@@ -1,8 +1,6 @@
 package simulation;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -13,38 +11,41 @@ import org.junit.Test;
 public class SimulatorTest {
 	private Simulator s;
 	private ISimulationComponent comp;
+	private final long defaultRunTime = 1;
 
 	@Before
 	public void setUp() throws Exception {
-		s = new Simulator();
+		s = new Simulator(defaultRunTime);
 		comp = mock(ISimulationComponent.class);
 	}
 
 	@Test
 	public void testInitialState() {
-		testStopped();
+		assertEquals(0, s.getSimulationTime());
 	}
 
-	private void testStopped() {
-		assertFalse(s.isRunning());
+	@Test(expected = IllegalArgumentException.class)
+	public void testNegativeDurationInit() {
+		s = new Simulator(0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testZeroDurationInit() {
+		s = new Simulator(0);
 	}
 
 	@Test
 	public void testStartedSim() {
 		s.start(true);
-		sleep(500);
-		testRunning();
-		s.stop();
-	}
-
-	private void testRunning() {
-		assertTrue(s.isRunning());
+		assertEquals(defaultRunTime, s.getSimulationTime());
+		assertEquals(s.getDuration(), s.getSimulationTime());
 	}
 
 	@Test
 	public void testSimDuration() {
-		s.setDuration(20);
-		assertEquals(20, s.getDuration());
+		long duration = 20;
+		s = new Simulator(duration);
+		assertEquals(duration, s.getDuration());
 	}
 
 	@Test
@@ -55,46 +56,15 @@ public class SimulatorTest {
 
 	@Test
 	public void testRunDurationImmediateReturn() {
-		s.setDuration(20);
+		long duration = 20;
+		s = new Simulator(duration);
 		runSim(true);
-		sleep(500);
 		verify(comp, times(20)).tick();
-		testStopped();
-	}
-
-	@Test
-	public void testRunDurationNoImmediateReturn() {
-		s.setDuration(20);
-		runSim(false);
-		verify(comp, times(20)).tick();
-		testStopped();
-	}
-
-	@Test
-	public void testRunNoDurationImmediateReturn() {
-		runSim(true);
-		testRunning();
-		s.stop();
-		testStopped();
 	}
 
 	private void runSim(boolean immediateReturn) {
 		s.register(comp);
 		s.start(immediateReturn);
-		if (immediateReturn) {
-			testRunning();
-		} else {
-			testStopped();
-		}
-	}
-
-	private void sleep(int i) {
-		try {
-			Thread.sleep(i);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 }

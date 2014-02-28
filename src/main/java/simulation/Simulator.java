@@ -1,61 +1,36 @@
 package simulation;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import time.Clock;
 
 public class Simulator implements ISimulationContext {
 
-	private static final int RUNNERTHREADSLEEPDURATION = 500;
-	private volatile boolean runflag;
-	private int duration;
+	private long duration;
 	private final Clock clock;
 	private final List<ISimulationComponent> components;
 
-	public Simulator() {
-		this.runflag = false;
-		this.duration = 0;
+	public Simulator(long duration) {
+		checkArgument(duration > 0, "Duration should be strictly positive.");
+		this.duration = duration;
 		this.clock = new Clock();
 		this.components = new ArrayList<ISimulationComponent>();
 	}
 
-	public boolean isRunning() {
-		return this.runflag;
-	}
-
 	public void start(boolean immediateReturn) {
-		setFlag(true);
 		simloop();
-		while (!immediateReturn && runflag) {
-			sleep(RUNNERTHREADSLEEPDURATION);
-		}
-	}
-
-	private void sleep(long duration) {
-		try {
-			Thread.sleep(duration);
-		} catch (InterruptedException e) {
-			Logger.getGlobal().log(Level.WARNING,
-					"Simulator control got woken from sleep by interrupt.");
-		}
 	}
 
 	private void simloop() {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (shouldRun()) {
-					getClock().addTimeStep(1);
-					tickComponents();
-				}
-				setFlag(false);
-			}
-		}).start();
+		while (shouldRun()) {
+			getClock().addTimeStep(1);
+			tickComponents();
+		}
 	}
 
 	private synchronized void tickComponents() {
@@ -65,10 +40,7 @@ public class Simulator implements ISimulationContext {
 	}
 
 	private boolean shouldRun() {
-		if (!runflag) {
-			return false;
-		}
-		if (getDuration() > 0 && getClock().getTimeCount() >= getDuration()) {
+		if (getClock().getTimeCount() >= getDuration()) {
 			return false;
 		}
 		return true;
@@ -79,12 +51,7 @@ public class Simulator implements ISimulationContext {
 		return this.clock;
 	}
 
-	public void setDuration(int i) {
-		this.duration = i;
-
-	}
-
-	public int getDuration() {
+	public long getDuration() {
 		return this.duration;
 	}
 
@@ -98,12 +65,8 @@ public class Simulator implements ISimulationContext {
 		return Collections.unmodifiableCollection(components);
 	}
 
-	public void stop() {
-		setFlag(false);
-	}
-
-	private void setFlag(boolean flag) {
-		this.runflag = flag;
+	public int getSimulationTime() {
+		return clock.getTimeCount();
 	}
 
 }
