@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import time.Clock;
 
@@ -38,10 +40,9 @@ public class Simulator implements ISimulationContext {
 		try {
 			Thread.sleep(duration);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.getGlobal().log(Level.WARNING,
+					"Simulator control got woken from sleep by interrupt.");
 		}
-
 	}
 
 	private void simloop() {
@@ -55,7 +56,6 @@ public class Simulator implements ISimulationContext {
 				setFlag(false);
 			}
 		}).start();
-
 	}
 
 	private synchronized void tickComponents() {

@@ -4,14 +4,15 @@ public class ProcessingState implements IStationState {
 
 	@Override
 	public void handleTick(IStationContext context, int timestep) {
+		int step = timestep;
 		IResource res = context.getCurrentResource();
-		while (res.getNeededProcessTime() > 0 && timestep > 0) {
+		while (res.getNeededProcessTime() > 0 && step > 0) {
 			res.process(1);
-			timestep--;
+			step--;
 		}
-		if (timestep > res.getNeededProcessTime()) {
+		if (step > res.getNeededProcessTime()) {
 			changestate(context);
-			redistributeTick(context, timestep);
+			redistributeTick(context, step);
 		}
 		if (res.getNeededProcessTime() == 0) {
 			changestate(context);
