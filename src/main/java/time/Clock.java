@@ -2,11 +2,11 @@ package time;
 
 public class Clock {
 	private int timecount;
-	
-	public Clock(){
+
+	public Clock() {
 		this.timecount = 0;
 	}
-	
+
 	public int getTimeCount() {
 		return timecount;
 	}
@@ -17,7 +17,6 @@ public class Clock {
 
 	public void resetTime() {
 		timecount = 0;
-		
-	}
 
+	}
 }

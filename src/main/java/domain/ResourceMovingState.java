@@ -5,7 +5,7 @@ public class ResourceMovingState implements IStationState {
 	@Override
 	public void handleTick(IStationContext context, int timestep) {
 		boolean succesfull = context.pushConveyor();
-		if(succesfull){
+		if (succesfull) {
 			context.setState(new ProcessingState());
 		}
 	}

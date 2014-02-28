@@ -12,8 +12,8 @@ public class Simulator implements ISimulationContext {
 	private static final int RUNNERTHREADSLEEPDURATION = 500;
 	private volatile boolean runflag;
 	private int duration;
-	private Clock clock;
-	private List<ISimulationComponent> components;
+	private final Clock clock;
+	private final List<ISimulationComponent> components;
 
 	public Simulator() {
 		this.runflag = false;
@@ -46,6 +46,7 @@ public class Simulator implements ISimulationContext {
 
 	private void simloop() {
 		new Thread(new Runnable() {
+			@Override
 			public void run() {
 				while (shouldRun()) {
 					getClock().addTimeStep(1);
@@ -64,10 +65,12 @@ public class Simulator implements ISimulationContext {
 	}
 
 	private boolean shouldRun() {
-		if (!runflag)
+		if (!runflag) {
 			return false;
-		if (getDuration() > 0 && getClock().getTimeCount() >= getDuration())
+		}
+		if (getDuration() > 0 && getClock().getTimeCount() >= getDuration()) {
 			return false;
+		}
 		return true;
 
 	}

@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class Buffer<T> {
 
-	private Queue<T> data;
+	private final Queue<T> data;
 
 	public Buffer() {
 		this.data = new LinkedList<T>();
@@ -26,8 +26,9 @@ public class Buffer<T> {
 
 	public T pull() {
 		T t = data.poll();
-		if (t == null)
+		if (t == null) {
 			throw new NoSuchElementException();
+		}
 		return t;
 	}
 }

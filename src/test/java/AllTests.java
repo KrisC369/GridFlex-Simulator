@@ -7,9 +7,9 @@ import time.ClockTest;
 import domain.BufferTest;
 import domain.WorkstationTest;
 
-
 @RunWith(Suite.class)
-@SuiteClasses({SimulatorTest.class, ClockTest.class, BufferTest.class, WorkstationTest.class})
+@SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
+		WorkstationTest.class })
 public class AllTests {
 
 }
