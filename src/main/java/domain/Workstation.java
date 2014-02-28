@@ -30,8 +30,8 @@ public class Workstation implements ISimulationComponent, IStationContext {
 	}
 
 	@Override
-	public void tick(int timestep) {
-		state.handleTick(this, timestep);
+	public void tick() {
+		state.handleTick(this);
 
 	}
 
@@ -73,10 +73,5 @@ public class Workstation implements ISimulationComponent, IStationContext {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void triggerRemainingTicks(int timestep) {
-		this.tick(timestep);
 	}
 }

@@ -2,7 +2,7 @@ package domain;
 
 interface IStationState {
 
-	void handleTick(IStationContext context, int timestep);
+	void handleTick(IStationContext context);
 
 	boolean isProcessing();
 

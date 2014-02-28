@@ -39,11 +39,11 @@ public class WorkstationTest {
 		int processCount = 3;
 		IResource res = new SimpleResource(processCount);
 		in.push(res);
-		w.tick(1);
+		w.tick();
 		testStateAfterProces1(res);
-		w.tick(1);
+		w.tick();
 		assertFalse(w.isIdle());
-		multiTick(3, 1);
+		multiTick(3);
 		testStateAfterFinalPush(res);
 	}
 
@@ -52,11 +52,11 @@ public class WorkstationTest {
 		int processCount = 3;
 		IResource res = new SimpleResource(processCount);
 		in.push(res);
-		w.tick(1);
+		w.tick();
 		testStateAfterProces1(res);
-		w.tick(1);
+		w.tick();
 		assertFalse(w.isIdle());
-		w.tick(3);
+		multiTick(3);
 		testStateAfterFinalPush(res);
 	}
 
@@ -64,14 +64,14 @@ public class WorkstationTest {
 	public void testDoubleSetResource() {
 		IResource res = new SimpleResource(1);
 		in.push(res);
-		w.tick(1);
+		w.tick();
 		testStateAfterProces1(res);
 		w.setCurrentResource(res);
 	}
 
-	private void multiTick(int times, int step) {
+	private void multiTick(int times) {
 		for (; times > 0; times--) {
-			w.tick(step);
+			w.tick();
 		}
 	}
 

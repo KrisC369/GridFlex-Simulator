@@ -60,7 +60,7 @@ public class Simulator implements ISimulationContext {
 
 	private synchronized void tickComponents() {
 		for (ISimulationComponent c : components) {
-			c.tick(1);
+			c.tick();
 		}
 	}
 

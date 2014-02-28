@@ -58,7 +58,7 @@ public class SimulatorTest {
 		s.setDuration(20);
 		runSim(true);
 		sleep(500);
-		verify(comp, times(20)).tick(1);
+		verify(comp, times(20)).tick();
 		testStopped();
 	}
 
@@ -66,7 +66,7 @@ public class SimulatorTest {
 	public void testRunDurationNoImmediateReturn() {
 		s.setDuration(20);
 		runSim(false);
-		verify(comp, times(20)).tick(1);
+		verify(comp, times(20)).tick();
 		testStopped();
 	}
 

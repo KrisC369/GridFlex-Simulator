@@ -6,6 +6,4 @@ interface IStationContext {
 	boolean pushConveyor();
 
 	IResource getCurrentResource();
-
-	void triggerRemainingTicks(int timestep);
 }
