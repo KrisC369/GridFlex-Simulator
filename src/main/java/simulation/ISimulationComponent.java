@@ -1,7 +1,7 @@
 package simulation;
 
 public interface ISimulationComponent {
-	public void initialize(ISimulationContext context);
+    public void initialize(ISimulationContext context);
 
-	public void tick();
+    public void tick();
 }

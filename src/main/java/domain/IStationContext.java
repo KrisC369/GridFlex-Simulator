@@ -1,9 +1,9 @@
 package domain;
 
 interface IStationContext {
-	void setState(IStationState newState);
+    void setState(IStationState newState);
 
-	boolean pushConveyor();
+    boolean pushConveyor();
 
-	IResource getCurrentResource();
+    IResource getCurrentResource();
 }

@@ -1,22 +1,22 @@
 package time;
 
 public class Clock {
-	private int timecount;
+    private int timecount;
 
-	public Clock() {
-		this.timecount = 0;
-	}
+    public Clock() {
+        this.timecount = 0;
+    }
 
-	public int getTimeCount() {
-		return timecount;
-	}
+    public int getTimeCount() {
+        return timecount;
+    }
 
-	public void addTimeStep(int step) {
-		this.timecount += step;
-	}
+    public void addTimeStep(int step) {
+        this.timecount += step;
+    }
 
-	public void resetTime() {
-		timecount = 0;
+    public void resetTime() {
+        timecount = 0;
 
-	}
+    }
 }

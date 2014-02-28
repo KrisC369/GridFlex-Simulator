@@ -1,7 +1,7 @@
 package domain;
 
 public interface IResource {
-	public int getNeededProcessTime();
+    public int getNeededProcessTime();
 
-	public void process(int time);
+    public void process(int time);
 }

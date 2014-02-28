@@ -9,7 +9,7 @@ import domain.WorkstationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
-		WorkstationTest.class })
+        WorkstationTest.class })
 public class AllTests {
 
 }

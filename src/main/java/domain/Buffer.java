@@ -6,29 +6,29 @@ import java.util.Queue;
 
 public class Buffer<T> {
 
-	private final Queue<T> data;
+    private final Queue<T> data;
 
-	public Buffer() {
-		this.data = new LinkedList<T>();
-	}
+    public Buffer() {
+        this.data = new LinkedList<T>();
+    }
 
-	public boolean isEmpty() {
-		return data.isEmpty();
-	}
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
 
-	public void push(T res) {
-		data.add(res);
-	}
+    public void push(T res) {
+        data.add(res);
+    }
 
-	public int getCurrentCapacity() {
-		return data.size();
-	}
+    public int getCurrentCapacity() {
+        return data.size();
+    }
 
-	public T pull() {
-		T t = data.poll();
-		if (t == null) {
-			throw new NoSuchElementException();
-		}
-		return t;
-	}
+    public T pull() {
+        T t = data.poll();
+        if (t == null) {
+            throw new NoSuchElementException();
+        }
+        return t;
+    }
 }

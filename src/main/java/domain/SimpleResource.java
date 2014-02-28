@@ -1,20 +1,20 @@
 package domain;
 
 public class SimpleResource implements IResource {
-	private int neededTime;
+    private int neededTime;
 
-	public SimpleResource(int i) {
-		this.neededTime = i;
-	}
+    public SimpleResource(int i) {
+        this.neededTime = i;
+    }
 
-	@Override
-	public int getNeededProcessTime() {
-		return this.neededTime;
-	}
+    @Override
+    public int getNeededProcessTime() {
+        return this.neededTime;
+    }
 
-	@Override
-	public void process(int time) {
-		this.neededTime--;
-	}
+    @Override
+    public void process(int time) {
+        this.neededTime--;
+    }
 
 }
