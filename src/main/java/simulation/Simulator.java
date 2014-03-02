@@ -9,12 +9,25 @@ import java.util.List;
 
 import time.Clock;
 
+/**
+ * The Class Simulator.
+ */
 public class Simulator implements ISimulationContext {
 
+    /** The scheduled duration of this simulator's run. */
     private long duration;
+    
+    /** The internal clock reference. */
     private final Clock clock;
+    
+    /** The collection of simulation components. */
     private final List<ISimulationComponent> components;
 
+    /**
+     * Instantiates a new simulator.
+     *
+     * @param duration the duration
+     */
     public Simulator(long duration) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
@@ -22,7 +35,11 @@ public class Simulator implements ISimulationContext {
         this.components = new ArrayList<ISimulationComponent>();
     }
 
-    public void start(boolean immediateReturn) {
+    /**
+     * Starts this simulation by running the simulation loop.
+     *
+     */
+    public void start() {
         simloop();
     }
 
@@ -51,20 +68,38 @@ public class Simulator implements ISimulationContext {
         return this.clock;
     }
 
+    /**
+     * Gets the scheduled duration of this simulation.
+     *
+     * @return the duration
+     */
     public long getDuration() {
         return this.duration;
     }
 
+    /* (non-Javadoc)
+     * @see simulation.ISimulationContext#register(simulation.ISimulationComponent)
+     */
     @Override
     public void register(ISimulationComponent comp) {
         this.components.add(comp);
 
     }
 
+    /**
+     * Gets the simulation components.
+     *
+     * @return the components of this simulation
+     */
     public Collection<ISimulationComponent> getComponents() {
         return Collections.unmodifiableCollection(components);
     }
 
+    /**
+     * Gets the elapsed simulation time.
+     *
+     * @return the simulation time
+     */
     public int getSimulationTime() {
         return clock.getTimeCount();
     }

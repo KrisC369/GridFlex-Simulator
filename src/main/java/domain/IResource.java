@@ -7,10 +7,11 @@ package domain;
  * 
  */
 public interface IResource {
+    
     /**
      * Return the needed process time for this resource.
-     * 
-     * @return
+     *
+     * @return the needed process time
      */
     int getNeededProcessTime();
 

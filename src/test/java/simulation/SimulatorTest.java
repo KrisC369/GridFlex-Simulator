@@ -36,7 +36,7 @@ public class SimulatorTest {
 
     @Test
     public void testStartedSim() {
-        s.start(true);
+        s.start();
         assertEquals(defaultRunTime, s.getSimulationTime());
         assertEquals(s.getDuration(), s.getSimulationTime());
     }
@@ -64,7 +64,7 @@ public class SimulatorTest {
 
     private void runSim(boolean immediateReturn) {
         s.register(comp);
-        s.start(immediateReturn);
+        s.start();
     }
 
 }

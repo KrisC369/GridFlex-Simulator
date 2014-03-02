@@ -20,15 +20,15 @@ interface IStationContext {
      * This method pushes the represented conveyer belt forward. Resources get
      * pulled from the in-buffer if there is room in the station and finished
      * resources can be pushed to the out-buffer when finished.
-     * 
-     * @return
+     *
+     * @return true, if successful
      */
     boolean pushConveyer();
 
     /**
-     * This method returns the resource currently present in the workstation
-     * 
-     * @return
+     * This method returns the resource currently present in the workstation.
+     *
+     * @return the current resource
      */
     IResource getCurrentResource();
 }

@@ -1,7 +1,13 @@
 package domain;
 
-public class ResourceMovingState implements IStationState {
+/**
+ * The Class ResourceMovingState .
+ */
+class ResourceMovingState implements IStationState {
 
+    /* (non-Javadoc)
+     * @see domain.IStationState#handleTick(domain.IStationContext)
+     */
     @Override
     public void handleTick(IStationContext context) {
         boolean succesfull = context.pushConveyer();
@@ -14,6 +20,9 @@ public class ResourceMovingState implements IStationState {
         context.setState(new ProcessingState());
     }
 
+    /* (non-Javadoc)
+     * @see domain.IStationState#isProcessing()
+     */
     @Override
     public boolean isProcessing() {
         return false;

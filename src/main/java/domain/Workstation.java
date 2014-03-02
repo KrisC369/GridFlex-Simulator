@@ -12,9 +12,16 @@ import simulation.ISimulationContext;
  */
 public class Workstation implements ISimulationComponent, IStationContext {
 
+    /** The input buffer. */
     private final Buffer<IResource> inputBuff;
+    
+    /** The output buffer. */
     private final Buffer<IResource> outputBuff;
+    
+    /** The state of this workstation. */
     private IStationState state;
+    
+    /** The current resource. */
     private IResource currentResource;
 
     /**
@@ -34,8 +41,8 @@ public class Workstation implements ISimulationComponent, IStationContext {
 
     /**
      * Return the amount of items that has been processed by this workstation.
-     * 
-     * @return
+     *
+     * @return the processed items count
      */
     public int getProcessedItemsCount() {
         return 0;
@@ -51,17 +58,26 @@ public class Workstation implements ISimulationComponent, IStationContext {
         return !state.isProcessing();
     }
 
+    /* (non-Javadoc)
+     * @see simulation.ISimulationComponent#initialize(simulation.ISimulationContext)
+     */
     @Override
     public void initialize(ISimulationContext context) {
 
     }
 
+    /* (non-Javadoc)
+     * @see simulation.ISimulationComponent#tick()
+     */
     @Override
     public void tick() {
         state.handleTick(this);
 
     }
 
+    /* (non-Javadoc)
+     * @see domain.IStationContext#setState(domain.IStationState)
+     */
     @Override
     public void setState(IStationState newState) {
         this.state = newState;
@@ -76,6 +92,9 @@ public class Workstation implements ISimulationComponent, IStationContext {
         return outputBuff;
     }
 
+    /* (non-Javadoc)
+     * @see domain.IStationContext#getCurrentResource()
+     */
     @Override
     public IResource getCurrentResource() {
 
@@ -96,6 +115,9 @@ public class Workstation implements ISimulationComponent, IStationContext {
         this.currentResource = res;
     }
 
+    /* (non-Javadoc)
+     * @see domain.IStationContext#pushConveyer()
+     */
     @Override
     public boolean pushConveyer() {
         if (null != getCurrentResource()) {

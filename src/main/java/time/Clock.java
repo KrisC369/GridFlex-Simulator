@@ -1,5 +1,9 @@
+/*
+ * 
+ */
 package time;
 
+// TODO: Auto-generated Javadoc
 /**
  * A basic clock representation for the simulation component of this software.
  * 
@@ -7,10 +11,12 @@ package time;
  * 
  */
 public class Clock {
+    
+    /** The timecount of this clock. */
     private int timecount;
 
     /**
-     * Public default constructor
+     * Public default constructor.
      */
     public Clock() {
         this.timecount = 0;
