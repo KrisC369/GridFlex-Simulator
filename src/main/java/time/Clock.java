@@ -1,9 +1,5 @@
-/*
- * 
- */
 package time;
 
-// TODO: Auto-generated Javadoc
 /**
  * A basic clock representation for the simulation component of this software.
  * 

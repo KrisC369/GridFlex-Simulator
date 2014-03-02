@@ -15,7 +15,7 @@ import time.Clock;
 public class Simulator implements ISimulationContext {
 
     /** The scheduled duration of this simulator's run. */
-    private long duration;
+    private final long duration;
     
     /** The internal clock reference. */
     private final Clock clock;
