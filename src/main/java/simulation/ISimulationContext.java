@@ -16,6 +16,6 @@ public interface ISimulationContext {
      * @param comp
      *            the component to register.
      */
-    abstract void register(ISimulationComponent comp);
+    void register(ISimulationComponent comp);
 
 }
