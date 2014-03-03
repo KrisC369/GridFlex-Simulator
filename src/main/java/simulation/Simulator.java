@@ -106,6 +106,12 @@ public class Simulator implements ISimulationContext {
         return clock.getTimeCount();
     }
     
+    
+    /**
+     *  Creates and instantiates a new simulator.
+     * @param duration the duration the simulator should run for.
+     * @return A new simulator object.
+     */
     public static Simulator createSimulator(long duration){
         return new Simulator(duration);
     }
