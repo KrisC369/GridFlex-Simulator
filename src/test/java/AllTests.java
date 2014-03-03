@@ -11,5 +11,4 @@ import domain.WorkstationTest;
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
         WorkstationTest.class })
 public class AllTests {
-
 }

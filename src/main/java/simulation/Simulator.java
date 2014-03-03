@@ -16,19 +16,20 @@ public class Simulator implements ISimulationContext {
 
     /** The scheduled duration of this simulator's run. */
     private final long duration;
-    
+
     /** The internal clock reference. */
     private final Clock clock;
-    
+
     /** The collection of simulation components. */
     private final List<ISimulationComponent> components;
 
     /**
      * Instantiates a new simulator.
-     *
-     * @param duration the duration
+     * 
+     * @param duration
+     *            the duration
      */
-    public Simulator(long duration) {
+    private Simulator(long duration) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new Clock();
@@ -37,7 +38,7 @@ public class Simulator implements ISimulationContext {
 
     /**
      * Starts this simulation by running the simulation loop.
-     *
+     * 
      */
     public void start() {
         simloop();
@@ -57,9 +58,7 @@ public class Simulator implements ISimulationContext {
     }
 
     private boolean shouldRun() {
-        if (getClock().getTimeCount() >= getDuration()) {
-            return false;
-        }
+        if (getClock().getTimeCount() >= getDuration()) { return false; }
         return true;
 
     }
@@ -70,15 +69,18 @@ public class Simulator implements ISimulationContext {
 
     /**
      * Gets the scheduled duration of this simulation.
-     *
+     * 
      * @return the duration
      */
     public long getDuration() {
         return this.duration;
     }
 
-    /* (non-Javadoc)
-     * @see simulation.ISimulationContext#register(simulation.ISimulationComponent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * simulation.ISimulationContext#register(simulation.ISimulationComponent)
      */
     @Override
     public void register(ISimulationComponent comp) {
@@ -88,7 +90,7 @@ public class Simulator implements ISimulationContext {
 
     /**
      * Gets the simulation components.
-     *
+     * 
      * @return the components of this simulation
      */
     public Collection<ISimulationComponent> getComponents() {
@@ -97,11 +99,15 @@ public class Simulator implements ISimulationContext {
 
     /**
      * Gets the elapsed simulation time.
-     *
+     * 
      * @return the simulation time
      */
     public int getSimulationTime() {
         return clock.getTimeCount();
+    }
+    
+    public static Simulator createSimulator(long duration){
+        return new Simulator(duration);
     }
 
 }

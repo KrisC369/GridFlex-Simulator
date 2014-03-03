@@ -15,7 +15,7 @@ public class SimulatorTest {
 
     @Before
     public void setUp() throws Exception {
-        s = new Simulator(defaultRunTime);
+        s = Simulator.createSimulator(defaultRunTime);
         comp = mock(ISimulationComponent.class);
     }
 
@@ -26,12 +26,12 @@ public class SimulatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeDurationInit() {
-        s = new Simulator(0);
+        s = Simulator.createSimulator(0);  
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testZeroDurationInit() {
-        s = new Simulator(0);
+        s = Simulator.createSimulator(0);  
     }
 
     @Test
@@ -44,7 +44,7 @@ public class SimulatorTest {
     @Test
     public void testSimDuration() {
         long duration = 20;
-        s = new Simulator(duration);
+        s = Simulator.createSimulator(duration);
         assertEquals(duration, s.getDuration());
     }
 
@@ -57,7 +57,7 @@ public class SimulatorTest {
     @Test
     public void testRunDurationImmediateReturn() {
         long duration = 20;
-        s = new Simulator(duration);
+        s = Simulator.createSimulator(duration);
         runSim(true);
         verify(comp, times(20)).tick();
     }

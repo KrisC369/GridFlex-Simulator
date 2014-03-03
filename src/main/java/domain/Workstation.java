@@ -3,6 +3,8 @@ package domain;
 import simulation.ISimulationComponent;
 import simulation.ISimulationContext;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * Main workstation class representing machines that perform work and consume
  * energy.
@@ -101,14 +103,8 @@ public class Workstation implements ISimulationComponent, IStationContext {
         return currentResource;
     }
 
-    /**
-     * Set the current resource present in the workstation. Only succeeds if no
-     * other resource is present.
-     * 
-     * @param res
-     *            The resource to set.
-     */
-    public void setCurrentResource(IResource res) {
+    @VisibleForTesting 
+    void setCurrentResource(IResource res) {
         if (null != currentResource) {
             throw new IllegalStateException();
         }
