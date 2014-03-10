@@ -152,7 +152,9 @@ public class Workstation implements IWorkstation, IStationContext {
 
     @VisibleForTesting
     void setCurrentResource(IResource res) {
-        if (null != currentResource) { throw new IllegalStateException(); }
+        if (null != currentResource) {
+            throw new IllegalStateException();
+        }
         this.currentResource = res;
     }
 
