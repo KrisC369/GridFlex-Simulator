@@ -1,4 +1,4 @@
-package domain;
+package domain.workstation;
 
 /**
  * The Interface IStationState.

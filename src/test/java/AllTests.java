@@ -5,7 +5,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import simulation.SimulatorTest;
 import time.ClockTest;
 import domain.BufferTest;
-import domain.WorkstationTest;
+import domain.workstation.WorkstationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,

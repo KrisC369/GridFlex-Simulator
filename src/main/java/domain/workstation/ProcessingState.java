@@ -1,4 +1,6 @@
-package domain;
+package domain.workstation;
+
+import domain.IResource;
 
 /**
  * The Class ProcessingState.

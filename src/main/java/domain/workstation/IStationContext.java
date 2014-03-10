@@ -1,4 +1,6 @@
-package domain;
+package domain.workstation;
+
+import domain.IResource;
 
 /**
  * This interface represents the methods that the station states can call on the

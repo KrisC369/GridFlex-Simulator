@@ -58,7 +58,7 @@ public class BufferTest {
     public void testBigNumberThroughput() {
         Buffer<Integer> b = new Buffer<Integer>();
         int n = 10191200;
-        for (Integer i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             b.push(i);
         }
         for (Integer i = 0; i < n; i++) {

@@ -1,9 +1,11 @@
-package domain;
+package domain.workstation;
 
-import simulation.ISimulationComponent;
 import simulation.ISimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
+
+import domain.Buffer;
+import domain.IResource;
 
 /**
  * Main workstation class representing machines that perform work and consume
@@ -12,7 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class Workstation implements ISimulationComponent, IStationContext {
+public class Workstation implements IWorkstation, IStationContext {
 
     /** The input buffer. */
     private final Buffer<IResource> inputBuff;
@@ -35,27 +37,25 @@ public class Workstation implements ISimulationComponent, IStationContext {
      * @param bufferOut
      *            The Out buffer.
      */
-    public Workstation(Buffer<IResource> bufferIn, Buffer<IResource> bufferOut) {
+    private Workstation(Buffer<IResource> bufferIn, Buffer<IResource> bufferOut) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
         this.state = new ResourceMovingState();
     }
 
-    /**
-     * Return the amount of items that has been processed by this workstation.
-     *
-     * @return the processed items count
+
+    /* (non-Javadoc)
+     * @see domain.workstation.IWorkstation#getProcessedItemsCount()
      */
+    @Override
     public int getProcessedItemsCount() {
         return 0;
     }
 
-    /**
-     * Returns wheter this machine is performing work during this time step or
-     * not.
-     * 
-     * @return true if performing work during this time step.
+    /* (non-Javadoc)
+     * @see domain.workstation.IWorkstation#isIdle()
      */
+    @Override
     public boolean isIdle() {
         return !state.isProcessing();
     }
@@ -65,7 +65,6 @@ public class Workstation implements ISimulationComponent, IStationContext {
      */
     @Override
     public void initialize(ISimulationContext context) {
-
     }
 
     /* (non-Javadoc)
@@ -125,5 +124,9 @@ public class Workstation implements ISimulationComponent, IStationContext {
             return true;
         }
         return false;
+    }
+    
+    public static IWorkstation create(Buffer<IResource> bufferIn, Buffer<IResource> bufferOut){
+        return new Workstation(bufferIn, bufferOut);
     }
 }
