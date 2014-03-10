@@ -33,8 +33,18 @@ public class WorkstationTest {
 
     @Test
     public void testInitial() {
+        initialStateTest(w);
+    }
+
+    private void initialStateTest(IWorkstation w) {
         assertEquals(0, w.getProcessedItemsCount());
         assertTrue(w.isIdle());
+    }
+    
+    @Test
+    public void testFactoryMethodInitial(){
+        IWorkstation iw = Workstation.create(new Buffer<IResource>(), new Buffer<IResource>());
+        assertTrue(iw.isIdle());
     }
 
     @Test
