@@ -37,6 +37,7 @@ public class Workstation implements IWorkstation, IStationContext {
      * @param bufferOut
      *            The Out buffer.
      */
+    @VisibleForTesting 
     Workstation(Buffer<IResource> bufferIn, Buffer<IResource> bufferOut) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
