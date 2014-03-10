@@ -9,26 +9,24 @@ import static org.mockito.Mockito.mock;
 import org.junit.Before;
 import org.junit.Test;
 
+import simulation.ISimulationContext;
+import simulation.Simulator;
 import domain.Buffer;
 import domain.IResource;
 import domain.SimpleResource;
-import domain.workstation.IWorkstation;
-import domain.workstation.Workstation;
-import simulation.ISimulationContext;
-import simulation.Simulator;
 
 public class WorkstationTest {
 
     private Buffer<IResource> in;
     private Buffer<IResource> out;
-    private IWorkstation w;
+    private Workstation w;
     private ISimulationContext sim;
 
     @Before
     public void setUp() throws Exception {
         in = new Buffer<IResource>();
         out = new Buffer<IResource>();
-        w = Workstation.create(in, out);
+        w = new Workstation(in, out);
         sim = mock(Simulator.class);
         sim.register(w);
     }
@@ -71,7 +69,7 @@ public class WorkstationTest {
         in.push(res);
         w.tick();
         testStateAfterProces1(res);
-        ((Workstation)w).setCurrentResource(res);
+        w.setCurrentResource(res);
     }
 
     private void multiTick(int times) {
@@ -81,7 +79,7 @@ public class WorkstationTest {
     }
 
     private void testStateAfterFinalPush(IResource res) {
-        assertNull(((Workstation)w).getCurrentResource());
+        assertNull(w.getCurrentResource());
         assertTrue(in.isEmpty());
         assertTrue(w.isIdle());
         assertFalse(out.isEmpty());
@@ -92,7 +90,7 @@ public class WorkstationTest {
         assertTrue(in.isEmpty());
         assertFalse(w.isIdle());
         assertTrue(out.isEmpty());
-        assertEquals(res, ((Workstation)w).getCurrentResource());
+        assertEquals(res, w.getCurrentResource());
     }
 
 }

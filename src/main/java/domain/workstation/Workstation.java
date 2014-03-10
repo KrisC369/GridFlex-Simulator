@@ -37,7 +37,7 @@ public class Workstation implements IWorkstation, IStationContext {
      * @param bufferOut
      *            The Out buffer.
      */
-    private Workstation(Buffer<IResource> bufferIn, Buffer<IResource> bufferOut) {
+    Workstation(Buffer<IResource> bufferIn, Buffer<IResource> bufferOut) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
         this.state = new ResourceMovingState();
