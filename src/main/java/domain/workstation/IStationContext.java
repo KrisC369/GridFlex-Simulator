@@ -10,14 +10,17 @@ import domain.IResource;
  * 
  */
 interface IStationContext {
+    
     /**
-     * Change the state of this Station context instance.
-     * 
-     * @param newState
-     *            The newstate that will be set.
+     * Change the state of this Station context instance to the working state.
      */
-    void setState(IStationState newState);
+    void setProcessingState();
 
+    /**
+     *  Change the state of this Station context instance to the idle state.
+     */
+    void setResourceMovingState();
+    
     /**
      * This method pushes the represented conveyer belt forward. Resources get
      * pulled from the in-buffer if there is room in the station and finished

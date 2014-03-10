@@ -19,4 +19,10 @@ interface IStationState {
      */
     boolean isProcessing();
 
+    /**
+     * Returns the consumptionRate in this state.
+     * @return the consumption rate.
+     */
+     int getConsumptionRate();
+
 }

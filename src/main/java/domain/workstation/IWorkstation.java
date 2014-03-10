@@ -25,4 +25,16 @@ public interface IWorkstation extends ISimulationComponent {
      */
     int getProcessedItemsCount();
 
+    /**
+     * Returns the energy consumption amount during the last step.
+     * @return an int representing consumption amount.
+     */
+    int getLastStepConsumption();
+
+    /**
+     * Returns the total energy consumption amount.
+     * @return the total energy consumed.
+     */
+    int getTotalConsumption();
+
 }

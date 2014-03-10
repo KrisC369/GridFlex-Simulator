@@ -21,14 +21,16 @@ public class WorkstationTest {
     private Buffer<IResource> out;
     private Workstation w;
     private ISimulationContext sim;
+    private IWorkstation iew;
 
     @Before
     public void setUp() throws Exception {
         in = new Buffer<IResource>();
         out = new Buffer<IResource>();
-        w = new Workstation(in, out);
+        w = new Workstation(in, out, 0, 0);
         sim = mock(Simulator.class);
         sim.register(w);
+        iew = Workstation.createConsuming(in, out, 1, 3);
     }
 
     @Test
@@ -40,51 +42,53 @@ public class WorkstationTest {
         assertEquals(0, w.getProcessedItemsCount());
         assertTrue(w.isIdle());
     }
-    
+
     @Test
-    public void testFactoryMethodInitial(){
-        IWorkstation iw = Workstation.create(new Buffer<IResource>(), new Buffer<IResource>());
+    public void testFactoryMethodInitial() {
+        IWorkstation iw = Workstation.createDefault(new Buffer<IResource>(),
+                new Buffer<IResource>());
         assertTrue(iw.isIdle());
     }
 
     @Test
     public void testProcessResourceSingleSteps() {
-        int processCount = 3;
-        IResource res = new SimpleResource(processCount);
-        in.push(res);
+        IResource res = pushResource(3);
         w.tick();
         testStateAfterProces1(res);
         w.tick();
         assertFalse(w.isIdle());
-        multiTick(3);
+        multiTick(w, 3);
         testStateAfterFinalPush(res);
     }
 
     @Test
     public void testProcessResourceWithLongerSteps() {
-        int processCount = 3;
-        IResource res = new SimpleResource(processCount);
-        in.push(res);
+        IResource res = pushResource(3);
         w.tick();
         testStateAfterProces1(res);
         w.tick();
         assertFalse(w.isIdle());
-        multiTick(3);
+        multiTick(w, 3);
         testStateAfterFinalPush(res);
     }
 
     @Test(expected = IllegalStateException.class)
     public void testDoubleSetResource() {
-        IResource res = new SimpleResource(1);
-        in.push(res);
+        IResource res = pushResource(1);
         w.tick();
         testStateAfterProces1(res);
         w.setCurrentResource(res);
     }
 
-    private void multiTick(int times) {
+    private IResource pushResource(int procTime) {
+        IResource res = new SimpleResource(procTime);
+        in.push(res);
+        return res;
+    }
+
+    private void multiTick(IWorkstation s, int times) {
         for (; times > 0; times--) {
-            w.tick();
+            s.tick();
         }
     }
 
@@ -94,6 +98,7 @@ public class WorkstationTest {
         assertTrue(w.isIdle());
         assertFalse(out.isEmpty());
         assertEquals(res, out.pull());
+        assertEquals(1,w.getProcessedItemsCount());
     }
 
     private void testStateAfterProces1(IResource res) {
@@ -101,6 +106,53 @@ public class WorkstationTest {
         assertFalse(w.isIdle());
         assertTrue(out.isEmpty());
         assertEquals(res, w.getCurrentResource());
+        assertEquals(0,w.getProcessedItemsCount());
+    }
+
+    // Test for consumptions.
+
+    @Test
+    public void testDefaultTotalConsumptionOfZero() {
+        pushResource(1);
+        multiTick(w, 5);
+        assertEquals(0, w.getTotalConsumption());
+    }
+
+    @Test
+    public void testDefaultOneTickConsumptionOfZero() {
+        pushResource(1);
+        for (int i = 0; i < 5; i++) {
+            w.tick();
+            assertEquals(0, w.getLastStepConsumption());
+        }
+    }
+
+    @Test
+    public void testConsumingTotalConsumptionOf5AfterInAndOut() {
+        pushResource(1);
+        multiTick(iew, 3);
+        assertEquals(5, iew.getTotalConsumption()); // 1:in + 1:out + 1*3:cons
+        assertEquals(1,iew.getProcessedItemsCount());
+    }
+
+    @Test
+    public void testConsumingTotalConsumptionOf11AfterInAndOut() {
+        pushResource(3);
+        multiTick(iew, 5);
+        assertEquals(11, iew.getTotalConsumption());// 1:in + 1:out + 3*3:cons
+        assertEquals(1,iew.getProcessedItemsCount());
+    }
+
+    @Test
+    public void testConsumingOneTickConsumptionOf3() {
+        pushResource(1);
+        iew.tick();
+        assertEquals(1, iew.getLastStepConsumption());
+        iew.tick();
+        assertEquals(3, iew.getLastStepConsumption());
+        iew.tick();
+        assertEquals(1, iew.getLastStepConsumption());
+        assertEquals(1,iew.getProcessedItemsCount());
     }
 
 }
