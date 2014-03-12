@@ -94,7 +94,7 @@ public class BufferTest {
         Buffer<IBufferable> b = new Buffer<IBufferable>();
         List<IBufferable> results = new ArrayList<IBufferable>(); 
         IBufferable tmp;
-        int n = 10191200;
+        int n = 101912;
         for (int i = 0; i < n; i++) {
             tmp = ResourceFactory.createResource();
             b.push(tmp);

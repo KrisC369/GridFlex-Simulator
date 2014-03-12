@@ -12,6 +12,9 @@ import java.util.List;
  */
 public class ResourceFactory {
     
+    
+    private ResourceFactory(){}
+    
     /**
      * Creates a resource with the steps needed at each processor as params.
      * @param neededProcessing a list of needed processing steps per processor, seperated by comma's.

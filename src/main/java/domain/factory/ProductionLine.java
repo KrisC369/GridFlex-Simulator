@@ -15,10 +15,10 @@ import domain.workstation.Workstation;
  * A productionline representing buffers and workstations.
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class ProductionLine implements ISimulationComponent {
+public final class ProductionLine implements ISimulationComponent {
     
-    private List<Buffer<IResource>> buffers;
-    private List<IWorkstation> workstations;
+    private final List<Buffer<IResource>> buffers;
+    private final List<IWorkstation> workstations;
     
     private ProductionLine() {
         this.buffers = new ArrayList<>();
