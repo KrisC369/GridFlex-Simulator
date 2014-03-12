@@ -1,15 +1,19 @@
 package domain;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  * The Class Buffer represents a simple FIFI queue buffer implementation.
  *
  * @param <T> the generic type of contents in this buffer.
  */
-public class Buffer<T> {
+public class Buffer<T extends IBufferable> {
 
     /** The internal queue representation. */
     private final Queue<T> data;
@@ -32,11 +36,12 @@ public class Buffer<T> {
 
     /**
      * Push a resource into this buffer.
-     *
+     * Notifies IBufferable resource it has been buffered.
      * @param res the content item to push.
      */
     public void push(T res) {
         data.add(res);
+        res.notifyOfHasBeenBuffered();
     }
 
     /**
@@ -59,5 +64,27 @@ public class Buffer<T> {
             throw new NoSuchElementException();
         }
         return t;
+    }
+
+    /**
+     * Pull all items from this buffer.
+     * @return all the present items.
+     */
+    public Collection<T> pullAll() {
+       Set<T> returnset = new HashSet<>();
+       while(!isEmpty()){
+           returnset.add(pull());
+       }
+       return returnset;
+    }
+
+    /**
+     * Push a Ordered list into this buffer.
+     * @param reslist the list of items to buffer.
+     */
+    public void pushAll(List<T> reslist) {
+       for(T t : reslist){
+           push(t);
+       }
     }
 }

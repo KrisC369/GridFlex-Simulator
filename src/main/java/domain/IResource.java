@@ -6,14 +6,14 @@ package domain;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface IResource {
+public interface IResource extends IBufferable {
     
     /**
-     * Return the needed process time for this resource.
+     * Return the needed process time for this resource at this moment.
      *
      * @return the needed process time
      */
-    int getNeededProcessTime();
+    int getCurrentNeededProcessTime();
 
     /**
      * Indicate that 'time' numbers of process steps have been completed.
@@ -22,4 +22,10 @@ public interface IResource {
      *            the amount of completed time steps.
      */
     void process(int time);
+
+    /**
+     * Returns whether this resource needs more processing at the current station.
+     * @return whether this resource needs more processing.
+     */
+    boolean needsMoreProcessing(); 
 }

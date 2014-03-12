@@ -15,7 +15,7 @@ public class SimpleResource implements IResource {
      *
      * @param needed the time needed to proces this resource.
      */
-    public SimpleResource(int needed) {
+    protected SimpleResource(int needed) {
         this.neededTime = needed;
     }
 
@@ -23,7 +23,7 @@ public class SimpleResource implements IResource {
      * @see domain.IResource#getNeededProcessTime()
      */
     @Override
-    public int getNeededProcessTime() {
+    public int getCurrentNeededProcessTime() {
         return this.neededTime;
     }
 
@@ -32,7 +32,19 @@ public class SimpleResource implements IResource {
      */
     @Override
     public void process(int time) {
-        this.neededTime--;
+        this.neededTime -= time;
     }
 
+    @Override
+    public boolean needsMoreProcessing() {
+        return getCurrentNeededProcessTime() > 0;
+    }
+
+    @Override
+    public void notifyOfHasBeenBuffered() {
+    }
+    
+    protected void setNeededTime(int newTime){
+        this.neededTime = newTime;
+    }
 }

@@ -13,7 +13,7 @@ import simulation.ISimulationContext;
 import simulation.Simulator;
 import domain.Buffer;
 import domain.IResource;
-import domain.SimpleResource;
+import domain.ResourceFactory;
 
 public class WorkstationTest {
 
@@ -81,7 +81,7 @@ public class WorkstationTest {
     }
 
     private IResource pushResource(int procTime) {
-        IResource res = new SimpleResource(procTime);
+        IResource res = ResourceFactory.createResource(procTime);
         in.push(res);
         return res;
     }

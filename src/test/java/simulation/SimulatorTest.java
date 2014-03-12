@@ -52,6 +52,7 @@ public class SimulatorTest {
     public void testRegisterComp() {
         s.register(comp);
         assertEquals(1, s.getComponents().size());
+        verify(comp,times(1)).initialize(s);
     }
 
     @Test

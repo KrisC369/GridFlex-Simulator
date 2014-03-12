@@ -16,25 +16,14 @@ import domain.IResource;
  */
 public class Workstation implements IWorkstation, IStationContext {
 
-    /** The input buffer. */
     private final Buffer<IResource> inputBuff;
-
-    /** The output buffer. */
     private final Buffer<IResource> outputBuff;
-
-    /** The state of this workstation. */
-    private IStationState currentState;
-    private final IStationState processingState;
-
     private final IStationState resourceMovingState;
-
-    /** The current resource. */
+    private final IStationState processingState;
+    private IStationState currentState;
     private IResource currentResource;
-
     private int totalConsumption;
-
     private int lastConsumption;
-
     private int processedCount;
 
     /**

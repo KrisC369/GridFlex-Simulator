@@ -85,7 +85,7 @@ public class Simulator implements ISimulationContext {
     @Override
     public void register(ISimulationComponent comp) {
         this.components.add(comp);
-
+        comp.initialize(this);
     }
 
     /**

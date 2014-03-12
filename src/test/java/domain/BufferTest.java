@@ -4,7 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.junit.Before;
@@ -55,13 +60,47 @@ public class BufferTest {
     }
 
     @Test
+    public void testPullAll() {
+        IResource res2 = mock(IResource.class);
+        b.push(res);
+        b.push(res2);
+        Collection<IResource> returnset = b.pullAll();
+        assertTrue(returnset.contains(res2));
+        assertTrue(returnset.contains(res));
+        assertEquals(2,returnset.size());
+    }
+    
+    @Test 
+    public void testBeenBufferedNotification(){
+        b.push(res);
+        verify(res, times(1)).notifyOfHasBeenBuffered();
+    }
+    
+    @Test
+    public void testPushAll() {
+        IResource res2 = mock(IResource.class);
+        List<IResource> reslist = new ArrayList<>();
+        reslist.add(res2);
+        reslist.add(res);
+        b.pushAll(reslist);
+        Collection<IResource> returnset = b.pullAll();
+        assertTrue(returnset.contains(res2));
+        assertTrue(returnset.contains(res));
+        assertEquals(2,returnset.size());
+    }
+    
+    @Test
     public void testBigNumberThroughput() {
-        Buffer<Integer> b = new Buffer<Integer>();
+        Buffer<IBufferable> b = new Buffer<IBufferable>();
+        List<IBufferable> results = new ArrayList<IBufferable>(); 
+        IBufferable tmp;
         int n = 10191200;
         for (int i = 0; i < n; i++) {
-            b.push(i);
+            tmp = ResourceFactory.createResource();
+            b.push(tmp);
+            results.add(tmp);
         }
-        for (Integer i = 0; i < n; i++) {
+        for (IBufferable i : results) {
             assertEquals(i, b.pull());
         }
     }
