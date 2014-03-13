@@ -10,14 +10,17 @@ import java.util.List;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class ResourceFactory {
-    
-    
-    private ResourceFactory(){}
-    
+public final class ResourceFactory {
+
+    private ResourceFactory() {
+    }
+
     /**
      * Creates a resource with the steps needed at each processor as params.
-     * @param neededProcessing a list of needed processing steps per processor, seperated by comma's.
+     * 
+     * @param neededProcessing
+     *            a list of needed processing steps per processor, seperated by
+     *            comma's.
      * @return the IResource instance.
      */
     public static IResource createResource(int... neededProcessing) {
@@ -34,8 +37,12 @@ public class ResourceFactory {
 
     /**
      * Creates a list of IResource elements according to the specs specified.
-     * @param amount the amount of instances to return in the list.
-     * @param processingNeeded a list of needed processing steps per processor, seperated by comma's.
+     * 
+     * @param amount
+     *            the amount of instances to return in the list.
+     * @param processingNeeded
+     *            a list of needed processing steps per processor, seperated by
+     *            comma's.
      * @return A list of IResource instances.
      */
     public static List<IResource> createBulkMPResource(int amount,

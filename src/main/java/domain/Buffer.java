@@ -10,8 +10,9 @@ import java.util.Set;
 
 /**
  * The Class Buffer represents a simple FIFI queue buffer implementation.
- *
- * @param <T> the generic type of contents in this buffer.
+ * 
+ * @param <T>
+ *            the generic type of contents in this buffer.
  */
 public class Buffer<T extends IBufferable> {
 
@@ -27,7 +28,7 @@ public class Buffer<T extends IBufferable> {
 
     /**
      * Checks if this buffer is empty.
-     *
+     * 
      * @return true, if is empty
      */
     public boolean isEmpty() {
@@ -35,9 +36,11 @@ public class Buffer<T extends IBufferable> {
     }
 
     /**
-     * Push a resource into this buffer.
-     * Notifies IBufferable resource it has been buffered.
-     * @param res the content item to push.
+     * Push a resource into this buffer. Notifies IBufferable resource it has
+     * been buffered.
+     * 
+     * @param res
+     *            the content item to push.
      */
     public void push(T res) {
         data.add(res);
@@ -46,7 +49,7 @@ public class Buffer<T extends IBufferable> {
 
     /**
      * Gets the current capacity.
-     *
+     * 
      * @return the current capacity
      */
     public int getCurrentCapacity() {
@@ -55,7 +58,7 @@ public class Buffer<T extends IBufferable> {
 
     /**
      * Pull a content item out of this buffer.
-     *
+     * 
      * @return the content up for grabs.
      */
     public T pull() {
@@ -68,23 +71,26 @@ public class Buffer<T extends IBufferable> {
 
     /**
      * Pull all items from this buffer.
+     * 
      * @return all the present items.
      */
     public Collection<T> pullAll() {
-       Set<T> returnset = new HashSet<>();
-       while(!isEmpty()){
-           returnset.add(pull());
-       }
-       return returnset;
+        Set<T> returnset = new HashSet<>();
+        while (!isEmpty()) {
+            returnset.add(pull());
+        }
+        return returnset;
     }
 
     /**
      * Push a Ordered list into this buffer.
-     * @param reslist the list of items to buffer.
+     * 
+     * @param reslist
+     *            the list of items to buffer.
      */
     public void pushAll(List<T> reslist) {
-       for(T t : reslist){
-           push(t);
-       }
+        for (T t : reslist) {
+            push(t);
+        }
     }
 }

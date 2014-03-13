@@ -73,7 +73,7 @@ abstract class StationState implements IStationState {
         public void handleTick(IStationContext context) {
             IResource res = context.getCurrentResource();
             res.process(1);
-            if (! res.needsMoreProcessing()) {
+            if (!res.needsMoreProcessing()) {
                 changestate(context);
             }
         }

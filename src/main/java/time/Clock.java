@@ -7,7 +7,7 @@ package time;
  * 
  */
 public class Clock {
-    
+
     /** The timecount of this clock. */
     private int timecount;
 

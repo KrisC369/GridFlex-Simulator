@@ -58,7 +58,9 @@ public class Simulator implements ISimulationContext {
     }
 
     private boolean shouldRun() {
-        if (getClock().getTimeCount() >= getDuration()) { return false; }
+        if (getClock().getTimeCount() >= getDuration()) {
+            return false;
+        }
         return true;
 
     }
@@ -105,14 +107,15 @@ public class Simulator implements ISimulationContext {
     public int getSimulationTime() {
         return clock.getTimeCount();
     }
-    
-    
+
     /**
-     *  Creates and instantiates a new simulator.
-     * @param duration the duration the simulator should run for.
+     * Creates and instantiates a new simulator.
+     * 
+     * @param duration
+     *            the duration the simulator should run for.
      * @return A new simulator object.
      */
-    public static Simulator createSimulator(long duration){
+    public static Simulator createSimulator(long duration) {
         return new Simulator(duration);
     }
 

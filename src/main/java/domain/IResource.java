@@ -7,10 +7,10 @@ package domain;
  * 
  */
 public interface IResource extends IBufferable {
-    
+
     /**
      * Return the needed process time for this resource at this moment.
-     *
+     * 
      * @return the needed process time
      */
     int getCurrentNeededProcessTime();
@@ -24,8 +24,10 @@ public interface IResource extends IBufferable {
     void process(int time);
 
     /**
-     * Returns whether this resource needs more processing at the current station.
+     * Returns whether this resource needs more processing at the current
+     * station.
+     * 
      * @return whether this resource needs more processing.
      */
-    boolean needsMoreProcessing(); 
+    boolean needsMoreProcessing();
 }

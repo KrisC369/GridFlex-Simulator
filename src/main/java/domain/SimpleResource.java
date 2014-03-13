@@ -1,25 +1,28 @@
 package domain;
 
 /**
- * This Class SimpleResource implements the IResource interface and represents
- * a very simple resource concept that needs a specific amount of time to be
+ * This Class SimpleResource implements the IResource interface and represents a
+ * very simple resource concept that needs a specific amount of time to be
  * processed.
  */
 public class SimpleResource implements IResource {
-    
+
     /** The needed time. */
     private int neededTime;
 
     /**
      * Instantiates a new simple resource.
-     *
-     * @param needed the time needed to proces this resource.
+     * 
+     * @param needed
+     *            the time needed to proces this resource.
      */
     protected SimpleResource(int needed) {
         this.neededTime = needed;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see domain.IResource#getNeededProcessTime()
      */
     @Override
@@ -27,7 +30,9 @@ public class SimpleResource implements IResource {
         return this.neededTime;
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see domain.IResource#process(int)
      */
     @Override
@@ -43,8 +48,13 @@ public class SimpleResource implements IResource {
     @Override
     public void notifyOfHasBeenBuffered() {
     }
-    
-    protected void setNeededTime(int newTime){
+
+    /**
+     * Sets the neededTime to a new value.
+     * 
+     * @param newTime
+     */
+    protected final void setNeededTime(int newTime) {
         this.neededTime = newTime;
     }
 }

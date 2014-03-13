@@ -13,21 +13,23 @@ import domain.workstation.Workstation;
 
 /**
  * A productionline representing buffers and workstations.
+ * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public final class ProductionLine implements ISimulationComponent {
-    
+
     private final List<Buffer<IResource>> buffers;
     private final List<IWorkstation> workstations;
-    
+
     private ProductionLine() {
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
     }
-    
+
     /**
-     * Creates a productionline with a simple layout. O-X-O with
-     * O as buffers and X as stations.
+     * Creates a productionline with a simple layout. O-X-O with O as buffers
+     * and X as stations.
+     * 
      * @return A productionline instance.
      */
     public static ProductionLine createSimpleLayout() {
@@ -41,8 +43,9 @@ public final class ProductionLine implements ISimulationComponent {
     }
 
     /**
-     * Creates a productionline with a more complex layout. O-XXX-O-X-O with
-     * O as buffers and X as stations and XXX as parallel stations.
+     * Creates a productionline with a more complex layout. O-XXX-O-X-O with O
+     * as buffers and X as stations and XXX as parallel stations.
+     * 
      * @return A productionline instance.
      */
     public static ProductionLine createExtendedLayout() {
@@ -62,9 +65,9 @@ public final class ProductionLine implements ISimulationComponent {
 
     @Override
     public void initialize(ISimulationContext context) {
-      for(IWorkstation w: workstations){
-          context.register(w);
-      }
+        for (IWorkstation w : workstations) {
+            context.register(w);
+        }
     }
 
     @Override
@@ -73,6 +76,7 @@ public final class ProductionLine implements ISimulationComponent {
 
     /**
      * Returns the number of workstations in this line.
+     * 
      * @return The number of workstations in this line.
      */
     public int getNumberOfWorkstations() {
@@ -81,18 +85,21 @@ public final class ProductionLine implements ISimulationComponent {
 
     /**
      * Take all the processed resources from the end of the line.
+     * 
      * @return the processed resources.
      */
     public Collection<IResource> takeResources() {
-        return buffers.get(buffers.size()-1).pullAll();
-        
+        return buffers.get(buffers.size() - 1).pullAll();
+
     }
 
     /**
      * Deliver all the resources and use it as input for the line.
-     * @param res the resources to use.
+     * 
+     * @param res
+     *            the resources to use.
      */
     public void deliverResources(List<IResource> res) {
-      buffers.get(0).pushAll(res);
+        buffers.get(0).pushAll(res);
     }
 }
