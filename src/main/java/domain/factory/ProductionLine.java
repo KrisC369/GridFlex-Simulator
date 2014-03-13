@@ -20,6 +20,8 @@ public final class ProductionLine implements ISimulationComponent {
 
     private final List<Buffer<IResource>> buffers;
     private final List<IWorkstation> workstations;
+    private static final int WORKING_CONSUMPTION = 3;
+    private static final int IDLE_CONSUMPTION = 1;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
@@ -37,7 +39,8 @@ public final class ProductionLine implements ISimulationComponent {
         Buffer<IResource> bIn = new Buffer<>();
         Buffer<IResource> bOut = new Buffer<>();
         line.buffers.add(bIn);
-        line.workstations.add(Workstation.createConsuming(bIn, bOut, 1, 3));
+        line.workstations.add(Workstation.createConsuming(bIn, bOut,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
         line.buffers.add(bOut);
         return line;
     }
@@ -56,10 +59,14 @@ public final class ProductionLine implements ISimulationComponent {
         line.buffers.add(bIn);
         line.buffers.add(b2);
         line.buffers.add(bOut);
-        line.workstations.add(Workstation.createConsuming(bIn, b2, 1, 3));
-        line.workstations.add(Workstation.createConsuming(bIn, b2, 1, 3));
-        line.workstations.add(Workstation.createConsuming(bIn, b2, 1, 3));
-        line.workstations.add(Workstation.createConsuming(b2, bOut, 1, 3));
+        line.workstations.add(Workstation.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(Workstation.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(Workstation.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(Workstation.createConsuming(b2, bOut,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
         return line;
     }
 

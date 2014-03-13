@@ -53,6 +53,7 @@ public class SimpleResource implements IResource {
      * Sets the neededTime to a new value.
      * 
      * @param newTime
+     *            The new value for the neededprocessingTime.
      */
     protected final void setNeededTime(int newTime) {
         this.neededTime = newTime;
