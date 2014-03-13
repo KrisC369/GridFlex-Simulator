@@ -18,10 +18,10 @@ import domain.workstation.Workstation;
  */
 public final class ProductionLine implements ISimulationComponent {
 
-    private final List<Buffer<IResource>> buffers;
-    private final List<IWorkstation> workstations;
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
+    private final List<Buffer<IResource>> buffers;
+    private final List<IWorkstation> workstations;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
