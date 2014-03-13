@@ -4,9 +4,9 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import simulation.SimulatorTest;
 import time.ClockTest;
-import domain.BufferTest;
-import domain.ResourceTest;
 import domain.factory.ProductionLineTest;
+import domain.resource.ResourceTest;
+import domain.util.BufferTest;
 import domain.workstation.WorkstationTest;
 
 @RunWith(Suite.class)

@@ -1,9 +1,12 @@
-package domain;
+package domain.resource;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import domain.resource.IResource;
+import domain.resource.ResourceFactory;
 
 public class ResourceTest {
 

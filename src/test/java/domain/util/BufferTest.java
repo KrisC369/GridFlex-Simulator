@@ -1,4 +1,4 @@
-package domain;
+package domain.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,6 +14,11 @@ import java.util.NoSuchElementException;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import domain.resource.IResource;
+import domain.resource.ResourceFactory;
+import domain.util.Buffer;
+import domain.util.IBufferable;
 
 public class BufferTest {
 

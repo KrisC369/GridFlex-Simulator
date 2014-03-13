@@ -1,6 +1,6 @@
 package domain.workstation;
 
-import domain.IResource;
+import domain.resource.IResource;
 
 /**
  * This class represents the commonalities of the state specific behavior.

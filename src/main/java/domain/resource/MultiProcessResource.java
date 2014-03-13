@@ -1,4 +1,4 @@
-package domain;
+package domain.resource;
 
 /**
  * A resource that can have multiple different processing runs as requirement.

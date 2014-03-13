@@ -4,8 +4,8 @@ import simulation.ISimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
 
-import domain.Buffer;
-import domain.IResource;
+import domain.resource.IResource;
+import domain.util.Buffer;
 
 /**
  * Main workstation class representing machines that perform work and consume

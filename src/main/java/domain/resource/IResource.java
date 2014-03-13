@@ -1,4 +1,6 @@
-package domain;
+package domain.resource;
+
+import domain.util.IBufferable;
 
 /**
  * Interface class for resource representations in the system.

@@ -5,7 +5,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.mock;
 
-
 import java.util.List;
 
 import org.junit.Before;
@@ -14,8 +13,8 @@ import org.junit.Test;
 import simulation.ISimulationComponent;
 import simulation.ISimulationContext;
 import simulation.Simulator;
-import domain.IResource;
-import domain.ResourceFactory;
+import domain.resource.IResource;
+import domain.resource.ResourceFactory;
 
 public class ProductionLineTest {
 

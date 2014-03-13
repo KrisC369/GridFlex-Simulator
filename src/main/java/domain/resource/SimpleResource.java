@@ -1,4 +1,4 @@
-package domain;
+package domain.resource;
 
 /**
  * This Class SimpleResource implements the IResource interface and represents a

@@ -1,4 +1,4 @@
-package domain;
+package domain.util;
 
 /**
  * Interface representing a bufferable instance.

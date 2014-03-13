@@ -6,8 +6,8 @@ import java.util.List;
 
 import simulation.ISimulationComponent;
 import simulation.ISimulationContext;
-import domain.Buffer;
-import domain.IResource;
+import domain.resource.IResource;
+import domain.util.Buffer;
 import domain.workstation.IWorkstation;
 import domain.workstation.Workstation;
 

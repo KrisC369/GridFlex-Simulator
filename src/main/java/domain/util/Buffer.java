@@ -1,4 +1,4 @@
-package domain;
+package domain.util;
 
 import java.util.Collection;
 import java.util.HashSet;
