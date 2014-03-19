@@ -9,6 +9,11 @@ import java.util.List;
 
 import time.Clock;
 
+import com.google.common.eventbus.EventBus;
+
+import events.SimState;
+import events.SimStateEvent;
+
 /**
  * The Class Simulator.
  */
@@ -23,6 +28,8 @@ public class Simulator implements ISimulationContext {
     /** The collection of simulation components. */
     private final List<ISimulationComponent> components;
 
+    private final EventBus eventbus;
+    
     /**
      * Instantiates a new simulator.
      * 
@@ -34,6 +41,7 @@ public class Simulator implements ISimulationContext {
         this.duration = duration;
         this.clock = new Clock();
         this.components = new ArrayList<ISimulationComponent>();
+        this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
     }
 
     /**
@@ -41,7 +49,12 @@ public class Simulator implements ISimulationContext {
      * 
      */
     public void start() {
+        notifyStart();
         simloop();
+    }
+
+    private void notifyStart() {
+        this.eventbus.post(new SimStateEvent(SimState.STARTED));
     }
 
     private void simloop() {
@@ -87,6 +100,7 @@ public class Simulator implements ISimulationContext {
     @Override
     public void register(ISimulationComponent comp) {
         this.components.add(comp);
+        this.eventbus.register(comp);
         comp.initialize(this);
     }
 

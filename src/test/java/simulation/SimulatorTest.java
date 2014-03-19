@@ -1,12 +1,18 @@
 package simulation;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.google.common.eventbus.Subscribe;
+
+import events.SimStateEvent;
 
 public class SimulatorTest {
     private Simulator s;
@@ -62,10 +68,38 @@ public class SimulatorTest {
         runSim(true);
         verify(comp, times(20)).tick();
     }
+    
+    @Test
+    public void testEventBus(){
+        long duration = 20;
+        s = Simulator.createSimulator(duration);
+        comp = new ChangeEventComponent();
+        s.register(comp);
+        s.start();
+        assertNotNull(((ChangeEventComponent) comp).getResult());
+        assertFalse(((ChangeEventComponent) comp).getResult().isEmpty());
+    }
 
     private void runSim(boolean immediateReturn) {
         s.register(comp);
         s.start();
     }
 
+    public static class ChangeEventComponent implements ISimulationComponent{
+        private Map<String, Object> resultMap;
+        @Override
+        public void initialize(ISimulationContext context) {
+        }
+
+        @Override
+        public void tick() {
+        }
+        
+        @Subscribe public void recordCustomerChange(SimStateEvent e) {
+            resultMap = (e.getEventInfo());
+        }
+        public Map<String, Object> getResult(){
+            return resultMap;
+        }
+    }
 }
