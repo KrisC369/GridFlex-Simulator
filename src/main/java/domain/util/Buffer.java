@@ -27,33 +27,21 @@ public class Buffer<T extends IBufferable> {
     }
 
     /**
-     * Checks if this buffer is empty.
-     * 
-     * @return true, if is empty
-     */
-    public boolean isEmpty() {
-        return data.isEmpty();
-    }
-
-    /**
-     * Push a resource into this buffer. Notifies IBufferable resource it has
-     * been buffered.
-     * 
-     * @param res
-     *            the content item to push.
-     */
-    public void push(T res) {
-        data.add(res);
-        res.notifyOfHasBeenBuffered();
-    }
-
-    /**
      * Gets the current capacity.
      * 
      * @return the current capacity
      */
     public int getCurrentCapacity() {
         return data.size();
+    }
+
+    /**
+     * Checks if this buffer is empty.
+     * 
+     * @return true, if is empty
+     */
+    public boolean isEmpty() {
+        return data.isEmpty();
     }
 
     /**
@@ -80,6 +68,18 @@ public class Buffer<T extends IBufferable> {
             returnset.add(pull());
         }
         return returnset;
+    }
+
+    /**
+     * Push a resource into this buffer. Notifies IBufferable resource it has
+     * been buffered.
+     * 
+     * @param res
+     *            the content item to push.
+     */
+    public void push(T res) {
+        data.add(res);
+        res.notifyOfHasBeenBuffered();
     }
 
     /**

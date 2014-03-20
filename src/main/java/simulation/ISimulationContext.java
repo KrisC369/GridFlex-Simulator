@@ -1,5 +1,9 @@
 package simulation;
 
+import com.google.common.eventbus.EventBus;
+
+import domain.util.SimpleEventFactory;
+
 /**
  * The interface for the simulation context.
  * 
@@ -7,6 +11,20 @@ package simulation;
  * 
  */
 public interface ISimulationContext {
+
+    /**
+     * Returns the eventbus for this simulation context.
+     * 
+     * @return the eventbus.
+     */
+    public abstract EventBus getEventbus();
+
+    /**
+     * Returns the eventFactory instance used for this simulation context.
+     * 
+     * @return an eventFactory.
+     */
+    public abstract SimpleEventFactory getEventFactory();
 
     /**
      * This method registers a simulationcomponent to the simulation context in

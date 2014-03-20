@@ -6,6 +6,13 @@ package domain.workstation;
 interface IStationState {
 
     /**
+     * Returns the consumptionRate in this state.
+     * 
+     * @return the consumption rate.
+     */
+    int getConsumptionRate();
+
+    /**
      * Handle tick.
      * 
      * @param context
@@ -19,12 +26,5 @@ interface IStationState {
      * @return true, if is processing
      */
     boolean isProcessing();
-
-    /**
-     * Returns the consumptionRate in this state.
-     * 
-     * @return the consumption rate.
-     */
-    int getConsumptionRate();
 
 }

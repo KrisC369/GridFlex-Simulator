@@ -9,52 +9,6 @@ import domain.resource.IResource;
  * 
  */
 abstract class StationState implements IStationState {
-    private final int consumptionRate;
-
-    StationState(int consumption) {
-        this.consumptionRate = consumption;
-    }
-
-    @Override
-    public int getConsumptionRate() {
-        return consumptionRate;
-    }
-
-    static final class ResourceMoving extends StationState {
-
-        ResourceMoving(int consumption) {
-            super(consumption);
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see domain.IStationState#handleTick(domain.IStationContext)
-         */
-        @Override
-        public void handleTick(IStationContext context) {
-            boolean succesfull = context.pushConveyer();
-            if (succesfull) {
-                changeState(context);
-            }
-        }
-
-        private void changeState(IStationContext context) {
-            context.setProcessingState();
-        }
-
-        /*
-         * (non-Javadoc)
-         * 
-         * @see domain.IStationState#isProcessing()
-         */
-        @Override
-        public boolean isProcessing() {
-            return false;
-        }
-
-    }
-
     /**
      * The Class ProcessingState.
      */
@@ -62,6 +16,10 @@ abstract class StationState implements IStationState {
 
         Processing(int consumption) {
             super(consumption);
+        }
+
+        private void changestate(IStationContext context) {
+            context.setResourceMovingState();
         }
 
         /*
@@ -78,10 +36,6 @@ abstract class StationState implements IStationState {
             }
         }
 
-        private void changestate(IStationContext context) {
-            context.setResourceMovingState();
-        }
-
         /*
          * (non-Javadoc)
          * 
@@ -92,6 +46,52 @@ abstract class StationState implements IStationState {
             return true;
         }
 
+    }
+
+    static final class ResourceMoving extends StationState {
+
+        ResourceMoving(int consumption) {
+            super(consumption);
+        }
+
+        private void changeState(IStationContext context) {
+            context.setProcessingState();
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see domain.IStationState#handleTick(domain.IStationContext)
+         */
+        @Override
+        public void handleTick(IStationContext context) {
+            boolean succesfull = context.pushConveyer();
+            if (succesfull) {
+                changeState(context);
+            }
+        }
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see domain.IStationState#isProcessing()
+         */
+        @Override
+        public boolean isProcessing() {
+            return false;
+        }
+
+    }
+
+    private final int consumptionRate;
+
+    StationState(int consumption) {
+        this.consumptionRate = consumption;
+    }
+
+    @Override
+    public int getConsumptionRate() {
+        return consumptionRate;
     }
 
 }

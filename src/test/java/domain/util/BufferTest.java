@@ -17,8 +17,6 @@ import org.junit.Test;
 
 import domain.resource.IResource;
 import domain.resource.ResourceFactory;
-import domain.util.Buffer;
-import domain.util.IBufferable;
 
 public class BufferTest {
 
@@ -34,66 +32,9 @@ public class BufferTest {
     }
 
     @Test
-    public void testInitialise() {
-        assertTrue(b.isEmpty());
-    }
-
-    @Test
-    public void testPush1Element() {
-        b.push(res);
-        assertFalse(b.isEmpty());
-        assertEquals(1, b.getCurrentCapacity());
-    }
-
-    @Test(expected = NoSuchElementException.class)
-    public void testPopEmpty() {
-        b.pull();
-    }
-
-    @Test
-    public void testSuccesfulPop() {
-        b.push(res);
-        assertEquals(res, b.pull());
-
-    }
-
-    @Test
-    public void testCorrectOrderPop() {
-        IResource res2 = mock(IResource.class);
-        b.push(res);
-        b.push(res2);
-        assertEquals(res, b.pull());
-        assertEquals(res2, b.pull());
-    }
-
-    @Test
-    public void testPullAll() {
-        IResource res2 = mock(IResource.class);
-        b.push(res);
-        b.push(res2);
-        Collection<IResource> returnset = b.pullAll();
-        assertTrue(returnset.contains(res2));
-        assertTrue(returnset.contains(res));
-        assertEquals(2, returnset.size());
-    }
-
-    @Test
     public void testBeenBufferedNotification() {
         b.push(res);
         verify(res, times(1)).notifyOfHasBeenBuffered();
-    }
-
-    @Test
-    public void testPushAll() {
-        IResource res2 = mock(IResource.class);
-        List<IResource> reslist = new ArrayList<>();
-        reslist.add(res2);
-        reslist.add(res);
-        b.pushAll(reslist);
-        Collection<IResource> returnset = b.pullAll();
-        assertTrue(returnset.contains(res2));
-        assertTrue(returnset.contains(res));
-        assertEquals(2, returnset.size());
     }
 
     @Test
@@ -110,5 +51,62 @@ public class BufferTest {
         for (IBufferable i : results) {
             assertEquals(i, b.pull());
         }
+    }
+
+    @Test
+    public void testCorrectOrderPop() {
+        IResource res2 = mock(IResource.class);
+        b.push(res);
+        b.push(res2);
+        assertEquals(res, b.pull());
+        assertEquals(res2, b.pull());
+    }
+
+    @Test
+    public void testInitialise() {
+        assertTrue(b.isEmpty());
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testPopEmpty() {
+        b.pull();
+    }
+
+    @Test
+    public void testPullAll() {
+        IResource res2 = mock(IResource.class);
+        b.push(res);
+        b.push(res2);
+        Collection<IResource> returnset = b.pullAll();
+        assertTrue(returnset.contains(res2));
+        assertTrue(returnset.contains(res));
+        assertEquals(2, returnset.size());
+    }
+
+    @Test
+    public void testPush1Element() {
+        b.push(res);
+        assertFalse(b.isEmpty());
+        assertEquals(1, b.getCurrentCapacity());
+    }
+
+    @Test
+    public void testPushAll() {
+        IResource res2 = mock(IResource.class);
+        List<IResource> reslist = new ArrayList<>();
+        reslist.add(res2);
+        reslist.add(res);
+        b.pushAll(reslist);
+        Collection<IResource> returnset = b.pullAll();
+        assertTrue(returnset.contains(res2));
+        assertTrue(returnset.contains(res));
+        assertEquals(2, returnset.size());
+    }
+
+    @Test
+    public void testSuccesfulPop() {
+        b.push(res);
+        assertEquals(res, b.pull());
+
     }
 }

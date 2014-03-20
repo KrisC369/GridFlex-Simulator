@@ -18,18 +18,18 @@ public interface IResource extends IBufferable {
     int getCurrentNeededProcessTime();
 
     /**
-     * Indicate that 'time' numbers of process steps have been completed.
-     * 
-     * @param time
-     *            the amount of completed time steps.
-     */
-    void process(int time);
-
-    /**
      * Returns whether this resource needs more processing at the current
      * station.
      * 
      * @return whether this resource needs more processing.
      */
     boolean needsMoreProcessing();
+
+    /**
+     * Indicate that 'time' numbers of process steps have been completed.
+     * 
+     * @param time
+     *            the amount of completed time steps.
+     */
+    void process(int time);
 }

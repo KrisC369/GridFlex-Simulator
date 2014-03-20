@@ -9,6 +9,11 @@ package simulation;
  */
 public interface ISimulationComponent {
     /**
+     * This tick method is called after all regular ticks have been performed.
+     */
+    void afterTick();
+
+    /**
      * Method for injecting the simulationcontext dependency if needed. This
      * method is called as a callback after registering with the simulation
      * context.

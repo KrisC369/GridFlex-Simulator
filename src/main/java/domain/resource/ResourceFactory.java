@@ -12,7 +12,23 @@ import java.util.List;
  */
 public final class ResourceFactory {
 
-    private ResourceFactory() {
+    /**
+     * Creates a list of IResource elements according to the specs specified.
+     * 
+     * @param amount
+     *            the amount of instances to return in the list.
+     * @param processingNeeded
+     *            a list of needed processing steps per processor, seperated by
+     *            comma's.
+     * @return A list of IResource instances.
+     */
+    public static List<IResource> createBulkMPResource(int amount,
+            int... processingNeeded) {
+        List<IResource> pool = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            pool.add(createResource(processingNeeded));
+        }
+        return pool;
     }
 
     /**
@@ -35,22 +51,6 @@ public final class ResourceFactory {
         }
     }
 
-    /**
-     * Creates a list of IResource elements according to the specs specified.
-     * 
-     * @param amount
-     *            the amount of instances to return in the list.
-     * @param processingNeeded
-     *            a list of needed processing steps per processor, seperated by
-     *            comma's.
-     * @return A list of IResource instances.
-     */
-    public static List<IResource> createBulkMPResource(int amount,
-            int... processingNeeded) {
-        List<IResource> pool = new ArrayList<>();
-        for (int i = 0; i < amount; i++) {
-            pool.add(createResource(processingNeeded));
-        }
-        return pool;
+    private ResourceFactory() {
     }
 }

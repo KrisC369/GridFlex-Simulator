@@ -1,7 +1,5 @@
 package domain.workstation;
 
-import javax.annotation.Nullable;
-
 import simulation.ISimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -19,6 +17,38 @@ import domain.util.Buffer;
  */
 public class Workstation implements IWorkstation, IStationContext {
 
+    /**
+     * Factory method for workstations that consume energy..
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in idle state.
+     * @param working
+     *            The energy consumption in working state.
+     * @return A Ready to use IWorkstation object.
+     */
+    public static IWorkstation createConsuming(Buffer<IResource> in,
+            Buffer<IResource> out, int idle, int working) {
+        return new Workstation(in, out, idle, working);
+    }
+
+    /**
+     * Factory method for default workstations without energy consumption.
+     * 
+     * @param bufferIn
+     *            The inputbuffer instance.
+     * @param bufferOut
+     *            The outputbuffer instance.
+     * @return A Ready to use IWorkstation object.
+     */
+    public static IWorkstation createDefault(Buffer<IResource> bufferIn,
+            Buffer<IResource> bufferOut) {
+        return new Workstation(bufferIn, bufferOut, 0, 0);
+    }
+
     private final Buffer<IResource> inputBuff;
     private final Buffer<IResource> outputBuff;
     private final IStationState resourceMovingState;
@@ -26,7 +56,9 @@ public class Workstation implements IWorkstation, IStationContext {
     private IStationState currentState;
     private Optional<IResource> currentResource;
     private int totalConsumption;
+
     private int lastConsumption;
+
     private int processedCount;
 
     /**
@@ -50,6 +82,18 @@ public class Workstation implements IWorkstation, IStationContext {
         this.processedCount = 0;
         this.lastConsumption = 0;
         this.currentResource = Optional.absent();
+    }
+
+    @Override
+    public void afterTick() {
+    }
+
+    @VisibleForTesting
+    void changeCurrentResource(IResource res) {
+        if (currentResource.isPresent()) {
+            throw new IllegalStateException();
+        }
+        this.currentResource = Optional.of(res);
     }
 
     /*
@@ -147,14 +191,6 @@ public class Workstation implements IWorkstation, IStationContext {
         this.currentResource = Optional.absent();
     }
 
-    @VisibleForTesting
-    void changeCurrentResource(IResource res) {
-        if (currentResource.isPresent()) {
-            throw new IllegalStateException();
-        }
-        this.currentResource = Optional.of(res);
-    }
-
     private void setLastConsumption(int rate) {
         this.lastConsumption = rate;
     }
@@ -181,37 +217,5 @@ public class Workstation implements IWorkstation, IStationContext {
         increaseTotalConsumption(rate);
         setLastConsumption(rate);
         currentState.handleTick(this);
-    }
-
-    /**
-     * Factory method for workstations that consume energy..
-     * 
-     * @param in
-     *            The inputbuffer instance.
-     * @param out
-     *            The outputbuffer instance.
-     * @param idle
-     *            The energy consumption in idle state.
-     * @param working
-     *            The energy consumption in working state.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static IWorkstation createConsuming(Buffer<IResource> in,
-            Buffer<IResource> out, int idle, int working) {
-        return new Workstation(in, out, idle, working);
-    }
-
-    /**
-     * Factory method for default workstations without energy consumption.
-     * 
-     * @param bufferIn
-     *            The inputbuffer instance.
-     * @param bufferOut
-     *            The outputbuffer instance.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static IWorkstation createDefault(Buffer<IResource> bufferIn,
-            Buffer<IResource> bufferOut) {
-        return new Workstation(bufferIn, bufferOut, 0, 0);
     }
 }

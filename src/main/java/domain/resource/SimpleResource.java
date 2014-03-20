@@ -30,6 +30,15 @@ public class SimpleResource implements IResource {
         return this.neededTime;
     }
 
+    @Override
+    public boolean needsMoreProcessing() {
+        return getCurrentNeededProcessTime() > 0;
+    }
+
+    @Override
+    public void notifyOfHasBeenBuffered() {
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -38,15 +47,6 @@ public class SimpleResource implements IResource {
     @Override
     public void process(int time) {
         this.neededTime -= time;
-    }
-
-    @Override
-    public boolean needsMoreProcessing() {
-        return getCurrentNeededProcessTime() > 0;
-    }
-
-    @Override
-    public void notifyOfHasBeenBuffered() {
     }
 
     /**

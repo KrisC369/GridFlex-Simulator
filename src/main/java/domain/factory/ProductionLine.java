@@ -6,8 +6,14 @@ import java.util.List;
 
 import simulation.ISimulationComponent;
 import simulation.ISimulationContext;
+import be.kuleuven.cs.gridlock.simulation.events.Event;
+
+import com.google.common.base.Optional;
+import com.google.common.eventbus.EventBus;
+
 import domain.resource.IResource;
 import domain.util.Buffer;
+import domain.util.SimpleEventFactory;
 import domain.workstation.IWorkstation;
 import domain.workstation.Workstation;
 
@@ -20,34 +26,11 @@ public final class ProductionLine implements ISimulationComponent {
 
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
-    private final List<Buffer<IResource>> buffers;
-    private final List<IWorkstation> workstations;
-
-    private ProductionLine() {
-        this.buffers = new ArrayList<>();
-        this.workstations = new ArrayList<>();
-    }
 
     /**
-     * Creates a productionline with a simple layout. O-X-O with O as buffers
-     * and X as stations.
-     * 
-     * @return A productionline instance.
-     */
-    public static ProductionLine createSimpleLayout() {
-        ProductionLine line = new ProductionLine();
-        Buffer<IResource> bIn = new Buffer<>();
-        Buffer<IResource> bOut = new Buffer<>();
-        line.buffers.add(bIn);
-        line.workstations.add(Workstation.createConsuming(bIn, bOut,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.buffers.add(bOut);
-        return line;
-    }
-
-    /**
-     * Creates a productionline with a more complex layout. O-XXX-O-X-O with O
-     * as buffers and X as stations and XXX as parallel stations.
+     * Creates a productionline with a more complex layout.
+     * <code>O-XXX-O-X-O</code> with O as buffers and X as stations and
+     * <code>XXX</code> as parallel stations.
      * 
      * @return A productionline instance.
      */
@@ -70,15 +53,57 @@ public final class ProductionLine implements ISimulationComponent {
         return line;
     }
 
-    @Override
-    public void initialize(ISimulationContext context) {
-        for (IWorkstation w : workstations) {
-            context.register(w);
-        }
+    /**
+     * Creates a productionline with a simple layout. O-X-O with O as buffers
+     * and X as stations.
+     * 
+     * @return A productionline instance.
+     */
+    public static ProductionLine createSimpleLayout() {
+        ProductionLine line = new ProductionLine();
+        Buffer<IResource> bIn = new Buffer<>();
+        Buffer<IResource> bOut = new Buffer<>();
+        line.buffers.add(bIn);
+        line.workstations.add(Workstation.createConsuming(bIn, bOut,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.buffers.add(bOut);
+        return line;
+    }
+
+    private final List<Buffer<IResource>> buffers;
+    private final List<IWorkstation> workstations;
+
+    private Optional<SimpleEventFactory> eventFac;
+
+    private Optional<EventBus> bus;
+
+    private ProductionLine() {
+        this.buffers = new ArrayList<>();
+        this.workstations = new ArrayList<>();
+        eventFac = Optional.absent();
+        bus = Optional.absent();
+        ;
     }
 
     @Override
-    public void tick() {
+    public void afterTick() {
+        long totalLaststep = 0;
+        long totalTotal = 0;
+        for (IWorkstation w : workstations) {
+            totalLaststep += w.getLastStepConsumption();
+            totalTotal += w.getTotalConsumption();
+        }
+        notifyConsumption(totalLaststep, totalTotal);
+    }
+
+    /**
+     * Deliver all the resources and use it as input for the line.
+     * 
+     * @param res
+     *            the resources to use.
+     */
+    public void deliverResources(List<IResource> res) {
+        buffers.get(0).pushAll(res);
     }
 
     /**
@@ -88,6 +113,24 @@ public final class ProductionLine implements ISimulationComponent {
      */
     public int getNumberOfWorkstations() {
         return this.workstations.size();
+    }
+
+    @Override
+    public void initialize(ISimulationContext context) {
+        for (IWorkstation w : workstations) {
+            context.register(w);
+        }
+        this.eventFac = Optional.of(context.getEventFactory());
+        this.bus = Optional.of(context.getEventbus());
+    }
+
+    private void notifyConsumption(long totalLaststep, long totalTotal) {
+        if (eventFac.isPresent() && bus.isPresent()) {
+            Event e = eventFac.get().build("report");
+            e.setAttribute("totalLaststepE", totalLaststep);
+            e.setAttribute("totalTotalE", totalTotal);
+            bus.get().post(e);
+        }
     }
 
     /**
@@ -100,13 +143,7 @@ public final class ProductionLine implements ISimulationComponent {
 
     }
 
-    /**
-     * Deliver all the resources and use it as input for the line.
-     * 
-     * @param res
-     *            the resources to use.
-     */
-    public void deliverResources(List<IResource> res) {
-        buffers.get(0).pushAll(res);
+    @Override
+    public void tick() {
     }
 }

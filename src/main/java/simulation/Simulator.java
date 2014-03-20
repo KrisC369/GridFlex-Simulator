@@ -19,6 +19,17 @@ import domain.util.SimpleEventFactory;
  */
 public class Simulator implements ISimulationContext {
 
+    /**
+     * Creates and instantiates a new simulator.
+     * 
+     * @param duration
+     *            the duration the simulator should run for.
+     * @return A new simulator object.
+     */
+    public static Simulator createSimulator(long duration) {
+        return new Simulator(duration);
+    }
+
     /** The scheduled duration of this simulator's run. */
     private final long duration;
 
@@ -47,44 +58,23 @@ public class Simulator implements ISimulationContext {
         this.eventFac = new SimpleEventFactory();
     }
 
-    /**
-     * Starts this simulation by running the simulation loop.
-     * 
-     */
-    public void start() {
-        notifyStart();
-        simloop();
-    }
-
-    private void notifyStart() {
-        Event ev = eventFac.build("simulation:started");
-        ev.setAttribute("clocktime", getClock().getTimeCount());
-        this.eventbus.post(ev);
-    }
-
-    private void simloop() {
-        while (shouldRun()) {
-            getClock().addTimeStep(1);
-            tickComponents();
-        }
-    }
-
-    private synchronized void tickComponents() {
+    private synchronized void afterTickComponents() {
         for (ISimulationComponent c : components) {
-            c.tick();
+            c.afterTick();
         }
-    }
-
-    private boolean shouldRun() {
-        if (getClock().getTimeCount() >= getDuration()) {
-            return false;
-        }
-        return true;
-
     }
 
     private Clock getClock() {
         return this.clock;
+    }
+
+    /**
+     * Gets the simulation components.
+     * 
+     * @return the components of this simulation
+     */
+    public Collection<ISimulationComponent> getComponents() {
+        return Collections.unmodifiableCollection(components);
     }
 
     /**
@@ -94,6 +84,31 @@ public class Simulator implements ISimulationContext {
      */
     public long getDuration() {
         return this.duration;
+    }
+
+    @Override
+    public EventBus getEventbus() {
+        return eventbus;
+    }
+
+    @Override
+    public SimpleEventFactory getEventFactory() {
+        return eventFac;
+    }
+
+    /**
+     * Gets the elapsed simulation time.
+     * 
+     * @return the simulation time
+     */
+    public int getSimulationTime() {
+        return clock.getTimeCount();
+    }
+
+    private void notifyStart() {
+        Event ev = eventFac.build("simulation:started");
+        ev.setAttribute("clocktime", getClock().getTimeCount());
+        this.eventbus.post(ev);
     }
 
     /*
@@ -109,33 +124,35 @@ public class Simulator implements ISimulationContext {
         comp.initialize(this);
     }
 
-    /**
-     * Gets the simulation components.
-     * 
-     * @return the components of this simulation
-     */
-    public Collection<ISimulationComponent> getComponents() {
-        return Collections.unmodifiableCollection(components);
+    private boolean shouldRun() {
+        if (getClock().getTimeCount() >= getDuration()) {
+            return false;
+        }
+        return true;
+
+    }
+
+    private void simloop() {
+        while (shouldRun()) {
+            getClock().addTimeStep(1);
+            tickComponents();
+            afterTickComponents();
+        }
     }
 
     /**
-     * Gets the elapsed simulation time.
+     * Starts this simulation by running the simulation loop.
      * 
-     * @return the simulation time
      */
-    public int getSimulationTime() {
-        return clock.getTimeCount();
+    public void start() {
+        notifyStart();
+        simloop();
     }
 
-    /**
-     * Creates and instantiates a new simulator.
-     * 
-     * @param duration
-     *            the duration the simulator should run for.
-     * @return A new simulator object.
-     */
-    public static Simulator createSimulator(long duration) {
-        return new Simulator(duration);
+    private synchronized void tickComponents() {
+        for (ISimulationComponent c : components) {
+            c.tick();
+        }
     }
 
 }

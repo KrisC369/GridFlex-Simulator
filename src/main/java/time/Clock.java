@@ -19,15 +19,6 @@ public class Clock {
     }
 
     /**
-     * Get the time count for this clock.
-     * 
-     * @return The amount of times this clock has had a time step added.
-     */
-    public int getTimeCount() {
-        return timecount;
-    }
-
-    /**
      * Add a number of time steps to this clock instance.
      * 
      * @param step
@@ -35,6 +26,15 @@ public class Clock {
      */
     public void addTimeStep(int step) {
         this.timecount += step;
+    }
+
+    /**
+     * Get the time count for this clock.
+     * 
+     * @return The amount of times this clock has had a time step added.
+     */
+    public int getTimeCount() {
+        return timecount;
     }
 
     /**

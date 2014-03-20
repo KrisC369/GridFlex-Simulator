@@ -14,14 +14,13 @@ import domain.resource.IResource;
 interface IStationContext {
 
     /**
-     * Change the state of this Station context instance to the working state.
+     * This method returns the resource currently present in the workstation.
+     * This value is <code>Optional</code> and can represent no resource being
+     * present.
+     * 
+     * @return the current resource wrapped in an Optional.
      */
-    void setProcessingState();
-
-    /**
-     * Change the state of this Station context instance to the idle state.
-     */
-    void setResourceMovingState();
+    Optional<IResource> getCurrentResource();
 
     /**
      * This method pushes the represented conveyer belt forward. Resources get
@@ -33,11 +32,12 @@ interface IStationContext {
     boolean pushConveyer();
 
     /**
-     * This method returns the resource currently present in the workstation.
-     * This value is <code>Optional</code> and can represent no resource being
-     * present.
-     * 
-     * @return the current resource wrapped in an Optional.
+     * Change the state of this Station context instance to the working state.
      */
-    Optional<IResource> getCurrentResource();
+    void setProcessingState();
+
+    /**
+     * Change the state of this Station context instance to the idle state.
+     */
+    void setResourceMovingState();
 }

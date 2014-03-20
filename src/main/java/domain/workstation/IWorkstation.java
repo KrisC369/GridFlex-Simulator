@@ -11,12 +11,11 @@ import simulation.ISimulationComponent;
 public interface IWorkstation extends ISimulationComponent {
 
     /**
-     * Returns wheter this machine is performing work during this time step or
-     * not.
+     * Returns the energy consumption amount during the last step.
      * 
-     * @return true if performing work during this time step.
+     * @return an int representing consumption amount.
      */
-    boolean isIdle();
+    int getLastStepConsumption();
 
     /**
      * Return the amount of items that has been processed by this workstation.
@@ -26,17 +25,18 @@ public interface IWorkstation extends ISimulationComponent {
     int getProcessedItemsCount();
 
     /**
-     * Returns the energy consumption amount during the last step.
-     * 
-     * @return an int representing consumption amount.
-     */
-    int getLastStepConsumption();
-
-    /**
      * Returns the total energy consumption amount.
      * 
      * @return the total energy consumed.
      */
     int getTotalConsumption();
+
+    /**
+     * Returns wheter this machine is performing work during this time step or
+     * not.
+     * 
+     * @return true if performing work during this time step.
+     */
+    boolean isIdle();
 
 }

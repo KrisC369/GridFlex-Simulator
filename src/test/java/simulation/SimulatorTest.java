@@ -18,14 +18,58 @@ import be.kuleuven.cs.gridlock.simulation.events.Event;
 import com.google.common.eventbus.Subscribe;
 
 public class SimulatorTest {
+    public static class ChangeEventComponent implements ISimulationComponent {
+        private Map<String, Object> resultMap = new HashMap<>();
+
+        @Override
+        public void afterTick() {
+            // TODO Auto-generated method stub
+
+        }
+
+        public Map<String, Object> getResult() {
+            return resultMap;
+        }
+
+        @Override
+        public void initialize(ISimulationContext context) {
+        }
+
+        @Subscribe
+        public void recordCustomerChange(Event e) {
+            resultMap = (e.getAttributes());
+        }
+
+        @Override
+        public void tick() {
+        }
+    }
+
     private Simulator s = mock(Simulator.class);
     private ISimulationComponent comp = mock(ISimulationComponent.class);
+
     private final long defaultRunTime = 1;
+
+    private void runSim(boolean immediateReturn) {
+        s.register(comp);
+        s.start();
+    }
 
     @Before
     public void setUp() throws Exception {
         s = Simulator.createSimulator(defaultRunTime);
         comp = mock(ISimulationComponent.class);
+    }
+
+    @Test
+    public void testEventBus() {
+        long duration = 20;
+        s = Simulator.createSimulator(duration);
+        comp = new ChangeEventComponent();
+        s.register(comp);
+        s.start();
+        assertNotNull(((ChangeEventComponent) comp).getResult());
+        assertFalse(((ChangeEventComponent) comp).getResult().isEmpty());
     }
 
     @Test
@@ -36,25 +80,6 @@ public class SimulatorTest {
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeDurationInit() {
         s = Simulator.createSimulator(0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testZeroDurationInit() {
-        s = Simulator.createSimulator(0);
-    }
-
-    @Test
-    public void testStartedSim() {
-        s.start();
-        assertEquals(defaultRunTime, s.getSimulationTime());
-        assertEquals(s.getDuration(), s.getSimulationTime());
-    }
-
-    @Test
-    public void testSimDuration() {
-        long duration = 20;
-        s = Simulator.createSimulator(duration);
-        assertEquals(duration, s.getDuration());
     }
 
     @Test
@@ -73,39 +98,29 @@ public class SimulatorTest {
     }
 
     @Test
-    public void testEventBus() {
+    public void testRunDurationImmediateReturnAfterTick() {
         long duration = 20;
         s = Simulator.createSimulator(duration);
-        comp = new ChangeEventComponent();
-        s.register(comp);
-        s.start();
-        assertNotNull(((ChangeEventComponent) comp).getResult());
-        assertFalse(((ChangeEventComponent) comp).getResult().isEmpty());
+        runSim(true);
+        verify(comp, times(20)).afterTick();
     }
 
-    private void runSim(boolean immediateReturn) {
-        s.register(comp);
-        s.start();
+    @Test
+    public void testSimDuration() {
+        long duration = 20;
+        s = Simulator.createSimulator(duration);
+        assertEquals(duration, s.getDuration());
     }
 
-    public static class ChangeEventComponent implements ISimulationComponent {
-        private Map<String, Object> resultMap = new HashMap<>();
+    @Test
+    public void testStartedSim() {
+        s.start();
+        assertEquals(defaultRunTime, s.getSimulationTime());
+        assertEquals(s.getDuration(), s.getSimulationTime());
+    }
 
-        @Override
-        public void initialize(ISimulationContext context) {
-        }
-
-        @Override
-        public void tick() {
-        }
-
-        @Subscribe
-        public void recordCustomerChange(Event e) {
-            resultMap = (e.getAttributes());
-        }
-
-        public Map<String, Object> getResult() {
-            return resultMap;
-        }
+    @Test(expected = IllegalArgumentException.class)
+    public void testZeroDurationInit() {
+        s = Simulator.createSimulator(0);
     }
 }
