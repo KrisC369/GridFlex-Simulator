@@ -17,14 +17,14 @@ public interface ISimulationContext {
      * 
      * @return the eventbus.
      */
-    public abstract EventBus getEventbus();
+    EventBus getEventbus();
 
     /**
      * Returns the eventFactory instance used for this simulation context.
      * 
      * @return an eventFactory.
      */
-    public abstract SimpleEventFactory getEventFactory();
+    SimpleEventFactory getEventFactory();
 
     /**
      * This method registers a simulationcomponent to the simulation context in
@@ -32,7 +32,7 @@ public interface ISimulationContext {
      * callback is initiated for dependency injection of this context.
      * 
      * Registration also encorporates registering the component to the
-     * <code>EventBus<code>
+     * <code>EventBus</code>
      * 
      * @param comp
      *            the component to register.

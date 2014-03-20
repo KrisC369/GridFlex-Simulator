@@ -79,11 +79,6 @@ public class ProductionLineTest {
         lineExtended = ProductionLine.createExtendedLayout();
     }
 
-    private void deliverResources(int n) {
-        List<IResource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
-        lineExtended.deliverResources(res);
-    }
-
     @Before
     public void setUp() throws Exception {
         lineSimple = ProductionLine.createSimpleLayout();
@@ -131,6 +126,11 @@ public class ProductionLineTest {
     public void testInitialSimpleSetup() {
         assertEquals(1, lineSimple.getNumberOfWorkstations());
         assertEquals(0, lineSimple.takeResources().size());
+    }
+
+    private void deliverResources(int n) {
+        List<IResource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
+        lineExtended.deliverResources(res);
     }
 
 }

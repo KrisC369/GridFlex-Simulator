@@ -19,17 +19,6 @@ import domain.util.SimpleEventFactory;
  */
 public class Simulator implements ISimulationContext {
 
-    /**
-     * Creates and instantiates a new simulator.
-     * 
-     * @param duration
-     *            the duration the simulator should run for.
-     * @return A new simulator object.
-     */
-    public static Simulator createSimulator(long duration) {
-        return new Simulator(duration);
-    }
-
     /** The scheduled duration of this simulator's run. */
     private final long duration;
 
@@ -56,16 +45,6 @@ public class Simulator implements ISimulationContext {
         this.components = new ArrayList<ISimulationComponent>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory();
-    }
-
-    private synchronized void afterTickComponents() {
-        for (ISimulationComponent c : components) {
-            c.afterTick();
-        }
-    }
-
-    private Clock getClock() {
-        return this.clock;
     }
 
     /**
@@ -105,12 +84,6 @@ public class Simulator implements ISimulationContext {
         return clock.getTimeCount();
     }
 
-    private void notifyStart() {
-        Event ev = eventFac.build("simulation:started");
-        ev.setAttribute("clocktime", getClock().getTimeCount());
-        this.eventbus.post(ev);
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -122,6 +95,31 @@ public class Simulator implements ISimulationContext {
         this.components.add(comp);
         this.eventbus.register(comp);
         comp.initialize(this);
+    }
+
+    /**
+     * Starts this simulation by running the simulation loop.
+     * 
+     */
+    public void start() {
+        notifyStart();
+        simloop();
+    }
+
+    private synchronized void afterTickComponents() {
+        for (ISimulationComponent c : components) {
+            c.afterTick();
+        }
+    }
+
+    private Clock getClock() {
+        return this.clock;
+    }
+
+    private void notifyStart() {
+        Event ev = eventFac.build("simulation:started");
+        ev.setAttribute("clocktime", getClock().getTimeCount());
+        this.eventbus.post(ev);
     }
 
     private boolean shouldRun() {
@@ -140,19 +138,21 @@ public class Simulator implements ISimulationContext {
         }
     }
 
-    /**
-     * Starts this simulation by running the simulation loop.
-     * 
-     */
-    public void start() {
-        notifyStart();
-        simloop();
-    }
-
     private synchronized void tickComponents() {
         for (ISimulationComponent c : components) {
             c.tick();
         }
+    }
+
+    /**
+     * Creates and instantiates a new simulator.
+     * 
+     * @param duration
+     *            the duration the simulator should run for.
+     * @return A new simulator object.
+     */
+    public static Simulator createSimulator(long duration) {
+        return new Simulator(duration);
     }
 
 }

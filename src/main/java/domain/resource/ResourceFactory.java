@@ -12,6 +12,9 @@ import java.util.List;
  */
 public final class ResourceFactory {
 
+    private ResourceFactory() {
+    }
+
     /**
      * Creates a list of IResource elements according to the specs specified.
      * 
@@ -49,8 +52,5 @@ public final class ResourceFactory {
                     Arrays.copyOfRange(neededProcessing, 1,
                             neededProcessing.length));
         }
-    }
-
-    private ResourceFactory() {
     }
 }

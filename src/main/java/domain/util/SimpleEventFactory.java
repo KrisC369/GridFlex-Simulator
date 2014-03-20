@@ -10,9 +10,9 @@ import be.kuleuven.cs.gridlock.simulation.events.EventFactoryImplementation;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class SimpleEventFactory {
+public final class SimpleEventFactory {
 
-    private EventFactory ef;
+    private final EventFactory ef;
 
     /**
      * Default constructor.

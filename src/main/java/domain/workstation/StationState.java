@@ -18,10 +18,6 @@ abstract class StationState implements IStationState {
             super(consumption);
         }
 
-        private void changestate(IStationContext context) {
-            context.setResourceMovingState();
-        }
-
         /*
          * (non-Javadoc)
          * 
@@ -46,16 +42,16 @@ abstract class StationState implements IStationState {
             return true;
         }
 
+        private void changestate(IStationContext context) {
+            context.setResourceMovingState();
+        }
+
     }
 
     static final class ResourceMoving extends StationState {
 
         ResourceMoving(int consumption) {
             super(consumption);
-        }
-
-        private void changeState(IStationContext context) {
-            context.setProcessingState();
         }
 
         /*
@@ -79,6 +75,10 @@ abstract class StationState implements IStationState {
         @Override
         public boolean isProcessing() {
             return false;
+        }
+
+        private void changeState(IStationContext context) {
+            context.setProcessingState();
         }
 
     }

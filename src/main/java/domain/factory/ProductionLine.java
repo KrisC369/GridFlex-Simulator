@@ -27,54 +27,11 @@ public final class ProductionLine implements ISimulationComponent {
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
 
-    /**
-     * Creates a productionline with a more complex layout.
-     * <code>O-XXX-O-X-O</code> with O as buffers and X as stations and
-     * <code>XXX</code> as parallel stations.
-     * 
-     * @return A productionline instance.
-     */
-    public static ProductionLine createExtendedLayout() {
-        ProductionLine line = new ProductionLine();
-        Buffer<IResource> bIn = new Buffer<>();
-        Buffer<IResource> b2 = new Buffer<>();
-        Buffer<IResource> bOut = new Buffer<>();
-        line.buffers.add(bIn);
-        line.buffers.add(b2);
-        line.buffers.add(bOut);
-        line.workstations.add(Workstation.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(Workstation.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(Workstation.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(Workstation.createConsuming(b2, bOut,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        return line;
-    }
-
-    /**
-     * Creates a productionline with a simple layout. O-X-O with O as buffers
-     * and X as stations.
-     * 
-     * @return A productionline instance.
-     */
-    public static ProductionLine createSimpleLayout() {
-        ProductionLine line = new ProductionLine();
-        Buffer<IResource> bIn = new Buffer<>();
-        Buffer<IResource> bOut = new Buffer<>();
-        line.buffers.add(bIn);
-        line.workstations.add(Workstation.createConsuming(bIn, bOut,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.buffers.add(bOut);
-        return line;
-    }
-
     private final List<Buffer<IResource>> buffers;
+
     private final List<IWorkstation> workstations;
 
     private Optional<SimpleEventFactory> eventFac;
-
     private Optional<EventBus> bus;
 
     private ProductionLine() {
@@ -82,7 +39,6 @@ public final class ProductionLine implements ISimulationComponent {
         this.workstations = new ArrayList<>();
         eventFac = Optional.absent();
         bus = Optional.absent();
-        ;
     }
 
     @Override
@@ -124,15 +80,6 @@ public final class ProductionLine implements ISimulationComponent {
         this.bus = Optional.of(context.getEventbus());
     }
 
-    private void notifyConsumption(long totalLaststep, long totalTotal) {
-        if (eventFac.isPresent() && bus.isPresent()) {
-            Event e = eventFac.get().build("report");
-            e.setAttribute("totalLaststepE", totalLaststep);
-            e.setAttribute("totalTotalE", totalTotal);
-            bus.get().post(e);
-        }
-    }
-
     /**
      * Take all the processed resources from the end of the line.
      * 
@@ -145,5 +92,57 @@ public final class ProductionLine implements ISimulationComponent {
 
     @Override
     public void tick() {
+    }
+
+    private void notifyConsumption(long totalLaststep, long totalTotal) {
+        if (eventFac.isPresent() && bus.isPresent()) {
+            Event e = eventFac.get().build("report");
+            e.setAttribute("totalLaststepE", totalLaststep);
+            e.setAttribute("totalTotalE", totalTotal);
+            bus.get().post(e);
+        }
+    }
+
+    /**
+     * Creates a productionline with a more complex layout.
+     * <code>O-XXX-O-X-O</code> with O as buffers and X as stations and
+     * <code>XXX</code> as parallel stations.
+     * 
+     * @return A productionline instance.
+     */
+    public static ProductionLine createExtendedLayout() {
+        ProductionLine line = new ProductionLine();
+        Buffer<IResource> bIn = new Buffer<>();
+        Buffer<IResource> b2 = new Buffer<>();
+        Buffer<IResource> bOut = new Buffer<>();
+        line.buffers.add(bIn);
+        line.buffers.add(b2);
+        line.buffers.add(bOut);
+        line.workstations.add(Workstation.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(Workstation.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(Workstation.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(Workstation.createConsuming(b2, bOut,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        return line;
+    }
+
+    /**
+     * Creates a productionline with a simple layout. O-X-O with O as buffers
+     * and X as stations.
+     * 
+     * @return A productionline instance.
+     */
+    public static ProductionLine createSimpleLayout() {
+        ProductionLine line = new ProductionLine();
+        Buffer<IResource> bIn = new Buffer<>();
+        Buffer<IResource> bOut = new Buffer<>();
+        line.buffers.add(bIn);
+        line.workstations.add(Workstation.createConsuming(bIn, bOut,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.buffers.add(bOut);
+        return line;
     }
 }

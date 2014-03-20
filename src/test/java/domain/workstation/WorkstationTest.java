@@ -23,23 +23,6 @@ public class WorkstationTest {
     private ISimulationContext sim = mock(ISimulationContext.class);
     private IWorkstation iew = mock(IWorkstation.class);
 
-    private void initialStateTest(IWorkstation w) {
-        assertEquals(0, w.getProcessedItemsCount());
-        assertTrue(w.isIdle());
-    }
-
-    private void multiTick(IWorkstation s, int times) {
-        for (; times > 0; times--) {
-            s.tick();
-        }
-    }
-
-    private IResource pushResource(int procTime) {
-        IResource res = ResourceFactory.createResource(procTime);
-        in.push(res);
-        return res;
-    }
-
     @Before
     public void setUp() throws Exception {
         in = new Buffer<IResource>();
@@ -109,8 +92,6 @@ public class WorkstationTest {
         assertTrue(iw.isIdle());
     }
 
-    // Test for consumptions.
-
     @Test
     public void testInitial() {
         initialStateTest(w);
@@ -136,6 +117,25 @@ public class WorkstationTest {
         assertFalse(w.isIdle());
         multiTick(w, 3);
         testStateAfterFinalPush(res);
+    }
+
+    // Test for consumptions.
+
+    private void initialStateTest(IWorkstation w) {
+        assertEquals(0, w.getProcessedItemsCount());
+        assertTrue(w.isIdle());
+    }
+
+    private void multiTick(IWorkstation s, int times) {
+        for (; times > 0; times--) {
+            s.tick();
+        }
+    }
+
+    private IResource pushResource(int procTime) {
+        IResource res = ResourceFactory.createResource(procTime);
+        in.push(res);
+        return res;
     }
 
     private void testStateAfterFinalPush(IResource res) {

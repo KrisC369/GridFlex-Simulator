@@ -17,48 +17,16 @@ import domain.util.Buffer;
  */
 public class Workstation implements IWorkstation, IStationContext {
 
-    /**
-     * Factory method for workstations that consume energy..
-     * 
-     * @param in
-     *            The inputbuffer instance.
-     * @param out
-     *            The outputbuffer instance.
-     * @param idle
-     *            The energy consumption in idle state.
-     * @param working
-     *            The energy consumption in working state.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static IWorkstation createConsuming(Buffer<IResource> in,
-            Buffer<IResource> out, int idle, int working) {
-        return new Workstation(in, out, idle, working);
-    }
-
-    /**
-     * Factory method for default workstations without energy consumption.
-     * 
-     * @param bufferIn
-     *            The inputbuffer instance.
-     * @param bufferOut
-     *            The outputbuffer instance.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static IWorkstation createDefault(Buffer<IResource> bufferIn,
-            Buffer<IResource> bufferOut) {
-        return new Workstation(bufferIn, bufferOut, 0, 0);
-    }
-
     private final Buffer<IResource> inputBuff;
+
     private final Buffer<IResource> outputBuff;
+
     private final IStationState resourceMovingState;
     private final IStationState processingState;
     private IStationState currentState;
     private Optional<IResource> currentResource;
     private int totalConsumption;
-
     private int lastConsumption;
-
     private int processedCount;
 
     /**
@@ -88,14 +56,6 @@ public class Workstation implements IWorkstation, IStationContext {
     public void afterTick() {
     }
 
-    @VisibleForTesting
-    void changeCurrentResource(IResource res) {
-        if (currentResource.isPresent()) {
-            throw new IllegalStateException();
-        }
-        this.currentResource = Optional.of(res);
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -107,21 +67,9 @@ public class Workstation implements IWorkstation, IStationContext {
         return currentResource;
     }
 
-    private IStationState getCurrentState() {
-        return this.currentState;
-    }
-
-    private Buffer<IResource> getInputBuffer() {
-        return inputBuff;
-    }
-
     @Override
     public int getLastStepConsumption() {
         return lastConsumption;
-    }
-
-    private Buffer<IResource> getOutputBuffer() {
-        return outputBuff;
     }
 
     /*
@@ -137,15 +85,6 @@ public class Workstation implements IWorkstation, IStationContext {
     @Override
     public int getTotalConsumption() {
         return this.totalConsumption;
-    }
-
-    private void increaseTotalConsumption(int consumptionRate) {
-        this.totalConsumption += consumptionRate;
-    }
-
-    private void incrementProcessedCount() {
-        this.processedCount++;
-
     }
 
     /*
@@ -187,14 +126,6 @@ public class Workstation implements IWorkstation, IStationContext {
         return false;
     }
 
-    private void resetCurrentResource() {
-        this.currentResource = Optional.absent();
-    }
-
-    private void setLastConsumption(int rate) {
-        this.lastConsumption = rate;
-    }
-
     @Override
     public void setProcessingState() {
         this.currentState = processingState;
@@ -217,5 +148,74 @@ public class Workstation implements IWorkstation, IStationContext {
         increaseTotalConsumption(rate);
         setLastConsumption(rate);
         currentState.handleTick(this);
+    }
+
+    @VisibleForTesting
+    void changeCurrentResource(IResource res) {
+        if (currentResource.isPresent()) {
+            throw new IllegalStateException();
+        }
+        this.currentResource = Optional.of(res);
+    }
+
+    private IStationState getCurrentState() {
+        return this.currentState;
+    }
+
+    private Buffer<IResource> getInputBuffer() {
+        return inputBuff;
+    }
+
+    private Buffer<IResource> getOutputBuffer() {
+        return outputBuff;
+    }
+
+    private void increaseTotalConsumption(int consumptionRate) {
+        this.totalConsumption += consumptionRate;
+    }
+
+    private void incrementProcessedCount() {
+        this.processedCount++;
+
+    }
+
+    private void resetCurrentResource() {
+        this.currentResource = Optional.absent();
+    }
+
+    private void setLastConsumption(int rate) {
+        this.lastConsumption = rate;
+    }
+
+    /**
+     * Factory method for workstations that consume energy..
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in idle state.
+     * @param working
+     *            The energy consumption in working state.
+     * @return A Ready to use IWorkstation object.
+     */
+    public static IWorkstation createConsuming(Buffer<IResource> in,
+            Buffer<IResource> out, int idle, int working) {
+        return new Workstation(in, out, idle, working);
+    }
+
+    /**
+     * Factory method for default workstations without energy consumption.
+     * 
+     * @param bufferIn
+     *            The inputbuffer instance.
+     * @param bufferOut
+     *            The outputbuffer instance.
+     * @return A Ready to use IWorkstation object.
+     */
+    public static IWorkstation createDefault(Buffer<IResource> bufferIn,
+            Buffer<IResource> bufferOut) {
+        return new Workstation(bufferIn, bufferOut, 0, 0);
     }
 }

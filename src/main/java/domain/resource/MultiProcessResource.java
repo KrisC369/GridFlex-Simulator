@@ -27,6 +27,15 @@ public class MultiProcessResource extends SimpleResource {
         }
     }
 
+    @Override
+    public void notifyOfHasBeenBuffered() {
+        int firstNonZeroIdx = findNonZeroIdx();
+        if (firstNonZeroIdx > 0) {
+            setNeededTime(neededProcessing[firstNonZeroIdx]);
+            neededProcessing[firstNonZeroIdx] = 0;
+        }
+    }
+
     private int findNonZeroIdx() {
         int result = -1;
         for (int i = 0; result < 0 && i < neededProcessing.length; i++) {
@@ -35,15 +44,6 @@ public class MultiProcessResource extends SimpleResource {
             }
         }
         return result;
-    }
-
-    @Override
-    public void notifyOfHasBeenBuffered() {
-        int firstNonZeroIdx = findNonZeroIdx();
-        if (firstNonZeroIdx > 0) {
-            setNeededTime(neededProcessing[firstNonZeroIdx]);
-            neededProcessing[firstNonZeroIdx] = 0;
-        }
     }
 
 }

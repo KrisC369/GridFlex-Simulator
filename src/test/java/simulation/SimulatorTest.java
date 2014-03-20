@@ -50,11 +50,6 @@ public class SimulatorTest {
 
     private final long defaultRunTime = 1;
 
-    private void runSim(boolean immediateReturn) {
-        s.register(comp);
-        s.start();
-    }
-
     @Before
     public void setUp() throws Exception {
         s = Simulator.createSimulator(defaultRunTime);
@@ -122,5 +117,10 @@ public class SimulatorTest {
     @Test(expected = IllegalArgumentException.class)
     public void testZeroDurationInit() {
         s = Simulator.createSimulator(0);
+    }
+
+    private void runSim(boolean immediateReturn) {
+        s.register(comp);
+        s.start();
     }
 }
