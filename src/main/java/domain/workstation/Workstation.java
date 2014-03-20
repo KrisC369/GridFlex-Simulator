@@ -1,8 +1,11 @@
 package domain.workstation;
 
+import javax.annotation.Nullable;
+
 import simulation.ISimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Optional;
 
 import domain.resource.IResource;
 import domain.util.Buffer;
@@ -21,7 +24,7 @@ public class Workstation implements IWorkstation, IStationContext {
     private final IStationState resourceMovingState;
     private final IStationState processingState;
     private IStationState currentState;
-    private IResource currentResource;
+    private Optional<IResource> currentResource;
     private int totalConsumption;
     private int lastConsumption;
     private int processedCount;
@@ -46,6 +49,7 @@ public class Workstation implements IWorkstation, IStationContext {
         this.totalConsumption = 0;
         this.processedCount = 0;
         this.lastConsumption = 0;
+        this.currentResource = Optional.absent();
     }
 
     /*
@@ -54,8 +58,8 @@ public class Workstation implements IWorkstation, IStationContext {
      * @see domain.IStationContext#getCurrentResource()
      */
     @Override
-    public IResource getCurrentResource() {
-
+    public Optional<IResource> getCurrentResource() {
+        
         return currentResource;
     }
 
@@ -127,24 +131,28 @@ public class Workstation implements IWorkstation, IStationContext {
      */
     @Override
     public boolean pushConveyer() {
-        if (null != getCurrentResource()) {
-            getOutputBuffer().push(getCurrentResource());
-            this.currentResource = null;
+        if (getCurrentResource().isPresent()) {
+            getOutputBuffer().push(getCurrentResource().get());
+            resetCurrentResource();
             incrementProcessedCount();
         }
         if (!getInputBuffer().isEmpty()) {
-            this.setCurrentResource(getInputBuffer().pull());
+            this.changeCurrentResource(getInputBuffer().pull());
             return true;
         }
         return false;
     }
 
+    private void resetCurrentResource(){
+        this.currentResource = Optional.absent();
+    }
+    
     @VisibleForTesting
-    void setCurrentResource(IResource res) {
-        if (null != currentResource) {
+    void changeCurrentResource(IResource res) {
+        if (currentResource.isPresent()) {
             throw new IllegalStateException();
         }
-        this.currentResource = res;
+        this.currentResource = Optional.of(res);
     }
 
     private void setLastConsumption(int rate) {

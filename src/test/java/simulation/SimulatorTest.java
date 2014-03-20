@@ -1,10 +1,13 @@
 package simulation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -15,8 +18,8 @@ import com.google.common.eventbus.Subscribe;
 import events.SimStateEvent;
 
 public class SimulatorTest {
-    private Simulator s;
-    private ISimulationComponent comp;
+    private Simulator s = mock(Simulator.class);
+    private ISimulationComponent comp = mock(ISimulationComponent.class);
     private final long defaultRunTime = 1;
 
     @Before
@@ -86,7 +89,7 @@ public class SimulatorTest {
     }
 
     public static class ChangeEventComponent implements ISimulationComponent{
-        private Map<String, Object> resultMap;
+        private Map<String, Object> resultMap = new HashMap<>();
         @Override
         public void initialize(ISimulationContext context) {
         }

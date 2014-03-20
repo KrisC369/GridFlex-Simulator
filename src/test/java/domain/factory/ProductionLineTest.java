@@ -1,9 +1,9 @@
 package domain.factory;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
@@ -17,11 +17,19 @@ import domain.resource.IResource;
 import domain.resource.ResourceFactory;
 
 public class ProductionLineTest {
-
+    
+    //Mocks for avoiding null checks.
     private ProductionLine lineSimple;
     private ProductionLine lineExtended;
     private int simSteps;
-    private ISimulationContext sim;
+    @SuppressWarnings("null")
+    private ISimulationContext sim = mock(ISimulationContext.class);
+    
+    public ProductionLineTest(){
+        lineSimple = ProductionLine.createSimpleLayout();
+        lineExtended = ProductionLine.createExtendedLayout();
+    }
+    
     @Before
     public void setUp() throws Exception {
         lineSimple = ProductionLine.createSimpleLayout();

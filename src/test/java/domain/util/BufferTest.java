@@ -22,8 +22,10 @@ import domain.util.IBufferable;
 
 public class BufferTest {
 
-    private Buffer<IResource> b;
-    private IResource res;
+    @SuppressWarnings("null")
+    private Buffer<IResource> b = mock(Buffer.class);
+    @SuppressWarnings("null")
+    private IResource res = mock(IResource.class);
 
     @Before
     public void setUp() throws Exception {

@@ -17,11 +17,11 @@ import domain.util.Buffer;
 
 public class WorkstationTest {
 
-    private Buffer<IResource> in;
-    private Buffer<IResource> out;
-    private Workstation w;
-    private ISimulationContext sim;
-    private IWorkstation iew;
+    private Buffer<IResource> in = mock(Buffer.class);
+    private Buffer<IResource> out = mock(Buffer.class);
+    private Workstation w = mock(Workstation.class);
+    private ISimulationContext sim = mock(ISimulationContext.class);
+    private IWorkstation iew = mock(IWorkstation.class);
 
     @Before
     public void setUp() throws Exception {
@@ -77,7 +77,7 @@ public class WorkstationTest {
         IResource res = pushResource(1);
         w.tick();
         testStateAfterProces1(res);
-        w.setCurrentResource(res);
+        w.changeCurrentResource(res);
     }
 
     private IResource pushResource(int procTime) {
@@ -93,7 +93,7 @@ public class WorkstationTest {
     }
 
     private void testStateAfterFinalPush(IResource res) {
-        assertNull(w.getCurrentResource());
+        assertNull(w.getCurrentResource().orNull());
         assertTrue(in.isEmpty());
         assertTrue(w.isIdle());
         assertFalse(out.isEmpty());
@@ -105,7 +105,7 @@ public class WorkstationTest {
         assertTrue(in.isEmpty());
         assertFalse(w.isIdle());
         assertTrue(out.isEmpty());
-        assertEquals(res, w.getCurrentResource());
+        assertEquals(res, w.getCurrentResource().get());
         assertEquals(0,w.getProcessedItemsCount());
     }
 
