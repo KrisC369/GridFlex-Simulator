@@ -8,11 +8,11 @@ import java.util.Collections;
 import java.util.List;
 
 import time.Clock;
+import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.EventBus;
 
-import events.SimState;
-import events.SimStateEvent;
+import domain.util.SimpleEventFactory;
 
 /**
  * The Class Simulator.
@@ -29,7 +29,9 @@ public class Simulator implements ISimulationContext {
     private final List<ISimulationComponent> components;
 
     private final EventBus eventbus;
-    
+
+    private final SimpleEventFactory eventFac;
+
     /**
      * Instantiates a new simulator.
      * 
@@ -42,6 +44,7 @@ public class Simulator implements ISimulationContext {
         this.clock = new Clock();
         this.components = new ArrayList<ISimulationComponent>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
+        this.eventFac = new SimpleEventFactory();
     }
 
     /**
@@ -54,7 +57,9 @@ public class Simulator implements ISimulationContext {
     }
 
     private void notifyStart() {
-        this.eventbus.post(new SimStateEvent(SimState.STARTED));
+        Event ev = eventFac.build("simulation:started");
+        ev.setAttribute("clocktime", getClock().getTimeCount());
+        this.eventbus.post(ev);
     }
 
     private void simloop() {

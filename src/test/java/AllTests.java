@@ -11,6 +11,6 @@ import domain.workstation.WorkstationTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
-        WorkstationTest.class, ProductionLineTest.class,ResourceTest.class })
+        WorkstationTest.class, ProductionLineTest.class, ResourceTest.class })
 public class AllTests {
 }

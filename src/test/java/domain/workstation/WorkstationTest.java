@@ -98,7 +98,7 @@ public class WorkstationTest {
         assertTrue(w.isIdle());
         assertFalse(out.isEmpty());
         assertEquals(res, out.pull());
-        assertEquals(1,w.getProcessedItemsCount());
+        assertEquals(1, w.getProcessedItemsCount());
     }
 
     private void testStateAfterProces1(IResource res) {
@@ -106,7 +106,7 @@ public class WorkstationTest {
         assertFalse(w.isIdle());
         assertTrue(out.isEmpty());
         assertEquals(res, w.getCurrentResource().get());
-        assertEquals(0,w.getProcessedItemsCount());
+        assertEquals(0, w.getProcessedItemsCount());
     }
 
     // Test for consumptions.
@@ -132,7 +132,7 @@ public class WorkstationTest {
         pushResource(1);
         multiTick(iew, 3);
         assertEquals(5, iew.getTotalConsumption()); // 1:in + 1:out + 1*3:cons
-        assertEquals(1,iew.getProcessedItemsCount());
+        assertEquals(1, iew.getProcessedItemsCount());
     }
 
     @Test
@@ -140,7 +140,7 @@ public class WorkstationTest {
         pushResource(3);
         multiTick(iew, 5);
         assertEquals(11, iew.getTotalConsumption());// 1:in + 1:out + 3*3:cons
-        assertEquals(1,iew.getProcessedItemsCount());
+        assertEquals(1, iew.getProcessedItemsCount());
     }
 
     @Test
@@ -152,7 +152,7 @@ public class WorkstationTest {
         assertEquals(3, iew.getLastStepConsumption());
         iew.tick();
         assertEquals(1, iew.getLastStepConsumption());
-        assertEquals(1,iew.getProcessedItemsCount());
+        assertEquals(1, iew.getProcessedItemsCount());
     }
 
 }

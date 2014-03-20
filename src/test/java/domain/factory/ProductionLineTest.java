@@ -17,57 +17,56 @@ import domain.resource.IResource;
 import domain.resource.ResourceFactory;
 
 public class ProductionLineTest {
-    
-    //Mocks for avoiding null checks.
+
+    // Mocks for avoiding null checks.
     private ProductionLine lineSimple;
     private ProductionLine lineExtended;
     private int simSteps;
     @SuppressWarnings("null")
     private ISimulationContext sim = mock(ISimulationContext.class);
-    
-    public ProductionLineTest(){
+
+    public ProductionLineTest() {
         lineSimple = ProductionLine.createSimpleLayout();
         lineExtended = ProductionLine.createExtendedLayout();
     }
-    
+
     @Before
     public void setUp() throws Exception {
         lineSimple = ProductionLine.createSimpleLayout();
         lineExtended = ProductionLine.createExtendedLayout();
         simSteps = 20;
-        sim =Simulator.createSimulator(simSteps);
+        sim = Simulator.createSimulator(simSteps);
         sim.register(lineSimple);
         sim.register(lineExtended);
     }
 
     @Test
     public void testInitialExtendedSetup() {
-        assertEquals(4,lineExtended.getNumberOfWorkstations());
-        assertEquals(0,lineExtended.takeResources().size());
+        assertEquals(4, lineExtended.getNumberOfWorkstations());
+        assertEquals(0, lineExtended.takeResources().size());
     }
+
     @Test
     public void testInitialSimpleSetup() {
-        assertEquals(1,lineSimple.getNumberOfWorkstations());
-        assertEquals(0,lineSimple.takeResources().size());
+        assertEquals(1, lineSimple.getNumberOfWorkstations());
+        assertEquals(0, lineSimple.takeResources().size());
     }
-    
+
     @Test
     public void testDeliverAndProcessResources() {
         int n = 3;
         deliverResources(n);
         ISimulationComponent tester = mock(ISimulationComponent.class);
         sim.register(tester);
-        ((Simulator)sim).start();
+        ((Simulator) sim).start();
         verify(tester, times(simSteps)).tick();
-        assertEquals(n,lineExtended.takeResources().size());
-        
+        assertEquals(n, lineExtended.takeResources().size());
+
     }
 
     private void deliverResources(int n) {
-        List<IResource> res = ResourceFactory.createBulkMPResource(n, 3,1);
+        List<IResource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         lineExtended.deliverResources(res);
     }
-    
-    
 
 }

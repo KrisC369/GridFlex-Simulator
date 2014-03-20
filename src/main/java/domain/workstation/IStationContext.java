@@ -34,7 +34,8 @@ interface IStationContext {
 
     /**
      * This method returns the resource currently present in the workstation.
-     * This value is <code>Optional</code> and can represent no resource being present.
+     * This value is <code>Optional</code> and can represent no resource being
+     * present.
      * 
      * @return the current resource wrapped in an Optional.
      */

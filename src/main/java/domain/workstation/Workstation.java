@@ -59,7 +59,7 @@ public class Workstation implements IWorkstation, IStationContext {
      */
     @Override
     public Optional<IResource> getCurrentResource() {
-        
+
         return currentResource;
     }
 
@@ -143,10 +143,10 @@ public class Workstation implements IWorkstation, IStationContext {
         return false;
     }
 
-    private void resetCurrentResource(){
+    private void resetCurrentResource() {
         this.currentResource = Optional.absent();
     }
-    
+
     @VisibleForTesting
     void changeCurrentResource(IResource res) {
         if (currentResource.isPresent()) {

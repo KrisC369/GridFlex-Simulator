@@ -74,15 +74,15 @@ public class BufferTest {
         Collection<IResource> returnset = b.pullAll();
         assertTrue(returnset.contains(res2));
         assertTrue(returnset.contains(res));
-        assertEquals(2,returnset.size());
+        assertEquals(2, returnset.size());
     }
-    
-    @Test 
-    public void testBeenBufferedNotification(){
+
+    @Test
+    public void testBeenBufferedNotification() {
         b.push(res);
         verify(res, times(1)).notifyOfHasBeenBuffered();
     }
-    
+
     @Test
     public void testPushAll() {
         IResource res2 = mock(IResource.class);
@@ -93,13 +93,13 @@ public class BufferTest {
         Collection<IResource> returnset = b.pullAll();
         assertTrue(returnset.contains(res2));
         assertTrue(returnset.contains(res));
-        assertEquals(2,returnset.size());
+        assertEquals(2, returnset.size());
     }
-    
+
     @Test
     public void testBigNumberThroughput() {
         Buffer<IBufferable> b = new Buffer<IBufferable>();
-        List<IBufferable> results = new ArrayList<IBufferable>(); 
+        List<IBufferable> results = new ArrayList<IBufferable>();
         IBufferable tmp;
         int n = 101912;
         for (int i = 0; i < n; i++) {

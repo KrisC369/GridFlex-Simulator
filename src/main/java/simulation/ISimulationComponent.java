@@ -7,7 +7,7 @@ package simulation;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface ISimulationComponent  {
+public interface ISimulationComponent {
     /**
      * Method for injecting the simulationcontext dependency if needed. This
      * method is called as a callback after registering with the simulation
@@ -24,5 +24,4 @@ public interface ISimulationComponent  {
      */
     void tick();
 
-   
 }

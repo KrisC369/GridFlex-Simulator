@@ -13,9 +13,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.eventbus.Subscribe;
+import be.kuleuven.cs.gridlock.simulation.events.Event;
 
-import events.SimStateEvent;
+import com.google.common.eventbus.Subscribe;
 
 public class SimulatorTest {
     private Simulator s = mock(Simulator.class);
@@ -35,12 +35,12 @@ public class SimulatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeDurationInit() {
-        s = Simulator.createSimulator(0);  
+        s = Simulator.createSimulator(0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testZeroDurationInit() {
-        s = Simulator.createSimulator(0);  
+        s = Simulator.createSimulator(0);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class SimulatorTest {
     public void testRegisterComp() {
         s.register(comp);
         assertEquals(1, s.getComponents().size());
-        verify(comp,times(1)).initialize(s);
+        verify(comp, times(1)).initialize(s);
     }
 
     @Test
@@ -71,9 +71,9 @@ public class SimulatorTest {
         runSim(true);
         verify(comp, times(20)).tick();
     }
-    
+
     @Test
-    public void testEventBus(){
+    public void testEventBus() {
         long duration = 20;
         s = Simulator.createSimulator(duration);
         comp = new ChangeEventComponent();
@@ -88,8 +88,9 @@ public class SimulatorTest {
         s.start();
     }
 
-    public static class ChangeEventComponent implements ISimulationComponent{
+    public static class ChangeEventComponent implements ISimulationComponent {
         private Map<String, Object> resultMap = new HashMap<>();
+
         @Override
         public void initialize(ISimulationContext context) {
         }
@@ -97,11 +98,13 @@ public class SimulatorTest {
         @Override
         public void tick() {
         }
-        
-        @Subscribe public void recordCustomerChange(SimStateEvent e) {
-            resultMap = (e.getEventInfo());
+
+        @Subscribe
+        public void recordCustomerChange(Event e) {
+            resultMap = (e.getAttributes());
         }
-        public Map<String, Object> getResult(){
+
+        public Map<String, Object> getResult() {
             return resultMap;
         }
     }
