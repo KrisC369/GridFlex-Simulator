@@ -6,7 +6,7 @@ package time;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class SimulationClock implements Clock{
+public class SimulationClock implements Clock {
 
     /** The timecount of this clock. */
     private int timecount;
@@ -28,7 +28,6 @@ public class SimulationClock implements Clock{
         this.timecount += step;
     }
 
-   
     @Override
     public int getTimeCount() {
         return timecount;

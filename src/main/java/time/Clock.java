@@ -5,6 +5,7 @@ package time;
 
 /**
  * Interface for time keeper classes.
+ * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public interface Clock {
@@ -15,5 +16,5 @@ public interface Clock {
      * @return The amount of times this clock has had a time step added.
      */
     public abstract int getTimeCount();
-    
+
 }

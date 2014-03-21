@@ -1,9 +1,11 @@
 package simulation;
 
 /**
- * Instrumentation components allow the injection of simulation context instances.
+ * Instrumentation components allow the injection of simulation context
+ * instances.
+ * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- *
+ * 
  */
 public interface InstrumentationComponent {
 

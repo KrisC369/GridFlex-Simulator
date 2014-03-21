@@ -2,8 +2,8 @@ package simulation;
 
 /**
  * Simulation components that need to receive tick-triggers implement this
- * interface. This interface inherits from the instrumentation component interface
- * which allows dependency injecion.
+ * interface. This interface inherits from the instrumentation component
+ * interface which allows dependency injecion.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
