@@ -9,11 +9,9 @@ import simulation.SimulationContext;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.base.Optional;
-import com.google.common.eventbus.EventBus;
 
 import domain.resource.Resource;
 import domain.util.Buffer;
-import domain.util.SimpleEventFactory;
 import domain.workstation.Workstation;
 import domain.workstation.WorkstationImpl;
 
@@ -94,14 +92,15 @@ public final class ProductionLine implements SimulationComponent {
     private void notifyConsumption(Long totalLaststep, Long totalTotal) {
         if (this.context.isPresent()) {
             Event e = getContext().getEventFactory().build("report");
-            e.setAttribute("time", getContext().getSimulationClock().getTimeCount());
+            e.setAttribute("time", getContext().getSimulationClock()
+                    .getTimeCount());
             e.setAttribute("totalLaststepE", totalLaststep);
             e.setAttribute("totalTotalE", totalTotal);
             getContext().getEventbus().post(e);
         }
     }
-    
-    private SimulationContext getContext(){
+
+    private SimulationContext getContext() {
         return this.context.get();
     }
 

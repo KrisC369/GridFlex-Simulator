@@ -46,7 +46,7 @@ public class Simulator implements SimulationContext {
         this.duration = duration;
         this.clock = new SimulationClock();
         this.components = new ArrayList<>();
-        this.instruComps= new ArrayList<>();
+        this.instruComps = new ArrayList<>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory();
     }
@@ -117,7 +117,7 @@ public class Simulator implements SimulationContext {
     private void notifyStop() {
         Event ev = eventFac.build("simulation:stopped");
         ev.setAttribute("clocktime", getClock().getTimeCount());
-        this.eventbus.post(ev);        
+        this.eventbus.post(ev);
     }
 
     private synchronized void afterTickComponents() {
@@ -171,6 +171,7 @@ public class Simulator implements SimulationContext {
 
     /**
      * Returns the instrumentation components of this simulator
+     * 
      * @return the instrumentation components.
      */
     public Collection<InstrumentationComponent> getInstrumentationComponents() {

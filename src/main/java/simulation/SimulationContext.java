@@ -27,9 +27,10 @@ public interface SimulationContext {
      * @return an eventFactory.
      */
     SimpleEventFactory getEventFactory();
-    
+
     /**
      * Return the simulation time keeper instance.
+     * 
      * @return the clock
      */
     Clock getSimulationClock();
@@ -47,11 +48,11 @@ public interface SimulationContext {
      *            the component to register.
      */
     void register(SimulationComponent comp);
-    
+
     /**
-     * This method registers an instrumentation component to allow for the injection of the context dependency.
-     *  Registration also encorporates registering
-     * the component to the <code>EventBus</code>
+     * This method registers an instrumentation component to allow for the
+     * injection of the context dependency. Registration also encorporates
+     * registering the component to the <code>EventBus</code>
      * 
      * @param comp
      *            the component to register.
