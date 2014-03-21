@@ -8,7 +8,7 @@ import domain.util.IBufferable;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface IResource extends IBufferable {
+public interface Resource extends IBufferable {
 
     /**
      * Return the needed process time for this resource at this moment.

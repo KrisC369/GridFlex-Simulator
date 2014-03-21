@@ -4,32 +4,32 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import simulation.ISimulationComponent;
-import simulation.ISimulationContext;
+import simulation.SimulationComponent;
+import simulation.SimulationContext;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.base.Optional;
 import com.google.common.eventbus.EventBus;
 
-import domain.resource.IResource;
+import domain.resource.Resource;
 import domain.util.Buffer;
 import domain.util.SimpleEventFactory;
-import domain.workstation.IWorkstation;
 import domain.workstation.Workstation;
+import domain.workstation.WorkstationImpl;
 
 /**
  * A productionline representing buffers and workstations.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements ISimulationComponent {
+public final class ProductionLine implements SimulationComponent {
 
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
 
-    private final List<Buffer<IResource>> buffers;
+    private final List<Buffer<Resource>> buffers;
 
-    private final List<IWorkstation> workstations;
+    private final List<Workstation> workstations;
 
     private Optional<SimpleEventFactory> eventFac;
     private Optional<EventBus> bus;
@@ -45,7 +45,7 @@ public final class ProductionLine implements ISimulationComponent {
     public void afterTick() {
         long totalLaststep = 0;
         long totalTotal = 0;
-        for (IWorkstation w : workstations) {
+        for (Workstation w : workstations) {
             totalLaststep += w.getLastStepConsumption();
             totalTotal += w.getTotalConsumption();
         }
@@ -58,7 +58,7 @@ public final class ProductionLine implements ISimulationComponent {
      * @param res
      *            the resources to use.
      */
-    public void deliverResources(List<IResource> res) {
+    public void deliverResources(List<Resource> res) {
         buffers.get(0).pushAll(res);
     }
 
@@ -72,8 +72,8 @@ public final class ProductionLine implements ISimulationComponent {
     }
 
     @Override
-    public void initialize(ISimulationContext context) {
-        for (IWorkstation w : workstations) {
+    public void initialize(SimulationContext context) {
+        for (Workstation w : workstations) {
             context.register(w);
         }
         this.eventFac = Optional.of(context.getEventFactory());
@@ -85,7 +85,7 @@ public final class ProductionLine implements ISimulationComponent {
      * 
      * @return the processed resources.
      */
-    public Collection<IResource> takeResources() {
+    public Collection<Resource> takeResources() {
         return buffers.get(buffers.size() - 1).pullAll();
 
     }
@@ -112,19 +112,19 @@ public final class ProductionLine implements ISimulationComponent {
      */
     public static ProductionLine createExtendedLayout() {
         ProductionLine line = new ProductionLine();
-        Buffer<IResource> bIn = new Buffer<>();
-        Buffer<IResource> b2 = new Buffer<>();
-        Buffer<IResource> bOut = new Buffer<>();
+        Buffer<Resource> bIn = new Buffer<>();
+        Buffer<Resource> b2 = new Buffer<>();
+        Buffer<Resource> bOut = new Buffer<>();
         line.buffers.add(bIn);
         line.buffers.add(b2);
         line.buffers.add(bOut);
-        line.workstations.add(Workstation.createConsuming(bIn, b2,
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
                 IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(Workstation.createConsuming(bIn, b2,
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
                 IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(Workstation.createConsuming(bIn, b2,
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
                 IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(Workstation.createConsuming(b2, bOut,
+        line.workstations.add(WorkstationImpl.createConsuming(b2, bOut,
                 IDLE_CONSUMPTION, WORKING_CONSUMPTION));
         return line;
     }
@@ -137,10 +137,10 @@ public final class ProductionLine implements ISimulationComponent {
      */
     public static ProductionLine createSimpleLayout() {
         ProductionLine line = new ProductionLine();
-        Buffer<IResource> bIn = new Buffer<>();
-        Buffer<IResource> bOut = new Buffer<>();
+        Buffer<Resource> bIn = new Buffer<>();
+        Buffer<Resource> bOut = new Buffer<>();
         line.buffers.add(bIn);
-        line.workstations.add(Workstation.createConsuming(bIn, bOut,
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, bOut,
                 IDLE_CONSUMPTION, WORKING_CONSUMPTION));
         line.buffers.add(bOut);
         return line;

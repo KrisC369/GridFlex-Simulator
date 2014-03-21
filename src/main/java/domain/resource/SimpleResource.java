@@ -5,7 +5,7 @@ package domain.resource;
  * very simple resource concept that needs a specific amount of time to be
  * processed.
  */
-public class SimpleResource implements IResource {
+public class SimpleResource implements Resource {
 
     /** The needed time. */
     private int neededTime;

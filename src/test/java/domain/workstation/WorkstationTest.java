@@ -9,28 +9,28 @@ import static org.mockito.Mockito.mock;
 import org.junit.Before;
 import org.junit.Test;
 
-import simulation.ISimulationContext;
+import simulation.SimulationContext;
 import simulation.Simulator;
-import domain.resource.IResource;
+import domain.resource.Resource;
 import domain.resource.ResourceFactory;
 import domain.util.Buffer;
 
 public class WorkstationTest {
 
-    private Buffer<IResource> in = mock(Buffer.class);
-    private Buffer<IResource> out = mock(Buffer.class);
-    private Workstation w = mock(Workstation.class);
-    private ISimulationContext sim = mock(ISimulationContext.class);
-    private IWorkstation iew = mock(IWorkstation.class);
+    private Buffer<Resource> in = mock(Buffer.class);
+    private Buffer<Resource> out = mock(Buffer.class);
+    private WorkstationImpl w = mock(WorkstationImpl.class);
+    private SimulationContext sim = mock(SimulationContext.class);
+    private Workstation iew = mock(Workstation.class);
 
     @Before
     public void setUp() throws Exception {
-        in = new Buffer<IResource>();
-        out = new Buffer<IResource>();
-        w = new Workstation(in, out, 0, 0);
+        in = new Buffer<Resource>();
+        out = new Buffer<Resource>();
+        w = new WorkstationImpl(in, out, 0, 0);
         sim = mock(Simulator.class);
         sim.register(w);
-        iew = Workstation.createConsuming(in, out, 1, 3);
+        iew = WorkstationImpl.createConsuming(in, out, 1, 3);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class WorkstationTest {
 
     @Test(expected = IllegalStateException.class)
     public void testDoubleSetResource() {
-        IResource res = pushResource(1);
+        Resource res = pushResource(1);
         w.tick();
         testStateAfterProces1(res);
         w.changeCurrentResource(res);
@@ -87,8 +87,8 @@ public class WorkstationTest {
 
     @Test
     public void testFactoryMethodInitial() {
-        IWorkstation iw = Workstation.createDefault(new Buffer<IResource>(),
-                new Buffer<IResource>());
+        Workstation iw = WorkstationImpl.createDefault(new Buffer<Resource>(),
+                new Buffer<Resource>());
         assertTrue(iw.isIdle());
     }
 
@@ -99,7 +99,7 @@ public class WorkstationTest {
 
     @Test
     public void testProcessResourceSingleSteps() {
-        IResource res = pushResource(3);
+        Resource res = pushResource(3);
         w.tick();
         testStateAfterProces1(res);
         w.tick();
@@ -110,7 +110,7 @@ public class WorkstationTest {
 
     @Test
     public void testProcessResourceWithLongerSteps() {
-        IResource res = pushResource(3);
+        Resource res = pushResource(3);
         w.tick();
         testStateAfterProces1(res);
         w.tick();
@@ -121,24 +121,24 @@ public class WorkstationTest {
 
     // Test for consumptions.
 
-    private void initialStateTest(IWorkstation w) {
+    private void initialStateTest(Workstation w) {
         assertEquals(0, w.getProcessedItemsCount());
         assertTrue(w.isIdle());
     }
 
-    private void multiTick(IWorkstation s, int times) {
+    private void multiTick(Workstation s, int times) {
         for (; times > 0; times--) {
             s.tick();
         }
     }
 
-    private IResource pushResource(int procTime) {
-        IResource res = ResourceFactory.createResource(procTime);
+    private Resource pushResource(int procTime) {
+        Resource res = ResourceFactory.createResource(procTime);
         in.push(res);
         return res;
     }
 
-    private void testStateAfterFinalPush(IResource res) {
+    private void testStateAfterFinalPush(Resource res) {
         assertNull(w.getCurrentResource().orNull());
         assertTrue(in.isEmpty());
         assertTrue(w.isIdle());
@@ -147,7 +147,7 @@ public class WorkstationTest {
         assertEquals(1, w.getProcessedItemsCount());
     }
 
-    private void testStateAfterProces1(IResource res) {
+    private void testStateAfterProces1(Resource res) {
         assertTrue(in.isEmpty());
         assertFalse(w.isIdle());
         assertTrue(out.isEmpty());

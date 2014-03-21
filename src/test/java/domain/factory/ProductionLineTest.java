@@ -12,24 +12,24 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import simulation.ISimulationComponent;
-import simulation.ISimulationContext;
+import simulation.SimulationComponent;
+import simulation.SimulationContext;
 import simulation.Simulator;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.Subscribe;
 
-import domain.resource.IResource;
+import domain.resource.Resource;
 import domain.resource.ResourceFactory;
 
 public class ProductionLineTest {
 
-    public static class ChangeEventComponent implements ISimulationComponent {
+    public static class ChangeEventComponent implements SimulationComponent {
         private Map<String, Object> resultMap = new HashMap<>();
         private String lastType = "";
-        private ISimulationComponent mock;
+        private SimulationComponent mock;
 
-        public ChangeEventComponent(ISimulationComponent mock) {
+        public ChangeEventComponent(SimulationComponent mock) {
             this.mock = mock;
         }
 
@@ -48,7 +48,7 @@ public class ProductionLineTest {
         }
 
         @Override
-        public void initialize(ISimulationContext context) {
+        public void initialize(SimulationContext context) {
         }
 
         @Subscribe
@@ -72,7 +72,7 @@ public class ProductionLineTest {
     private int simSteps;
 
     @SuppressWarnings("null")
-    private ISimulationContext sim = mock(ISimulationContext.class);
+    private SimulationContext sim = mock(SimulationContext.class);
 
     public ProductionLineTest() {
         lineSimple = ProductionLine.createSimpleLayout();
@@ -93,8 +93,8 @@ public class ProductionLineTest {
     public void signalConsumptionTest() {
         int n = 3;
         deliverResources(n);
-        ISimulationComponent m = mock(ISimulationComponent.class);
-        ISimulationComponent tester = new ChangeEventComponent(m);
+        SimulationComponent m = mock(SimulationComponent.class);
+        SimulationComponent tester = new ChangeEventComponent(m);
         long duration = 20;
         sim = Simulator.createSimulator(duration);
         sim.register(lineSimple);
@@ -108,7 +108,7 @@ public class ProductionLineTest {
     public void testDeliverAndProcessResources() {
         int n = 3;
         deliverResources(n);
-        ISimulationComponent tester = mock(ISimulationComponent.class);
+        SimulationComponent tester = mock(SimulationComponent.class);
         sim.register(tester);
         ((Simulator) sim).start();
         verify(tester, times(simSteps)).tick();
@@ -129,7 +129,7 @@ public class ProductionLineTest {
     }
 
     private void deliverResources(int n) {
-        List<IResource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
+        List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         lineExtended.deliverResources(res);
     }
 

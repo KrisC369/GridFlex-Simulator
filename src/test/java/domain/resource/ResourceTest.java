@@ -9,7 +9,7 @@ import org.junit.Test;
 public class ResourceTest {
 
     @SuppressWarnings("null")
-    IResource res = mock(IResource.class);
+    Resource res = mock(Resource.class);
 
     @Before
     public void setUp() throws Exception {

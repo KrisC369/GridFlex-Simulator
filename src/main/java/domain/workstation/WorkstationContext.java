@@ -2,7 +2,7 @@ package domain.workstation;
 
 import com.google.common.base.Optional;
 
-import domain.resource.IResource;
+import domain.resource.Resource;
 
 /**
  * This interface represents the methods that the station states can call on the
@@ -11,7 +11,7 @@ import domain.resource.IResource;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-interface IStationContext {
+interface WorkstationContext {
 
     /**
      * This method returns the resource currently present in the workstation.
@@ -20,7 +20,7 @@ interface IStationContext {
      * 
      * @return the current resource wrapped in an Optional.
      */
-    Optional<IResource> getCurrentResource();
+    Optional<Resource> getCurrentResource();
 
     /**
      * This method pushes the represented conveyer belt forward. Resources get

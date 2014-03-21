@@ -1,8 +1,6 @@
 package simulation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,7 +16,7 @@ import be.kuleuven.cs.gridlock.simulation.events.Event;
 import com.google.common.eventbus.Subscribe;
 
 public class SimulatorTest {
-    public static class ChangeEventComponent implements ISimulationComponent {
+    public static class ChangeEventComponent implements SimulationComponent {
         private Map<String, Object> resultMap = new HashMap<>();
 
         @Override
@@ -32,7 +30,7 @@ public class SimulatorTest {
         }
 
         @Override
-        public void initialize(ISimulationContext context) {
+        public void initialize(SimulationContext context) {
         }
 
         @Subscribe
@@ -46,14 +44,14 @@ public class SimulatorTest {
     }
 
     private Simulator s = mock(Simulator.class);
-    private ISimulationComponent comp = mock(ISimulationComponent.class);
+    private SimulationComponent comp = mock(SimulationComponent.class);
 
     private final long defaultRunTime = 1;
 
     @Before
     public void setUp() throws Exception {
         s = Simulator.createSimulator(defaultRunTime);
-        comp = mock(ISimulationComponent.class);
+        comp = mock(SimulationComponent.class);
     }
 
     @Test
@@ -80,7 +78,7 @@ public class SimulatorTest {
     @Test
     public void testRegisterComp() {
         s.register(comp);
-        assertEquals(1, s.getComponents().size());
+        assertEquals(1, s.getSimulationComponents().size());
         verify(comp, times(1)).initialize(s);
     }
 
@@ -117,6 +115,18 @@ public class SimulatorTest {
     @Test(expected = IllegalArgumentException.class)
     public void testZeroDurationInit() {
         s = Simulator.createSimulator(0);
+    }
+    
+    @Test
+    public void testRegisterInstrumentation() {
+        s = Simulator.createSimulator(20);
+        InstrumentationComponent i =mock(InstrumentationComponent.class);
+        s.register(i);
+        assertTrue(s.getInstrumentationComponents().contains(i));
+        assertFalse(s.getSimulationComponents().contains(i));
+        s.register(comp);
+        assertTrue(s.getInstrumentationComponents().contains(comp));
+        assertTrue(s.getSimulationComponents().contains(comp));
     }
 
     private void runSim(boolean immediateReturn) {

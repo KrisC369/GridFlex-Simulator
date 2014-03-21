@@ -15,20 +15,20 @@ import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.resource.IResource;
+import domain.resource.Resource;
 import domain.resource.ResourceFactory;
 
 public class BufferTest {
 
     @SuppressWarnings("null")
-    private Buffer<IResource> b = mock(Buffer.class);
+    private Buffer<Resource> b = mock(Buffer.class);
     @SuppressWarnings("null")
-    private IResource res = mock(IResource.class);
+    private Resource res = mock(Resource.class);
 
     @Before
     public void setUp() throws Exception {
-        b = new Buffer<IResource>();
-        res = mock(IResource.class);
+        b = new Buffer<Resource>();
+        res = mock(Resource.class);
     }
 
     @Test
@@ -55,7 +55,7 @@ public class BufferTest {
 
     @Test
     public void testCorrectOrderPop() {
-        IResource res2 = mock(IResource.class);
+        Resource res2 = mock(Resource.class);
         b.push(res);
         b.push(res2);
         assertEquals(res, b.pull());
@@ -74,10 +74,10 @@ public class BufferTest {
 
     @Test
     public void testPullAll() {
-        IResource res2 = mock(IResource.class);
+        Resource res2 = mock(Resource.class);
         b.push(res);
         b.push(res2);
-        Collection<IResource> returnset = b.pullAll();
+        Collection<Resource> returnset = b.pullAll();
         assertTrue(returnset.contains(res2));
         assertTrue(returnset.contains(res));
         assertEquals(2, returnset.size());
@@ -92,12 +92,12 @@ public class BufferTest {
 
     @Test
     public void testPushAll() {
-        IResource res2 = mock(IResource.class);
-        List<IResource> reslist = new ArrayList<>();
+        Resource res2 = mock(Resource.class);
+        List<Resource> reslist = new ArrayList<>();
         reslist.add(res2);
         reslist.add(res);
         b.pushAll(reslist);
-        Collection<IResource> returnset = b.pullAll();
+        Collection<Resource> returnset = b.pullAll();
         assertTrue(returnset.contains(res2));
         assertTrue(returnset.contains(res));
         assertEquals(2, returnset.size());

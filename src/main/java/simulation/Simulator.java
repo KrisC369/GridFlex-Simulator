@@ -17,7 +17,7 @@ import domain.util.SimpleEventFactory;
 /**
  * The Class Simulator.
  */
-public class Simulator implements ISimulationContext {
+public class Simulator implements SimulationContext {
 
     /** The scheduled duration of this simulator's run. */
     private final long duration;
@@ -26,11 +26,13 @@ public class Simulator implements ISimulationContext {
     private final Clock clock;
 
     /** The collection of simulation components. */
-    private final List<ISimulationComponent> components;
+    private final List<SimulationComponent> components;
 
     private final EventBus eventbus;
 
     private final SimpleEventFactory eventFac;
+
+    private List<InstrumentationComponent> instruComps;
 
     /**
      * Instantiates a new simulator.
@@ -42,7 +44,8 @@ public class Simulator implements ISimulationContext {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new Clock();
-        this.components = new ArrayList<ISimulationComponent>();
+        this.components = new ArrayList<>();
+        this.instruComps= new ArrayList<>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory();
     }
@@ -50,9 +53,9 @@ public class Simulator implements ISimulationContext {
     /**
      * Gets the simulation components.
      * 
-     * @return the components of this simulation
+     * @return the tick-receiving components of this simulation
      */
-    public Collection<ISimulationComponent> getComponents() {
+    public Collection<SimulationComponent> getSimulationComponents() {
         return Collections.unmodifiableCollection(components);
     }
 
@@ -91,10 +94,13 @@ public class Simulator implements ISimulationContext {
      * simulation.ISimulationContext#register(simulation.ISimulationComponent)
      */
     @Override
-    public void register(ISimulationComponent comp) {
+    public void register(SimulationComponent comp) {
+        registerComp(comp);
+    }
+
+    private void registerComp(SimulationComponent comp) {
         this.components.add(comp);
-        this.eventbus.register(comp);
-        comp.initialize(this);
+        registerInstru(comp);
     }
 
     /**
@@ -107,7 +113,7 @@ public class Simulator implements ISimulationContext {
     }
 
     private synchronized void afterTickComponents() {
-        for (ISimulationComponent c : components) {
+        for (SimulationComponent c : components) {
             c.afterTick();
         }
     }
@@ -139,7 +145,7 @@ public class Simulator implements ISimulationContext {
     }
 
     private synchronized void tickComponents() {
-        for (ISimulationComponent c : components) {
+        for (SimulationComponent c : components) {
             c.tick();
         }
     }
@@ -153,6 +159,25 @@ public class Simulator implements ISimulationContext {
      */
     public static Simulator createSimulator(long duration) {
         return new Simulator(duration);
+    }
+
+    /**
+     * Returns the instrumentation components of this simulator
+     * @return the instrumentation components.
+     */
+    public Collection<InstrumentationComponent> getInstrumentationComponents() {
+        return Collections.unmodifiableCollection(instruComps);
+    }
+
+    @Override
+    public void register(InstrumentationComponent comp) {
+        registerInstru(comp);
+    }
+
+    private void registerInstru(InstrumentationComponent comp) {
+        this.instruComps.add(comp);
+        this.eventbus.register(comp);
+        comp.initialize(this);
     }
 
 }

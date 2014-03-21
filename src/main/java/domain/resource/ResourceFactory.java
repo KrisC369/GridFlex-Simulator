@@ -25,9 +25,9 @@ public final class ResourceFactory {
      *            comma's.
      * @return A list of IResource instances.
      */
-    public static List<IResource> createBulkMPResource(int amount,
+    public static List<Resource> createBulkMPResource(int amount,
             int... processingNeeded) {
-        List<IResource> pool = new ArrayList<>();
+        List<Resource> pool = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             pool.add(createResource(processingNeeded));
         }
@@ -42,7 +42,7 @@ public final class ResourceFactory {
      *            comma's.
      * @return the IResource instance.
      */
-    public static IResource createResource(int... neededProcessing) {
+    public static Resource createResource(int... neededProcessing) {
         if (neededProcessing.length == 0) {
             return new SimpleResource(0);
         } else if (neededProcessing.length == 1) {
