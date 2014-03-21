@@ -123,6 +123,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
             this.changeCurrentResource(getInputBuffer().pull());
             return true;
         }
+        setLastConsumption(0);
         return false;
     }
 

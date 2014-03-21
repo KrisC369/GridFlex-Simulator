@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import time.Clock;
+import time.SimulationClock;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.EventBus;
@@ -23,7 +24,7 @@ public class Simulator implements SimulationContext {
     private final long duration;
 
     /** The internal clock reference. */
-    private final Clock clock;
+    private final SimulationClock clock;
 
     /** The collection of simulation components. */
     private final List<SimulationComponent> components;
@@ -43,7 +44,7 @@ public class Simulator implements SimulationContext {
     private Simulator(long duration) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
-        this.clock = new Clock();
+        this.clock = new SimulationClock();
         this.components = new ArrayList<>();
         this.instruComps= new ArrayList<>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
@@ -110,6 +111,13 @@ public class Simulator implements SimulationContext {
     public void start() {
         notifyStart();
         simloop();
+        notifyStop();
+    }
+
+    private void notifyStop() {
+        Event ev = eventFac.build("simulation:stopped");
+        ev.setAttribute("clocktime", getClock().getTimeCount());
+        this.eventbus.post(ev);        
     }
 
     private synchronized void afterTickComponents() {
@@ -118,7 +126,7 @@ public class Simulator implements SimulationContext {
         }
     }
 
-    private Clock getClock() {
+    private SimulationClock getClock() {
         return this.clock;
     }
 
@@ -178,6 +186,11 @@ public class Simulator implements SimulationContext {
         this.instruComps.add(comp);
         this.eventbus.register(comp);
         comp.initialize(this);
+    }
+
+    @Override
+    public Clock getSimulationClock() {
+        return this.clock;
     }
 
 }

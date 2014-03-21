@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ClockTest {
-    Clock c = mock(Clock.class);
+    SimulationClock c = mock(SimulationClock.class);
 
     @Test
     public void resetTime() {
@@ -18,7 +18,7 @@ public class ClockTest {
 
     @Before
     public void setUp() throws Exception {
-        c = new Clock();
+        c = new SimulationClock();
     }
 
     @Test

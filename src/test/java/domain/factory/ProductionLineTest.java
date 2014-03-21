@@ -101,7 +101,7 @@ public class ProductionLineTest {
         sim.register(tester);
         ((Simulator) sim).start();
         verify(m, times((int) duration)).tick();
-        assertEquals("report", ((ChangeEventComponent) tester).getLastType());
+        assertEquals("simulation:stopped", ((ChangeEventComponent) tester).getLastType());
     }
 
     @Test

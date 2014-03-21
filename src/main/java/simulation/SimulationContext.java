@@ -1,5 +1,7 @@
 package simulation;
 
+import time.Clock;
+
 import com.google.common.eventbus.EventBus;
 
 import domain.util.SimpleEventFactory;
@@ -25,6 +27,12 @@ public interface SimulationContext {
      * @return an eventFactory.
      */
     SimpleEventFactory getEventFactory();
+    
+    /**
+     * Return the simulation time keeper instance.
+     * @return the clock
+     */
+    Clock getSimulationClock();
 
     /**
      * This method registers a simulation component to the simulation context in

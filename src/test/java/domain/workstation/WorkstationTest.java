@@ -41,7 +41,7 @@ public class WorkstationTest {
         iew.tick();
         assertEquals(3, iew.getLastStepConsumption());
         iew.tick();
-        assertEquals(1, iew.getLastStepConsumption());
+        assertEquals(0, iew.getLastStepConsumption());
         assertEquals(1, iew.getProcessedItemsCount());
     }
 

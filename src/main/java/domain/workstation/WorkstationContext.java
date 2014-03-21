@@ -40,4 +40,5 @@ interface WorkstationContext {
      * Change the state of this Station context instance to the idle state.
      */
     void setResourceMovingState();
+
 }

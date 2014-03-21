@@ -31,14 +31,12 @@ public final class ProductionLine implements SimulationComponent {
 
     private final List<Workstation> workstations;
 
-    private Optional<SimpleEventFactory> eventFac;
-    private Optional<EventBus> bus;
+    private Optional<SimulationContext> context;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
-        eventFac = Optional.absent();
-        bus = Optional.absent();
+        this.context = Optional.absent();
     }
 
     @Override
@@ -76,8 +74,7 @@ public final class ProductionLine implements SimulationComponent {
         for (Workstation w : workstations) {
             context.register(w);
         }
-        this.eventFac = Optional.of(context.getEventFactory());
-        this.bus = Optional.of(context.getEventbus());
+        this.context = Optional.of(context);
     }
 
     /**
@@ -94,13 +91,18 @@ public final class ProductionLine implements SimulationComponent {
     public void tick() {
     }
 
-    private void notifyConsumption(long totalLaststep, long totalTotal) {
-        if (eventFac.isPresent() && bus.isPresent()) {
-            Event e = eventFac.get().build("report");
+    private void notifyConsumption(Long totalLaststep, Long totalTotal) {
+        if (this.context.isPresent()) {
+            Event e = getContext().getEventFactory().build("report");
+            e.setAttribute("time", getContext().getSimulationClock().getTimeCount());
             e.setAttribute("totalLaststepE", totalLaststep);
             e.setAttribute("totalTotalE", totalTotal);
-            bus.get().post(e);
+            getContext().getEventbus().post(e);
         }
+    }
+    
+    private SimulationContext getContext(){
+        return this.context.get();
     }
 
     /**

@@ -68,6 +68,7 @@ public class SimulatorTest {
     @Test
     public void testInitialState() {
         assertEquals(0, s.getSimulationTime());
+        assertEquals(0,s.getSimulationClock().getTimeCount());
     }
 
     @Test(expected = IllegalArgumentException.class)
