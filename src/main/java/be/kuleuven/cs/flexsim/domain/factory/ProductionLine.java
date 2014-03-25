@@ -2,7 +2,6 @@ package be.kuleuven.cs.flexsim.domain.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -143,8 +142,9 @@ public final class ProductionLine implements SimulationComponent {
     }
 
     /**
-     * Creates a productionline with a simple layout. O-X-O with O as buffers
-     * and X as stations.
+     * Creates a productionline with a more complex layout.
+     * <code>O-XXX-O-XX-0-X-O</code> with O as buffers and X as stations and
+     * <code>XX..</code> as parallel stations.
      * 
      * @return A productionline instance.
      */
@@ -156,6 +156,37 @@ public final class ProductionLine implements SimulationComponent {
         line.workstations.add(WorkstationImpl.createConsuming(bIn, bOut,
                 IDLE_CONSUMPTION, WORKING_CONSUMPTION));
         line.buffers.add(bOut);
+        return line;
+    }
+    
+    /**
+     * Creates a productionline with a simple layout. O-X-O with O as buffers
+     * and X as stations.
+     * 
+     * @return A productionline instance.
+     */
+    public static ProductionLine createSuperExtendedLayout() {
+        ProductionLine line = new ProductionLine();
+        Buffer<Resource> bIn = new Buffer<>();
+        Buffer<Resource> b2 = new Buffer<>();
+        Buffer<Resource> b3 = new Buffer<>();
+        Buffer<Resource> bOut = new Buffer<>();
+        line.buffers.add(bIn);
+        line.buffers.add(b2);
+        line.buffers.add(b3);
+        line.buffers.add(bOut);
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(WorkstationImpl.createConsuming(b2, b3,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(WorkstationImpl.createConsuming(b2, b3,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.workstations.add(WorkstationImpl.createConsuming(b3, bOut,
+                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
         return line;
     }
 }

@@ -177,7 +177,7 @@ public class Simulator implements SimulationContext {
     }
 
     /**
-     * Returns the instrumentation components of this simulator
+     * Returns the instrumentation components of this simulator.
      * 
      * @return the instrumentation components.
      */

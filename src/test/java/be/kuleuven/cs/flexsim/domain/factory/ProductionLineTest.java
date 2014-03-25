@@ -69,6 +69,7 @@ public class ProductionLineTest {
     // Mocks for avoiding null checks.
     private ProductionLine lineSimple;
     private ProductionLine lineExtended;
+    private ProductionLine lineSuperExtended;
     private int simSteps;
 
     @SuppressWarnings("null")
@@ -77,6 +78,7 @@ public class ProductionLineTest {
     public ProductionLineTest() {
         lineSimple = ProductionLine.createSimpleLayout();
         lineExtended = ProductionLine.createExtendedLayout();
+        lineSuperExtended = ProductionLine.createSuperExtendedLayout();
     }
 
     @Before
@@ -120,6 +122,12 @@ public class ProductionLineTest {
     public void testInitialExtendedSetup() {
         assertEquals(4, lineExtended.getNumberOfWorkstations());
         assertEquals(0, lineExtended.takeResources().size());
+    }
+    
+    @Test
+    public void testInitialSuperExtendedSetup() {
+        assertEquals(6, lineSuperExtended.getNumberOfWorkstations());
+        assertEquals(0, lineSuperExtended.takeResources().size());
     }
 
     @Test
