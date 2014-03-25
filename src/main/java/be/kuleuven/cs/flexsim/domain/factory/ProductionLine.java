@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.domain.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -38,13 +39,21 @@ public final class ProductionLine implements SimulationComponent {
 
     @Override
     public void afterTick() {
+        report();
+    }
+
+    private void report() {
         long totalLaststep = 0;
         long totalTotal = 0;
         for (Workstation w : workstations) {
             totalLaststep += w.getLastStepConsumption();
             totalTotal += w.getTotalConsumption();
         }
-        notifyConsumption(totalLaststep, totalTotal);
+        List<Long> buffSizes = new ArrayList<>();
+        for(Buffer<Resource> b : buffers){
+            buffSizes.add((long)b.getCurrentOccupancyLevel());
+        }
+        notifyReport(totalLaststep, totalTotal, buffSizes);
     }
 
     /**
@@ -81,20 +90,24 @@ public final class ProductionLine implements SimulationComponent {
      */
     public Collection<Resource> takeResources() {
         return buffers.get(buffers.size() - 1).pullAll();
-
     }
 
     @Override
     public void tick() {
     }
 
-    private void notifyConsumption(Long totalLaststep, Long totalTotal) {
+    private void notifyReport(Long totalLaststep, Long totalTotal, List<Long> buffSizes) {
         if (this.context.isPresent()) {
             Event e = getContext().getEventFactory().build("report");
+            e.setAttribute("pLinehash", this.hashCode());
             e.setAttribute("time", getContext().getSimulationClock()
                     .getTimeCount());
             e.setAttribute("totalLaststepE", totalLaststep);
             e.setAttribute("totalTotalE", totalTotal);
+            int idx=0;
+            for(long i : buffSizes){
+                e.setAttribute("buffer_" + idx++, i);
+            }
             getContext().getEventbus().post(e);
         }
     }

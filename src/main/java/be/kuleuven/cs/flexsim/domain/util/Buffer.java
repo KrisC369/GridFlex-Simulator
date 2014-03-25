@@ -9,7 +9,7 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- * The Class Buffer represents a simple FIFI queue buffer implementation.
+ * The Class Buffer represents a simple FIFO queue buffer implementation.
  * 
  * @param <T>
  *            the generic type of contents in this buffer.
@@ -31,7 +31,7 @@ public class Buffer<T extends IBufferable> {
      * 
      * @return the current capacity
      */
-    public int getCurrentCapacity() {
+    public int getCurrentOccupancyLevel() {
         return data.size();
     }
 

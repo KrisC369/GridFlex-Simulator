@@ -89,7 +89,7 @@ public class BufferTest {
     public void testPush1Element() {
         b.push(res);
         assertFalse(b.isEmpty());
-        assertEquals(1, b.getCurrentCapacity());
+        assertEquals(1, b.getCurrentOccupancyLevel());
     }
 
     @Test
