@@ -36,8 +36,6 @@
 			<groupId>be.kuleuven.cs.gridlock</groupId>
 			<artifactId>gridlock-events</artifactId>
 			<version>0.0.1</version>
-			<systemPath>${basedir}/lib/gridlock-events-0.0.1.jar</systemPath>
-			<scope>system</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jfree</groupId>
