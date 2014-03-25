@@ -140,5 +140,12 @@ public class ProductionLineTest {
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         lineExtended.deliverResources(res);
     }
-
+    
+    @Test
+    public void testCustomSetup() {
+        ProductionLine lineSimple = ProductionLine.createCustomLayout(1, 3,1);
+        ProductionLine lineExtended = ProductionLine.createCustomLayout(4, 3,1,2);
+        assertEquals(5, lineSimple.getNumberOfWorkstations());
+        assertEquals(10, lineExtended.getNumberOfWorkstations());
+    }
 }

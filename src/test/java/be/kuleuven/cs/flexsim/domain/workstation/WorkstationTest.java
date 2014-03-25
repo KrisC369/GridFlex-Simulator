@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
+
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,8 +13,6 @@ import org.junit.Test;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
-import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
-import be.kuleuven.cs.flexsim.domain.workstation.WorkstationImpl;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
@@ -120,6 +119,61 @@ public class WorkstationTest {
         multiTick(w, 3);
         testStateAfterFinalPush(res);
     }
+    
+    @Test
+    public void testShiftableWorkstation(){
+        int shift = 1;
+        iew = WorkstationImpl.createShiftableWorkstation(in, out, 0, 0,shift);
+        Resource res = pushResource(3);
+        iew.tick();
+        iew.afterTick();
+        assertTrue(iew.isIdle());
+        iew.tick();
+        iew.afterTick();
+        assertTrue(in.isEmpty());
+        assertFalse(iew.isIdle());
+        assertTrue(out.isEmpty());
+        assertEquals(0, iew.getProcessedItemsCount());
+        iew.tick();
+        iew.afterTick();
+        multiTick(iew, 3);
+        assertTrue(in.isEmpty());
+        assertTrue(iew.isIdle());
+        assertFalse(out.isEmpty());
+        assertEquals(res, out.pull());
+        assertEquals(1, iew.getProcessedItemsCount());
+    }
+    
+    @Test
+    public void testDecorator(){
+        int shift = 1;
+        Workstation mock = mock(Workstation.class);
+        Workstation deco = new DelayedStartStationDecorator(shift, mock);
+        deco.afterTick();
+        verify(mock,times(0)).afterTick();
+        deco.afterTick();
+        verify(mock,times(1)).afterTick();
+        
+        deco.tick();
+        verify(mock,times(0)).tick();
+        deco.tick();
+        verify(mock,times(1)).tick();
+       
+        deco.initialize(null);;
+        verify(mock,times(1)).initialize(null);
+        
+        deco.getLastStepConsumption();
+        verify(mock,times(1)).getLastStepConsumption();
+        
+        deco.getProcessedItemsCount();
+        verify(mock,times(1)).getProcessedItemsCount();
+        
+        deco.getTotalConsumption();
+        verify(mock,times(1)).getTotalConsumption();
+        
+        deco.isIdle();
+        verify(mock,times(1)).isIdle();
+    }
 
     // Test for consumptions.
 
@@ -156,5 +210,5 @@ public class WorkstationTest {
         assertEquals(res, w.getCurrentResource().get());
         assertEquals(0, w.getProcessedItemsCount());
     }
-
+    
 }

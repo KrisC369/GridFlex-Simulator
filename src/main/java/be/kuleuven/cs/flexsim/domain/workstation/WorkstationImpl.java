@@ -188,7 +188,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     /**
-     * Factory method for workstations that consume energy..
+     * Factory method for workstations that consume energy.
      * 
      * @param in
      *            The inputbuffer instance.
@@ -217,5 +217,27 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     public static Workstation createDefault(Buffer<Resource> bufferIn,
             Buffer<Resource> bufferOut) {
         return new WorkstationImpl(bufferIn, bufferOut, 0, 0);
+    }
+
+    /**
+     * Factory method for workstations that consume energy and starts execution
+     * shifted in time by specified amount of timesteps.
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in idle state.
+     * @param working
+     *            The energy consumption in working state.
+     * @param shift
+     *            The amount of timesteps to delay the start of execution.
+     * @return A Ready to use IWorkstation object.
+     */
+    public static Workstation createShiftableWorkstation(
+            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
+            int shift) {
+        return new DelayedStartStationDecorator(shift,new WorkstationImpl(in, out, idle, working));
     }
 }

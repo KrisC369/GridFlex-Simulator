@@ -49,8 +49,8 @@ public final class ProductionLine implements SimulationComponent {
             totalTotal += w.getTotalConsumption();
         }
         List<Long> buffSizes = new ArrayList<>();
-        for(Buffer<Resource> b : buffers){
-            buffSizes.add((long)b.getCurrentOccupancyLevel());
+        for (Buffer<Resource> b : buffers) {
+            buffSizes.add((long) b.getCurrentOccupancyLevel());
         }
         notifyReport(totalLaststep, totalTotal, buffSizes);
     }
@@ -95,7 +95,8 @@ public final class ProductionLine implements SimulationComponent {
     public void tick() {
     }
 
-    private void notifyReport(Long totalLaststep, Long totalTotal, List<Long> buffSizes) {
+    private void notifyReport(Long totalLaststep, Long totalTotal,
+            List<Long> buffSizes) {
         if (this.context.isPresent()) {
             Event e = getContext().getEventFactory().build("report");
             e.setAttribute("pLinehash", this.hashCode());
@@ -103,8 +104,8 @@ public final class ProductionLine implements SimulationComponent {
                     .getTimeCount());
             e.setAttribute("totalLaststepE", totalLaststep);
             e.setAttribute("totalTotalE", totalTotal);
-            int idx=0;
-            for(long i : buffSizes){
+            int idx = 0;
+            for (long i : buffSizes) {
                 e.setAttribute("buffer_" + idx++, i);
             }
             getContext().getEventbus().post(e);
@@ -123,28 +124,12 @@ public final class ProductionLine implements SimulationComponent {
      * @return A productionline instance.
      */
     public static ProductionLine createExtendedLayout() {
-        ProductionLine line = new ProductionLine();
-        Buffer<Resource> bIn = new Buffer<>();
-        Buffer<Resource> b2 = new Buffer<>();
-        Buffer<Resource> bOut = new Buffer<>();
-        line.buffers.add(bIn);
-        line.buffers.add(b2);
-        line.buffers.add(bOut);
-        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(b2, bOut,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        return line;
+        return createCustomLayout(3, 1);
     }
 
     /**
-     * Creates a productionline with a more complex layout.
-     * <code>O-XXX-O-XX-0-X-O</code> with O as buffers and X as stations and
-     * <code>XX..</code> as parallel stations.
+     * Creates a productionline with a simple layout. O-X-O with O as buffers
+     * and X as stations.
      * 
      * @return A productionline instance.
      */
@@ -158,35 +143,51 @@ public final class ProductionLine implements SimulationComponent {
         line.buffers.add(bOut);
         return line;
     }
-    
+
     /**
-     * Creates a productionline with a simple layout. O-X-O with O as buffers
-     * and X as stations.
+     * Creates a productionline with a more complex layout.
+     * <code>O-XXX-O-XX-0-X-O</code> with O as buffers and X as stations and
+     * <code>XX..</code> as parallel stations.
      * 
      * @return A productionline instance.
      */
     public static ProductionLine createSuperExtendedLayout() {
+        return createCustomLayout(3, 2, 1);
+    }
+
+    /**
+     * Creates a production line with a custom layout specified by the
+     * arguments.
+     * 
+     * @param initialStations
+     *            the mandatory first line workstation amount.
+     * @param furtherStations
+     *            further levels of parallel workstations.
+     * @return an instantiated production line object adhering to the specified
+     *         layout.
+     */
+    public static ProductionLine createCustomLayout(int initialStations,
+            int... furtherStations) {
         ProductionLine line = new ProductionLine();
-        Buffer<Resource> bIn = new Buffer<>();
-        Buffer<Resource> b2 = new Buffer<>();
-        Buffer<Resource> b3 = new Buffer<>();
-        Buffer<Resource> bOut = new Buffer<>();
-        line.buffers.add(bIn);
-        line.buffers.add(b2);
-        line.buffers.add(b3);
-        line.buffers.add(bOut);
-        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(bIn, b2,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(b2, b3,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(b2, b3,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
-        line.workstations.add(WorkstationImpl.createConsuming(b3, bOut,
-                IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+        line.buffers.add(new Buffer<Resource>());
+        line.buffers.add(new Buffer<Resource>());
+        for (int i = 0; i < initialStations; i++) {
+            line.workstations.add(WorkstationImpl.createShiftableWorkstation(
+                    line.buffers.get(0), line.buffers.get(1), IDLE_CONSUMPTION,
+                    WORKING_CONSUMPTION,i%2));
+        }
+        for (int i = 0; i < furtherStations.length; i++) {
+            line.buffers.add(new Buffer<Resource>());
+            for (int j = 0; j < furtherStations[i]; j++) {
+                
+                int shift = (i%2) ^ (j%2);
+                line.workstations.add(WorkstationImpl.createShiftableWorkstation(
+                        line.buffers.get(line.buffers.size() - 2),
+                        line.buffers.get(line.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION,shift)); 
+            }
+        }
         return line;
     }
+
 }
