@@ -15,9 +15,17 @@ import be.kuleuven.cs.gridlock.simulation.events.Event;
 import com.google.common.eventbus.EventBus;
 
 /**
- * The Class Simulator.
+ * The Class Simulator. This Simulator drives the simulation by sending 
+ * ticks to signify the passing of time. This simulator implements
+ * the <code>SimulationContext</code>-interface.
  */
 public class Simulator implements SimulationContext {
+
+    private static final String SIMSTOP_LITERAL = "simulation:stopped";
+
+    private static final String SIMSTART_LITERAL = "simulation:started";
+
+    private static final String TIMECOUNT_LITERAL = "clocktime";
 
     /** The scheduled duration of this simulator's run. */
     private final long duration;
@@ -32,7 +40,7 @@ public class Simulator implements SimulationContext {
 
     private final SimpleEventFactory eventFac;
 
-    private List<InstrumentationComponent> instruComps;
+    private final List<InstrumentationComponent> instruComps;
 
     /**
      * Instantiates a new simulator.
@@ -114,8 +122,8 @@ public class Simulator implements SimulationContext {
     }
 
     private void notifyStop() {
-        Event ev = eventFac.build("simulation:stopped");
-        ev.setAttribute("clocktime", getClock().getTimeCount());
+        Event ev = eventFac.build(SIMSTOP_LITERAL);
+        ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
     }
 
@@ -130,8 +138,8 @@ public class Simulator implements SimulationContext {
     }
 
     private void notifyStart() {
-        Event ev = eventFac.build("simulation:started");
-        ev.setAttribute("clocktime", getClock().getTimeCount());
+        Event ev = eventFac.build(SIMSTART_LITERAL);
+        ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
     }
 
