@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.factory;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -12,9 +12,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
@@ -147,5 +147,14 @@ public class ProductionLineTest {
         ProductionLine lineExtended = ProductionLine.createCustomLayout(4, 3,1,2);
         assertEquals(5, lineSimple.getNumberOfWorkstations());
         assertEquals(10, lineExtended.getNumberOfWorkstations());
+    }
+    
+    @Test
+    public void testGetCurtailables() {
+        ProductionLine lineExtended = ProductionLine.createStaticCurtailableLayout();
+        List<Curtailable> stations = lineExtended.getCurtailableStations();
+        for(Curtailable c : stations) {
+            assertTrue(lineExtended.getWorkstations().contains(c));
+        }
     }
 }

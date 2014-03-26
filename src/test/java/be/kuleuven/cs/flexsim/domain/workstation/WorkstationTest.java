@@ -177,7 +177,7 @@ public class WorkstationTest {
 
     @Test
     public void testCurtailableStation(){
-        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0);
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0,0);
         Curtailable curt2 =((Curtailable)curt);
         
         Resource res = pushResource(3);
@@ -210,7 +210,7 @@ public class WorkstationTest {
     
     @Test(expected=IllegalStateException.class)
     public void testDoubleCurtailment(){
-        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0);
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0,0);
         Curtailable curt2 =((Curtailable)curt);
         
         curt2.doFullCurtailment();
@@ -220,7 +220,7 @@ public class WorkstationTest {
     
     @Test(expected=IllegalStateException.class)
     public void testDoubleRestore(){
-        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0);
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0, 0);
         Curtailable curt2 =((Curtailable)curt);
         
         curt2.doFullCurtailment();

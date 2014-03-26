@@ -8,7 +8,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 public interface Curtailable {
 
     /**
-     * Activate curtailment functionality
+     * Activate curtailment functionality.
      */
     void doFullCurtailment();
 

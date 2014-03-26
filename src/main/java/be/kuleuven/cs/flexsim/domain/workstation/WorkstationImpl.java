@@ -241,10 +241,23 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
                 out, idle, working));
     }
 
+    /**
+     * Factory method for workstations that consume energy and allow curtailment
+     * of all functionality
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in idle state.
+     * @param working
+     *            The energy consumption in working state.
+     * @return A Ready to use IWorkstation object.
+     */
     public static Workstation createCurtailableStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working) {
-        // TODO Auto-generated method stub
-        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
-                idle, working));
+            Buffer<Resource> out, int idle, int working,int shift) {
+        return new CurtailableStationDecorator(new DelayedStartStationDecorator(shift, new WorkstationImpl(in, out,
+                idle, working)));
     }
 }
