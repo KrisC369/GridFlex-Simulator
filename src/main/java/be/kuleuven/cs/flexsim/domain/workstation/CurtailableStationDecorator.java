@@ -1,11 +1,8 @@
-/**
- * 
- */
 package be.kuleuven.cs.flexsim.domain.workstation;
 
 /**
+ * This station decorator allows for curtailment functionality for workstations.
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- * 
  */
 public class CurtailableStationDecorator extends ForwardingStationDecorator
         implements Curtailable {
