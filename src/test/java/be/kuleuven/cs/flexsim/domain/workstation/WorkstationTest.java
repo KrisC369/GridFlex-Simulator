@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -159,8 +158,9 @@ public class WorkstationTest {
         deco.tick();
         verify(mock,times(1)).tick();
        
-        deco.initialize(null);;
-        verify(mock,times(1)).initialize(null);
+        SimulationContext c = mock(SimulationContext.class);
+        deco.initialize(c);
+        verify(mock,times(1)).initialize(c);
         
         deco.getLastStepConsumption();
         verify(mock,times(1)).getLastStepConsumption();
@@ -175,6 +175,61 @@ public class WorkstationTest {
         verify(mock,times(1)).isIdle();
     }
 
+    @Test
+    public void testCurtailableStation(){
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0);
+        Curtailable curt2 =((Curtailable)curt);
+        
+        Resource res = pushResource(3);
+        curt.tick();
+        curt.afterTick();
+        curt.tick();
+        curt.afterTick();
+        assertTrue(in.isEmpty());
+        assertFalse(curt.isIdle());
+        assertTrue(out.isEmpty());
+        assertEquals(0, curt.getProcessedItemsCount());
+        curt2.doFullCurtailment();
+        
+        multiTick(curt,20);
+        
+        assertTrue(in.isEmpty());
+        assertFalse(curt.isIdle());
+        assertTrue(out.isEmpty());
+        assertEquals(0, curt.getProcessedItemsCount());
+        
+        curt2.restore();
+        multiTick(curt,3);
+        
+        assertTrue(in.isEmpty());
+        assertTrue(curt.isIdle());
+        assertFalse(out.isEmpty());
+        assertEquals(res, out.pull());
+        assertEquals(1, curt.getProcessedItemsCount());
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testDoubleCurtailment(){
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0);
+        Curtailable curt2 =((Curtailable)curt);
+        
+        curt2.doFullCurtailment();
+        assertTrue(curt2.isCurtailed());
+        curt2.doFullCurtailment();
+    }
+    
+    @Test(expected=IllegalStateException.class)
+    public void testDoubleRestore(){
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0, 0);
+        Curtailable curt2 =((Curtailable)curt);
+        
+        curt2.doFullCurtailment();
+        assertTrue(curt2.isCurtailed());
+        curt2.restore();
+        assertFalse(curt2.isCurtailed());
+        curt2.restore();
+    }
+    
     // Test for consumptions.
 
     private void initialStateTest(Workstation w) {

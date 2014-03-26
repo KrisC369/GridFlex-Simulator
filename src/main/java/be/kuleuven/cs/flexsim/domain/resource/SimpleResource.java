@@ -26,12 +26,12 @@ public class SimpleResource implements Resource {
      * @see domain.IResource#getNeededProcessTime()
      */
     @Override
-    public int getCurrentNeededProcessTime() {
+    public final int getCurrentNeededProcessTime() {
         return this.neededTime;
     }
 
     @Override
-    public boolean needsMoreProcessing() {
+    public final boolean needsMoreProcessing() {
         return getCurrentNeededProcessTime() > 0;
     }
 
@@ -45,7 +45,7 @@ public class SimpleResource implements Resource {
      * @see domain.IResource#process(int)
      */
     @Override
-    public void process(int time) {
+    public final void process(int time) {
         this.neededTime -= time;
     }
 

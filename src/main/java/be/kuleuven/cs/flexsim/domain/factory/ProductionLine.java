@@ -174,20 +174,20 @@ public final class ProductionLine implements SimulationComponent {
         for (int i = 0; i < initialStations; i++) {
             line.workstations.add(WorkstationImpl.createShiftableWorkstation(
                     line.buffers.get(0), line.buffers.get(1), IDLE_CONSUMPTION,
-                    WORKING_CONSUMPTION,i%2));
+                    WORKING_CONSUMPTION, i % 2));
         }
         for (int i = 0; i < furtherStations.length; i++) {
             line.buffers.add(new Buffer<Resource>());
             for (int j = 0; j < furtherStations[i]; j++) {
-                
-                int shift = (i%2) ^ (j%2);
-                line.workstations.add(WorkstationImpl.createShiftableWorkstation(
-                        line.buffers.get(line.buffers.size() - 2),
-                        line.buffers.get(line.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION,shift)); 
+
+                int shift = (i % 2) ^ (j % 2);
+                line.workstations.add(WorkstationImpl
+                        .createShiftableWorkstation(
+                                line.buffers.get(line.buffers.size() - 2),
+                                line.buffers.get(line.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift));
             }
         }
         return line;
     }
-
 }

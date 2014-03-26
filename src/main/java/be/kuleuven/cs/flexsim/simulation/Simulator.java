@@ -15,9 +15,9 @@ import be.kuleuven.cs.gridlock.simulation.events.Event;
 import com.google.common.eventbus.EventBus;
 
 /**
- * The Class Simulator. This Simulator drives the simulation by sending 
- * ticks to signify the passing of time. This simulator implements
- * the <code>SimulationContext</code>-interface.
+ * The Class Simulator. This Simulator drives the simulation by sending ticks to
+ * signify the passing of time. This simulator implements the
+ * <code>SimulationContext</code>-interface.
  */
 public class Simulator implements SimulationContext {
 

@@ -235,9 +235,16 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      *            The amount of timesteps to delay the start of execution.
      * @return A Ready to use IWorkstation object.
      */
-    public static Workstation createShiftableWorkstation(
-            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
-            int shift) {
-        return new DelayedStartStationDecorator(shift,new WorkstationImpl(in, out, idle, working));
+    public static Workstation createShiftableWorkstation(Buffer<Resource> in,
+            Buffer<Resource> out, int idle, int working, int shift) {
+        return new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
+                out, idle, working));
+    }
+
+    public static Workstation createCurtailableStation(Buffer<Resource> in,
+            Buffer<Resource> out, int idle, int working) {
+        // TODO Auto-generated method stub
+        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
+                idle, working));
     }
 }

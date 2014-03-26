@@ -39,6 +39,4 @@ public interface Workstation extends SimulationComponent {
      */
     boolean isIdle();
 
-    
-
 }

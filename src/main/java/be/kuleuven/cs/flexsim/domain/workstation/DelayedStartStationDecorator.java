@@ -1,16 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
 /**
  * This decorator adds the functionality of delaying the start of operation
  * (recieving ticks) by a couple of timesteps.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class DelayedStartStationDecorator implements Workstation {
+public class DelayedStartStationDecorator extends ForwardingStationDecorator {
 
-    private final Workstation w;
     private int shiftTime;
     private int shiftTimeAfter;
 
@@ -24,7 +21,7 @@ public class DelayedStartStationDecorator implements Workstation {
      * 
      */
     DelayedStartStationDecorator(int shift, Workstation workstationImpl) {
-        this.w = workstationImpl;
+        super(workstationImpl);
         this.shiftTime = shift;
         this.shiftTimeAfter = shift;
     }
@@ -34,7 +31,7 @@ public class DelayedStartStationDecorator implements Workstation {
         if (shiftTimeAfter > 0) {
             shiftTimeAfter--;
         } else {
-            w.afterTick();
+            super.afterTick();
         }
     }
 
@@ -43,32 +40,7 @@ public class DelayedStartStationDecorator implements Workstation {
         if (shiftTime > 0) {
             shiftTime--;
         } else {
-            w.tick();
+            super.tick();
         }
-    }
-
-    @Override
-    public void initialize(SimulationContext context) {
-        w.initialize(context);
-    }
-
-    @Override
-    public int getLastStepConsumption() {
-        return w.getLastStepConsumption();
-    }
-
-    @Override
-    public int getProcessedItemsCount() {
-        return w.getProcessedItemsCount();
-    }
-
-    @Override
-    public int getTotalConsumption() {
-        return w.getTotalConsumption();
-    }
-
-    @Override
-    public boolean isIdle() {
-        return w.isIdle();
     }
 }
