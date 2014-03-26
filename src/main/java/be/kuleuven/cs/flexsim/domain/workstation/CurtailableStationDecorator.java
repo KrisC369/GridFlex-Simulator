@@ -12,6 +12,10 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
 
     private boolean curtailed;
 
+    /**
+     * Default constructor for creating this decorator.
+     * @param delegate
+     */
     CurtailableStationDecorator(Workstation delegate) {
         super(delegate);
         this.curtailed = false;
