@@ -1,6 +1,9 @@
 package be.kuleuven.cs.flexsim.simulation;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -11,10 +14,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.simulation.InstrumentationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.Subscribe;
@@ -72,7 +71,7 @@ public class SimulatorTest {
     @Test
     public void testInitialState() {
         assertEquals(0, s.getSimulationTime());
-        assertEquals(0,s.getSimulationClock().getTimeCount());
+        assertEquals(0, s.getSimulationClock().getTimeCount());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -121,11 +120,11 @@ public class SimulatorTest {
     public void testZeroDurationInit() {
         s = Simulator.createSimulator(0);
     }
-    
+
     @Test
     public void testRegisterInstrumentation() {
         s = Simulator.createSimulator(20);
-        InstrumentationComponent i =mock(InstrumentationComponent.class);
+        InstrumentationComponent i = mock(InstrumentationComponent.class);
         s.register(i);
         assertTrue(s.getInstrumentationComponents().contains(i));
         assertFalse(s.getSimulationComponents().contains(i));

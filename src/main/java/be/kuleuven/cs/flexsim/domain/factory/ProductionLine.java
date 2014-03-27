@@ -3,8 +3,6 @@ package be.kuleuven.cs.flexsim.domain.factory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
@@ -158,7 +156,8 @@ public final class ProductionLine implements SimulationComponent {
      * @return A production line instance.
      */
     public static ProductionLine createSuperExtendedLayout() {
-        return createCustomLayout(BOTTLENECK_NUMBER, BOTTLENECK_NUMBER-1, BOTTLENECK_NUMBER-2);
+        return createCustomLayout(BOTTLENECK_NUMBER, BOTTLENECK_NUMBER - 1,
+                BOTTLENECK_NUMBER - 2);
     }
 
     /**
@@ -199,7 +198,8 @@ public final class ProductionLine implements SimulationComponent {
      */
     public static ProductionLine createStaticCurtailableLayout() {
         return new ProductionLineBuilder().addShifted(CAPACITY_NUMBER)
-                .addCurtailableShifted(CAPACITY_NUMBER).addShifted(BOTTLENECK_NUMBER).build();
+                .addCurtailableShifted(CAPACITY_NUMBER)
+                .addShifted(BOTTLENECK_NUMBER).build();
     }
 
     /**

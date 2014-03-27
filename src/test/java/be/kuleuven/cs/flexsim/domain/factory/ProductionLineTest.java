@@ -1,6 +1,8 @@
 package be.kuleuven.cs.flexsim.domain.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -104,7 +106,8 @@ public class ProductionLineTest {
         sim.register(tester);
         ((Simulator) sim).start();
         verify(m, times((int) duration)).tick();
-        assertEquals("simulation:stopped", ((ChangeEventComponent) tester).getLastType());
+        assertEquals("simulation:stopped",
+                ((ChangeEventComponent) tester).getLastType());
     }
 
     @Test
@@ -124,7 +127,7 @@ public class ProductionLineTest {
         assertEquals(4, lineExtended.getNumberOfWorkstations());
         assertEquals(0, lineExtended.takeResources().size());
     }
-    
+
     @Test
     public void testInitialSuperExtendedSetup() {
         assertEquals(6, lineSuperExtended.getNumberOfWorkstations());
@@ -141,45 +144,49 @@ public class ProductionLineTest {
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         lineExtended.deliverResources(res);
     }
-    
+
     @Test
     public void testCustomSetup() {
-        ProductionLine lineSimple = ProductionLine.createCustomLayout(1, 3,1);
-        ProductionLine lineExtended = ProductionLine.createCustomLayout(4, 3,1,2);
+        ProductionLine lineSimple = ProductionLine.createCustomLayout(1, 3, 1);
+        ProductionLine lineExtended = ProductionLine.createCustomLayout(4, 3,
+                1, 2);
         assertEquals(5, lineSimple.getNumberOfWorkstations());
         assertEquals(10, lineExtended.getNumberOfWorkstations());
     }
-    
+
     @Test
     public void testGetCurtailables() {
-        ProductionLine lineExtended = ProductionLine.createStaticCurtailableLayout();
+        ProductionLine lineExtended = ProductionLine
+                .createStaticCurtailableLayout();
         List<Curtailable> stations = lineExtended.getCurtailableStations();
-        for(Curtailable c : stations) {
+        for (Curtailable c : stations) {
             assertTrue(lineExtended.getWorkstations().contains(c));
         }
     }
-    
+
     @Test
-    public void testBuilderDefault(){
-        ProductionLine l = new ProductionLineBuilder().addDefault(3).addDefault(4).build();
+    public void testBuilderDefault() {
+        ProductionLine l = new ProductionLineBuilder().addDefault(3)
+                .addDefault(4).build();
         sim = Simulator.createSimulator(200);
         sim.register(l);
         List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
         l.deliverResources(res);
-        assertEquals(7,l.getNumberOfWorkstations());
+        assertEquals(7, l.getNumberOfWorkstations());
         ((Simulator) sim).start();
-        assertEquals(0,l.getWorkstations().get(3).getTotalConsumption());
+        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
-    
+
     @Test
-    public void testBuilderConsuming(){
-        ProductionLine l = new ProductionLineBuilder().addConsuming(3).addConsuming(4).build();
+    public void testBuilderConsuming() {
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3)
+                .addConsuming(4).build();
         sim = Simulator.createSimulator(200);
         sim.register(l);
         List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
         l.deliverResources(res);
-        assertEquals(7,l.getNumberOfWorkstations());
+        assertEquals(7, l.getNumberOfWorkstations());
         ((Simulator) sim).start();
-        assertNotEquals(0,l.getWorkstations().get(3).getTotalConsumption());
+        assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
 }

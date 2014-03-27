@@ -17,8 +17,6 @@ import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
-import be.kuleuven.cs.flexsim.domain.util.Buffer;
-import be.kuleuven.cs.flexsim.domain.util.IBufferable;
 
 public class BufferTest {
 

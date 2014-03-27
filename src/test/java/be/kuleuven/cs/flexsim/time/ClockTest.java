@@ -6,8 +6,6 @@ import static org.mockito.Mockito.mock;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.time.SimulationClock;
-
 public class ClockTest {
     SimulationClock c = mock(SimulationClock.class);
 

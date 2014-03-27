@@ -27,8 +27,7 @@ public class DelayedStartStationDecorator extends ForwardingStationDecorator {
     }
 
     /**
-     * {@inheritDoc}
-     * This tick method is called after a number of initial ticks.
+     * {@inheritDoc} This tick method is called after a number of initial ticks.
      */
     @Override
     public void afterTick() {
@@ -40,8 +39,7 @@ public class DelayedStartStationDecorator extends ForwardingStationDecorator {
     }
 
     /**
-     * {@inheritDoc}
-     * This tick method is called after a number of initial ticks.
+     * {@inheritDoc} This tick method is called after a number of initial ticks.
      */
     @Override
     public void tick() {

@@ -243,7 +243,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
 
     /**
      * Factory method for workstations that consume energy and allow curtailment
-     * of all functionality
+     * of all functionality.
      * 
      * @param in
      *            The inputbuffer instance.
@@ -253,13 +253,14 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      *            The energy consumption in idle state.
      * @param working
      *            The energy consumption in working state.
-     * @param shift 
+     * @param shift
      *            The amount of timesteps to delay the start of execution.
      * @return A Ready to use IWorkstation object.
      */
     public static Workstation createCurtailableStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working,int shift) {
-        return new CurtailableStationDecorator(new DelayedStartStationDecorator(shift, new WorkstationImpl(in, out,
-                idle, working)));
+            Buffer<Resource> out, int idle, int working, int shift) {
+        return new CurtailableStationDecorator(
+                new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
+                        out, idle, working)));
     }
 }

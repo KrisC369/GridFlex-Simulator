@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 
 /**
  * This station decorator allows for curtailment functionality for workstations.
+ * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class CurtailableStationDecorator extends ForwardingStationDecorator
@@ -11,6 +12,7 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
 
     /**
      * Default constructor for creating this decorator.
+     * 
      * @param delegate
      */
     CurtailableStationDecorator(Workstation delegate) {
@@ -40,8 +42,7 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
     }
 
     /**
-     * Only defers ticks when not in curtailment mode.
-     * {@inheritDoc}
+     * Only defers ticks when not in curtailment mode. {@inheritDoc}
      */
     @Override
     public void afterTick() {
@@ -51,8 +52,7 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
     }
 
     /**
-     * Only defers ticks when not in curtailment mode.
-     * {@inheritDoc}
+     * Only defers ticks when not in curtailment mode. {@inheritDoc}
      */
     @Override
     public void tick() {
