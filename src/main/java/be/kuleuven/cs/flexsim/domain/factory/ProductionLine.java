@@ -167,27 +167,12 @@ public final class ProductionLine implements SimulationComponent {
      */
     public static ProductionLine createCustomLayout(int initialStations,
             int... furtherStations) {
-        ProductionLine line = new ProductionLine();
-        line.buffers.add(new Buffer<Resource>());
-        line.buffers.add(new Buffer<Resource>());
-        for (int i = 0; i < initialStations; i++) {
-            line.workstations.add(WorkstationImpl.createShiftableWorkstation(
-                    line.buffers.get(0), line.buffers.get(1), IDLE_CONSUMPTION,
-                    WORKING_CONSUMPTION, i % 2));
-        }
+        ProductionLineBuilder b = new ProductionLineBuilder()
+                .addShifted(initialStations);
         for (int i = 0; i < furtherStations.length; i++) {
-            line.buffers.add(new Buffer<Resource>());
-            for (int j = 0; j < furtherStations[i]; j++) {
-
-                int shift = (i % 2) ^ (j % 2);
-                line.workstations.add(WorkstationImpl
-                        .createShiftableWorkstation(
-                                line.buffers.get(line.buffers.size() - 2),
-                                line.buffers.get(line.buffers.size() - 1),
-                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift));
-            }
+            b.addShifted(furtherStations[i]);
         }
-        return line;
+        return b.build();
     }
 
     /**
@@ -206,44 +191,8 @@ public final class ProductionLine implements SimulationComponent {
      * @return a newly created production line instance.
      */
     public static ProductionLine createStaticCurtailableLayout() {
-        ProductionLine line = new ProductionLine();
-        line.buffers.add(new Buffer<Resource>());
-        line.buffers.add(new Buffer<Resource>());
-        for (int i = 0; i < 7; i++) {
-            line.workstations.add(WorkstationImpl.createShiftableWorkstation(
-                    line.buffers.get(0), line.buffers.get(1), IDLE_CONSUMPTION,
-                    WORKING_CONSUMPTION, i % 2));
-        }
-        line.buffers.add(new Buffer<Resource>());
-        for (int j = 0; j < 7; j++) {
-
-            int shift = (j % 2);
-            try {
-                Workstation w = WorkstationImpl.createCurtailableStation(
-                        line.buffers.get(line.buffers.size() - 2),
-                        line.buffers.get(line.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
-                line.workstations.add(w);
-                line.curtailables.add((Curtailable) w);
-
-            } catch (ClassCastException e) {
-                Logger.getGlobal()
-                        .log(Level.SEVERE,
-                                "Could not get a curtailable instance from workstation factory method.");
-                throw new RuntimeException(e.getCause());
-            }
-        }
-
-        line.buffers.add(new Buffer<Resource>());
-        for (int j = 0; j < 3; j++) {
-
-            int shift = (j % 2);
-            line.workstations.add(WorkstationImpl.createShiftableWorkstation(
-                    line.buffers.get(line.buffers.size() - 2),
-                    line.buffers.get(line.buffers.size() - 1),
-                    IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift));
-        }
-        return line;
+        return new ProductionLineBuilder().addShifted(7)
+                .addCurtailableShifted(7).addShifted(3).build();
     }
 
     /**
@@ -253,5 +202,73 @@ public final class ProductionLine implements SimulationComponent {
      */
     List<Workstation> getWorkstations() {
         return new ArrayList<>(this.workstations);
+    }
+
+    public static class ProductionLineBuilder {
+        ProductionLine line = new ProductionLine();
+
+        public ProductionLineBuilder() {
+            line = new ProductionLine();
+            line.buffers.add(new Buffer<Resource>());
+        }
+
+        public ProductionLine build() {
+            return line;
+        }
+
+        public ProductionLineBuilder addShifted(int n) {
+            line.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                line.workstations.add(WorkstationImpl
+                        .createShiftableWorkstation(
+                                line.buffers.get(line.buffers.size() - 2),
+                                line.buffers.get(line.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, i % 2));
+            }
+            return this;
+        }
+
+        public ProductionLineBuilder addCurtailableShifted(int n) {
+            line.buffers.add(new Buffer<Resource>());
+            for (int j = 0; j < n; j++) {
+                int shift = (j % 2);
+                try {
+                    Workstation w = WorkstationImpl.createCurtailableStation(
+                            line.buffers.get(line.buffers.size() - 2),
+                            line.buffers.get(line.buffers.size() - 1),
+                            IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
+                    line.workstations.add(w);
+                    line.curtailables.add((Curtailable) w);
+
+                } catch (ClassCastException e) {
+                    Logger.getGlobal()
+                            .log(Level.SEVERE,
+                                    "Could not get a curtailable instance from workstation factory method.");
+                    throw new RuntimeException(e.getCause());
+                }
+            }
+            return this;
+        }
+
+        public ProductionLineBuilder addDefault(int n) {
+            line.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < 7; i++) {
+                line.workstations.add(WorkstationImpl.createDefault(
+                        line.buffers.get(line.buffers.size() - 2),
+                        line.buffers.get(line.buffers.size() - 1)));
+            }
+            return this;
+        }
+
+        public ProductionLineBuilder addConsuming(int n) {
+            line.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < 7; i++) {
+                line.workstations.add(WorkstationImpl.createConsuming(
+                        line.buffers.get(line.buffers.size() - 2),
+                        line.buffers.get(line.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+            }
+            return this;
+        }
     }
 }
