@@ -253,6 +253,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      *            The energy consumption in idle state.
      * @param working
      *            The energy consumption in working state.
+     * @param shift 
+     *            The amount of timesteps to delay the start of execution.
      * @return A Ready to use IWorkstation object.
      */
     public static Workstation createCurtailableStation(Buffer<Resource> in,

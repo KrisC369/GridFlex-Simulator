@@ -24,7 +24,9 @@ import com.google.common.base.Optional;
  */
 public final class ProductionLine implements SimulationComponent {
 
-    private static final int WORKING_CONSUMPTION = 3;
+    private static final int BOTTLENECK_NUMBER = 3;
+    private static final int CAPACITY_NUMBER = 7;
+    private static final int WORKING_CONSUMPTION = BOTTLENECK_NUMBER;
     private static final int IDLE_CONSUMPTION = 1;
 
     private final List<Buffer<Resource>> buffers;
@@ -42,6 +44,11 @@ public final class ProductionLine implements SimulationComponent {
         this.curtailables = new ArrayList<>();
     }
 
+    /**
+     * This method refines the following documentation by generating a report
+     * event when there is simulation context present for this line instance.
+     * {@inheritDoc}
+     */
     @Override
     public void afterTick() {
         report();
@@ -130,7 +137,7 @@ public final class ProductionLine implements SimulationComponent {
      * @return A production line instance.
      */
     public static ProductionLine createExtendedLayout() {
-        return createCustomLayout(3, 1);
+        return createCustomLayout(BOTTLENECK_NUMBER, 1);
     }
 
     /**
@@ -151,7 +158,7 @@ public final class ProductionLine implements SimulationComponent {
      * @return A production line instance.
      */
     public static ProductionLine createSuperExtendedLayout() {
-        return createCustomLayout(3, 2, 1);
+        return createCustomLayout(BOTTLENECK_NUMBER, BOTTLENECK_NUMBER-1, BOTTLENECK_NUMBER-2);
     }
 
     /**
@@ -191,8 +198,8 @@ public final class ProductionLine implements SimulationComponent {
      * @return a newly created production line instance.
      */
     public static ProductionLine createStaticCurtailableLayout() {
-        return new ProductionLineBuilder().addShifted(7)
-                .addCurtailableShifted(7).addShifted(3).build();
+        return new ProductionLineBuilder().addShifted(CAPACITY_NUMBER)
+                .addCurtailableShifted(CAPACITY_NUMBER).addShifted(BOTTLENECK_NUMBER).build();
     }
 
     /**
@@ -204,68 +211,104 @@ public final class ProductionLine implements SimulationComponent {
         return new ArrayList<>(this.workstations);
     }
 
+    /**
+     * Builder class for building production line instances.
+     * 
+     * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+     */
     public static class ProductionLineBuilder {
-        ProductionLine line = new ProductionLine();
 
+        private ProductionLine prodline = new ProductionLine();
+
+        /**
+         * Default constructor for builder instances.
+         */
         public ProductionLineBuilder() {
-            line = new ProductionLine();
-            line.buffers.add(new Buffer<Resource>());
+            prodline = new ProductionLine();
+            prodline.buffers.add(new Buffer<Resource>());
         }
 
+        /**
+         * Builds the configured production line.
+         * 
+         * @return The production line.
+         */
         public ProductionLine build() {
-            return line;
+            return prodline;
         }
 
+        /**
+         * Adds a number of parallel one-step-shifted workstations to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @return the current builder instance
+         */
         public ProductionLineBuilder addShifted(int n) {
-            line.buffers.add(new Buffer<Resource>());
+            prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                line.workstations.add(WorkstationImpl
-                        .createShiftableWorkstation(
-                                line.buffers.get(line.buffers.size() - 2),
-                                line.buffers.get(line.buffers.size() - 1),
+                prodline.workstations
+                        .add(WorkstationImpl.createShiftableWorkstation(
+                                prodline.buffers
+                                        .get(prodline.buffers.size() - 2),
+                                prodline.buffers.get(prodline.buffers.size() - 1),
                                 IDLE_CONSUMPTION, WORKING_CONSUMPTION, i % 2));
             }
             return this;
         }
 
+        /**
+         * Adds a number of parallel curtailable workstations to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @return the current builder instance
+         */
         public ProductionLineBuilder addCurtailableShifted(int n) {
-            line.buffers.add(new Buffer<Resource>());
+            prodline.buffers.add(new Buffer<Resource>());
             for (int j = 0; j < n; j++) {
-                int shift = (j % 2);
-                try {
-                    Workstation w = WorkstationImpl.createCurtailableStation(
-                            line.buffers.get(line.buffers.size() - 2),
-                            line.buffers.get(line.buffers.size() - 1),
-                            IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
-                    line.workstations.add(w);
-                    line.curtailables.add((Curtailable) w);
+                int shift = j % 2;
+                Workstation w = WorkstationImpl.createCurtailableStation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
+                prodline.workstations.add(w);
+                prodline.curtailables.add((Curtailable) w);
 
-                } catch (ClassCastException e) {
-                    Logger.getGlobal()
-                            .log(Level.SEVERE,
-                                    "Could not get a curtailable instance from workstation factory method.");
-                    throw new RuntimeException(e.getCause());
-                }
             }
             return this;
         }
 
+        /**
+         * * Adds a number of parallel default workstations to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @return the current builder instance
+         */
         public ProductionLineBuilder addDefault(int n) {
-            line.buffers.add(new Buffer<Resource>());
-            for (int i = 0; i < 7; i++) {
-                line.workstations.add(WorkstationImpl.createDefault(
-                        line.buffers.get(line.buffers.size() - 2),
-                        line.buffers.get(line.buffers.size() - 1)));
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations.add(WorkstationImpl.createDefault(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1)));
             }
             return this;
         }
 
+        /**
+         * Adds a number of parallel EnergyConsuming workstations to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @return the current builder instance
+         */
         public ProductionLineBuilder addConsuming(int n) {
-            line.buffers.add(new Buffer<Resource>());
-            for (int i = 0; i < 7; i++) {
-                line.workstations.add(WorkstationImpl.createConsuming(
-                        line.buffers.get(line.buffers.size() - 2),
-                        line.buffers.get(line.buffers.size() - 1),
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations.add(WorkstationImpl.createConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, WORKING_CONSUMPTION));
             }
             return this;

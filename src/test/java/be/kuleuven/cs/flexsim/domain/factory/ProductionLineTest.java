@@ -12,6 +12,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import be.kuleuven.cs.flexsim.domain.factory.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
@@ -156,5 +157,29 @@ public class ProductionLineTest {
         for(Curtailable c : stations) {
             assertTrue(lineExtended.getWorkstations().contains(c));
         }
+    }
+    
+    @Test
+    public void testBuilderDefault(){
+        ProductionLine l = new ProductionLineBuilder().addDefault(3).addDefault(4).build();
+        sim = Simulator.createSimulator(200);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+        assertEquals(7,l.getNumberOfWorkstations());
+        ((Simulator) sim).start();
+        assertEquals(0,l.getWorkstations().get(3).getTotalConsumption());
+    }
+    
+    @Test
+    public void testBuilderConsuming(){
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3).addConsuming(4).build();
+        sim = Simulator.createSimulator(200);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+        assertEquals(7,l.getNumberOfWorkstations());
+        ((Simulator) sim).start();
+        assertNotEquals(0,l.getWorkstations().get(3).getTotalConsumption());
     }
 }

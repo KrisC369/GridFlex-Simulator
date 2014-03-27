@@ -41,6 +41,7 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
 
     /**
      * Only defers ticks when not in curtailment mode.
+     * {@inheritDoc}
      */
     @Override
     public void afterTick() {
@@ -51,6 +52,7 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
 
     /**
      * Only defers ticks when not in curtailment mode.
+     * {@inheritDoc}
      */
     @Override
     public void tick() {

@@ -57,6 +57,11 @@ public abstract class ForwardingStationDecorator implements Workstation {
         getDelegate().tick();
     }
 
+    /**
+     * Returns the delegate instance for this forwarding decorator.
+     * 
+     * @return the delegated instance.
+     */
     protected final Workstation getDelegate() {
         return this.w;
     }
