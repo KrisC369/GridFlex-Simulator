@@ -85,6 +85,13 @@
 				<artifactId>cobertura-maven-plugin</artifactId>
 				<version>2.6</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+				</configuration>
+			</plugin>
 		</plugins>
 	</reporting>
 	<properties>
@@ -102,7 +109,16 @@
 		<url>https://github.com/KrisC369/Flexsim/issues</url>
 		<system>GitHub Issues</system>
 	</issueManagement>
-	<url>GitHub Issues</url>
+	<ciManagement>
+      <system>jenkins</system>
+      <url>http://kraken.cs.kuleuven.be:8080/job/Flexsim</url>
+      <notifiers>
+         <notifier>
+            <type>mail</type>
+            <address>kristof.coninx@cs.kuleuven.be</address>
+         </notifier>
+      </notifiers>
+   </ciManagement>
 	<repositories>
 		<repository>
 			<id>java.net2</id>
