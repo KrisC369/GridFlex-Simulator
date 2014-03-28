@@ -145,8 +145,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     @Override
     public void tick() {
         int rate = getCurrentState().getConsumptionRate();
-        increaseTotalConsumption(rate);
         setLastConsumption(rate);
+        increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(this);
     }
 

@@ -1,9 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -63,6 +60,30 @@ public class WorkstationTest {
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
+    @Test
+    public void testStopConsumingWhenFinished(){
+        long r = iew.getTotalConsumption();
+        assertEquals(0, r);
+        pushResource(1);
+        
+        iew.tick();
+        assertNotEquals(r, iew.getTotalConsumption());
+        r = iew.getTotalConsumption();
+        iew.tick();
+        assertNotEquals(r, iew.getTotalConsumption());
+        r = iew.getTotalConsumption();
+        iew.tick();
+        assertNotEquals(r, iew.getTotalConsumption());
+        r = iew.getTotalConsumption();
+        iew.tick();
+        assertEquals(r, iew.getTotalConsumption());
+        r = iew.getTotalConsumption();
+        iew.tick();
+        assertEquals(r, iew.getTotalConsumption());
+        r = iew.getTotalConsumption();
+
+    }
+    
     @Test
     public void testDefaultOneTickConsumptionOfZero() {
         pushResource(1);
@@ -178,9 +199,9 @@ public class WorkstationTest {
     }
 
     @Test
-    public void testCurtailableStation() {
-        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0,
-                0, 0);
+    public void testCurtailableStationProcessingAndConsumption() {
+        Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 1,
+                3, 0);
         Curtailable curt2 = ((Curtailable) curt);
 
         Resource res = pushResource(3);
@@ -192,14 +213,19 @@ public class WorkstationTest {
         assertFalse(curt.isIdle());
         assertTrue(out.isEmpty());
         assertEquals(0, curt.getProcessedItemsCount());
+        assertNotEquals(0, curt.getLastStepConsumption());
+        long r = curt.getTotalConsumption();
         curt2.doFullCurtailment();
 
         multiTick(curt, 20);
+        curt.afterTick();
 
         assertTrue(in.isEmpty());
         assertFalse(curt.isIdle());
         assertTrue(out.isEmpty());
         assertEquals(0, curt.getProcessedItemsCount());
+        assertEquals(0, curt.getLastStepConsumption());
+        assertEquals(r,curt.getTotalConsumption());
 
         curt2.restore();
         multiTick(curt, 3);
@@ -210,7 +236,7 @@ public class WorkstationTest {
         assertEquals(res, out.pull());
         assertEquals(1, curt.getProcessedItemsCount());
     }
-
+    
     @Test(expected = IllegalStateException.class)
     public void testDoubleCurtailment() {
         Workstation curt = WorkstationImpl.createCurtailableStation(in, out, 0,

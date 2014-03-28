@@ -60,4 +60,12 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
             super.tick();
         }
     }
+
+    @Override
+    public int getLastStepConsumption() {
+        if (isCurtailed()) {
+            return 0;
+        }
+        return getDelegate().getLastStepConsumption();
+    }
 }

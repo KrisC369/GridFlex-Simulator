@@ -60,9 +60,11 @@ abstract class StationStateImpl implements StationState {
     }
 
     static final class ResourceMoving extends StationStateImpl {
+        private boolean idle;
 
         ResourceMoving(int consumption) {
             super(consumption);
+            this.idle = false;
         }
 
         /*
@@ -75,6 +77,8 @@ abstract class StationStateImpl implements StationState {
             boolean succesfull = context.pushConveyer();
             if (succesfull) {
                 changeState(context);
+            } else {
+                this.idle = true;
             }
         }
 
@@ -92,6 +96,12 @@ abstract class StationStateImpl implements StationState {
             context.setProcessingState();
         }
 
+        @Override
+        public int getConsumptionRate() {
+            if (idle) {
+                return 0;
+            }
+            return super.getConsumptionRate();
+        }
     }
-
 }
