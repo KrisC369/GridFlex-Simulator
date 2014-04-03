@@ -218,7 +218,7 @@ public final class ProductionLine implements SimulationComponent {
      */
     public static class ProductionLineBuilder {
 
-        private ProductionLine prodline = new ProductionLine();
+        private final ProductionLine prodline;
 
         /**
          * Default constructor for builder instances.
