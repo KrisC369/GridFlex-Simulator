@@ -19,7 +19,7 @@ import com.google.common.eventbus.EventBus;
  * signify the passing of time. This simulator implements the
  * <code>SimulationContext</code>-interface.
  */
-public class Simulator implements SimulationContext {
+public final class Simulator implements SimulationContext {
 
     private static final String SIMSTOP_LITERAL = "simulation:stopped";
 

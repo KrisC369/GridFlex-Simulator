@@ -46,10 +46,9 @@ public class SimulatorTest {
         }
     }
 
-    private Simulator s = mock(Simulator.class);
     private SimulationComponent comp = mock(SimulationComponent.class);
-
     private final long defaultRunTime = 1;
+    private Simulator s = Simulator.createSimulator(defaultRunTime);
 
     @Before
     public void setUp() throws Exception {

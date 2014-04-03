@@ -14,7 +14,7 @@ import java.util.Set;
  * @param <T>
  *            the generic type of contents in this buffer.
  */
-public class Buffer<T extends IBufferable> {
+public final class Buffer<T extends IBufferable> {
 
     /** The internal queue representation. */
     private final Queue<T> data;

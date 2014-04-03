@@ -16,7 +16,6 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class WorkstationTest {
 
@@ -31,7 +30,7 @@ public class WorkstationTest {
         in = new Buffer<Resource>();
         out = new Buffer<Resource>();
         w = new WorkstationImpl(in, out, 0, 0);
-        sim = mock(Simulator.class);
+        sim = mock(SimulationContext.class);
         sim.register(w);
         iew = WorkstationImpl.createConsuming(in, out, 1, 3);
     }

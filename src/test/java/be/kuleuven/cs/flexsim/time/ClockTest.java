@@ -1,13 +1,12 @@
 package be.kuleuven.cs.flexsim.time;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class ClockTest {
-    SimulationClock c = mock(SimulationClock.class);
+    SimulationClock c = new SimulationClock();
 
     @Test
     public void resetTime() {
