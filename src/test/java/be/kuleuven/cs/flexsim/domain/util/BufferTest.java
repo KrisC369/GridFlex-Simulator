@@ -21,7 +21,7 @@ import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 public class BufferTest {
 
     @SuppressWarnings("null")
-    private Buffer<Resource> b = mock(Buffer.class);
+    private Buffer<Resource> b = new Buffer<Resource>();
     @SuppressWarnings("null")
     private Resource res = mock(Resource.class);
 

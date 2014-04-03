@@ -19,8 +19,8 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 public class WorkstationTest {
 
-    private Buffer<Resource> in = mock(Buffer.class);
-    private Buffer<Resource> out = mock(Buffer.class);
+    private Buffer<Resource> in = new Buffer<Resource>();
+    private Buffer<Resource> out = new Buffer<Resource>();
     private WorkstationImpl w = mock(WorkstationImpl.class);
     private SimulationContext sim = mock(SimulationContext.class);
     private Workstation iew = mock(Workstation.class);
