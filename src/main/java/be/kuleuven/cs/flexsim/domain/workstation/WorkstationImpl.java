@@ -26,8 +26,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     private final StationState processingState;
     private StationState currentState;
     private List<Resource> currentResource;
-    private int totalConsumption;
-    private int lastConsumption;
+    private double totalConsumption;
+    private double lastConsumption;
     private int processedCount;
     private final int fixedECons;
     private final int capacity;
@@ -40,15 +40,17 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      *            The In buffer.
      * @param bufferOut
      *            The Out buffer.
+     * @param linear
      */
     @VisibleForTesting
     WorkstationImpl(Buffer<Resource> bufferIn, Buffer<Resource> bufferOut,
-            int idle, int working, int capacity) {
+            int idle, int working, int capacity, ConsumptionModel model) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
         this.fixedECons = idle;
-        this.processingState = new StationStateImpl.Processing(working - idle);
-        this.resourceMovingState = new StationStateImpl.ResourceMoving(0);
+        this.processingState = new StationStateImpl.Processing(working - idle,
+                model);
+        this.resourceMovingState = new StationStateImpl.ResourceMoving(0, model);
         this.currentState = resourceMovingState;
         this.totalConsumption = 0;
         this.processedCount = 0;
@@ -62,7 +64,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public int getLastStepConsumption() {
+    public double getLastStepConsumption() {
         return lastConsumption;
     }
 
@@ -77,7 +79,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public int getTotalConsumption() {
+    public double getTotalConsumption() {
         return this.totalConsumption;
     }
 
@@ -171,9 +173,30 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     @Override
     public void tick() {
         setLastConsumption(getFixedConsumptionRate()
-                + getCurrentState().getVarConsumptionRate());
+                + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
+                        getRemainingMaxSteps()));
         increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(this);
+    }
+
+    private int getRemainingSteps() {
+        int maxResource = 0;
+        for (Resource r : currentResource) {
+            if (r.getCurrentNeededProcessTime() > maxResource) {
+                maxResource = r.getCurrentNeededProcessTime();
+            }
+        }
+        return maxResource;
+    }
+
+    private int getRemainingMaxSteps() {
+        int maxResource = 0;
+        for (Resource r : currentResource) {
+            if (r.getMaxNeededProcessTime() > maxResource) {
+                maxResource = r.getMaxNeededProcessTime();
+            }
+        }
+        return maxResource;
     }
 
     private StationState getCurrentState() {
@@ -188,7 +211,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         return outputBuff;
     }
 
-    private void increaseTotalConsumption(int consumptionRate) {
+    private void increaseTotalConsumption(double consumptionRate) {
         this.totalConsumption = this.totalConsumption + consumptionRate;
     }
 
@@ -201,7 +224,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.currentResource = new ArrayList<>();
     }
 
-    private void setLastConsumption(int rate) {
+    private void setLastConsumption(double rate) {
         this.lastConsumption = rate;
     }
 
@@ -221,10 +244,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
 
     @Override
     public void processResources(int steps) {
-        for (int i = 0; i < steps; i++) {
-            for (Resource r : currentResource) {
-                r.process(steps);
-            }
+        for (Resource r : currentResource) {
+            r.process(steps);
         }
     }
 

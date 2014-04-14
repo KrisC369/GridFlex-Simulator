@@ -18,6 +18,14 @@ public interface Resource extends IBufferable {
     int getCurrentNeededProcessTime();
 
     /**
+     * Returns the maximum needed process time. The highest value it could be at
+     * this point.
+     * 
+     * @return the maximum process time.
+     */
+    int getMaxNeededProcessTime();
+
+    /**
      * Returns whether this resource needs more processing at the current
      * station.
      * 

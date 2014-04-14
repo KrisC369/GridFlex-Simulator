@@ -15,7 +15,7 @@ public interface Workstation extends SimulationComponent {
      * 
      * @return an int representing consumption amount.
      */
-    int getLastStepConsumption();
+    double getLastStepConsumption();
 
     /**
      * Return the amount of items that has been processed by this workstation.
@@ -29,7 +29,7 @@ public interface Workstation extends SimulationComponent {
      * 
      * @return the total energy consumed.
      */
-    int getTotalConsumption();
+    double getTotalConsumption();
 
     /**
      * Returns wheter this machine is performing work during this time step or

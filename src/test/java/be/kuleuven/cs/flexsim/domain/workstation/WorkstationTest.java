@@ -23,12 +23,14 @@ public class WorkstationTest {
     private WorkstationImpl wSingle = mock(WorkstationImpl.class);
     private SimulationContext sim = mock(SimulationContext.class);
     private Workstation iew = mock(Workstation.class);
+    private static final double DELTA = 0.05;
 
     @Before
     public void setUp() throws Exception {
         in = new Buffer<Resource>();
         out = new Buffer<Resource>();
-        wSingle = new WorkstationImpl(in, out, 0, 0, 1);
+        wSingle = new WorkstationImpl(in, out, 0, 0, 1,
+                ConsumptionModel.CONSTANT);
         sim = mock(SimulationContext.class);
         sim.register(wSingle);
         iew = WorkstationFactory.createConsuming(in, out, 1, 3);
@@ -38,11 +40,11 @@ public class WorkstationTest {
     public void testConsumingOneTickConsumptionOf3() {
         pushResource(1);
         iew.tick();
-        assertEquals(1, iew.getLastStepConsumption());
+        assertEquals(1, iew.getLastStepConsumption(), DELTA);
         iew.tick();
-        assertEquals(3, iew.getLastStepConsumption());
+        assertEquals(3, iew.getLastStepConsumption(), DELTA);
         iew.tick();
-        assertEquals(0, iew.getLastStepConsumption());
+        assertEquals(0, iew.getLastStepConsumption(), DELTA);
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
@@ -50,7 +52,8 @@ public class WorkstationTest {
     public void testConsumingTotalConsumptionOf11AfterInAndOut() {
         pushResource(3);
         multiTick(iew, 5);
-        assertEquals(11, iew.getTotalConsumption());// 1:in + 1:out + 3*3:cons
+        assertEquals(11, iew.getTotalConsumption(), DELTA);// 1:in + 1:out +
+                                                           // 3*3:cons
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
@@ -58,15 +61,16 @@ public class WorkstationTest {
     public void testConsumingTotalConsumptionOf5AfterInAndOut() {
         pushResource(1);
         multiTick(iew, 3);
-        assertEquals(5, iew.getTotalConsumption()); // 1:in + 1:out + 1*3:cons
+        assertEquals(5, iew.getTotalConsumption(), DELTA); // 1:in + 1:out +
+                                                           // 1*3:cons
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
     @Test
     public void testOnlyFixedCostWhenFinished() {
-        long r = iew.getTotalConsumption();
+        double r = iew.getTotalConsumption();
         int fixedCost = 1;
-        assertEquals(0, r);
+        assertEquals(0, r, DELTA);
         pushResource(1);
 
         iew.tick();
@@ -94,7 +98,7 @@ public class WorkstationTest {
         pushResource(1);
         for (int i = 0; i < 5; i++) {
             wSingle.tick();
-            assertEquals(0, wSingle.getLastStepConsumption());
+            assertEquals(0, wSingle.getLastStepConsumption(), DELTA);
         }
     }
 
@@ -102,7 +106,7 @@ public class WorkstationTest {
     public void testDefaultTotalConsumptionOfZero() {
         pushResource(1);
         multiTick(wSingle, 5);
-        assertEquals(0, wSingle.getTotalConsumption());
+        assertEquals(0, wSingle.getTotalConsumption(), DELTA);
     }
 
     // @Test(expected = IllegalStateException.class)
@@ -220,7 +224,7 @@ public class WorkstationTest {
         assertTrue(out.isEmpty());
         assertEquals(0, curt.getProcessedItemsCount());
         assertNotEquals(0, curt.getLastStepConsumption());
-        long r = curt.getTotalConsumption();
+        double r = curt.getTotalConsumption();
         curt2.doFullCurtailment();
 
         multiTick(curt, 20);
@@ -230,8 +234,8 @@ public class WorkstationTest {
         assertFalse(curt.isIdle());
         assertTrue(out.isEmpty());
         assertEquals(0, curt.getProcessedItemsCount());
-        assertEquals(0, curt.getLastStepConsumption());
-        assertEquals(r, curt.getTotalConsumption());
+        assertEquals(0, curt.getLastStepConsumption(), 0.05);
+        assertEquals(r, curt.getTotalConsumption(), DELTA);
 
         curt2.restore();
         multiTick(curt, 3);
@@ -269,7 +273,7 @@ public class WorkstationTest {
 
     @Test
     public void testMultiCapacityHigherBufferResourceHandling() {
-        iew = new WorkstationImpl(in, out, 1, 3, 3);
+        iew = WorkstationFactory.createMultiCapConsuming(in, out, 1, 3, 3);
         multiPushResource(6, 1);
         multiTick(iew, 1);
         assertEquals(3, in.getCurrentOccupancyLevel());
@@ -293,6 +297,24 @@ public class WorkstationTest {
         assertEquals(0, in.getCurrentOccupancyLevel());
         multiTick(iew, 1);
         assertEquals(6, iew.getProcessedItemsCount());
+    }
+
+    @Test
+    public void testMultiCapacityLinearConsumption() {
+        iew = WorkstationFactory.createMultiCapLinearConsuming(in, out, 1, 6,
+                12, 10);
+        multiPushResource(24, 10);
+        multiTick(iew, 1);
+        assertEquals(1, iew.getLastStepConsumption(), 0.05);
+        multiTick(iew, 1);
+        assertEquals(1.5, iew.getLastStepConsumption(), 0.05);
+        multiTick(iew, 1);
+        assertEquals(2.0, iew.getLastStepConsumption(), 0.05);
+        multiTick(iew, 1);
+        assertEquals(2.5, iew.getLastStepConsumption(), 0.05);
+        multiTick(iew, 7);
+        assertEquals(6, iew.getLastStepConsumption(), 0.05);
+
     }
 
     private void multiPushResource(int n, int k) {

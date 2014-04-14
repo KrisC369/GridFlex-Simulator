@@ -9,6 +9,7 @@ public class SimpleResource implements Resource {
 
     /** The needed time. */
     private int neededTime;
+    private int maxTime;
 
     /**
      * Instantiates a new simple resource.
@@ -18,6 +19,7 @@ public class SimpleResource implements Resource {
      */
     protected SimpleResource(int needed) {
         this.neededTime = needed;
+        this.maxTime = needed;
     }
 
     /*
@@ -57,5 +59,11 @@ public class SimpleResource implements Resource {
      */
     protected final void setNeededTime(int newTime) {
         this.neededTime = newTime;
+        this.maxTime = newTime;
+    }
+
+    @Override
+    public int getMaxNeededProcessTime() {
+        return this.maxTime;
     }
 }

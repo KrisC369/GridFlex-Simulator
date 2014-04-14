@@ -7,15 +7,18 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * 
  */
 abstract class StationStateImpl implements StationState {
-    private final int varConsumptionRate;
+    private final int maxVarConsumptionRate;
+    private final ConsumptionModel model;
 
-    StationStateImpl(int varConsumption) {
-        this.varConsumptionRate = varConsumption;
+    StationStateImpl(int varConsumption, ConsumptionModel model) {
+        this.maxVarConsumptionRate = varConsumption;
+        this.model = model;
     }
 
     @Override
-    public int getVarConsumptionRate() {
-        return varConsumptionRate;
+    public double getVarConsumptionRate(int remainingSteps, int totalSteps) {
+        return model.getVarConsumptionRate(remainingSteps, totalSteps,
+                maxVarConsumptionRate);
     }
 
     /**
@@ -23,8 +26,8 @@ abstract class StationStateImpl implements StationState {
      */
     static final class Processing extends StationStateImpl {
 
-        Processing(int consumption) {
-            super(consumption);
+        Processing(int consumption, ConsumptionModel model) {
+            super(consumption, model);
         }
 
         /*
@@ -58,8 +61,8 @@ abstract class StationStateImpl implements StationState {
 
     static final class ResourceMoving extends StationStateImpl {
 
-        ResourceMoving(int consumption) {
-            super(consumption);
+        ResourceMoving(int consumption, ConsumptionModel model) {
+            super(consumption, model);
         }
 
         /*

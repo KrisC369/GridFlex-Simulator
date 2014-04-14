@@ -28,7 +28,7 @@ public abstract class ForwardingStationDecorator implements Workstation {
     }
 
     @Override
-    public int getLastStepConsumption() {
+    public double getLastStepConsumption() {
         return getDelegate().getLastStepConsumption();
     }
 
@@ -38,7 +38,7 @@ public abstract class ForwardingStationDecorator implements Workstation {
     }
 
     @Override
-    public int getTotalConsumption() {
+    public double getTotalConsumption() {
         return getDelegate().getTotalConsumption();
     }
 

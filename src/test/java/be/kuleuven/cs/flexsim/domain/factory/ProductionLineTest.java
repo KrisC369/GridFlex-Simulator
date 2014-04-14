@@ -74,6 +74,7 @@ public class ProductionLineTest {
     private ProductionLine lineExtended;
     private ProductionLine lineSuperExtended;
     private int simSteps;
+    private static final double DELTA = 0.05;
 
     @SuppressWarnings("null")
     private SimulationContext sim = mock(SimulationContext.class);
@@ -174,7 +175,7 @@ public class ProductionLineTest {
         l.deliverResources(res);
         assertEquals(7, l.getNumberOfWorkstations());
         ((Simulator) sim).start();
-        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption());
+        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
     }
 
     @Test

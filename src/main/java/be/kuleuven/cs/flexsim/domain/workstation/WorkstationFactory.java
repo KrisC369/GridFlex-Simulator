@@ -25,11 +25,12 @@ public final class WorkstationFactory {
      *            The energy consumption in idle state.
      * @param working
      *            The energy consumption in working state.
-     * @return A Ready to use IWorkstation object.
+     * @return A Ready to use Workstation object.
      */
     public static Workstation createConsuming(Buffer<Resource> in,
             Buffer<Resource> out, int idle, int working) {
-        return new WorkstationImpl(in, out, idle, working, 1);
+        return new WorkstationImpl(in, out, idle, working, 1,
+                ConsumptionModel.CONSTANT);
     }
 
     /**
@@ -39,11 +40,12 @@ public final class WorkstationFactory {
      *            The inputbuffer instance.
      * @param bufferOut
      *            The outputbuffer instance.
-     * @return A Ready to use IWorkstation object.
+     * @return A Ready to use Workstation object.
      */
     public static Workstation createDefault(Buffer<Resource> bufferIn,
             Buffer<Resource> bufferOut) {
-        return new WorkstationImpl(bufferIn, bufferOut, 0, 0, 1);
+        return new WorkstationImpl(bufferIn, bufferOut, 0, 0, 1,
+                ConsumptionModel.CONSTANT);
     }
 
     /**
@@ -60,12 +62,12 @@ public final class WorkstationFactory {
      *            The energy consumption in working state.
      * @param shift
      *            The amount of timesteps to delay the start of execution.
-     * @return A Ready to use IWorkstation object.
+     * @return A Ready to use Workstation object.
      */
     public static Workstation createShiftableWorkstation(Buffer<Resource> in,
             Buffer<Resource> out, int idle, int working, int shift) {
         return new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
-                out, idle, working, 1));
+                out, idle, working, 1, ConsumptionModel.CONSTANT));
     }
 
     /**
@@ -82,13 +84,36 @@ public final class WorkstationFactory {
      *            The energy consumption in working state.
      * @param shift
      *            The amount of timesteps to delay the start of execution.
-     * @return A Ready to use IWorkstation object.
+     * @return A Ready to use Workstation object.
      */
     public static Workstation createCurtailableStation(Buffer<Resource> in,
             Buffer<Resource> out, int idle, int working, int shift) {
         return new CurtailableStationDecorator(
                 new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
-                        out, idle, working, 1)));
+                        out, idle, working, 1, ConsumptionModel.CONSTANT)));
+    }
+
+    /**
+     * Factory method for workstations that consume energy and can handle
+     * multiple items at once.
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in idle state.
+     * @param working
+     *            The energy consumption in working state.
+     * 
+     * @param capacity
+     *            The capacity of this workstation in terms of resources.
+     * @return A Ready to use Workstation object.
+     */
+    public static Workstation createMultiCapConsuming(Buffer<Resource> in,
+            Buffer<Resource> out, int idle, int working, int capacity) {
+        return new WorkstationImpl(in, out, idle, working, capacity,
+                ConsumptionModel.CONSTANT);
     }
 
     /**
@@ -105,10 +130,12 @@ public final class WorkstationFactory {
      * 
      * @param capacity
      *            The capacity of this workstation in terms of resources.
-     * @return A Ready to use IWorkstation object.
+     * @return A Ready to use Workstation object.
      */
-    public static Workstation createMultiCapConsuming(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int capacity) {
-        return new WorkstationImpl(in, out, idle, working, capacity);
+    public static Workstation createMultiCapLinearConsuming(
+            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
+            int capacity, int maxSteps) {
+        return new WorkstationImpl(in, out, idle, working, capacity,
+                ConsumptionModel.LINEAR);
     }
 }

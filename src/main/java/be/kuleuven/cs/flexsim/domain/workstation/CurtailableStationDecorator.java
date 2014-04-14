@@ -62,7 +62,7 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
     }
 
     @Override
-    public int getLastStepConsumption() {
+    public double getLastStepConsumption() {
         if (isCurtailed()) {
             return 0;
         }

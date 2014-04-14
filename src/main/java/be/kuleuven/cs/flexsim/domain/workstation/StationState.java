@@ -8,9 +8,14 @@ interface StationState {
     /**
      * Returns the consumptionRate in this state.
      * 
+     * @param remainingSteps
+     *            The remaining steps until finished processing in this state.
+     * @param totalSteps
+     *            The total steps needed for the duration spent in this state.
+     * 
      * @return the consumption rate.
      */
-    int getVarConsumptionRate();
+    double getVarConsumptionRate(int remainingSteps, int totalSteps);
 
     /**
      * Handle tick.
