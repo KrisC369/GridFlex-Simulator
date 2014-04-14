@@ -189,11 +189,11 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     private void increaseTotalConsumption(int consumptionRate) {
-        this.totalConsumption += consumptionRate;
+        this.totalConsumption = this.totalConsumption + consumptionRate;
     }
 
     private void incrementProcessedCount(int size) {
-        this.processedCount += size;
+        this.processedCount = this.processedCount + size;
 
     }
 
