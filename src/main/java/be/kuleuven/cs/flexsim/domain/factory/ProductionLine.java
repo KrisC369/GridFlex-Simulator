@@ -24,7 +24,7 @@ public final class ProductionLine implements SimulationComponent {
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
-    private static final int WORKING_CONSUMPTION = BOTTLENECK_NUMBER;
+    private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
 
     private final List<Buffer<Resource>> buffers;

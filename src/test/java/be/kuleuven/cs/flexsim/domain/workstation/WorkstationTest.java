@@ -64,8 +64,9 @@ public class WorkstationTest {
     }
 
     @Test
-    public void testStopConsumingWhenFinished() {
+    public void testOnlyFixedCostWhenFinished() {
         long r = iew.getTotalConsumption();
+        int fixedCost = 1;
         assertEquals(0, r);
         pushResource(1);
 
@@ -79,10 +80,12 @@ public class WorkstationTest {
         assertNotEquals(r, iew.getTotalConsumption());
         r = iew.getTotalConsumption();
         iew.tick();
-        assertEquals(r, iew.getTotalConsumption());
+        assertNotEquals(r, iew.getTotalConsumption());
+        assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
         iew.tick();
-        assertEquals(r, iew.getTotalConsumption());
+        assertNotEquals(r, iew.getTotalConsumption());
+        assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
 
     }

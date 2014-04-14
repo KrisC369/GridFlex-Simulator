@@ -41,4 +41,10 @@ interface WorkstationContext {
      */
     void setResourceMovingState();
 
+    /**
+     * Returns the fixed cost for this workstation.
+     * 
+     * @return the fixed cost.
+     */
+    int getFixedECost();
 }

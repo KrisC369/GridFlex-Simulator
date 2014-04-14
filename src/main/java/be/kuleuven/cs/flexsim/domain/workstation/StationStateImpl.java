@@ -9,15 +9,15 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
  * 
  */
 abstract class StationStateImpl implements StationState {
-    private final int consumptionRate;
+    private final int varConsumptionRate;
 
-    StationStateImpl(int consumption) {
-        this.consumptionRate = consumption;
+    StationStateImpl(int varConsumption) {
+        this.varConsumptionRate = varConsumption;
     }
 
     @Override
-    public int getConsumptionRate() {
-        return consumptionRate;
+    public int getVarConsumptionRate() {
+        return varConsumptionRate;
     }
 
     /**
@@ -60,11 +60,9 @@ abstract class StationStateImpl implements StationState {
     }
 
     static final class ResourceMoving extends StationStateImpl {
-        private boolean idle;
 
         ResourceMoving(int consumption) {
             super(consumption);
-            this.idle = false;
         }
 
         /*
@@ -77,8 +75,6 @@ abstract class StationStateImpl implements StationState {
             boolean succesfull = context.pushConveyer();
             if (succesfull) {
                 changeState(context);
-            } else {
-                this.idle = true;
             }
         }
 
@@ -94,14 +90,6 @@ abstract class StationStateImpl implements StationState {
 
         private void changeState(WorkstationContext context) {
             context.setProcessingState();
-        }
-
-        @Override
-        public int getConsumptionRate() {
-            if (idle) {
-                return 0;
-            }
-            return super.getConsumptionRate();
         }
     }
 }

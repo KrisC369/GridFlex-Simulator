@@ -10,7 +10,7 @@ interface StationState {
      * 
      * @return the consumption rate.
      */
-    int getConsumptionRate();
+    int getVarConsumptionRate();
 
     /**
      * Handle tick.

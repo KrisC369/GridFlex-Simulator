@@ -27,6 +27,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     private int totalConsumption;
     private int lastConsumption;
     private int processedCount;
+    private final int fixedECost;
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -42,8 +43,9 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
             int idle, int working) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
-        this.processingState = new StationStateImpl.Processing(working);
-        this.resourceMovingState = new StationStateImpl.ResourceMoving(idle);
+        this.fixedECost = idle;
+        this.processingState = new StationStateImpl.Processing(working - idle);
+        this.resourceMovingState = new StationStateImpl.ResourceMoving(0);
         this.currentState = resourceMovingState;
         this.totalConsumption = 0;
         this.processedCount = 0;
@@ -144,8 +146,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      */
     @Override
     public void tick() {
-        int rate = getCurrentState().getConsumptionRate();
-        setLastConsumption(rate);
+        int rate = getCurrentState().getVarConsumptionRate();
+        setLastConsumption(getFixedECost() + rate);
         increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(this);
     }
@@ -262,5 +264,10 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         return new CurtailableStationDecorator(
                 new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
                         out, idle, working)));
+    }
+
+    @Override
+    public int getFixedECost() {
+        return fixedECost;
     }
 }
