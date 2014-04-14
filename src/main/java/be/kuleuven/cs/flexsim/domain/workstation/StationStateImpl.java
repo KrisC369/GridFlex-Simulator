@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import be.kuleuven.cs.flexsim.domain.resource.Resource;
-
 /**
  * This class represents the commonalities of the state specific behavior.
  * 
@@ -36,9 +34,8 @@ abstract class StationStateImpl implements StationState {
          */
         @Override
         public void handleTick(WorkstationContext context) {
-            Resource res = context.getCurrentResource().get();
-            res.process(1);
-            if (!res.needsMoreProcessing()) {
+            context.processResources(1);
+            if (!context.hasUnfinishedResources()) {
                 changestate(context);
             }
         }

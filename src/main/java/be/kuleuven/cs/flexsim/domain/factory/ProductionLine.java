@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
-import be.kuleuven.cs.flexsim.domain.workstation.WorkstationImpl;
+import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
@@ -248,7 +248,7 @@ public final class ProductionLine implements SimulationComponent {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 prodline.workstations
-                        .add(WorkstationImpl.createShiftableWorkstation(
+                        .add(WorkstationFactory.createShiftableWorkstation(
                                 prodline.buffers
                                         .get(prodline.buffers.size() - 2),
                                 prodline.buffers.get(prodline.buffers.size() - 1),
@@ -268,7 +268,7 @@ public final class ProductionLine implements SimulationComponent {
             prodline.buffers.add(new Buffer<Resource>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
-                Workstation w = WorkstationImpl.createCurtailableStation(
+                Workstation w = WorkstationFactory.createCurtailableStation(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
@@ -289,7 +289,7 @@ public final class ProductionLine implements SimulationComponent {
         public ProductionLineBuilder addDefault(int n) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                prodline.workstations.add(WorkstationImpl.createDefault(
+                prodline.workstations.add(WorkstationFactory.createDefault(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1)));
             }
@@ -306,7 +306,7 @@ public final class ProductionLine implements SimulationComponent {
         public ProductionLineBuilder addConsuming(int n) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                prodline.workstations.add(WorkstationImpl.createConsuming(
+                prodline.workstations.add(WorkstationFactory.createConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, WORKING_CONSUMPTION));

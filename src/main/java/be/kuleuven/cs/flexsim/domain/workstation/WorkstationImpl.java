@@ -1,11 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Optional;
 
 /**
  * Main workstation class representing machines that perform work and consume
@@ -17,17 +20,17 @@ import com.google.common.base.Optional;
 public class WorkstationImpl implements Workstation, WorkstationContext {
 
     private final Buffer<Resource> inputBuff;
-
     private final Buffer<Resource> outputBuff;
 
     private final StationState resourceMovingState;
     private final StationState processingState;
     private StationState currentState;
-    private Optional<Resource> currentResource;
+    private List<Resource> currentResource;
     private int totalConsumption;
     private int lastConsumption;
     private int processedCount;
     private final int fixedECons;
+    private final int capacity;
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -40,7 +43,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      */
     @VisibleForTesting
     WorkstationImpl(Buffer<Resource> bufferIn, Buffer<Resource> bufferOut,
-            int idle, int working) {
+            int idle, int working, int capacity) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
         this.fixedECons = idle;
@@ -50,22 +53,12 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.totalConsumption = 0;
         this.processedCount = 0;
         this.lastConsumption = 0;
-        this.currentResource = Optional.absent();
+        this.capacity = capacity;
+        this.currentResource = new ArrayList<>();
     }
 
     @Override
     public void afterTick() {
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see domain.IStationContext#getCurrentResource()
-     */
-    @Override
-    public Optional<Resource> getCurrentResource() {
-
-        return currentResource;
     }
 
     @Override
@@ -115,17 +108,48 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      */
     @Override
     public boolean pushConveyer() {
-        if (getCurrentResource().isPresent()) {
-            getOutputBuffer().push(getCurrentResource().get());
-            resetCurrentResource();
-            incrementProcessedCount();
+        if (!getCurrentResources().isEmpty()) {
+            pushOut();
         }
         if (!getInputBuffer().isEmpty()) {
-            this.changeCurrentResource(getInputBuffer().pull());
+            pullIn();
             return true;
         }
         setLastConsumption(0);
         return false;
+    }
+
+    @VisibleForTesting
+    List<Resource> getCurrentResources() {
+        return new ArrayList<>(this.currentResource);
+    }
+
+    private void pullIn() {
+        if (getInputBuffer().getCurrentOccupancyLevel() < getCapacity()) {
+            this.addAllResources(getInputBuffer().pullAll());
+        } else {
+            for (int i = 0; i < getCapacity(); i++) {
+                this.addResource(getInputBuffer().pull());
+            }
+        }
+    }
+
+    private void addAllResources(Collection<Resource> res) {
+        this.currentResource.addAll(res);
+    }
+
+    private void addResource(Resource res) {
+        this.currentResource.add(res);
+    }
+
+    /**
+     * 
+     */
+    private void pushOut() {
+        int size = getCurrentResources().size();
+        getOutputBuffer().pushAll(getCurrentResources());
+        resetCurrentResource();
+        incrementProcessedCount(size);
     }
 
     @Override
@@ -152,14 +176,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         currentState.handleTick(this);
     }
 
-    @VisibleForTesting
-    void changeCurrentResource(Resource res) {
-        if (currentResource.isPresent()) {
-            throw new IllegalStateException();
-        }
-        this.currentResource = Optional.of(res);
-    }
-
     private StationState getCurrentState() {
         return this.currentState;
     }
@@ -176,98 +192,49 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.totalConsumption += consumptionRate;
     }
 
-    private void incrementProcessedCount() {
-        this.processedCount++;
+    private void incrementProcessedCount(int size) {
+        this.processedCount += size;
 
     }
 
     private void resetCurrentResource() {
-        this.currentResource = Optional.absent();
+        this.currentResource = new ArrayList<>();
     }
 
     private void setLastConsumption(int rate) {
         this.lastConsumption = rate;
     }
 
-    /**
-     * Factory method for workstations that consume energy.
-     * 
-     * @param in
-     *            The inputbuffer instance.
-     * @param out
-     *            The outputbuffer instance.
-     * @param idle
-     *            The energy consumption in idle state.
-     * @param working
-     *            The energy consumption in working state.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static Workstation createConsuming(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working) {
-        return new WorkstationImpl(in, out, idle, working);
-    }
-
-    /**
-     * Factory method for default workstations without energy consumption.
-     * 
-     * @param bufferIn
-     *            The inputbuffer instance.
-     * @param bufferOut
-     *            The outputbuffer instance.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static Workstation createDefault(Buffer<Resource> bufferIn,
-            Buffer<Resource> bufferOut) {
-        return new WorkstationImpl(bufferIn, bufferOut, 0, 0);
-    }
-
-    /**
-     * Factory method for workstations that consume energy and starts execution
-     * shifted in time by specified amount of timesteps.
-     * 
-     * @param in
-     *            The inputbuffer instance.
-     * @param out
-     *            The outputbuffer instance.
-     * @param idle
-     *            The energy consumption in idle state.
-     * @param working
-     *            The energy consumption in working state.
-     * @param shift
-     *            The amount of timesteps to delay the start of execution.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static Workstation createShiftableWorkstation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int shift) {
-        return new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
-                out, idle, working));
-    }
-
-    /**
-     * Factory method for workstations that consume energy and allow curtailment
-     * of all functionality.
-     * 
-     * @param in
-     *            The inputbuffer instance.
-     * @param out
-     *            The outputbuffer instance.
-     * @param idle
-     *            The energy consumption in idle state.
-     * @param working
-     *            The energy consumption in working state.
-     * @param shift
-     *            The amount of timesteps to delay the start of execution.
-     * @return A Ready to use IWorkstation object.
-     */
-    public static Workstation createCurtailableStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int shift) {
-        return new CurtailableStationDecorator(
-                new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
-                        out, idle, working)));
-    }
-
     @Override
     public int getFixedConsumptionRate() {
         return fixedECons;
+    }
+
+    /**
+     * Returns the current capacity of this workstation.
+     * 
+     * @return the capacity
+     */
+    public final int getCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public void processResources(int steps) {
+        for (int i = 0; i < steps; i++) {
+            for (Resource r : currentResource) {
+                r.process(steps);
+            }
+        }
+    }
+
+    @Override
+    public boolean hasUnfinishedResources() {
+        for (Resource r : currentResource) {
+            if (r.needsMoreProcessing()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

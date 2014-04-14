@@ -1,9 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import be.kuleuven.cs.flexsim.domain.resource.Resource;
-
-import com.google.common.base.Optional;
-
 /**
  * This interface represents the methods that the station states can call on the
  * context class.
@@ -14,13 +10,13 @@ import com.google.common.base.Optional;
 interface WorkstationContext {
 
     /**
-     * This method returns the resource currently present in the workstation.
-     * This value is <code>Optional</code> and can represent no resource being
-     * present.
+     * Signals the context to activate the processing of the current resources
+     * with the specified amount of steps.
      * 
-     * @return the current resource wrapped in an Optional.
+     * @param steps
+     *            the amount of steps to process resources with.
      */
-    Optional<Resource> getCurrentResource();
+    void processResources(int steps);
 
     /**
      * This method pushes the represented conveyer belt forward. Resources get
@@ -47,4 +43,13 @@ interface WorkstationContext {
      * @return the fixed cost.
      */
     int getFixedConsumptionRate();
+
+    /**
+     * Returns whether this workstation has any current resources that need more
+     * processing.
+     * 
+     * @return true if workstation possesses current resources that need more
+     *         processing.
+     */
+    boolean hasUnfinishedResources();
 }
