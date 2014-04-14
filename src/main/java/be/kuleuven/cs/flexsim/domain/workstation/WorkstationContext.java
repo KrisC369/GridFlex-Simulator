@@ -46,5 +46,5 @@ interface WorkstationContext {
      * 
      * @return the fixed cost.
      */
-    int getFixedECost();
+    int getFixedConsumptionRate();
 }

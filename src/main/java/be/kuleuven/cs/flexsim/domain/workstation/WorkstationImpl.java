@@ -27,7 +27,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     private int totalConsumption;
     private int lastConsumption;
     private int processedCount;
-    private final int fixedECost;
+    private final int fixedECons;
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -43,7 +43,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
             int idle, int working) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
-        this.fixedECost = idle;
+        this.fixedECons = idle;
         this.processingState = new StationStateImpl.Processing(working - idle);
         this.resourceMovingState = new StationStateImpl.ResourceMoving(0);
         this.currentState = resourceMovingState;
@@ -146,8 +146,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      */
     @Override
     public void tick() {
-        int rate = getCurrentState().getVarConsumptionRate();
-        setLastConsumption(getFixedECost() + rate);
+        setLastConsumption(getFixedConsumptionRate()
+                + getCurrentState().getVarConsumptionRate());
         increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(this);
     }
@@ -267,7 +267,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public int getFixedECost() {
-        return fixedECost;
+    public int getFixedConsumptionRate() {
+        return fixedECons;
     }
 }
