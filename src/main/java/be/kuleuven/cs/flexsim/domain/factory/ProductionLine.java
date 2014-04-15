@@ -26,6 +26,7 @@ public final class ProductionLine implements SimulationComponent {
     private static final int CAPACITY_NUMBER = 7;
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
+    private static final int MULTICAP_WORKING_CONSUMPTION = 20;
 
     private final List<Buffer<Resource>> buffers;
 
@@ -310,6 +311,78 @@ public final class ProductionLine implements SimulationComponent {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of parallel constant energy consuming workstations that
+         * can handle multiple items at once, to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @param cap
+         *            the capapcity of parallel stations
+         * @return the current builder instance
+         */
+        public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations
+                        .add(WorkstationFactory.createMultiCapConsuming(
+                                prodline.buffers
+                                        .get(prodline.buffers.size() - 2),
+                                prodline.buffers.get(prodline.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap));
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of parallel linear energy consuming workstations that
+         * can handle multiple items at once, to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @param cap
+         *            the capapcity of parallel stations
+         * @return the current builder instance
+         */
+        public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations
+                        .add(WorkstationFactory.createMultiCapLinearConsuming(
+                                prodline.buffers
+                                        .get(prodline.buffers.size() - 2),
+                                prodline.buffers.get(prodline.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap));
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of parallel exponential energy consuming workstations
+         * that can handle multiple items at once, to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @param cap
+         *            the capapcity of parallel stations
+         * @return the current builder instance
+         */
+        public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
+                int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations
+                        .add(WorkstationFactory
+                                .createMultiCapExponentialConsuming(
+                                        prodline.buffers.get(prodline.buffers
+                                                .size() - 2),
+                                        prodline.buffers.get(prodline.buffers
+                                                .size() - 1), IDLE_CONSUMPTION,
+                                        MULTICAP_WORKING_CONSUMPTION, cap));
             }
             return this;
         }
