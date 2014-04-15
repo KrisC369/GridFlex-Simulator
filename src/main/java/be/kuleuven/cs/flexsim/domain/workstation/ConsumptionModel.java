@@ -1,6 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+/**
+ * Different consumption model strategies for calculating energy consumption.
+ * 
+ * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ */
 public enum ConsumptionModel {
+    /**
+     * A Linear consumption model.
+     */
     LINEAR {
 
         @Override
@@ -15,16 +23,23 @@ public enum ConsumptionModel {
 
     },
 
+    /**
+     * An exponential energy consumption model.
+     */
     EXPONENTIAL {
 
         @Override
         public double getVarConsumptionRate(int remainingSteps, int maxSteps,
                 int maxRate) {
-            return 0;
+            return Math.pow(Math.pow(maxRate, 1 / (double) maxSteps), maxSteps
+                    - remainingSteps + 1);
         }
 
     },
 
+    /**
+     * A constant energy consumption model.
+     */
     CONSTANT {
 
         @Override

@@ -302,7 +302,7 @@ public class WorkstationTest {
     @Test
     public void testMultiCapacityLinearConsumption() {
         iew = WorkstationFactory.createMultiCapLinearConsuming(in, out, 1, 6,
-                12, 10);
+                12);
         multiPushResource(24, 10);
         multiTick(iew, 1);
         assertEquals(1, iew.getLastStepConsumption(), 0.05);
@@ -314,6 +314,25 @@ public class WorkstationTest {
         assertEquals(2.5, iew.getLastStepConsumption(), 0.05);
         multiTick(iew, 7);
         assertEquals(6, iew.getLastStepConsumption(), 0.05);
+    }
+
+    @Test
+    public void testMultiCapacityExponentialConsumption() {
+        iew = WorkstationFactory.createMultiCapExponentialConsuming(in, out, 1,
+                7, 12);
+        multiPushResource(24, 10);
+        multiTick(iew, 1);
+        assertEquals(1, iew.getLastStepConsumption(), 0.001);
+        multiTick(iew, 1);
+        assertEquals(2.196, iew.getLastStepConsumption(), 0.001);
+        multiTick(iew, 1);
+        assertEquals(2.431, iew.getLastStepConsumption(), 0.001);
+        multiTick(iew, 1);
+        assertEquals(2.712, iew.getLastStepConsumption(), 0.001);
+        multiTick(iew, 1);
+        assertEquals(3.0477, iew.getLastStepConsumption(), 0.001);
+        multiTick(iew, 6);
+        assertEquals(7, iew.getLastStepConsumption(), 0.001);
 
     }
 

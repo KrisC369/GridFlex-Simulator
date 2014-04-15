@@ -117,7 +117,8 @@ public final class WorkstationFactory {
     }
 
     /**
-     * Factory method for workstations that consume energy.
+     * Factory method for workstations that consume energy using a linear
+     * consumption model.
      * 
      * @param in
      *            The inputbuffer instance.
@@ -134,8 +135,33 @@ public final class WorkstationFactory {
      */
     public static Workstation createMultiCapLinearConsuming(
             Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
-            int capacity, int maxSteps) {
+            int capacity) {
         return new WorkstationImpl(in, out, idle, working, capacity,
                 ConsumptionModel.LINEAR);
+    }
+
+    /**
+     * Factory method for workstations that consume energy using an exponential
+     * consumption model.
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in idle state.
+     * @param working
+     *            The energy consumption in working state.
+     * 
+     * @param capacity
+     *            The capacity of this workstation in terms of resources.
+     * @return A Ready to use Workstation object.
+     */
+
+    public static Workstation createMultiCapExponentialConsuming(
+            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
+            int capacity) {
+        return new WorkstationImpl(in, out, idle, working, capacity,
+                ConsumptionModel.EXPONENTIAL);
     }
 }
