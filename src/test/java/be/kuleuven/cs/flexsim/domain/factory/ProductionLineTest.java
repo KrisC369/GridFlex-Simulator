@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLine.ProductionLineBuilder;
+import be.kuleuven.cs.flexsim.domain.finances.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
@@ -110,7 +111,7 @@ public class ProductionLineTest {
         SimulationComponent tester = new ChangeEventComponent(m);
         long duration = 20;
         sim = Simulator.createSimulator(duration);
-        sim.register(lineSimple);
+        sim.register(new FinanceTracker(lineSimple));
         sim.register(tester);
         ((Simulator) sim).start();
         verify(m, times((int) duration)).tick();

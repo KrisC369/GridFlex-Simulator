@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.domain.finances.InOutTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -13,16 +14,13 @@ import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.gridlock.simulation.events.Event;
-
-import com.google.common.base.Optional;
 
 /**
  * A production line representing buffers and workstations.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements SimulationComponent {
+public final class ProductionLine implements InOutTrackableSimulationComponent {
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
@@ -50,32 +48,46 @@ public final class ProductionLine implements SimulationComponent {
 
     private final List<Curtailable> curtailables;
 
-    private Optional<SimulationContext> context;
-
     private ProductionLine() {
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
-        this.context = Optional.absent();
         this.curtailables = new ArrayList<>();
     }
 
-    /**
-     * This method refines the following documentation by generating a report
-     * event when there is simulation context present for this line instance.
-     * {@inheritDoc}
-     */
     @Override
-    public void afterTick() {
-        report();
+    public List<Integer> getBufferOccupancyLevels() {
+        List<Integer> buffSizes = new ArrayList<>();
+        for (Buffer<Resource> b : buffers) {
+            buffSizes.add(b.getCurrentOccupancyLevel());
+        }
+        return buffSizes;
     }
 
-    private void report() {
-        List<Long> buffSizes = new ArrayList<>();
-        for (Buffer<Resource> b : buffers) {
-            buffSizes.add((long) b.getCurrentOccupancyLevel());
-        }
-        notifyReport(CollectionUtils.sum(workstations, LASTSTEP_CONSUMPTION),
-                CollectionUtils.sum(workstations, TOTAL_CONSUMPTION), buffSizes);
+    @Override
+    public int getAggregatedLastStepConsumptions() {
+        return CollectionUtils.sum(workstations, LASTSTEP_CONSUMPTION);
+    }
+
+    @Override
+    public int getAggregatedTotalConsumptions() {
+        return CollectionUtils.sum(workstations, TOTAL_CONSUMPTION);
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        return new ArrayList<SimulationComponent>(this.workstations);
+    }
+
+    @Override
+    public void tick() {
+    }
+
+    @Override
+    public void afterTick() {
     }
 
     /**
@@ -89,20 +101,6 @@ public final class ProductionLine implements SimulationComponent {
     }
 
     /**
-     * Returns the number of workstations in this line.
-     * 
-     * @return The number of workstations in this line.
-     */
-    public int getNumberOfWorkstations() {
-        return this.workstations.size();
-    }
-
-    @Override
-    public void initialize(SimulationContext context) {
-        this.context = Optional.of(context);
-    }
-
-    /**
      * Take all the processed resources from the end of the line.
      * 
      * @return the processed resources.
@@ -111,29 +109,13 @@ public final class ProductionLine implements SimulationComponent {
         return buffers.get(buffers.size() - 1).pullAll();
     }
 
-    @Override
-    public void tick() {
-    }
-
-    private void notifyReport(int totalLaststep, int totalTotal,
-            List<Long> buffSizes) {
-        if (this.context.isPresent()) {
-            Event e = getContext().getEventFactory().build("report");
-            e.setAttribute("pLinehash", this.hashCode());
-            e.setAttribute("time", getContext().getSimulationClock()
-                    .getTimeCount());
-            e.setAttribute("totalLaststepE", totalLaststep);
-            e.setAttribute("totalTotalE", totalTotal);
-            int idx = 0;
-            for (long i : buffSizes) {
-                e.setAttribute("buffer_" + idx++, i);
-            }
-            getContext().getEventbus().post(e);
-        }
-    }
-
-    private SimulationContext getContext() {
-        return this.context.get();
+    /**
+     * Returns the number of workstations in this line.
+     * 
+     * @return The number of workstations in this line.
+     */
+    public int getNumberOfWorkstations() {
+        return this.workstations.size();
     }
 
     /**
@@ -208,6 +190,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return a newly created production line instance.
      */
+    @Deprecated
     public static ProductionLine createStaticCurtailableLayout() {
         return new ProductionLineBuilder().addShifted(CAPACITY_NUMBER)
                 .addCurtailableShifted(CAPACITY_NUMBER)
@@ -397,10 +380,5 @@ public final class ProductionLine implements SimulationComponent {
             }
             return this;
         }
-    }
-
-    @Override
-    public List<SimulationComponent> getSimulationSubComponents() {
-        return new ArrayList<SimulationComponent>(this.workstations);
     }
 }
