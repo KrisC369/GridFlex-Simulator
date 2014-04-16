@@ -3,10 +3,12 @@ package be.kuleuven.cs.flexsim.domain.factory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,7 @@ public class ProductionLineTest {
         }
 
         @Override
-        public void afterTick() {
+        public void afterTick(int t) {
             // TODO Auto-generated method stub
 
         }
@@ -59,12 +61,18 @@ public class ProductionLineTest {
             resultMap = (e.getAttributes());
             lastType = e.getType();
             if (e.getType().contains("report")) {
-                mock.tick();
+                mock.tick(0);
             }
         }
 
         @Override
-        public void tick() {
+        public void tick(int t) {
+        }
+
+        @Override
+        public List<SimulationComponent> getSimulationSubComponents() {
+            // TODO Auto-generated method stub
+            return Collections.emptyList();
         }
 
     }
@@ -96,29 +104,13 @@ public class ProductionLineTest {
     }
 
     @Test
-    public void signalConsumptionTest() {
-        int n = 3;
-        deliverResources(n);
-        SimulationComponent m = mock(SimulationComponent.class);
-        SimulationComponent tester = new ChangeEventComponent(m);
-        long duration = 20;
-        sim = Simulator.createSimulator(duration);
-        sim.register(lineSimple);
-        sim.register(tester);
-        ((Simulator) sim).start();
-        verify(m, times((int) duration)).tick();
-        assertEquals("simulation:stopped",
-                ((ChangeEventComponent) tester).getLastType());
-    }
-
-    @Test
     public void testDeliverAndProcessResources() {
         int n = 3;
         deliverResources(n);
         SimulationComponent tester = mock(SimulationComponent.class);
         sim.register(tester);
         ((Simulator) sim).start();
-        verify(tester, times(simSteps)).tick();
+        verify(tester, times(simSteps)).tick(anyInt());
         assertEquals(n, lineExtended.takeResources().size());
 
     }
@@ -190,4 +182,20 @@ public class ProductionLineTest {
         ((Simulator) sim).start();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
+
+    @Test
+    public void testBuilderMultiCap() {
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3)
+                .addConsuming(4).addMultiCapConstantConsuming(1, 12)
+                .addMultiCapExponentialConsuming(1, 12)
+                .addMultiCapLinearConsuming(1, 12).build();
+        sim = Simulator.createSimulator(200);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+        assertEquals(10, l.getNumberOfWorkstations());
+        ((Simulator) sim).start();
+        assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
+    }
+
 }

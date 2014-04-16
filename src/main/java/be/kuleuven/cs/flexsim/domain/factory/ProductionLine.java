@@ -4,28 +4,43 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.domain.finances.ProcessTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.gridlock.simulation.events.Event;
-
-import com.google.common.base.Optional;
 
 /**
  * A production line representing buffers and workstations.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements SimulationComponent {
+public final class ProductionLine implements ProcessTrackableSimulationComponent {
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
+    private static final int MULTICAP_WORKING_CONSUMPTION = 20;
+    private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
+
+        @Override
+        public int apply(Workstation input) {
+            return (int) input.getLastStepConsumption();
+        }
+    };
+
+    private static final IntNNFunction<Workstation> TOTAL_CONSUMPTION = new IntNNFunction<Workstation>() {
+        @Override
+        public int apply(Workstation input) {
+            return (int) input.getTotalConsumption();
+        }
+    };
 
     private final List<Buffer<Resource>> buffers;
 
@@ -33,37 +48,46 @@ public final class ProductionLine implements SimulationComponent {
 
     private final List<Curtailable> curtailables;
 
-    private Optional<SimulationContext> context;
-
     private ProductionLine() {
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
-        this.context = Optional.absent();
         this.curtailables = new ArrayList<>();
     }
 
-    /**
-     * This method refines the following documentation by generating a report
-     * event when there is simulation context present for this line instance.
-     * {@inheritDoc}
-     */
     @Override
-    public void afterTick() {
-        report();
+    public List<Integer> getBufferOccupancyLevels() {
+        List<Integer> buffSizes = new ArrayList<>();
+        for (Buffer<Resource> b : buffers) {
+            buffSizes.add(b.getCurrentOccupancyLevel());
+        }
+        return buffSizes;
     }
 
-    private void report() {
-        long totalLaststep = 0;
-        long totalTotal = 0;
-        for (Workstation w : workstations) {
-            totalLaststep += w.getLastStepConsumption();
-            totalTotal += w.getTotalConsumption();
-        }
-        List<Long> buffSizes = new ArrayList<>();
-        for (Buffer<Resource> b : buffers) {
-            buffSizes.add((long) b.getCurrentOccupancyLevel());
-        }
-        notifyReport(totalLaststep, totalTotal, buffSizes);
+    @Override
+    public int getAggregatedLastStepConsumptions() {
+        return CollectionUtils.sum(workstations, LASTSTEP_CONSUMPTION);
+    }
+
+    @Override
+    public int getAggregatedTotalConsumptions() {
+        return CollectionUtils.sum(workstations, TOTAL_CONSUMPTION);
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        return new ArrayList<SimulationComponent>(this.workstations);
+    }
+
+    @Override
+    public void tick(int t) {
+    }
+
+    @Override
+    public void afterTick(int t) {
     }
 
     /**
@@ -72,8 +96,19 @@ public final class ProductionLine implements SimulationComponent {
      * @param res
      *            the resources to use.
      */
+    @Override
     public void deliverResources(List<Resource> res) {
         buffers.get(0).pushAll(res);
+    }
+
+    /**
+     * Take all the processed resources from the end of the line.
+     * 
+     * @return the processed resources.
+     */
+    @Override
+    public Collection<Resource> takeResources() {
+        return buffers.get(buffers.size() - 1).pullAll();
     }
 
     /**
@@ -85,48 +120,6 @@ public final class ProductionLine implements SimulationComponent {
         return this.workstations.size();
     }
 
-    @Override
-    public void initialize(SimulationContext context) {
-        for (Workstation w : workstations) {
-            context.register(w);
-        }
-        this.context = Optional.of(context);
-    }
-
-    /**
-     * Take all the processed resources from the end of the line.
-     * 
-     * @return the processed resources.
-     */
-    public Collection<Resource> takeResources() {
-        return buffers.get(buffers.size() - 1).pullAll();
-    }
-
-    @Override
-    public void tick() {
-    }
-
-    private void notifyReport(Long totalLaststep, Long totalTotal,
-            List<Long> buffSizes) {
-        if (this.context.isPresent()) {
-            Event e = getContext().getEventFactory().build("report");
-            e.setAttribute("pLinehash", this.hashCode());
-            e.setAttribute("time", getContext().getSimulationClock()
-                    .getTimeCount());
-            e.setAttribute("totalLaststepE", totalLaststep);
-            e.setAttribute("totalTotalE", totalTotal);
-            int idx = 0;
-            for (long i : buffSizes) {
-                e.setAttribute("buffer_" + idx++, i);
-            }
-            getContext().getEventbus().post(e);
-        }
-    }
-
-    private SimulationContext getContext() {
-        return this.context.get();
-    }
-
     /**
      * Creates a production line with a more complex layout.
      * <code>O-XXX-O-X-O</code> with O as buffers and X as stations and
@@ -134,6 +127,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return A production line instance.
      */
+    @Deprecated
     public static ProductionLine createExtendedLayout() {
         return createCustomLayout(BOTTLENECK_NUMBER, 1);
     }
@@ -144,6 +138,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return A production line instance.
      */
+    @Deprecated
     public static ProductionLine createSimpleLayout() {
         return createCustomLayout(1);
     }
@@ -155,6 +150,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return A production line instance.
      */
+    @Deprecated
     public static ProductionLine createSuperExtendedLayout() {
         return createCustomLayout(BOTTLENECK_NUMBER, BOTTLENECK_NUMBER - 1,
                 BOTTLENECK_NUMBER - 2);
@@ -196,6 +192,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return a newly created production line instance.
      */
+    @Deprecated
     public static ProductionLine createStaticCurtailableLayout() {
         return new ProductionLineBuilder().addShifted(CAPACITY_NUMBER)
                 .addCurtailableShifted(CAPACITY_NUMBER)
@@ -310,6 +307,78 @@ public final class ProductionLine implements SimulationComponent {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of parallel constant energy consuming workstations that
+         * can handle multiple items at once, to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @param cap
+         *            the capapcity of parallel stations
+         * @return the current builder instance
+         */
+        public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations
+                        .add(WorkstationFactory.createMultiCapConsuming(
+                                prodline.buffers
+                                        .get(prodline.buffers.size() - 2),
+                                prodline.buffers.get(prodline.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap));
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of parallel linear energy consuming workstations that
+         * can handle multiple items at once, to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @param cap
+         *            the capapcity of parallel stations
+         * @return the current builder instance
+         */
+        public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations
+                        .add(WorkstationFactory.createMultiCapLinearConsuming(
+                                prodline.buffers
+                                        .get(prodline.buffers.size() - 2),
+                                prodline.buffers.get(prodline.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap));
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of parallel exponential energy consuming workstations
+         * that can handle multiple items at once, to the line.
+         * 
+         * @param n
+         *            the number of parallel stations
+         * @param cap
+         *            the capapcity of parallel stations
+         * @return the current builder instance
+         */
+        public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
+                int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                prodline.workstations
+                        .add(WorkstationFactory
+                                .createMultiCapExponentialConsuming(
+                                        prodline.buffers.get(prodline.buffers
+                                                .size() - 2),
+                                        prodline.buffers.get(prodline.buffers
+                                                .size() - 1), IDLE_CONSUMPTION,
+                                        MULTICAP_WORKING_CONSUMPTION, cap));
             }
             return this;
         }

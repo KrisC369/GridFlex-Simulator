@@ -2,10 +2,14 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -18,6 +22,20 @@ import com.google.common.annotations.VisibleForTesting;
  * 
  */
 public class WorkstationImpl implements Workstation, WorkstationContext {
+
+    private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = new IntNNFunction<Resource>() {
+        @Override
+        public int apply(Resource input) {
+            return input.getCurrentNeededProcessTime();
+        }
+    };
+
+    private static final IntNNFunction<Resource> MAX_REMAINING_STEPS = new IntNNFunction<Resource>() {
+        @Override
+        public int apply(Resource input) {
+            return input.getMaxNeededProcessTime();
+        }
+    };
 
     private final Buffer<Resource> inputBuff;
     private final Buffer<Resource> outputBuff;
@@ -60,7 +78,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public void afterTick() {
+    public void afterTick(int t) {
     }
 
     @Override
@@ -171,7 +189,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      * @see simulation.ISimulationComponent#tick()
      */
     @Override
-    public void tick() {
+    public void tick(int t) {
         setLastConsumption(getFixedConsumptionRate()
                 + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
                         getRemainingMaxSteps()));
@@ -180,23 +198,11 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     private int getRemainingSteps() {
-        int maxResource = 0;
-        for (Resource r : currentResource) {
-            if (r.getCurrentNeededProcessTime() > maxResource) {
-                maxResource = r.getCurrentNeededProcessTime();
-            }
-        }
-        return maxResource;
+        return CollectionUtils.max(currentResource, CURRENT_REMAINING_STEPS);
     }
 
     private int getRemainingMaxSteps() {
-        int maxResource = 0;
-        for (Resource r : currentResource) {
-            if (r.getMaxNeededProcessTime() > maxResource) {
-                maxResource = r.getMaxNeededProcessTime();
-            }
-        }
-        return maxResource;
+        return CollectionUtils.max(currentResource, MAX_REMAINING_STEPS);
     }
 
     private StationState getCurrentState() {
@@ -257,5 +263,10 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        return Collections.emptyList();
     }
 }

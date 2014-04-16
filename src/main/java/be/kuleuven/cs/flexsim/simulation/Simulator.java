@@ -68,6 +68,15 @@ public final class Simulator implements SimulationContext {
     }
 
     /**
+     * Returns the instrumentation components of this simulator.
+     * 
+     * @return the instrumentation components.
+     */
+    public Collection<InstrumentationComponent> getInstrumentationComponents() {
+        return Collections.unmodifiableCollection(instruComps);
+    }
+
+    /**
      * Gets the scheduled duration of this simulation.
      * 
      * @return the duration
@@ -86,6 +95,11 @@ public final class Simulator implements SimulationContext {
         return eventFac;
     }
 
+    @Override
+    public Clock getSimulationClock() {
+        return this.clock;
+    }
+
     /**
      * Gets the elapsed simulation time.
      * 
@@ -93,22 +107,6 @@ public final class Simulator implements SimulationContext {
      */
     public int getSimulationTime() {
         return clock.getTimeCount();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * simulation.ISimulationContext#register(simulation.ISimulationComponent)
-     */
-    @Override
-    public void register(SimulationComponent comp) {
-        registerComp(comp);
-    }
-
-    private void registerComp(SimulationComponent comp) {
-        this.components.add(comp);
-        registerInstru(comp);
     }
 
     /**
@@ -121,26 +119,32 @@ public final class Simulator implements SimulationContext {
         notifyStop();
     }
 
+    private void notifyStart() {
+        Event ev = eventFac.build(SIMSTART_LITERAL);
+        ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
+        this.eventbus.post(ev);
+    }
+
     private void notifyStop() {
         Event ev = eventFac.build(SIMSTOP_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
     }
 
+    private synchronized void tickComponents() {
+        for (SimulationComponent c : components) {
+            c.tick(getSimulationTime());
+        }
+    }
+
     private synchronized void afterTickComponents() {
         for (SimulationComponent c : components) {
-            c.afterTick();
+            c.afterTick(getSimulationTime());
         }
     }
 
     private SimulationClock getClock() {
         return this.clock;
-    }
-
-    private void notifyStart() {
-        Event ev = eventFac.build(SIMSTART_LITERAL);
-        ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
-        this.eventbus.post(ev);
     }
 
     private boolean shouldRun() {
@@ -159,12 +163,6 @@ public final class Simulator implements SimulationContext {
         }
     }
 
-    private synchronized void tickComponents() {
-        for (SimulationComponent c : components) {
-            c.tick();
-        }
-    }
-
     /**
      * Creates and instantiates a new simulator.
      * 
@@ -176,13 +174,23 @@ public final class Simulator implements SimulationContext {
         return new Simulator(duration);
     }
 
-    /**
-     * Returns the instrumentation components of this simulator.
+    /*
+     * (non-Javadoc)
      * 
-     * @return the instrumentation components.
+     * @see
+     * simulation.ISimulationContext#register(simulation.ISimulationComponent)
      */
-    public Collection<InstrumentationComponent> getInstrumentationComponents() {
-        return Collections.unmodifiableCollection(instruComps);
+    @Override
+    public void register(SimulationComponent comp) {
+        registerComp(comp);
+        for (SimulationComponent sc : comp.getSimulationSubComponents()) {
+            register(sc);
+        }
+    }
+
+    private void registerComp(SimulationComponent comp) {
+        this.components.add(comp);
+        registerInstru(comp);
     }
 
     @Override
@@ -194,11 +202,6 @@ public final class Simulator implements SimulationContext {
         this.instruComps.add(comp);
         this.eventbus.register(comp);
         comp.initialize(this);
-    }
-
-    @Override
-    public Clock getSimulationClock() {
-        return this.clock;
     }
 
 }

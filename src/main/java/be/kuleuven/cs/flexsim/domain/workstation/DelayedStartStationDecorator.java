@@ -30,11 +30,11 @@ public class DelayedStartStationDecorator extends ForwardingStationDecorator {
      * {@inheritDoc} This tick method is called after a number of initial ticks.
      */
     @Override
-    public void afterTick() {
+    public void afterTick(int t) {
         if (shiftTimeAfter > 0) {
             shiftTimeAfter--;
         } else {
-            super.afterTick();
+            super.afterTick(t);
         }
     }
 
@@ -42,11 +42,11 @@ public class DelayedStartStationDecorator extends ForwardingStationDecorator {
      * {@inheritDoc} This tick method is called after a number of initial ticks.
      */
     @Override
-    public void tick() {
+    public void tick(int t) {
         if (shiftTime > 0) {
             shiftTime--;
         } else {
-            super.tick();
+            super.tick(t);
         }
     }
 }

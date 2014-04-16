@@ -39,11 +39,11 @@ public class WorkstationTest {
     @Test
     public void testConsumingOneTickConsumptionOf3() {
         pushResource(1);
-        iew.tick();
+        iew.tick(0);
         assertEquals(1, iew.getLastStepConsumption(), DELTA);
-        iew.tick();
+        iew.tick(0);
         assertEquals(3, iew.getLastStepConsumption(), DELTA);
-        iew.tick();
+        iew.tick(0);
         assertEquals(0, iew.getLastStepConsumption(), DELTA);
         assertEquals(1, iew.getProcessedItemsCount());
     }
@@ -73,20 +73,20 @@ public class WorkstationTest {
         assertEquals(0, r, DELTA);
         pushResource(1);
 
-        iew.tick();
+        iew.tick(0);
         assertNotEquals(r, iew.getTotalConsumption());
         r = iew.getTotalConsumption();
-        iew.tick();
+        iew.tick(0);
         assertNotEquals(r, iew.getTotalConsumption());
         r = iew.getTotalConsumption();
-        iew.tick();
+        iew.tick(0);
         assertNotEquals(r, iew.getTotalConsumption());
         r = iew.getTotalConsumption();
-        iew.tick();
+        iew.tick(0);
         assertNotEquals(r, iew.getTotalConsumption());
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
-        iew.tick();
+        iew.tick(0);
         assertNotEquals(r, iew.getTotalConsumption());
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
@@ -97,7 +97,7 @@ public class WorkstationTest {
     public void testDefaultOneTickConsumptionOfZero() {
         pushResource(1);
         for (int i = 0; i < 5; i++) {
-            wSingle.tick();
+            wSingle.tick(0);
             assertEquals(0, wSingle.getLastStepConsumption(), DELTA);
         }
     }
@@ -132,9 +132,9 @@ public class WorkstationTest {
     @Test
     public void testProcessResourceSingleSteps() {
         Resource res = pushResource(3);
-        wSingle.tick();
+        wSingle.tick(0);
         testStateAfterProces1(res);
-        wSingle.tick();
+        wSingle.tick(0);
         assertFalse(wSingle.isIdle());
         multiTick(wSingle, 3);
         testStateAfterFinalPush(res);
@@ -143,9 +143,9 @@ public class WorkstationTest {
     @Test
     public void testProcessResourceWithLongerSteps() {
         Resource res = pushResource(3);
-        wSingle.tick();
+        wSingle.tick(0);
         testStateAfterProces1(res);
-        wSingle.tick();
+        wSingle.tick(0);
         assertFalse(wSingle.isIdle());
         multiTick(wSingle, 3);
         testStateAfterFinalPush(res);
@@ -157,17 +157,17 @@ public class WorkstationTest {
         iew = WorkstationFactory.createShiftableWorkstation(in, out, 0, 0,
                 shift);
         Resource res = pushResource(3);
-        iew.tick();
-        iew.afterTick();
+        iew.tick(0);
+        iew.afterTick(0);
         assertTrue(iew.isIdle());
-        iew.tick();
-        iew.afterTick();
+        iew.tick(0);
+        iew.afterTick(0);
         assertTrue(in.isEmpty());
         assertFalse(iew.isIdle());
         assertTrue(out.isEmpty());
         assertEquals(0, iew.getProcessedItemsCount());
-        iew.tick();
-        iew.afterTick();
+        iew.tick(0);
+        iew.afterTick(0);
         multiTick(iew, 3);
         assertTrue(in.isEmpty());
         assertTrue(iew.isIdle());
@@ -181,15 +181,15 @@ public class WorkstationTest {
         int shift = 1;
         Workstation mock = mock(Workstation.class);
         Workstation deco = new DelayedStartStationDecorator(shift, mock);
-        deco.afterTick();
-        verify(mock, times(0)).afterTick();
-        deco.afterTick();
-        verify(mock, times(1)).afterTick();
+        deco.afterTick(0);
+        verify(mock, times(0)).afterTick(0);
+        deco.afterTick(0);
+        verify(mock, times(1)).afterTick(0);
 
-        deco.tick();
-        verify(mock, times(0)).tick();
-        deco.tick();
-        verify(mock, times(1)).tick();
+        deco.tick(0);
+        verify(mock, times(0)).tick(0);
+        deco.tick(0);
+        verify(mock, times(1)).tick(0);
 
         SimulationContext c = mock(SimulationContext.class);
         deco.initialize(c);
@@ -215,10 +215,10 @@ public class WorkstationTest {
         Curtailable curt2 = ((Curtailable) curt);
 
         Resource res = pushResource(3);
-        curt.tick();
-        curt.afterTick();
-        curt.tick();
-        curt.afterTick();
+        curt.tick(0);
+        curt.afterTick(0);
+        curt.tick(0);
+        curt.afterTick(0);
         assertTrue(in.isEmpty());
         assertFalse(curt.isIdle());
         assertTrue(out.isEmpty());
@@ -228,7 +228,7 @@ public class WorkstationTest {
         curt2.doFullCurtailment();
 
         multiTick(curt, 20);
-        curt.afterTick();
+        curt.afterTick(0);
 
         assertTrue(in.isEmpty());
         assertFalse(curt.isIdle());
@@ -349,7 +349,7 @@ public class WorkstationTest {
 
     private void multiTick(Workstation s, int times) {
         for (; times > 0; times--) {
-            s.tick();
+            s.tick(0);
         }
     }
 
