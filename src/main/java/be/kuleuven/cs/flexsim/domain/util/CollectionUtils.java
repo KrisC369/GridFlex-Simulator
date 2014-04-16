@@ -12,16 +12,21 @@ import java.util.List;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class CollectionUtils {
+public final class CollectionUtils {
+    private CollectionUtils() {
+    }
+
     /**
      * This calculates the max of a certain value in a list of objects having
      * comparable values.
      * 
      * @param list
-     *            the list of elements
+     *            the list of elements.
      * @param f
      *            the function to apply to an element to get the value to
      *            compare with the maximum.
+     * @param <T>
+     *            the type representing the elements to apply function f to.
      * @return the maximum.
      */
     public static <T> int max(List<T> list, IntNNFunction<T> f) {
@@ -41,7 +46,9 @@ public class CollectionUtils {
      * @param elems
      *            the list of elements.
      * @param f
-     *            the function to apply to an element to get the value to sum
+     *            the function to apply to an element to get the value to sum.
+     * @param <T>
+     *            the type representing the elements to apply function f to.
      *            over.
      * @return the sum over all elements.
      */
