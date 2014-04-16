@@ -6,7 +6,8 @@ import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
-import be.kuleuven.cs.flexsim.domain.util.NonNullableFunction;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.domain.util.LongNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
@@ -28,17 +29,17 @@ public final class ProductionLine implements SimulationComponent {
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
     private static final int MULTICAP_WORKING_CONSUMPTION = 20;
-    private static final NonNullableFunction<Workstation, Long> LASTSTEP_CONSUMPTION = new NonNullableFunction<Workstation, Long>() {
+    private static final LongNNFunction<Workstation> LASTSTEP_CONSUMPTION = new LongNNFunction<Workstation>() {
 
         @Override
-        public Long apply(Workstation input) {
+        public long apply(Workstation input) {
             return (long) input.getLastStepConsumption();
         }
     };
 
-    private static final NonNullableFunction<Workstation, Long> TOTAL_CONSUMPTION = new NonNullableFunction<Workstation, Long>() {
+    private static final LongNNFunction<Workstation> TOTAL_CONSUMPTION = new LongNNFunction<Workstation>() {
         @Override
-        public Long apply(Workstation input) {
+        public long apply(Workstation input) {
             return (long) input.getTotalConsumption();
         }
     };
@@ -73,16 +74,8 @@ public final class ProductionLine implements SimulationComponent {
         for (Buffer<Resource> b : buffers) {
             buffSizes.add((long) b.getCurrentOccupancyLevel());
         }
-        notifyReport(sum(workstations, LASTSTEP_CONSUMPTION),
-                sum(workstations, TOTAL_CONSUMPTION), buffSizes);
-    }
-
-    private <T> long sum(List<T> elems, NonNullableFunction<T, Long> f) {
-        long tot = 0;
-        for (T t : elems) {
-            tot += f.apply(t);
-        }
-        return tot;
+        notifyReport(CollectionUtils.sum(workstations, LASTSTEP_CONSUMPTION),
+                CollectionUtils.sum(workstations, TOTAL_CONSUMPTION), buffSizes);
     }
 
     /**

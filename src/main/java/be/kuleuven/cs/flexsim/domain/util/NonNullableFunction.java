@@ -38,4 +38,7 @@ public interface NonNullableFunction<F, T> {
      *             null arguments
      */
     T apply(@Nullable F input);
+
+    // @Override
+    // boolean equals(@Nullable Object object);
 }
