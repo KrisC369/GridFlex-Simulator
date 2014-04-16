@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import javax.annotation.Nullable;
 
 /**
  * * Determines an output int value based on an input value.
@@ -35,5 +34,5 @@ public interface IntNNFunction<F> {
      *             if {@code input} is null and this function does not accept
      *             null arguments
      */
-    int apply(@Nullable F input);
+    int apply(F input);
 }
