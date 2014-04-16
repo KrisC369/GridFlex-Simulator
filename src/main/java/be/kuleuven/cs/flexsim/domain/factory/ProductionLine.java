@@ -7,7 +7,7 @@ import java.util.List;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.domain.util.LongNNFunction;
+import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
@@ -29,18 +29,18 @@ public final class ProductionLine implements SimulationComponent {
     private static final int WORKING_CONSUMPTION = 3;
     private static final int IDLE_CONSUMPTION = 1;
     private static final int MULTICAP_WORKING_CONSUMPTION = 20;
-    private static final LongNNFunction<Workstation> LASTSTEP_CONSUMPTION = new LongNNFunction<Workstation>() {
+    private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
 
         @Override
-        public long apply(Workstation input) {
-            return (long) input.getLastStepConsumption();
+        public int apply(Workstation input) {
+            return (int) input.getLastStepConsumption();
         }
     };
 
-    private static final LongNNFunction<Workstation> TOTAL_CONSUMPTION = new LongNNFunction<Workstation>() {
+    private static final IntNNFunction<Workstation> TOTAL_CONSUMPTION = new IntNNFunction<Workstation>() {
         @Override
-        public long apply(Workstation input) {
-            return (long) input.getTotalConsumption();
+        public int apply(Workstation input) {
+            return (int) input.getTotalConsumption();
         }
     };
 
@@ -118,7 +118,7 @@ public final class ProductionLine implements SimulationComponent {
     public void tick() {
     }
 
-    private void notifyReport(Long totalLaststep, Long totalTotal,
+    private void notifyReport(int totalLaststep, int totalTotal,
             List<Long> buffSizes) {
         if (this.context.isPresent()) {
             Event e = getContext().getEventFactory().build("report");
@@ -146,6 +146,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return A production line instance.
      */
+    @Deprecated
     public static ProductionLine createExtendedLayout() {
         return createCustomLayout(BOTTLENECK_NUMBER, 1);
     }
@@ -156,6 +157,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return A production line instance.
      */
+    @Deprecated
     public static ProductionLine createSimpleLayout() {
         return createCustomLayout(1);
     }
@@ -167,6 +169,7 @@ public final class ProductionLine implements SimulationComponent {
      * 
      * @return A production line instance.
      */
+    @Deprecated
     public static ProductionLine createSuperExtendedLayout() {
         return createCustomLayout(BOTTLENECK_NUMBER, BOTTLENECK_NUMBER - 1,
                 BOTTLENECK_NUMBER - 2);
