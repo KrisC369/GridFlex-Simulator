@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.factory;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,7 +32,6 @@ public final class ProductionLine implements SimulationComponent {
 
         @Override
         public Long apply(Workstation input) {
-            checkNotNull(input);
             return (long) input.getLastStepConsumption();
         }
     };
@@ -42,7 +39,6 @@ public final class ProductionLine implements SimulationComponent {
     private static final NonNullableFunction<Workstation, Long> TOTAL_CONSUMPTION = new NonNullableFunction<Workstation, Long>() {
         @Override
         public Long apply(Workstation input) {
-            checkNotNull(input);
             return (long) input.getTotalConsumption();
         }
     };
