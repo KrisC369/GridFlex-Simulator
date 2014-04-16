@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+
 /**
  * This station decorator allows for curtailment functionality for workstations.
  * 

@@ -1,5 +1,8 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import java.util.List;
+
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 /**
@@ -64,6 +67,11 @@ public abstract class ForwardingStationDecorator implements Workstation {
      */
     protected final Workstation getDelegate() {
         return this.w;
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        return getDelegate().getSimulationSubComponents();
     }
 
 }

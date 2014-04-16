@@ -95,22 +95,6 @@ public final class Simulator implements SimulationContext {
         return clock.getTimeCount();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * simulation.ISimulationContext#register(simulation.ISimulationComponent)
-     */
-    @Override
-    public void register(SimulationComponent comp) {
-        registerComp(comp);
-    }
-
-    private void registerComp(SimulationComponent comp) {
-        this.components.add(comp);
-        registerInstru(comp);
-    }
-
     /**
      * Starts this simulation by running the simulation loop.
      * 
@@ -176,13 +160,23 @@ public final class Simulator implements SimulationContext {
         return new Simulator(duration);
     }
 
-    /**
-     * Returns the instrumentation components of this simulator.
+    /*
+     * (non-Javadoc)
      * 
-     * @return the instrumentation components.
+     * @see
+     * simulation.ISimulationContext#register(simulation.ISimulationComponent)
      */
-    public Collection<InstrumentationComponent> getInstrumentationComponents() {
-        return Collections.unmodifiableCollection(instruComps);
+    @Override
+    public void register(SimulationComponent comp) {
+        registerComp(comp);
+        for (SimulationComponent sc : comp.getSimulationSubComponents()) {
+            register(sc);
+        }
+    }
+
+    private void registerComp(SimulationComponent comp) {
+        this.components.add(comp);
+        registerInstru(comp);
     }
 
     @Override
@@ -194,6 +188,15 @@ public final class Simulator implements SimulationContext {
         this.instruComps.add(comp);
         this.eventbus.register(comp);
         comp.initialize(this);
+    }
+
+    /**
+     * Returns the instrumentation components of this simulator.
+     * 
+     * @return the instrumentation components.
+     */
+    public Collection<InstrumentationComponent> getInstrumentationComponents() {
+        return Collections.unmodifiableCollection(instruComps);
     }
 
     @Override

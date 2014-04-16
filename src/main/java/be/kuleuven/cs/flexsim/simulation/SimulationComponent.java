@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.simulation;
 
+import java.util.List;
+
 /**
  * Simulation components that need to receive tick-triggers implement this
  * interface. This interface inherits from the instrumentation component
@@ -19,5 +21,12 @@ public interface SimulationComponent extends InstrumentationComponent {
      * called.
      */
     void tick();
+
+    /**
+     * Get the subcomponents that are also simulation components.
+     * 
+     * @return the subcomponents for this component or an empty list.
+     */
+    List<SimulationComponent> getSimulationSubComponents();
 
 }

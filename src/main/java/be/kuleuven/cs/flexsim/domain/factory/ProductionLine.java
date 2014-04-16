@@ -99,9 +99,6 @@ public final class ProductionLine implements SimulationComponent {
 
     @Override
     public void initialize(SimulationContext context) {
-        for (Workstation w : workstations) {
-            context.register(w);
-        }
         this.context = Optional.of(context);
     }
 
@@ -400,5 +397,10 @@ public final class ProductionLine implements SimulationComponent {
             }
             return this;
         }
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        return new ArrayList<SimulationComponent>(this.workstations);
     }
 }

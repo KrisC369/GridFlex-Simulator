@@ -8,7 +8,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
@@ -43,6 +45,12 @@ public class SimulatorTest {
 
         @Override
         public void tick() {
+        }
+
+        @Override
+        public List<SimulationComponent> getSimulationSubComponents() {
+            // TODO Auto-generated method stub
+            return Collections.emptyList();
         }
     }
 
