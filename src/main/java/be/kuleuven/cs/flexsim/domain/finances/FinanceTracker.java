@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.finances;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
@@ -17,12 +18,25 @@ import com.google.common.base.Optional;
  */
 public class FinanceTracker implements SimulationComponent {
 
-    private final InOutTrackableSimulationComponent target;
+    private final ProcessTrackableSimulationComponent target;
     private Optional<SimulationContext> context;
+    private int totalReward;
+    private int totalCost;
+    private RewardModel rewardMod;
+    private DebtModel debtMod;
 
-    public FinanceTracker(InOutTrackableSimulationComponent target) {
+    /**
+     * Default constructor based on trackable components.
+     * 
+     * @param target
+     *            the target component to track.
+     */
+    public FinanceTracker(ProcessTrackableSimulationComponent target,
+            RewardModel rm, DebtModel dm) {
         this.target = target;
         this.context = Optional.absent();
+        this.rewardMod = rm;
+        this.debtMod = dm;
     }
 
     @Override
@@ -36,17 +50,32 @@ public class FinanceTracker implements SimulationComponent {
      * {@inheritDoc}
      */
     @Override
-    public void afterTick() {
+    public void afterTick(int t) {
+        calculateConsumption(t);
+        calculateReward(t);
         report();
     }
 
+    private void calculateConsumption(int t) {
+        incrementTotalCost(debtMod.calculateDebt(t, getTarget()
+                .getAggregatedLastStepConsumptions()));
+    }
+
+    private void calculateReward(int t) {
+        int rewardIncrement = 0;
+        for (Resource r : getTarget().takeResources()) {
+            rewardIncrement += rewardMod.calculateReward(t, r);
+        }
+        increaseTotalReward(rewardIncrement);
+    }
+
     private void report() {
-        notifyReport(getTarget().getAggregatedLastStepConsumptions(),
+        publishReport(getTarget().getAggregatedLastStepConsumptions(),
                 getTarget().getAggregatedTotalConsumptions(), getTarget()
                         .getBufferOccupancyLevels());
     }
 
-    private void notifyReport(int totalLaststep, int totalTotal,
+    private void publishReport(int totalLaststep, int totalTotal,
             List<Integer> buffSizes) {
         if (this.context.isPresent()) {
             Event e = getContext().getEventFactory().build("report");
@@ -64,7 +93,7 @@ public class FinanceTracker implements SimulationComponent {
     }
 
     @Override
-    public void tick() {
+    public void tick(int t) {
         // TODO Auto-generated method stub
 
     }
@@ -79,15 +108,34 @@ public class FinanceTracker implements SimulationComponent {
     /**
      * @return the target
      */
-    private final InOutTrackableSimulationComponent getTarget() {
+    private ProcessTrackableSimulationComponent getTarget() {
         return target;
     }
 
     /**
      * @return the context
      */
-    private final SimulationContext getContext() {
+    private SimulationContext getContext() {
         return context.get();
+    }
+
+    public int getTotalReward() {
+        return this.totalReward;
+    }
+
+    private void increaseTotalReward(int increment) {
+        this.totalReward = this.totalReward + increment;
+    }
+
+    /**
+     * @return the totalCost
+     */
+    public final int getTotalCost() {
+        return totalCost;
+    }
+
+    private final void incrementTotalCost(int incr) {
+        this.totalCost = this.totalCost + incr;
     }
 
 }

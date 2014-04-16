@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.factory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLine.ProductionLineBuilder;
-import be.kuleuven.cs.flexsim.domain.finances.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
@@ -39,7 +39,7 @@ public class ProductionLineTest {
         }
 
         @Override
-        public void afterTick() {
+        public void afterTick(int t) {
             // TODO Auto-generated method stub
 
         }
@@ -61,12 +61,12 @@ public class ProductionLineTest {
             resultMap = (e.getAttributes());
             lastType = e.getType();
             if (e.getType().contains("report")) {
-                mock.tick();
+                mock.tick(0);
             }
         }
 
         @Override
-        public void tick() {
+        public void tick(int t) {
         }
 
         @Override
@@ -104,29 +104,13 @@ public class ProductionLineTest {
     }
 
     @Test
-    public void signalConsumptionTest() {
-        int n = 3;
-        deliverResources(n);
-        SimulationComponent m = mock(SimulationComponent.class);
-        SimulationComponent tester = new ChangeEventComponent(m);
-        long duration = 20;
-        sim = Simulator.createSimulator(duration);
-        sim.register(new FinanceTracker(lineSimple));
-        sim.register(tester);
-        ((Simulator) sim).start();
-        verify(m, times((int) duration)).tick();
-        assertEquals("simulation:stopped",
-                ((ChangeEventComponent) tester).getLastType());
-    }
-
-    @Test
     public void testDeliverAndProcessResources() {
         int n = 3;
         deliverResources(n);
         SimulationComponent tester = mock(SimulationComponent.class);
         sim.register(tester);
         ((Simulator) sim).start();
-        verify(tester, times(simSteps)).tick();
+        verify(tester, times(simSteps)).tick(anyInt());
         assertEquals(n, lineExtended.takeResources().size());
 
     }

@@ -13,14 +13,20 @@ import java.util.List;
 public interface SimulationComponent extends InstrumentationComponent {
     /**
      * This tick method is called after all regular ticks have been performed.
+     * 
+     * @param t
+     *            The time step count.
      */
-    void afterTick();
+    void afterTick(int t);
 
     /**
      * The main simulation tick method. Every simulated timestep this method is
      * called.
+     * 
+     * @param t
+     *            The time step count.
      */
-    void tick();
+    void tick(int t);
 
     /**
      * Get the subcomponents that are also simulation components.

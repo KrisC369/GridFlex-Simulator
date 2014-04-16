@@ -46,9 +46,9 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
      * Only defers ticks when not in curtailment mode. {@inheritDoc}
      */
     @Override
-    public void afterTick() {
+    public void afterTick(int t) {
         if (!isCurtailed()) {
-            super.afterTick();
+            super.afterTick(t);
         }
     }
 
@@ -56,9 +56,9 @@ public class CurtailableStationDecorator extends ForwardingStationDecorator
      * Only defers ticks when not in curtailment mode. {@inheritDoc}
      */
     @Override
-    public void tick() {
+    public void tick(int t) {
         if (!isCurtailed()) {
-            super.tick();
+            super.tick(t);
         }
     }
 

@@ -78,7 +78,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public void afterTick() {
+    public void afterTick(int t) {
     }
 
     @Override
@@ -189,7 +189,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
      * @see simulation.ISimulationComponent#tick()
      */
     @Override
-    public void tick() {
+    public void tick(int t) {
         setLastConsumption(getFixedConsumptionRate()
                 + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
                         getRemainingMaxSteps()));

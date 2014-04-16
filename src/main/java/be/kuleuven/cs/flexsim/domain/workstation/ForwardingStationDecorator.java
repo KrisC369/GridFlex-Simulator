@@ -51,13 +51,13 @@ public abstract class ForwardingStationDecorator implements Workstation {
     }
 
     @Override
-    public void afterTick() {
-        getDelegate().afterTick();
+    public void afterTick(int t) {
+        getDelegate().afterTick(0);
     }
 
     @Override
-    public void tick() {
-        getDelegate().tick();
+    public void tick(int t) {
+        getDelegate().tick(0);
     }
 
     /**

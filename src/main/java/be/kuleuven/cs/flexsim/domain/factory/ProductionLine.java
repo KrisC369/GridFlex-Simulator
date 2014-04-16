@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.finances.InOutTrackableSimulationComponent;
+import be.kuleuven.cs.flexsim.domain.finances.ProcessTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -20,7 +20,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements InOutTrackableSimulationComponent {
+public final class ProductionLine implements ProcessTrackableSimulationComponent {
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
@@ -83,11 +83,11 @@ public final class ProductionLine implements InOutTrackableSimulationComponent {
     }
 
     @Override
-    public void tick() {
+    public void tick(int t) {
     }
 
     @Override
-    public void afterTick() {
+    public void afterTick(int t) {
     }
 
     /**
@@ -96,6 +96,7 @@ public final class ProductionLine implements InOutTrackableSimulationComponent {
      * @param res
      *            the resources to use.
      */
+    @Override
     public void deliverResources(List<Resource> res) {
         buffers.get(0).pushAll(res);
     }
@@ -105,6 +106,7 @@ public final class ProductionLine implements InOutTrackableSimulationComponent {
      * 
      * @return the processed resources.
      */
+    @Override
     public Collection<Resource> takeResources() {
         return buffers.get(buffers.size() - 1).pullAll();
     }

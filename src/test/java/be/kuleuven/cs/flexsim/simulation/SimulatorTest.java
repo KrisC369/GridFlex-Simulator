@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -25,7 +26,7 @@ public class SimulatorTest {
         private Map<String, Object> resultMap = new HashMap<>();
 
         @Override
-        public void afterTick() {
+        public void afterTick(int t) {
             // TODO Auto-generated method stub
 
         }
@@ -44,7 +45,7 @@ public class SimulatorTest {
         }
 
         @Override
-        public void tick() {
+        public void tick(int t) {
         }
 
         @Override
@@ -98,7 +99,7 @@ public class SimulatorTest {
         long duration = 20;
         s = Simulator.createSimulator(duration);
         runSim(true);
-        verify(comp, times(20)).tick();
+        verify(comp, times(20)).tick(anyInt());
     }
 
     @Test
@@ -106,7 +107,7 @@ public class SimulatorTest {
         long duration = 20;
         s = Simulator.createSimulator(duration);
         runSim(true);
-        verify(comp, times(20)).afterTick();
+        verify(comp, times(20)).afterTick(anyInt());
     }
 
     @Test
