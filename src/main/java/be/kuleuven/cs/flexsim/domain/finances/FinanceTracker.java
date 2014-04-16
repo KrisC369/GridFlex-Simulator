@@ -22,14 +22,18 @@ public class FinanceTracker implements SimulationComponent {
     private Optional<SimulationContext> context;
     private int totalReward;
     private int totalCost;
-    private RewardModel rewardMod;
-    private DebtModel debtMod;
+    private final RewardModel rewardMod;
+    private final DebtModel debtMod;
 
     /**
      * Default constructor based on trackable components.
      * 
      * @param target
      *            the target component to track.
+     * @param rm
+     *            The rewardModel to use.
+     * @param dm
+     *            The debtModel to use.
      */
     public FinanceTracker(ProcessTrackableSimulationComponent target,
             RewardModel rm, DebtModel dm) {
@@ -119,6 +123,11 @@ public class FinanceTracker implements SimulationComponent {
         return context.get();
     }
 
+    /**
+     * Returns the total reward metric value for this tracker.
+     * 
+     * @return the reward.
+     */
     public int getTotalReward() {
         return this.totalReward;
     }
@@ -128,13 +137,15 @@ public class FinanceTracker implements SimulationComponent {
     }
 
     /**
-     * @return the totalCost
+     * Returns the total cost metric for this tracker.
+     * 
+     * @return the totalCost.
      */
     public final int getTotalCost() {
         return totalCost;
     }
 
-    private final void incrementTotalCost(int incr) {
+    private void incrementTotalCost(int incr) {
         this.totalCost = this.totalCost + incr;
     }
 

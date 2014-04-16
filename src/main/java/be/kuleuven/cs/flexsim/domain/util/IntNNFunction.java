@@ -2,8 +2,6 @@ package be.kuleuven.cs.flexsim.domain.util;
 
 import javax.annotation.Nullable;
 
-import com.google.common.base.Objects;
-
 /**
  * * Determines an output int value based on an input value.
  ** <p>
@@ -25,9 +23,7 @@ public interface IntNNFunction<F> {
      * 
      * <ul>
      * <li>Its execution does not cause any observable side effects.
-     * <li>The computation is <i>consistent with equals</i>; that is,
-     * {@link Objects#equal Objects.equal}{@code (a, b)} implies that
-     * {@code Objects.equal(function.apply(a), function.apply(b))}.
+     * <li>The computation is <i>consistent with equals</i>;
      * </ul>
      * 
      * @param input
