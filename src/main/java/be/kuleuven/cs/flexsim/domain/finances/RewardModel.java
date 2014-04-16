@@ -23,7 +23,7 @@ public enum RewardModel {
     private static final int REWARD_RATE = 5;
 
     /**
-     * Calculate a reward for finishing a certain resource at timestep r;
+     * Calculate a reward for finishing a certain resource at timestep r.
      * 
      * @param timestep
      *            The timestep.

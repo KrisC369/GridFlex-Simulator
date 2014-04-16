@@ -21,7 +21,7 @@ public interface ProcessTrackableSimulationComponent extends
      * 
      * @return the total aggregated energy consumed.
      */
-    public abstract int getAggregatedTotalConsumptions();
+    int getAggregatedTotalConsumptions();
 
     /**
      * Returns the energy consumption in the last step aggregated over all
@@ -29,7 +29,7 @@ public interface ProcessTrackableSimulationComponent extends
      * 
      * @return the aggregated energy consumed in the last simulation step.
      */
-    public abstract int getAggregatedLastStepConsumptions();
+    int getAggregatedLastStepConsumptions();
 
     /**
      * Get an list of the buffer levels ordered by the location of the buffer in
@@ -37,14 +37,14 @@ public interface ProcessTrackableSimulationComponent extends
      * 
      * @return a list of occupancy levels.
      */
-    public abstract List<Integer> getBufferOccupancyLevels();
+    List<Integer> getBufferOccupancyLevels();
 
     /**
      * Take the finished resources from the end of the process.
      * 
      * @return the finished resources.
      */
-    public abstract Collection<Resource> takeResources();
+    Collection<Resource> takeResources();
 
     /**
      * Deliver unprocessed resources to the primary buffer at the beginning of
@@ -53,6 +53,6 @@ public interface ProcessTrackableSimulationComponent extends
      * @param res
      *            the resources that serve as input
      */
-    public abstract void deliverResources(List<Resource> res);
+    void deliverResources(List<Resource> res);
 
 }
