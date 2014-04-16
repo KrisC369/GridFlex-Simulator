@@ -6,6 +6,7 @@ import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
+import be.kuleuven.cs.flexsim.domain.util.NonNullableFunction;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.annotations.VisibleForTesting;
@@ -18,6 +19,22 @@ import com.google.common.annotations.VisibleForTesting;
  * 
  */
 public class WorkstationImpl implements Workstation, WorkstationContext {
+
+    private static final NonNullableFunction<Resource, Integer> CURRENT_REMAINING_STEPS = new NonNullableFunction<Resource, Integer>() {
+        @Override
+        public Integer apply(Resource input) {
+            // TODO Auto-generated method stub
+            return input.getCurrentNeededProcessTime();
+        }
+    };
+
+    private static final NonNullableFunction<Resource, Integer> MAX_REMAINING_STEPS = new NonNullableFunction<Resource, Integer>() {
+        @Override
+        public Integer apply(Resource input) {
+            // TODO Auto-generated method stub
+            return input.getMaxNeededProcessTime();
+        }
+    };
 
     private final Buffer<Resource> inputBuff;
     private final Buffer<Resource> outputBuff;
@@ -180,23 +197,21 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     private int getRemainingSteps() {
-        int maxResource = 0;
-        for (Resource r : currentResource) {
-            if (r.getCurrentNeededProcessTime() > maxResource) {
-                maxResource = r.getCurrentNeededProcessTime();
-            }
-        }
-        return maxResource;
+        return max(currentResource, CURRENT_REMAINING_STEPS);
     }
 
     private int getRemainingMaxSteps() {
-        int maxResource = 0;
-        for (Resource r : currentResource) {
-            if (r.getMaxNeededProcessTime() > maxResource) {
-                maxResource = r.getMaxNeededProcessTime();
+        return max(currentResource, MAX_REMAINING_STEPS);
+    }
+
+    private <T> int max(List<T> list, NonNullableFunction<T, Integer> f) {
+        int max = 0;
+        for (T t : list) {
+            if (f.apply(t) > max) {
+                max = f.apply(t);
             }
         }
-        return maxResource;
+        return max;
     }
 
     private StationState getCurrentState() {
