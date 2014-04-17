@@ -35,7 +35,7 @@ public final class FinanceTracker implements SimulationComponent {
      * @param dm
      *            The debtModel to use.
      */
-    public FinanceTracker(ProcessTrackableSimulationComponent target,
+    private FinanceTracker(ProcessTrackableSimulationComponent target,
             RewardModel rm, DebtModel dm) {
         this.target = target;
         this.context = Optional.absent();
@@ -141,7 +141,7 @@ public final class FinanceTracker implements SimulationComponent {
      * 
      * @return the totalCost.
      */
-    public final int getTotalCost() {
+    public int getTotalCost() {
         return totalCost;
     }
 
@@ -154,8 +154,40 @@ public final class FinanceTracker implements SimulationComponent {
      * 
      * @return the total reward minus the total cost.
      */
-    public final int getTotalProfit() {
+    public int getTotalProfit() {
         return getTotalReward() - getTotalCost();
     }
 
+    /**
+     * Factory method for creating finance tracker object with default reward
+     * and debt models.
+     * 
+     * @param target
+     *            The trackable target to inspect.
+     * @return A fully instantiated FinanceTracker object.
+     */
+    public static FinanceTracker createDefault(
+            ProcessTrackableSimulationComponent target) {
+        return new FinanceTracker(target, RewardModel.CONSTANT,
+                DebtModel.CONSTANT);
+
+    }
+
+    /**
+     * Factory method for creating finance tracker object with custom reward and
+     * debt models.
+     * 
+     * @param target
+     *            The trackable target to inspect.
+     * @param rm
+     *            The reward model to use.
+     * @param dm
+     *            The debt model to use.
+     * @return A fully instantiated FinanceTracker object.
+     */
+    public static FinanceTracker createCustom(
+            ProcessTrackableSimulationComponent target, RewardModel rm,
+            DebtModel dm) {
+        return new FinanceTracker(target, rm, dm);
+    }
 }

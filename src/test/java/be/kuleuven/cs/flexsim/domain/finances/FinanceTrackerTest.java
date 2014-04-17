@@ -22,13 +22,12 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class FinanceTrackerTest {
     private ProcessTrackableSimulationComponent mockPL = mock(ProcessTrackableSimulationComponent.class);
-    private FinanceTracker t = new FinanceTracker(mockPL, RewardModel.CONSTANT,
-            DebtModel.CONSTANT);
+    private FinanceTracker t = FinanceTracker.createDefault(mockPL);
     private SimulationContext sim = mock(SimulationContext.class);
 
     @Before
     public void setUp() throws Exception {
-        t = new FinanceTracker(mockPL, RewardModel.CONSTANT, DebtModel.CONSTANT);
+        t = FinanceTracker.createDefault(mockPL);
         sim = Simulator.createSimulator(20);
     }
 
@@ -41,7 +40,7 @@ public class FinanceTrackerTest {
     @Test
     public void signalConsumptionTest() {
         ProductionLine mockPL = ProductionLine.createSimpleLayout();
-        t = new FinanceTracker(mockPL, RewardModel.CONSTANT, DebtModel.CONSTANT);
+        t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -59,7 +58,7 @@ public class FinanceTrackerTest {
     @Test
     public void getCurrentPaymentRateTest() {
         ProductionLine mockPL = ProductionLine.createSimpleLayout();
-        t = new FinanceTracker(mockPL, RewardModel.CONSTANT, DebtModel.CONSTANT);
+        t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -72,7 +71,7 @@ public class FinanceTrackerTest {
     @Test
     public void getCurrentRewardRateTest() {
         ProductionLine mockPL = ProductionLine.createSimpleLayout();
-        t = new FinanceTracker(mockPL, RewardModel.CONSTANT, DebtModel.CONSTANT);
+        t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -89,7 +88,7 @@ public class FinanceTrackerTest {
     @Test
     public void getProfitTest() {
         ProductionLine mockPL = ProductionLine.createSimpleLayout();
-        t = new FinanceTracker(mockPL, RewardModel.CONSTANT, DebtModel.CONSTANT);
+        t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
