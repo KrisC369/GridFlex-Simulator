@@ -8,7 +8,7 @@ package be.kuleuven.cs.flexsim.time;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public interface Clock {
+public interface VirtualClock {
 
     /**
      * Get the time count for this clock.

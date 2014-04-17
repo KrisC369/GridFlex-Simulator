@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
-import be.kuleuven.cs.flexsim.time.Clock;
+import be.kuleuven.cs.flexsim.time.VirtualClock;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
@@ -96,7 +96,7 @@ public final class Simulator implements SimulationContext {
     }
 
     @Override
-    public Clock getSimulationClock() {
+    public VirtualClock getSimulationClock() {
         return this.clock;
     }
 

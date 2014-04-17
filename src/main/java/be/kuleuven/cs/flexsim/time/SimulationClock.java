@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.time;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public final class SimulationClock implements Clock {
+public final class SimulationClock implements VirtualClock {
 
     /** The timecount of this clock. */
     private int timecount;

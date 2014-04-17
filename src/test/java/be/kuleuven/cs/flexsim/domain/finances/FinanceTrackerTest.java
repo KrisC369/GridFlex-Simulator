@@ -27,7 +27,8 @@ public class FinanceTrackerTest {
 
     @Before
     public void setUp() throws Exception {
-        t = FinanceTracker.createDefault(mockPL);
+        t = FinanceTracker.createCustom(mockPL, RewardModel.CONSTANT,
+                DebtModel.CONSTANT);
         sim = Simulator.createSimulator(20);
     }
 

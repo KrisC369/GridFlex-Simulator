@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.simulation;
 
 import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
-import be.kuleuven.cs.flexsim.time.Clock;
+import be.kuleuven.cs.flexsim.time.VirtualClock;
 
 import com.google.common.eventbus.EventBus;
 
@@ -32,7 +32,7 @@ public interface SimulationContext {
      * 
      * @return the clock
      */
-    Clock getSimulationClock();
+    VirtualClock getSimulationClock();
 
     /**
      * This method registers a simulation component to the simulation context in
