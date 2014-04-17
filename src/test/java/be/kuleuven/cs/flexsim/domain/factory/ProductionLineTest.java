@@ -20,9 +20,10 @@ import be.kuleuven.cs.flexsim.domain.factory.ProductionLine.ProductionLineBuilde
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import be.kuleuven.cs.flexsim.simulation.TimeStepSimulator;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.Subscribe;
@@ -84,13 +85,16 @@ public class ProductionLineTest {
     private int simSteps;
     private static final double DELTA = 0.05;
 
+    private SimulationContext context;
     @SuppressWarnings("null")
-    private SimulationContext sim = mock(SimulationContext.class);
+    private TimeStepSimulator sim = TimeStepSimulator.createSimulator(1,
+            context);
 
     public ProductionLineTest() {
         lineSimple = ProductionLine.createSimpleLayout();
         lineExtended = ProductionLine.createExtendedLayout();
         lineSuperExtended = ProductionLine.createSuperExtendedLayout();
+        this.context = SimulationContext.createDefaultContext();
     }
 
     @Before
@@ -98,9 +102,9 @@ public class ProductionLineTest {
         lineSimple = ProductionLine.createSimpleLayout();
         lineExtended = ProductionLine.createExtendedLayout();
         simSteps = 20;
-        sim = Simulator.createSimulator(simSteps);
-        sim.register(lineSimple);
-        sim.register(lineExtended);
+        sim = TimeStepSimulator.createSimulator(simSteps, context);
+        context.register(lineSimple);
+        context.register(lineExtended);
     }
 
     @Test
@@ -108,8 +112,8 @@ public class ProductionLineTest {
         int n = 3;
         deliverResources(n);
         SimulationComponent tester = mock(SimulationComponent.class);
-        sim.register(tester);
-        ((Simulator) sim).start();
+        context.register(tester);
+        ((TimeStepSimulator) sim).start();
         verify(tester, times(simSteps)).tick(anyInt());
         assertEquals(n, lineExtended.takeResources().size());
 
@@ -161,12 +165,12 @@ public class ProductionLineTest {
     public void testBuilderDefault() {
         ProductionLine l = new ProductionLineBuilder().addDefault(3)
                 .addDefault(4).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
+        sim = TimeStepSimulator.createSimulator(200, context);
+        context.register(l);
         List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
         l.deliverResources(res);
         assertEquals(7, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        ((TimeStepSimulator) sim).start();
         assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
     }
 
@@ -174,12 +178,12 @@ public class ProductionLineTest {
     public void testBuilderConsuming() {
         ProductionLine l = new ProductionLineBuilder().addConsuming(3)
                 .addConsuming(4).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
+        sim = TimeStepSimulator.createSimulator(200, context);
+        context.register(l);
         List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
         l.deliverResources(res);
         assertEquals(7, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        ((TimeStepSimulator) sim).start();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
 
@@ -189,12 +193,12 @@ public class ProductionLineTest {
                 .addConsuming(4).addMultiCapConstantConsuming(1, 12)
                 .addMultiCapExponentialConsuming(1, 12)
                 .addMultiCapLinearConsuming(1, 12).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
+        sim = TimeStepSimulator.createSimulator(200, context);
+        context.register(l);
         List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
         l.deliverResources(res);
         assertEquals(10, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        ((TimeStepSimulator) sim).start();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
 
