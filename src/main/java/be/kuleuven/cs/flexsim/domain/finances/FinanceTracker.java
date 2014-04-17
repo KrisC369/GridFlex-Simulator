@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class FinanceTracker implements SimulationComponent {
+public final class FinanceTracker implements SimulationComponent {
 
     private final ProcessTrackableSimulationComponent target;
     private Optional<SimulationContext> context;
@@ -147,6 +147,15 @@ public class FinanceTracker implements SimulationComponent {
 
     private void incrementTotalCost(int incr) {
         this.totalCost = this.totalCost + incr;
+    }
+
+    /**
+     * Returns the total profit as the reward minus the cost.
+     * 
+     * @return the total reward minus the total cost.
+     */
+    public final int getTotalProfit() {
+        return getTotalReward() - getTotalCost();
     }
 
 }

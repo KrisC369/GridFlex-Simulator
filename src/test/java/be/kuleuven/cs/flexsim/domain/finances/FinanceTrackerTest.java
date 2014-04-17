@@ -21,8 +21,9 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class FinanceTrackerTest {
-    private FinanceTracker t = mock(FinanceTracker.class);
     private ProcessTrackableSimulationComponent mockPL = mock(ProcessTrackableSimulationComponent.class);
+    private FinanceTracker t = new FinanceTracker(mockPL, RewardModel.CONSTANT,
+            DebtModel.CONSTANT);
     private SimulationContext sim = mock(SimulationContext.class);
 
     @Before
@@ -85,9 +86,18 @@ public class FinanceTrackerTest {
                         mockPL.getBufferOccupancyLevels().size() - 1), 0);
     }
 
-    private void multiTick(int n, SimulationComponent s) {
-        for (int i = 0; i < n; i++) {
-            s.tick(0);
-        }
+    @Test
+    public void getProfitTest() {
+        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        t = new FinanceTracker(mockPL, RewardModel.CONSTANT, DebtModel.CONSTANT);
+        int n = 3;
+        List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
+        mockPL.deliverResources(res);
+        sim.register(t);
+        assertEquals(0, t.getTotalReward(), 0);
+        ((Simulator) sim).start();
+        int reward = t.getTotalReward();
+        int cost = t.getTotalCost();
+        assertEquals(reward - cost, t.getTotalProfit());
     }
 }
