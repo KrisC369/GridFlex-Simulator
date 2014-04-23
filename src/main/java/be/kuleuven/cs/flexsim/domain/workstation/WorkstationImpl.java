@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -47,8 +49,9 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     private double totalConsumption;
     private double lastConsumption;
     private int processedCount;
-    private final int fixedECons;
+    private int fixedECons;
     private final int capacity;
+    private int speedfactor;
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -75,6 +78,21 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.lastConsumption = 0;
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
+        this.speedfactor = 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see simulation.ISimulationComponent#tick()
+     */
+    @Override
+    public void tick(int t) {
+        setLastConsumption(getFixedConsumptionRate()
+                + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
+                        getRemainingMaxSteps()));
+        increaseTotalConsumption(getLastStepConsumption());
+        currentState.handleTick(this);
     }
 
     @Override
@@ -183,20 +201,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.currentState = resourceMovingState;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see simulation.ISimulationComponent#tick()
-     */
-    @Override
-    public void tick(int t) {
-        setLastConsumption(getFixedConsumptionRate()
-                + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
-                        getRemainingMaxSteps()));
-        increaseTotalConsumption(getLastStepConsumption());
-        currentState.handleTick(this);
-    }
-
     private int getRemainingSteps() {
         return CollectionUtils.max(currentResource, CURRENT_REMAINING_STEPS);
     }
@@ -239,19 +243,14 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         return fixedECons;
     }
 
-    /**
-     * Returns the current capacity of this workstation.
-     * 
-     * @return the capacity
-     */
-    public final int getCapacity() {
+    private int getCapacity() {
         return capacity;
     }
 
     @Override
     public void processResources(int steps) {
         for (Resource r : currentResource) {
-            r.process(steps);
+            r.process(steps + getProcessingSpeed());
         }
     }
 
@@ -268,5 +267,46 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public void setSpeedVsEConsumptionRatio(int shift, boolean speed) {
+        if (speed) {
+            checkArgument(shift < getMaxVarECons(),
+                    "cant shift more towards speed than available.");
+            setFixedECons(getFixedECons() + shift);
+            setMaxVarECons(getMaxVarECons() - shift);
+            setProcessingSpeed(getProcessingSpeed() + shift);
+        } else {
+            checkArgument(shift < getFixedECons(),
+                    "cant shift more towards low consumption than available.");
+            setFixedECons(getFixedECons() - shift);
+            setMaxVarECons(getMaxVarECons() + shift);
+            setProcessingSpeed(getProcessingSpeed() - shift);
+        }
+    }
+
+    private void setProcessingSpeed(int i) {
+        this.speedfactor = i;
+    }
+
+    private int getProcessingSpeed() {
+        return speedfactor;
+    }
+
+    private final void setFixedECons(int fixedECons) {
+        this.fixedECons = fixedECons;
+    }
+
+    private final void setMaxVarECons(int shift) {
+        getCurrentState().setMaxVariableConsumption(shift);
+    }
+
+    private int getFixedECons() {
+        return this.fixedECons;
+    }
+
+    private int getMaxVarECons() {
+        return getCurrentState().getMaxVariableConsumption();
     }
 }

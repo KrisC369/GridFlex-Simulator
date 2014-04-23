@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -71,7 +72,14 @@ public abstract class ForwardingStationDecorator implements Workstation {
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        return getDelegate().getSimulationSubComponents();
+        List<SimulationComponent> toret = new ArrayList<>();
+        toret.add(getDelegate());
+        return toret;
+    }
+
+    @Override
+    public void setSpeedVsEConsumptionRatio(int shift, boolean speed) {
+        getDelegate().setSpeedVsEConsumptionRatio(shift, speed);
     }
 
 }

@@ -20,7 +20,8 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements ProcessTrackableSimulationComponent {
+public final class ProductionLine implements
+        ProcessTrackableSimulationComponent {
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
@@ -370,15 +371,14 @@ public final class ProductionLine implements ProcessTrackableSimulationComponent
         public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
                 int cap) {
             prodline.buffers.add(new Buffer<Resource>());
+            Workstation w;
             for (int i = 0; i < n; i++) {
-                prodline.workstations
-                        .add(WorkstationFactory
-                                .createMultiCapExponentialConsuming(
-                                        prodline.buffers.get(prodline.buffers
-                                                .size() - 2),
-                                        prodline.buffers.get(prodline.buffers
-                                                .size() - 1), IDLE_CONSUMPTION,
-                                        MULTICAP_WORKING_CONSUMPTION, cap));
+                w = WorkstationFactory.createMultiCapExponentialConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
+                prodline.workstations.add(w);
+                prodline.curtailables.add((Curtailable) w);
             }
             return this;
         }

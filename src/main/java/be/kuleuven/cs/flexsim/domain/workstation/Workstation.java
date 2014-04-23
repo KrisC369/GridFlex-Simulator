@@ -39,4 +39,6 @@ public interface Workstation extends SimulationComponent {
      */
     boolean isIdle();
 
+    public abstract void setSpeedVsEConsumptionRatio(int shift, boolean speed);
+
 }

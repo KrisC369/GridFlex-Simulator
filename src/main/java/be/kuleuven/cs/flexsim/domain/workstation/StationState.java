@@ -32,4 +32,7 @@ interface StationState {
      */
     boolean isProcessing();
 
+    void setMaxVariableConsumption(int amount);
+
+    int getMaxVariableConsumption();
 }

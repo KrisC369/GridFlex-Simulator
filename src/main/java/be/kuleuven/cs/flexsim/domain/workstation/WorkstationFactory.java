@@ -112,8 +112,8 @@ public final class WorkstationFactory {
      */
     public static Workstation createMultiCapConsuming(Buffer<Resource> in,
             Buffer<Resource> out, int idle, int working, int capacity) {
-        return new WorkstationImpl(in, out, idle, working, capacity,
-                ConsumptionModel.CONSTANT);
+        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
+                idle, working, capacity, ConsumptionModel.CONSTANT));
     }
 
     /**
@@ -136,8 +136,8 @@ public final class WorkstationFactory {
     public static Workstation createMultiCapLinearConsuming(
             Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
             int capacity) {
-        return new WorkstationImpl(in, out, idle, working, capacity,
-                ConsumptionModel.LINEAR);
+        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
+                idle, working, capacity, ConsumptionModel.LINEAR));
     }
 
     /**
@@ -161,7 +161,7 @@ public final class WorkstationFactory {
     public static Workstation createMultiCapExponentialConsuming(
             Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
             int capacity) {
-        return new WorkstationImpl(in, out, idle, working, capacity,
-                ConsumptionModel.EXPONENTIAL);
+        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
+                idle, working, capacity, ConsumptionModel.EXPONENTIAL));
     }
 }
