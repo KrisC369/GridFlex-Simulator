@@ -24,6 +24,7 @@ public final class FinanceTracker implements SimulationComponent {
     private int totalCost;
     private final RewardModel rewardMod;
     private final DebtModel debtMod;
+    private long itemCount;
 
     /**
      * Default constructor based on trackable components.
@@ -41,6 +42,7 @@ public final class FinanceTracker implements SimulationComponent {
         this.context = Optional.absent();
         this.rewardMod = rm;
         this.debtMod = dm;
+        this.itemCount = 0;
     }
 
     @Override
@@ -69,8 +71,17 @@ public final class FinanceTracker implements SimulationComponent {
         int rewardIncrement = 0;
         for (Resource r : getTarget().takeResources()) {
             rewardIncrement += rewardMod.calculateReward(t, r);
+            incrementItemCount();
         }
         increaseTotalReward(rewardIncrement);
+    }
+
+    private void incrementItemCount() {
+        this.itemCount++;
+    }
+
+    private long getItemCount() {
+        return this.itemCount;
     }
 
     private void report() {
@@ -92,6 +103,7 @@ public final class FinanceTracker implements SimulationComponent {
             for (long i : buffSizes) {
                 e.setAttribute("buffer_" + idx++, i);
             }
+            e.setAttribute("buffer_Fin", getItemCount());
             getContext().getEventbus().post(e);
         }
     }

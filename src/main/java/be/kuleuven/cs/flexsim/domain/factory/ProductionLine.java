@@ -25,9 +25,9 @@ public final class ProductionLine implements
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
-    private static final int WORKING_CONSUMPTION = 3;
-    private static final int IDLE_CONSUMPTION = 1;
-    private static final int MULTICAP_WORKING_CONSUMPTION = 20;
+    private static final int WORKING_CONSUMPTION = 40;
+    private static final int IDLE_CONSUMPTION = 2;
+    private static final int MULTICAP_WORKING_CONSUMPTION = 40;
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
 
         @Override
@@ -324,13 +324,14 @@ public final class ProductionLine implements
          */
         public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
+            Workstation w;
             for (int i = 0; i < n; i++) {
-                prodline.workstations
-                        .add(WorkstationFactory.createMultiCapConsuming(
-                                prodline.buffers
-                                        .get(prodline.buffers.size() - 2),
-                                prodline.buffers.get(prodline.buffers.size() - 1),
-                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap));
+                w = WorkstationFactory.createMultiCapConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap);
+                prodline.workstations.add(w);
+                prodline.curtailables.add((Curtailable) w);
             }
             return this;
         }
@@ -347,13 +348,15 @@ public final class ProductionLine implements
          */
         public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
+            Workstation w;
             for (int i = 0; i < n; i++) {
-                prodline.workstations
-                        .add(WorkstationFactory.createMultiCapLinearConsuming(
-                                prodline.buffers
-                                        .get(prodline.buffers.size() - 2),
-                                prodline.buffers.get(prodline.buffers.size() - 1),
-                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap));
+                w = WorkstationFactory.createMultiCapLinearConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap);
+
+                prodline.workstations.add(w);
+                prodline.curtailables.add((Curtailable) w);
             }
             return this;
         }
