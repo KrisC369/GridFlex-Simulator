@@ -91,8 +91,8 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         setLastConsumption(getFixedConsumptionRate()
                 + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
                         getRemainingMaxSteps()));
-        increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(this);
+        increaseTotalConsumption(getLastStepConsumption());
     }
 
     @Override
@@ -270,19 +270,20 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public void setSpeedVsEConsumptionRatio(int shift, boolean speed) {
-        if (speed) {
-            checkArgument(shift < getMaxVarECons(),
+    public void setSpeedVsEConsumptionRatio(int consumptionShift,
+            int speedShift, boolean favorSpeed) {
+        if (favorSpeed) {
+            checkArgument(consumptionShift < getMaxVarECons(),
                     "cant shift more towards speed than available.");
-            setFixedECons(getFixedECons() + shift);
-            setMaxVarECons(getMaxVarECons() - shift);
-            setProcessingSpeed(getProcessingSpeed() + shift);
+            setFixedECons(getFixedECons() + consumptionShift);
+            setMaxVarECons(getMaxVarECons() - consumptionShift);
+            setProcessingSpeed(getProcessingSpeed() + speedShift);
         } else {
-            checkArgument(shift < getFixedECons(),
+            checkArgument(consumptionShift < getFixedECons(),
                     "cant shift more towards low consumption than available.");
-            setFixedECons(getFixedECons() - shift);
-            setMaxVarECons(getMaxVarECons() + shift);
-            setProcessingSpeed(getProcessingSpeed() - shift);
+            setFixedECons(getFixedECons() - consumptionShift);
+            setMaxVarECons(getMaxVarECons() + consumptionShift);
+            setProcessingSpeed(getProcessingSpeed() - speedShift);
         }
     }
 

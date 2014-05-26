@@ -29,14 +29,15 @@ public interface Curtailable {
      * operation and energy consumption to favor speed of operation or low
      * energy consumption.
      * 
-     * @param shift
+     * @param consumptionShift
      *            the amount to shift.
-     * 
-     * @param speed
+     * @param speedShift TODO
+     * @param favorSpeed
      *            favor for speed if true.
+     * 
      * @throws IllegalArgumentException
      *             the percentage is not between 0 and 1.
      */
-    void setSpeedVsEConsumptionRatio(int shift, boolean speed);
+    void setSpeedVsEConsumptionRatio(int consumptionShift, int speedShift, boolean favorSpeed);
 
 }

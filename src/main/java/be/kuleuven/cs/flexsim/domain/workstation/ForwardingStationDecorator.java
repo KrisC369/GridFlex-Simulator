@@ -53,12 +53,12 @@ public abstract class ForwardingStationDecorator implements Workstation {
 
     @Override
     public void afterTick(int t) {
-        getDelegate().afterTick(0);
+        getDelegate().afterTick(t);
     }
 
     @Override
     public void tick(int t) {
-        getDelegate().tick(0);
+        getDelegate().tick(t);
     }
 
     /**
@@ -73,13 +73,15 @@ public abstract class ForwardingStationDecorator implements Workstation {
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
         List<SimulationComponent> toret = new ArrayList<>();
-        toret.add(getDelegate());
+        toret.addAll(getDelegate().getSimulationSubComponents());
         return toret;
     }
 
     @Override
-    public void setSpeedVsEConsumptionRatio(int shift, boolean speed) {
-        getDelegate().setSpeedVsEConsumptionRatio(shift, speed);
+    public void setSpeedVsEConsumptionRatio(int consumptionShift,
+            int speedShift, boolean favorSpeed) {
+        getDelegate().setSpeedVsEConsumptionRatio(consumptionShift, speedShift,
+                favorSpeed);
     }
 
 }

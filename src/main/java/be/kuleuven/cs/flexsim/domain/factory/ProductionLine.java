@@ -25,11 +25,10 @@ public final class ProductionLine implements
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
-    private static final int WORKING_CONSUMPTION = 40;
-    private static final int IDLE_CONSUMPTION = 2;
-    private static final int MULTICAP_WORKING_CONSUMPTION = 40;
+    private static final int WORKING_CONSUMPTION = 200;
+    private static final int IDLE_CONSUMPTION = 100;
+    private static final int MULTICAP_WORKING_CONSUMPTION = 7000;
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
-
         @Override
         public int apply(Workstation input) {
             return (int) input.getLastStepConsumption();
@@ -329,7 +328,7 @@ public final class ProductionLine implements
                 w = WorkstationFactory.createMultiCapConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap);
+                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
                 prodline.workstations.add(w);
                 prodline.curtailables.add((Curtailable) w);
             }
@@ -353,7 +352,7 @@ public final class ProductionLine implements
                 w = WorkstationFactory.createMultiCapLinearConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, cap);
+                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
 
                 prodline.workstations.add(w);
                 prodline.curtailables.add((Curtailable) w);
