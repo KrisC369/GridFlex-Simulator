@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class DelayedStartStationDecorator extends ForwardingStationDecorator {
+class DelayedStartStationDecorator extends ForwardingStationDecorator {
 
     private int shiftTime;
     private int shiftTimeAfter;
