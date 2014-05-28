@@ -52,7 +52,7 @@ public class WorkstationTest {
     public void testConsumingTotalConsumptionOf11AfterInAndOut() {
         pushResource(3);
         multiTick(iew, 5);
-        assertEquals(10, iew.getTotalConsumption(), DELTA);// 1:in + 1:out +
+        assertEquals(11, iew.getTotalConsumption(), DELTA);// 1:in + 1:out +
                                                            // 3*3:cons
         assertEquals(1, iew.getProcessedItemsCount());
     }
@@ -61,7 +61,7 @@ public class WorkstationTest {
     public void testConsumingTotalConsumptionOf5AfterInAndOut() {
         pushResource(1);
         multiTick(iew, 3);
-        assertEquals(4, iew.getTotalConsumption(), DELTA); // 1:in + 1:out +
+        assertEquals(5, iew.getTotalConsumption(), DELTA); // 1:in + 1:out +
                                                            // 1*3:cons
         assertEquals(1, iew.getProcessedItemsCount());
     }
@@ -80,14 +80,14 @@ public class WorkstationTest {
         assertNotEquals(r, iew.getTotalConsumption());
         r = iew.getTotalConsumption();
         iew.tick(0);
-        assertEquals(r, iew.getTotalConsumption(), 0.01);
+        assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         r = iew.getTotalConsumption();
         iew.tick(0);
-        assertEquals(r, iew.getTotalConsumption(), 0.01);
+        assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
         iew.tick(0);
-        assertEquals(r, iew.getTotalConsumption(), 0.01);
+        assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
 

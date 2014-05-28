@@ -23,7 +23,7 @@ import com.google.common.annotations.VisibleForTesting;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class WorkstationImpl implements Workstation, WorkstationContext {
+public class WorkstationImpl implements Workstation {
 
     private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = new IntNNFunction<Resource>() {
         @Override
@@ -52,6 +52,49 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     private int fixedECons;
     private final int capacity;
     private int speedfactor;
+    private final WorkstationContext stateContext = new WorkstationContext() {
+
+        @Override
+        public void processResources(int steps) {
+            for (Resource r : currentResource) {
+                r.process(steps);
+            }
+        }
+
+        @Override
+        public boolean pushConveyer() {
+            if (!getCurrentResources().isEmpty()) {
+                pushOut();
+            }
+            if (!getInputBuffer().isEmpty()) {
+                pullIn();
+                return true;
+            }
+            setLastConsumption(0);
+            return false;
+        }
+
+        @Override
+        public void setProcessingState() {
+            currentState = processingState;
+
+        }
+
+        @Override
+        public void setResourceMovingState() {
+            currentState = resourceMovingState;
+        }
+
+        @Override
+        public boolean hasUnfinishedResources() {
+            for (Resource r : currentResource) {
+                if (r.needsMoreProcessing()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -79,20 +122,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
         this.speedfactor = 0;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see simulation.ISimulationComponent#tick()
-     */
-    @Override
-    public void tick(int t) {
-        setLastConsumption(getFixedConsumptionRate()
-                + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
-                        getRemainingMaxSteps()));
-        currentState.handleTick(this);
-        increaseTotalConsumption(getLastStepConsumption());
     }
 
     @Override
@@ -139,24 +168,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         return !currentState.isProcessing();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see domain.IStationContext#pushConveyer()
-     */
-    @Override
-    public boolean pushConveyer() {
-        if (!getCurrentResources().isEmpty()) {
-            pushOut();
-        }
-        if (!getInputBuffer().isEmpty()) {
-            pullIn();
-            return true;
-        }
-        setLastConsumption(0);
-        return false;
-    }
-
     @VisibleForTesting
     List<Resource> getCurrentResources() {
         return new ArrayList<>(this.currentResource);
@@ -190,15 +201,18 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         incrementProcessedCount(size);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see simulation.ISimulationComponent#tick()
+     */
     @Override
-    public void setProcessingState() {
-        this.currentState = processingState;
-
-    }
-
-    @Override
-    public void setResourceMovingState() {
-        this.currentState = resourceMovingState;
+    public void tick(int t) {
+        setLastConsumption(getFixedConsumptionRate()
+                + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
+                        getRemainingMaxSteps()));
+        increaseTotalConsumption(getLastStepConsumption());
+        currentState.handleTick(stateContext);
     }
 
     private int getRemainingSteps() {
@@ -238,30 +252,17 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.lastConsumption = rate;
     }
 
-    @Override
-    public int getFixedConsumptionRate() {
-        return fixedECons;
-    }
-
-    private int getCapacity() {
+    /**
+     * Returns the current capacity of this workstation.
+     * 
+     * @return the capacity
+     */
+    public final int getCapacity() {
         return capacity;
     }
 
-    @Override
-    public void processResources(int steps) {
-        for (Resource r : currentResource) {
-            r.process(steps + getProcessingSpeed());
-        }
-    }
-
-    @Override
-    public boolean hasUnfinishedResources() {
-        for (Resource r : currentResource) {
-            if (r.needsMoreProcessing()) {
-                return true;
-            }
-        }
-        return false;
+    private int getFixedConsumptionRate() {
+        return fixedECons;
     }
 
     @Override
