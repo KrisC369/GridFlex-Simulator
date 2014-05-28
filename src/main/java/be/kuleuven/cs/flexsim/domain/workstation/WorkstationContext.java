@@ -37,13 +37,6 @@ interface WorkstationContext {
      */
     void setResourceMovingState();
 
-    // /**
-    // * Returns the fixed cost for this workstation.
-    // *
-    // * @return the fixed cost.
-    // */
-    // int getFixedConsumptionRate();
-
     /**
      * Returns whether this workstation has any current resources that need more
      * processing.

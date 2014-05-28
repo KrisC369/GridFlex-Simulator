@@ -49,49 +49,7 @@ public class WorkstationImpl implements Workstation {
     private int processedCount;
     private final int fixedECons;
     private final int capacity;
-    private final WorkstationContext stateContext = new WorkstationContext() {
-
-        @Override
-        public void processResources(int steps) {
-            for (Resource r : currentResource) {
-                r.process(steps);
-            }
-        }
-
-        @Override
-        public boolean pushConveyer() {
-            if (!getCurrentResources().isEmpty()) {
-                pushOut();
-            }
-            if (!getInputBuffer().isEmpty()) {
-                pullIn();
-                return true;
-            }
-            setLastConsumption(0);
-            return false;
-        }
-
-        @Override
-        public void setProcessingState() {
-            currentState = processingState;
-
-        }
-
-        @Override
-        public void setResourceMovingState() {
-            currentState = resourceMovingState;
-        }
-
-        @Override
-        public boolean hasUnfinishedResources() {
-            for (Resource r : currentResource) {
-                if (r.needsMoreProcessing()) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    };
+    private final WorkstationContext stateContext = new StateContext();
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -266,4 +224,47 @@ public class WorkstationImpl implements Workstation {
         return fixedECons;
     }
 
+    private final class StateContext implements WorkstationContext {
+
+        @Override
+        public void processResources(int steps) {
+            for (Resource r : currentResource) {
+                r.process(steps);
+            }
+        }
+
+        @Override
+        public boolean pushConveyer() {
+            if (!getCurrentResources().isEmpty()) {
+                pushOut();
+            }
+            if (!getInputBuffer().isEmpty()) {
+                pullIn();
+                return true;
+            }
+            setLastConsumption(0);
+            return false;
+        }
+
+        @Override
+        public void setProcessingState() {
+            currentState = processingState;
+
+        }
+
+        @Override
+        public void setResourceMovingState() {
+            currentState = resourceMovingState;
+        }
+
+        @Override
+        public boolean hasUnfinishedResources() {
+            for (Resource r : currentResource) {
+                if (r.needsMoreProcessing()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 }
