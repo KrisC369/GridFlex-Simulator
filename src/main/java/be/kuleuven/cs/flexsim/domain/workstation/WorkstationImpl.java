@@ -21,7 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class WorkstationImpl implements Workstation {
+class WorkstationImpl implements Workstation {
 
     private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = new IntNNFunction<Resource>() {
         @Override

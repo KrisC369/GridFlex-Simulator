@@ -3,7 +3,8 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 /**
- * Workstation API for public operations on workstation components.
+ * Workstation API for public operations on workstation components. Workstations
+ * represent machines that perform work and consume energy.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
@@ -38,5 +39,4 @@ public interface Workstation extends SimulationComponent {
      * @return true if performing work during this time step.
      */
     boolean isIdle();
-
 }
