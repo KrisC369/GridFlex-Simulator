@@ -21,7 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public class WorkstationImpl implements Workstation, WorkstationContext {
+public class WorkstationImpl implements Workstation {
 
     private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = new IntNNFunction<Resource>() {
         @Override
@@ -49,6 +49,49 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     private int processedCount;
     private final int fixedECons;
     private final int capacity;
+    private final WorkstationContext stateContext = new WorkstationContext() {
+
+        @Override
+        public void processResources(int steps) {
+            for (Resource r : currentResource) {
+                r.process(steps);
+            }
+        }
+
+        @Override
+        public boolean pushConveyer() {
+            if (!getCurrentResources().isEmpty()) {
+                pushOut();
+            }
+            if (!getInputBuffer().isEmpty()) {
+                pullIn();
+                return true;
+            }
+            setLastConsumption(0);
+            return false;
+        }
+
+        @Override
+        public void setProcessingState() {
+            currentState = processingState;
+
+        }
+
+        @Override
+        public void setResourceMovingState() {
+            currentState = resourceMovingState;
+        }
+
+        @Override
+        public boolean hasUnfinishedResources() {
+            for (Resource r : currentResource) {
+                if (r.needsMoreProcessing()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    };
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -121,24 +164,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         return !currentState.isProcessing();
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see domain.IStationContext#pushConveyer()
-     */
-    @Override
-    public boolean pushConveyer() {
-        if (!getCurrentResources().isEmpty()) {
-            pushOut();
-        }
-        if (!getInputBuffer().isEmpty()) {
-            pullIn();
-            return true;
-        }
-        setLastConsumption(0);
-        return false;
-    }
-
     @VisibleForTesting
     List<Resource> getCurrentResources() {
         return new ArrayList<>(this.currentResource);
@@ -172,17 +197,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         incrementProcessedCount(size);
     }
 
-    @Override
-    public void setProcessingState() {
-        this.currentState = processingState;
-
-    }
-
-    @Override
-    public void setResourceMovingState() {
-        this.currentState = resourceMovingState;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -194,7 +208,7 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
                 + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
                         getRemainingMaxSteps()));
         increaseTotalConsumption(getLastStepConsumption());
-        currentState.handleTick(this);
+        currentState.handleTick(stateContext);
     }
 
     private int getRemainingSteps() {
@@ -234,11 +248,6 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
         this.lastConsumption = rate;
     }
 
-    @Override
-    public int getFixedConsumptionRate() {
-        return fixedECons;
-    }
-
     /**
      * Returns the current capacity of this workstation.
      * 
@@ -249,24 +258,12 @@ public class WorkstationImpl implements Workstation, WorkstationContext {
     }
 
     @Override
-    public void processResources(int steps) {
-        for (Resource r : currentResource) {
-            r.process(steps);
-        }
-    }
-
-    @Override
-    public boolean hasUnfinishedResources() {
-        for (Resource r : currentResource) {
-            if (r.needsMoreProcessing()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
     public List<SimulationComponent> getSimulationSubComponents() {
         return Collections.emptyList();
     }
+
+    private int getFixedConsumptionRate() {
+        return fixedECons;
+    }
+
 }
