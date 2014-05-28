@@ -9,7 +9,7 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
-import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
+import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -46,7 +46,7 @@ public final class ProductionLine implements
 
     private final List<Workstation> workstations;
 
-    private final List<Curtailable> curtailables;
+    private final List<CurtailableWorkstation> curtailables;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
@@ -120,6 +120,15 @@ public final class ProductionLine implements
         return this.workstations.size();
     }
 
+    private void addStation(CurtailableWorkstation w) {
+        this.curtailables.add(w);
+        this.addStation((Workstation) w);
+    }
+
+    private void addStation(Workstation w) {
+        this.workstations.add(w);
+    }
+
     /**
      * Creates a production line with a more complex layout.
      * <code>O-XXX-O-X-O</code> with O as buffers and X as stations and
@@ -182,7 +191,7 @@ public final class ProductionLine implements
      * 
      * @return a list of pointers to curtailable instances.
      */
-    public List<Curtailable> getCurtailableStations() {
+    public List<CurtailableWorkstation> getCurtailableStations() {
         return new ArrayList<>(this.curtailables);
     }
 
@@ -265,13 +274,13 @@ public final class ProductionLine implements
             prodline.buffers.add(new Buffer<Resource>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
-                Workstation w = WorkstationFactory.createCurtailableStation(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
-                        prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
-                prodline.workstations.add(w);
-                prodline.curtailables.add((Curtailable) w);
-
+                CurtailableWorkstation w = WorkstationFactory
+                        .createCurtailableStation(
+                                prodline.buffers
+                                        .get(prodline.buffers.size() - 2),
+                                prodline.buffers.get(prodline.buffers.size() - 1),
+                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
+                prodline.addStation(w);
             }
             return this;
         }
@@ -323,14 +332,13 @@ public final class ProductionLine implements
          */
         public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
-            Workstation w;
+            CurtailableWorkstation w;
             for (int i = 0; i < n; i++) {
                 w = WorkstationFactory.createMultiCapConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
-                prodline.workstations.add(w);
-                prodline.curtailables.add((Curtailable) w);
+                prodline.addStation(w);
             }
             return this;
         }
@@ -347,15 +355,14 @@ public final class ProductionLine implements
          */
         public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
-            Workstation w;
+            CurtailableWorkstation w;
             for (int i = 0; i < n; i++) {
                 w = WorkstationFactory.createMultiCapLinearConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
 
-                prodline.workstations.add(w);
-                prodline.curtailables.add((Curtailable) w);
+                prodline.addStation(w);
             }
             return this;
         }
@@ -373,14 +380,13 @@ public final class ProductionLine implements
         public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
                 int cap) {
             prodline.buffers.add(new Buffer<Resource>());
-            Workstation w;
+            CurtailableWorkstation w;
             for (int i = 0; i < n; i++) {
                 w = WorkstationFactory.createMultiCapExponentialConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
-                prodline.workstations.add(w);
-                prodline.curtailables.add((Curtailable) w);
+                prodline.addStation(w);
             }
             return this;
         }

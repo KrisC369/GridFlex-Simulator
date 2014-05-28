@@ -40,6 +40,21 @@ public interface Workstation extends SimulationComponent {
      */
     boolean isIdle();
 
+    /**
+     * Sets the controllable instance's trade off metric between speed of
+     * operation and energy consumption to favor speed of operation or low
+     * energy consumption.
+     * 
+     * @param consumptionShift
+     *            the amount to shift.
+     * @param speedShift
+     *            TODO
+     * @param favorSpeed
+     *            favor for speed if true.
+     * 
+     * @throws IllegalArgumentException
+     *             the percentage is not between 0 and 1.
+     */
     public abstract void setSpeedVsEConsumptionRatio(int consumptionShift,
             int speedShift, boolean favorSpeed);
 

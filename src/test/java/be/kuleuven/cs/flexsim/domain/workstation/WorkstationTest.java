@@ -212,7 +212,7 @@ public class WorkstationTest {
     public void testCurtailableStationProcessingAndConsumption() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 1, 3, 0);
-        Curtailable curt2 = ((Curtailable) curt);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
 
         Resource res = pushResource(3);
         curt.tick(0);
@@ -251,7 +251,7 @@ public class WorkstationTest {
     public void testDoubleCurtailment() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
-        Curtailable curt2 = ((Curtailable) curt);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
 
         curt2.doFullCurtailment();
         assertTrue(curt2.isCurtailed());
@@ -262,7 +262,7 @@ public class WorkstationTest {
     public void testDoubleRestore() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
-        Curtailable curt2 = ((Curtailable) curt);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
 
         curt2.doFullCurtailment();
         assertTrue(curt2.isCurtailed());

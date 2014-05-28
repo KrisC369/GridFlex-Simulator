@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 class CurtailableStationDecorator extends ForwardingStationDecorator implements
-        Curtailable {
+        CurtailableWorkstation {
 
     private boolean curtailed;
 
