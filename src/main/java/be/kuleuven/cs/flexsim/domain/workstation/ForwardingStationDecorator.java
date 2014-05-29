@@ -78,10 +78,17 @@ public abstract class ForwardingStationDecorator implements Workstation {
     }
 
     @Override
-    public void setSpeedVsEConsumptionRatio(int consumptionShift,
-            int speedShift, boolean favorSpeed) {
-        getDelegate().setSpeedVsEConsumptionRatio(consumptionShift, speedShift,
-                favorSpeed);
+    public void favorSpeedOverFixedEConsumption(int consumptionShift,
+            int speedShift) {
+        getDelegate().favorSpeedOverFixedEConsumption(consumptionShift,
+                speedShift);
+    }
+
+    @Override
+    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
+            int speedShift) {
+        getDelegate().favorFixedEConsumptionOverSpeed(consumptionShift,
+                speedShift);
     }
 
 }

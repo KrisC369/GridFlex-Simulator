@@ -229,21 +229,23 @@ class WorkstationImpl implements Workstation {
     }
 
     @Override
-    public void setSpeedVsEConsumptionRatio(int consumptionShift,
-            int speedShift, boolean favorSpeed) {
-        if (favorSpeed) {
-            checkArgument(consumptionShift < getMaxVarECons(),
-                    "cant shift more towards speed than available.");
-            setFixedECons(getFixedECons() + consumptionShift);
-            setMaxVarECons(getMaxVarECons() - consumptionShift);
-            setProcessingSpeed(getProcessingSpeed() + speedShift);
-        } else {
-            checkArgument(consumptionShift < getFixedECons(),
-                    "cant shift more towards low consumption than available.");
-            setFixedECons(getFixedECons() - consumptionShift);
-            setMaxVarECons(getMaxVarECons() + consumptionShift);
-            setProcessingSpeed(getProcessingSpeed() - speedShift);
-        }
+    public void favorSpeedOverFixedEConsumption(int consumptionShift,
+            int speedShift) {
+        checkArgument(consumptionShift < getMaxVarECons(),
+                "cant shift more towards speed than available.");
+        setFixedECons(getFixedECons() + consumptionShift);
+        setMaxVarECons(getMaxVarECons() - consumptionShift);
+        setProcessingSpeed(getProcessingSpeed() + speedShift);
+    }
+
+    @Override
+    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
+            int speedShift) {
+        checkArgument(consumptionShift < getFixedECons(),
+                "cant shift more towards low consumption than available.");
+        setFixedECons(getFixedECons() - consumptionShift);
+        setMaxVarECons(getMaxVarECons() + consumptionShift);
+        setProcessingSpeed(getProcessingSpeed() - speedShift);
     }
 
     private void setProcessingSpeed(int i) {
@@ -254,11 +256,11 @@ class WorkstationImpl implements Workstation {
         return speedfactor;
     }
 
-    private final void setFixedECons(int fixedECons) {
+    private void setFixedECons(int fixedECons) {
         this.fixedECons = fixedECons;
     }
 
-    private final void setMaxVarECons(int shift) {
+    private void setMaxVarECons(int shift) {
         getCurrentState().setMaxVariableConsumption(shift);
     }
 
