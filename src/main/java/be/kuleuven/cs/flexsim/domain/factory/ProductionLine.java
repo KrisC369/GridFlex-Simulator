@@ -2,7 +2,9 @@ package be.kuleuven.cs.flexsim.domain.factory;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.finances.ProcessTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -10,6 +12,8 @@ import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
+import be.kuleuven.cs.flexsim.domain.workstation.Registerable;
+import be.kuleuven.cs.flexsim.domain.workstation.SteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -43,15 +47,19 @@ public final class ProductionLine implements
     };
 
     private final List<Buffer<Resource>> buffers;
-
     private final List<Workstation> workstations;
-
     private final List<CurtailableWorkstation> curtailables;
+    private final List<SteerableWorkstation> steerables;
+    private final Set<Workstation> uniques;
+    private final PLRegisterable registry;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
         this.curtailables = new ArrayList<>();
+        this.steerables = new ArrayList<>();
+        this.registry = new PLRegisterable();
+        this.uniques = new HashSet<Workstation>();
     }
 
     @Override
@@ -118,15 +126,6 @@ public final class ProductionLine implements
      */
     public int getNumberOfWorkstations() {
         return this.workstations.size();
-    }
-
-    private void addStation(CurtailableWorkstation w) {
-        this.curtailables.add(w);
-        this.addStation((Workstation) w);
-    }
-
-    private void addStation(Workstation w) {
-        this.workstations.add(w);
     }
 
     /**
@@ -196,6 +195,15 @@ public final class ProductionLine implements
     }
 
     /**
+     * Returns the stations that are curtailable in this production line.
+     * 
+     * @return a list of pointers to curtailable instances.
+     */
+    public List<SteerableWorkstation> getSteerableStations() {
+        return new ArrayList<>(this.steerables);
+    }
+
+    /**
      * Returns a newly created production line with a static layout and some
      * curtailable workstations.
      * 
@@ -253,12 +261,11 @@ public final class ProductionLine implements
         public ProductionLineBuilder addShifted(int n) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                prodline.workstations
-                        .add(WorkstationFactory.createShiftableWorkstation(
-                                prodline.buffers
-                                        .get(prodline.buffers.size() - 2),
-                                prodline.buffers.get(prodline.buffers.size() - 1),
-                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, i % 2));
+                WorkstationFactory.createShiftableWorkstation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, i % 2)
+                        .registerWith(prodline.registry);
             }
             return this;
         }
@@ -274,13 +281,11 @@ public final class ProductionLine implements
             prodline.buffers.add(new Buffer<Resource>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
-                CurtailableWorkstation w = WorkstationFactory
-                        .createCurtailableStation(
-                                prodline.buffers
-                                        .get(prodline.buffers.size() - 2),
-                                prodline.buffers.get(prodline.buffers.size() - 1),
-                                IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift);
-                prodline.addStation(w);
+                WorkstationFactory.createCurtailableStation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift)
+                        .registerWith(prodline.registry);
             }
             return this;
         }
@@ -295,9 +300,10 @@ public final class ProductionLine implements
         public ProductionLineBuilder addDefault(int n) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                prodline.workstations.add(WorkstationFactory.createDefault(
+                WorkstationFactory.createDefault(
                         prodline.buffers.get(prodline.buffers.size() - 2),
-                        prodline.buffers.get(prodline.buffers.size() - 1)));
+                        prodline.buffers.get(prodline.buffers.size() - 1))
+                        .registerWith(prodline.registry);
             }
             return this;
         }
@@ -312,10 +318,11 @@ public final class ProductionLine implements
         public ProductionLineBuilder addConsuming(int n) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                prodline.workstations.add(WorkstationFactory.createConsuming(
+                WorkstationFactory.createConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION));
+                        IDLE_CONSUMPTION, WORKING_CONSUMPTION).registerWith(
+                        prodline.registry);
             }
             return this;
         }
@@ -332,13 +339,12 @@ public final class ProductionLine implements
          */
         public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
-            CurtailableWorkstation w;
             for (int i = 0; i < n; i++) {
-                w = WorkstationFactory.createMultiCapConsuming(
+                WorkstationFactory.createMultiCapConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
-                prodline.addStation(w);
+                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
+                        .registerWith(prodline.registry);
             }
             return this;
         }
@@ -355,14 +361,13 @@ public final class ProductionLine implements
          */
         public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
-            CurtailableWorkstation w;
             for (int i = 0; i < n; i++) {
-                w = WorkstationFactory.createMultiCapLinearConsuming(
+                WorkstationFactory.createMultiCapLinearConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
+                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
+                        .registerWith(prodline.registry);
 
-                prodline.addStation(w);
             }
             return this;
         }
@@ -380,15 +385,37 @@ public final class ProductionLine implements
         public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
                 int cap) {
             prodline.buffers.add(new Buffer<Resource>());
-            CurtailableWorkstation w;
             for (int i = 0; i < n; i++) {
-                w = WorkstationFactory.createMultiCapExponentialConsuming(
+                WorkstationFactory.createMultiCapExponentialConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap);
-                prodline.addStation(w);
+                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
+                        .registerWith(prodline.registry);
             }
             return this;
+        }
+    }
+
+    private final class PLRegisterable implements Registerable {
+
+        @Override
+        public void register(Workstation ws) {
+            if (!uniques.contains(ws)) {
+                uniques.add(ws);
+                workstations.add(ws);
+            }
+        }
+
+        @Override
+        public void register(CurtailableWorkstation ws) {
+            curtailables.add(ws);
+            register((Workstation) ws);
+        }
+
+        @Override
+        public void register(SteerableWorkstation ws) {
+            steerables.add(ws);
+            register((Workstation) ws);
         }
     }
 }

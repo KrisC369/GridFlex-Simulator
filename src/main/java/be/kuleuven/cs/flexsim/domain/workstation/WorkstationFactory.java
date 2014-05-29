@@ -86,8 +86,9 @@ public final class WorkstationFactory {
      *            The amount of timesteps to delay the start of execution.
      * @return A Ready to use Workstation object.
      */
-    public static CurtailableWorkstation createCurtailableStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int shift) {
+    public static CurtailableWorkstation createCurtailableStation(
+            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
+            int shift) {
         return new CurtailableStationDecorator(
                 new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
                         out, idle, working, 1, ConsumptionModel.CONSTANT)));
@@ -110,10 +111,12 @@ public final class WorkstationFactory {
      *            The capacity of this workstation in terms of resources.
      * @return A Ready to use Workstation object.
      */
-    public static CurtailableWorkstation createMultiCapConsuming(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int capacity) {
-        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
-                idle, working, capacity, ConsumptionModel.CONSTANT));
+    public static CurtailableWorkstation createMultiCapConsuming(
+            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
+            int capacity) {
+        return new SteerableCurtailableStationDecorator(
+                new SteerableStationImpl(in, out, idle, working, capacity,
+                        ConsumptionModel.CONSTANT));
     }
 
     /**
@@ -136,8 +139,9 @@ public final class WorkstationFactory {
     public static CurtailableWorkstation createMultiCapLinearConsuming(
             Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
             int capacity) {
-        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
-                idle, working, capacity, ConsumptionModel.LINEAR));
+        return new SteerableCurtailableStationDecorator(
+                new SteerableStationImpl(in, out, idle, working, capacity,
+                        ConsumptionModel.LINEAR));
     }
 
     /**
@@ -158,10 +162,11 @@ public final class WorkstationFactory {
      * @return A Ready to use Workstation object.
      */
 
-    public static CurtailableWorkstation createMultiCapExponentialConsuming(
+    public static SteerableWorkstation createMultiCapExponentialConsuming(
             Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
             int capacity) {
-        return new CurtailableStationDecorator(new WorkstationImpl(in, out,
-                idle, working, capacity, ConsumptionModel.EXPONENTIAL));
+        return new SteerableCurtailableStationDecorator(
+                new SteerableStationImpl(in, out, idle, working, capacity,
+                        ConsumptionModel.EXPONENTIAL));
     }
 }

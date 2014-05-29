@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -51,7 +49,7 @@ class WorkstationImpl implements Workstation {
     private int processedCount;
     private int fixedECons;
     private final int capacity;
-    private int speedfactor;
+
     private final WorkstationContext stateContext = new StateContext();
 
     /**
@@ -79,7 +77,7 @@ class WorkstationImpl implements Workstation {
         this.lastConsumption = 0;
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
-        this.speedfactor = 0;
+
     }
 
     @Override
@@ -228,48 +226,30 @@ class WorkstationImpl implements Workstation {
         return Collections.emptyList();
     }
 
-    @Override
-    public void favorSpeedOverFixedEConsumption(int consumptionShift,
-            int speedShift) {
-        checkArgument(consumptionShift < getMaxVarECons(),
-                "cant shift more towards speed than available.");
-        setFixedECons(getFixedECons() + consumptionShift);
-        setMaxVarECons(getMaxVarECons() - consumptionShift);
-        setProcessingSpeed(getProcessingSpeed() + speedShift);
-    }
-
-    @Override
-    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
-            int speedShift) {
-        checkArgument(consumptionShift < getFixedECons(),
-                "cant shift more towards low consumption than available.");
-        setFixedECons(getFixedECons() - consumptionShift);
-        setMaxVarECons(getMaxVarECons() + consumptionShift);
-        setProcessingSpeed(getProcessingSpeed() - speedShift);
-    }
-
-    private void setProcessingSpeed(int i) {
-        this.speedfactor = i;
-    }
-
-    private int getProcessingSpeed() {
-        return speedfactor;
-    }
-
-    private void setFixedECons(int fixedECons) {
+    final void setFixedECons(int fixedECons) {
         this.fixedECons = fixedECons;
     }
 
-    private void setMaxVarECons(int shift) {
+    final void setMaxVarECons(int shift) {
         getCurrentState().setMaxVariableConsumption(shift);
     }
 
-    private int getFixedECons() {
+    final int getFixedECons() {
         return this.fixedECons;
     }
 
-    private int getMaxVarECons() {
+    final int getMaxVarECons() {
         return getCurrentState().getMaxVariableConsumption();
+    }
+
+    @Override
+    public void registerWith(Registerable subject) {
+        subject.register(this);
+
+    }
+
+    void doProcessingStep(Resource r, int baseSteps) {
+        r.process(baseSteps);
     }
 
     private final class StateContext implements WorkstationContext {
@@ -277,7 +257,7 @@ class WorkstationImpl implements Workstation {
         @Override
         public void processResources(int steps) {
             for (Resource r : currentResource) {
-                r.process(steps);
+                doProcessingStep(r, steps);
             }
         }
 

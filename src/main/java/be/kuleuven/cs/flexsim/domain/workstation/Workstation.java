@@ -41,29 +41,10 @@ public interface Workstation extends SimulationComponent {
     boolean isIdle();
 
     /**
-     * Sets the controllable instance's trade off metric between speed of
-     * operation and energy consumption to favor speed of operation.
+     * Register this workstation with a registerable instance.
      * 
-     * @param consumptionShift
-     *            the amount to shift towards consumption.
-     * @param speedShift
-     *            the amount to shift towards speed
-     * @throws IllegalArgumentException
-     *             the percentage is not between 0 and 1.
+     * @param subject
+     *            the subject to register with.
      */
-    void favorSpeedOverFixedEConsumption(int consumptionShift, int speedShift);
-
-    /**
-     * Sets the controllable instance's trade off metric between speed of
-     * operation and energy consumption to favor low energy consumption.
-     * 
-     * @param consumptionShift
-     *            the amount to shift towards consumption.
-     * @param speedShift
-     *            the amount to shift towards speed
-     * @throws IllegalArgumentException
-     *             the percentage is not between 0 and 1.
-     */
-    void favorFixedEConsumptionOverSpeed(int consumptionShift, int speedShift);
-
+    void registerWith(Registerable subject);
 }

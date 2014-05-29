@@ -11,10 +11,15 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * instances.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @param <T>
+ *            The type of workstation we are decorating. Only Workstation
+ *            interface methods are automatically delegated. Specific subtype
+ *            methods should be delegated to in extending delegators.
  */
-public abstract class ForwardingStationDecorator implements Workstation {
+public abstract class ForwardingStationDecorator<T extends Workstation>
+        implements Workstation {
 
-    private final Workstation w;
+    private final T w;
 
     /**
      * Default constructor that has to be called by subclasses.
@@ -22,7 +27,7 @@ public abstract class ForwardingStationDecorator implements Workstation {
      * @param ws
      *            the delegate workstation of this decorator
      */
-    ForwardingStationDecorator(Workstation ws) {
+    ForwardingStationDecorator(T ws) {
         this.w = ws;
     }
 
@@ -66,7 +71,7 @@ public abstract class ForwardingStationDecorator implements Workstation {
      * 
      * @return the delegated instance.
      */
-    protected final Workstation getDelegate() {
+    protected final T getDelegate() {
         return this.w;
     }
 
@@ -78,17 +83,8 @@ public abstract class ForwardingStationDecorator implements Workstation {
     }
 
     @Override
-    public void favorSpeedOverFixedEConsumption(int consumptionShift,
-            int speedShift) {
-        getDelegate().favorSpeedOverFixedEConsumption(consumptionShift,
-                speedShift);
-    }
-
-    @Override
-    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
-            int speedShift) {
-        getDelegate().favorFixedEConsumptionOverSpeed(consumptionShift,
-                speedShift);
+    public void registerWith(Registerable subject) {
+        getDelegate().registerWith(subject);
     }
 
 }
