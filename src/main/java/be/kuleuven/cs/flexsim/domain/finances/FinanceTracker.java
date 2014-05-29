@@ -57,7 +57,7 @@ public final class FinanceTracker implements SimulationComponent {
     public void afterTick(int t) {
         calculateConsumption(t);
         calculateReward(t);
-        report();
+        report(t);
     }
 
     private void calculateConsumption(int t) {
@@ -73,19 +73,18 @@ public final class FinanceTracker implements SimulationComponent {
         increaseTotalReward(rewardIncrement);
     }
 
-    private void report() {
-        publishReport(getTarget().getAggregatedLastStepConsumptions(),
+    private void report(int t) {
+        publishReport(t, getTarget().getAggregatedLastStepConsumptions(),
                 getTarget().getAggregatedTotalConsumptions(), getTarget()
                         .getBufferOccupancyLevels());
     }
 
-    private void publishReport(int totalLaststep, int totalTotal,
+    private void publishReport(int time, int totalLaststep, int totalTotal,
             List<Integer> buffSizes) {
         if (this.context.isPresent()) {
             Event e = getContext().getEventFactory().build("report");
             e.setAttribute("pLinehash", this.hashCode());
-            e.setAttribute("time", getContext().getSimulationClock()
-                    .getTimeCount());
+            e.setAttribute("time", time);
             e.setAttribute("totalLaststepE", totalLaststep);
             e.setAttribute("totalTotalE", totalTotal);
             int idx = 0;

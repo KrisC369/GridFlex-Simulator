@@ -16,20 +16,24 @@ import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLineTest.ChangeEventComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import be.kuleuven.cs.flexsim.simulation.TimeStepSimulator;
 
 public class FinanceTrackerTest {
     private ProcessTrackableSimulationComponent mockPL = mock(ProcessTrackableSimulationComponent.class);
     private FinanceTracker t = FinanceTracker.createDefault(mockPL);
-    private SimulationContext sim = mock(SimulationContext.class);
+    private SimulationContext context = mock(SimulationContext.class);
+    private TimeStepSimulator sim = TimeStepSimulator.createSimulator(1,
+            context);
 
     @Before
     public void setUp() throws Exception {
         t = FinanceTracker.createCustom(mockPL, RewardModel.CONSTANT,
                 DebtModel.CONSTANT);
-        sim = Simulator.createSimulator(20);
+        context = SimulationContext.createDefaultContext();
+        sim = TimeStepSimulator.createSimulator(20, context);
     }
 
     @Test
@@ -48,9 +52,9 @@ public class FinanceTrackerTest {
         SimulationComponent m = mock(SimulationComponent.class);
         SimulationComponent tester = new ChangeEventComponent(m);
         long duration = 20;
-        sim.register(t);
-        sim.register(tester);
-        ((Simulator) sim).start();
+        context.register(t);
+        context.register(tester);
+        ((TimeStepSimulator) sim).start();
         verify(m, times((int) duration)).tick(0);
         assertEquals("simulation:stopped",
                 ((ChangeEventComponent) tester).getLastType());
@@ -63,9 +67,9 @@ public class FinanceTrackerTest {
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
-        sim.register(t);
+        context.register(t);
         assertEquals(0, t.getTotalCost(), 0);
-        ((Simulator) sim).start();
+        ((TimeStepSimulator) sim).start();
         assertNotEquals(0, t.getTotalCost());
     }
 
@@ -76,9 +80,9 @@ public class FinanceTrackerTest {
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
-        sim.register(t);
+        context.register(t);
         assertEquals(0, t.getTotalReward(), 0);
-        ((Simulator) sim).start();
+        ((TimeStepSimulator) sim).start();
         assertNotEquals(0, t.getTotalReward());
         assertEquals(
                 0,
@@ -93,9 +97,9 @@ public class FinanceTrackerTest {
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
-        sim.register(t);
+        context.register(t);
         assertEquals(0, t.getTotalReward(), 0);
-        ((Simulator) sim).start();
+        ((TimeStepSimulator) sim).start();
         int reward = t.getTotalReward();
         int cost = t.getTotalCost();
         assertEquals(reward - cost, t.getTotalProfit());

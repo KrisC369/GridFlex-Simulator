@@ -57,20 +57,23 @@ public class SimulatorTest {
 
     private SimulationComponent comp = mock(SimulationComponent.class);
     private final long defaultRunTime = 1;
-    private Simulator s = Simulator.createSimulator(defaultRunTime);
+    private SimulationContext context = mock(SimulationContext.class);
+    private TimeStepSimulator s = TimeStepSimulator.createSimulator(
+            defaultRunTime, context);
 
     @Before
     public void setUp() throws Exception {
-        s = Simulator.createSimulator(defaultRunTime);
+        context = SimulationContext.createDefaultContext();
+        s = TimeStepSimulator.createSimulator(defaultRunTime, context);
         comp = mock(SimulationComponent.class);
     }
 
     @Test
     public void testEventBus() {
         long duration = 20;
-        s = Simulator.createSimulator(duration);
+        s = TimeStepSimulator.createSimulator(duration, context);
         comp = new ChangeEventComponent();
-        s.register(comp);
+        context.register(comp);
         s.start();
         assertNotNull(((ChangeEventComponent) comp).getResult());
         assertFalse(((ChangeEventComponent) comp).getResult().isEmpty());
@@ -79,25 +82,25 @@ public class SimulatorTest {
     @Test
     public void testInitialState() {
         assertEquals(0, s.getSimulationTime());
-        assertEquals(0, s.getSimulationClock().getTimeCount());
+        assertEquals(0, s.getClock().getTimeCount());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeDurationInit() {
-        s = Simulator.createSimulator(0);
+        s = TimeStepSimulator.createSimulator(0, context);
     }
 
     @Test
     public void testRegisterComp() {
-        s.register(comp);
-        assertEquals(1, s.getSimulationComponents().size());
-        verify(comp, times(1)).initialize(s);
+        context.register(comp);
+        assertEquals(1, context.getSimulationComponents().size());
+        verify(comp, times(1)).initialize(context);
     }
 
     @Test
     public void testRunDurationImmediateReturn() {
         long duration = 20;
-        s = Simulator.createSimulator(duration);
+        s = TimeStepSimulator.createSimulator(duration, context);
         runSim(true);
         verify(comp, times(20)).tick(anyInt());
     }
@@ -105,7 +108,7 @@ public class SimulatorTest {
     @Test
     public void testRunDurationImmediateReturnAfterTick() {
         long duration = 20;
-        s = Simulator.createSimulator(duration);
+        s = TimeStepSimulator.createSimulator(duration, context);
         runSim(true);
         verify(comp, times(20)).afterTick(anyInt());
     }
@@ -113,7 +116,7 @@ public class SimulatorTest {
     @Test
     public void testSimDuration() {
         long duration = 20;
-        s = Simulator.createSimulator(duration);
+        s = TimeStepSimulator.createSimulator(duration, context);
         assertEquals(duration, s.getDuration());
     }
 
@@ -126,23 +129,23 @@ public class SimulatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testZeroDurationInit() {
-        s = Simulator.createSimulator(0);
+        s = TimeStepSimulator.createSimulator(0, context);
     }
 
     @Test
     public void testRegisterInstrumentation() {
-        s = Simulator.createSimulator(20);
+        s = TimeStepSimulator.createSimulator(20, context);
         InstrumentationComponent i = mock(InstrumentationComponent.class);
-        s.register(i);
-        assertTrue(s.getInstrumentationComponents().contains(i));
-        assertFalse(s.getSimulationComponents().contains(i));
-        s.register(comp);
-        assertTrue(s.getInstrumentationComponents().contains(comp));
-        assertTrue(s.getSimulationComponents().contains(comp));
+        context.register(i);
+        assertTrue(context.getInstrumentationComponents().contains(i));
+        assertFalse(context.getSimulationComponents().contains(i));
+        context.register(comp);
+        assertTrue(context.getInstrumentationComponents().contains(comp));
+        assertTrue(context.getSimulationComponents().contains(comp));
     }
 
     private void runSim(boolean immediateReturn) {
-        s.register(comp);
+        context.register(comp);
         s.start();
     }
 }

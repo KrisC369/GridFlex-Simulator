@@ -10,7 +10,7 @@ package be.kuleuven.cs.flexsim.simulation;
 public interface InstrumentationComponent {
 
     /**
-     * Method for injecting the simulationcontext dependency if needed. This
+     * Method for injecting the simulation context dependency if needed. This
      * method is called as a callback after registering with the simulation
      * context.
      * 
