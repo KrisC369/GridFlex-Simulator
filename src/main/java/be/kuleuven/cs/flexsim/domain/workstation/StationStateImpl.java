@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * This class represents the commonalities of the state specific behavior.
  * 
@@ -7,7 +9,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * 
  */
 abstract class StationStateImpl implements StationState {
-    private final int maxVarConsumptionRate;
+    private int maxVarConsumptionRate;
     private final ConsumptionModel model;
 
     StationStateImpl(int varConsumption, ConsumptionModel model) {
@@ -19,6 +21,17 @@ abstract class StationStateImpl implements StationState {
     public double getVarConsumptionRate(int remainingSteps, int totalSteps) {
         return model.getVarConsumptionRate(remainingSteps, totalSteps,
                 maxVarConsumptionRate);
+    }
+
+    @Override
+    public void setMaxVariableConsumption(int amount) {
+        checkArgument(amount >= 0, "Amount %s Can't be negative", amount);
+        this.maxVarConsumptionRate = amount;
+    }
+
+    @Override
+    public int getMaxVariableConsumption() {
+        return maxVarConsumptionRate;
     }
 
     /**
@@ -90,6 +103,11 @@ abstract class StationStateImpl implements StationState {
 
         private void changeState(WorkstationContext context) {
             context.setProcessingState();
+        }
+
+        @Override
+        public void setMaxVariableConsumption(int amount) {
+            // noop
         }
     }
 }

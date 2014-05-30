@@ -80,14 +80,14 @@ public class WorkstationTest {
         assertNotEquals(r, iew.getTotalConsumption());
         r = iew.getTotalConsumption();
         iew.tick(0);
-        assertNotEquals(r, iew.getTotalConsumption());
+        assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         r = iew.getTotalConsumption();
         iew.tick(0);
-        assertNotEquals(r, iew.getTotalConsumption());
+        assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
         iew.tick(0);
-        assertNotEquals(r, iew.getTotalConsumption());
+        assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
 
@@ -177,7 +177,7 @@ public class WorkstationTest {
     }
 
     @Test
-    public void testDecorator() {
+    public void testDelayedStartDecorator() {
         int shift = 1;
         Workstation mock = mock(Workstation.class);
         Workstation deco = new DelayedStartStationDecorator(shift, mock);
@@ -209,16 +209,26 @@ public class WorkstationTest {
     }
 
     @Test
+    public void testDecoratorCombinationsOnCreation() {
+        Workstation mock = mock(Workstation.class);
+        Workstation deco = new CurtailableStationDecorator(mock);
+
+        assertTrue(deco instanceof CurtailableWorkstation);
+        assertFalse(deco instanceof SteerableWorkstation);
+        deco = new SteerableCurtailableStationDecorator(
+                mock(SteerableStationImpl.class));
+        assertTrue(deco instanceof CurtailableWorkstation);
+        assertTrue(deco instanceof SteerableWorkstation);
+    }
+
+    @Test
     public void testCurtailableStationProcessingAndConsumption() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 1, 3, 0);
-        Curtailable curt2 = ((Curtailable) curt);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
 
         Resource res = pushResource(3);
-        curt.tick(0);
-        curt.afterTick(0);
-        curt.tick(0);
-        curt.afterTick(0);
+        multiTick(curt, 2);
         assertTrue(in.isEmpty());
         assertFalse(curt.isIdle());
         assertTrue(out.isEmpty());
@@ -247,11 +257,80 @@ public class WorkstationTest {
         assertEquals(1, curt.getProcessedItemsCount());
     }
 
+    @Test
+    public void testSteerableCurtailableStationProcessingAndConsumption() {
+        Workstation curt = WorkstationFactory.createMultiCapConsuming(in, out,
+                1, 3, 1);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
+
+        Resource res = pushResource(3);
+        multiTick(curt, 2);
+        assertTrue(in.isEmpty());
+        assertFalse(curt.isIdle());
+        assertTrue(out.isEmpty());
+        assertEquals(0, curt.getProcessedItemsCount());
+        assertNotEquals(0, curt.getLastStepConsumption());
+        double r = curt.getTotalConsumption();
+        curt2.doFullCurtailment();
+
+        multiTick(curt, 20);
+        curt.afterTick(0);
+        assertTrue(curt2.isCurtailed());
+        curt2.restore();
+        multiTick(curt, 3);
+
+        assertTrue(in.isEmpty());
+        assertTrue(curt.isIdle());
+        assertFalse(out.isEmpty());
+        assertEquals(res, out.pull());
+        assertEquals(1, curt.getProcessedItemsCount());
+    }
+
+    @Test
+    public void testSteerableProcessingAndConsumption() {
+        int defWorkingCons = 3;
+        int newWorkingCons = 500;
+        Workstation curt = WorkstationFactory.createMultiCapLinearConsuming(in,
+                out, 1, 502, 1);
+        SteerableWorkstation steer2 = ((SteerableWorkstation) curt);
+
+        Resource res = pushResource(20);
+        multiTick(curt, 2);
+        assertTrue(in.isEmpty());
+        assertFalse(curt.isIdle());
+        assertTrue(out.isEmpty());
+        assertEquals(0, curt.getProcessedItemsCount());
+        assertNotEquals(0, curt.getLastStepConsumption());
+        assertEquals(25, curt.getLastStepConsumption(), 2);
+
+        steer2.favorSpeedOverFixedEConsumption(newWorkingCons, 10);
+
+        multiTick(curt, 1);
+        assertEquals(newWorkingCons, curt.getLastStepConsumption(), 2);
+        multiTick(curt, 6);
+
+        assertTrue(in.isEmpty());
+        assertTrue(curt.isIdle());
+        assertFalse(out.isEmpty());
+        assertEquals(res, out.pull());
+        assertEquals(1, curt.getProcessedItemsCount());
+
+        steer2.favorFixedEConsumptionOverSpeed(newWorkingCons, 10);
+        res = pushResource(20);
+        multiTick(curt, 10);
+        assertTrue(in.isEmpty());
+        assertFalse(curt.isIdle());
+        assertTrue(out.isEmpty());
+        assertEquals(1, curt.getProcessedItemsCount());
+        assertNotEquals(0, curt.getLastStepConsumption());
+        assertEquals(2, curt.getLastStepConsumption(), 2);
+    }
+
     @Test(expected = IllegalStateException.class)
     public void testDoubleCurtailment() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
-        Curtailable curt2 = ((Curtailable) curt);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
 
         curt2.doFullCurtailment();
         assertTrue(curt2.isCurtailed());
@@ -262,7 +341,7 @@ public class WorkstationTest {
     public void testDoubleRestore() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
-        Curtailable curt2 = ((Curtailable) curt);
+        CurtailableWorkstation curt2 = ((CurtailableWorkstation) curt);
 
         curt2.doFullCurtailment();
         assertTrue(curt2.isCurtailed());
@@ -350,6 +429,7 @@ public class WorkstationTest {
     private void multiTick(Workstation s, int times) {
         for (; times > 0; times--) {
             s.tick(0);
+            s.afterTick(0);
         }
     }
 

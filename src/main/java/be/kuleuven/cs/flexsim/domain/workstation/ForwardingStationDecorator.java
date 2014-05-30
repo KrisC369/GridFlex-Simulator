@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -10,10 +11,15 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * instances.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @param <T>
+ *            The type of workstation we are decorating. Only Workstation
+ *            interface methods are automatically delegated. Specific subtype
+ *            methods should be delegated to in extending delegators.
  */
-public abstract class ForwardingStationDecorator implements Workstation {
+public abstract class ForwardingStationDecorator<T extends Workstation>
+        implements Workstation {
 
-    private final Workstation w;
+    private final T w;
 
     /**
      * Default constructor that has to be called by subclasses.
@@ -21,7 +27,7 @@ public abstract class ForwardingStationDecorator implements Workstation {
      * @param ws
      *            the delegate workstation of this decorator
      */
-    ForwardingStationDecorator(Workstation ws) {
+    ForwardingStationDecorator(T ws) {
         this.w = ws;
     }
 
@@ -52,12 +58,12 @@ public abstract class ForwardingStationDecorator implements Workstation {
 
     @Override
     public void afterTick(int t) {
-        getDelegate().afterTick(0);
+        getDelegate().afterTick(t);
     }
 
     @Override
     public void tick(int t) {
-        getDelegate().tick(0);
+        getDelegate().tick(t);
     }
 
     /**
@@ -65,13 +71,20 @@ public abstract class ForwardingStationDecorator implements Workstation {
      * 
      * @return the delegated instance.
      */
-    protected final Workstation getDelegate() {
+    protected final T getDelegate() {
         return this.w;
     }
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        return getDelegate().getSimulationSubComponents();
+        List<SimulationComponent> toret = new ArrayList<>();
+        toret.addAll(getDelegate().getSimulationSubComponents());
+        return toret;
+    }
+
+    @Override
+    public void registerWith(Registerable subject) {
+        getDelegate().registerWith(subject);
     }
 
 }

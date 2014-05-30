@@ -1,0 +1,930 @@
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:24:	This class has too many methods, consider refactoring it.
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:28:	Avoid excessively long variable names like WORKING_CONSUMPTION
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:30:	Avoid excessively long variable names like MULTICAP_WORKING_CONSUMPTION
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:31:	Avoid excessively long variable names like LASTSTEP_CONSUMPTION
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:33:	Parameter 'input' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:40:	Parameter 'input' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:45:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:47:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:49:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:58:	Found 'UR'-anomaly for variable 'b' (lines '58'-'61').
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:59:	Local variable 'buffSizes' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:60:	Avoid variables with short names like b
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:60:	Local variable 'b' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:77:	Document empty method
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:77:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:86:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:86:	Document empty method
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:86:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:90:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:90:	Document empty method
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:90:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:100:	Parameter 'res' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:101:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:111:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:123:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:123:	Parameter 'w' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:128:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:128:	Parameter 'w' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:168:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:179:	Parameter 'initialStations' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:180:	Parameter 'furtherStations' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:181:	Avoid variables with short names like b
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:181:	Local variable 'b' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:184:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:216:	Use explicit scoping instead of the default package private level
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:227:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:233:	Avoid instantiation through private constructors from outside of the constructors class.
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:253:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:253:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:256:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:258:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:259:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:260:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:260:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:273:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:273:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:276:	Local variable 'shift' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:277:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:277:	Local variable 'w' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:279:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:280:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:281:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:281:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:295:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:295:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:298:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:299:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:299:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:300:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:300:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:312:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:312:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:315:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:316:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:316:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:317:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:317:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:323:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:333:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:333:	Parameter 'cap' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:333:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:335:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:338:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:338:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:339:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:339:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:346:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:356:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:356:	Parameter 'cap' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:356:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:358:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:361:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:361:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:362:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:362:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:370:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:380:	Avoid variables with short names like n
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:380:	Parameter 'n' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:381:	Parameter 'cap' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:383:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:386:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:386:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:387:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLine.java:387:	Potential violation of Law of Demeter (static property access)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/DebtModel.java:16:	Parameter 'lastConsumption' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/DebtModel.java:16:	Parameter 'timestep' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/DebtModel.java:22:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:19:	This class has too many methods, consider refactoring it.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:21:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:22:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:23:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:24:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:25:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:26:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:27:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:29:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:39:	Parameter 'target' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:40:	Avoid variables with short names like dm
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:40:	Avoid variables with short names like rm
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:40:	Parameter 'dm' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:40:	Parameter 'rm' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:49:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:59:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:59:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:65:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:65:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:66:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:66:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:66:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:70:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:70:	Found 'UR'-anomaly for variable 'r' (lines '70'-'73').
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:70:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:72:	Avoid variables with short names like r
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:72:	Local variable 'r' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:72:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:88:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:88:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:88:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:88:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:89:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:89:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:93:	Found 'UR'-anomaly for variable 'i' (lines '93'-'105').
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:93:	Parameter 'totalLaststep' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:93:	Parameter 'totalTotal' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:94:	Parameter 'buffSizes' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:94:	Parameter 'profit' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:96:	Avoid variables with short names like e
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:96:	Local variable 'e' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:96:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:96:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:97:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:97:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:98:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:98:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:98:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:98:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:98:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:100:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:101:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:102:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:103:	Found 'DU'-anomaly for variable 'idx' (lines '103'-'110').
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:104:	Avoid variables with short names like i
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:104:	Local variable 'i' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:105:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:107:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:108:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:108:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:113:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:113:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:120:	Local variable 'toret' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:148:	Parameter 'increment' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:161:	Parameter 'incr' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:183:	Parameter 'target' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:189:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:202:	Avoid variables with short names like rm
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:202:	Parameter 'rm' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:202:	Parameter 'target' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:203:	Avoid variables with short names like dm
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTracker.java:203:	Parameter 'dm' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/RewardModel.java:18:	Avoid variables with short names like r
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/RewardModel.java:18:	Parameter 'r' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/RewardModel.java:18:	Parameter 'timestep' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/RewardModel.java:25:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/RewardModel.java:34:	Avoid variables with short names like r
+src/main/java/be/kuleuven/cs/flexsim/domain/finances/package-info.java:2:	Comment is too large: Line too long
+src/main/java/be/kuleuven/cs/flexsim/domain/package-info.java:2:	Comment is too large: Line too long
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:10:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:10:	Use explicit scoping instead of the default package private level
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:20:	Parameter 'following' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:20:	Parameter 'needed' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:25:	Avoid variables with short names like i
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:25:	Local variable 'i' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:32:	Local variable 'firstNonZeroIdx' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:33:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:34:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/MultiProcessResource.java:42:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:18:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:28:	Parameter 'amount' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:29:	Parameter 'processingNeeded' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:30:	Local variable 'pool' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:45:	Parameter 'neededProcessing' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:46:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:47:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:48:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/ResourceFactory.java:49:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/SimpleResource.java:11:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/SimpleResource.java:12:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/SimpleResource.java:20:	Parameter 'needed' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/SimpleResource.java:41:	Document empty method
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/SimpleResource.java:50:	Parameter 'time' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/resource/SimpleResource.java:60:	Parameter 'newTime' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:20:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:53:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:53:	Local variable 't' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:66:	Local variable 'returnset' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:80:	Parameter 'res' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:91:	Found 'UR'-anomaly for variable 't' (lines '91'-'93').
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:91:	Parameter 'reslist' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:92:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/util/Buffer.java:92:	Local variable 't' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:19:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:32:	Avoid variables with short names like f
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:32:	Found 'UR'-anomaly for variable 't' (lines '32'-'35').
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:32:	Parameter 'f' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:32:	Parameter 'list' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:34:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:34:	Local variable 't' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:42:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:55:	Avoid variables with short names like f
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:55:	Found 'UR'-anomaly for variable 't' (lines '55'-'58').
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:55:	Parameter 'elems' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:55:	Parameter 'f' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:57:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/util/CollectionUtils.java:57:	Local variable 't' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/util/IntNNFunction.java:4:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/util/IntNNFunction.java:18:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/util/SimpleEventFactory.java:15:	Avoid variables with short names like ef
+src/main/java/be/kuleuven/cs/flexsim/domain/util/SimpleEventFactory.java:15:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/util/SimpleEventFactory.java:31:	Parameter 'eventType' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:15:	Parameter 'maxSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:15:	Parameter 'remainingSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:16:	Parameter 'maxRate' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:17:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:18:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:32:	Parameter 'maxSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:32:	Parameter 'remainingSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:33:	Parameter 'maxRate' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:46:	Parameter 'maxSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:46:	Parameter 'remainingSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:47:	Parameter 'maxRate' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ConsumptionModel.java:53:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:11:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:18:	Parameter 'delegate' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:48:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:48:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:58:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:58:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:67:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/CurtailableStationDecorator.java:69:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:11:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:12:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:23:	Parameter 'shift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:23:	Parameter 'workstationImpl' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:33:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:33:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:34:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:45:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:45:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/DelayedStartStationDecorator.java:46:	Avoid using Literals in Conditional Statements
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:15:	Abstract classes should be named AbstractXXX
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:17:	Avoid variables with short names like w
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:17:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:25:	Avoid variables with short names like ws
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:25:	Parameter 'ws' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:30:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:31:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:36:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:41:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:46:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:51:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:55:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:55:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:56:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:60:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:60:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:61:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:75:	Local variable 'toret' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:76:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:76:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:81:	Parameter 'consumptionShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:82:	Parameter 'speedShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:83:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:88:	Parameter 'consumptionShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:89:	Parameter 'speedShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/ForwardingStationDecorator.java:90:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationState.java:8:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:11:	Abstract classes should be named AbstractXXX
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:12:	Avoid excessively long variable names like maxVarConsumptionRate
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:12:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:13:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:15:	Parameter 'model' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:15:	Parameter 'varConsumption' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:21:	Parameter 'remainingSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:21:	Parameter 'totalSteps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:27:	Parameter 'amount' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:42:	Parameter 'consumption' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:42:	Parameter 'model' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:52:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:69:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:77:	Parameter 'consumption' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:77:	Parameter 'model' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:87:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:88:	Local variable 'succesfull' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:104:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/StationStateImpl.java:109:	Parameter 'amount' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/Workstation.java:43:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/Workstation.java:56:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:17:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:30:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:30:	Avoid variables with short names like in
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:30:	Parameter 'in' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:31:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:31:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:31:	Parameter 'out' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:31:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:36:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:45:	Parameter 'bufferIn' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:46:	Parameter 'bufferOut' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:51:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:67:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:67:	Avoid variables with short names like in
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:67:	Parameter 'in' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:68:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:68:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:68:	Parameter 'out' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:68:	Parameter 'shift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:68:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:73:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:89:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:89:	Avoid variables with short names like in
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:89:	Parameter 'in' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:90:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:90:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:90:	Parameter 'out' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:90:	Parameter 'shift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:90:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:96:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:113:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:113:	Avoid variables with short names like in
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:113:	Parameter 'in' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:114:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:114:	Parameter 'capacity' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:114:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:114:	Parameter 'out' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:114:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:119:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Avoid variables with short names like in
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Parameter 'in' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Parameter 'out' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:137:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:138:	Parameter 'capacity' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:143:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Avoid prefixing parameters by in, out or inOut. Uses Javadoc to document this behavior.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Avoid variables with short names like in
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Parameter 'in' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Parameter 'out' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:162:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationFactory.java:163:	Parameter 'capacity' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:26:	This class has too many methods, consider refactoring it.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:28:	Avoid excessively long variable names like CURRENT_REMAINING_STEPS
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:30:	Parameter 'input' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:35:	Avoid excessively long variable names like MAX_REMAINING_STEPS
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:37:	Parameter 'input' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:42:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:43:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:45:	Avoid excessively long variable names like resourceMovingState
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:45:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:46:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:47:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:48:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:49:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:50:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:51:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:53:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:54:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:55:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:57:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:68:	Parameter 'bufferIn' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:68:	Parameter 'bufferOut' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:69:	Parameter 'capacity' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:69:	Parameter 'idle' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:69:	Parameter 'model' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:69:	Parameter 'working' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:86:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:86:	Document empty method
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:86:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:116:	Document empty method
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:116:	Parameter 'context' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:129:	Use explicit scoping instead of the default package private level
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:135:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:136:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:139:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:144:	Parameter 'res' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:148:	Parameter 'res' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:156:	Local variable 'size' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:156:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:157:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:168:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:168:	Parameter 't' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:169:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:170:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:196:	Parameter 'consumptionRate' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:200:	Parameter 'size' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:209:	Parameter 'rate' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:232:	Parameter 'consumptionShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:233:	Parameter 'speedShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:242:	Parameter 'consumptionShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:243:	Parameter 'speedShift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:251:	Avoid variables with short names like i
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:251:	Parameter 'i' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:259:	Parameter 'fixedECons' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:263:	Parameter 'shift' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:264:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:272:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:278:	Found 'UR'-anomaly for variable 'r' (lines '278'-'280').
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:278:	Parameter 'steps' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:279:	Avoid variables with short names like r
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:279:	Local variable 'r' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:286:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:289:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:291:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:309:	Found 'UR'-anomaly for variable 'r' (lines '309'-'311').
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:310:	Avoid variables with short names like r
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:310:	Local variable 'r' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationImpl.java:312:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/simulation/SimulationComponent.java:20:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/simulation/SimulationComponent.java:29:	Avoid variables with short names like t
+src/main/java/be/kuleuven/cs/flexsim/simulation/SimulationContext.java:37:	Comment is too large: Too many lines
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:22:	This class has too many methods, consider refactoring it.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:31:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:34:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:37:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:39:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:41:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:43:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:51:	Parameter 'duration' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:123:	Avoid variables with short names like ev
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:123:	Local variable 'ev' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:124:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:124:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:124:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:129:	Avoid variables with short names like ev
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:129:	Local variable 'ev' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:130:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:130:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:130:	Potential violation of Law of Demeter (object not created locally)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:134:	Found 'UR'-anomaly for variable 'c' (lines '134'-'136').
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:134:	Use block level rather than method level synchronization
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:135:	Avoid variables with short names like c
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:135:	Local variable 'c' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:140:	Found 'UR'-anomaly for variable 'c' (lines '140'-'142').
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:140:	Use block level rather than method level synchronization
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:141:	Avoid variables with short names like c
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:141:	Local variable 'c' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:151:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:152:	A method should have only one exit point, and that should be the last statement in the method
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:160:	Potential violation of Law of Demeter (method chain calls)
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:173:	Parameter 'duration' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:184:	Found 'UR'-anomaly for variable 'sc' (lines '184'-'187').
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:184:	Parameter 'comp' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:186:	Avoid variables with short names like sc
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:186:	Local variable 'sc' could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:191:	Parameter 'comp' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:197:	Parameter 'comp' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/Simulator.java:201:	Parameter 'comp' is not assigned and could be declared final
+src/main/java/be/kuleuven/cs/flexsim/simulation/package-info.java:2:	Comment is too large: Line too long
+src/main/java/be/kuleuven/cs/flexsim/time/SimulationClock.java:12:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/main/java/be/kuleuven/cs/flexsim/time/SimulationClock.java:27:	Parameter 'step' is not assigned and could be declared final
+src/test/java/AllTests.java:17:	All classes and interfaces must belong to a named package
+src/test/java/AllTests.java:17:	Each class should declare at least one constructor
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:1:	Too many static imports may lead to messy code
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:30:	This class has too many methods, consider refactoring it.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:33:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:33:	If you run in Java5 or newer and have concurrent access, you should use the ConcurrentHashMap implementation
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:34:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:35:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:35:	Private field 'mock' could be made final; it is only initialized in the declaration or constructor.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:37:	Parameter 'mock' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:42:	Avoid variables with short names like t
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:42:	Parameter 't' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:56:	Document empty method
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:56:	Parameter 'context' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:60:	Avoid variables with short names like e
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:60:	Parameter 'e' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:61:	This statement may have some unnecessary parentheses
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:61:	Useless parentheses.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:61:	Useless parentheses.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:63:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:69:	Avoid variables with short names like t
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:69:	Document empty method
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:69:	Parameter 't' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:81:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:81:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:82:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:82:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:83:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:83:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:83:	Private field 'lineSuperExtended' could be made final; it is only initialized in the declaration or constructor.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:84:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:84:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:85:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:88:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:88:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:108:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:108:	Local variable 'n' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:110:	Local variable 'tester' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:112:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:113:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:114:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:114:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:114:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:119:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:120:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:121:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:121:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:121:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:125:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:126:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:127:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:127:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:127:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:131:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:132:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:133:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:133:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:133:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:136:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:136:	Parameter 'n' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:137:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:142:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:143:	Local variable 'lineSimple' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:144:	Local variable 'lineExtended' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:146:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:146:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:147:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:147:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:151:	Found 'UR'-anomaly for variable 'c' (lines '151'-'156').
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:152:	Local variable 'lineExtended' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:154:	Local variable 'stations' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:154:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:155:	Avoid variables with short names like c
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:155:	Local variable 'c' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:156:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:156:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:156:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:156:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:161:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:162:	Avoid variables with short names like l
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:162:	Local variable 'l' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:166:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:167:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:168:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:168:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:169:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:170:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:170:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:170:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:170:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:170:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:174:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:175:	Avoid variables with short names like l
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:175:	Local variable 'l' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:179:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:180:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:181:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:181:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:182:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:183:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:183:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:183:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:183:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:183:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:187:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:188:	Avoid variables with short names like l
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:188:	Local variable 'l' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:194:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:195:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:196:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:196:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:197:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:198:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:198:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:198:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:198:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/factory/ProductionLineTest.java:198:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:1:	Too many static imports may lead to messy code
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:24:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:24:	Private field 'mockPL' could be made final; it is only initialized in the declaration or constructor.
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:25:	Avoid variables with short names like t
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:25:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:26:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:37:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:37:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:37:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:43:	Local variable 'mockPL' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:45:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:45:	Local variable 'n' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:46:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:47:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:48:	Avoid variables with short names like m
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:48:	Local variable 'm' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:49:	Local variable 'tester' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:50:	Local variable 'duration' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:53:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:54:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:55:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:55:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:56:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:60:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:61:	Local variable 'mockPL' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:63:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:63:	Local variable 'n' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:64:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:65:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:68:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:73:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:74:	Local variable 'mockPL' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:76:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:76:	Local variable 'n' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:77:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:78:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:81:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:83:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:83:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:85:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:85:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:85:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:86:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:86:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:90:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:91:	Local variable 'mockPL' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:93:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:93:	Local variable 'n' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:94:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:95:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:98:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:99:	Local variable 'reward' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:100:	Local variable 'cost' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/finances/FinanceTrackerTest.java:101:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:11:	Use explicit scoping instead of the default package private level
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:12:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:21:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:25:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:26:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:29:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:32:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:35:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/resource/ResourceTest.java:38:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:1:	Too many static imports may lead to messy code
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:24:	Avoid variables with short names like b
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:24:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:26:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:35:	JUnit tests should include assert() or fail()
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:37:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:42:	Avoid variables with short names like b
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:42:	Found 'DU'-anomaly for variable 'b' (lines '42'-'54').
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:42:	Local variable 'b' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:43:	Local variable 'results' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:45:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:45:	Local variable 'n' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:48:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:49:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:51:	Avoid variables with short names like i
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:51:	Local variable 'i' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:52:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:52:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:57:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:58:	Local variable 'res2' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:61:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:62:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:67:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:76:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:77:	Local variable 'res2' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:80:	Local variable 'returnset' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:81:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:81:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:82:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:82:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:83:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:83:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:87:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:89:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:90:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:94:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:95:	Local variable 'res2' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:96:	Local variable 'reslist' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:100:	Local variable 'returnset' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:101:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:101:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:102:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:102:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:103:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:103:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/util/BufferTest.java:109:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:1:	Too many static imports may lead to messy code
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:19:	This class has too many methods, consider refactoring it.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:21:	Avoid variables with short names like in
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:21:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:22:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:23:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:24:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:24:	Perhaps 'sim' could be replaced by a local variable.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:25:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:40:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:48:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:52:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:57:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:61:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:66:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:70:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:71:	Avoid variables with short names like r
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:72:	Local variable 'fixedCost' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:92:	Found 'DU'-anomaly for variable 'r' (lines '92'-'94').
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:122:	Avoid variables with short names like iw
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:122:	Local variable 'iw' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:124:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:128:	JUnit tests should include assert() or fail()
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:134:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:138:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:145:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:149:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:155:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:156:	Local variable 'shift' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:159:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:162:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:165:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:166:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:167:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:168:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:172:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:173:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:174:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:175:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:176:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:180:	JUnit tests should include assert() or fail()
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:181:	Local variable 'shift' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:182:	Local variable 'mock' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:183:	Local variable 'deco' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:185:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:187:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:190:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:192:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:194:	Avoid variables with short names like c
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:194:	Local variable 'c' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:196:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:199:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:202:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:205:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:208:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:212:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:213:	Local variable 'curt' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:215:	Local variable 'curt2' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:217:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:218:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:219:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:220:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:221:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:222:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:223:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:223:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:224:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:225:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:225:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:226:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:227:	Avoid variables with short names like r
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:227:	Local variable 'r' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:227:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:228:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:231:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:233:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:234:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:234:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:235:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:236:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:236:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:237:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:238:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:240:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:243:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:244:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:244:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:245:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:246:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:247:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:247:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:252:	Local variable 'curt' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:254:	Local variable 'curt2' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:256:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:257:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:257:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:258:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:262:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:263:	Local variable 'curt' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:265:	Local variable 'curt2' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:267:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:268:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:268:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:269:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:270:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:270:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:271:	Potential violation of Law of Demeter (object not created locally)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:275:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:279:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:281:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:283:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:285:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:289:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:293:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:295:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:297:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:299:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:303:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:320:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:339:	Avoid variables with short names like k
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:339:	Avoid variables with short names like n
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:339:	Parameter 'k' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:339:	Parameter 'n' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:345:	Avoid variables with short names like w
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:345:	Parameter 'w' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:346:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:347:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:350:	Avoid reassigning parameters such as 'times'
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:350:	Avoid variables with short names like s
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:350:	Parameter 's' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:356:	Parameter 'procTime' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:357:	Local variable 'res' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:362:	JUnit 4 tests that execute tests should use the @Test annotation
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:362:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:362:	Parameter 'res' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:363:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:363:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:363:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:364:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:365:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:366:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:367:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:368:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:371:	Avoid unused method parameters such as 'res'.
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:371:	JUnit 4 tests that execute tests should use the @Test annotation
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:371:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:371:	Parameter 'res' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:372:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:373:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:374:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:375:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:375:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:375:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/domain/workstation/WorkstationTest.java:376:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:1:	Too many static imports may lead to messy code
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:24:	This class has too many methods, consider refactoring it.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:26:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:26:	If you run in Java5 or newer and have concurrent access, you should use the ConcurrentHashMap implementation
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:29:	Avoid variables with short names like t
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:29:	Parameter 't' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:39:	Document empty method
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:39:	Parameter 'context' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:43:	Avoid variables with short names like e
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:43:	Parameter 'e' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:44:	This statement may have some unnecessary parentheses
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:44:	Useless parentheses.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:44:	Useless parentheses.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:48:	Avoid variables with short names like t
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:48:	Document empty method
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:48:	Parameter 't' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:58:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:58:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:59:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:59:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:59:	This final field could be made static
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:60:	Avoid variables with short names like s
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:60:	Fields should be declared at the top of the class, before any method declarations, constructors, initializers or inner classes.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:60:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:69:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:70:	Local variable 'duration' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:75:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:75:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:75:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:76:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:76:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:76:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:76:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:76:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:80:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:81:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:82:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:82:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:82:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:93:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:93:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:93:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:94:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:98:	JUnit tests should include assert() or fail()
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:99:	Local variable 'duration' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:102:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:106:	JUnit tests should include assert() or fail()
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:107:	Local variable 'duration' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:110:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:115:	Local variable 'duration' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:117:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:121:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:123:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:124:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:133:	JUnit tests should not contain more than 1 assert(s).
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:135:	Avoid variables with short names like i
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:135:	Local variable 'i' could be declared final
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:137:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:137:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:137:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:138:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:138:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:138:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:140:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:140:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:140:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:141:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:141:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:141:	Potential violation of Law of Demeter (method chain calls)
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:144:	Avoid unused method parameters such as 'immediateReturn'.
+src/test/java/be/kuleuven/cs/flexsim/simulation/SimulatorTest.java:144:	Parameter 'immediateReturn' is not assigned and could be declared final
+src/test/java/be/kuleuven/cs/flexsim/time/ClockTest.java:9:	Avoid variables with short names like c
+src/test/java/be/kuleuven/cs/flexsim/time/ClockTest.java:9:	Found non-transient, non-static member. Please mark as transient or provide accessors.
+src/test/java/be/kuleuven/cs/flexsim/time/ClockTest.java:9:	Use explicit scoping instead of the default package private level
+src/test/java/be/kuleuven/cs/flexsim/time/ClockTest.java:15:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/time/ClockTest.java:26:	JUnit assertions should include a message
+src/test/java/be/kuleuven/cs/flexsim/time/ClockTest.java:31:	JUnit assertions should include a message

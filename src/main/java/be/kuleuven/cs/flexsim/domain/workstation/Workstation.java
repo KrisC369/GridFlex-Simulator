@@ -39,4 +39,12 @@ public interface Workstation extends SimulationComponent {
      * @return true if performing work during this time step.
      */
     boolean isIdle();
+
+    /**
+     * Register this workstation with a registerable instance.
+     * 
+     * @param subject
+     *            the subject to register with.
+     */
+    void registerWith(Registerable subject);
 }

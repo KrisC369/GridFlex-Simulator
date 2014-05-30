@@ -20,7 +20,7 @@ public enum RewardModel {
         }
 
     };
-    private static final int REWARD_RATE = 5;
+    private static final int REWARD_RATE = 8000;
 
     /**
      * Calculate a reward for finishing a certain resource at timestep r.

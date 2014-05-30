@@ -19,7 +19,7 @@ import org.junit.Test;
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
-import be.kuleuven.cs.flexsim.domain.workstation.Curtailable;
+import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
@@ -151,8 +151,8 @@ public class ProductionLineTest {
     public void testGetCurtailables() {
         ProductionLine lineExtended = ProductionLine
                 .createStaticCurtailableLayout();
-        List<Curtailable> stations = lineExtended.getCurtailableStations();
-        for (Curtailable c : stations) {
+        List<CurtailableWorkstation> stations = lineExtended.getCurtailableStations();
+        for (CurtailableWorkstation c : stations) {
             assertTrue(lineExtended.getWorkstations().contains(c));
         }
     }

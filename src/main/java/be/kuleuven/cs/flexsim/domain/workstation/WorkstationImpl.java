@@ -47,8 +47,9 @@ class WorkstationImpl implements Workstation {
     private double totalConsumption;
     private double lastConsumption;
     private int processedCount;
-    private final int fixedECons;
+    private int fixedECons;
     private final int capacity;
+
     private final WorkstationContext stateContext = new StateContext();
 
     /**
@@ -76,6 +77,7 @@ class WorkstationImpl implements Workstation {
         this.lastConsumption = 0;
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
+
     }
 
     @Override
@@ -215,13 +217,39 @@ class WorkstationImpl implements Workstation {
         return capacity;
     }
 
+    private int getFixedConsumptionRate() {
+        return fixedECons;
+    }
+
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
         return Collections.emptyList();
     }
 
-    private int getFixedConsumptionRate() {
-        return fixedECons;
+    final void setFixedECons(int fixedECons) {
+        this.fixedECons = fixedECons;
+    }
+
+    final void setMaxVarECons(int shift) {
+        getCurrentState().setMaxVariableConsumption(shift);
+    }
+
+    final int getFixedECons() {
+        return this.fixedECons;
+    }
+
+    final int getMaxVarECons() {
+        return getCurrentState().getMaxVariableConsumption();
+    }
+
+    @Override
+    public void registerWith(Registerable subject) {
+        subject.register(this);
+
+    }
+
+    void doProcessingStep(Resource r, int baseSteps) {
+        r.process(baseSteps);
     }
 
     private final class StateContext implements WorkstationContext {
@@ -229,7 +257,7 @@ class WorkstationImpl implements Workstation {
         @Override
         public void processResources(int steps) {
             for (Resource r : currentResource) {
-                r.process(steps);
+                doProcessingStep(r, steps);
             }
         }
 
