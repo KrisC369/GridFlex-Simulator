@@ -45,4 +45,12 @@ interface WorkstationContext {
      *         processing.
      */
     boolean hasUnfinishedResources();
+
+    /**
+     * Returns the rated maximum on the variable consumption rate of energy.
+     * This value is possibly subject to change.
+     * 
+     * @return the rated maximum
+     */
+    int getRatedVariableConsumption();
 }

@@ -15,7 +15,8 @@ interface StationState {
      * 
      * @return the consumption rate.
      */
-    double getVarConsumptionRate(int remainingSteps, int totalSteps);
+    double getVarConsumptionRate(int remainingSteps, int totalSteps,
+            WorkstationContext context);
 
     /**
      * Handle tick.
@@ -32,18 +33,26 @@ interface StationState {
      */
     boolean isProcessing();
 
-    /**
-     * Sets the maximum bound for the variable consumption in the current state.
-     * 
-     * @param amount
-     *            the new maximum.
-     */
-    void setMaxVariableConsumption(int amount);
+    // /**
+    // * Sets the maximum bound for the variable consumption in the current
+    // state.
+    // *
+    // * @param amount
+    // * the new maximum.
+    // */
+    // void setMaxVariableConsumption(int amount);
+    //
+    // /**
+    // * Get the maximum of the variable consumption rate for this state.
+    // *
+    // * @return the maximum of variable consumption.
+    // */
+    // int getMaxVariableConsumption();
 
     /**
-     * Get the maximum of the variable consumption rate for this state.
+     * Returns the consumption model for this state.
      * 
-     * @return the maximum of variable consumption.
+     * @return the consumption model.
      */
-    int getMaxVariableConsumption();
+    ConsumptionModel getModel();
 }

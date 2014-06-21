@@ -323,7 +323,7 @@ public class WorkstationTest {
         assertTrue(out.isEmpty());
         assertEquals(1, curt.getProcessedItemsCount());
         assertNotEquals(0, curt.getLastStepConsumption());
-        assertEquals(2, curt.getLastStepConsumption(), 2);
+        assertEquals(newWorkingCons / 2, curt.getLastStepConsumption(), 50);
     }
 
     @Test(expected = IllegalStateException.class)

@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 /**
  * This class represents the commonalities of the state specific behavior.
  * 
@@ -9,29 +7,15 @@ import static com.google.common.base.Preconditions.checkArgument;
  * 
  */
 abstract class StationStateImpl implements StationState {
-    private int maxVarConsumptionRate;
     private final ConsumptionModel model;
 
     StationStateImpl(int varConsumption, ConsumptionModel model) {
-        this.maxVarConsumptionRate = varConsumption;
         this.model = model;
     }
 
     @Override
-    public double getVarConsumptionRate(int remainingSteps, int totalSteps) {
-        return model.getVarConsumptionRate(remainingSteps, totalSteps,
-                maxVarConsumptionRate);
-    }
-
-    @Override
-    public void setMaxVariableConsumption(int amount) {
-        checkArgument(amount >= 0, "Amount %s Can't be negative", amount);
-        this.maxVarConsumptionRate = amount;
-    }
-
-    @Override
-    public int getMaxVariableConsumption() {
-        return maxVarConsumptionRate;
+    public ConsumptionModel getModel() {
+        return this.model;
     }
 
     /**
@@ -70,6 +54,13 @@ abstract class StationStateImpl implements StationState {
             context.setResourceMovingState();
         }
 
+        @Override
+        public double getVarConsumptionRate(int remainingSteps, int totalSteps,
+                WorkstationContext context) {
+            return getModel().getVarConsumptionRate(remainingSteps, totalSteps,
+                    context.getRatedVariableConsumption());
+        }
+
     }
 
     static final class ResourceMoving extends StationStateImpl {
@@ -106,8 +97,10 @@ abstract class StationStateImpl implements StationState {
         }
 
         @Override
-        public void setMaxVariableConsumption(int amount) {
-            // noop
+        public double getVarConsumptionRate(int remainingSteps, int totalSteps,
+                WorkstationContext context) {
+            return getModel().getVarConsumptionRate(remainingSteps, totalSteps,
+                    0);
         }
     }
 }

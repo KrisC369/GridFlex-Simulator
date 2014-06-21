@@ -48,6 +48,7 @@ class WorkstationImpl implements Workstation {
     private double lastConsumption;
     private int processedCount;
     private int fixedECons;
+    private int ratedMaxVarECons;
     private final int capacity;
 
     private final WorkstationContext stateContext = new StateContext();
@@ -68,8 +69,9 @@ class WorkstationImpl implements Workstation {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
         this.fixedECons = idle;
-        this.processingState = new StationStateImpl.Processing(working - idle,
-                model);
+        this.ratedMaxVarECons = working - idle;
+        this.processingState = new StationStateImpl.Processing(
+                ratedMaxVarECons, model);
         this.resourceMovingState = new StationStateImpl.ResourceMoving(0, model);
         this.currentState = resourceMovingState;
         this.totalConsumption = 0;
@@ -166,7 +168,7 @@ class WorkstationImpl implements Workstation {
     public void tick(int t) {
         setLastConsumption(getFixedConsumptionRate()
                 + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
-                        getRemainingMaxSteps()));
+                        getRemainingMaxSteps(), stateContext));
         increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(stateContext);
     }
@@ -231,7 +233,7 @@ class WorkstationImpl implements Workstation {
     }
 
     final void setMaxVarECons(int shift) {
-        getCurrentState().setMaxVariableConsumption(shift);
+        this.setRatedMaxVarECons(shift);
     }
 
     final int getFixedECons() {
@@ -239,7 +241,7 @@ class WorkstationImpl implements Workstation {
     }
 
     final int getMaxVarECons() {
-        return getCurrentState().getMaxVariableConsumption();
+        return ratedMaxVarECons;
     }
 
     @Override
@@ -294,5 +296,18 @@ class WorkstationImpl implements Workstation {
             }
             return false;
         }
+
+        @Override
+        public int getRatedVariableConsumption() {
+            return ratedMaxVarECons;
+        }
+    }
+
+    /**
+     * @param ratedMaxVarECons
+     *            the ratedMaxVarECons to set
+     */
+    private final void setRatedMaxVarECons(int ratedMaxVarECons) {
+        this.ratedMaxVarECons = ratedMaxVarECons;
     }
 }
