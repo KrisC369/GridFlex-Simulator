@@ -70,9 +70,8 @@ class WorkstationImpl implements Workstation {
         this.outputBuff = bufferOut;
         this.fixedECons = idle;
         this.ratedMaxVarECons = working - idle;
-        this.processingState = new StationStateImpl.Processing(
-                ratedMaxVarECons, model);
-        this.resourceMovingState = new StationStateImpl.ResourceMoving(0, model);
+        this.processingState = new StationStateImpl.Processing(model);
+        this.resourceMovingState = new StationStateImpl.ResourceMoving(model);
         this.currentState = resourceMovingState;
         this.totalConsumption = 0;
         this.processedCount = 0;
@@ -254,6 +253,14 @@ class WorkstationImpl implements Workstation {
         r.process(baseSteps);
     }
 
+    /**
+     * @param ratedMaxVarECons
+     *            the ratedMaxVarECons to set
+     */
+    private void setRatedMaxVarECons(int ratedMaxVarECons) {
+        this.ratedMaxVarECons = ratedMaxVarECons;
+    }
+
     private final class StateContext implements WorkstationContext {
 
         @Override
@@ -301,13 +308,5 @@ class WorkstationImpl implements Workstation {
         public int getRatedVariableConsumption() {
             return ratedMaxVarECons;
         }
-    }
-
-    /**
-     * @param ratedMaxVarECons
-     *            the ratedMaxVarECons to set
-     */
-    private final void setRatedMaxVarECons(int ratedMaxVarECons) {
-        this.ratedMaxVarECons = ratedMaxVarECons;
     }
 }

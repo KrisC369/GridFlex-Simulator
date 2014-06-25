@@ -12,6 +12,8 @@ interface StationState {
      *            The remaining steps until finished processing in this state.
      * @param totalSteps
      *            The total steps needed for the duration spent in this state.
+     * @param context
+     *            The context of this state specific operation.
      * 
      * @return the consumption rate.
      */
@@ -32,22 +34,6 @@ interface StationState {
      * @return true, if is processing
      */
     boolean isProcessing();
-
-    // /**
-    // * Sets the maximum bound for the variable consumption in the current
-    // state.
-    // *
-    // * @param amount
-    // * the new maximum.
-    // */
-    // void setMaxVariableConsumption(int amount);
-    //
-    // /**
-    // * Get the maximum of the variable consumption rate for this state.
-    // *
-    // * @return the maximum of variable consumption.
-    // */
-    // int getMaxVariableConsumption();
 
     /**
      * Returns the consumption model for this state.

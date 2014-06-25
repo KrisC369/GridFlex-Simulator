@@ -9,7 +9,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 abstract class StationStateImpl implements StationState {
     private final ConsumptionModel model;
 
-    StationStateImpl(int varConsumption, ConsumptionModel model) {
+    StationStateImpl(ConsumptionModel model) {
         this.model = model;
     }
 
@@ -23,8 +23,8 @@ abstract class StationStateImpl implements StationState {
      */
     static final class Processing extends StationStateImpl {
 
-        Processing(int consumption, ConsumptionModel model) {
-            super(consumption, model);
+        Processing(ConsumptionModel model) {
+            super(model);
         }
 
         /*
@@ -65,8 +65,8 @@ abstract class StationStateImpl implements StationState {
 
     static final class ResourceMoving extends StationStateImpl {
 
-        ResourceMoving(int consumption, ConsumptionModel model) {
-            super(consumption, model);
+        ResourceMoving(ConsumptionModel model) {
+            super(model);
         }
 
         /*
