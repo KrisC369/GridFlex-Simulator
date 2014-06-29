@@ -50,7 +50,7 @@ class WorkstationImpl implements Workstation {
     private int fixedECons;
     private int ratedMaxVarECons;
     private final int capacity;
-
+    private Processor proc = new ProcessorImpl();
     private final WorkstationContext stateContext = new StateContext();
 
     /**
@@ -78,7 +78,6 @@ class WorkstationImpl implements Workstation {
         this.lastConsumption = 0;
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
-
     }
 
     @Override
@@ -257,6 +256,10 @@ class WorkstationImpl implements Workstation {
         r.process(baseSteps);
     }
 
+    void setProcessor(Processor proc) {
+        this.proc = proc;
+    }
+
     /**
      * @param ratedMaxVarECons
      *            the ratedMaxVarECons to set
@@ -270,7 +273,7 @@ class WorkstationImpl implements Workstation {
         @Override
         public void processResources(int steps) {
             for (Resource r : currentResource) {
-                doProcessingStep(r, steps);
+                proc.doProcessingStep(r, steps);
             }
         }
 
@@ -311,6 +314,13 @@ class WorkstationImpl implements Workstation {
         @Override
         public int getRatedVariableConsumption() {
             return ratedMaxVarECons;
+        }
+    }
+
+    private final class ProcessorImpl implements Processor {
+        @Override
+        public void doProcessingStep(Resource r, int baseSteps) {
+            r.process(baseSteps);
         }
     }
 }
