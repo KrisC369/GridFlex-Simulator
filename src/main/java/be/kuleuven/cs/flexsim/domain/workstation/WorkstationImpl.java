@@ -165,11 +165,15 @@ class WorkstationImpl implements Workstation {
      */
     @Override
     public void tick(int t) {
+        calculateLastConsumption();
+        increaseTotalConsumption(getLastStepConsumption());
+        currentState.handleTick(stateContext);
+    }
+
+    private void calculateLastConsumption() {
         setLastConsumption(getFixedConsumptionRate()
                 + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
                         getRemainingMaxSteps(), stateContext));
-        increaseTotalConsumption(getLastStepConsumption());
-        currentState.handleTick(stateContext);
     }
 
     private int getRemainingSteps() {

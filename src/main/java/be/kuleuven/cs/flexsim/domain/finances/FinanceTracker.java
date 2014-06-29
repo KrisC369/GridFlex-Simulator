@@ -92,27 +92,27 @@ public final class FinanceTracker implements SimulationComponent {
 
     private void publishReport(int totalLaststep, int totalTotal,
             List<Integer> buffSizes, int profit) {
-        if (this.context.isPresent()) {
-            Event e = getContext().getEventFactory().build("report");
-            e.setAttribute("pLinehash", this.hashCode());
-            e.setAttribute("time", getContext().getSimulationClock()
-                    .getTimeCount());
-            e.setAttribute("totalLaststepE", totalLaststep);
-            e.setAttribute("totalTotalE", totalTotal);
-            e.setAttribute("totalProfitM", profit);
-            int idx = 0;
-            for (long i : buffSizes) {
-                e.setAttribute("buffer_" + idx++, i);
-            }
-            e.setAttribute("buffer_Fin", getItemCount());
-            getContext().getEventbus().post(e);
+        if (!this.context.isPresent()) {
+            throw new IllegalStateException(
+                    "This component has not been correctly configured with a context.");
         }
+        Event e = getContext().getEventFactory().build("report");
+        e.setAttribute("pLinehash", this.hashCode());
+        e.setAttribute("time", getContext().getSimulationClock().getTimeCount());
+        e.setAttribute("totalLaststepE", totalLaststep);
+        e.setAttribute("totalTotalE", totalTotal);
+        e.setAttribute("totalProfitM", profit);
+        int idx = 0;
+        for (long i : buffSizes) {
+            e.setAttribute("buffer_" + idx++, i);
+        }
+        e.setAttribute("buffer_Fin", getItemCount());
+        getContext().getEventbus().post(e);
+
     }
 
     @Override
     public void tick(int t) {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

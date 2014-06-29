@@ -13,6 +13,6 @@ import be.kuleuven.cs.flexsim.time.ClockTest;
 @RunWith(Suite.class)
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
         WorkstationTest.class, ProductionLineTest.class, ResourceTest.class,
-        FinanceTrackerTest.class })
+        FinanceTrackerTest.class, ScenarioTest.class })
 public class AllTests {
 }

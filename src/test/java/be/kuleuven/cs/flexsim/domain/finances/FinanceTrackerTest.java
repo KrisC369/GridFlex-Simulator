@@ -10,7 +10,9 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLineTest.ChangeEventComponent;
@@ -24,6 +26,9 @@ public class FinanceTrackerTest {
     private ProcessTrackableSimulationComponent mockPL = mock(ProcessTrackableSimulationComponent.class);
     private FinanceTracker t = FinanceTracker.createDefault(mockPL);
     private SimulationContext sim = mock(SimulationContext.class);
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -99,5 +104,13 @@ public class FinanceTrackerTest {
         int reward = t.getTotalReward();
         int cost = t.getTotalCost();
         assertEquals(reward - cost, t.getTotalProfit());
+    }
+
+    @Test
+    public void noContextTest() {
+        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        t = FinanceTracker.createDefault(mockPL);
+        exception.expect(IllegalStateException.class);
+        ((FinanceTracker) t).afterTick(1);
     }
 }

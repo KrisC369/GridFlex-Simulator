@@ -2,14 +2,14 @@ package be.kuleuven.cs.flexsim.simulation;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
-import be.kuleuven.cs.flexsim.time.VirtualClock;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
+import be.kuleuven.cs.flexsim.time.VirtualClock;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.EventBus;
@@ -34,13 +34,13 @@ public final class Simulator implements SimulationContext {
     private final SimulationClock clock;
 
     /** The collection of simulation components. */
-    private final List<SimulationComponent> components;
+    private final Set<SimulationComponent> components;
 
     private final EventBus eventbus;
 
     private final SimpleEventFactory eventFac;
 
-    private final List<InstrumentationComponent> instruComps;
+    private final Set<InstrumentationComponent> instruComps;
 
     /**
      * Instantiates a new simulator.
@@ -52,8 +52,8 @@ public final class Simulator implements SimulationContext {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new SimulationClock();
-        this.components = new ArrayList<>();
-        this.instruComps = new ArrayList<>();
+        this.components = new LinkedHashSet<>();
+        this.instruComps = new LinkedHashSet<>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory();
     }
