@@ -472,10 +472,43 @@ public class WorkstationTest {
         assertEquals(700, steer.getLastStepConsumption(), 4);
 
         steer.signalLowConsumption();
+        steer.triggerChange(85);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(335, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(15);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(265, steer.getLastStepConsumption(), 4);
+
+        steer.signalHighConsumption();
+        steer.triggerChange(100);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(750, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(10);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(660, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(50);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(700, steer.getLastStepConsumption(), 4);
+
+        steer.signalLowConsumption();
         steer.triggerChange(50);
         steer.getDelegate().tick(1);
         steer.getDelegate().afterTick(1);
         assertEquals(300, steer.getLastStepConsumption(), 4);
+
+        steer.signalHighConsumption();
+        steer.triggerChange(50);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(700, steer.getLastStepConsumption(), 4);
     }
 
     @Test

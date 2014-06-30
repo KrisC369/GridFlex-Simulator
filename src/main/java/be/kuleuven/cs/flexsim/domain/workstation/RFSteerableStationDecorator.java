@@ -39,8 +39,9 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
                     "This switch is set to high before call to setHigh.");
         }
         this.isHigh = true;
-        final int diff = this.high - (this.low + this.offset);
+        final int diff = this.high - (this.low + this.getOffset());
         getDelegate().increaseRatedMaxVarECons(diff);
+        resetOffset();
     }
 
     @Override
@@ -50,8 +51,9 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
                     "This switch is set to low before call to setLow.");
         }
         this.isHigh = false;
-        final int diff = (this.high + this.offset) - this.low;
+        final int diff = (this.high + this.getOffset()) - this.low;
         getDelegate().decreaseRatedMaxVarECons(diff);
+        resetOffset();
     }
 
     @Override
@@ -62,13 +64,13 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
 
     void triggerChange(final int r) {
         final int newVal = getTarget() - N / 2 + r;
-        final int diff = newVal - (getTarget() + offset);
+        final int diff = newVal - (getTarget() + getOffset());
         if (diff > 0) {
             getDelegate().increaseRatedMaxVarECons(diff);
         } else {
             getDelegate().decreaseRatedMaxVarECons(Math.abs(diff));
         }
-        this.offset = newVal - getTarget();
+        this.setOffset(newVal - getTarget());
     }
 
     private int getTarget() {
@@ -82,4 +84,28 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     public void registerWith(Registerable subject) {
         subject.register((DualModeWorkstation) this);
     }
+
+    /**
+     * @return the offset
+     */
+    private int getOffset() {
+        return offset;
+    }
+
+    /**
+     * @param offset
+     *            the offset to set
+     */
+    private void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    /**
+     * @param offset
+     *            the offset to set
+     */
+    private void resetOffset() {
+        this.offset = 0;
+    }
+
 }
