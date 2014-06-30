@@ -30,7 +30,7 @@ public class SteerableCurtailableStationDecorator extends
         checkArgument(consumptionShift < getDelegate().getMaxVarECons(),
                 "cant shift more towards speed than available.");
         getDelegate().setFixedECons(
-                getDelegate().getFixedECons() + consumptionShift);
+                getDelegate().getFixedConsumptionRate() + consumptionShift);
         getDelegate().setMaxVarECons(
                 getDelegate().getMaxVarECons() - consumptionShift);
         setProcessingSpeed(getProcessingSpeed() + speedShift);
@@ -39,10 +39,10 @@ public class SteerableCurtailableStationDecorator extends
     @Override
     public void favorFixedEConsumptionOverSpeed(int consumptionShift,
             int speedShift) {
-        checkArgument(consumptionShift < getDelegate().getFixedECons(),
+        checkArgument(consumptionShift < getDelegate().getFixedConsumptionRate(),
                 "cant shift more towards low consumption than available.");
         getDelegate().setFixedECons(
-                getDelegate().getFixedECons() - consumptionShift);
+                getDelegate().getFixedConsumptionRate() - consumptionShift);
         getDelegate().setMaxVarECons(
                 getDelegate().getMaxVarECons() + consumptionShift);
         setProcessingSpeed(getProcessingSpeed() - speedShift);
