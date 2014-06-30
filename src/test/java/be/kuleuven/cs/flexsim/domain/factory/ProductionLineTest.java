@@ -151,7 +151,8 @@ public class ProductionLineTest {
     public void testGetCurtailables() {
         ProductionLine lineExtended = ProductionLine
                 .createStaticCurtailableLayout();
-        List<CurtailableWorkstation> stations = lineExtended.getCurtailableStations();
+        List<CurtailableWorkstation> stations = lineExtended
+                .getCurtailableStations();
         for (CurtailableWorkstation c : stations) {
             assertTrue(lineExtended.getWorkstations().contains(c));
         }
@@ -194,6 +195,22 @@ public class ProductionLineTest {
         List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
         l.deliverResources(res);
         assertEquals(10, l.getNumberOfWorkstations());
+        ((Simulator) sim).start();
+        assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
+    }
+
+    @Test
+    public void testBuilderRFS() {
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3)
+                .addConsuming(4).addMultiCapConstantConsuming(1, 12)
+                .addMultiCapExponentialConsuming(1, 12)
+                .addMultiCapLinearConsuming(1, 12).addRFSteerableStation(3, 12)
+                .build();
+        sim = Simulator.createSimulator(200);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+        assertEquals(13, l.getNumberOfWorkstations());
         ((Simulator) sim).start();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
