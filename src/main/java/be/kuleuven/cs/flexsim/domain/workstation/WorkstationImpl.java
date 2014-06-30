@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -171,7 +173,8 @@ class WorkstationImpl implements Workstation {
 
     private void calculateLastConsumption() {
         setLastConsumption(getFixedConsumptionRate()
-                + getCurrentState().getVarConsumptionRate(getRemainingStepsOfResource(),
+                + getCurrentState().getVarConsumptionRate(
+                        getRemainingStepsOfResource(),
                         getRemainingMaxStepsOfResource(), stateContext));
     }
 
@@ -226,20 +229,36 @@ class WorkstationImpl implements Workstation {
         return Collections.emptyList();
     }
 
-    final void setFixedECons(int fixedECons) {
+    private final void setFixedECons(int fixedECons) {
         this.fixedECons = fixedECons;
     }
 
-    final void setMaxVarECons(int shift) {
-        this.setRatedMaxVarECons(shift);
-    }
-
-    final int getFixedConsumptionRate() {
+    private final int getFixedConsumptionRate() {
         return this.fixedECons;
     }
 
-    final int getMaxVarECons() {
+    private final int getMaxVarECons() {
         return ratedMaxVarECons;
+    }
+
+    final void increaseRatedMaxVarECons(int shift) {
+        this.setRatedMaxVarECons(this.getMaxVarECons() + shift);
+    }
+
+    final void decreaseRatedMaxVarECons(int shift) {
+        checkArgument(shift < getMaxVarECons(),
+                "cant shift more towards speed than available.");
+        this.setRatedMaxVarECons(this.getMaxVarECons() - shift);
+    }
+
+    final void increaseFixedECons(int shift) {
+        this.setFixedECons(this.getFixedConsumptionRate() + shift);
+    }
+
+    final void decreaseFixedECons(int shift) {
+        checkArgument(shift < getFixedConsumptionRate(),
+                "cant shift more towards low consumption than available.");
+        this.setFixedECons(this.getFixedConsumptionRate() - shift);
     }
 
     @Override

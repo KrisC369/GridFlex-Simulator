@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 
 /**
@@ -27,24 +26,16 @@ public class SteerableCurtailableStationDecorator extends
     @Override
     public void favorSpeedOverFixedEConsumption(int consumptionShift,
             int speedShift) {
-        checkArgument(consumptionShift < getDelegate().getMaxVarECons(),
-                "cant shift more towards speed than available.");
-        getDelegate().setFixedECons(
-                getDelegate().getFixedConsumptionRate() + consumptionShift);
-        getDelegate().setMaxVarECons(
-                getDelegate().getMaxVarECons() - consumptionShift);
+        getDelegate().increaseFixedECons(consumptionShift);
+        getDelegate().decreaseRatedMaxVarECons(consumptionShift);
         setProcessingSpeed(getProcessingSpeed() + speedShift);
     }
 
     @Override
     public void favorFixedEConsumptionOverSpeed(int consumptionShift,
             int speedShift) {
-        checkArgument(consumptionShift < getDelegate().getFixedConsumptionRate(),
-                "cant shift more towards low consumption than available.");
-        getDelegate().setFixedECons(
-                getDelegate().getFixedConsumptionRate() - consumptionShift);
-        getDelegate().setMaxVarECons(
-                getDelegate().getMaxVarECons() + consumptionShift);
+        getDelegate().decreaseFixedECons(consumptionShift);
+        getDelegate().increaseRatedMaxVarECons(consumptionShift);
         setProcessingSpeed(getProcessingSpeed() - speedShift);
     }
 
