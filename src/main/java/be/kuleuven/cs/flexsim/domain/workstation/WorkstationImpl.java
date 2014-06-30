@@ -317,7 +317,7 @@ class WorkstationImpl implements Workstation {
         }
     }
 
-    private final class ProcessorImpl implements Processor {
+    private static final class ProcessorImpl implements Processor {
         @Override
         public void doProcessingStep(Resource r, int baseSteps) {
             r.process(baseSteps);
