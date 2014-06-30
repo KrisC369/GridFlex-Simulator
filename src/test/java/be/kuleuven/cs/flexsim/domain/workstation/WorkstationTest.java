@@ -9,7 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -24,6 +26,9 @@ public class WorkstationTest {
     private SimulationContext sim = mock(SimulationContext.class);
     private Workstation iew = mock(Workstation.class);
     private static final double DELTA = 0.05;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -90,7 +95,6 @@ public class WorkstationTest {
         assertEquals(r + 1, iew.getTotalConsumption(), 0.01);
         assertEquals(r, iew.getTotalConsumption(), fixedCost);
         r = iew.getTotalConsumption();
-
     }
 
     @Test
@@ -108,14 +112,6 @@ public class WorkstationTest {
         multiTick(wSingle, 5);
         assertEquals(0, wSingle.getTotalConsumption(), DELTA);
     }
-
-    // @Test(expected = IllegalStateException.class)
-    // public void testDoubleSetResource() {
-    // Resource res = pushResource(1);
-    // wSingle.tick();
-    // testStateAfterProces1(res);
-    // wSingle.changeCurrentResource(res);
-    // }
 
     @Test
     public void testFactoryMethodInitial() {
@@ -326,7 +322,29 @@ public class WorkstationTest {
         assertEquals(newWorkingCons / 2, curt.getLastStepConsumption(), 50);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
+    public void testOverSteerCons() {
+        int defWorkingCons = 3;
+        int newWorkingCons = 500;
+        Workstation curt = WorkstationFactory.createMultiCapLinearConsuming(in,
+                out, 1, 502, 1);
+        SteerableWorkstation steer2 = ((SteerableWorkstation) curt);
+        exception.expect(IllegalArgumentException.class);
+        steer2.favorFixedEConsumptionOverSpeed(1500, 1500);
+    }
+
+    @Test
+    public void testOverSteerSpeed() {
+        int defWorkingCons = 3;
+        int newWorkingCons = 500;
+        Workstation curt = WorkstationFactory.createMultiCapLinearConsuming(in,
+                out, 1, 502, 1);
+        SteerableWorkstation steer2 = ((SteerableWorkstation) curt);
+        exception.expect(IllegalArgumentException.class);
+        steer2.favorSpeedOverFixedEConsumption(1500, 1500);
+    }
+
+    @Test
     public void testDoubleCurtailment() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
@@ -334,10 +352,11 @@ public class WorkstationTest {
 
         curt2.doFullCurtailment();
         assertTrue(curt2.isCurtailed());
+        exception.expect(IllegalStateException.class);
         curt2.doFullCurtailment();
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testDoubleRestore() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
@@ -347,6 +366,7 @@ public class WorkstationTest {
         assertTrue(curt2.isCurtailed());
         curt2.restore();
         assertFalse(curt2.isCurtailed());
+        exception.expect(IllegalStateException.class);
         curt2.restore();
     }
 

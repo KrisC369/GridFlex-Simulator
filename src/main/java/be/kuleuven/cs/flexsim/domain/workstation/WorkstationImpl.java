@@ -171,15 +171,15 @@ class WorkstationImpl implements Workstation {
 
     private void calculateLastConsumption() {
         setLastConsumption(getFixedConsumptionRate()
-                + getCurrentState().getVarConsumptionRate(getRemainingSteps(),
-                        getRemainingMaxSteps(), stateContext));
+                + getCurrentState().getVarConsumptionRate(getRemainingStepsOfResource(),
+                        getRemainingMaxStepsOfResource(), stateContext));
     }
 
-    private int getRemainingSteps() {
+    private int getRemainingStepsOfResource() {
         return CollectionUtils.max(currentResource, CURRENT_REMAINING_STEPS);
     }
 
-    private int getRemainingMaxSteps() {
+    private int getRemainingMaxStepsOfResource() {
         return CollectionUtils.max(currentResource, MAX_REMAINING_STEPS);
     }
 
@@ -221,10 +221,6 @@ class WorkstationImpl implements Workstation {
         return capacity;
     }
 
-    private int getFixedConsumptionRate() {
-        return fixedECons;
-    }
-
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
         return Collections.emptyList();
@@ -238,7 +234,7 @@ class WorkstationImpl implements Workstation {
         this.setRatedMaxVarECons(shift);
     }
 
-    final int getFixedECons() {
+    final int getFixedConsumptionRate() {
         return this.fixedECons;
     }
 
@@ -250,10 +246,6 @@ class WorkstationImpl implements Workstation {
     public void registerWith(Registerable subject) {
         subject.register(this);
 
-    }
-
-    void doProcessingStep(Resource r, int baseSteps) {
-        r.process(baseSteps);
     }
 
     void setProcessor(Processor proc) {
