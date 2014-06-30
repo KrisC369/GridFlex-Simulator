@@ -160,10 +160,33 @@ public final class WorkstationFactory {
      * @return A Ready to use Workstation object.
      */
 
-    public static SteerableWorkstation createMultiCapExponentialConsuming(
+    public static TradeofSteerableWorkstation createMultiCapExponentialConsuming(
             Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
             int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.EXPONENTIAL));
+    }
+
+    /**
+     * Factory method for workstations that consume energy in two modes with a
+     * random noise factor.
+     * 
+     * @param in
+     *            The inputbuffer instance.
+     * @param out
+     *            The outputbuffer instance.
+     * @param idle
+     *            The energy consumption in low consumption state.
+     * @param working
+     *            The energy consumption in high consumption state.
+     * 
+     * @param capacity
+     *            The capacity of this workstation in terms of resources.
+     * @return A Ready to use Workstation object.
+     */
+    public static Workstation createRFStationDecorator(Buffer<Resource> in,
+            Buffer<Resource> out, int idle, int working, int capacity) {
+        return new RFSteerableStationDecorator(new WorkstationImpl(in, out, 0,
+                idle, capacity, ConsumptionModel.CONSTANT), working, idle);
     }
 }

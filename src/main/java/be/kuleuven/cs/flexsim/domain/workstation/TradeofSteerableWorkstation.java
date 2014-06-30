@@ -9,7 +9,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface SteerableWorkstation extends Workstation {
+public interface TradeofSteerableWorkstation extends Workstation {
     /**
      * Sets the controllable instance's trade off metric between speed of
      * operation and energy consumption to favor speed of operation.

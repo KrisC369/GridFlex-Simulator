@@ -13,8 +13,9 @@ import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.CustomWorkstationFactory;
+import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Registerable;
-import be.kuleuven.cs.flexsim.domain.workstation.SteerableWorkstation;
+import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -33,6 +34,8 @@ public final class ProductionLine implements
     private static final int WORKING_CONSUMPTION = 200;
     private static final int IDLE_CONSUMPTION = 100;
     private static final int MULTICAP_WORKING_CONSUMPTION = 7000;
+    private static final int MULTICAP_LOW_WORKING_CONSUMPTION = 300;
+    private static final int MULTICAP_HIGH_WORKING_CONSUMPTION = 500;
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
         @Override
         public int apply(Workstation input) {
@@ -50,7 +53,8 @@ public final class ProductionLine implements
     private final List<Buffer<Resource>> buffers;
     private final List<Workstation> workstations;
     private final List<CurtailableWorkstation> curtailables;
-    private final List<SteerableWorkstation> steerables;
+    private final List<TradeofSteerableWorkstation> steerables;
+    private final List<DualModeWorkstation> duals;
     private final Set<Workstation> uniques;
     private final PLRegisterable registry;
 
@@ -58,6 +62,7 @@ public final class ProductionLine implements
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
         this.curtailables = new ArrayList<>();
+        this.duals = new ArrayList<>();
         this.steerables = new ArrayList<>();
         this.registry = new PLRegisterable();
         this.uniques = new HashSet<Workstation>();
@@ -196,11 +201,21 @@ public final class ProductionLine implements
     }
 
     /**
+     * Returns the stations that are dual mode operational in this production
+     * line.
+     * 
+     * @return a list of pointers to dual mode instances.
+     */
+    public List<DualModeWorkstation> getDualModeStations() {
+        return new ArrayList<>(this.duals);
+    }
+
+    /**
      * Returns the stations that are curtailable in this production line.
      * 
      * @return a list of pointers to curtailable instances.
      */
-    public List<SteerableWorkstation> getSteerableStations() {
+    public List<TradeofSteerableWorkstation> getSteerableStations() {
         return new ArrayList<>(this.steerables);
     }
 
@@ -410,7 +425,32 @@ public final class ProductionLine implements
                 CustomWorkstationFactory factory, int n) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                factory.createStation().registerWith(prodline.registry);
+                factory.createStation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1))
+                        .registerWith(prodline.registry);
+            }
+            return this;
+        }
+
+        /**
+         * Adds a number of RFSteerable stations to the line.
+         * 
+         * @param n
+         *            the amount of instances
+         * @param cap
+         *            the capacity of this station.
+         * @return the current builder instance.
+         */
+        public ProductionLineBuilder addRFSteerableStation(int n, int cap) {
+            prodline.buffers.add(new Buffer<Resource>());
+            for (int i = 0; i < n; i++) {
+                WorkstationFactory.createRFStationDecorator(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
+                        prodline.buffers.get(prodline.buffers.size() - 1),
+                        MULTICAP_LOW_WORKING_CONSUMPTION,
+                        MULTICAP_HIGH_WORKING_CONSUMPTION, cap).registerWith(
+                        prodline.registry);
             }
             return this;
         }
@@ -433,8 +473,14 @@ public final class ProductionLine implements
         }
 
         @Override
-        public void register(SteerableWorkstation ws) {
+        public void register(TradeofSteerableWorkstation ws) {
             steerables.add(ws);
+            register((Workstation) ws);
+        }
+
+        @Override
+        public void register(DualModeWorkstation ws) {
+            duals.add(ws);
             register((Workstation) ws);
         }
     }

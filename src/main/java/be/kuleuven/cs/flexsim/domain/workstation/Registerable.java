@@ -31,6 +31,14 @@ public interface Registerable {
      * @param ws
      *            the instance.
      */
-    void register(SteerableWorkstation ws);
+    void register(TradeofSteerableWorkstation ws);
+
+    /**
+     * Register a dual mode workstation instance.
+     * 
+     * @param ws
+     *            the instance.
+     */
+    void register(DualModeWorkstation ws);
 
 }

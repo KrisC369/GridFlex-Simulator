@@ -229,15 +229,15 @@ class WorkstationImpl implements ConfigurableWorkstation {
         return Collections.emptyList();
     }
 
-    private final void setFixedECons(int fixedECons) {
+    private void setFixedECons(int fixedECons) {
         this.fixedECons = fixedECons;
     }
 
-    private final int getFixedConsumptionRate() {
+    private int getFixedConsumptionRate() {
         return this.fixedECons;
     }
 
-    private final int getMaxVarECons() {
+    private int getMaxVarECons() {
         return ratedMaxVarECons;
     }
 

@@ -210,11 +210,11 @@ public class WorkstationTest {
         Workstation deco = new CurtailableStationDecorator(mock);
 
         assertTrue(deco instanceof CurtailableWorkstation);
-        assertFalse(deco instanceof SteerableWorkstation);
+        assertFalse(deco instanceof TradeofSteerableWorkstation);
         deco = new SteerableCurtailableStationDecorator(
                 mock(WorkstationImpl.class));
         assertTrue(deco instanceof CurtailableWorkstation);
-        assertTrue(deco instanceof SteerableWorkstation);
+        assertTrue(deco instanceof TradeofSteerableWorkstation);
     }
 
     @Test
@@ -288,7 +288,7 @@ public class WorkstationTest {
         int newWorkingCons = 500;
         Workstation curt = WorkstationFactory.createMultiCapLinearConsuming(in,
                 out, 1, 502, 1);
-        SteerableWorkstation steer2 = ((SteerableWorkstation) curt);
+        TradeofSteerableWorkstation steer2 = ((TradeofSteerableWorkstation) curt);
 
         Resource res = pushResource(20);
         multiTick(curt, 2);
@@ -328,7 +328,7 @@ public class WorkstationTest {
         int newWorkingCons = 500;
         Workstation curt = WorkstationFactory.createMultiCapLinearConsuming(in,
                 out, 1, 502, 1);
-        SteerableWorkstation steer2 = ((SteerableWorkstation) curt);
+        TradeofSteerableWorkstation steer2 = ((TradeofSteerableWorkstation) curt);
         exception.expect(IllegalArgumentException.class);
         steer2.favorFixedEConsumptionOverSpeed(1500, 1500);
     }
@@ -339,7 +339,7 @@ public class WorkstationTest {
         int newWorkingCons = 500;
         Workstation curt = WorkstationFactory.createMultiCapLinearConsuming(in,
                 out, 1, 502, 1);
-        SteerableWorkstation steer2 = ((SteerableWorkstation) curt);
+        TradeofSteerableWorkstation steer2 = ((TradeofSteerableWorkstation) curt);
         exception.expect(IllegalArgumentException.class);
         steer2.favorSpeedOverFixedEConsumption(1500, 1500);
     }
@@ -432,7 +432,73 @@ public class WorkstationTest {
         assertEquals(3.0477, iew.getLastStepConsumption(), 0.001);
         multiTick(iew, 6);
         assertEquals(7, iew.getLastStepConsumption(), 0.001);
+    }
 
+    @Test
+    public void testRandomDecorator() {
+        iew = WorkstationFactory
+                .createRFStationDecorator(in, out, 300, 700, 12);
+        multiPushResource(24, 5000);
+        RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+
+        steer.signalHighConsumption();
+        steer.triggerChange(20);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(670, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(20);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(670, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(70);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(720, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(70);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(720, steer.getLastStepConsumption(), 4);
+
+        steer.triggerChange(50);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(700, steer.getLastStepConsumption(), 4);
+
+        steer.signalLowConsumption();
+        steer.triggerChange(50);
+        steer.getDelegate().tick(1);
+        steer.getDelegate().afterTick(1);
+        assertEquals(300, steer.getLastStepConsumption(), 4);
+    }
+
+    @Test
+    public void testRandomDecoratorMultIncr() {
+        iew = WorkstationFactory
+                .createRFStationDecorator(in, out, 300, 700, 12);
+        multiPushResource(24, 5000);
+        RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
+        steer.signalHighConsumption();
+        exception.expect(IllegalStateException.class);
+        steer.signalHighConsumption();
+    }
+
+    @Test
+    public void testRandomDecoratorMultDecr() {
+        iew = WorkstationFactory
+                .createRFStationDecorator(in, out, 300, 700, 12);
+        multiPushResource(24, 5000);
+        RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
+        steer.signalHighConsumption();
+        steer.signalLowConsumption();
+        exception.expect(IllegalStateException.class);
+        steer.signalLowConsumption();
     }
 
     private void multiPushResource(int n, int k) {
