@@ -13,11 +13,11 @@ import org.apache.commons.math3.random.RandomGenerator;
 public class RFSteerableStationDecorator extends SteerableStationDecorator
         implements DualModeWorkstation {
 
-    private final RandomGenerator g = new MersenneTwister();
     /**
      * With of the random noise band.
      */
     public static final int N = 100;
+    private final RandomGenerator g = new MersenneTwister();
     private final int high;
     private final int low;
     private boolean isHigh;

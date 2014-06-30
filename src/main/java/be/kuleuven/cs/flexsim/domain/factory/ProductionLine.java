@@ -12,7 +12,6 @@ import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
-import be.kuleuven.cs.flexsim.domain.workstation.CustomWorkstationFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Registerable;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
@@ -406,28 +405,6 @@ public final class ProductionLine implements
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
-                        .registerWith(prodline.registry);
-            }
-            return this;
-        }
-
-        /**
-         * Adds a number of custom stations to the line based on the specified
-         * factory.
-         * 
-         * @param factory
-         *            The factory to create instances with.
-         * @param n
-         *            the amount of instances
-         * @return the current builder instance.
-         */
-        public ProductionLineBuilder addCustomStation(
-                CustomWorkstationFactory factory, int n) {
-            prodline.buffers.add(new Buffer<Resource>());
-            for (int i = 0; i < n; i++) {
-                factory.createStation(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
-                        prodline.buffers.get(prodline.buffers.size() - 1))
                         .registerWith(prodline.registry);
             }
             return this;
