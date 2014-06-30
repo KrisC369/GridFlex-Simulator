@@ -23,7 +23,7 @@ import com.google.common.annotations.VisibleForTesting;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-class WorkstationImpl implements Workstation {
+class WorkstationImpl implements ConfigurableWorkstation {
 
     private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = new IntNNFunction<Resource>() {
         @Override
@@ -241,21 +241,25 @@ class WorkstationImpl implements Workstation {
         return ratedMaxVarECons;
     }
 
-    final void increaseRatedMaxVarECons(int shift) {
+    @Override
+    public final void increaseRatedMaxVarECons(int shift) {
         this.setRatedMaxVarECons(this.getMaxVarECons() + shift);
     }
 
-    final void decreaseRatedMaxVarECons(int shift) {
+    @Override
+    public void decreaseRatedMaxVarECons(int shift) {
         checkArgument(shift < getMaxVarECons(),
                 "cant shift more towards speed than available.");
         this.setRatedMaxVarECons(this.getMaxVarECons() - shift);
     }
 
-    final void increaseFixedECons(int shift) {
+    @Override
+    public void increaseFixedECons(int shift) {
         this.setFixedECons(this.getFixedConsumptionRate() + shift);
     }
 
-    final void decreaseFixedECons(int shift) {
+    @Override
+    public void decreaseFixedECons(int shift) {
         checkArgument(shift < getFixedConsumptionRate(),
                 "cant shift more towards low consumption than available.");
         this.setFixedECons(this.getFixedConsumptionRate() - shift);
@@ -267,7 +271,8 @@ class WorkstationImpl implements Workstation {
 
     }
 
-    void setProcessor(Processor proc) {
+    @Override
+    public void setProcessor(Processor proc) {
         this.proc = proc;
     }
 

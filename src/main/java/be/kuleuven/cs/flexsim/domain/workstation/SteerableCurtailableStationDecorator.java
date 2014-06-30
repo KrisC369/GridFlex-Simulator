@@ -11,13 +11,13 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
  *         TODO test the decorator hierarchies.
  */
 public class SteerableCurtailableStationDecorator extends
-        ForwardingStationDecorator<WorkstationImpl> implements
+        ForwardingStationDecorator<ConfigurableWorkstation> implements
         CurtailableWorkstation, SteerableWorkstation {
 
     private final CurtailableWorkstation cs;
     private int speedfactor;
 
-    SteerableCurtailableStationDecorator(WorkstationImpl ws) {
+    SteerableCurtailableStationDecorator(ConfigurableWorkstation ws) {
         super(ws);
         this.cs = new CurtailableStationDecorator(this);
         getDelegate().setProcessor(new SteerableProcessor());
