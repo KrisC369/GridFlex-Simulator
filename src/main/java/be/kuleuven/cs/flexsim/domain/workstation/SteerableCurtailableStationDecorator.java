@@ -15,7 +15,7 @@ public class SteerableCurtailableStationDecorator extends
 
     SteerableCurtailableStationDecorator(ConfigurableWorkstation ws) {
         super(ws);
-        this.cs = new CurtailableStationDecorator(this);
+        this.cs = new CurtailableStationDecorator<Workstation>(ws);
     }
 
     @Override
@@ -35,6 +35,16 @@ public class SteerableCurtailableStationDecorator extends
         return getCurtDelegate().isCurtailed();
     }
 
+    @Override
+    public void tick(int t) {
+        getCurtDelegate().tick(t);
+    }
+
+    @Override
+    public void afterTick(int t) {
+        getCurtDelegate().afterTick(t);
+    }
+
     /**
      * @return the curtailable instance delegate.
      */
@@ -45,6 +55,6 @@ public class SteerableCurtailableStationDecorator extends
     @Override
     public void registerWith(WorkstationRegisterable subject) {
         subject.register((CurtailableWorkstation) this);
-        subject.register((TradeofSteerableWorkstation) this);
+        super.registerWith(subject);
     }
 }

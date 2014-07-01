@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.factory;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,10 +14,10 @@ import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
-import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
+import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -30,11 +31,6 @@ public final class ProductionLine implements
 
     private static final int BOTTLENECK_NUMBER = 3;
     private static final int CAPACITY_NUMBER = 7;
-    private static final int WORKING_CONSUMPTION = 200;
-    private static final int IDLE_CONSUMPTION = 100;
-    private static final int MULTICAP_WORKING_CONSUMPTION = 7000;
-    private static final int MULTICAP_LOW_WORKING_CONSUMPTION = 300;
-    private static final int MULTICAP_HIGH_WORKING_CONSUMPTION = 500;
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
         @Override
         public int apply(Workstation input) {
@@ -51,18 +47,18 @@ public final class ProductionLine implements
 
     private final List<Buffer<Resource>> buffers;
     private final List<Workstation> workstations;
-    private final List<CurtailableWorkstation> curtailables;
-    private final List<TradeofSteerableWorkstation> steerables;
-    private final List<DualModeWorkstation> duals;
+    private final Set<CurtailableWorkstation> curtailables;
+    private final Set<TradeofSteerableWorkstation> steerables;
+    private final Set<DualModeWorkstation> duals;
     private final Set<Workstation> uniques;
     private final PLRegisterable registry;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
         this.workstations = new ArrayList<>();
-        this.curtailables = new ArrayList<>();
-        this.duals = new ArrayList<>();
-        this.steerables = new ArrayList<>();
+        this.curtailables = new LinkedHashSet<>();
+        this.duals = new LinkedHashSet<>();
+        this.steerables = new LinkedHashSet<>();
         this.registry = new PLRegisterable();
         this.uniques = new HashSet<Workstation>();
     }
@@ -247,6 +243,19 @@ public final class ProductionLine implements
      */
     public static class ProductionLineBuilder {
 
+        private static final int RF_HIGH = 1800;
+        private static final int RF_LOW = 300;
+        private static final int MULTICAP_WORKING_CONSUMPTION = 2000;
+        private static final int IDLE_CONSUMPTION = 100;
+        private static final int WORKING_CONSUMPTION = 200;
+        private static final int RFWIDTH = 300;
+        private int rfWidth = RFWIDTH;
+        private int workingConsumption;
+        private int idleConsumption;
+        private int multicapWorkingConsumption;
+        private int rfLowConsumption;
+        private int rfHighConsumption;
+
         private final ProductionLine prodline;
 
         /**
@@ -255,6 +264,11 @@ public final class ProductionLine implements
         public ProductionLineBuilder() {
             prodline = new ProductionLine();
             prodline.buffers.add(new Buffer<Resource>());
+            workingConsumption = WORKING_CONSUMPTION;
+            idleConsumption = IDLE_CONSUMPTION;
+            multicapWorkingConsumption = MULTICAP_WORKING_CONSUMPTION;
+            rfLowConsumption = RF_LOW;
+            rfHighConsumption = RF_HIGH;
         }
 
         /**
@@ -279,7 +293,7 @@ public final class ProductionLine implements
                 WorkstationFactory.createShiftableWorkstation(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, i % 2)
+                        idleConsumption, workingConsumption, i % 2)
                         .registerWith(prodline.registry);
             }
             return this;
@@ -299,7 +313,7 @@ public final class ProductionLine implements
                 WorkstationFactory.createCurtailableStation(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION, shift)
+                        idleConsumption, workingConsumption, shift)
                         .registerWith(prodline.registry);
             }
             return this;
@@ -336,7 +350,7 @@ public final class ProductionLine implements
                 WorkstationFactory.createConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, WORKING_CONSUMPTION).registerWith(
+                        idleConsumption, workingConsumption).registerWith(
                         prodline.registry);
             }
             return this;
@@ -358,7 +372,7 @@ public final class ProductionLine implements
                 WorkstationFactory.createMultiCapConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
+                        idleConsumption, multicapWorkingConsumption, cap)
                         .registerWith(prodline.registry);
             }
             return this;
@@ -380,7 +394,7 @@ public final class ProductionLine implements
                 WorkstationFactory.createMultiCapLinearConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
+                        idleConsumption, multicapWorkingConsumption, cap)
                         .registerWith(prodline.registry);
 
             }
@@ -404,7 +418,7 @@ public final class ProductionLine implements
                 WorkstationFactory.createMultiCapExponentialConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        IDLE_CONSUMPTION, MULTICAP_WORKING_CONSUMPTION, cap)
+                        idleConsumption, multicapWorkingConsumption, cap)
                         .registerWith(prodline.registry);
             }
             return this;
@@ -422,15 +436,80 @@ public final class ProductionLine implements
         public ProductionLineBuilder addRFSteerableStation(int n, int cap) {
             prodline.buffers.add(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createRFStationDecorator(
+                WorkstationFactory.createRFDualModeStation(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        MULTICAP_LOW_WORKING_CONSUMPTION,
-                        MULTICAP_HIGH_WORKING_CONSUMPTION, cap).registerWith(
-                        prodline.registry);
+                        rfLowConsumption, rfHighConsumption, rfWidth, cap)
+                        .registerWith(prodline.registry);
             }
             return this;
         }
+
+        /**
+         * @param rfWidth
+         *            the rfWidth to set
+         * @return this builder instance.
+         */
+        public final ProductionLineBuilder setRfWidth(int rfWidth) {
+            this.rfWidth = rfWidth;
+            return this;
+        }
+
+        /**
+         * @param workingConsumption
+         *            the workingConsumption to set
+         * @return this builder instance.
+         */
+        public final ProductionLineBuilder setWorkingConsumption(
+                int workingConsumption) {
+            this.workingConsumption = workingConsumption;
+            return this;
+        }
+
+        /**
+         * @param idleConsumption
+         *            the idleConsumption to set
+         * @return this builder instance.
+         */
+        public final ProductionLineBuilder setIdleConsumption(
+                int idleConsumption) {
+            this.idleConsumption = idleConsumption;
+            return this;
+        }
+
+        /**
+         * @param multicapWorkingConsumption
+         *            the multicapWorkingConsumption to set
+         * @return this builder instance.
+         */
+        public final ProductionLineBuilder setMulticapWorkingConsumption(
+                int multicapWorkingConsumption) {
+            this.multicapWorkingConsumption = multicapWorkingConsumption;
+            return this;
+        }
+
+        /**
+         * @param rfLowConsumption
+         *            the rfLowConsumption to set
+         * @return this builder instance.
+         */
+        public final ProductionLineBuilder setRfLowConsumption(
+                int rfLowConsumption) {
+            this.rfLowConsumption = rfLowConsumption;
+            return this;
+        }
+
+        /**
+         * @param rfHighConsumption
+         *            the rfHighConsumption to set
+         * @return this builder instance.
+         */
+        public final ProductionLineBuilder setRfHighConsumption(
+                int rfHighConsumption) {
+            this.rfHighConsumption = rfHighConsumption;
+            return this;
+        }
+
     }
 
     private final class PLRegisterable implements WorkstationRegisterable {
@@ -446,19 +525,16 @@ public final class ProductionLine implements
         @Override
         public void register(CurtailableWorkstation ws) {
             curtailables.add(ws);
-            register((Workstation) ws);
         }
 
         @Override
         public void register(TradeofSteerableWorkstation ws) {
             steerables.add(ws);
-            register((Workstation) ws);
         }
 
         @Override
         public void register(DualModeWorkstation ws) {
             duals.add(ws);
-            register((Workstation) ws);
         }
     }
 }

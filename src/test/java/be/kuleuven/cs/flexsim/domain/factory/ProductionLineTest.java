@@ -172,6 +172,19 @@ public class ProductionLineTest {
     }
 
     @Test
+    public void testBuilderSteerable() {
+        ProductionLine l = new ProductionLineBuilder().addDefault(3)
+                .addDefault(4).addMultiCapExponentialConsuming(1, 12).build();
+        sim = Simulator.createSimulator(200);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+        assertEquals(8, l.getNumberOfWorkstations());
+        ((Simulator) sim).start();
+        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
+    }
+
+    @Test
     public void testBuilderConsuming() {
         ProductionLine l = new ProductionLineBuilder().addConsuming(3)
                 .addConsuming(4).build();
@@ -213,6 +226,27 @@ public class ProductionLineTest {
         assertEquals(13, l.getNumberOfWorkstations());
         ((Simulator) sim).start();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
+        assertNotEquals(0, l.getDualModeStations().size());
+        assertNotEquals(0, l.getSteerableStations().size());
+    }
+
+    @Test
+    public void testBuilderSettings() {
+        ProductionLine l = new ProductionLineBuilder().setIdleConsumption(0)
+                .setMulticapWorkingConsumption(0).setRfHighConsumption(0)
+                .setRfLowConsumption(0).setRfWidth(1).setWorkingConsumption(0)
+                .addConsuming(3).addConsuming(4)
+                .addMultiCapConstantConsuming(1, 12)
+                .addMultiCapExponentialConsuming(1, 12)
+                .addMultiCapLinearConsuming(1, 12).build();
+        sim = Simulator.createSimulator(200);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+        assertEquals(10, l.getNumberOfWorkstations());
+        ((Simulator) sim).start();
+        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), 0);
+        assertEquals(0, l.getDualModeStations().size(), 0);
     }
 
 }

@@ -40,6 +40,7 @@ public class SteerableStationDecorator extends
     @Override
     public void registerWith(WorkstationRegisterable subject) {
         subject.register(this);
+        super.registerWith(subject);
     }
 
     private void setProcessingSpeed(int i) {

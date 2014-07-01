@@ -357,6 +357,19 @@ public class WorkstationTest {
     }
 
     @Test
+    public void testCurtailmentWithSteerCurt() {
+        Workstation curt = WorkstationFactory
+                .createMultiCapExponentialConsuming(in, out, 5, 5, 5);
+        SteerableCurtailableStationDecorator curt2 = ((SteerableCurtailableStationDecorator) curt);
+
+        curt2.doFullCurtailment();
+        assertTrue(curt2.isCurtailed());
+        multiPushResource(24, 10);
+        multiTick(curt, 5);
+        assertEquals(0, curt.getLastStepConsumption(), 0);
+    }
+
+    @Test
     public void testDoubleRestore() {
         Workstation curt = WorkstationFactory.createCurtailableStation(in, out,
                 0, 0, 0);
@@ -436,8 +449,8 @@ public class WorkstationTest {
 
     @Test
     public void testRandomDecorator() {
-        iew = WorkstationFactory
-                .createRFStationDecorator(in, out, 300, 700, 12);
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700,
+                100, 12);
         multiPushResource(24, 5000);
         RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
         steer.getDelegate().tick(1);
@@ -513,8 +526,8 @@ public class WorkstationTest {
 
     @Test
     public void testRandomDecoratorMultIncr() {
-        iew = WorkstationFactory
-                .createRFStationDecorator(in, out, 300, 700, 12);
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700,
+                100, 12);
         multiPushResource(24, 5000);
         RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
         steer.signalHighConsumption();
@@ -524,8 +537,8 @@ public class WorkstationTest {
 
     @Test
     public void testRandomDecoratorMultDecr() {
-        iew = WorkstationFactory
-                .createRFStationDecorator(in, out, 300, 700, 12);
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700,
+                100, 12);
         multiPushResource(24, 5000);
         RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
         steer.signalHighConsumption();

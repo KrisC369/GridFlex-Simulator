@@ -16,19 +16,21 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     /**
      * With of the random noise band.
      */
-    public static final int N = 100;
+    public final int n;
     private final RandomGenerator g = new MersenneTwister();
     private final int high;
     private final int low;
     private boolean isHigh;
     private int offset;
 
-    RFSteerableStationDecorator(ConfigurableWorkstation ws, int high, int low) {
+    RFSteerableStationDecorator(ConfigurableWorkstation ws, int high, int low,
+            int width) {
         super(ws);
         this.high = high;
         this.low = low;
         this.isHigh = false;
         this.offset = 0;
+        this.n = width;
     }
 
     // TODO decide on speed incr.
@@ -58,12 +60,12 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
 
     @Override
     public void tick(int t) {
-        triggerChange(g.nextInt(N));
+        triggerChange(g.nextInt(n));
         super.tick(t);
     }
 
     void triggerChange(final int r) {
-        final int newVal = getTarget() - N / 2 + r;
+        final int newVal = getTarget() - n / 2 + r;
         final int diff = newVal - (getTarget() + getOffset());
         if (diff > 0) {
             getDelegate().increaseRatedMaxVarECons(diff);
@@ -83,6 +85,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     @Override
     public void registerWith(WorkstationRegisterable subject) {
         subject.register((DualModeWorkstation) this);
+        super.registerWith(subject);
     }
 
     /**

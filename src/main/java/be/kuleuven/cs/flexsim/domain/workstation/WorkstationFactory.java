@@ -88,7 +88,7 @@ public final class WorkstationFactory {
      */
     public static Workstation createCurtailableStation(Buffer<Resource> in,
             Buffer<Resource> out, int idle, int working, int shift) {
-        return new CurtailableStationDecorator(
+        return new CurtailableStationDecorator<Workstation>(
                 new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
                         out, idle, working, 1, ConsumptionModel.CONSTANT)));
     }
@@ -114,6 +114,7 @@ public final class WorkstationFactory {
             Buffer<Resource> out, int idle, int working, int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.CONSTANT));
+
     }
 
     /**
@@ -138,6 +139,7 @@ public final class WorkstationFactory {
             int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.LINEAR));
+
     }
 
     /**
@@ -180,11 +182,14 @@ public final class WorkstationFactory {
      * 
      * @param capacity
      *            The capacity of this workstation in terms of resources.
+     * @param width
+     *            The width of the noise band.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createRFStationDecorator(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int capacity) {
+    public static Workstation createRFDualModeStation(Buffer<Resource> in,
+            Buffer<Resource> out, int idle, int working, int width, int capacity) {
         return new RFSteerableStationDecorator(new WorkstationImpl(in, out, 0,
-                idle, capacity, ConsumptionModel.CONSTANT), working, idle);
+                idle, capacity, ConsumptionModel.CONSTANT), working, idle,
+                width);
     }
 }

@@ -5,9 +5,8 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-class CurtailableStationDecorator extends
-        ForwardingStationDecorator<Workstation> implements
-        CurtailableWorkstation {
+class CurtailableStationDecorator<T extends Workstation> extends
+        ForwardingStationDecorator<T> implements CurtailableWorkstation {
 
     private boolean curtailed;
 
@@ -16,7 +15,7 @@ class CurtailableStationDecorator extends
      * 
      * @param delegate
      */
-    CurtailableStationDecorator(Workstation delegate) {
+    CurtailableStationDecorator(T delegate) {
         super(delegate);
         this.curtailed = false;
     }
@@ -73,5 +72,6 @@ class CurtailableStationDecorator extends
     @Override
     public void registerWith(WorkstationRegisterable subject) {
         subject.register(this);
+        super.registerWith(subject);
     }
 }
