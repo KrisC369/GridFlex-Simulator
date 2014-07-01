@@ -81,7 +81,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     }
 
     @Override
-    public void registerWith(Registerable subject) {
+    public void registerWith(WorkstationRegisterable subject) {
         subject.register((DualModeWorkstation) this);
     }
 

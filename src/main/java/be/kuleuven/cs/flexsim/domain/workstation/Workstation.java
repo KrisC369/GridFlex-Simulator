@@ -9,7 +9,8 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface Workstation extends SimulationComponent {
+public interface Workstation extends SimulationComponent,
+        Registering<WorkstationRegisterable> {
 
     /**
      * Returns the energy consumption amount during the last step.
@@ -39,12 +40,4 @@ public interface Workstation extends SimulationComponent {
      * @return true if performing work during this time step.
      */
     boolean isIdle();
-
-    /**
-     * Register this workstation with a registerable instance.
-     * 
-     * @param subject
-     *            the subject to register with.
-     */
-    void registerWith(Registerable subject);
 }

@@ -13,7 +13,7 @@ import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
-import be.kuleuven.cs.flexsim.domain.workstation.Registerable;
+import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
@@ -433,7 +433,7 @@ public final class ProductionLine implements
         }
     }
 
-    private final class PLRegisterable implements Registerable {
+    private final class PLRegisterable implements WorkstationRegisterable {
 
         @Override
         public void register(Workstation ws) {

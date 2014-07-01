@@ -1,7 +1,6 @@
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import org.junit.Test;
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.finances.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class ScenarioTest {
@@ -43,12 +43,8 @@ public class ScenarioTest {
 
     @Test
     public void testDoubleConfig() {
-        assertFalse(hasDuplicates(s.getSimulationComponents()));
-    }
-
-    private <T> boolean hasDuplicates(Collection<T> list) {
-        Set<T> set = new HashSet<T>();
-        set.addAll(list);
-        return list.size() != set.size();
+        Set<SimulationComponent> set = new HashSet<SimulationComponent>();
+        set.addAll(s.getSimulationComponents());
+        assertEquals(s.getSimulationComponents().size(), set.size(), 0);
     }
 }

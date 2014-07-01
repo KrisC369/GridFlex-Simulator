@@ -83,7 +83,7 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
     }
 
     @Override
-    public void registerWith(Registerable subject) {
+    public void registerWith(WorkstationRegisterable subject) {
         getDelegate().registerWith(subject);
     }
 

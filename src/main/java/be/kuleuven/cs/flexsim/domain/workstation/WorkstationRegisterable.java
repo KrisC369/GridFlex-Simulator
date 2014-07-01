@@ -1,13 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
 /**
- * Represents an instance where workstations should be able to register
- * themselves to for whatever reason.
+ * Represents an instance workstations should be able to register themselves to
+ * for whatever reason. This interface provides a means to register the specific
+ * subtype. (Similarities with visitors)
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface Registerable {
+public interface WorkstationRegisterable {
 
     /**
      * Register a regular workstation.

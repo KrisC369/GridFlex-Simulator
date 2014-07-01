@@ -38,7 +38,7 @@ public class SteerableStationDecorator extends
     }
 
     @Override
-    public void registerWith(Registerable subject) {
+    public void registerWith(WorkstationRegisterable subject) {
         subject.register(this);
     }
 
