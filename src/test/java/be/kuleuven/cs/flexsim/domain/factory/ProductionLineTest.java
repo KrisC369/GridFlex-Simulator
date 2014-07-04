@@ -40,8 +40,6 @@ public class ProductionLineTest {
 
         @Override
         public void afterTick(int t) {
-            // TODO Auto-generated method stub
-
         }
 
         public String getLastType() {

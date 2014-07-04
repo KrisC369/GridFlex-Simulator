@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Simulation components that need to receive tick-triggers implement this
  * interface. This interface inherits from the instrumentation component
- * interface which allows dependency injecion.
+ * interface which allows dependency injection.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
