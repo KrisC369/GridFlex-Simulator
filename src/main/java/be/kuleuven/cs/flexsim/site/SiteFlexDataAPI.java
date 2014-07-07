@@ -9,5 +9,10 @@ import java.util.List;
  *
  */
 public interface SiteFlexDataAPI {
+    /**
+     * Queries this entity for its flexibility values.
+     * 
+     * @return a list of flexibility tuples.
+     */
     public List<FlexTuple> getFlexTuples();
 }

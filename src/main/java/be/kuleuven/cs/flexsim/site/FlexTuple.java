@@ -48,6 +48,11 @@ public class FlexTuple {
         return new FlexTuple(id, deltaP, direction, t, t_r, t_c);
     }
 
+    /**
+     * Returns a tuple representing no flex.
+     * 
+     * @return an empty tuple.
+     */
     public static FlexTuple createNONE() {
         return new FlexTuple(0, 0, false, 0, 0, 0);
     }
