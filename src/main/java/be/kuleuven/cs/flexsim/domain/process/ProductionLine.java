@@ -29,8 +29,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 public final class ProductionLine implements
         ProcessTrackableSimulationComponent {
 
-    private static final int BOTTLENECK_NUMBER = 3;
-    private static final int CAPACITY_NUMBER = 7;
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
         @Override
         public int apply(Workstation input) {
@@ -130,42 +128,6 @@ public final class ProductionLine implements
     }
 
     /**
-     * Creates a production line with a more complex layout.
-     * <code>O-XXX-O-X-O</code> with O as buffers and X as stations and
-     * <code>XXX</code> as parallel stations.
-     * 
-     * @return A production line instance.
-     */
-    @Deprecated
-    public static ProductionLine createExtendedLayout() {
-        return createCustomLayout(BOTTLENECK_NUMBER, 1);
-    }
-
-    /**
-     * Creates a production line with a simple layout. O-X-O with O as buffers
-     * and X as stations.
-     * 
-     * @return A production line instance.
-     */
-    @Deprecated
-    public static ProductionLine createSimpleLayout() {
-        return createCustomLayout(1);
-    }
-
-    /**
-     * Creates a production line with a more complex layout.
-     * <code>O-XXX-O-XX-0-X-O</code> with O as buffers and X as stations and
-     * <code>XX..</code> as parallel stations.
-     * 
-     * @return A production line instance.
-     */
-    @Deprecated
-    public static ProductionLine createSuperExtendedLayout() {
-        return createCustomLayout(BOTTLENECK_NUMBER, BOTTLENECK_NUMBER - 1,
-                BOTTLENECK_NUMBER - 2);
-    }
-
-    /**
      * Creates a production line with a custom layout specified by the
      * arguments.
      * 
@@ -212,19 +174,6 @@ public final class ProductionLine implements
      */
     public List<TradeofSteerableWorkstation> getSteerableStations() {
         return new ArrayList<>(this.steerables);
-    }
-
-    /**
-     * Returns a newly created production line with a static layout and some
-     * curtailable workstations.
-     * 
-     * @return a newly created production line instance.
-     */
-    @Deprecated
-    public static ProductionLine createStaticCurtailableLayout() {
-        return new ProductionLineBuilder().addShifted(CAPACITY_NUMBER)
-                .addCurtailableShifted(CAPACITY_NUMBER)
-                .addShifted(BOTTLENECK_NUMBER).build();
     }
 
     /**
