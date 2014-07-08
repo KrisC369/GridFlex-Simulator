@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.site;
+package be.kuleuven.cs.flexsim.domain.site;
 
 import static org.junit.Assert.assertTrue;
 
@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.site.SiteImpl;
 
 public class SiteTest {
 

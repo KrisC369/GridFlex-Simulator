@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.site;
+package be.kuleuven.cs.flexsim.domain.site;
 
 /**
  * Represent a control schedule for effectuating flexibility steering.

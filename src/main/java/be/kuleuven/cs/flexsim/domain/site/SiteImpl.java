@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.site;
+package be.kuleuven.cs.flexsim.domain.site;
 
 import java.util.Collections;
 import java.util.List;

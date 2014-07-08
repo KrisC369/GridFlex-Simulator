@@ -5,11 +5,11 @@ import org.junit.runners.Suite.SuiteClasses;
 import be.kuleuven.cs.flexsim.domain.factory.ProductionLineTest;
 import be.kuleuven.cs.flexsim.domain.finances.FinanceTrackerTest;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceTest;
+import be.kuleuven.cs.flexsim.domain.site.FlexTupleTest;
+import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
 import be.kuleuven.cs.flexsim.simulation.SimulatorTest;
-import be.kuleuven.cs.flexsim.site.FlexTupleTest;
-import be.kuleuven.cs.flexsim.site.SiteTest;
 import be.kuleuven.cs.flexsim.time.ClockTest;
 
 @RunWith(Suite.class)
