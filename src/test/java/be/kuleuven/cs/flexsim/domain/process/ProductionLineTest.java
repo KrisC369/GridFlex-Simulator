@@ -16,7 +16,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -87,15 +86,18 @@ public class ProductionLineTest {
     private SimulationContext sim = mock(SimulationContext.class);
 
     public ProductionLineTest() {
-        lineSimple = ProductionLine.createSimpleLayout();
-        lineExtended = ProductionLine.createExtendedLayout();
-        lineSuperExtended = ProductionLine.createSuperExtendedLayout();
+        lineSimple = new ProductionLineBuilder().addShifted(1).build();
+        lineExtended = new ProductionLineBuilder().addShifted(3).addShifted(1)
+                .build();
+        lineSuperExtended = new ProductionLineBuilder().addShifted(3)
+                .addShifted(2).addShifted(1).build();
     }
 
     @Before
     public void setUp() throws Exception {
-        lineSimple = ProductionLine.createSimpleLayout();
-        lineExtended = ProductionLine.createExtendedLayout();
+        lineSimple = new ProductionLineBuilder().addShifted(1).build();
+        lineExtended = new ProductionLineBuilder().addShifted(3).addShifted(1)
+                .build();
         simSteps = 20;
         sim = Simulator.createSimulator(simSteps);
         sim.register(lineSimple);
@@ -148,8 +150,8 @@ public class ProductionLineTest {
 
     @Test
     public void testGetCurtailables() {
-        ProductionLine lineExtended = ProductionLine
-                .createStaticCurtailableLayout();
+        ProductionLine lineExtended = new ProductionLineBuilder().addShifted(7)
+                .addCurtailableShifted(7).addShifted(3).build();
         List<CurtailableWorkstation> stations = lineExtended
                 .getCurtailableStations();
         for (CurtailableWorkstation c : stations) {

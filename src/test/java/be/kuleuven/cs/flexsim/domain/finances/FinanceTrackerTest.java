@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest.ChangeEventComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -45,7 +46,8 @@ public class FinanceTrackerTest {
 
     @Test
     public void signalConsumptionTest() {
-        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
+                .build();
         t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
@@ -63,7 +65,8 @@ public class FinanceTrackerTest {
 
     @Test
     public void getCurrentPaymentRateTest() {
-        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
+                .build();
         t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
@@ -76,7 +79,8 @@ public class FinanceTrackerTest {
 
     @Test
     public void getCurrentRewardRateTest() {
-        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
+                .build();
         t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
@@ -93,7 +97,8 @@ public class FinanceTrackerTest {
 
     @Test
     public void getProfitTest() {
-        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
+                .build();
         t = FinanceTracker.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
@@ -108,7 +113,8 @@ public class FinanceTrackerTest {
 
     @Test
     public void noContextTest() {
-        ProductionLine mockPL = ProductionLine.createSimpleLayout();
+        ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
+                .build();
         t = FinanceTracker.createDefault(mockPL);
         exception.expect(IllegalStateException.class);
         ((FinanceTracker) t).afterTick(1);
