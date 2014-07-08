@@ -6,6 +6,6 @@ package be.kuleuven.cs.flexsim.site;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-public interface ControlSchedule {
+public interface ActivateFlexCommand {
 
 }

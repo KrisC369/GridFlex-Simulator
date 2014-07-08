@@ -74,7 +74,7 @@ public class FlexTuple {
     /**
      * @return the direction
      */
-    public final boolean isDirection() {
+    public final boolean getDirection() {
         return direction;
     }
 
