@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.finances;
+package be.kuleuven.cs.flexsim.domain.finance;
 
 import java.util.ArrayList;
 import java.util.List;

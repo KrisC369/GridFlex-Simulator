@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.finances;
+package be.kuleuven.cs.flexsim.domain.finance;
 
 /**
  * The debt or payment model representation.

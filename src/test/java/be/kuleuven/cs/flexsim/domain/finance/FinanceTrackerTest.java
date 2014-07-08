@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.finances;
+package be.kuleuven.cs.flexsim.domain.finance;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,6 +14,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import be.kuleuven.cs.flexsim.domain.finance.DebtModel;
+import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
+import be.kuleuven.cs.flexsim.domain.finance.ProcessTrackableSimulationComponent;
+import be.kuleuven.cs.flexsim.domain.finance.RewardModel;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest.ChangeEventComponent;

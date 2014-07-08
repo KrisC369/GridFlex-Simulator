@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.finances;
+package be.kuleuven.cs.flexsim.domain.finance;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 

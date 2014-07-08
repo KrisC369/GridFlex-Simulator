@@ -2,7 +2,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import be.kuleuven.cs.flexsim.domain.finances.FinanceTrackerTest;
+import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerTest;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceTest;
 import be.kuleuven.cs.flexsim.domain.site.FlexTupleTest;

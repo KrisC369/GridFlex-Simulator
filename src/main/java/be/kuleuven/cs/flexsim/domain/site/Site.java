@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-public interface Site extends SiteFlexControlAPI, SiteFlexDataAPI {
+public interface Site extends SiteFlexAPI {
 
     /**
      * Tests if this site has the specified production line.

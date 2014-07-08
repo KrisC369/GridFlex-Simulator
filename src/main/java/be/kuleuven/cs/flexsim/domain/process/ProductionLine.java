@@ -7,7 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.flexsim.domain.finances.ProcessTrackableSimulationComponent;
+import be.kuleuven.cs.flexsim.domain.finance.ProcessTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
