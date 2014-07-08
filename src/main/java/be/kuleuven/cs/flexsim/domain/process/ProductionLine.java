@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.factory;
+package be.kuleuven.cs.flexsim.domain.process;
 
 import java.util.ArrayList;
 import java.util.Collection;

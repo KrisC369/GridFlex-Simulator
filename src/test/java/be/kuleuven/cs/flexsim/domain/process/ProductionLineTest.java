@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.factory;
+package be.kuleuven.cs.flexsim.domain.process;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -16,7 +16,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLine.ProductionLineBuilder;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;

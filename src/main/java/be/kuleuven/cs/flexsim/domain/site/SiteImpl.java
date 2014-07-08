@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 
 import com.google.common.collect.Lists;
 

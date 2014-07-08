@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 
 /**
  * Represents a production site with possibly multiple production lines.
