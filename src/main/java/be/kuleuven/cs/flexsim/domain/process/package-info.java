@@ -3,7 +3,7 @@
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @ParametersAreNonnullByDefault
-package be.kuleuven.cs.flexsim.domain.factory;
+package be.kuleuven.cs.flexsim.domain.process;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

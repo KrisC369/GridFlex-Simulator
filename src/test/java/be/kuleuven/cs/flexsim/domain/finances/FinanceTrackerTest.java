@@ -14,8 +14,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLine;
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLineTest.ChangeEventComponent;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest.ChangeEventComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;

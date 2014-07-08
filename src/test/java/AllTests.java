@@ -2,8 +2,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import be.kuleuven.cs.flexsim.domain.factory.ProductionLineTest;
 import be.kuleuven.cs.flexsim.domain.finances.FinanceTrackerTest;
+import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
