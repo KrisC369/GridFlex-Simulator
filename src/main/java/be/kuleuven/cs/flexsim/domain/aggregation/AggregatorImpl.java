@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation;
 
 import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
 
 import com.google.common.collect.Lists;
@@ -14,7 +14,7 @@ import com.google.common.collect.Lists;
  *
  */
 public class AggregatorImpl {
-    private List<Site> clients;
+    private List<SiteFlexAPI> clients;
     private SteeringSignal tso;
 
     /**
@@ -31,8 +31,8 @@ public class AggregatorImpl {
     /**
      * @return the clients
      */
-    final List<Site> getClients() {
-        return clients;
+    final List<SiteFlexAPI> getClients() {
+        return Lists.newArrayList(clients);
     }
 
     /**
@@ -40,6 +40,15 @@ public class AggregatorImpl {
      */
     final SteeringSignal getTso() {
         return tso;
+    }
+
+    public void registerClient(SiteFlexAPI client) {
+        clients.add(client);
+    }
+
+    void doAggregationStep() {
+        // TODO Auto-generated method stub
+
     }
 
 }
