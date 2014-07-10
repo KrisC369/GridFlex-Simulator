@@ -4,10 +4,12 @@ import javax.annotation.Nullable;
 
 /**
  * Tuples representing flexibility.
+ *
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
+// TODO define flex direction semantics clearly.
 public class FlexTuple {
 
     private final int id;
