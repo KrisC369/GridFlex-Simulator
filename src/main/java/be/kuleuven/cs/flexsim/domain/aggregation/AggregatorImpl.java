@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,6 +10,8 @@ import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
@@ -21,9 +24,11 @@ import com.google.common.collect.Sets;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-public class AggregatorImpl {
+public class AggregatorImpl implements SimulationComponent {
     private Set<SiteFlexAPI> clients;
     private SteeringSignal tso;
+    private int tickcount;
+    private final int aggFreq;
 
     /**
      * Default constructor
@@ -31,9 +36,11 @@ public class AggregatorImpl {
      * @param tso
      *            the tso.
      */
-    public AggregatorImpl(SteeringSignal tso) {
+    public AggregatorImpl(SteeringSignal tso, int frequency) {
         this.clients = Sets.newLinkedHashSet();
         this.tso = tso;
+        this.tickcount = 1;
+        this.aggFreq = frequency;
     }
 
     /**
@@ -124,5 +131,25 @@ public class AggregatorImpl {
             res.putAll(s, s.getFlexTuples());
         }
         return res;
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+    }
+
+    @Override
+    public void afterTick(int t) {
+    }
+
+    @Override
+    public void tick(int t) {
+        if (tickcount++ % aggFreq == 0) {
+            doAggregationStep();
+        }
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        return Collections.emptyList();
     }
 }
