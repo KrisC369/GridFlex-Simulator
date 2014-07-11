@@ -14,13 +14,21 @@ public class RandomTSO implements SteeringSignal {
     private final int min;
     private final int max;
 
+    /**
+     * Default constructor.
+     * 
+     * @param min
+     *            the minimum value for the random generator.
+     * @param max
+     *            the maximum value for the random generator.
+     */
     public RandomTSO(int min, int max) {
         this.min = min;
         this.max = max;
     }
 
     /**
-     * @return the g
+     * @return the generator
      */
     final RandomGenerator getGenerator() {
         return g;

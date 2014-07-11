@@ -35,6 +35,8 @@ public class AggregatorImpl implements SimulationComponent {
      *
      * @param tso
      *            the tso.
+     * @param frequency
+     *            the frequency with which to perform aggregation functions.
      */
     public AggregatorImpl(SteeringSignal tso, int frequency) {
         this.clients = Sets.newLinkedHashSet();
