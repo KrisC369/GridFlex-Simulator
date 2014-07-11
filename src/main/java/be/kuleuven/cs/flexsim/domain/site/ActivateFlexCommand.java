@@ -8,4 +8,12 @@ package be.kuleuven.cs.flexsim.domain.site;
  */
 public interface ActivateFlexCommand {
 
+    /**
+     * Returns the reference ID from flex provider to reference a specific flex
+     * profile.
+     * 
+     * @return the ReferenceID.
+     */
+    int getReferenceID();
+
 }

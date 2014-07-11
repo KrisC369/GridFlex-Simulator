@@ -83,7 +83,12 @@ public class AggregatorImpl {
             for (int i : ids) {
                 for (FlexTuple t : flex.get(s)) {
                     if (t.getId() == i) {
+                        final FlexTuple tt = t;
                         s.activateFlex(new ActivateFlexCommand() {
+                            @Override
+                            public int getReferenceID() {
+                                return tt.getId();
+                            }
                         });
                     }
                 }
