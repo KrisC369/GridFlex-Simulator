@@ -2,6 +2,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImplTest;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerTest;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceTest;
@@ -16,6 +17,6 @@ import be.kuleuven.cs.flexsim.time.ClockTest;
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
         WorkstationTest.class, ProductionLineTest.class, ResourceTest.class,
         FinanceTrackerTest.class, ScenarioTest.class, FlexTupleTest.class,
-        SiteTest.class })
+        SiteTest.class, AggregatorImplTest.class })
 public class AllTests {
 }

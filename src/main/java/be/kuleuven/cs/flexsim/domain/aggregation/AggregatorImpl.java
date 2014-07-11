@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -82,10 +81,10 @@ public class AggregatorImpl {
 
         for (SiteFlexAPI s : flex.keySet()) {
             for (int i : ids) {
-                Collection<FlexTuple> coll = flex.get(s);
-                for (FlexTuple t : coll) {
+                for (FlexTuple t : flex.get(s)) {
                     if (t.getId() == i) {
-                        s.activateFlex(new ActivateFlexCommand(){});
+                        s.activateFlex(new ActivateFlexCommand() {
+                        });
                     }
                 }
             }

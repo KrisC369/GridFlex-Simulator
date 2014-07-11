@@ -30,12 +30,16 @@ public class AggregatorImplTest {
         doReturn(0).when(tso).getCurrentValue(anyInt());
         this.agg = new AggregatorImpl(tso);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, false, 10, 0, 0)))
-                .when(clientDown).getFlexTuples();
+        doReturn(
+                Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
+                        FlexTuple.create(3, 10, true, 10, 0, 0))).when(
+                clientDown).getFlexTuples();
 
         this.clientUp = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0)))
-                .when(clientUp).getFlexTuples();
+        doReturn(
+                Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0),
+                        FlexTuple.create(4, 10, false, 10, 0, 0))).when(
+                clientUp).getFlexTuples();
 
         agg.registerClient(clientUp);
         agg.registerClient(clientDown);
@@ -74,6 +78,9 @@ public class AggregatorImplTest {
     public void testSimpleAggregationUpFlex() {
         tso = mock(SteeringSignal.class);
         doReturn(5).when(tso).getCurrentValue(anyInt());
+        agg = new AggregatorImpl(tso);
+        agg.registerClient(clientUp);
+        agg.registerClient(clientDown);
 
         agg.doAggregationStep();
         verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
@@ -84,10 +91,41 @@ public class AggregatorImplTest {
     @Test
     public void testSimpleAggregationDownFlex() {
         tso = mock(SteeringSignal.class);
-        doReturn(5).when(tso).getCurrentValue(anyInt());
+        doReturn(-5).when(tso).getCurrentValue(anyInt());
+        agg = new AggregatorImpl(tso);
+        agg.registerClient(clientUp);
+        agg.registerClient(clientDown);
 
         agg.doAggregationStep();
-        verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
+        verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
+        verify(clientDown, times(0)).activateFlex(
+                any(ActivateFlexCommand.class));
+    }
+
+    @Test
+    public void testSimpleAggregationDoubleDownFlex() {
+        tso = mock(SteeringSignal.class);
+        doReturn(15).when(tso).getCurrentValue(anyInt());
+        agg = new AggregatorImpl(tso);
+        agg.registerClient(clientUp);
+        agg.registerClient(clientDown);
+
+        agg.doAggregationStep();
+        verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
+        verify(clientDown, times(1)).activateFlex(
+                any(ActivateFlexCommand.class));
+    }
+
+    @Test
+    public void testSimpleAggregationDoubleUpFlex() {
+        tso = mock(SteeringSignal.class);
+        doReturn(-15).when(tso).getCurrentValue(anyInt());
+        agg = new AggregatorImpl(tso);
+        agg.registerClient(clientUp);
+        agg.registerClient(clientDown);
+
+        agg.doAggregationStep();
+        verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
         verify(clientDown, times(1)).activateFlex(
                 any(ActivateFlexCommand.class));
     }
