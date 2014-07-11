@@ -7,11 +7,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.flexsim.domain.finance.ProcessTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
@@ -21,13 +21,14 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
+import com.google.common.collect.Lists;
+
 /**
  * A production line representing buffers and workstations.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements
-        ProcessTrackableSimulationComponent {
+public final class ProductionLine implements TrackableFlexProcessComponent {
 
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
         @Override
@@ -183,6 +184,32 @@ public final class ProductionLine implements
      */
     List<Workstation> getWorkstations() {
         return new ArrayList<>(this.workstations);
+    }
+
+    @Override
+    public List<FlexTuple> getCurrentFlexbility() {
+        if (getCurtailableStations().isEmpty()
+                && getSteerableStations().isEmpty()) {
+            return Lists.newArrayList(FlexTuple.createNONE());
+        }
+        List<FlexTuple> flex = Lists.newArrayList();
+        for (CurtailableWorkstation c : getCurtailableStations()) {
+            flex.add(calculateCurtFlex(c));
+        }
+        for (TradeofSteerableWorkstation c : getSteerableStations()) {
+            flex.add(calculateSteerFlex(c));
+        }
+        return flex;
+    }
+
+    private FlexTuple calculateSteerFlex(TradeofSteerableWorkstation c) {
+        // TODO implement
+        return FlexTuple.createNONE();
+    }
+
+    private FlexTuple calculateCurtFlex(CurtailableWorkstation c) {
+        // TODO implement
+        return FlexTuple.createNONE();
     }
 
     /**

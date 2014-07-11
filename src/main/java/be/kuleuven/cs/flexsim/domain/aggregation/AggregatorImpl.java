@@ -7,9 +7,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
-import be.kuleuven.cs.flexsim.domain.site.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 

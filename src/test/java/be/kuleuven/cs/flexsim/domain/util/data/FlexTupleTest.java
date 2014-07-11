@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.site;
+package be.kuleuven.cs.flexsim.domain.util.data;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -9,7 +9,7 @@ import java.util.Formatter;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.site.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
 public class FlexTupleTest {
 

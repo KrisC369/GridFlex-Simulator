@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.finance;
 import java.util.ArrayList;
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.domain.process.TrackableFlexProcessComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -18,7 +19,7 @@ import com.google.common.base.Optional;
  */
 public final class FinanceTracker implements SimulationComponent {
 
-    private final ProcessTrackableSimulationComponent target;
+    private final TrackableFlexProcessComponent target;
     private Optional<SimulationContext> context;
     private int totalReward;
     private int totalCost;
@@ -36,7 +37,7 @@ public final class FinanceTracker implements SimulationComponent {
      * @param dm
      *            The debtModel to use.
      */
-    private FinanceTracker(ProcessTrackableSimulationComponent target,
+    private FinanceTracker(TrackableFlexProcessComponent target,
             RewardModel rm, DebtModel dm) {
         this.target = target;
         this.context = Optional.absent();
@@ -125,7 +126,7 @@ public final class FinanceTracker implements SimulationComponent {
     /**
      * @return the target
      */
-    private ProcessTrackableSimulationComponent getTarget() {
+    private TrackableFlexProcessComponent getTarget() {
         return target;
     }
 
@@ -180,7 +181,7 @@ public final class FinanceTracker implements SimulationComponent {
      * @return A fully instantiated FinanceTracker object.
      */
     public static FinanceTracker createDefault(
-            ProcessTrackableSimulationComponent target) {
+            TrackableFlexProcessComponent target) {
         return new FinanceTracker(target, RewardModel.CONSTANT,
                 DebtModel.CONSTANT);
 
@@ -199,7 +200,7 @@ public final class FinanceTracker implements SimulationComponent {
      * @return A fully instantiated FinanceTracker object.
      */
     public static FinanceTracker createCustom(
-            ProcessTrackableSimulationComponent target, RewardModel rm,
+            TrackableFlexProcessComponent target, RewardModel rm,
             DebtModel dm) {
         return new FinanceTracker(target, rm, dm);
     }

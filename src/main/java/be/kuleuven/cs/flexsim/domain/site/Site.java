@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 
 /**
  * Represents a production site with possibly multiple production lines.
@@ -11,12 +11,12 @@ import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 public interface Site extends SiteFlexAPI {
 
     /**
-     * Tests if this site has the specified production line.
+     * Tests if this site has the specified process.
      * 
-     * @param line
-     *            the line to test.
-     * @return True if this site contains the line.
+     * @param process
+     *            the process to test.
+     * @return True if this site contains the process.
      */
-    boolean containsLine(ProductionLine line);
+    boolean containsLine(FlexProcess process);
 
 }

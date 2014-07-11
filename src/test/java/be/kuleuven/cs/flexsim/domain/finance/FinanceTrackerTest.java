@@ -16,9 +16,9 @@ import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.finance.DebtModel;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
-import be.kuleuven.cs.flexsim.domain.finance.ProcessTrackableSimulationComponent;
 import be.kuleuven.cs.flexsim.domain.finance.RewardModel;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.TrackableFlexProcessComponent;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest.ChangeEventComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -28,7 +28,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class FinanceTrackerTest {
-    private ProcessTrackableSimulationComponent mockPL = mock(ProcessTrackableSimulationComponent.class);
+    private TrackableFlexProcessComponent mockPL = mock(TrackableFlexProcessComponent.class);
     private FinanceTracker t = FinanceTracker.createDefault(mockPL);
     private SimulationContext sim = mock(SimulationContext.class);
 

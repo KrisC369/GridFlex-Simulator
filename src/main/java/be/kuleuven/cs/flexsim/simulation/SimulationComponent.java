@@ -33,6 +33,6 @@ public interface SimulationComponent extends InstrumentationComponent {
      * 
      * @return the subcomponents for this component or an empty list.
      */
-    List<SimulationComponent> getSimulationSubComponents();
+    List<? extends SimulationComponent> getSimulationSubComponents();
 
 }

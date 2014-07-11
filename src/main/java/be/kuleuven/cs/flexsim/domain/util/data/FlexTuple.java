@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.site;
+package be.kuleuven.cs.flexsim.domain.util.data;
 
 import javax.annotation.Nullable;
 

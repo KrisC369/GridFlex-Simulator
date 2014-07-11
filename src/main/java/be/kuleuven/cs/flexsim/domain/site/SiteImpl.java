@@ -5,9 +5,14 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 
 /**
  * An implementation for the Site interface
@@ -15,9 +20,10 @@ import com.google.common.collect.Lists;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-public class SiteImpl implements Site {
+public class SiteImpl implements Site, SimulationComponent {
 
-    private List<ProductionLine> processes;
+    private List<FlexProcess> processes;
+    private Multimap<FlexProcess, FlexTuple> flex;
 
     /**
      * Default constructor based on lines.
@@ -25,8 +31,9 @@ public class SiteImpl implements Site {
      * @param lines
      *            The lines present in this site.
      */
-    public SiteImpl(ProductionLine... lines) {
+    public SiteImpl(FlexProcess... lines) {
         processes = Lists.newArrayList(lines);
+        this.flex = ArrayListMultimap.create();
     }
 
     @Override
@@ -40,15 +47,43 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public boolean containsLine(ProductionLine line1) {
-        return getProcesses().contains(line1);
+    public boolean containsLine(FlexProcess process) {
+        return getProcesses().contains(process);
     }
 
     /**
      * @return the processes
      */
-    final List<ProductionLine> getProcesses() {
+    final List<FlexProcess> getProcesses() {
         return processes;
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+    }
+
+    @Override
+    public void afterTick(int t) {
+
+    }
+
+    @Override
+    public void tick(int t) {
+        gatherFlex();
+    }
+
+    private void gatherFlex() {
+        this.flex = ArrayListMultimap.create();
+        for (FlexProcess proc : processes) {
+            flex.putAll(proc, Lists.newArrayList(proc.getCurrentFlexbility()));
+        }
+    }
+
+    @Override
+    public List<SimulationComponent> getSimulationSubComponents() {
+        List<SimulationComponent> toret = Lists.newArrayList();
+        toret.addAll(processes);
+        return toret;
     }
 
 }
