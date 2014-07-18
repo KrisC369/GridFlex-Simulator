@@ -210,7 +210,7 @@ public class WorkstationTest {
         Workstation deco = new CurtailableStationDecorator(mock);
 
         assertTrue(deco instanceof CurtailableWorkstation);
-        assertFalse(deco instanceof TradeofSteerableWorkstation);
+        // assertFalse(deco instanceof TradeofSteerableWorkstation);
         deco = new SteerableCurtailableStationDecorator(
                 mock(WorkstationImpl.class));
         assertTrue(deco instanceof CurtailableWorkstation);

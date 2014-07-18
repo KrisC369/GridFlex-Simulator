@@ -32,8 +32,8 @@ public class FlexTupleTest {
         assertEquals(deltaP, tuple.getDeltaP(), 0);
         assertEquals(id, tuple.getId(), 0);
         assertEquals(t, tuple.getT(), 0);
-        assertEquals(tr, tuple.getT_r(), 0);
-        assertEquals(tc, tuple.getT_c(), 0);
+        assertEquals(tr, tuple.getTR(), 0);
+        assertEquals(tc, tuple.getTC(), 0);
         assertEquals(dir, tuple.getDirection());
 
     }

@@ -25,8 +25,8 @@ import com.google.common.collect.Sets;
  *
  */
 public class AggregatorImpl implements SimulationComponent {
-    private Set<SiteFlexAPI> clients;
-    private SteeringSignal tso;
+    private final Set<SiteFlexAPI> clients;
+    private final SteeringSignal tso;
     private int tickcount;
     private final int aggFreq;
 

@@ -16,8 +16,8 @@ public interface SiteFlexAPI {
      * 
      * @return a list of flexibility tuples.
      */
-    public List<FlexTuple> getFlexTuples();
-    
+    List<FlexTuple> getFlexTuples();
+
     /**
      * Schedule the activation of flexibility at an entity.
      * 

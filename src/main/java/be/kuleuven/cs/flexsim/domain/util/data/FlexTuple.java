@@ -16,16 +16,16 @@ public class FlexTuple {
     private final int deltaP;
     private final boolean direction;
     private final int t;
-    private final int t_r;
-    private final int t_c;
+    private final int tR;
+    private final int tC;
 
-    FlexTuple(int id, int deltaP, boolean direction, int t, int t_r, int t_c) {
+    FlexTuple(int id, int deltaP, boolean direction, int t, int tR, int tC) {
         this.id = id;
         this.deltaP = deltaP;
         this.direction = direction;
         this.t = t;
-        this.t_r = t_r;
-        this.t_c = t_c;
+        this.tR = tR;
+        this.tC = tC;
     }
 
     /**
@@ -90,15 +90,15 @@ public class FlexTuple {
     /**
      * @return the t_r
      */
-    public final int getT_r() {
-        return t_r;
+    public final int getTR() {
+        return tR;
     }
 
     /**
      * @return the t_c
      */
-    public final int getT_c() {
-        return t_c;
+    public final int getTC() {
+        return tC;
     }
 
     /*
@@ -114,8 +114,8 @@ public class FlexTuple {
         result = prime * result + (direction ? 1231 : 1237);
         result = prime * result + id;
         result = prime * result + t;
-        result = prime * result + t_c;
-        result = prime * result + t_r;
+        result = prime * result + tC;
+        result = prime * result + tR;
         return result;
     }
 
@@ -135,6 +135,13 @@ public class FlexTuple {
         if (!(obj instanceof FlexTuple)) {
             return false;
         }
+        return varEquals(obj);
+    }
+
+    /**
+     * @param obj
+     */
+    private boolean varEquals(Object obj) {
         FlexTuple other = (FlexTuple) obj;
         if (deltaP != other.deltaP) {
             return false;
@@ -148,10 +155,10 @@ public class FlexTuple {
         if (t != other.t) {
             return false;
         }
-        if (t_c != other.t_c) {
+        if (tC != other.tC) {
             return false;
         }
-        if (t_r != other.t_r) {
+        if (tR != other.tR) {
             return false;
         }
         return true;
@@ -174,9 +181,9 @@ public class FlexTuple {
         builder.append(", t=");
         builder.append(t);
         builder.append(", t_r=");
-        builder.append(t_r);
+        builder.append(tR);
         builder.append(", t_c=");
-        builder.append(t_c);
+        builder.append(tC);
         builder.append("]");
         return builder.toString();
     }
