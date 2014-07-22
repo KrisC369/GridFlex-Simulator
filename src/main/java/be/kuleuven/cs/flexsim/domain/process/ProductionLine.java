@@ -7,6 +7,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DirectedMultigraph;
+
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -51,6 +54,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
     private final Set<DualModeWorkstation> duals;
     private final Set<Workstation> uniques;
     private final PLRegisterable registry;
+    private final Graph<Buffer<Resource>, Workstation> layout;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
@@ -60,6 +64,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         this.steerables = new LinkedHashSet<>();
         this.registry = new PLRegisterable();
         this.uniques = new HashSet<Workstation>();
+        this.layout = new DirectedMultigraph<>(Workstation.class);
     }
 
     @Override
@@ -199,7 +204,13 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         for (TradeofSteerableWorkstation c : getSteerableStations()) {
             flex.add(calculateSteerFlex(c));
         }
+        flex = filterOutDuplicates(flex);
         return flex;
+    }
+
+    private ArrayList<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
+        return Lists.newArrayList(com.google.common.collect.Sets
+                .newHashSet(flex));
     }
 
     private FlexTuple calculateSteerFlex(TradeofSteerableWorkstation c) {
@@ -210,6 +221,39 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
     private FlexTuple calculateCurtFlex(CurtailableWorkstation c) {
         // TODO implement
         return FlexTuple.createNONE();
+    }
+
+    private void addToGraph(Workstation ws) {
+        this.layout.addEdge(buffers.get(buffers.size() - 2),
+                buffers.get(buffers.size() - 1), ws);
+    }
+
+    private void addBuffer(Buffer<Resource> b) {
+        this.buffers.add(b);
+        this.layout.addVertex(b);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("ProductionLine [layout=").append(layout).append("]");
+        return builder.toString();
+    }
+
+    /**
+     * Returns the layout of this production line instance.
+     * 
+     * @return an unmodifiable graph instance representing the layout.
+     */
+    public Graph<Buffer<Resource>, Workstation> getLayout() {
+        // return new UnmodifiableGraph<Buffer<Resource>,
+        // Workstation>(this.layout);
+        return this.layout;
     }
 
     /**
@@ -239,7 +283,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          */
         public ProductionLineBuilder() {
             prodline = new ProductionLine();
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             workingConsumption = WORKING_CONSUMPTION;
             idleConsumption = IDLE_CONSUMPTION;
             multicapWorkingConsumption = MULTICAP_WORKING_CONSUMPTION;
@@ -264,7 +308,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance
          */
         public ProductionLineBuilder addShifted(int n) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createShiftableWorkstation(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -283,7 +327,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance
          */
         public ProductionLineBuilder addCurtailableShifted(int n) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
                 WorkstationFactory.createCurtailableStation(
@@ -303,7 +347,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance
          */
         public ProductionLineBuilder addDefault(int n) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createDefault(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -321,7 +365,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance
          */
         public ProductionLineBuilder addConsuming(int n) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -343,7 +387,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance
          */
         public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createMultiCapConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -365,7 +409,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance
          */
         public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createMultiCapLinearConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -389,7 +433,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          */
         public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
                 int cap) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createMultiCapExponentialConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -410,7 +454,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
          * @return the current builder instance.
          */
         public ProductionLineBuilder addRFSteerableStation(int n, int cap) {
-            prodline.buffers.add(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory.createRFDualModeStation(
                         prodline.buffers.get(prodline.buffers.size() - 2),
@@ -495,6 +539,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
             if (!uniques.contains(ws)) {
                 uniques.add(ws);
                 workstations.add(ws);
+                addToGraph(ws);
             }
         }
 

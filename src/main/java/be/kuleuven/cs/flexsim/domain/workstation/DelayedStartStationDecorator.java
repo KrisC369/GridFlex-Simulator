@@ -50,4 +50,18 @@ class DelayedStartStationDecorator extends
             super.tick(t);
         }
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DelayedStartStationDecorator [shiftTime=")
+                .append(shiftTime).append(", hc=").append(this.hashCode())
+                .append("]");
+        return builder.toString();
+    }
 }

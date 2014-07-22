@@ -93,4 +93,18 @@ public final class Buffer<T extends IBufferable> {
             push(t);
         }
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Buffer [getCurrentOccupancyLevel()=")
+                .append(getCurrentOccupancyLevel()).append(", hc=")
+                .append(this.hashCode()).append("]");
+        return builder.toString();
+    }
 }

@@ -339,4 +339,19 @@ class WorkstationImpl implements ConfigurableWorkstation {
             r.process(baseSteps);
         }
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("WorkstationImpl [fixedECons=").append(fixedECons)
+                .append(", ratedMaxVarECons=").append(ratedMaxVarECons)
+                .append(", capacity=").append(capacity).append(", hc=")
+                .append(this.hashCode()).append("]");
+        return builder.toString();
+    }
 }

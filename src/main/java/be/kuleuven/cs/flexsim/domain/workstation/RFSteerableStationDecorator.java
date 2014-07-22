@@ -17,6 +17,22 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
      * With of the random noise band.
      */
     public final int n;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("RFSteerableStationDecorator [high=").append(high)
+                .append(", low=").append(low).append(", isHigh=")
+                .append(isHigh).append(", hc=").append(this.hashCode())
+                .append("]");
+        return builder.toString();
+    }
+
     private final RandomGenerator g = new MersenneTwister();
     private final int high;
     private final int low;

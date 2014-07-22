@@ -57,4 +57,17 @@ public class SteerableCurtailableStationDecorator extends
         subject.register((CurtailableWorkstation) this);
         super.registerWith(subject);
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SteerableCurtailableStationDecorator [")
+                .append(", hc=").append(this.hashCode()).append("]");
+        return builder.toString();
+    }
 }

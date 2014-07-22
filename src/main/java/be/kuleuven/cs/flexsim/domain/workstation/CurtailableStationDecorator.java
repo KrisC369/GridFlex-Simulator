@@ -74,4 +74,18 @@ class CurtailableStationDecorator<T extends Workstation> extends
         subject.register(this);
         super.registerWith(subject);
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("CurtailableStationDecorator [curtailed=")
+                .append(curtailed).append(", hc=").append(this.hashCode())
+                .append("]");
+        return builder.toString();
+    }
 }

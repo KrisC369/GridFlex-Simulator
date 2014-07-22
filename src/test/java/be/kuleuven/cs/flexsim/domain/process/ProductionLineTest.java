@@ -19,6 +19,7 @@ import org.junit.Test;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -110,7 +111,7 @@ public class ProductionLineTest {
         deliverResources(n);
         SimulationComponent tester = mock(SimulationComponent.class);
         sim.register(tester);
-        ((Simulator) sim).start();
+        startSim();
         verify(tester, times(simSteps)).tick(anyInt());
         assertEquals(n, lineExtended.takeResources().size());
 
@@ -163,12 +164,9 @@ public class ProductionLineTest {
     public void testBuilderDefault() {
         ProductionLine l = new ProductionLineBuilder().addDefault(3)
                 .addDefault(4).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
-        l.deliverResources(res);
+        setupForSim(l, simSteps);
         assertEquals(7, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        startSim();
         assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
     }
 
@@ -176,12 +174,9 @@ public class ProductionLineTest {
     public void testBuilderSteerable() {
         ProductionLine l = new ProductionLineBuilder().addDefault(3)
                 .addDefault(4).addMultiCapExponentialConsuming(1, 12).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
-        l.deliverResources(res);
+        setupForSim(l, simSteps);
         assertEquals(8, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        startSim();
         assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
     }
 
@@ -189,12 +184,9 @@ public class ProductionLineTest {
     public void testBuilderConsuming() {
         ProductionLine l = new ProductionLineBuilder().addConsuming(3)
                 .addConsuming(4).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
-        l.deliverResources(res);
+        setupForSim(l, simSteps);
         assertEquals(7, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        startSim();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
 
@@ -204,12 +196,9 @@ public class ProductionLineTest {
                 .addConsuming(4).addMultiCapConstantConsuming(1, 12)
                 .addMultiCapExponentialConsuming(1, 12)
                 .addMultiCapLinearConsuming(1, 12).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
-        l.deliverResources(res);
+        setupForSim(l, simSteps);
         assertEquals(10, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        startSim();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
     }
 
@@ -220,12 +209,9 @@ public class ProductionLineTest {
                 .addMultiCapExponentialConsuming(1, 12)
                 .addMultiCapLinearConsuming(1, 12).addRFSteerableStation(3, 12)
                 .build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
-        l.deliverResources(res);
+        setupForSim(l, simSteps);
         assertEquals(13, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        startSim();
         assertNotEquals(0, l.getWorkstations().get(3).getTotalConsumption());
         assertNotEquals(0, l.getDualModeStations().size());
         assertNotEquals(0, l.getSteerableStations().size());
@@ -240,14 +226,71 @@ public class ProductionLineTest {
                 .addMultiCapConstantConsuming(1, 12)
                 .addMultiCapExponentialConsuming(1, 12)
                 .addMultiCapLinearConsuming(1, 12).build();
-        sim = Simulator.createSimulator(200);
-        sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
-        l.deliverResources(res);
+        setupForSim(l, simSteps);
         assertEquals(10, l.getNumberOfWorkstations());
-        ((Simulator) sim).start();
+        startSim();
         assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), 0);
         assertEquals(0, l.getDualModeStations().size(), 0);
     }
 
+    /**
+     * 
+     */
+    private void startSim() {
+        ((Simulator) sim).start();
+    }
+
+    private void setupForSim(ProductionLine l, int steps) {
+        sim = Simulator.createSimulator(steps);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        l.deliverResources(res);
+    }
+
+    @Test
+    public void testFlexNoSteer() {
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3)
+                .addShifted(4).build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertTrue(flex.contains(FlexTuple.createNONE()));
+
+        // with curt
+        l = new ProductionLineBuilder().addConsuming(3).addShifted(4)
+                .addCurtailableShifted(4).build();
+        setupForSim(l, simSteps);
+        startSim();
+        flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertTrue(flex.contains(FlexTuple.createNONE()));
+    }
+
+    @Test
+    public void testFlexNoCurt() {
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3)
+                .addShifted(4).build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertTrue(flex.contains(FlexTuple.createNONE()));
+
+        // with steer
+        l = new ProductionLineBuilder().addConsuming(3)
+                .addRFSteerableStation(4, 20).build();
+        setupForSim(l, simSteps);
+        startSim();
+        flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertTrue(flex.contains(FlexTuple.createNONE()));
+    }
+
+    @Test
+    public void testLayout() {
+        ProductionLine l = new ProductionLineBuilder().addConsuming(3)
+                .addShifted(4).addMultiCapConstantConsuming(3, 12).build();
+        assertTrue(l.toString().contains(l.getLayout().toString()));
+    }
 }
