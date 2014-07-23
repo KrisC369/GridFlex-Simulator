@@ -7,6 +7,8 @@ package be.kuleuven.cs.flexsim.domain.resource;
  */
 public class MultiProcessResource extends SimpleResource {
 
+    private static final long serialVersionUID = -6904517818044421084L;
+
     int[] neededProcessing;
 
     /**

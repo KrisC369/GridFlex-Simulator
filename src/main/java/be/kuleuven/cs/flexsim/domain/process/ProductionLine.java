@@ -25,6 +25,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * A production line representing buffers and workstations.
@@ -55,6 +56,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
     private final Set<Workstation> uniques;
     private final PLRegisterable registry;
     private final Graph<Buffer<Resource>, Workstation> layout;
+    private long idcount;
 
     private ProductionLine() {
         this.buffers = new ArrayList<>();
@@ -65,6 +67,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         this.registry = new PLRegisterable();
         this.uniques = new HashSet<Workstation>();
         this.layout = new DirectedMultigraph<>(Workstation.class);
+        this.idcount = 0;
     }
 
     @Override
@@ -199,13 +202,20 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         }
         List<FlexTuple> flex = Lists.newArrayList();
         for (CurtailableWorkstation c : getCurtailableStations()) {
-            flex.add(calculateCurtFlex(c));
+            flex.add(calculateRank1CurtFlex(c));
         }
+        flex.add(calculateRank2CurtFlex(getCurtailableStations()));
         for (TradeofSteerableWorkstation c : getSteerableStations()) {
             flex.add(calculateSteerFlex(c));
         }
         flex = filterOutDuplicates(flex);
         return flex;
+    }
+
+    private FlexTuple calculateRank2CurtFlex(
+            List<CurtailableWorkstation> curtailableStations) {
+        // TODO Auto-generated method stub
+        return FlexTuple.createNONE();
     }
 
     private ArrayList<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
@@ -218,9 +228,53 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         return FlexTuple.createNONE();
     }
 
-    private FlexTuple calculateCurtFlex(CurtailableWorkstation c) {
+    private FlexTuple calculateRank1CurtFlex(CurtailableWorkstation c) {
         // TODO implement
+        double totalCurrentPhaseRate = calculateCurrentPhaseRate(c);
+        double previousPhaseRate = calculatePreviousPhaseRate(c);
+        if (totalCurrentPhaseRate - c.getProcessingRate() >= previousPhaseRate) {
+            return makeCurtFlexTuple(c);
+        }
+
         return FlexTuple.createNONE();
+    }
+
+    private FlexTuple makeCurtFlexTuple(CurtailableWorkstation c) {
+        return FlexTuple.create(newId(), (int) c.getAverageConsumption(),
+                false, 1, 0, 0);
+    }
+
+    private synchronized long newId() {
+        return idcount++;
+    }
+
+    private double calculatePreviousPhaseRate(CurtailableWorkstation c) {
+        double sum = 0;
+        Buffer<Resource> b = layout.getEdgeSource(c);
+        for (Workstation w : filterNotSouce(c, layout.edgesOf(b))) {
+            sum += w.getProcessingRate();
+        }
+        return sum;
+    }
+
+    private Set<Workstation> filterNotSouce(CurtailableWorkstation c,
+            Set<Workstation> edgesOf) {
+        Set<Workstation> t = Sets.newHashSet();
+        for (Workstation w : edgesOf) {
+            if (layout.getEdgeTarget(w).equals(c)) {
+                t.add(w);
+            }
+        }
+        return t;
+    }
+
+    private double calculateCurrentPhaseRate(CurtailableWorkstation c) {
+        double sum = 0;
+        for (Workstation w : layout.getAllEdges(layout.getEdgeSource(c),
+                layout.getEdgeTarget(c))) {
+            sum += w.getProcessingRate();
+        }
+        return sum;
     }
 
     private void addToGraph(Workstation ws) {

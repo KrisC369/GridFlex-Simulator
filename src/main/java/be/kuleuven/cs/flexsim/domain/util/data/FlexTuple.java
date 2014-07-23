@@ -12,14 +12,14 @@ import javax.annotation.Nullable;
 // TODO define flex direction semantics clearly.
 public class FlexTuple {
 
-    private final int id;
+    private final long id;
     private final int deltaP;
     private final boolean direction;
     private final int t;
     private final int tR;
     private final int tC;
 
-    FlexTuple(int id, int deltaP, boolean direction, int t, int tR, int tC) {
+    FlexTuple(long id, int deltaP, boolean direction, int t, int tR, int tC) {
         this.id = id;
         this.deltaP = deltaP;
         this.direction = direction;
@@ -45,7 +45,7 @@ public class FlexTuple {
      *            the cease time value
      * @return A new Tuple representing these values
      */
-    public static FlexTuple create(int id, int deltaP, boolean direction,
+    public static FlexTuple create(long id, int deltaP, boolean direction,
             int t, int t_r, int t_c) {
         return new FlexTuple(id, deltaP, direction, t, t_r, t_c);
     }
@@ -62,7 +62,7 @@ public class FlexTuple {
     /**
      * @return the id
      */
-    public final int getId() {
+    public final long getId() {
         return id;
     }
 
@@ -99,43 +99,6 @@ public class FlexTuple {
      */
     public final int getTC() {
         return tC;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + deltaP;
-        result = prime * result + (direction ? 1231 : 1237);
-        result = prime * result + id;
-        result = prime * result + t;
-        result = prime * result + tC;
-        result = prime * result + tR;
-        return result;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof FlexTuple)) {
-            return false;
-        }
-        return varEquals(obj);
     }
 
     /**
@@ -186,6 +149,40 @@ public class FlexTuple {
         builder.append(tC);
         builder.append("]");
         return builder.toString();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + deltaP;
+        result = prime * result + (direction ? 1231 : 1237);
+        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result + t;
+        result = prime * result + tC;
+        result = prime * result + tR;
+        return result;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        return varEquals(obj);
     }
 
 }

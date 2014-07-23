@@ -87,4 +87,17 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
         subject.register(this);
     }
 
+    public final int getRatedCapacity() {
+        return getDelegate().getRatedCapacity();
+    }
+
+    @Override
+    public double getProcessingRate() {
+        return getDelegate().getProcessingRate();
+    }
+
+    @Override
+    public double getAverageConsumption() {
+        return getDelegate().getAverageConsumption();
+    }
 }

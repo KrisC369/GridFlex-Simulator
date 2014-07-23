@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,7 +15,9 @@ import java.util.Set;
  * @param <T>
  *            the generic type of contents in this buffer.
  */
-public final class Buffer<T extends IBufferable> {
+public final class Buffer<T extends IBufferable> implements Serializable {
+
+    private static final long serialVersionUID = 9044791947885042068L;
 
     /** The internal queue representation. */
     private final Queue<T> data;

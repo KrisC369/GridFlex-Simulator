@@ -14,6 +14,6 @@ public interface ActivateFlexCommand {
      * 
      * @return the ReferenceID.
      */
-    int getReferenceID();
+    long getReferenceID();
 
 }

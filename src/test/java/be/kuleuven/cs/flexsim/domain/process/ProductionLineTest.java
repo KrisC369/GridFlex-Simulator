@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.process;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
@@ -243,7 +244,8 @@ public class ProductionLineTest {
     private void setupForSim(ProductionLine l, int steps) {
         sim = Simulator.createSimulator(steps);
         sim.register(l);
-        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 1);
+        List<Resource> res = ResourceFactory.createBulkMPResource(50, 3, 3, 3,
+                3, 3, 3);
         l.deliverResources(res);
     }
 
@@ -254,15 +256,6 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
-        assertEquals(1, flex.size(), 0);
-        assertTrue(flex.contains(FlexTuple.createNONE()));
-
-        // with curt
-        l = new ProductionLineBuilder().addConsuming(3).addShifted(4)
-                .addCurtailableShifted(4).build();
-        setupForSim(l, simSteps);
-        startSim();
-        flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
         assertTrue(flex.contains(FlexTuple.createNONE()));
     }
@@ -285,6 +278,36 @@ public class ProductionLineTest {
         flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
         assertTrue(flex.contains(FlexTuple.createNONE()));
+    }
+
+    @Test
+    public void testFlex1Curt() {
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(4).addConsuming(3)
+                .build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertFalse(flex.contains(FlexTuple.createNONE()));
+        assertEquals(377, flex.get(0).getDeltaP(), 10);
+
+    }
+
+    @Test
+    public void testFlex2Curt() {
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertFalse(flex.contains(FlexTuple.createNONE()));
+        assertEquals(754, flex.get(0).getDeltaP(), 10);
+
     }
 
     @Test

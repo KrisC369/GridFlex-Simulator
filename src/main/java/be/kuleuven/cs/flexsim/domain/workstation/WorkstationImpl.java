@@ -132,10 +132,10 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     private void pullIn() {
-        if (getInputBuffer().getCurrentOccupancyLevel() < getCapacity()) {
+        if (getInputBuffer().getCurrentOccupancyLevel() < getRatedCapacity()) {
             this.addAllResources(getInputBuffer().pullAll());
         } else {
-            for (int i = 0; i < getCapacity(); i++) {
+            for (int i = 0; i < getRatedCapacity(); i++) {
                 this.addResource(getInputBuffer().pull());
             }
         }
@@ -220,7 +220,8 @@ class WorkstationImpl implements ConfigurableWorkstation {
      * 
      * @return the capacity
      */
-    public final int getCapacity() {
+    @Override
+    public final int getRatedCapacity() {
         return capacity;
     }
 
@@ -284,6 +285,35 @@ class WorkstationImpl implements ConfigurableWorkstation {
         this.ratedMaxVarECons = ratedMaxVarECons;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("WorkstationImpl [fixedECons=").append(fixedECons)
+                .append(", ratedMaxVarECons=").append(ratedMaxVarECons)
+                .append(", capacity=").append(capacity).append(", hc=")
+                .append(this.hashCode()).append("]");
+        return builder.toString();
+    }
+
+    @Override
+    public double getProcessingRate() {
+        final double cap = getRatedCapacity();
+        final double neededProc = (double) getRemainingMaxStepsOfResource() > 0 ? (double) getRemainingMaxStepsOfResource()
+                : 1.0;
+        return cap / neededProc;
+    }
+
+    @Override
+    public double getAverageConsumption() {
+        return (getMaxVarECons() * getRemainingMaxStepsOfResource() + getFixedConsumptionRate())
+                / (getRemainingMaxStepsOfResource() + 1);
+    }
+
     private final class StateContext implements WorkstationContext {
 
         @Override
@@ -338,20 +368,5 @@ class WorkstationImpl implements ConfigurableWorkstation {
         public void doProcessingStep(Resource r, int baseSteps) {
             r.process(baseSteps);
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("WorkstationImpl [fixedECons=").append(fixedECons)
-                .append(", ratedMaxVarECons=").append(ratedMaxVarECons)
-                .append(", capacity=").append(capacity).append(", hc=")
-                .append(this.hashCode()).append("]");
-        return builder.toString();
     }
 }

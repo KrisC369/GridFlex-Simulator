@@ -34,10 +34,31 @@ public interface Workstation extends SimulationComponent,
     double getTotalConsumption();
 
     /**
+     * Returns the current average energy consumption amount.
+     *
+     * @return The avg energy consumption.
+     */
+    double getAverageConsumption();
+
+    /**
      * Returns wheter this machine is performing work during this time step or
      * not.
      * 
      * @return true if performing work during this time step.
      */
     boolean isIdle();
+
+    /**
+     * Returns the capacity of this workstation as rated by the specs.
+     * 
+     * @return the capacity.
+     */
+    public abstract int getRatedCapacity();
+
+    /**
+     * Returns the rate of processing items.
+     * 
+     * @return The current processing rate.
+     */
+    double getProcessingRate();
 }

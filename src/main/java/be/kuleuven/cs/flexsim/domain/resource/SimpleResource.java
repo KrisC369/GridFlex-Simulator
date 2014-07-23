@@ -7,6 +7,8 @@ package be.kuleuven.cs.flexsim.domain.resource;
  */
 public class SimpleResource implements Resource {
 
+    private static final long serialVersionUID = 8674085582036232815L;
+
     /** The needed time. */
     private int neededTime;
     private int maxTime;

@@ -547,6 +547,23 @@ public class WorkstationTest {
         steer.signalLowConsumption();
     }
 
+    @Test
+    public void testGetProcessRate() {
+        int cap = 1;
+        int procneeded = 3;
+        iew = WorkstationFactory.createCurtailableStation(in, out, 20, 200, 0);
+        multiPushResource(24, procneeded);
+        multiTick(iew, 2);
+        assertEquals(cap / (double) procneeded, iew.getProcessingRate(), 0);
+
+        cap = 3;
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 20, 200, 14,
+                cap);
+        multiPushResource(24, 2);
+        multiTick(iew, 2);
+        assertEquals(cap / (double) procneeded, iew.getProcessingRate(), 0);
+    }
+
     private void multiPushResource(int n, int k) {
         for (int i = 0; i < n; i++) {
             pushResource(k);

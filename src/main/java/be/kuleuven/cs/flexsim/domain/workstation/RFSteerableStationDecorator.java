@@ -14,24 +14,9 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         implements DualModeWorkstation {
 
     /**
-     * With of the random noise band.
+     * Width of the random noise band.
      */
     public final int n;
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("RFSteerableStationDecorator [high=").append(high)
-                .append(", low=").append(low).append(", isHigh=")
-                .append(isHigh).append(", hc=").append(this.hashCode())
-                .append("]");
-        return builder.toString();
-    }
 
     private final RandomGenerator g = new MersenneTwister();
     private final int high;
@@ -125,6 +110,21 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
      */
     private void resetOffset() {
         this.offset = 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("RFSteerableStationDecorator [high=").append(high)
+                .append(", low=").append(low).append(", isHigh=")
+                .append(isHigh).append(", hc=").append(this.hashCode())
+                .append("]");
+        return builder.toString();
     }
 
 }

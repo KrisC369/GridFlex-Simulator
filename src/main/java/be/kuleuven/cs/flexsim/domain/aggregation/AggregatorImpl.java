@@ -71,11 +71,11 @@ public class AggregatorImpl implements SimulationComponent {
 
     void doAggregationStep() {
         ArrayListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
-        Map<Integer, Integer> flexFiltered = filterAndTransform(flex);
+        Map<Long, Integer> flexFiltered = filterAndTransform(flex);
         final int target = getTargetFlex();
         int current = 0;
-        Set<Integer> ids = Sets.newHashSet();
-        for (Entry<Integer, Integer> e : flexFiltered.entrySet()) {
+        Set<Long> ids = Sets.newHashSet();
+        for (Entry<Long, Integer> e : flexFiltered.entrySet()) {
             if (diff(current + e.getValue(), target) < diff(current, target)) {
                 current += e.getValue();
                 ids.add(e.getKey());
@@ -86,16 +86,16 @@ public class AggregatorImpl implements SimulationComponent {
     }
 
     private void dispatchActivation(
-            ArrayListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Integer> ids) {
+            ArrayListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
 
         for (SiteFlexAPI s : flex.keySet()) {
-            for (int i : ids) {
+            for (long i : ids) {
                 for (FlexTuple t : flex.get(s)) {
                     if (t.getId() == i) {
                         final FlexTuple tt = t;
                         s.activateFlex(new ActivateFlexCommand() {
                             @Override
-                            public int getReferenceID() {
+                            public long getReferenceID() {
                                 return tt.getId();
                             }
                         });
@@ -113,9 +113,9 @@ public class AggregatorImpl implements SimulationComponent {
         return getTso().getCurrentValue(0) * -1;
     }
 
-    private Map<Integer, Integer> filterAndTransform(
+    private Map<Long, Integer> filterAndTransform(
             ArrayListMultimap<SiteFlexAPI, FlexTuple> flex) {
-        Map<Integer, Integer> res = Maps.newHashMap();
+        Map<Long, Integer> res = Maps.newHashMap();
         for (FlexTuple f : flex.values()) {
             if (f.getDirection()) {
                 res.put(f.getId(), f.getDeltaP());
