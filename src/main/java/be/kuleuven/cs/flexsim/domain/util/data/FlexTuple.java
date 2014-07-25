@@ -12,6 +12,10 @@ import javax.annotation.Nullable;
 // TODO define flex direction semantics clearly.
 public class FlexTuple {
 
+    /**
+     * Represents no flex.
+     */
+    public static final FlexTuple NONE = createNONE();
     private final long id;
     private final int deltaP;
     private final boolean direction;

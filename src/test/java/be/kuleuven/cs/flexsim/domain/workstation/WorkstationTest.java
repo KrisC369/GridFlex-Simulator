@@ -562,6 +562,13 @@ public class WorkstationTest {
         multiPushResource(24, 2);
         multiTick(iew, 2);
         assertEquals(cap / (double) procneeded, iew.getProcessingRate(), 0);
+
+        iew = WorkstationFactory.createCurtailableStation(in, out, 20, 200, 0);
+        ((CurtailableWorkstation) iew).doFullCurtailment();
+        multiPushResource(24, procneeded);
+        multiTick(iew, 2);
+        assertEquals(0, iew.getProcessingRate(), 0);
+
     }
 
     private void multiPushResource(int n, int k) {

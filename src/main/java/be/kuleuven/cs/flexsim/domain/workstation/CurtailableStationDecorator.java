@@ -88,4 +88,12 @@ class CurtailableStationDecorator<T extends Workstation> extends
                 .append("]");
         return builder.toString();
     }
+
+    @Override
+    public double getProcessingRate() {
+        if (isCurtailed()) {
+            return 0;
+        }
+        return getDelegate().getProcessingRate();
+    }
 }

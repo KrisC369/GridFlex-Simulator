@@ -54,6 +54,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     private final int capacity;
     private Processor proc = new ProcessorImpl();
     private final WorkstationContext stateContext = new StateContext();
+    private double lastProcessingRate;
 
     /**
      * Constructor that creates a workstation instance from an in and an out
@@ -80,6 +81,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
         this.lastConsumption = 0;
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
+        this.lastProcessingRate = 0;
     }
 
     @Override
@@ -302,16 +304,25 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     @Override
     public double getProcessingRate() {
+        recalculateProcessingRate();
+        return lastProcessingRate;
+    }
+
+    private void recalculateProcessingRate() {
         final double cap = getRatedCapacity();
         final double neededProc = (double) getRemainingMaxStepsOfResource() > 0 ? (double) getRemainingMaxStepsOfResource()
-                : 1.0;
-        return cap / neededProc;
+                : Double.POSITIVE_INFINITY;
+        setLastProcessingRate(cap / neededProc);
     }
 
     @Override
     public double getAverageConsumption() {
         return (getMaxVarECons() * getRemainingMaxStepsOfResource() + getFixedConsumptionRate())
                 / (getRemainingMaxStepsOfResource() + 1);
+    }
+
+    private void setLastProcessingRate(double value) {
+        this.lastProcessingRate = value;
     }
 
     private final class StateContext implements WorkstationContext {

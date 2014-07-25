@@ -257,7 +257,7 @@ public class ProductionLineTest {
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
-        assertTrue(flex.contains(FlexTuple.createNONE()));
+        assertTrue(flex.contains(FlexTuple.NONE));
     }
 
     @Test
@@ -268,7 +268,7 @@ public class ProductionLineTest {
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
-        assertTrue(flex.contains(FlexTuple.createNONE()));
+        assertTrue(flex.contains(FlexTuple.NONE));
 
         // with steer
         l = new ProductionLineBuilder().addConsuming(3)
@@ -277,7 +277,21 @@ public class ProductionLineTest {
         startSim();
         flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
-        assertTrue(flex.contains(FlexTuple.createNONE()));
+        assertTrue(flex.contains(FlexTuple.NONE));
+    }
+
+    @Test
+    public void testFlex1CurtAlreadyCurt() {
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(4).addConsuming(3)
+                .build();
+        setupForSim(l, simSteps);
+        l.getCurtailableStations().get(0).doFullCurtailment();
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertTrue(flex.contains(FlexTuple.NONE));
     }
 
     @Test
@@ -290,13 +304,44 @@ public class ProductionLineTest {
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
-        assertFalse(flex.contains(FlexTuple.createNONE()));
-        assertEquals(377, flex.get(0).getDeltaP(), 10);
-
+        assertFalse(flex.contains(FlexTuple.NONE));
+        assertEquals(10, flex.get(0).getDeltaP(), 10); // it's idle anyways so
+        // only fixd consumption
+        // counted.
     }
 
     @Test
     public void testFlex2Curt() {
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(5).addConsuming(3)
+                .build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(2, flex.size(), 0);
+        assertFalse(flex.contains(FlexTuple.NONE));
+        assertEquals(20, flex.get(0).getDeltaP(), 10);
+
+    }
+
+    @Test
+    public void testFlex3Curt() {
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(6).addConsuming(3)
+                .build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(4, flex.size(), 0); // 1 r1, 2 r2, 1 r3
+        assertFalse(flex.contains(FlexTuple.NONE));
+        assertEquals(30, flex.get(0).getDeltaP(), 10);
+
+    }
+
+    @Test
+    public void testFlex2CurtHorizontal() {
         ProductionLine l = new ProductionLineBuilder()
                 .setWorkingConsumption(500).setIdleConsumption(10)
                 .addConsuming(3).addCurtailableShifted(4)
@@ -304,9 +349,9 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
-        assertEquals(1, flex.size(), 0);
-        assertFalse(flex.contains(FlexTuple.createNONE()));
-        assertEquals(754, flex.get(0).getDeltaP(), 10);
+        assertEquals(3, flex.size(), 0); // 1 r1, 2 r2, 1 r3
+        assertFalse(flex.contains(FlexTuple.NONE));
+        assertEquals(30, flex.get(0).getDeltaP(), 10);
 
     }
 
