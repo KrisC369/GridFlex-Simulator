@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.process;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -28,11 +27,12 @@ import com.google.common.collect.Sets;
  */
 class ProcessDeviceImpl {
 
+    private static final int _32 = 32;
     private final Graph<Buffer<Resource>, Workstation> layout;
-    private volatile long idcount;
+    private long idcount;
     private boolean fresh;
     private List<FlexTuple> flex;
-    private LinkedListMultimap<Long, Workstation> profileMap;
+    private final LinkedListMultimap<Long, Workstation> profileMap;
     private RandomGenerator random;
     private long key;
 
@@ -140,20 +140,20 @@ class ProcessDeviceImpl {
 
     private List<FlexTuple> calculateOrder3CurtFlex(
             List<CurtailableWorkstation> curtailableStations) {
-        List<FlexTuple> flex = Lists.newArrayList();
+        List<FlexTuple> flexRet = Lists.newArrayList();
         int size = curtailableStations.size();
         for (int i = 0; i < size - 2; i++) {
             for (int j = i + 1; j < size - 1; j++) {
                 for (int k = j + 1; k < size - 1; k++) {
-                    flex.add(calculateFirstOrderCurtFlex(
+                    flexRet.add(calculateFirstOrderCurtFlex(
                             curtailableStations.get(i),
                             curtailableStations.get(j),
                             curtailableStations.get(k)));
                 }
             }
         }
-        if (!flex.isEmpty()) {
-            return flex;
+        if (!flexRet.isEmpty()) {
+            return flexRet;
         }
         return Lists.newArrayList(FlexTuple.NONE);
     }
@@ -164,8 +164,9 @@ class ProcessDeviceImpl {
             return true;
         }
         if (b.length == 1) {
-            return (layout.getEdgeSource(a).equals(layout.getEdgeSource(b[0])) && layout
-                    .getEdgeTarget(a).equals(layout.getEdgeTarget(b[0])));
+            return layout.getEdgeSource(a).equals(layout.getEdgeSource(b[0]))
+                    && layout.getEdgeTarget(a).equals(
+                            layout.getEdgeTarget(b[0]));
         }
         for (CurtailableWorkstation cb : b) {
             if (layout.getEdgeSource(a).equals(layout.getEdgeSource(cb))
@@ -247,7 +248,7 @@ class ProcessDeviceImpl {
         return t;
     }
 
-    private ArrayList<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
+    private List<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
         return Lists.newArrayList(com.google.common.collect.Sets
                 .newHashSet(flex));
     }
@@ -259,8 +260,9 @@ class ProcessDeviceImpl {
                 fr.add(f);
             }
         }
-        if (!fr.isEmpty())
+        if (!fr.isEmpty()) {
             return fr;
+        }
         return Lists.newArrayList(FlexTuple.NONE);
     }
 
@@ -285,7 +287,7 @@ class ProcessDeviceImpl {
             this.key = random.nextLong();
         }
         int result = 1;
-        result = (int) (this.key + (int) (idcount ^ (idcount >>> 32)));
+        result = (int) (this.key + (int) (idcount ^ (idcount >>> _32)));
         idcount++;
         return result;
     }
@@ -309,7 +311,7 @@ class ProcessDeviceImpl {
      * @param random
      *            the random to set
      */
-    final void setRandom(RandomGenerator random) {
+    final synchronized void setRandom(RandomGenerator random) {
         this.random = random;
     }
 }

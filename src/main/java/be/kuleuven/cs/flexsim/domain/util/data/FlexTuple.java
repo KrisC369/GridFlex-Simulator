@@ -43,15 +43,15 @@ public class FlexTuple {
      *            the direction value
      * @param t
      *            the duration time value
-     * @param t_r
+     * @param tR
      *            the reaction time value
-     * @param t_c
+     * @param tC
      *            the cease time value
      * @return A new Tuple representing these values
      */
     public static FlexTuple create(long id, int deltaP, boolean direction,
-            int t, int t_r, int t_c) {
-        return new FlexTuple(id, deltaP, direction, t, t_r, t_c);
+            int t, int tR, int tC) {
+        return new FlexTuple(id, deltaP, direction, t, tR, tC);
     }
 
     /**
@@ -105,32 +105,6 @@ public class FlexTuple {
         return tC;
     }
 
-    /**
-     * @param obj
-     */
-    private boolean varEquals(Object obj) {
-        FlexTuple other = (FlexTuple) obj;
-        if (deltaP != other.deltaP) {
-            return false;
-        }
-        if (direction != other.direction) {
-            return false;
-        }
-        if (id != other.id) {
-            return false;
-        }
-        if (t != other.t) {
-            return false;
-        }
-        if (tC != other.tC) {
-            return false;
-        }
-        if (tR != other.tR) {
-            return false;
-        }
-        return true;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -147,9 +121,9 @@ public class FlexTuple {
         builder.append(direction);
         builder.append(", t=");
         builder.append(t);
-        builder.append(", t_r=");
+        builder.append(", tR=");
         builder.append(tR);
-        builder.append(", t_c=");
+        builder.append(", tC=");
         builder.append(tC);
         builder.append("]");
         return builder.toString();
@@ -180,13 +154,45 @@ public class FlexTuple {
      */
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         return varEquals(obj);
     }
 
+    /**
+     * @param obj
+     */
+    private boolean varEquals(Object obj) {
+        FlexTuple other = (FlexTuple) obj;
+        if (deltaP != other.deltaP) {
+            return false;
+        }
+        if (direction != other.direction) {
+            return false;
+        }
+        if (id != other.id) {
+            return false;
+        }
+        return timingEquals(other);
+    }
+
+    private boolean timingEquals(FlexTuple other) {
+        if (t != other.t) {
+            return false;
+        }
+        if (tC != other.tC) {
+            return false;
+        }
+        if (tR != other.tR) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -318,7 +318,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     @Override
     public double getAverageConsumption() {
         return (getMaxVarECons() * getRemainingMaxStepsOfResource() + getFixedConsumptionRate())
-                / (getRemainingMaxStepsOfResource() + 1);
+                / (double) (getRemainingMaxStepsOfResource() + 1);
     }
 
     private void setLastProcessingRate(double value) {

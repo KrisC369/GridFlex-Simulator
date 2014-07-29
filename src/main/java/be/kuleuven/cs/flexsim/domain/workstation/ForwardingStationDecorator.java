@@ -87,6 +87,7 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
         subject.register(this);
     }
 
+    @Override
     public final int getRatedCapacity() {
         return getDelegate().getRatedCapacity();
     }

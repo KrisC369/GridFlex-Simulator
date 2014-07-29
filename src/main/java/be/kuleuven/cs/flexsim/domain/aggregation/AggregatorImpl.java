@@ -19,7 +19,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 /**
- * Represents an energy aggregator implementation
+ * Represents an energy aggregator implementation.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
@@ -31,7 +31,7 @@ public class AggregatorImpl implements SimulationComponent {
     private final int aggFreq;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
      * @param tso
      *            the tso.
@@ -46,14 +46,14 @@ public class AggregatorImpl implements SimulationComponent {
     }
 
     /**
-     * @return the clients
+     * @return the clients.
      */
     final List<SiteFlexAPI> getClients() {
         return Lists.newArrayList(clients);
     }
 
     /**
-     * @return the tso
+     * @return the tso.
      */
     final SteeringSignal getTso() {
         return tso;

@@ -20,7 +20,7 @@ import com.google.common.collect.Multimap;
  */
 public class SiteImpl implements Site {
 
-    private List<FlexProcess> processes;
+    private final List<FlexProcess> processes;
     private Multimap<FlexProcess, FlexTuple> flex;
 
     /**

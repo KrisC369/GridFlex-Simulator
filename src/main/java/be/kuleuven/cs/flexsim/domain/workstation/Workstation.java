@@ -53,7 +53,7 @@ public interface Workstation extends SimulationComponent,
      * 
      * @return the capacity.
      */
-    public abstract int getRatedCapacity();
+    int getRatedCapacity();
 
     /**
      * Returns the rate of processing items.
