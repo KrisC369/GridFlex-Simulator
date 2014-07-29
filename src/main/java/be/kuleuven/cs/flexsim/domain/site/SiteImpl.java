@@ -19,7 +19,7 @@ import com.google.common.collect.Multimap;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-public class SiteImpl implements Site, SimulationComponent {
+public class SiteImpl implements Site {
 
     private List<FlexProcess> processes;
     private Multimap<FlexProcess, FlexTuple> flex;

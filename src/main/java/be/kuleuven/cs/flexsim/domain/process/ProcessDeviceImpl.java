@@ -47,6 +47,7 @@ class ProcessDeviceImpl {
         if (!fresh) {
             this.flex = recalculateFlex(curtailableWorkstations,
                     tradeofSteerableWorkstations);
+            this.fresh = true;
         }
         return this.flex;
     }
@@ -272,7 +273,6 @@ class ProcessDeviceImpl {
     }
 
     void invalidate() {
-        // TODO Auto-generated method stub
-
+        this.fresh = false;
     }
 }

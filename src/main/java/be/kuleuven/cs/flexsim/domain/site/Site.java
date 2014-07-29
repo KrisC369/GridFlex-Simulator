@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 /**
  * Represents a production site with possibly multiple production lines.
@@ -8,7 +9,7 @@ import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-public interface Site extends SiteFlexAPI {
+public interface Site extends SiteFlexAPI, SimulationComponent {
 
     /**
      * Tests if this site has the specified process.
