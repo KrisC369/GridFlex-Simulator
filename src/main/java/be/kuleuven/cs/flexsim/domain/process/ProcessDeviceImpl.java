@@ -31,7 +31,7 @@ class ProcessDeviceImpl {
     private final Graph<Buffer<Resource>, Workstation> layout;
     private long idcount;
     private boolean fresh;
-    private List<FlexTuple> flex;
+    private List<FlexTuple> flexibility;
     private final LinkedListMultimap<Long, Workstation> profileMap;
     private RandomGenerator random;
     private long key;
@@ -44,7 +44,7 @@ class ProcessDeviceImpl {
      */
     public ProcessDeviceImpl(ProductionLine subject) {
         this.layout = subject.getLayout();
-        this.flex = Lists.newArrayList();
+        this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
         this.random = new MersenneTwister();
         this.key = 0;
@@ -55,11 +55,11 @@ class ProcessDeviceImpl {
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
 
         if (!fresh) {
-            this.flex = recalculateFlex(curtailableWorkstations,
+            this.flexibility = recalculateFlex(curtailableWorkstations,
                     tradeofSteerableWorkstations);
             this.fresh = true;
         }
-        return this.flex;
+        return this.flexibility;
     }
 
     private List<FlexTuple> recalculateFlex(
@@ -124,16 +124,16 @@ class ProcessDeviceImpl {
 
     private List<FlexTuple> calculateOrder2CurtFlex(
             List<CurtailableWorkstation> curtailableStations) {
-        List<FlexTuple> flex = Lists.newArrayList();
+        List<FlexTuple> flexRet = Lists.newArrayList();
         int size = curtailableStations.size();
         for (int i = 0; i <= size - 2; i++) {
             for (int j = i + 1; j <= size - 1; j++) {
-                flex.add(calculateFirstOrderCurtFlex(
+                flexRet.add(calculateFirstOrderCurtFlex(
                         curtailableStations.get(i), curtailableStations.get(j)));
             }
         }
-        if (!flex.isEmpty()) {
-            return flex;
+        if (!flexRet.isEmpty()) {
+            return flexRet;
         }
         return Lists.newArrayList(FlexTuple.NONE);
     }

@@ -12,13 +12,13 @@ import javax.annotation.Nullable;
 // TODO define flex direction semantics clearly.
 public class FlexTuple {
 
-    private static final int PRIME2 = 1237;
-    private static final int PRIME1 = 1231;
-    private static final int POW2_8 = 32;
     /**
      * Represents no flex.
      */
     public static final FlexTuple NONE = createNONE();
+    private static final int PRIME2 = 1237;
+    private static final int PRIME1 = 1231;
+    private static final int POW2_8 = 32;
     private final long id;
     private final int deltaP;
     private final boolean direction;
