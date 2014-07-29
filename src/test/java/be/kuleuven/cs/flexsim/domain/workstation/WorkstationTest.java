@@ -17,6 +17,7 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class WorkstationTest {
 
@@ -49,7 +50,7 @@ public class WorkstationTest {
         iew.tick(0);
         assertEquals(3, iew.getLastStepConsumption(), DELTA);
         iew.tick(0);
-        assertEquals(0, iew.getLastStepConsumption(), DELTA);
+        assertEquals(1, iew.getLastStepConsumption(), DELTA);
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
@@ -568,7 +569,15 @@ public class WorkstationTest {
         multiPushResource(24, procneeded);
         multiTick(iew, 2);
         assertEquals(0, iew.getProcessingRate(), 0);
+    }
 
+    @Test
+    public void testMultiRegister() {
+        iew = WorkstationFactory.createCurtailableStation(in, out, 20, 200, 0);
+        Simulator s = Simulator.createSimulator(200);
+        s.register(iew);
+        s.register(iew);
+        assertEquals(1, s.getSimulationComponents().size(), 0);
     }
 
     private void multiPushResource(int n, int k) {

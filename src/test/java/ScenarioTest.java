@@ -106,10 +106,12 @@ public class ScenarioTest {
         simulator.register(t2);
         simulator.register(t3);
         simulator.register(t4);
+        // System.out.println("setup 1 done");
         simulator.start();
 
         double profitBefore = t1.getTotalProfit() + t2.getTotalProfit()
                 + t3.getTotalProfit() + t4.getTotalProfit();
+        // System.out.println("simulation 1 done");
 
         // After: Curtailment
         line1 = new ProductionLineBuilder().setWorkingConsumption(500)
@@ -159,12 +161,14 @@ public class ScenarioTest {
         simulator.register(t2);
         simulator.register(t3);
         simulator.register(t4);
+        // System.out.println("Setup 2 done");
         simulator.start();
-
+        // System.out.println("Simulation 2 done");
         double profitAfter = t1.getTotalProfit() + t2.getTotalProfit()
                 + t3.getTotalProfit() + t4.getTotalProfit();
-        System.out.println("Profit no curt:" + profitBefore + "\nProfit Curt: "
-                + profitAfter);
+        // System.out.println("Profit no curt:" + profitBefore +
+        // "\nProfit Curt: "
+        // + profitAfter);
         assertTrue(profitBefore < profitAfter);
         // TODO Fix nondet.
     }
