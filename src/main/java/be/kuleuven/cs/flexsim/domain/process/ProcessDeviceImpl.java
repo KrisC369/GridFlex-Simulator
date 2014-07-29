@@ -62,28 +62,37 @@ class ProcessDeviceImpl {
     private FlexTuple calculateFirstOrderCurtFlex(CurtailableWorkstation a,
             CurtailableWorkstation... cs) {
         if (presentInSamePhase(a, cs)) {
-            double totalCurrentPhaseRate = calculateCurrentPhaseRate(a);
-            double previousPhaseRate = calculatePreviousPhaseRate(a);
-            double currentPR = aggregateProcessingRate(a,
-                    Lists.newArrayList(cs));
-            if (canCurtail(totalCurrentPhaseRate, previousPhaseRate, currentPR)) {
-                return makeCurtFlexTuple(a, cs);
-            }
-        } else {
-            List<CurtailableWorkstation> firstPhase = Lists.newArrayList();
-            List<CurtailableWorkstation> secondPhase = Lists.newArrayList();
-            splitLists(a, firstPhase, secondPhase, Lists.newArrayList(cs));
-            double firstPhaseTotal = calculateCurrentPhaseRate(a);
-            double preFirstPhase = calculatePreviousPhaseRate(a);
-            double secondPhaseTotal = secondPhase.isEmpty() ? 0
-                    : calculatePreviousPhaseRate(secondPhase.get(0));
-            double curtEstFirstPhase = aggregateProcessingRate(a, firstPhase);
-            double curtEstSecondPhase = aggregateProcessingRate(secondPhase);
-            if (canCurtail(firstPhaseTotal, preFirstPhase, curtEstFirstPhase)
-                    && canCurtail(secondPhaseTotal, curtEstSecondPhase,
-                            firstPhaseTotal - curtEstFirstPhase)) {
-                return makeCurtFlexTuple(a, cs);
-            }
+            return samePhaseFirstOrderFlex(a, cs);
+        }
+        return twoPhasesFirstOrderFlex(a, cs);
+    }
+
+    private FlexTuple samePhaseFirstOrderFlex(CurtailableWorkstation a,
+            CurtailableWorkstation... cs) {
+        double totalCurrentPhaseRate = calculateCurrentPhaseRate(a);
+        double previousPhaseRate = calculatePreviousPhaseRate(a);
+        double currentPR = aggregateProcessingRate(a, Lists.newArrayList(cs));
+        if (canCurtail(totalCurrentPhaseRate, previousPhaseRate, currentPR)) {
+            return makeCurtFlexTuple(a, cs);
+        }
+        return FlexTuple.createNONE();
+    }
+
+    private FlexTuple twoPhasesFirstOrderFlex(CurtailableWorkstation a,
+            CurtailableWorkstation... cs) {
+        List<CurtailableWorkstation> firstPhase = Lists.newArrayList();
+        List<CurtailableWorkstation> secondPhase = Lists.newArrayList();
+        splitLists(a, firstPhase, secondPhase, Lists.newArrayList(cs));
+        double firstPhaseTotal = calculateCurrentPhaseRate(a);
+        double preFirstPhase = calculatePreviousPhaseRate(a);
+        double secondPhaseTotal = secondPhase.isEmpty() ? 0
+                : calculatePreviousPhaseRate(secondPhase.get(0));
+        double curtEstFirstPhase = aggregateProcessingRate(a, firstPhase);
+        double curtEstSecondPhase = aggregateProcessingRate(secondPhase);
+        if (canCurtail(firstPhaseTotal, preFirstPhase, curtEstFirstPhase)
+                && canCurtail(secondPhaseTotal, curtEstSecondPhase,
+                        firstPhaseTotal - curtEstFirstPhase)) {
+            return makeCurtFlexTuple(a, cs);
         }
         return FlexTuple.createNONE();
     }
