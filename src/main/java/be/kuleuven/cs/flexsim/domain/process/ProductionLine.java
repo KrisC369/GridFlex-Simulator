@@ -97,6 +97,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
 
     @Override
     public void tick(int t) {
+        getFlexProcessor().invalidate();
     }
 
     @Override

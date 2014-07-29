@@ -26,6 +26,8 @@ class ProcessDeviceImpl {
 
     private final Graph<Buffer<Resource>, Workstation> layout;
     private volatile long idcount;
+    private boolean fresh;
+    private List<FlexTuple> flex;
 
     /**
      * Default constructor
@@ -35,9 +37,21 @@ class ProcessDeviceImpl {
      */
     public ProcessDeviceImpl(ProductionLine subject) {
         this.layout = subject.getLayout();
+        this.flex = Lists.newArrayList();
     }
 
     public List<FlexTuple> getCurrentFlexbility(
+            List<CurtailableWorkstation> curtailableWorkstations,
+            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
+
+        if (!fresh) {
+            this.flex = recalculateFlex(curtailableWorkstations,
+                    tradeofSteerableWorkstations);
+        }
+        return this.flex;
+    }
+
+    private List<FlexTuple> recalculateFlex(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
         // downflex only
@@ -250,6 +264,15 @@ class ProcessDeviceImpl {
     }
 
     private synchronized long newId() {
-        return idcount++;
+        final int prime = this.hashCode();
+        int result = 1;
+        result = prime * result + (int) (idcount ^ (idcount >>> 32));
+        idcount++;
+        return result;
+    }
+
+    void invalidate() {
+        // TODO Auto-generated method stub
+
     }
 }

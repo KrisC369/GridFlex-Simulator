@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -38,7 +37,8 @@ public class SiteImpl implements Site, SimulationComponent {
 
     @Override
     public List<FlexTuple> getFlexTuples() {
-        return Collections.emptyList();
+        gatherFlex();
+        return Lists.newArrayList(flex.values());
     }
 
     @Override

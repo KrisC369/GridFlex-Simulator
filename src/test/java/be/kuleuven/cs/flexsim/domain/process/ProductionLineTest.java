@@ -336,7 +336,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(6, flex.size(), 0); // 3 r1, 6 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertEquals(30, flex.get(0).getDeltaP(), 10);
+        assertEquals(30, flex.get(0).getDeltaP(), 20);
 
     }
 
@@ -351,7 +351,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(3, flex.size(), 0); // 2 r1, 0 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertEquals(30, flex.get(0).getDeltaP(), 10);
+        assertEquals(30, flex.get(0).getDeltaP(), 20);
 
     }
 
