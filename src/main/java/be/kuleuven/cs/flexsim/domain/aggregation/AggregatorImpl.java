@@ -13,7 +13,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -70,7 +70,7 @@ public class AggregatorImpl implements SimulationComponent {
     }
 
     void doAggregationStep() {
-        ArrayListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
         Map<Long, Integer> flexFiltered = filterAndTransform(flex);
         final int target = getTargetFlex();
         int current = 0;
@@ -86,8 +86,7 @@ public class AggregatorImpl implements SimulationComponent {
     }
 
     private void dispatchActivation(
-            ArrayListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
-
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
         for (SiteFlexAPI s : flex.keySet()) {
             for (long i : ids) {
                 for (FlexTuple t : flex.get(s)) {
@@ -114,8 +113,8 @@ public class AggregatorImpl implements SimulationComponent {
     }
 
     private Map<Long, Integer> filterAndTransform(
-            ArrayListMultimap<SiteFlexAPI, FlexTuple> flex) {
-        Map<Long, Integer> res = Maps.newHashMap();
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
+        Map<Long, Integer> res = Maps.newLinkedHashMap();
         for (FlexTuple f : flex.values()) {
             if (f.getDirection()) {
                 res.put(f.getId(), f.getDeltaP());
@@ -126,8 +125,8 @@ public class AggregatorImpl implements SimulationComponent {
         return res;
     }
 
-    private ArrayListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
-        ArrayListMultimap<SiteFlexAPI, FlexTuple> res = ArrayListMultimap
+    private LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> res = LinkedListMultimap
                 .create();
         for (SiteFlexAPI s : this.clients) {
             res.putAll(s, s.getFlexTuples());

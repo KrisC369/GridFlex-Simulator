@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomGenerator;
 import org.jgrapht.Graph;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -14,7 +16,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -30,7 +32,9 @@ class ProcessDeviceImpl {
     private volatile long idcount;
     private boolean fresh;
     private List<FlexTuple> flex;
-    private HashMultimap<Long, Workstation> profileMap;
+    private LinkedListMultimap<Long, Workstation> profileMap;
+    private RandomGenerator random;
+    private long key;
 
     /**
      * Default constructor
@@ -41,7 +45,9 @@ class ProcessDeviceImpl {
     public ProcessDeviceImpl(ProductionLine subject) {
         this.layout = subject.getLayout();
         this.flex = Lists.newArrayList();
-        this.profileMap = HashMultimap.create();
+        this.profileMap = LinkedListMultimap.create();
+        this.random = new MersenneTwister();
+        this.key = 0;
     }
 
     List<FlexTuple> getCurrentFlexbility(
@@ -224,7 +230,7 @@ class ProcessDeviceImpl {
         }
         sump *= -1;
         long id = newId();
-        HashSet<Workstation> set = Sets.newHashSet();
+        HashSet<Workstation> set = Sets.newLinkedHashSet();
         set.add(a);
         set.addAll(Lists.newArrayList(cs));
         profileMap.putAll(id, set);
@@ -232,7 +238,7 @@ class ProcessDeviceImpl {
     }
 
     private Set<Workstation> filterNotSource(Buffer<Resource> c) {
-        Set<Workstation> t = Sets.newHashSet();
+        Set<Workstation> t = Sets.newLinkedHashSet();
         for (Workstation w : layout.edgesOf(c)) {
             if (layout.getEdgeTarget(w).equals(c)) {
                 t.add(w);
@@ -275,9 +281,11 @@ class ProcessDeviceImpl {
     }
 
     private synchronized long newId() {
-        final int prime = this.hashCode();
+        if (this.key == 0) {
+            this.key = random.nextLong();
+        }
         int result = 1;
-        result = prime * result + (int) (idcount ^ (idcount >>> 32));
+        result = (int) (this.key + (int) (idcount ^ (idcount >>> 32)));
         idcount++;
         return result;
     }
@@ -287,7 +295,7 @@ class ProcessDeviceImpl {
     }
 
     void executeCurtailment(Long id, List<CurtailableWorkstation> list) {
-        Set<Workstation> stations = profileMap.get(id);
+        List<Workstation> stations = profileMap.get(id);
         for (CurtailableWorkstation c : list) {
             for (Workstation s : stations) {
                 if (c.equals(s)) {
@@ -295,5 +303,13 @@ class ProcessDeviceImpl {
                 }
             }
         }
+    }
+
+    /**
+     * @param random
+     *            the random to set
+     */
+    final void setRandom(RandomGenerator random) {
+        this.random = random;
     }
 }

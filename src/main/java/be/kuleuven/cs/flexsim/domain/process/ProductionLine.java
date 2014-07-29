@@ -88,6 +88,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
 
     @Override
     public void initialize(SimulationContext context) {
+        getFlexProcessor().setRandom(context.getRandom());
     }
 
     @Override

@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomGenerator;
+
 import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
@@ -42,6 +45,8 @@ public final class Simulator implements SimulationContext {
 
     private final Set<InstrumentationComponent> instruComps;
 
+    private final RandomGenerator random;
+
     /**
      * Instantiates a new simulator.
      * 
@@ -56,6 +61,7 @@ public final class Simulator implements SimulationContext {
         this.instruComps = new LinkedHashSet<>();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory();
+        this.random = new MersenneTwister(duration);
     }
 
     /**
@@ -204,4 +210,8 @@ public final class Simulator implements SimulationContext {
         comp.initialize(this);
     }
 
+    @Override
+    public RandomGenerator getRandom() {
+        return this.random;
+    }
 }

@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.simulation;
 
+import org.apache.commons.math3.random.RandomGenerator;
+
 import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
 
@@ -36,12 +38,12 @@ public interface SimulationContext {
 
     /**
      * This method registers a simulation component to the simulation context in
-     * order to receive ticks in every simulated timestep. After registration, a
-     * callback is initiated for dependency injection of this context.
+     * order to receive ticks in every simulated time step. After registration,
+     * a callback is initiated for dependency injection of this context.
      * 
-     * Besides dependency injecion, simulation components recieve ticks from the
-     * simulator at each timestep. Registration also encorporates registering
-     * the component to the <code>EventBus</code>
+     * Besides dependency injection, simulation components receive ticks from
+     * the simulator at each time step. Registration also incorporates
+     * registering the component to the <code>EventBus</code>
      * 
      * @param comp
      *            the component to register.
@@ -58,4 +60,11 @@ public interface SimulationContext {
      */
     void register(InstrumentationComponent comp);
 
+    /**
+     * This methods returns an instance of a deterministic random generator.
+     * (eg. Mersenne Twister).
+     * 
+     * @return The Random Generator.
+     */
+    RandomGenerator getRandom();
 }

@@ -8,6 +8,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
@@ -30,7 +31,7 @@ public class SiteImpl implements Site {
      */
     public SiteImpl(FlexProcess... lines) {
         processes = Lists.newArrayList(lines);
-        this.flex = ArrayListMultimap.create();
+        this.flex = LinkedListMultimap.create();
     }
 
     @Override

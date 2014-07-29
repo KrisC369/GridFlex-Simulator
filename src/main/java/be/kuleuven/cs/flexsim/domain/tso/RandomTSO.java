@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.tso;
 
-import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 
 /**
@@ -10,7 +9,7 @@ import org.apache.commons.math3.random.RandomGenerator;
  *
  */
 public class RandomTSO implements SteeringSignal {
-    private final RandomGenerator g = new MersenneTwister();
+    private final RandomGenerator g;
     private final int min;
     private final int max;
 
@@ -21,10 +20,13 @@ public class RandomTSO implements SteeringSignal {
      *            the minimum value for the random generator.
      * @param max
      *            the maximum value for the random generator.
+     * @param g
+     *            The random generator to use.
      */
-    public RandomTSO(int min, int max) {
+    public RandomTSO(int min, int max, RandomGenerator g) {
         this.min = min;
         this.max = max;
+        this.g = g;
     }
 
     /**

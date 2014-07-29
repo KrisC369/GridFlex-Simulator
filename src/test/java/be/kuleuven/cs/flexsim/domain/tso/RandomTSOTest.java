@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.tso;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class RandomTSOTest {
 
     @Before
     public void setUp() throws Exception {
-        tso = new RandomTSO(MIN, MAX);
+        tso = new RandomTSO(MIN, MAX, new MersenneTwister());
     }
 
     @Test

@@ -91,14 +91,14 @@ public class ScenarioTest {
         FinanceTracker t3 = FinanceTracker.createDefault(line3);
         FinanceTracker t4 = FinanceTracker.createDefault(line4);
 
+        Simulator simulator = Simulator.createSimulator(1500);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(-1, 0);
+        SteeringSignal tso = new RandomTSO(-1, 0, simulator.getRandom());
         AggregatorImpl agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
-        Simulator simulator = Simulator.createSimulator(1500);
         simulator.register(agg);
         simulator.register(site1);
         simulator.register(site2);
@@ -144,14 +144,14 @@ public class ScenarioTest {
         t3 = FinanceTracker.createDefault(line3);
         t4 = FinanceTracker.createDefault(line4);
 
+        simulator = Simulator.createSimulator(1500);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
-        tso = new RandomTSO(-70, 0);
+        tso = new RandomTSO(-70, 0, simulator.getRandom());
         agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
-        simulator = Simulator.createSimulator(1500);
         simulator.register(agg);
         simulator.register(site1);
         simulator.register(site2);

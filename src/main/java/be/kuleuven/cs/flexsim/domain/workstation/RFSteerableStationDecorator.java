@@ -3,6 +3,8 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+
 /**
  * A decorator for decorating workstation instances that steerable with a random
  * noise factor on the variable consumption.
@@ -18,7 +20,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
      */
     public final int n;
 
-    private final RandomGenerator g = new MersenneTwister();
+    private RandomGenerator g = new MersenneTwister();
     private final int high;
     private final int low;
     private boolean isHigh;
@@ -125,6 +127,12 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
                 .append(isHigh).append(", hc=").append(this.hashCode())
                 .append("]");
         return builder.toString();
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+        this.g = context.getRandom();
+        super.initialize(context);
     }
 
 }
