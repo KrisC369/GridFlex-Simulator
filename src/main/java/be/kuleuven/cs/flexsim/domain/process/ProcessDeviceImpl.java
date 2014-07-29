@@ -37,10 +37,6 @@ class ProcessDeviceImpl {
         this.layout = subject.getLayout();
     }
 
-    private synchronized long newId() {
-        return idcount++;
-    }
-
     public List<FlexTuple> getCurrentFlexbility(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
@@ -63,35 +59,61 @@ class ProcessDeviceImpl {
         return flex;
     }
 
-    private List<CurtailableWorkstation> getEffectivelyCurtailableStations(
-            List<CurtailableWorkstation> curtailableWorkstations) {
-        List<CurtailableWorkstation> toret = Lists.newArrayList();
-        for (CurtailableWorkstation w : curtailableWorkstations) {
-            if (!w.isCurtailed()) {
-                toret.add(w);
+    private FlexTuple calculateFirstOrderCurtFlex(CurtailableWorkstation a,
+            CurtailableWorkstation... cs) {
+        if (presentInSamePhase(a, cs)) {
+            double totalCurrentPhaseRate = calculateCurrentPhaseRate(a);
+            double previousPhaseRate = calculatePreviousPhaseRate(a);
+            double currentPR = aggregateProcessingRate(a,
+                    Lists.newArrayList(cs));
+            if (canCurtail(totalCurrentPhaseRate, previousPhaseRate, currentPR)) {
+                return makeCurtFlexTuple(a, cs);
+            }
+        } else {
+            List<CurtailableWorkstation> firstPhase = Lists.newArrayList();
+            List<CurtailableWorkstation> secondPhase = Lists.newArrayList();
+            splitLists(a, firstPhase, secondPhase, Lists.newArrayList(cs));
+            double firstPhaseTotal = calculateCurrentPhaseRate(a);
+            double preFirstPhase = calculatePreviousPhaseRate(a);
+            double secondPhaseTotal = secondPhase.isEmpty() ? 0
+                    : calculatePreviousPhaseRate(secondPhase.get(0));
+            double curtEstFirstPhase = aggregateProcessingRate(a, firstPhase);
+            double curtEstSecondPhase = aggregateProcessingRate(secondPhase);
+            if (canCurtail(firstPhaseTotal, preFirstPhase, curtEstFirstPhase)
+                    && canCurtail(secondPhaseTotal, curtEstSecondPhase,
+                            firstPhaseTotal - curtEstFirstPhase)) {
+                return makeCurtFlexTuple(a, cs);
             }
         }
-        return toret;
+        return FlexTuple.createNONE();
     }
 
-    private List<FlexTuple> someOrNone(List<FlexTuple> flex) {
-        List<FlexTuple> fr = Lists.newArrayList();
-        for (FlexTuple f : flex) {
-            if (!f.equals(FlexTuple.NONE)) {
-                fr.add(f);
+    private void splitLists(CurtailableWorkstation firstPhaseExample,
+            List<CurtailableWorkstation> firstPhase,
+            List<CurtailableWorkstation> secondPhase,
+            List<CurtailableWorkstation> stations) {
+        CurtailableWorkstation mark;
+        for (int i = 0; i < stations.size(); i++) {
+            mark = stations.get(i);
+            if (presentInSamePhase(firstPhaseExample, mark)) {
+                firstPhase.add(mark);
+            } else {
+                secondPhase.add(mark);
             }
         }
-        if (!fr.isEmpty())
-            return fr;
-        return Lists.newArrayList(FlexTuple.NONE);
+    }
+
+    private boolean canCurtail(double totalCurrentPhaseRate,
+            double previousPhaseRate, double currentCurtEst) {
+        return totalCurrentPhaseRate - currentCurtEst >= previousPhaseRate;
     }
 
     private List<FlexTuple> calculateOrder2CurtFlex(
             List<CurtailableWorkstation> curtailableStations) {
         List<FlexTuple> flex = Lists.newArrayList();
         int size = curtailableStations.size();
-        for (int i = 0; i < size - 2; i++) {
-            for (int j = i + 1; j < size - 1; j++) {
+        for (int i = 0; i <= size - 2; i++) {
+            for (int j = i + 1; j <= size - 1; j++) {
                 flex.add(calculateFirstOrderCurtFlex(
                         curtailableStations.get(i), curtailableStations.get(j)));
             }
@@ -140,31 +162,30 @@ class ProcessDeviceImpl {
         return true;
     }
 
-    private ArrayList<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
-        return Lists.newArrayList(com.google.common.collect.Sets
-                .newHashSet(flex));
+    private <T extends Workstation> double aggregateProcessingRate(T a,
+            List<T> firstPhase) {
+        List<T> list = Lists.newArrayList();
+        list.add(a);
+        list.addAll(firstPhase);
+        return aggregateProcessingRate(list);
     }
 
-    private FlexTuple calculateSteerFlex(TradeofSteerableWorkstation c) {
-        // TODO implement
-        return FlexTuple.createNONE();
-    }
-
-    private FlexTuple calculateFirstOrderCurtFlex(CurtailableWorkstation a,
-            CurtailableWorkstation... cs) {
-        // TODO implement
-        if (presentInSamePhase(a, cs)) {
-            double totalCurrentPhaseRate = calculateCurrentPhaseRate(a);
-            double previousPhaseRate = calculatePreviousPhaseRate(a);
-            double currentPR = a.getProcessingRate();
-            for (CurtailableWorkstation c : cs) {
-                currentPR += c.getProcessingRate();
-            }
-            if (totalCurrentPhaseRate - currentPR >= previousPhaseRate) {
-                return makeCurtFlexTuple(a, cs);
-            }
+    private double aggregateProcessingRate(
+            Iterable<? extends Workstation> stations) {
+        double result = 0;
+        for (Workstation c : stations) {
+            result += c.getProcessingRate();
         }
-        return FlexTuple.createNONE();
+        return result;
+    }
+
+    private double calculateCurrentPhaseRate(CurtailableWorkstation c) {
+        return aggregateProcessingRate(layout.getAllEdges(
+                layout.getEdgeSource(c), layout.getEdgeTarget(c)));
+    }
+
+    private double calculatePreviousPhaseRate(CurtailableWorkstation c) {
+        return aggregateProcessingRate(filterNotSource(layout.getEdgeSource(c)));
     }
 
     private FlexTuple makeCurtFlexTuple(CurtailableWorkstation a,
@@ -174,14 +195,6 @@ class ProcessDeviceImpl {
             sump += c.getAverageConsumption();
         }
         return FlexTuple.create(newId(), (int) sump, false, 1, 0, 0);
-    }
-
-    private double calculatePreviousPhaseRate(CurtailableWorkstation c) {
-        double sum = 0;
-        for (Workstation w : filterNotSource(layout.getEdgeSource(c))) {
-            sum += w.getProcessingRate();
-        }
-        return sum;
     }
 
     private Set<Workstation> filterNotSource(Buffer<Resource> c) {
@@ -194,12 +207,40 @@ class ProcessDeviceImpl {
         return t;
     }
 
-    private double calculateCurrentPhaseRate(CurtailableWorkstation c) {
-        double sum = 0;
-        for (Workstation w : layout.getAllEdges(layout.getEdgeSource(c),
-                layout.getEdgeTarget(c))) {
-            sum += w.getProcessingRate();
+    private ArrayList<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
+        return Lists.newArrayList(com.google.common.collect.Sets
+                .newHashSet(flex));
+    }
+
+    private List<FlexTuple> someOrNone(List<FlexTuple> flex) {
+        List<FlexTuple> fr = Lists.newArrayList();
+        for (FlexTuple f : flex) {
+            if (!f.equals(FlexTuple.NONE)) {
+                fr.add(f);
+            }
         }
-        return sum;
+        if (!fr.isEmpty())
+            return fr;
+        return Lists.newArrayList(FlexTuple.NONE);
+    }
+
+    private FlexTuple calculateSteerFlex(TradeofSteerableWorkstation c) {
+        // TODO implement
+        return FlexTuple.createNONE();
+    }
+
+    private List<CurtailableWorkstation> getEffectivelyCurtailableStations(
+            List<CurtailableWorkstation> curtailableWorkstations) {
+        List<CurtailableWorkstation> toret = Lists.newArrayList();
+        for (CurtailableWorkstation w : curtailableWorkstations) {
+            if (!w.isCurtailed()) {
+                toret.add(w);
+            }
+        }
+        return toret;
+    }
+
+    private synchronized long newId() {
+        return idcount++;
     }
 }

@@ -319,7 +319,7 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
-        assertEquals(2, flex.size(), 0);
+        assertEquals(3, flex.size(), 0); // l1: 2, l2: 1
         assertFalse(flex.contains(FlexTuple.NONE));
         assertEquals(20, flex.get(0).getDeltaP(), 10);
 
@@ -334,7 +334,7 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
-        assertEquals(4, flex.size(), 0); // 1 r1, 2 r2, 1 r3
+        assertEquals(6, flex.size(), 0); // 3 r1, 6 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
         assertEquals(30, flex.get(0).getDeltaP(), 10);
 
@@ -349,7 +349,7 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
-        assertEquals(3, flex.size(), 0); // 1 r1, 2 r2, 1 r3
+        assertEquals(3, flex.size(), 0); // 2 r1, 0 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
         assertEquals(30, flex.get(0).getDeltaP(), 10);
 
