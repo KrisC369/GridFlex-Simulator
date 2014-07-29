@@ -2,8 +2,6 @@ package be.kuleuven.cs.flexsim.domain.site;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -43,7 +41,13 @@ public class SiteImpl implements Site {
 
     @Override
     public void activateFlex(ActivateFlexCommand schedule) {
-        throw new NotImplementedException("Not implemented yet!");
+        for (FlexProcess p : flex.keySet()) {
+            for (FlexTuple t : flex.get(p)) {
+                if (t.getId() == schedule.getReferenceID()) {
+                    p.executeCurtailmentProfile(t.getId());
+                }
+            }
+        }
     }
 
     @Override

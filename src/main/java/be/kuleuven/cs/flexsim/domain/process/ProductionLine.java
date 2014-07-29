@@ -202,6 +202,11 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
                 getCurtailableStations(), getSteerableStations());
     }
 
+    @Override
+    public void executeCurtailmentProfile(Long id) {
+        getFlexProcessor().executeCurtailment(id, getCurtailableStations());
+    }
+
     private void addToGraph(Workstation ws) {
         this.layout.addEdge(buffers.get(buffers.size() - 2),
                 buffers.get(buffers.size() - 1), ws);

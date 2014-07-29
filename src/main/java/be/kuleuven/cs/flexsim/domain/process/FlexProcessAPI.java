@@ -20,4 +20,12 @@ public interface FlexProcessAPI {
      * @return the flexibility tuples.
      */
     List<FlexTuple> getCurrentFlexbility();
+
+    /**
+     * Execute a curtailment profile in portfolio.
+     * 
+     * @param id
+     *            the identifier of the profile.
+     */
+    void executeCurtailmentProfile(Long id);
 }

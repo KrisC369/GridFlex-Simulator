@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.process;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -28,6 +30,7 @@ class ProcessDeviceImpl {
     private volatile long idcount;
     private boolean fresh;
     private List<FlexTuple> flex;
+    private HashMultimap<Long, Workstation> profileMap;
 
     /**
      * Default constructor
@@ -38,9 +41,10 @@ class ProcessDeviceImpl {
     public ProcessDeviceImpl(ProductionLine subject) {
         this.layout = subject.getLayout();
         this.flex = Lists.newArrayList();
+        this.profileMap = HashMultimap.create();
     }
 
-    public List<FlexTuple> getCurrentFlexbility(
+    List<FlexTuple> getCurrentFlexbility(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
 
@@ -218,7 +222,13 @@ class ProcessDeviceImpl {
         for (CurtailableWorkstation c : cs) {
             sump += c.getAverageConsumption();
         }
-        return FlexTuple.create(newId(), (int) sump, false, 1, 0, 0);
+        sump *= -1;
+        long id = newId();
+        HashSet<Workstation> set = Sets.newHashSet();
+        set.add(a);
+        set.addAll(Lists.newArrayList(cs));
+        profileMap.putAll(id, set);
+        return FlexTuple.create(id, (int) sump, false, 1, 0, 0);
     }
 
     private Set<Workstation> filterNotSource(Buffer<Resource> c) {
@@ -274,5 +284,16 @@ class ProcessDeviceImpl {
 
     void invalidate() {
         this.fresh = false;
+    }
+
+    void executeCurtailment(Long id, List<CurtailableWorkstation> list) {
+        Set<Workstation> stations = profileMap.get(id);
+        for (CurtailableWorkstation c : list) {
+            for (Workstation s : stations) {
+                if (c.equals(s)) {
+                    c.doFullCurtailment();
+                }
+            }
+        }
     }
 }

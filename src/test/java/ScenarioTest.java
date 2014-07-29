@@ -166,5 +166,6 @@ public class ScenarioTest {
         System.out.println("Profit no curt:" + profitBefore + "\nProfit Curt: "
                 + profitAfter);
         assertTrue(profitBefore < profitAfter);
+        // TODO Fix nondet.
     }
 }
