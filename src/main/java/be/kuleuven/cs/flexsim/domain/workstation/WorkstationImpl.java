@@ -343,7 +343,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
                 pullIn();
                 return true;
             }
-            // setLastConsumption(0);
             return false;
         }
 

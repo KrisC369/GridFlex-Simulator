@@ -12,6 +12,9 @@ import javax.annotation.Nullable;
 // TODO define flex direction semantics clearly.
 public class FlexTuple {
 
+    private static final int PRIME2 = 1237;
+    private static final int PRIME1 = 1231;
+    private static final int POW2_8 = 32;
     /**
      * Represents no flex.
      */
@@ -139,8 +142,8 @@ public class FlexTuple {
         final int prime = 31;
         int result = 1;
         result = prime * result + deltaP;
-        result = prime * result + (direction ? 1231 : 1237);
-        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result + (direction ? PRIME1 : PRIME2);
+        result = prime * result + (int) (id ^ (id >>> POW2_8));
         result = prime * result + t;
         result = prime * result + tC;
         result = prime * result + tR;

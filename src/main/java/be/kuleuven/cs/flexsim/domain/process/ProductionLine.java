@@ -236,8 +236,6 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
      * @return an unmodifiable graph instance representing the layout.
      */
     public Graph<Buffer<Resource>, Workstation> getLayout() {
-        // return new UnmodifiableGraph<Buffer<Resource>,
-        // Workstation>(this.layout);
         return this.layout;
     }
 

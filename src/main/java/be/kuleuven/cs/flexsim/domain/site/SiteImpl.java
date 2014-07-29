@@ -13,7 +13,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 
 /**
- * An implementation for the Site interface
+ * An implementation for the Site interface.
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *

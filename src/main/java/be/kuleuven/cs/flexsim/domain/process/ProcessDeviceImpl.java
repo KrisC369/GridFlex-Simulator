@@ -27,7 +27,7 @@ import com.google.common.collect.Sets;
  */
 class ProcessDeviceImpl {
 
-    private static final int _32 = 32;
+    private static final int POW2_8 = 32;
     private final Graph<Buffer<Resource>, Workstation> layout;
     private long idcount;
     private boolean fresh;
@@ -70,18 +70,18 @@ class ProcessDeviceImpl {
                 && tradeofSteerableWorkstations.isEmpty()) {
             return Lists.newArrayList(FlexTuple.createNONE());
         }
-        List<FlexTuple> flex = Lists.newArrayList();
+        List<FlexTuple> flexRet = Lists.newArrayList();
         for (CurtailableWorkstation c : getEffectivelyCurtailableStations(curtailableWorkstations)) {
-            flex.add(calculateFirstOrderCurtFlex(c));
+            flexRet.add(calculateFirstOrderCurtFlex(c));
         }
-        flex.addAll(calculateOrder2CurtFlex(getEffectivelyCurtailableStations(curtailableWorkstations)));
-        flex.addAll(calculateOrder3CurtFlex(getEffectivelyCurtailableStations(curtailableWorkstations)));
+        flexRet.addAll(calculateOrder2CurtFlex(getEffectivelyCurtailableStations(curtailableWorkstations)));
+        flexRet.addAll(calculateOrder3CurtFlex(getEffectivelyCurtailableStations(curtailableWorkstations)));
         for (TradeofSteerableWorkstation c : tradeofSteerableWorkstations) {
-            flex.add(calculateSteerFlex(c));
+            flexRet.add(calculateSteerFlex(c));
         }
-        flex = filterOutDuplicates(flex);
-        flex = someOrNone(flex);
-        return flex;
+        flexRet = filterOutDuplicates(flexRet);
+        flexRet = someOrNone(flexRet);
+        return flexRet;
     }
 
     private FlexTuple calculateFirstOrderCurtFlex(CurtailableWorkstation a,
@@ -287,7 +287,7 @@ class ProcessDeviceImpl {
             this.key = random.nextLong();
         }
         int result = 1;
-        result = (int) (this.key + (int) (idcount ^ (idcount >>> _32)));
+        result = (int) (this.key + (int) (idcount ^ (idcount >>> POW2_8)));
         idcount++;
         return result;
     }
