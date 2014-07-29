@@ -97,26 +97,6 @@ class ProcessDeviceImpl {
         return FlexTuple.createNONE();
     }
 
-    private void splitLists(CurtailableWorkstation firstPhaseExample,
-            List<CurtailableWorkstation> firstPhase,
-            List<CurtailableWorkstation> secondPhase,
-            List<CurtailableWorkstation> stations) {
-        CurtailableWorkstation mark;
-        for (int i = 0; i < stations.size(); i++) {
-            mark = stations.get(i);
-            if (presentInSamePhase(firstPhaseExample, mark)) {
-                firstPhase.add(mark);
-            } else {
-                secondPhase.add(mark);
-            }
-        }
-    }
-
-    private boolean canCurtail(double totalCurrentPhaseRate,
-            double previousPhaseRate, double currentCurtEst) {
-        return totalCurrentPhaseRate - currentCurtEst >= previousPhaseRate;
-    }
-
     private List<FlexTuple> calculateOrder2CurtFlex(
             List<CurtailableWorkstation> curtailableStations) {
         List<FlexTuple> flex = Lists.newArrayList();
@@ -195,6 +175,26 @@ class ProcessDeviceImpl {
 
     private double calculatePreviousPhaseRate(CurtailableWorkstation c) {
         return aggregateProcessingRate(filterNotSource(layout.getEdgeSource(c)));
+    }
+
+    private void splitLists(CurtailableWorkstation firstPhaseExample,
+            List<CurtailableWorkstation> firstPhase,
+            List<CurtailableWorkstation> secondPhase,
+            List<CurtailableWorkstation> stations) {
+        CurtailableWorkstation mark;
+        for (int i = 0; i < stations.size(); i++) {
+            mark = stations.get(i);
+            if (presentInSamePhase(firstPhaseExample, mark)) {
+                firstPhase.add(mark);
+            } else {
+                secondPhase.add(mark);
+            }
+        }
+    }
+
+    private boolean canCurtail(double totalCurrentPhaseRate,
+            double previousPhaseRate, double currentCurtEst) {
+        return totalCurrentPhaseRate - currentCurtEst >= previousPhaseRate;
     }
 
     private FlexTuple makeCurtFlexTuple(CurtailableWorkstation a,
