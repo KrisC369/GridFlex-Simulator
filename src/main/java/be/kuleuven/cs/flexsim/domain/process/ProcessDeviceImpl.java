@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 import org.jgrapht.Graph;
+import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
@@ -81,10 +82,10 @@ class ProcessDeviceImpl {
             flexRet.add(calculateSteerFlex(c));
         }
         flexRet = filterOutDuplicates(flexRet);
-        flexRet = someOrNone(flexRet);
         // upflex
         flexRet.addAll(calculateUpFlex(getCurtailedStations(curtailableWorkstations)));
-
+        flexRet = someOrNone(flexRet);
+        // flexRet = filterOutZeroFlex(flexRet);
         return flexRet;
     }
 
@@ -286,7 +287,7 @@ class ProcessDeviceImpl {
 
     private List<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
         return Lists.newArrayList(com.google.common.collect.Sets
-                .newHashSet(flex));
+                .newLinkedHashSet(flex));
     }
 
     private List<FlexTuple> someOrNone(List<FlexTuple> flex) {
@@ -349,7 +350,20 @@ class ProcessDeviceImpl {
             for (Workstation s : stations) {
                 if (c.equals(s)) {
                     c.doFullCurtailment();
-                    System.out.println("Exec curtailment: " + c);
+                    logFullCurtailment(c);
+                }
+            }
+        }
+    }
+
+    void executeCancelCurtailment(long id,
+            List<CurtailableWorkstation> curtailableStations) {
+        List<Workstation> stations = profileMap.get(id);
+        for (CurtailableWorkstation c : curtailableStations) {
+            for (Workstation s : stations) {
+                if (c.equals(s)) {
+                    c.restore();
+                    logCancelCurtailment(c);
                 }
             }
         }
@@ -363,16 +377,13 @@ class ProcessDeviceImpl {
         this.random = random;
     }
 
-    void executeCancelCurtailment(long id,
-            List<CurtailableWorkstation> curtailableStations) {
-        List<Workstation> stations = profileMap.get(id);
-        for (CurtailableWorkstation c : curtailableStations) {
-            for (Workstation s : stations) {
-                if (c.equals(s)) {
-                    c.restore();
-                    System.out.println("Restored Curtailment: " + c);
-                }
-            }
-        }
+    private void logFullCurtailment(Workstation c) {
+        LoggerFactory.getLogger(ProductionLine.class).info(
+                "Executing curtailment on {}", c);
+    }
+
+    private void logCancelCurtailment(Workstation c) {
+        LoggerFactory.getLogger(ProductionLine.class).info(
+                "Restoring curtailment on {}", c);
     }
 }

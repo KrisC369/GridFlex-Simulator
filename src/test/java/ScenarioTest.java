@@ -166,8 +166,9 @@ public class ScenarioTest {
         // System.out.println("Simulation 2 done");
         double profitAfter = t1.getTotalProfit() + t2.getTotalProfit()
                 + t3.getTotalProfit() + t4.getTotalProfit();
-        System.out.println("Profit no curt:" + profitBefore + "\nProfit Curt: "
-                + profitAfter);
+        // System.out.println("Profit no curt:" + profitBefore +
+        // "\nProfit Curt: "
+        // + profitAfter);
         assertTrue(profitBefore < profitAfter);
     }
 }

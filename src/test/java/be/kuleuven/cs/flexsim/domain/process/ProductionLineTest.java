@@ -356,7 +356,7 @@ public class ProductionLineTest {
     }
 
     @Test
-    public void testUpFlexCurtHorizontal() {
+    public void testUpFlexCurt() {
         ProductionLine l = new ProductionLineBuilder()
                 .setWorkingConsumption(500).setIdleConsumption(10)
                 .addConsuming(3).addCurtailableShifted(4)
@@ -367,10 +367,16 @@ public class ProductionLineTest {
         assertEquals(3, flex.size(), 0); // 2 r1, 0 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
         assertEquals(30, flex.get(0).getDeltaP(), 20);
-        l.executeCurtailmentProfile(flex.get(0).getId());
+        l.executeCurtailmentProfile(flex.get(2).getId()); // all stations curt.
         l.tick(simSteps + 1);
         flex = l.getCurrentFlexbility();
-        assertTrue(hasPositiveFlex(flex));
+        boolean hasPositiveFlex = false;
+        for (FlexTuple f : flex) {
+            if (f.getDirection())
+                hasPositiveFlex = true;
+        }
+        assertTrue(flex.size() > 0);
+        assertEquals(true, hasPositiveFlex);
     }
 
     private boolean hasPositiveFlex(List<FlexTuple> flex) {

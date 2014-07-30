@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import org.slf4j.LoggerFactory;
+
 /**
  * This station decorator allows for curtailment functionality for workstations.
  * 
@@ -26,6 +28,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
             throw new IllegalStateException();
         }
         curtailed = true;
+        logCurtailment();
     }
 
     @Override
@@ -34,6 +37,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
             throw new IllegalStateException();
         }
         curtailed = false;
+        logRestoration();
     }
 
     @Override
@@ -95,5 +99,16 @@ class CurtailableStationDecorator<T extends Workstation> extends
             return 0;
         }
         return getDelegate().getProcessingRate();
+    }
+
+    private void logCurtailment() {
+        LoggerFactory.getLogger(CurtailableWorkstation.class).debug(
+                "Full curtailment active on {}", this);
+
+    }
+
+    private void logRestoration() {
+        LoggerFactory.getLogger(CurtailableWorkstation.class).debug(
+                "Restoring curtailment on {}", this);
     }
 }

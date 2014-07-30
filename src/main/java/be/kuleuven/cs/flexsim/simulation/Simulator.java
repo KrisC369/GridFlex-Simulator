@@ -129,12 +129,16 @@ public final class Simulator implements SimulationContext {
         Event ev = eventFac.build(SIMSTART_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
+        org.slf4j.LoggerFactory.getLogger(Simulator.class).info(
+                "Simulation started");
     }
 
     private void notifyStop() {
         Event ev = eventFac.build(SIMSTOP_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
+        org.slf4j.LoggerFactory.getLogger(Simulator.class).info(
+                "Simulation stopped");
     }
 
     private synchronized void tickComponents() {
