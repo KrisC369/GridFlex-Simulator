@@ -13,20 +13,20 @@ public interface FinanceTracker {
      * 
      * @return the reward.
      */
-    public abstract int getTotalReward();
+    int getTotalReward();
 
     /**
      * Returns the total cost metric for this tracker.
      * 
      * @return the totalCost.
      */
-    public abstract int getTotalCost();
+    int getTotalCost();
 
     /**
      * Returns the total profit as the reward minus the cost.
      * 
      * @return the total reward minus the total cost.
      */
-    public abstract int getTotalProfit();
+    int getTotalProfit();
 
 }

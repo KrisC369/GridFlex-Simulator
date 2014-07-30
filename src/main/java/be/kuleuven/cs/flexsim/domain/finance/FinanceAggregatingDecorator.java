@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
  */
 class FinanceAggregatingDecorator implements FinanceTracker {
 
-    private List<FinanceTracker> targets;
+    private final List<FinanceTracker> targets;
 
     FinanceAggregatingDecorator(FinanceTracker... tt) {
         this.targets = Lists.newArrayList(tt);
