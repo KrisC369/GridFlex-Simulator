@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.process;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -85,7 +87,6 @@ class ProcessDeviceImpl {
         // upflex
         flexRet.addAll(calculateUpFlex(getCurtailedStations(curtailableWorkstations)));
         flexRet = someOrNone(flexRet);
-        // flexRet = filterOutZeroFlex(flexRet);
         return flexRet;
     }
 
@@ -304,6 +305,7 @@ class ProcessDeviceImpl {
     }
 
     private FlexTuple calculateSteerFlex(TradeofSteerableWorkstation c) {
+        checkNotNull(c);
         // TODO implement
         return FlexTuple.createNONE();
     }

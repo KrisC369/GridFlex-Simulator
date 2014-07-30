@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImpl;
-import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
+import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -24,7 +24,7 @@ public class ScenarioTest {
 
     private Simulator s;
     private ProductionLine p;
-    private FinanceTracker ft;
+    private FinanceTrackerImpl ft;
 
     @Before
     public void setUp() throws Exception {
@@ -33,7 +33,7 @@ public class ScenarioTest {
                 .addShifted(14).addShifted(4)
                 .addMultiCapExponentialConsuming(4, 125).addShifted(14)
                 .addShifted(14).addShifted(10).build();
-        ft = FinanceTracker.createDefault(p);
+        ft = FinanceTrackerImpl.createDefault(p);
         s.register(p);
         s.register(ft);
     }
@@ -86,10 +86,10 @@ public class ScenarioTest {
         line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
                 3, 3));
 
-        FinanceTracker t1 = FinanceTracker.createDefault(line1);
-        FinanceTracker t2 = FinanceTracker.createDefault(line2);
-        FinanceTracker t3 = FinanceTracker.createDefault(line3);
-        FinanceTracker t4 = FinanceTracker.createDefault(line4);
+        FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
+        FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
+        FinanceTrackerImpl t3 = FinanceTrackerImpl.createDefault(line3);
+        FinanceTrackerImpl t4 = FinanceTrackerImpl.createDefault(line4);
 
         Simulator simulator = Simulator.createSimulator(1500);
         Site site1 = new SiteImpl(line1, line2);
@@ -141,10 +141,10 @@ public class ScenarioTest {
         line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
                 3, 3));
 
-        t1 = FinanceTracker.createDefault(line1);
-        t2 = FinanceTracker.createDefault(line2);
-        t3 = FinanceTracker.createDefault(line3);
-        t4 = FinanceTracker.createDefault(line4);
+        t1 = FinanceTrackerImpl.createDefault(line1);
+        t2 = FinanceTrackerImpl.createDefault(line2);
+        t3 = FinanceTrackerImpl.createDefault(line3);
+        t4 = FinanceTrackerImpl.createDefault(line4);
 
         simulator = Simulator.createSimulator(1500);
         site1 = new SiteImpl(line1, line2);

@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.finance.DebtModel;
-import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
+import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.finance.RewardModel;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.TrackableFlexProcessComponent;
@@ -29,7 +29,7 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class FinanceTrackerTest {
     private TrackableFlexProcessComponent mockPL = mock(TrackableFlexProcessComponent.class);
-    private FinanceTracker t = FinanceTracker.createDefault(mockPL);
+    private FinanceTrackerImpl t = FinanceTrackerImpl.createDefault(mockPL);
     private SimulationContext sim = mock(SimulationContext.class);
 
     @Rule
@@ -37,7 +37,7 @@ public class FinanceTrackerTest {
 
     @Before
     public void setUp() throws Exception {
-        t = FinanceTracker.createCustom(mockPL, RewardModel.CONSTANT,
+        t = FinanceTrackerImpl.createCustom(mockPL, RewardModel.CONSTANT,
                 DebtModel.CONSTANT);
         sim = Simulator.createSimulator(20);
     }
@@ -52,7 +52,7 @@ public class FinanceTrackerTest {
     public void signalConsumptionTest() {
         ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
                 .build();
-        t = FinanceTracker.createDefault(mockPL);
+        t = FinanceTrackerImpl.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -71,7 +71,7 @@ public class FinanceTrackerTest {
     public void getCurrentPaymentRateTest() {
         ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
                 .build();
-        t = FinanceTracker.createDefault(mockPL);
+        t = FinanceTrackerImpl.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -85,7 +85,7 @@ public class FinanceTrackerTest {
     public void getCurrentRewardRateTest() {
         ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
                 .build();
-        t = FinanceTracker.createDefault(mockPL);
+        t = FinanceTrackerImpl.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -103,7 +103,7 @@ public class FinanceTrackerTest {
     public void getProfitTest() {
         ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
                 .build();
-        t = FinanceTracker.createDefault(mockPL);
+        t = FinanceTrackerImpl.createDefault(mockPL);
         int n = 3;
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
@@ -119,8 +119,8 @@ public class FinanceTrackerTest {
     public void noContextTest() {
         ProductionLine mockPL = new ProductionLineBuilder().addShifted(1)
                 .build();
-        t = FinanceTracker.createDefault(mockPL);
+        t = FinanceTrackerImpl.createDefault(mockPL);
         exception.expect(IllegalStateException.class);
-        ((FinanceTracker) t).afterTick(1);
+        ((FinanceTrackerImpl) t).afterTick(1);
     }
 }
