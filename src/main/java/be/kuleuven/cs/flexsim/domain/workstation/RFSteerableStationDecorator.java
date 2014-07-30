@@ -18,7 +18,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     /**
      * Width of the random noise band.
      */
-    public final int n;
+    private final int n;
 
     private RandomGenerator g = new MersenneTwister();
     private final int high;

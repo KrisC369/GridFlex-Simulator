@@ -239,6 +239,12 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         return this.layout;
     }
 
+    @Override
+    public void executeCancelCurtailmentProfile(long id) {
+        getFlexProcessor().executeCancelCurtailment(id,
+                getCurtailableStations());
+    }
+
     /**
      * Builder class for building production line instances.
      * 
@@ -540,11 +546,5 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         public void register(DualModeWorkstation ws) {
             duals.add(ws);
         }
-    }
-
-    @Override
-    public void executeCancelCurtailmentProfile(long id) {
-        getFlexProcessor().executeCancelCurtailment(id,
-                getCurtailableStations());
     }
 }

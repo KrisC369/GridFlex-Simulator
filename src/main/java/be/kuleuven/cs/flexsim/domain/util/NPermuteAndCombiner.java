@@ -18,7 +18,7 @@ import com.google.common.collect.Lists;
 public class NPermuteAndCombiner<T> {
 
     /**
-     * Process a list and partition it in all unique k-size combinations
+     * Process a list and partition it in all unique k-size combinations.
      * 
      * @param set
      *            the source set of items.
@@ -27,12 +27,15 @@ public class NPermuteAndCombiner<T> {
      * @return A list of combinations of k.
      */
     public List<List<T>> processSubsets(List<T> set, int k) {
+        int n;
         if (k > set.size()) {
-            k = set.size();
+            n = set.size();
+        } else {
+            n = k;
         }
         List<List<T>> result = Lists.newArrayList();
-        List<T> subset = Lists.newArrayListWithCapacity(k);
-        for (int i = 0; i < k; i++) {
+        List<T> subset = Lists.newArrayListWithCapacity(n);
+        for (int i = 0; i < n; i++) {
             subset.add(null);
         }
         return processLargerSubsets(result, set, subset, 0, 0);
@@ -56,12 +59,13 @@ public class NPermuteAndCombiner<T> {
      * 
      * @param list
      *            The input list.
-     * @param size
+     * @param n
      *            the size of the permutations
      * @return a collection of permutations.
      */
-    public Collection<List<T>> permutations(List<T> list, int size) {
+    public Collection<List<T>> permutations(List<T> list, int n) {
         Collection<List<T>> all = Lists.newArrayList();
+        int size = n;
         if (list.size() < size) {
             size = list.size();
         }

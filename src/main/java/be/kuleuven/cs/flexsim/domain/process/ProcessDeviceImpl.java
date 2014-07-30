@@ -363,7 +363,7 @@ class ProcessDeviceImpl {
         this.random = random;
     }
 
-    public void executeCancelCurtailment(long id,
+    void executeCancelCurtailment(long id,
             List<CurtailableWorkstation> curtailableStations) {
         List<Workstation> stations = profileMap.get(id);
         for (CurtailableWorkstation c : curtailableStations) {
