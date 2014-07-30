@@ -27,5 +27,13 @@ public interface FlexProcessAPI {
      * @param id
      *            the identifier of the profile.
      */
-    void executeCurtailmentProfile(Long id);
+    void executeCurtailmentProfile(long id);
+
+    /**
+     * Cancel curtailment according to a profile with a specified id.
+     * 
+     * @param id
+     *            the identifier of the profile;
+     */
+    void executeCancelCurtailmentProfile(long id);
 }

@@ -16,4 +16,11 @@ public interface ActivateFlexCommand {
      */
     long getReferenceID();
 
+    /**
+     * Indicates whether this command is meant to increase or decrease
+     * consumption.
+     * 
+     * @return true if curtailment is wanted.
+     */
+    boolean isCurtailmentCommand();
 }

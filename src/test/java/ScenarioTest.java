@@ -94,7 +94,7 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(1500);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(-1, 0, simulator.getRandom());
+        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
         AggregatorImpl agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -149,7 +149,7 @@ public class ScenarioTest {
         simulator = Simulator.createSimulator(1500);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
-        tso = new RandomTSO(-70, 0, simulator.getRandom());
+        tso = new RandomTSO(-30, 70, simulator.getRandom());
         agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -166,10 +166,8 @@ public class ScenarioTest {
         // System.out.println("Simulation 2 done");
         double profitAfter = t1.getTotalProfit() + t2.getTotalProfit()
                 + t3.getTotalProfit() + t4.getTotalProfit();
-        // System.out.println("Profit no curt:" + profitBefore +
-        // "\nProfit Curt: "
-        // + profitAfter);
+        System.out.println("Profit no curt:" + profitBefore + "\nProfit Curt: "
+                + profitAfter);
         assertTrue(profitBefore < profitAfter);
-        // TODO Fix nondet.
     }
 }

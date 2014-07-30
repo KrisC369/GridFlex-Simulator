@@ -305,7 +305,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertEquals(-10, flex.get(0).getDeltaP(), 10); // it's idle anyways so
+        assertEquals(10, flex.get(0).getDeltaP(), 10); // it's idle anyways so
         // only fixd consumption
         // counted.
     }
@@ -321,7 +321,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(3, flex.size(), 0); // l1: 2, l2: 1
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertEquals(-20, flex.get(0).getDeltaP(), 10);
+        assertEquals(20, flex.get(0).getDeltaP(), 10);
 
     }
 
@@ -336,7 +336,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(6, flex.size(), 0); // 3 r1, 6 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertEquals(-30, flex.get(0).getDeltaP(), 20);
+        assertEquals(30, flex.get(0).getDeltaP(), 20);
 
     }
 
@@ -351,8 +351,34 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(3, flex.size(), 0); // 2 r1, 0 r2, 1 r3
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertEquals(-30, flex.get(0).getDeltaP(), 20);
+        assertEquals(30, flex.get(0).getDeltaP(), 20);
+        assertFalse(hasPositiveFlex(flex));
+    }
 
+    @Test
+    public void testUpFlexCurtHorizontal() {
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
+        setupForSim(l, simSteps);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(3, flex.size(), 0); // 2 r1, 0 r2, 1 r3
+        assertFalse(flex.contains(FlexTuple.NONE));
+        assertEquals(30, flex.get(0).getDeltaP(), 20);
+        l.executeCurtailmentProfile(flex.get(0).getId());
+        l.tick(simSteps + 1);
+        flex = l.getCurrentFlexbility();
+        assertTrue(hasPositiveFlex(flex));
+    }
+
+    private boolean hasPositiveFlex(List<FlexTuple> flex) {
+        for (FlexTuple f : flex) {
+            if (f.getDirection())
+                return true;
+        }
+        return false;
     }
 
     @Test

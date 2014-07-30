@@ -9,6 +9,7 @@ import be.kuleuven.cs.flexsim.domain.resource.ResourceTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.tso.RandomTSOTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
+import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTupleTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
 import be.kuleuven.cs.flexsim.simulation.SimulatorTest;
@@ -18,6 +19,7 @@ import be.kuleuven.cs.flexsim.time.ClockTest;
 @SuiteClasses({ SimulatorTest.class, ClockTest.class, BufferTest.class,
         WorkstationTest.class, ProductionLineTest.class, ResourceTest.class,
         FinanceTrackerTest.class, ScenarioTest.class, FlexTupleTest.class,
-        SiteTest.class, AggregatorImplTest.class, RandomTSOTest.class })
+        SiteTest.class, AggregatorImplTest.class, RandomTSOTest.class,
+        NPermuteAndCombinerTest.class })
 public class AllTests {
 }

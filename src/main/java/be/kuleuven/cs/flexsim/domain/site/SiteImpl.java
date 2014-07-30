@@ -45,7 +45,11 @@ public class SiteImpl implements Site {
         for (FlexProcess p : flex.keySet()) {
             for (FlexTuple t : flex.get(p)) {
                 if (t.getId() == schedule.getReferenceID()) {
-                    p.executeCurtailmentProfile(t.getId());
+                    if (schedule.isCurtailmentCommand()) {
+                        p.executeCurtailmentProfile(t.getId());
+                    } else {
+                        p.executeCancelCurtailmentProfile(t.getId());
+                    }
                 }
             }
         }

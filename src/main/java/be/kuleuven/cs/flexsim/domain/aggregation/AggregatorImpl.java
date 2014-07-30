@@ -74,7 +74,7 @@ public class AggregatorImpl implements SimulationComponent {
         Map<Long, Integer> flexFiltered = filterAndTransform(flex);
         final int target = getTargetFlex();
         int current = 0;
-        Set<Long> ids = Sets.newHashSet();
+        Set<Long> ids = Sets.newLinkedHashSet();
         for (Entry<Long, Integer> e : flexFiltered.entrySet()) {
             if (diff(current + e.getValue(), target) < diff(current, target)) {
                 current += e.getValue();
@@ -96,6 +96,11 @@ public class AggregatorImpl implements SimulationComponent {
                             @Override
                             public long getReferenceID() {
                                 return tt.getId();
+                            }
+
+                            @Override
+                            public boolean isCurtailmentCommand() {
+                                return !tt.getDirection();
                             }
                         });
                     }

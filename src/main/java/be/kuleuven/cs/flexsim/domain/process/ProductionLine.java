@@ -204,7 +204,7 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
     }
 
     @Override
-    public void executeCurtailmentProfile(Long id) {
+    public void executeCurtailmentProfile(long id) {
         getFlexProcessor().executeCurtailment(id, getCurtailableStations());
     }
 
@@ -540,5 +540,11 @@ public final class ProductionLine implements TrackableFlexProcessComponent {
         public void register(DualModeWorkstation ws) {
             duals.add(ws);
         }
+    }
+
+    @Override
+    public void executeCancelCurtailmentProfile(long id) {
+        getFlexProcessor().executeCancelCurtailment(id,
+                getCurtailableStations());
     }
 }
