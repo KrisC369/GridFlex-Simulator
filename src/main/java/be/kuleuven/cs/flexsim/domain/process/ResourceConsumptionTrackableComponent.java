@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 /**
  * Represents a simulation component for which the process can be tracked and
@@ -12,7 +13,8 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
  */
-public interface TrackableFlexProcessComponent extends FlexProcess {
+public interface ResourceConsumptionTrackableComponent extends
+        SimulationComponent {
 
     /**
      * Returns the total energy consumption aggregated over all subcomponents.

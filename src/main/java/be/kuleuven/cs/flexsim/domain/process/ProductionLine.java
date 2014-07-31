@@ -29,7 +29,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class ProductionLine implements TrackableFlexProcessComponent {
+public final class ProductionLine implements FlexProcess {
 
     private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = new IntNNFunction<Workstation>() {
         @Override

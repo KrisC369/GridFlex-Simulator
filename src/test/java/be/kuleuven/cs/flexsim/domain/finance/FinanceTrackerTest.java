@@ -17,7 +17,7 @@ import org.junit.rules.ExpectedException;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest.ChangeEventComponent;
-import be.kuleuven.cs.flexsim.domain.process.TrackableFlexProcessComponent;
+import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -25,7 +25,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class FinanceTrackerTest {
-    private TrackableFlexProcessComponent mockPL = mock(TrackableFlexProcessComponent.class);
+    private ResourceConsumptionTrackableComponent mockPL = mock(ResourceConsumptionTrackableComponent.class);
     private FinanceTrackerImpl t = FinanceTrackerImpl.createDefault(mockPL);
     private SimulationContext sim = mock(SimulationContext.class);
 
@@ -37,6 +37,7 @@ public class FinanceTrackerTest {
         t = FinanceTrackerImpl.createCustom(mockPL, RewardModel.CONSTANT,
                 DebtModel.CONSTANT);
         sim = Simulator.createSimulator(20);
+        sim.register(mockPL);
     }
 
     @Test
@@ -73,6 +74,8 @@ public class FinanceTrackerTest {
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
         sim.register(t);
+        sim.register(mockPL);
+
         assertEquals(0, t.getTotalCost(), 0);
         ((Simulator) sim).start();
         assertNotEquals(0, t.getTotalCost());
@@ -87,6 +90,7 @@ public class FinanceTrackerTest {
         List<Resource> res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
         sim.register(t);
+        sim.register(mockPL);
         assertEquals(0, t.getTotalReward(), 0);
         ((Simulator) sim).start();
         assertNotEquals(0, t.getTotalReward());

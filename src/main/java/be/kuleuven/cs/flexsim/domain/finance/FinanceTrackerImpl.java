@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.finance;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.process.TrackableFlexProcessComponent;
+import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -20,7 +20,7 @@ import com.google.common.base.Optional;
 public final class FinanceTrackerImpl implements SimulationComponent,
         FinanceTracker {
 
-    private final TrackableFlexProcessComponent target;
+    private final ResourceConsumptionTrackableComponent target;
     private Optional<SimulationContext> context;
     private int totalReward;
     private int totalCost;
@@ -38,7 +38,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * @param dm
      *            The debtModel to use.
      */
-    private FinanceTrackerImpl(TrackableFlexProcessComponent target,
+    private FinanceTrackerImpl(ResourceConsumptionTrackableComponent target,
             RewardModel rm, DebtModel dm) {
         this.target = target;
         this.context = Optional.absent();
@@ -127,7 +127,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
     /**
      * @return the target
      */
-    private TrackableFlexProcessComponent getTarget() {
+    private ResourceConsumptionTrackableComponent getTarget() {
         return target;
     }
 
@@ -187,7 +187,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * @return A fully instantiated FinanceTracker object.
      */
     public static FinanceTrackerImpl createDefault(
-            TrackableFlexProcessComponent target) {
+            ResourceConsumptionTrackableComponent target) {
         return new FinanceTrackerImpl(target, RewardModel.CONSTANT,
                 DebtModel.CONSTANT);
 
@@ -206,7 +206,8 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * @return A fully instantiated FinanceTracker object.
      */
     public static FinanceTrackerImpl createCustom(
-            TrackableFlexProcessComponent target, RewardModel rm, DebtModel dm) {
+            ResourceConsumptionTrackableComponent target, RewardModel rm,
+            DebtModel dm) {
         return new FinanceTrackerImpl(target, rm, dm);
     }
 
