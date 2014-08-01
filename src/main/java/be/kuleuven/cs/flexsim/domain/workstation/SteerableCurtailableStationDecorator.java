@@ -66,8 +66,8 @@ public class SteerableCurtailableStationDecorator extends
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("SteerableCurtailableStationDecorator [")
-                .append(", hc=").append(this.hashCode()).append("]");
+        builder.append("SteerableCurtailableWorkstation [").append(", hc=")
+                .append(this.hashCode()).append("]");
         return builder.toString();
     }
 }

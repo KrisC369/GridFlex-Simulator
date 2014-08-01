@@ -295,7 +295,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("WorkstationImpl [fixedECons=").append(fixedECons)
+        builder.append("Workstation [fixedECons=").append(fixedECons)
                 .append(", ratedMaxVarECons=").append(ratedMaxVarECons)
                 .append(", capacity=").append(capacity).append(", hc=")
                 .append(this.hashCode()).append("]");

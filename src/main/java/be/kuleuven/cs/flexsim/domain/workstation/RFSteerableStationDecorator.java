@@ -122,7 +122,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("RFSteerableStationDecorator [high=").append(high)
+        builder.append("RFSteerableStation [high=").append(high)
                 .append(", low=").append(low).append(", isHigh=")
                 .append(isHigh).append(", hc=").append(this.hashCode())
                 .append("]");

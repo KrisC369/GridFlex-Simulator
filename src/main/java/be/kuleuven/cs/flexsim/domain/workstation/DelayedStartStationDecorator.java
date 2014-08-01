@@ -59,9 +59,8 @@ class DelayedStartStationDecorator extends
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("DelayedStartStationDecorator [shiftTime=")
-                .append(shiftTime).append(", hc=").append(this.hashCode())
-                .append("]");
+        builder.append("DelayedStartStation [shiftTime=").append(shiftTime)
+                .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();
     }
 }

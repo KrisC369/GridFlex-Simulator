@@ -87,9 +87,8 @@ class CurtailableStationDecorator<T extends Workstation> extends
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("CurtailableStationDecorator [curtailed=")
-                .append(curtailed).append(", hc=").append(this.hashCode())
-                .append("]");
+        builder.append("CurtailableWorkstation [curtailed=").append(curtailed)
+                .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();
     }
 

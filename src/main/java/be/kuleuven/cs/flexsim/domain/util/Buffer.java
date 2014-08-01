@@ -105,7 +105,7 @@ public final class Buffer<T extends IBufferable> implements Serializable {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Buffer [getCurrentOccupancyLevel()=")
+        builder.append("Buffer [OccupancyLevel()=")
                 .append(getCurrentOccupancyLevel()).append(", hc=")
                 .append(this.hashCode()).append("]");
         return builder.toString();
