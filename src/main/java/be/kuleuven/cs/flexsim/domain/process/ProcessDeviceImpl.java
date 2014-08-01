@@ -69,6 +69,13 @@ class ProcessDeviceImpl {
     private List<FlexTuple> recalculateFlex(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
+        return gratuitousFlex(curtailableWorkstations,
+                tradeofSteerableWorkstations);
+    }
+
+    private List<FlexTuple> gratuitousFlex(
+            List<CurtailableWorkstation> curtailableWorkstations,
+            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
         // downflex only
         if (curtailableWorkstations.isEmpty()
                 && tradeofSteerableWorkstations.isEmpty()) {

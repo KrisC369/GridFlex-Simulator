@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
@@ -110,27 +111,53 @@ public class SiteImpl implements Site {
     public int getAggregatedLastStepConsumptions() {
         int sum = 0;
         for (FlexProcess fp : processes) {
-            sum += fp.getAggregatedTotalConsumptions();
+            sum += fp.getAggregatedLastStepConsumptions();
         }
         return sum;
     }
 
     @Override
     public List<Integer> getBufferOccupancyLevels() {
-        // TODO Auto-generated method stub
-        return null;
+        List<List<Integer>> occupancies = Lists.newArrayList();
+        List<Integer> toret = Lists.newArrayList();
+        for (FlexProcess fp : processes) {
+            occupancies.add(fp.getBufferOccupancyLevels());
+        }
+        int max = 0;
+        for (List<Integer> p : occupancies) {
+            if (p.size() > max) {
+                max = p.size();
+            }
+        }
+        for (int i = 0; i < max; i++) {
+            int sum = 0;
+            int count = 0;
+            for (List<Integer> p : occupancies) {
+                if (i <= p.size() - 1) {
+                    sum += p.get(i);
+                    count++;
+                }
+            }
+            toret.add(count == 0 ? sum : sum / count);
+        }
+        return toret;
     }
 
     @Override
     public Collection<Resource> takeResources() {
-        // TODO Auto-generated method stub
-        return null;
+        List<Resource> toret = Lists.newArrayList();
+        for (FlexProcess fp : processes) {
+            toret.addAll(fp.takeResources());
+        }
+        return toret;
     }
 
     @Override
     public void deliverResources(List<Resource> res) {
-        // TODO Auto-generated method stub
-
+        LinkedList<Resource> q = Lists.newLinkedList(res);
+        for (int i = 0; i < res.size(); i++) {
+            processes.get(i % processes.size()).deliverResources(
+                    Lists.newArrayList(q.pop()));
+        }
     }
-
 }
