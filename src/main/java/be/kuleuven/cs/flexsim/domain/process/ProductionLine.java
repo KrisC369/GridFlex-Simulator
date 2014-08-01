@@ -7,9 +7,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DirectedMultigraph;
-
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -23,6 +20,9 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.SparseMultigraph;
+import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
  * A production line representing buffers and workstations.
@@ -63,7 +63,7 @@ public final class ProductionLine implements FlexProcess {
         this.steerables = new LinkedHashSet<>();
         this.registry = new PLRegisterable();
         this.uniques = new HashSet<Workstation>();
-        this.layout = new DirectedMultigraph<>(Workstation.class);
+        this.layout = new SparseMultigraph<>();
         flexProcessor = new ProcessDeviceImpl(this);
     }
 
@@ -209,8 +209,8 @@ public final class ProductionLine implements FlexProcess {
     }
 
     private void addToGraph(Workstation ws) {
-        this.layout.addEdge(buffers.get(buffers.size() - 2),
-                buffers.get(buffers.size() - 1), ws);
+        this.layout.addEdge(ws, buffers.get(buffers.size() - 2),
+                buffers.get(buffers.size() - 1), EdgeType.DIRECTED);
     }
 
     private void addBuffer(Buffer<Resource> b) {

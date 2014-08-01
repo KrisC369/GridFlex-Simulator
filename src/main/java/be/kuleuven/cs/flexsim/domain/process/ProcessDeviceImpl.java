@@ -4,11 +4,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
-import org.jgrapht.Graph;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -22,6 +20,8 @@ import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import edu.uci.ics.jung.graph.Graph;
 
 /**
  * Implements the process device interface.
@@ -191,13 +191,12 @@ class ProcessDeviceImpl {
             return true;
         }
         if (b.length == 1) {
-            return layout.getEdgeSource(a).equals(layout.getEdgeSource(b[0]))
-                    && layout.getEdgeTarget(a).equals(
-                            layout.getEdgeTarget(b[0]));
+            return layout.getSource(a).equals(layout.getSource(b[0]))
+                    && layout.getDest(a).equals(layout.getDest(b[0]));
         }
         for (CurtailableWorkstation cb : b) {
-            if (layout.getEdgeSource(a).equals(layout.getEdgeSource(cb))
-                    && layout.getEdgeTarget(a).equals(layout.getEdgeTarget(cb))) {
+            if (layout.getSource(a).equals(layout.getSource(cb))
+                    && layout.getDest(a).equals(layout.getDest(cb))) {
                 return false;
             }
         }
@@ -222,12 +221,17 @@ class ProcessDeviceImpl {
     }
 
     private double calculateCurrentPhaseRate(CurtailableWorkstation c) {
-        return aggregateProcessingRate(layout.getAllEdges(
-                layout.getEdgeSource(c), layout.getEdgeTarget(c)));
+        List<Workstation> edges = Lists.newArrayList();
+        for (Workstation s : layout.getEdges()) {
+            if (layout.getSource(s).equals(layout.getSource(c))
+                    && layout.getDest(s).equals(layout.getDest(c)))
+                edges.add(s);
+        }
+        return aggregateProcessingRate(edges);
     }
 
     private double calculatePreviousPhaseRate(CurtailableWorkstation c) {
-        return aggregateProcessingRate(filterNotSource(layout.getEdgeSource(c)));
+        return aggregateProcessingRate(layout.getInEdges(layout.getSource(c)));
     }
 
     private void splitLists(CurtailableWorkstation firstPhaseExample,
@@ -281,16 +285,6 @@ class ProcessDeviceImpl {
             Iterable<Workstation> target, boolean downflex) {
         profileMap.putAll(id, target);
         return FlexTuple.create(id, deltaP, !downflex, 1, 0, 0);
-    }
-
-    private Set<Workstation> filterNotSource(Buffer<Resource> c) {
-        Set<Workstation> t = Sets.newLinkedHashSet();
-        for (Workstation w : layout.edgesOf(c)) {
-            if (layout.getEdgeTarget(w).equals(c)) {
-                t.add(w);
-            }
-        }
-        return t;
     }
 
     private List<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
