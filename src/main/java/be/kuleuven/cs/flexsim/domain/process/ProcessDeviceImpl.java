@@ -2,8 +2,8 @@ package be.kuleuven.cs.flexsim.domain.process;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
@@ -224,8 +224,9 @@ class ProcessDeviceImpl {
         List<Workstation> edges = Lists.newArrayList();
         for (Workstation s : layout.getEdges()) {
             if (layout.getSource(s).equals(layout.getSource(c))
-                    && layout.getDest(s).equals(layout.getDest(c)))
+                    && layout.getDest(s).equals(layout.getDest(c))) {
                 edges.add(s);
+            }
         }
         return aggregateProcessingRate(edges);
     }
@@ -275,7 +276,7 @@ class ProcessDeviceImpl {
             sump += c.getAverageConsumption();
         }
         long id = newId();
-        HashSet<Workstation> set = Sets.newLinkedHashSet();
+        Set<Workstation> set = Sets.newLinkedHashSet();
         set.add(a);
         set.addAll(Lists.newArrayList(cs));
         return makeTuple(id, (int) sump, set, downflex);

@@ -6,7 +6,6 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * 
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  * 
- *         TODO test the decorator hierarchies.
  */
 public class SteerableCurtailableStationDecorator extends
         SteerableStationDecorator implements CurtailableWorkstation {

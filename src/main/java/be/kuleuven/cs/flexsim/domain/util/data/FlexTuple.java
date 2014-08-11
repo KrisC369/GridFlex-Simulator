@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *
  */
-// TODO define flex direction semantics clearly.
 public class FlexTuple {
 
     /**
@@ -81,6 +80,10 @@ public class FlexTuple {
     }
 
     /**
+     * Returns the direction of flexibility. Positive flexibility represents the
+     * ability to consume more, while negative flexibility represents the
+     * ability to curtail.
+     * 
      * @return the direction
      */
     public final boolean getDirection() {

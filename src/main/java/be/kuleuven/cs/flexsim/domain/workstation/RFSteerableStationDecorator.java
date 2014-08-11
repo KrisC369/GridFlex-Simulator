@@ -36,7 +36,9 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         this.n = width;
     }
 
-    // TODO decide on speed incr.
+    // TODO decide on speed incr. when switching between high and low
+    // consumption. Otherwise
+    // remove dependency on steerableStationDec.
     @Override
     public void signalHighConsumption() {
         if (isHigh) {

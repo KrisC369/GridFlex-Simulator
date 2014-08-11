@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Deque;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
@@ -154,7 +154,7 @@ public class SiteImpl implements Site {
 
     @Override
     public void deliverResources(List<Resource> res) {
-        LinkedList<Resource> q = Lists.newLinkedList(res);
+        Deque<Resource> q = Lists.newLinkedList(res);
         for (int i = 0; i < res.size(); i++) {
             processes.get(i % processes.size()).deliverResources(
                     Lists.newArrayList(q.pop()));
