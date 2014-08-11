@@ -62,4 +62,31 @@ public class SiteTest {
         assertTrue(siteflex.containsAll(flex2));
         assertEquals(siteflex.size(), flex1.size() + flex2.size(), 0);
     }
+
+    @Test
+    public void testAggregatedInfo() {
+        ProductionLine line1 = new ProductionLine.ProductionLineBuilder()
+                .addShifted(7).addMultiCapExponentialConsuming(2, 15)
+                .addShifted(7).build();
+        ProductionLine line2 = new ProductionLine.ProductionLineBuilder()
+                .addShifted(3).addMultiCapExponentialConsuming(1, 15)
+                .addShifted(4).build();
+        s = new SiteImpl(line1, line2);
+        int cons1 = line1.getAggregatedLastStepConsumptions();
+        int cons2 = line2.getAggregatedLastStepConsumptions();
+        int aggregate = s.getAggregatedLastStepConsumptions();
+        assertEquals(aggregate, cons1 + cons2, 0);
+
+        cons1 = line1.getAggregatedTotalConsumptions();
+        cons2 = line2.getAggregatedTotalConsumptions();
+        aggregate = s.getAggregatedTotalConsumptions();
+        assertEquals(aggregate, cons1 + cons2, 0);
+
+        List<Integer> flex1 = line1.getBufferOccupancyLevels();
+        List<Integer> flex2 = line2.getBufferOccupancyLevels();
+        List<Integer> siteflex = s.getBufferOccupancyLevels();
+        assertTrue(siteflex.containsAll(flex1));
+        assertTrue(siteflex.containsAll(flex2));
+        assertEquals(siteflex.size(), Math.max(flex1.size(), flex2.size()), 0);
+    }
 }
