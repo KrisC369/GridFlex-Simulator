@@ -67,4 +67,5 @@ public interface SimulationContext {
      * @return The Random Generator.
      */
     RandomGenerator getRandom();
+
 }
