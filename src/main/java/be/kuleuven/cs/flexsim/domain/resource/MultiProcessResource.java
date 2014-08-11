@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.resource;
 /**
  * A resource that can have multiple different processing runs as requirement.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class MultiProcessResource extends SimpleResource {
 

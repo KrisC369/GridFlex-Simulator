@@ -4,7 +4,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * This decorator adds the functionality of delaying the start of operation
  * (recieving ticks) by a couple of timesteps.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 class DelayedStartStationDecorator extends
         ForwardingStationDecorator<Workstation> {

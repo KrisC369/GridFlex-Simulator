@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Factory instance for creating resource instances.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public final class ResourceFactory {

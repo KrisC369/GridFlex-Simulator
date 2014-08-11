@@ -26,7 +26,7 @@ import edu.uci.ics.jung.graph.Graph;
 /**
  * Implements the process device interface.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 class ProcessDeviceImpl {

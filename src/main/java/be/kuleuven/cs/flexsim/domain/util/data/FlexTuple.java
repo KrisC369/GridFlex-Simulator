@@ -6,7 +6,7 @@ import javax.annotation.Nullable;
  * Tuples representing flexibility.
  *
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public class FlexTuple {

@@ -21,7 +21,7 @@ import com.google.common.collect.Sets;
 /**
  * Represents an energy aggregator implementation.
  *
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public class AggregatorImpl implements SimulationComponent {

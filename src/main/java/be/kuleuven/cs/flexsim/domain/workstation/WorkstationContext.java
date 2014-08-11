@@ -4,7 +4,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * This interface represents the methods that the station states can call on the
  * context class.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 interface WorkstationContext {

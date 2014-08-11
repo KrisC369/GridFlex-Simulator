@@ -10,7 +10,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * Abstract base class implementing the decorator pattern for Workstation
  * instances.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The type of workstation we are decorating. Only Workstation
  *            interface methods are automatically delegated. Specific subtype

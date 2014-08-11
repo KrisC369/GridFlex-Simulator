@@ -9,7 +9,7 @@ package be.kuleuven.cs.flexsim.domain.util;
  * of {@code Function}</a> for more information on a similar function interface
  * that is Nullable.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <F>
  *            Input type.
  * 

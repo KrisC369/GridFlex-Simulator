@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 /**
  * This class represents the commonalities of the state specific behavior.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 abstract class StationStateImpl implements StationState {

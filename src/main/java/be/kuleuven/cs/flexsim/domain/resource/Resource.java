@@ -7,7 +7,7 @@ import be.kuleuven.cs.flexsim.domain.util.IBufferable;
 /**
  * Interface class for resource representations in the system.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface Resource extends IBufferable, Serializable {

@@ -10,7 +10,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * Represents a simulation component for which the process can be tracked and
  * steered in terms of input-output of resources.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface ResourceConsumptionTrackableComponent extends

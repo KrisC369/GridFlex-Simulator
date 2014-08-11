@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 /**
  * This workstation is configurable in terms of Energy consumption parameters.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 interface ConfigurableWorkstation extends Workstation {

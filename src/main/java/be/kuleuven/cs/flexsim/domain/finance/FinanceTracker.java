@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.finance;
 /**
  * Represents an entity for tracking financing data about trackable instances.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public interface FinanceTracker {

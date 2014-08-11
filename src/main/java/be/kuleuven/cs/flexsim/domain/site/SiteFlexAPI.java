@@ -7,7 +7,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 /**
  * API for gathering data about the flexibility for an entity.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public interface SiteFlexAPI {

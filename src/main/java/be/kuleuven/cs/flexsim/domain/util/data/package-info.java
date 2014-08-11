@@ -1,6 +1,6 @@
 /**
  * This package holds data utilities and value classes representing domain data.
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 @ParametersAreNonnullByDefault

@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 /**
  * Adapter class for aggregating and summing multiple trackers.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 class FinanceAggregatingDecorator implements FinanceTracker {

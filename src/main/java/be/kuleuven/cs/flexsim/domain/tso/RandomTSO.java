@@ -5,7 +5,7 @@ import org.apache.commons.math3.random.RandomGenerator;
 /**
  * Represents a TSO implementation with random signal.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public class RandomTSO implements SteeringSignal {

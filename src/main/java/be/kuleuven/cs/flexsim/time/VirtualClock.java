@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.time;
 /**
  * Interface for time keeper classes.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public interface VirtualClock {
 

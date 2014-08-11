@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 /**
  * Represents instances that allow curtailment of some sorts.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public interface CurtailableWorkstation extends Workstation {
 

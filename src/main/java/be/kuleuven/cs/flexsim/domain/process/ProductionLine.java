@@ -27,7 +27,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 /**
  * A production line representing buffers and workstations.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public final class ProductionLine implements FlexProcess {
 
@@ -248,7 +248,7 @@ public final class ProductionLine implements FlexProcess {
     /**
      * Builder class for building production line instances.
      * 
-     * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+     * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
      */
     public static class ProductionLineBuilder {
 

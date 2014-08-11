@@ -6,7 +6,7 @@ import be.kuleuven.cs.flexsim.domain.util.Buffer;
 /**
  * Helper class for creating and instantiating workstation objects.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public final class WorkstationFactory {

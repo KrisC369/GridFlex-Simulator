@@ -7,7 +7,7 @@ import java.util.List;
  * interface. This interface inherits from the instrumentation component
  * interface which allows dependency injection.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface SimulationComponent extends InstrumentationComponent {

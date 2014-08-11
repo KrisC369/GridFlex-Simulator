@@ -4,7 +4,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * A decorator for decorating workstation instances that are both Steerable and
  * curtailable.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public class SteerableCurtailableStationDecorator extends

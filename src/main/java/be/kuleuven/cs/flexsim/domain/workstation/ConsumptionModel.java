@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 /**
  * Different consumption model strategies for calculating energy consumption.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public enum ConsumptionModel {
     /**

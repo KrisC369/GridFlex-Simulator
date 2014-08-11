@@ -18,7 +18,7 @@ import com.google.common.collect.Multimap;
 /**
  * An implementation for the Site interface.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public class SiteImpl implements Site {

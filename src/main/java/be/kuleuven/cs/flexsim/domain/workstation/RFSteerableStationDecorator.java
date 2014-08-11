@@ -9,7 +9,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * A decorator for decorating workstation instances that steerable with a random
  * noise factor on the variable consumption.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public class RFSteerableStationDecorator extends SteerableStationDecorator

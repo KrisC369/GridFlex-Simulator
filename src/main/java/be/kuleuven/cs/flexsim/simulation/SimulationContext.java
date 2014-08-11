@@ -10,7 +10,7 @@ import com.google.common.eventbus.EventBus;
 /**
  * The interface for the simulation context.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface SimulationContext {

@@ -5,7 +5,7 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 /**
  * The Reward model representation.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public enum RewardModel {

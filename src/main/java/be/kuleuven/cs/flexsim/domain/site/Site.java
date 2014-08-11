@@ -6,7 +6,7 @@ import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableCompone
 /**
  * Represents a production site with possibly multiple production lines.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public interface Site extends SiteFlexAPI,

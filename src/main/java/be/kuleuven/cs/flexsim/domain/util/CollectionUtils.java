@@ -9,7 +9,7 @@ import java.util.List;
  * This class represents some generic utility function making use of mapping
  * functions.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public final class CollectionUtils {

@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.time;
 /**
  * A basic clock representation for the simulation component of this software.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public final class SimulationClock implements VirtualClock {

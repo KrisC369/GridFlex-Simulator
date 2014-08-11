@@ -5,7 +5,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * for whatever reason. This interface provides a means to register the specific
  * subtype. (Similarities with visitors)
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface WorkstationRegisterable {

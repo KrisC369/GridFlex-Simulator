@@ -7,7 +7,7 @@ import be.kuleuven.cs.gridlock.simulation.events.EventFactoryImplementation;
 /**
  * EventFactory implementation for simplified events not using an event manager.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public final class SimpleEventFactory {

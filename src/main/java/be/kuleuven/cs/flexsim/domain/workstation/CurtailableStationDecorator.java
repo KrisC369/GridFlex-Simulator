@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 /**
  * This station decorator allows for curtailment functionality for workstations.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 class CurtailableStationDecorator<T extends Workstation> extends
         ForwardingStationDecorator<T> implements CurtailableWorkstation {

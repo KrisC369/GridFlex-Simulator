@@ -1,6 +1,6 @@
 /**
  * Package for all energy aggregation related stuff.
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 @ParametersAreNonnullByDefault

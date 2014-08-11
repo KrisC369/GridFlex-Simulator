@@ -4,7 +4,7 @@ package be.kuleuven.cs.flexsim.simulation;
  * Instrumentation components allow the injection of simulation context
  * instances.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface InstrumentationComponent {

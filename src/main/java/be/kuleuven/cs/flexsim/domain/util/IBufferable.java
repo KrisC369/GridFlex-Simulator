@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.util;
 /**
  * Interface representing a bufferable instance.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public interface IBufferable {
 

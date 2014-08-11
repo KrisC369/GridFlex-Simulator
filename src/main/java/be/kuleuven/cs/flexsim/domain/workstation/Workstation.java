@@ -6,7 +6,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * Workstation API for public operations on workstation components. Workstations
  * represent machines that perform work and consume energy.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public interface Workstation extends SimulationComponent,

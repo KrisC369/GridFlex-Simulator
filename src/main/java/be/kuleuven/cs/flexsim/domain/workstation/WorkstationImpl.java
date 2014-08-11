@@ -20,7 +20,7 @@ import com.google.common.annotations.VisibleForTesting;
  * Main workstation class representing machines that perform work and consume
  * energy.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 class WorkstationImpl implements ConfigurableWorkstation {

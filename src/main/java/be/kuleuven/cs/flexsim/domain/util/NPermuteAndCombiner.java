@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 /**
  * Utility class for generation of Permutation and combinations of items.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The elements that will be permuted or recombined.
  *

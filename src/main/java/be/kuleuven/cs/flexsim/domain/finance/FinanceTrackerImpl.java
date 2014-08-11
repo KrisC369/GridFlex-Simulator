@@ -14,7 +14,7 @@ import com.google.common.base.Optional;
 /**
  * Tracks and finalizes the finances of productionlines.
  * 
- * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
 public final class FinanceTrackerImpl implements SimulationComponent,
