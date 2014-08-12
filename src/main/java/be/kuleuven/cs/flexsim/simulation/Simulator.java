@@ -4,7 +4,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
@@ -15,6 +14,7 @@ import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
 
 /**
@@ -47,6 +47,8 @@ public final class Simulator implements SimulationContext {
 
     private final RandomGenerator random;
 
+    private final UIDGenerator uidgen;
+
     /**
      * Instantiates a new simulator.
      * 
@@ -57,11 +59,19 @@ public final class Simulator implements SimulationContext {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new SimulationClock();
-        this.components = new LinkedHashSet<>();
-        this.instruComps = new LinkedHashSet<>();
+        this.components = Sets.newLinkedHashSet();
+        this.instruComps = Sets.newLinkedHashSet();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory();
         this.random = new MersenneTwister(duration);
+        this.uidgen = new UIDGenerator() {
+            private long count = 0;
+
+            @Override
+            public synchronized long getNextUID() {
+                return count++;
+            }
+        };
     }
 
     /**
@@ -217,5 +227,10 @@ public final class Simulator implements SimulationContext {
     @Override
     public RandomGenerator getRandom() {
         return this.random;
+    }
+
+    @Override
+    public UIDGenerator getUIDGenerator() {
+        return this.uidgen;
     }
 }

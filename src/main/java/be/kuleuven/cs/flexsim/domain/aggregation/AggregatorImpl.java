@@ -1,14 +1,15 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
+import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -70,19 +71,35 @@ public class AggregatorImpl implements SimulationComponent {
     }
 
     void doAggregationStep() {
+        // As of yet, only guaranteed working for 2 sites.
+        // Add combinations using all sites
         LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
         Map<Long, Integer> flexFiltered = filterAndTransform(flex);
+
+        NPermuteAndCombiner<Long> g = new NPermuteAndCombiner<>();
+        List<Collection<Long>> splitted = split(flex);
+        Collection<List<Long>> possibleSolutions = g.permutations(splitted);
+
+        // Add possibility for only 1 site participating.
+        for (Collection<Long> key : splitted) {
+            possibleSolutions.addAll(g.processSubsets(Lists.newArrayList(key),
+                    1));
+        }
+
         final int target = getTargetFlex();
-        int current = 0;
-        Set<Long> ids = Sets.newLinkedHashSet();
-        for (Entry<Long, Integer> e : flexFiltered.entrySet()) {
-            if (diff(current + e.getValue(), target) < diff(current, target)) {
-                current += e.getValue();
-                ids.add(e.getKey());
+        Collection<Long> best = Lists.newArrayList();
+        int score = 0;
+        for (Collection<Long> poss : possibleSolutions) {
+            int flexSum = 0;
+            for (long l : poss) {
+                flexSum += flexFiltered.get(l);
+            }
+            if (diff(flexSum, target) < diff(score, target)) {
+                score = flexSum;
+                best = poss;
             }
         }
-        dispatchActivation(flex, ids);
-
+        dispatchActivation(flex, Sets.newLinkedHashSet(best));
     }
 
     private void dispatchActivation(
@@ -126,6 +143,20 @@ public class AggregatorImpl implements SimulationComponent {
             } else {
                 res.put(f.getId(), f.getDeltaP() * -1);
             }
+        }
+        return res;
+    }
+
+    private List<Collection<Long>> split(
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
+        List<Collection<Long>> res = Lists.newArrayList();
+        List<Long> tmp;
+        for (SiteFlexAPI key : flex.keySet()) {
+            tmp = Lists.newArrayList();
+            for (FlexTuple f : flex.get(key)) {
+                tmp.add(f.getId());
+            }
+            res.add(tmp);
         }
         return res;
     }

@@ -68,7 +68,8 @@ public class AggregatorImplTest {
 
     @Test
     public void testSimpleAggregationNoFlex() {
-        agg.doAggregationStep();
+        doRegister();
+        sim.start();
         verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
         verify(clientDown, times(0)).activateFlex(
                 any(ActivateFlexCommand.class));
@@ -124,6 +125,23 @@ public class AggregatorImplTest {
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
+        verify(clientDown, times(1)).activateFlex(
+                any(ActivateFlexCommand.class));
+    }
+
+    @Test
+    public void testUseOnlyOneProfile() {
+        tso = mock(SteeringSignal.class);
+        this.clientDown = mock(SiteFlexAPI.class);
+        doReturn(
+                Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
+                        FlexTuple.create(7, 5, false, 10, 0, 0),
+                        FlexTuple.create(3, 10, true, 10, 0, 0))).when(
+                clientDown).getFlexTuples();
+        doReturn(5000).when(tso).getCurrentValue(anyInt());
+        agg = new AggregatorImpl(tso, freq);
+        doRegister();
+        sim.start();
         verify(clientDown, times(1)).activateFlex(
                 any(ActivateFlexCommand.class));
     }

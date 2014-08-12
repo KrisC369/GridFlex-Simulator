@@ -2,12 +2,13 @@ package be.kuleuven.cs.flexsim.domain.util;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Set;
+
+import com.google.common.collect.Sets;
 
 /**
  * The Class Buffer represents a simple FIFO queue buffer implementation.
@@ -66,7 +67,7 @@ public final class Buffer<T extends IBufferable> implements Serializable {
      * @return all the present items.
      */
     public Collection<T> pullAll() {
-        Set<T> returnset = new HashSet<>();
+        Set<T> returnset = Sets.newLinkedHashSet();
         while (!isEmpty()) {
             returnset.add(pull());
         }

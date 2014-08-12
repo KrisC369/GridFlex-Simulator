@@ -93,4 +93,24 @@ public class NPermuteAndCombinerTest {
         Collection<List<String>> result2 = g.permutations(f, 4);
         assertEquals(result, result2);
     }
+
+    @Test
+    public void testCombiner() {
+        Collection<String> k = Lists.newArrayList("X", "Y", "Z");
+        Collection<String> ff = f;
+        Collection<List<String>> result = g.permutations(Lists.newArrayList(ff,
+                k));
+        assertTrue(result.contains(Lists.newArrayList("A", "X")));
+        assertTrue(result.contains(Lists.newArrayList("A", "Y")));
+        assertTrue(result.contains(Lists.newArrayList("A", "Z")));
+        assertTrue(result.contains(Lists.newArrayList("B", "X")));
+        assertTrue(result.contains(Lists.newArrayList("B", "Y")));
+        assertTrue(result.contains(Lists.newArrayList("B", "Z")));
+        assertTrue(result.contains(Lists.newArrayList("C", "X")));
+        assertTrue(result.contains(Lists.newArrayList("C", "Y")));
+        assertTrue(result.contains(Lists.newArrayList("C", "Z")));
+        assertTrue(result.contains(Lists.newArrayList("D", "X")));
+        assertTrue(result.contains(Lists.newArrayList("D", "Y")));
+        assertTrue(result.contains(Lists.newArrayList("D", "Z")));
+    }
 }

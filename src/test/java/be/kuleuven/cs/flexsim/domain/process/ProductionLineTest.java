@@ -10,7 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +32,7 @@ import com.google.common.eventbus.Subscribe;
 public class ProductionLineTest {
 
     public static class ChangeEventComponent implements SimulationComponent {
-        private Map<String, Object> resultMap = new HashMap<>();
+        private Map<String, Object> resultMap = new LinkedHashMap<>();
         private String lastType = "";
         private SimulationComponent mock;
 

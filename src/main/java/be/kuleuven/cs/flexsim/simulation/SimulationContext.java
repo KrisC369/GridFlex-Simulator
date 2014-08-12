@@ -68,4 +68,11 @@ public interface SimulationContext {
      */
     RandomGenerator getRandom();
 
+    /**
+     * Returns a generator that generates unique IDs in Long format.
+     * 
+     * @return A unique ID generator.
+     */
+    UIDGenerator getUIDGenerator();
+
 }

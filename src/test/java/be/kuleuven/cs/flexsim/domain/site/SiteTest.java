@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -9,7 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
+import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class SiteTest {
 
@@ -88,5 +91,37 @@ public class SiteTest {
         assertTrue(siteflex.containsAll(flex1));
         assertTrue(siteflex.containsAll(flex2));
         assertEquals(siteflex.size(), Math.max(flex1.size(), flex2.size()), 0);
+    }
+
+    @Test
+    public void testGatherAndDeliverResources() {
+        ProductionLine line1 = new ProductionLine.ProductionLineBuilder()
+                .addShifted(7).addMultiCapExponentialConsuming(2, 15)
+                .addShifted(7).build();
+        ProductionLine line2 = new ProductionLine.ProductionLineBuilder()
+                .addShifted(3).addMultiCapExponentialConsuming(1, 15)
+                .addShifted(4).build();
+        s = new SiteImpl(line1, line2);
+        s.deliverResources(ResourceFactory.createBulkMPResource(50, 3, 3, 3, 3,
+                3, 3));
+        assertTrue(line1.getBufferOccupancyLevels().get(0) > 0);
+        assertTrue(line2.getBufferOccupancyLevels().get(0) > 0);
+        Simulator sim = Simulator.createSimulator(1000);
+        sim.register(s);
+        sim.start();
+        assertFalse(s.takeResources().isEmpty());
+    }
+
+    @Test
+    public void testToString() {
+        ProductionLine line1 = new ProductionLine.ProductionLineBuilder()
+                .addShifted(7).addMultiCapExponentialConsuming(2, 15)
+                .addShifted(7).build();
+        ProductionLine line2 = new ProductionLine.ProductionLineBuilder()
+                .addShifted(3).addMultiCapExponentialConsuming(1, 15)
+                .addShifted(4).build();
+        s = new SiteImpl(line1, line2);
+        String res = s.toString();
+        assertTrue(res.contains(((Integer) s.hashCode()).toString()));
     }
 }

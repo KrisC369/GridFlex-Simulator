@@ -2,8 +2,6 @@ package be.kuleuven.cs.flexsim.domain.process;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -20,6 +18,10 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
@@ -56,13 +58,13 @@ public final class ProductionLine implements FlexProcess {
     private final ProcessDeviceImpl flexProcessor;
 
     private ProductionLine() {
-        this.buffers = new ArrayList<>();
-        this.workstations = new ArrayList<>();
-        this.curtailables = new LinkedHashSet<>();
-        this.duals = new LinkedHashSet<>();
-        this.steerables = new LinkedHashSet<>();
+        this.buffers = Lists.newArrayList();
+        this.workstations = Lists.newArrayList();
+        this.curtailables = Sets.newLinkedHashSet();
+        this.duals = Sets.newLinkedHashSet();
+        this.steerables = Sets.newLinkedHashSet();
         this.registry = new PLRegisterable();
-        this.uniques = new HashSet<Workstation>();
+        this.uniques = Sets.newLinkedHashSet();
         this.layout = new SparseMultigraph<>();
         flexProcessor = new ProcessDeviceImpl(this);
     }

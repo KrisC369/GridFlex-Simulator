@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.simulation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
@@ -10,7 +11,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +20,13 @@ import org.junit.Test;
 
 import be.kuleuven.cs.gridlock.simulation.events.Event;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
 
 public class SimulatorTest {
     public static class ChangeEventComponent implements SimulationComponent {
-        private Map<String, Object> resultMap = new HashMap<>();
+        private Map<String, Object> resultMap = new LinkedHashMap<>();
 
         @Override
         public void afterTick(int t) {
@@ -144,5 +147,72 @@ public class SimulatorTest {
     private void runSim(boolean immediateReturn) {
         s.register(comp);
         s.start();
+    }
+
+    @Test
+    public void testUID() {
+        s = Simulator.createSimulator(2000);
+        UIDGenerator gen = s.getUIDGenerator();
+        long prev = -1;
+        for (long c = 0; c < 100000; c++) {
+            long curr = gen.getNextUID();
+            assertNotEquals(prev, curr);
+            prev = curr;
+        }
+    }
+
+    @Test
+    public void testGenerator() {
+        List<List<Long>> results = Lists.newArrayList();
+        List<Long> tmp = Lists.newArrayList();
+
+        for (int i = 0; i < 100; i++) {
+            tmp = Lists.newArrayList();
+            s = Simulator.createSimulator(2000);
+            for (int j = 0; j < 100000; j++) {
+                tmp.add(s.getRandom().nextLong());
+            }
+            results.add(tmp);
+        }
+        assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
+
+        results = Lists.newArrayList();
+        tmp = Lists.newArrayList();
+
+        for (int i = 0; i < 100; i++) {
+            tmp = Lists.newArrayList();
+            s = Simulator.createSimulator(31648);
+            for (int j = 0; j < 100000; j++) {
+                tmp.add(s.getRandom().nextLong());
+            }
+            results.add(tmp);
+        }
+        assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
+
+        results = Lists.newArrayList();
+        tmp = Lists.newArrayList();
+
+        for (int i = 0; i < 100; i++) {
+            tmp = Lists.newArrayList();
+            s = Simulator.createSimulator(12447);
+            for (int j = 0; j < 100000; j++) {
+                tmp.add(s.getRandom().nextLong());
+            }
+            results.add(tmp);
+        }
+        assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
+
+        results = Lists.newArrayList();
+        tmp = Lists.newArrayList();
+
+        for (int i = 0; i < 100; i++) {
+            tmp = Lists.newArrayList();
+            s = Simulator.createSimulator(358);
+            for (int j = 0; j < 100000; j++) {
+                tmp.add(s.getRandom().nextLong());
+            }
+            results.add(tmp);
+        }
+        assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
 }

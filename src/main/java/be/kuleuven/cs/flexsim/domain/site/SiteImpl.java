@@ -160,4 +160,16 @@ public class SiteImpl implements Site {
                     Lists.newArrayList(q.pop()));
         }
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Site [hC=").append(hashCode()).append("]");
+        return builder.toString();
+    }
 }
