@@ -9,6 +9,8 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import com.google.common.collect.Lists;
 
 /**
+ * A TSO that serves as a copper plate connection to all sites present.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -20,7 +22,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
     private int currentImbalance;
 
     /**
-     * Default constructor
+     * Default constructor.
      * 
      * @param signal
      *            The steeringSignal to use as offset.
@@ -28,10 +30,26 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
      *            The sites connected to this TSO
      */
     public CopperPlateTSO(SteeringSignal signal, Site... sites) {
+        this(0, signal, sites);
+    }
+
+    /**
+     * Constructor including initial balance.
+     * 
+     * @param initialbal
+     *            the initial balance ofset representing other prosumers'
+     *            balance
+     * @param signal
+     *            The steeringSignal to use as offset.
+     * @param sites
+     *            The sites connected to this TSO
+     */
+    public CopperPlateTSO(int initialbal, SteeringSignal signal, Site... sites) {
         this.prosumers = Lists.newArrayList(sites);
         this.signal = signal;
-        this.initialImbalance = 0;
+        this.initialImbalance = initialbal;
         this.currentImbalance = 0;
+
     }
 
     @Override
@@ -58,6 +76,6 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
 
     @Override
     public int getCurrentValue(int timeMark) {
-        return this.signal.getCurrentValue(timeMark);
+        return this.signal.getCurrentValue(timeMark) + this.currentImbalance;
     }
 }
