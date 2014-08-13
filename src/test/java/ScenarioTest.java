@@ -304,43 +304,21 @@ public class ScenarioTest {
     }
 
     @Test
-    public void testRepeatDeterminism1() {
+    public void testRepeatForDeterminism() {
         List<Double> results = Lists.newArrayList();
         for (int i = 0; i < 5; i++) {
-            results.add(testAggregationWithConnectedTSO());
+            results.add(testAggregationRunStepWithCurtailment());
         }
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
 
     @Test
-    public void testRepeatDeterminismMultiThread() {
+    public void testRepeatForDeterminismMultiThread() {
         int expsize = 15;
         final List<Double> results = Lists.newArrayList();
         for (int i = 0; i < expsize; i++) {
             new Thread(new Runnable() {
 
-                @Override
-                public void run() {
-                    results.add(testAggregationWithConnectedTSO());
-                }
-            }).start();
-        }
-        while (results.size() < expsize) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
-    }
-
-    @Test
-    public void testRepeatDeterminismMultiThread2() {
-        int expsize = 15;
-        final List<Double> results = Lists.newArrayList();
-        for (int i = 0; i < expsize; i++) {
-            new Thread(new Runnable() {
                 @Override
                 public void run() {
                     results.add(testAggregationRunStepWithCurtailment());
@@ -358,10 +336,33 @@ public class ScenarioTest {
     }
 
     @Test
-    public void testRepeatDeterminism2() {
+    public void testRepeatForDeterminismMultiThreadCPTSO() {
+        int expsize = 15;
+        final List<Double> results = Lists.newArrayList();
+        for (int i = 0; i < expsize; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    results.add(testAggregationWithConnectedTSO());
+                }
+            }).start();
+        }
+        while (results.size() < expsize) {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
+    }
+
+    @Test
+    public void testRepeatForDeterminismCPTSO() {
         List<Double> results = Lists.newArrayList();
         for (int i = 0; i < 5; i++) {
-            results.add(testAggregationRunStepWithCurtailment());
+            results.add(testAggregationWithConnectedTSO());
 
         }
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
