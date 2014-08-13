@@ -99,13 +99,6 @@ class ProcessDeviceImpl {
     private List<FlexTuple> calculateUpFlex(
             List<CurtailableWorkstation> curtailedStations) {
         List<FlexTuple> toRet = Lists.newArrayList();
-        // NPermuteAndCombiner<CurtailableWorkstation> g = new
-        // NPermuteAndCombiner<>();
-        // List<List<CurtailableWorkstation>> sets = Lists.newArrayList();
-        // for (int i = 1; i < curtailedStations.size(); i++) {
-        // sets.addAll(g.processSubsets(curtailedStations, i));
-        // }
-
         List<Set<CurtailableWorkstation>> sets2 = Lists.newArrayList(Sets
                 .powerSet(Sets.newLinkedHashSet(curtailedStations)));
         sets2.remove(Sets.newLinkedHashSet());
