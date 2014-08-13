@@ -5,8 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.math3.random.MersenneTwister;
-import org.apache.commons.math3.random.RandomGenerator;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
@@ -32,15 +30,11 @@ import edu.uci.ics.jung.graph.Graph;
  */
 class ProcessDeviceImpl {
 
-    private static final int POW2_8 = 32;
     private final Graph<Buffer<Resource>, Workstation> layout;
-    private long idcount;
     private boolean fresh;
     private List<FlexTuple> flexibility;
     private final LinkedListMultimap<Long, Workstation> profileMap;
-    private RandomGenerator random;
     private UIDGenerator uid;
-    private long key;
 
     /**
      * Default constructor
@@ -52,8 +46,6 @@ class ProcessDeviceImpl {
         this.layout = subject.getLayout();
         this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
-        this.random = new MersenneTwister();
-        this.key = 0;
         this.uid = new UIDGenerator() {
             @Override
             public long getNextUID() {
@@ -341,14 +333,6 @@ class ProcessDeviceImpl {
     }
 
     private synchronized long newId() {
-        if (this.key == 0) {
-            this.key = random.nextLong();
-        }
-        int result = 1;
-        result = (int) (this.key + (int) (idcount ^ (idcount >>> POW2_8)));
-        idcount++;
-
-        // return result;
         return uid.getNextUID();
     }
 
@@ -379,14 +363,6 @@ class ProcessDeviceImpl {
                 }
             }
         }
-    }
-
-    /**
-     * @param random
-     *            the random to set
-     */
-    final synchronized void setRandom(RandomGenerator random) {
-        this.random = random;
     }
 
     /**
