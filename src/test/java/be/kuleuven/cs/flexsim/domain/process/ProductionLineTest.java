@@ -291,7 +291,7 @@ public class ProductionLineTest {
         startSim();
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
-        System.out.println(flex);
+        // System.out.println(flex);
         assertFalse(flex.contains(FlexTuple.NONE));
         assertTrue(flex.get(0).getDirection());// one up flex
     }
