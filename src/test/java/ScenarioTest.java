@@ -2,7 +2,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -307,7 +306,7 @@ public class ScenarioTest {
         for (int i = 0; i < 5; i++) {
             results.add(testAggregationRunStepWithCurtailment());
         }
-        System.out.println(Arrays.toString(results.toArray()));
+        // System.out.println(Arrays.toString(results.toArray()));
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
 
@@ -331,7 +330,7 @@ public class ScenarioTest {
                 e.printStackTrace();
             }
         }
-        System.out.println(Arrays.toString(results.toArray()));
+        // System.out.println(Arrays.toString(results.toArray()));
 
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
