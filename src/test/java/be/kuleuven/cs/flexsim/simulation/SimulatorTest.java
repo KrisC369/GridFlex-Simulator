@@ -10,6 +10,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -214,5 +215,23 @@ public class SimulatorTest {
             results.add(tmp);
         }
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
+    }
+
+    @Test
+    public void testGeneratorDeterminism() {
+        Simulator sim = Simulator.createSimulator(24550);
+        List<Integer> res = Lists.newArrayList();
+        List<Integer> t = Lists.newArrayList();
+
+        for (int i = 0; i < 25000; i++) {
+            sim = Simulator.createSimulator(24550);
+            t = Lists.newArrayList();
+            for (int j = 0; j < 25000; j++) {
+                t.add(sim.getRandom().nextInt(Math.abs(70 + 300)) - 300);
+            }
+            res.add(t.hashCode());
+        }
+        System.out.println(Arrays.toString(res.toArray()));
+        assertEquals(1, Sets.newLinkedHashSet(res).size(), 0);
     }
 }

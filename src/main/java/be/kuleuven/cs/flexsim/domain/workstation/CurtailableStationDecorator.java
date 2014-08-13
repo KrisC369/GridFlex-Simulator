@@ -27,8 +27,8 @@ class CurtailableStationDecorator<T extends Workstation> extends
         if (isCurtailed()) {
             throw new IllegalStateException();
         }
-        curtailed = true;
         logCurtailment();
+        curtailed = true;
     }
 
     @Override
@@ -36,8 +36,8 @@ class CurtailableStationDecorator<T extends Workstation> extends
         if (!isCurtailed()) {
             throw new IllegalStateException();
         }
-        curtailed = false;
         logRestoration();
+        curtailed = false;
     }
 
     @Override

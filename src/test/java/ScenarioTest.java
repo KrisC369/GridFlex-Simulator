@@ -2,6 +2,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,8 +85,6 @@ public class ScenarioTest {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        ResourceFactory.createBulkMPResource(50, 3, 3, 3, 3, 3, 3);
-
         line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
                 3, 3));
         line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
@@ -139,7 +138,6 @@ public class ScenarioTest {
                 .setIdleConsumption(15).addConsuming(4)
                 .addCurtailableShifted(4).addCurtailableShifted(5)
                 .addConsuming(3).build();
-        ResourceFactory.createBulkMPResource(50, 3, 3, 3, 3, 3, 3);
 
         line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
                 3, 3));
@@ -158,7 +156,7 @@ public class ScenarioTest {
         simulator = Simulator.createSimulator(1500);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
-        tso = new RandomTSO(-300, 70, simulator.getRandom());
+        tso = new RandomTSO(-500, 1000, simulator.getRandom());
         agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -309,6 +307,7 @@ public class ScenarioTest {
         for (int i = 0; i < 5; i++) {
             results.add(testAggregationRunStepWithCurtailment());
         }
+        System.out.println(Arrays.toString(results.toArray()));
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
 
@@ -332,6 +331,8 @@ public class ScenarioTest {
                 e.printStackTrace();
             }
         }
+        System.out.println(Arrays.toString(results.toArray()));
+
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
 
@@ -367,4 +368,5 @@ public class ScenarioTest {
         }
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
     }
+
 }

@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
+import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
@@ -139,16 +140,14 @@ public final class Simulator implements SimulationContext {
         Event ev = eventFac.build(SIMSTART_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
-        org.slf4j.LoggerFactory.getLogger(Simulator.class).info(
-                "Simulation started");
+        LoggerFactory.getLogger(Simulator.class).info("Simulation started");
     }
 
     private void notifyStop() {
         Event ev = eventFac.build(SIMSTOP_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
-        org.slf4j.LoggerFactory.getLogger(Simulator.class).info(
-                "Simulation stopped");
+        LoggerFactory.getLogger(Simulator.class).info("Simulation stopped");
     }
 
     private synchronized void tickComponents() {
@@ -210,7 +209,14 @@ public final class Simulator implements SimulationContext {
 
     private void registerComp(SimulationComponent comp) {
         this.components.add(comp);
+        logRegisterSC(comp);
         registerInstru(comp);
+    }
+
+    private void logRegisterSC(SimulationComponent comp) {
+        LoggerFactory.getLogger(Simulator.class).debug(
+                "Simulation component registered: {}", comp);
+
     }
 
     @Override
@@ -222,6 +228,13 @@ public final class Simulator implements SimulationContext {
         this.instruComps.add(comp);
         this.eventbus.register(comp);
         comp.initialize(this);
+        logRegisterIC(comp);
+    }
+
+    private void logRegisterIC(InstrumentationComponent comp) {
+        LoggerFactory.getLogger(Simulator.class).debug(
+                "Instrumentation component registered: {}", comp);
+
     }
 
     @Override

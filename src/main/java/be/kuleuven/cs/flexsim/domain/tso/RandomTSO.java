@@ -53,6 +53,6 @@ public class RandomTSO implements SteeringSignal {
     @Override
     public int getCurrentValue(int timeMark) {
         return getGenerator().nextInt(Math.abs(getMax() - getMin())) + getMin();
-    }
 
+    }
 }

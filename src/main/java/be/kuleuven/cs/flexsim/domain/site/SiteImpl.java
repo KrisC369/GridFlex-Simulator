@@ -10,7 +10,6 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -85,7 +84,7 @@ public class SiteImpl implements Site {
     }
 
     private void gatherFlex() {
-        this.flex = ArrayListMultimap.create();
+        this.flex = LinkedListMultimap.create();
         for (FlexProcess proc : processes) {
             flex.putAll(proc, Lists.newArrayList(proc.getCurrentFlexbility()));
         }

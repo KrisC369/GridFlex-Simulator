@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.LoggerFactory;
+
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
@@ -70,7 +72,7 @@ public class AggregatorImpl implements SimulationComponent {
         clients.add(client);
     }
 
-    void doAggregationStep() {
+    void doAggregationStep(int t) {
         // As of yet, only guaranteed working for 2 sites.
         // Add combinations using all sites
         LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
@@ -87,6 +89,8 @@ public class AggregatorImpl implements SimulationComponent {
         }
 
         final int target = getTargetFlex();
+        logStep(t, target);
+
         Collection<Long> best = Lists.newArrayList();
         int score = 0;
         for (Collection<Long> poss : possibleSolutions) {
@@ -109,6 +113,11 @@ public class AggregatorImpl implements SimulationComponent {
                 for (FlexTuple t : flex.get(s)) {
                     if (t.getId() == i) {
                         final FlexTuple tt = t;
+                        if (tt.getDirection()) {
+                            logRestore(tt);
+                        } else {
+                            logCurtail(tt);
+                        }
                         s.activateFlex(new ActivateFlexCommand() {
                             @Override
                             public long getReferenceID() {
@@ -181,12 +190,29 @@ public class AggregatorImpl implements SimulationComponent {
     @Override
     public void tick(int t) {
         if (tickcount++ % aggFreq == 0) {
-            doAggregationStep();
+            doAggregationStep(t);
         }
     }
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
         return Collections.emptyList();
+    }
+
+    private void logStep(int t, int target) {
+        LoggerFactory
+                .getLogger(AggregatorImpl.class)
+                .debug("Performing aggregation step at time step {} with flextarget {}",
+                        t, target);
+    }
+
+    private void logCurtail(FlexTuple tt) {
+        LoggerFactory.getLogger(AggregatorImpl.class).debug(
+                "Sending curtail request based on profile {}", tt);
+    }
+
+    private void logRestore(FlexTuple tt) {
+        LoggerFactory.getLogger(AggregatorImpl.class).debug(
+                "Sending restore request based on profile {}", tt);
     }
 }

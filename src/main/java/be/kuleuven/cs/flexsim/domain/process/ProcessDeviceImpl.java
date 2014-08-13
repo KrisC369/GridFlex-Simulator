@@ -16,6 +16,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
+import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
@@ -38,6 +39,7 @@ class ProcessDeviceImpl {
     private List<FlexTuple> flexibility;
     private final LinkedListMultimap<Long, Workstation> profileMap;
     private RandomGenerator random;
+    private UIDGenerator uid;
     private long key;
 
     /**
@@ -52,6 +54,12 @@ class ProcessDeviceImpl {
         this.profileMap = LinkedListMultimap.create();
         this.random = new MersenneTwister();
         this.key = 0;
+        this.uid = new UIDGenerator() {
+            @Override
+            public long getNextUID() {
+                return 0;
+            }
+        };
     }
 
     List<FlexTuple> getCurrentFlexbility(
@@ -106,7 +114,7 @@ class ProcessDeviceImpl {
             sets.addAll(g.processSubsets(curtailedStations, i));
         }
         for (List<CurtailableWorkstation> lc : sets) {
-            toRet.add(makeCurtFlexTuple(false, lc));
+            toRet.add(makeCurtFlexTuple(true, lc));
         }
         return toRet;
     }
@@ -125,7 +133,7 @@ class ProcessDeviceImpl {
         double previousPhaseRate = calculatePreviousPhaseRate(a);
         double currentPR = aggregateProcessingRate(a, Lists.newArrayList(cs));
         if (canCurtail(totalCurrentPhaseRate, previousPhaseRate, currentPR)) {
-            return makeCurtFlexTuple(true, a, cs);
+            return makeCurtFlexTuple(false, a, cs);
         }
         return FlexTuple.createNONE();
     }
@@ -144,7 +152,7 @@ class ProcessDeviceImpl {
         if (canCurtail(firstPhaseTotal, preFirstPhase, curtEstFirstPhase)
                 && canCurtail(secondPhaseTotal, curtEstSecondPhase,
                         firstPhaseTotal - curtEstFirstPhase)) {
-            return makeCurtFlexTuple(true, a, cs);
+            return makeCurtFlexTuple(false, a, cs);
         }
         return FlexTuple.createNONE();
     }
@@ -255,21 +263,20 @@ class ProcessDeviceImpl {
         return totalCurrentPhaseRate - currentCurtEst >= previousPhaseRate;
     }
 
-    private FlexTuple makeCurtFlexTuple(boolean downflex,
+    private FlexTuple makeCurtFlexTuple(boolean upflex,
             List<CurtailableWorkstation> cs) {
-        assert !cs.isEmpty();
         if (cs.isEmpty()) {
             throw new IllegalArgumentException("No stations to create curt.");
         }
         if (cs.size() == 1) {
-            return makeCurtFlexTuple(downflex, cs.get(0),
+            return makeCurtFlexTuple(upflex, cs.get(0),
                     new CurtailableWorkstation[0]);
         }
-        return makeCurtFlexTuple(downflex, cs.get(0), cs.subList(1, cs.size())
+        return makeCurtFlexTuple(upflex, cs.get(0), cs.subList(1, cs.size())
                 .toArray(new CurtailableWorkstation[cs.size() - 1]));
     }
 
-    private FlexTuple makeCurtFlexTuple(boolean downflex,
+    private FlexTuple makeCurtFlexTuple(boolean upflex,
             CurtailableWorkstation a, CurtailableWorkstation... cs) {
         double sump = a.getAverageConsumption();
         for (CurtailableWorkstation c : cs) {
@@ -279,18 +286,17 @@ class ProcessDeviceImpl {
         Set<Workstation> set = Sets.newLinkedHashSet();
         set.add(a);
         set.addAll(Lists.newArrayList(cs));
-        return makeTuple(id, (int) sump, set, downflex);
+        return makeTuple(id, (int) Math.round(sump), set, upflex);
     }
 
     private FlexTuple makeTuple(long id, int deltaP,
-            Iterable<Workstation> target, boolean downflex) {
+            Iterable<Workstation> target, boolean upflex) {
         profileMap.putAll(id, target);
-        return FlexTuple.create(id, deltaP, !downflex, 1, 0, 0);
+        return FlexTuple.create(id, deltaP, upflex, 1, 0, 0);
     }
 
     private List<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
-        return Lists.newArrayList(com.google.common.collect.Sets
-                .newLinkedHashSet(flex));
+        return Lists.newArrayList(Sets.newLinkedHashSet(flex));
     }
 
     private List<FlexTuple> someOrNone(List<FlexTuple> flex) {
@@ -341,14 +347,16 @@ class ProcessDeviceImpl {
         int result = 1;
         result = (int) (this.key + (int) (idcount ^ (idcount >>> POW2_8)));
         idcount++;
-        return result;
+
+        // return result;
+        return uid.getNextUID();
     }
 
     void invalidate() {
         this.fresh = false;
     }
 
-    void executeCurtailment(Long id, List<CurtailableWorkstation> list) {
+    void executeCurtailment(long id, List<CurtailableWorkstation> list) {
         List<Workstation> stations = profileMap.get(id);
         for (CurtailableWorkstation c : getEffectivelyCurtailableStations(list)) {
             for (Workstation s : stations) {
@@ -379,6 +387,14 @@ class ProcessDeviceImpl {
      */
     final synchronized void setRandom(RandomGenerator random) {
         this.random = random;
+    }
+
+    /**
+     * @param random
+     *            the random to set
+     */
+    final synchronized void setUID(UIDGenerator random) {
+        this.uid = random;
     }
 
     private void logFullCurtailment(Workstation c) {

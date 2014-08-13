@@ -91,6 +91,7 @@ public final class ProductionLine implements FlexProcess {
     @Override
     public void initialize(SimulationContext context) {
         getFlexProcessor().setRandom(context.getRandom());
+        getFlexProcessor().setUID(context.getUIDGenerator());
     }
 
     @Override
