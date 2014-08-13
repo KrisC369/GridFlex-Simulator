@@ -98,6 +98,7 @@ public class NPermuteAndCombiner<T> {
      *            combined.
      * @return Resulting collection of lists with all permutations of original
      *         list.
+     * @deprecated Use Guava's Sets.carthesianProduct instead
      */
     public Collection<List<T>> permutations(List<Collection<T>> collections) {
         if (collections == null || collections.isEmpty()) {

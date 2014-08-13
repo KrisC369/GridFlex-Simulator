@@ -79,9 +79,9 @@ public class AggregatorImpl implements SimulationComponent {
         Map<Long, Integer> flexFiltered = filterAndTransform(flex);
 
         NPermuteAndCombiner<Long> g = new NPermuteAndCombiner<>();
-        List<Collection<Long>> splitted = split(flex);
-        Collection<List<Long>> possibleSolutions = g.permutations(splitted);
-
+        List<Set<Long>> splitted = split(flex);
+        List<List<Long>> possibleSolutions = Lists.newArrayList(Sets
+                .cartesianProduct(splitted));
         // Add possibility for only 1 site participating.
         for (Collection<Long> key : splitted) {
             possibleSolutions.addAll(g.processSubsets(Lists.newArrayList(key),
@@ -156,12 +156,12 @@ public class AggregatorImpl implements SimulationComponent {
         return res;
     }
 
-    private List<Collection<Long>> split(
+    private List<Set<Long>> split(
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
-        List<Collection<Long>> res = Lists.newArrayList();
-        List<Long> tmp;
+        List<Set<Long>> res = Lists.newArrayList();
+        Set<Long> tmp;
         for (SiteFlexAPI key : flex.keySet()) {
-            tmp = Lists.newArrayList();
+            tmp = Sets.newLinkedHashSet();
             for (FlexTuple f : flex.get(key)) {
                 tmp.add(f.getId());
             }

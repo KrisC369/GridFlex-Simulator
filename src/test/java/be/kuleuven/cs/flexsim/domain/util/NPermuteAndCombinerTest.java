@@ -5,12 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 public class NPermuteAndCombinerTest {
 
@@ -112,5 +114,40 @@ public class NPermuteAndCombinerTest {
         assertTrue(result.contains(Lists.newArrayList("D", "X")));
         assertTrue(result.contains(Lists.newArrayList("D", "Y")));
         assertTrue(result.contains(Lists.newArrayList("D", "Z")));
+    }
+
+    @Test
+    public void testGuavaEquivalence() {
+        Collection<String> k = Lists.newArrayList("X", "Y", "Z");
+        Set<String> f1 = Sets.newLinkedHashSet(k);
+        Set<String> ff = Sets.newLinkedHashSet(f);
+        Collection<List<String>> result = g.permutations(Lists.newArrayList(ff,
+                k));
+        Set<List<String>> result2 = Sets.cartesianProduct(Lists.newArrayList(
+                ff, f1));
+        // System.out.println(result);
+        // System.out.println(result2);
+        assertTrue(result.containsAll(result2));
+        assertTrue(result2.containsAll(result));
+    }
+
+    @Test
+    public void testGuavaPowerset() {
+
+        List<List<String>> result7 = Lists.newArrayList();
+        for (int i = 1; i <= f.size(); i++) {
+            result7.addAll(g.processSubsets(f, i));
+        }
+        List<Set<String>> result8 = Lists.newArrayList(Sets.powerSet(Sets
+                .newLinkedHashSet(f)));
+        result8.remove(Sets.newLinkedHashSet());
+        // System.out.println(result7);
+        // System.out.println(result8);
+        List<List<String>> result9 = Lists.newArrayList();
+        for (Set<String> s : result8) {
+            result9.add(Lists.newArrayList(s));
+        }
+        assertTrue(result7.containsAll(result9));
+        assertTrue(result9.containsAll(result7));
     }
 }
