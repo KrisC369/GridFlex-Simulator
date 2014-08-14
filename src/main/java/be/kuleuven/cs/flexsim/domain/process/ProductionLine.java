@@ -55,7 +55,7 @@ public final class ProductionLine implements FlexProcess {
     private final Set<Workstation> uniques;
     private final PLRegisterable registry;
     private final Graph<Buffer<Resource>, Workstation> layout;
-    private final ProcessDeviceImpl flexProcessor;
+    private final ProcessDevice flexProcessor;
 
     private ProductionLine() {
         this.buffers = Lists.newArrayList();
@@ -195,7 +195,7 @@ public final class ProductionLine implements FlexProcess {
         return new ArrayList<>(this.workstations);
     }
 
-    ProcessDeviceImpl getFlexProcessor() {
+    ProcessDevice getFlexProcessor() {
         return this.flexProcessor;
     }
 

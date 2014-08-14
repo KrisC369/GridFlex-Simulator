@@ -27,13 +27,14 @@ import edu.uci.ics.jung.graph.Graph;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-class ProcessDeviceImpl {
+class ProcessDeviceImpl implements ProcessDevice {
 
     private final Graph<Buffer<Resource>, Workstation> layout;
     private boolean fresh;
     private List<FlexTuple> flexibility;
     private final LinkedListMultimap<Long, Workstation> profileMap;
     private UIDGenerator uid;
+    private Set<FlexAspect> aspects;
 
     /**
      * Default constructor
@@ -41,7 +42,7 @@ class ProcessDeviceImpl {
      * @param subject
      *            the subject PLine.
      */
-    public ProcessDeviceImpl(ProductionLine subject) {
+    ProcessDeviceImpl(ProductionLine subject) {
         this.layout = subject.getLayout();
         this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
@@ -51,9 +52,11 @@ class ProcessDeviceImpl {
                 return 0;
             }
         };
+        this.aspects = Sets.newLinkedHashSet();
     }
 
-    List<FlexTuple> getCurrentFlexbility(
+    @Override
+    public List<FlexTuple> getCurrentFlexbility(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
 
@@ -334,11 +337,13 @@ class ProcessDeviceImpl {
         return uid.getNextUID();
     }
 
-    void invalidate() {
+    @Override
+    public void invalidate() {
         this.fresh = false;
     }
 
-    void executeCurtailment(long id, List<CurtailableWorkstation> list) {
+    @Override
+    public void executeCurtailment(long id, List<CurtailableWorkstation> list) {
         List<Workstation> stations = profileMap.get(id);
         for (CurtailableWorkstation c : getEffectivelyCurtailableStations(list)) {
             for (Workstation s : stations) {
@@ -350,7 +355,8 @@ class ProcessDeviceImpl {
         }
     }
 
-    void executeCancelCurtailment(long id,
+    @Override
+    public void executeCancelCurtailment(long id,
             List<CurtailableWorkstation> curtailableStations) {
         List<Workstation> stations = profileMap.get(id);
         for (CurtailableWorkstation c : curtailableStations) {
@@ -367,7 +373,8 @@ class ProcessDeviceImpl {
      * @param random
      *            the random to set
      */
-    final synchronized void setUID(UIDGenerator random) {
+    @Override
+    public final synchronized void setUID(UIDGenerator random) {
         this.uid = random;
     }
 
@@ -379,5 +386,11 @@ class ProcessDeviceImpl {
     private void logCancelCurtailment(Workstation c) {
         LoggerFactory.getLogger(ProductionLine.class).info(
                 "Restoring curtailment on {}", c);
+    }
+
+    @Override
+    public ProcessDevice addFlexAspect(FlexAspect aspect) {
+        this.aspects.add(aspect);
+        return this;
     }
 }
