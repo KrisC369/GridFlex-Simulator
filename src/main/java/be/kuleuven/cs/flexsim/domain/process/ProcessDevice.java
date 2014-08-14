@@ -10,6 +10,9 @@ import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 
 /**
+ * Represents a Control device in charge of managing flexibility of a single
+ * process.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -24,13 +27,40 @@ interface ProcessDevice {
      */
     ProcessDevice addFlexAspect(FlexAspect aspect);
 
-    void executeCancelCurtailment(long id,
-            List<CurtailableWorkstation> curtailableStations);
+    /**
+     * Execute this cancel curtailment request.
+     * 
+     * @param id
+     *            the id of the request.
+     * @param stations
+     *            The stations to work with.
+     */
+    void executeCancelCurtailment(long id, List<CurtailableWorkstation> stations);
 
+    /**
+     * Execute this curtailment request.
+     * 
+     * @param id
+     *            the id of the request.
+     * @param list
+     *            the List of curtailable stations to work with.
+     */
     void executeCurtailment(long id, List<CurtailableWorkstation> list);
 
+    /**
+     * Invalidate the current cache of profiles.
+     */
     void invalidate();
 
+    /**
+     * Returns the current measure of flexibility.
+     * 
+     * @param curtailableWorkstations
+     *            The stations that can curtail.
+     * @param tradeofSteerableWorkstations
+     *            The stations that can steer their output.
+     * @return the list of flexibility tuples for this process.
+     */
     List<FlexTuple> getCurrentFlexbility(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations);

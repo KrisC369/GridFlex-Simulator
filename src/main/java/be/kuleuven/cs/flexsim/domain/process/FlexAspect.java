@@ -15,6 +15,17 @@ import com.google.common.collect.LinkedListMultimap;
  *
  */
 interface FlexAspect {
+    /**
+     * Return the flexibility of this aspect.
+     * 
+     * @param curtailableStations
+     *            The set of curtailable stations to work on.
+     * @param curtailedStations
+     *            The set of curtailed stations at this moment.
+     * @param profileMap
+     *            The reference to the map of id's to workstations.
+     * @return the list of flexibility tuples for this aspect.
+     */
     List<FlexTuple> getFlexibility(
             List<? extends Workstation> curtailableStations,
             List<? extends Workstation> curtailedStations,
