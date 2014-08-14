@@ -8,7 +8,6 @@ import java.util.List;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
-import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -24,8 +23,6 @@ interface ProcessDevice {
      * @return the process device with this aspect added.
      */
     ProcessDevice addFlexAspect(FlexAspect aspect);
-
-    void setUID(UIDGenerator random);
 
     void executeCancelCurtailment(long id,
             List<CurtailableWorkstation> curtailableStations);

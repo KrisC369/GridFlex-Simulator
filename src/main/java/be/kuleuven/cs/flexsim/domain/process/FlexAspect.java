@@ -2,15 +2,10 @@ package be.kuleuven.cs.flexsim.domain.process;
 
 import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.resource.Resource;
-import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
-import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
 
 import com.google.common.collect.LinkedListMultimap;
-
-import edu.uci.ics.jung.graph.Graph;
 
 /**
  * An aspect of flexibility. A certain measure or category of flexibility is
@@ -24,7 +19,4 @@ interface FlexAspect {
             List<? extends Workstation> curtailableStations,
             List<? extends Workstation> curtailedStations,
             LinkedListMultimap<Long, Workstation> profileMap);
-
-    void initialize(UIDGenerator generator,
-            Graph<Buffer<Resource>, Workstation> layout);
 }

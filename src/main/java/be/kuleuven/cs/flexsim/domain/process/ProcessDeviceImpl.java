@@ -5,19 +5,14 @@ import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.resource.Resource;
-import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
-import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
-import edu.uci.ics.jung.graph.Graph;
 
 /**
  * Implements the process device interface.
@@ -27,12 +22,10 @@ import edu.uci.ics.jung.graph.Graph;
  */
 class ProcessDeviceImpl implements ProcessDevice {
 
-    private final Graph<Buffer<Resource>, Workstation> layout;
     private boolean fresh;
     private List<FlexTuple> flexibility;
     private LinkedListMultimap<Long, Workstation> profileMap;
-    private UIDGenerator uid;
-    private Set<FlexAspect> aspects;
+    private final Set<FlexAspect> aspects;
 
     /**
      * Default constructor
@@ -41,15 +34,8 @@ class ProcessDeviceImpl implements ProcessDevice {
      *            the subject PLine.
      */
     ProcessDeviceImpl(ProductionLine subject) {
-        this.layout = subject.getLayout();
         this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
-        this.uid = new UIDGenerator() {
-            @Override
-            public long getNextUID() {
-                return 0;
-            }
-        };
         this.aspects = Sets.newLinkedHashSet();
     }
 
@@ -165,15 +151,6 @@ class ProcessDeviceImpl implements ProcessDevice {
         }
     }
 
-    /**
-     * @param random
-     *            the random to set
-     */
-    @Override
-    public final synchronized void setUID(UIDGenerator random) {
-        this.uid = random;
-    }
-
     private void logFullCurtailment(Workstation c) {
         LoggerFactory.getLogger(ProductionLine.class).info(
                 "Executing curtailment on {}", c);
@@ -187,7 +164,6 @@ class ProcessDeviceImpl implements ProcessDevice {
     @Override
     public ProcessDevice addFlexAspect(FlexAspect aspect) {
         this.aspects.add(aspect);
-        aspect.initialize(this.uid, layout);
         return this;
     }
 }

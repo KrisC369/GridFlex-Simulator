@@ -90,13 +90,22 @@ public final class ProductionLine implements FlexProcess {
 
     @Override
     public void initialize(SimulationContext context) {
-        getFlexProcessor().setUID(context.getUIDGenerator());
         this.flexProcessor
-                .addFlexAspect(new FlexAspectImpl.SingleStationDownFlex())
-                .addFlexAspect(new FlexAspectImpl.TwoStationsDownFlex())
-                .addFlexAspect(new FlexAspectImpl.ThreeStationsDownFlex())
-                .addFlexAspect(new FlexAspectImpl.UpFlex())
-                .addFlexAspect(new FlexAspectImpl.SteerFlex());
+                .addFlexAspect(
+                        new FlexAspectImpl.SingleStationDownFlex(context
+                                .getUIDGenerator(), layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.TwoStationsDownFlex(context
+                                .getUIDGenerator(), layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.ThreeStationsDownFlex(context
+                                .getUIDGenerator(), layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.UpFlex(context.getUIDGenerator(),
+                                layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.SteerFlex(context.getUIDGenerator(),
+                                layout));
 
     }
 

@@ -8,8 +8,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
@@ -28,10 +26,15 @@ import edu.uci.ics.jung.graph.Graph;
  *
  */
 abstract class FlexAspectImpl implements FlexAspect {
-    @Nullable
+    private static final String INITIALISE_ERR = "Initialise this aspect first. No layout present.";
     private UIDGenerator generator;
-    @Nullable
-    private Graph<Buffer<Resource>, Workstation> layout;
+    private final Graph<Buffer<Resource>, Workstation> layout;
+
+    public FlexAspectImpl(UIDGenerator gen,
+            Graph<Buffer<Resource>, Workstation> layout) {
+        this.layout = layout;
+        this.generator = gen;
+    }
 
     protected final FlexTuple findFlex(
             LinkedListMultimap<Long, Workstation> profileMap, Workstation a,
@@ -75,8 +78,7 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     private double calculateCurrentPhaseRate(Workstation c) {
-        checkNotNull(this.layout,
-                "Initialise this aspect first. No layout present.");
+        checkNotNull(this.layout, INITIALISE_ERR);
         Graph<Buffer<Resource>, Workstation> layout2 = layout;
         List<Workstation> edges = Lists.newArrayList();
         for (Workstation s : layout2.getEdges()) {
@@ -89,8 +91,7 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     private double calculatePreviousPhaseRate(Workstation c) {
-        checkNotNull(this.layout,
-                "Initialise this aspect first. No layout present.");
+        checkNotNull(this.layout, INITIALISE_ERR);
         Graph<Buffer<Resource>, Workstation> layout2 = layout;
         return aggregateProcessingRate(layout2.getInEdges(layout2.getSource(c)));
     }
@@ -132,8 +133,7 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     private boolean presentInSamePhase(Workstation a, Workstation... b) {
-        checkNotNull(this.layout,
-                "Initialise this aspect first. No layout present.");
+        checkNotNull(this.layout, INITIALISE_ERR);
         Graph<Buffer<Resource>, Workstation> layout2 = layout;
         if (b.length == 0) {
             return true;
@@ -193,14 +193,12 @@ abstract class FlexAspectImpl implements FlexAspect {
         return FlexTuple.create(id, deltaP, upflex, 1, 0, 0);
     }
 
-    @Override
-    public void initialize(UIDGenerator generator,
-            Graph<Buffer<Resource>, Workstation> layout) {
-        this.generator = generator;
-        this.layout = layout;
-    }
-
     static class SingleStationDownFlex extends FlexAspectImpl {
+
+        SingleStationDownFlex(UIDGenerator gen,
+                Graph<Buffer<Resource>, Workstation> layout) {
+            super(gen, layout);
+        }
 
         @Override
         public List<FlexTuple> getFlexibility(
@@ -216,6 +214,11 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     static class TwoStationsDownFlex extends FlexAspectImpl {
+
+        TwoStationsDownFlex(UIDGenerator gen,
+                Graph<Buffer<Resource>, Workstation> layout) {
+            super(gen, layout);
+        }
 
         @Override
         public List<FlexTuple> getFlexibility(
@@ -249,6 +252,11 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     static class ThreeStationsDownFlex extends FlexAspectImpl {
+
+        ThreeStationsDownFlex(UIDGenerator gen,
+                Graph<Buffer<Resource>, Workstation> layout) {
+            super(gen, layout);
+        }
 
         @Override
         public List<FlexTuple> getFlexibility(
@@ -286,6 +294,10 @@ abstract class FlexAspectImpl implements FlexAspect {
 
     static class UpFlex extends FlexAspectImpl {
 
+        UpFlex(UIDGenerator gen, Graph<Buffer<Resource>, Workstation> layout) {
+            super(gen, layout);
+        }
+
         @Override
         public List<FlexTuple> getFlexibility(
                 List<? extends Workstation> curtailableStations,
@@ -307,6 +319,9 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     static class SteerFlex extends FlexAspectImpl {
+        SteerFlex(UIDGenerator gen, Graph<Buffer<Resource>, Workstation> layout) {
+            super(gen, layout);
+        }
 
         @Override
         public List<FlexTuple> getFlexibility(
