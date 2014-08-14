@@ -85,8 +85,6 @@ class ProcessDeviceImpl implements ProcessDevice {
         List<CurtailableWorkstation> effectivelyCurtailableStations = getEffectivelyCurtailableStations(curtailableWorkstations);
         List<CurtailableWorkstation> curtailedStations = getCurtailedStations(curtailableWorkstations);
         for (FlexAspect aspect : aspects) {
-            aspect.getFlexibility(effectivelyCurtailableStations,
-                    curtailedStations, profileMap);
             flexRet.addAll(aspect.getFlexibility(
                     effectivelyCurtailableStations, curtailedStations,
                     profileMap));
