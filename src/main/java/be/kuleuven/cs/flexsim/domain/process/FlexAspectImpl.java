@@ -27,7 +27,7 @@ import edu.uci.ics.jung.graph.Graph;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
+abstract class FlexAspectImpl implements FlexAspect {
     @Nullable
     private UIDGenerator generator;
     @Nullable
@@ -42,16 +42,14 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         profileMap = LinkedListMultimap.create();
     }
 
-    private FlexTuple findFlex(CurtailableWorkstation a,
-            CurtailableWorkstation... cs) {
+    private FlexTuple findFlex(Workstation a, Workstation... cs) {
         if (presentInSamePhase(a, cs)) {
             return samePhaseFirstOrderFlex(a, cs);
         }
         return twoPhasesFirstOrderFlex(a, cs);
     }
 
-    private FlexTuple samePhaseFirstOrderFlex(CurtailableWorkstation a,
-            CurtailableWorkstation... cs) {
+    private FlexTuple samePhaseFirstOrderFlex(Workstation a, Workstation... cs) {
         double totalCurrentPhaseRate = calculateCurrentPhaseRate(a);
         double previousPhaseRate = calculatePreviousPhaseRate(a);
         double currentPR = aggregateProcessingRate(a, Lists.newArrayList(cs));
@@ -61,10 +59,9 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         return FlexTuple.createNONE();
     }
 
-    private FlexTuple twoPhasesFirstOrderFlex(CurtailableWorkstation a,
-            CurtailableWorkstation... cs) {
-        List<CurtailableWorkstation> firstPhase = Lists.newArrayList();
-        List<CurtailableWorkstation> secondPhase = Lists.newArrayList();
+    private FlexTuple twoPhasesFirstOrderFlex(Workstation a, Workstation... cs) {
+        List<Workstation> firstPhase = Lists.newArrayList();
+        List<Workstation> secondPhase = Lists.newArrayList();
         splitLists(a, firstPhase, secondPhase, Lists.newArrayList(cs));
         double firstPhaseTotal = calculateCurrentPhaseRate(a);
         double preFirstPhase = calculatePreviousPhaseRate(a);
@@ -80,7 +77,7 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         return FlexTuple.createNONE();
     }
 
-    private double calculateCurrentPhaseRate(CurtailableWorkstation c) {
+    private double calculateCurrentPhaseRate(Workstation c) {
         checkNotNull(this.layout,
                 "Initialise this aspect first. No layout present.");
         Graph<Buffer<Resource>, Workstation> layout2 = layout;
@@ -94,18 +91,17 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         return aggregateProcessingRate(edges);
     }
 
-    private double calculatePreviousPhaseRate(CurtailableWorkstation c) {
+    private double calculatePreviousPhaseRate(Workstation c) {
         checkNotNull(this.layout,
                 "Initialise this aspect first. No layout present.");
         Graph<Buffer<Resource>, Workstation> layout2 = layout;
         return aggregateProcessingRate(layout2.getInEdges(layout2.getSource(c)));
     }
 
-    private void splitLists(CurtailableWorkstation firstPhaseExample,
-            List<CurtailableWorkstation> firstPhase,
-            List<CurtailableWorkstation> secondPhase,
-            List<CurtailableWorkstation> stations) {
-        CurtailableWorkstation mark;
+    private void splitLists(Workstation firstPhaseExample,
+            List<Workstation> firstPhase, List<Workstation> secondPhase,
+            List<Workstation> stations) {
+        Workstation mark;
         for (int i = 0; i < stations.size(); i++) {
             mark = stations.get(i);
             if (presentInSamePhase(firstPhaseExample, mark)) {
@@ -158,8 +154,7 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         return true;
     }
 
-    private FlexTuple makeCurtFlexTuple(boolean upflex,
-            List<CurtailableWorkstation> cs) {
+    private FlexTuple makeCurtFlexTuple(boolean upflex, List<Workstation> cs) {
         if (cs.isEmpty()) {
             throw new IllegalArgumentException("No stations to create curt.");
         }
@@ -171,13 +166,13 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
                 .toArray(new CurtailableWorkstation[cs.size() - 1]));
     }
 
-    private FlexTuple makeCurtFlexTuple(boolean upflex,
-            CurtailableWorkstation a, CurtailableWorkstation... cs) {
+    private FlexTuple makeCurtFlexTuple(boolean upflex, Workstation a,
+            Workstation... cs) {
         double sump = a.getAverageConsumption();
         checkNotNull(this.generator,
                 "Initialize this aspect first. No generator present.");
         UIDGenerator gen = generator;
-        for (CurtailableWorkstation c : cs) {
+        for (Workstation c : cs) {
             sump += c.getAverageConsumption();
         }
         long id = gen.getNextUID();
@@ -200,14 +195,14 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         this.layout = layout;
     }
 
-    class SingleStationDownFlex extends FlexAspectImpl<CurtailableWorkstation> {
+    class SingleStationDownFlex extends FlexAspectImpl {
 
         @Override
         public FlexDTO<List<FlexTuple>, LinkedListMultimap<Long, Workstation>> getFlexibility(
-                List<CurtailableWorkstation> effectivelyCurtableStations) {
+                List<? extends Workstation> effectivelyCurtableStations) {
             resetProfile();
             final List<FlexTuple> flexRet = Lists.newArrayList();
-            for (CurtailableWorkstation c : effectivelyCurtableStations) {
+            for (Workstation c : effectivelyCurtableStations) {
                 flexRet.add(findFlex(c));
             }
             final LinkedListMultimap<Long, Workstation> profiles = profileMap;
@@ -226,11 +221,11 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         }
     }
 
-    class TwoStationsDownFlex extends FlexAspectImpl<CurtailableWorkstation> {
+    class TwoStationsDownFlex extends FlexAspectImpl {
 
         @Override
         public FlexDTO<List<FlexTuple>, LinkedListMultimap<Long, Workstation>> getFlexibility(
-                List<CurtailableWorkstation> effectivelyCurtableStations) {
+                List<? extends Workstation> effectivelyCurtableStations) {
             resetProfile();
             final List<FlexTuple> flexRet = Lists.newArrayList();
             flexRet.addAll(findTwoStationsFlex(effectivelyCurtableStations));
@@ -250,7 +245,7 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         }
 
         private List<FlexTuple> findTwoStationsFlex(
-                List<CurtailableWorkstation> curtailableStations) {
+                List<? extends Workstation> curtailableStations) {
             List<FlexTuple> flexRet = Lists.newArrayList();
             int size = curtailableStations.size();
             for (int i = 0; i <= size - 2; i++) {
@@ -266,11 +261,11 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         }
     }
 
-    class ThreeStationsDownFlex extends FlexAspectImpl<CurtailableWorkstation> {
+    class ThreeStationsDownFlex extends FlexAspectImpl {
 
         @Override
         public FlexDTO<List<FlexTuple>, LinkedListMultimap<Long, Workstation>> getFlexibility(
-                List<CurtailableWorkstation> effectivelyCurtableStations) {
+                List<? extends Workstation> effectivelyCurtableStations) {
             resetProfile();
             final List<FlexTuple> flexRet = Lists.newArrayList();
             flexRet.addAll(findThreeStationFlex(effectivelyCurtableStations));
@@ -290,7 +285,7 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         }
 
         private List<FlexTuple> findThreeStationFlex(
-                List<CurtailableWorkstation> curtailableStations) {
+                List<? extends Workstation> curtailableStations) {
             List<FlexTuple> flexRet = Lists.newArrayList();
             int size = curtailableStations.size();
             for (int i = 0; i < size - 2; i++) {
@@ -309,17 +304,17 @@ abstract class FlexAspectImpl<T extends Workstation> implements FlexAspect<T> {
         }
     }
 
-    class UpFlex extends FlexAspectImpl<CurtailableWorkstation> {
+    class UpFlex extends FlexAspectImpl {
 
         @Override
         public FlexDTO<List<FlexTuple>, LinkedListMultimap<Long, Workstation>> getFlexibility(
-                List<CurtailableWorkstation> stations) {
+                List<? extends Workstation> stations) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
-            List<Set<CurtailableWorkstation>> sets2 = Lists.newArrayList(Sets
+            List<Set<Workstation>> sets2 = Lists.newArrayList(Sets
                     .powerSet(Sets.newLinkedHashSet(stations)));
             sets2.remove(Sets.newLinkedHashSet());
 
-            for (Set<CurtailableWorkstation> lc : sets2) {
+            for (Set<Workstation> lc : sets2) {
                 flexRet.add(makeCurtFlexTuple(true, Lists.newArrayList(lc)));
             }
 
