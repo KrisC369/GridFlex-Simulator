@@ -62,10 +62,10 @@ public class ScenarioTest {
 
     @Test
     public void testAggregationRunStepWithCurtailmentRunner() {
-        testAggregationRunStepWithCurtailment();
+        testAggregationRunStepWithCurtailment(1500);
     }
 
-    public double testAggregationRunStepWithCurtailment() {
+    public double testAggregationRunStepWithCurtailment(int simSteps) {
         // Before: no curtailment.
         ProductionLine line1 = new ProductionLineBuilder()
                 .setWorkingConsumption(500).setIdleConsumption(20)
@@ -98,7 +98,7 @@ public class ScenarioTest {
         FinanceTrackerImpl t3 = FinanceTrackerImpl.createDefault(line3);
         FinanceTrackerImpl t4 = FinanceTrackerImpl.createDefault(line4);
 
-        Simulator simulator = Simulator.createSimulator(1500);
+        Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
         SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
@@ -152,7 +152,7 @@ public class ScenarioTest {
         t3 = FinanceTrackerImpl.createDefault(line3);
         t4 = FinanceTrackerImpl.createDefault(line4);
 
-        simulator = Simulator.createSimulator(1500);
+        simulator = Simulator.createSimulator(simSteps);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
         tso = new RandomTSO(-500, 1000, simulator.getRandom());
@@ -181,10 +181,10 @@ public class ScenarioTest {
 
     @Test
     public void testAggregationWithConnectedTSORunner() {
-        testAggregationWithConnectedTSO();
+        testAggregationWithConnectedTSO(1500);
     }
 
-    public double testAggregationWithConnectedTSO() {
+    public double testAggregationWithConnectedTSO(int simSteps) {
         ProductionLine line1 = new ProductionLineBuilder()
                 .setWorkingConsumption(500).setIdleConsumption(20)
                 .addConsuming(3).addCurtailableShifted(6)
@@ -218,7 +218,7 @@ public class ScenarioTest {
         FinanceTrackerImpl t3 = FinanceTrackerImpl.createDefault(line3);
         FinanceTrackerImpl t4 = FinanceTrackerImpl.createDefault(line4);
 
-        Simulator simulator = Simulator.createSimulator(1500);
+        Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
         SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
@@ -273,7 +273,7 @@ public class ScenarioTest {
         t3 = FinanceTrackerImpl.createDefault(line3);
         t4 = FinanceTrackerImpl.createDefault(line4);
 
-        simulator = Simulator.createSimulator(1500);
+        simulator = Simulator.createSimulator(simSteps);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
         tso = new RandomTSO(-300, 70, simulator.getRandom());
@@ -304,7 +304,7 @@ public class ScenarioTest {
     public void testRepeatForDeterminism() {
         List<Double> results = Lists.newArrayList();
         for (int i = 0; i < 5; i++) {
-            results.add(testAggregationRunStepWithCurtailment());
+            results.add(testAggregationRunStepWithCurtailment(1500));
         }
         // System.out.println(Arrays.toString(results.toArray()));
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
@@ -319,7 +319,7 @@ public class ScenarioTest {
 
                 @Override
                 public void run() {
-                    results.add(testAggregationRunStepWithCurtailment());
+                    results.add(testAggregationRunStepWithCurtailment(1500));
                 }
             }).start();
         }
@@ -344,7 +344,7 @@ public class ScenarioTest {
                 @Override
                 public void run() {
 
-                    results.add(testAggregationWithConnectedTSO());
+                    results.add(testAggregationWithConnectedTSO(1500));
                 }
             }).start();
         }
@@ -362,10 +362,24 @@ public class ScenarioTest {
     public void testRepeatForDeterminismCPTSO() {
         List<Double> results = Lists.newArrayList();
         for (int i = 0; i < 5; i++) {
-            results.add(testAggregationWithConnectedTSO());
+            results.add(testAggregationWithConnectedTSO(1500));
 
         }
         assertEquals(1, Sets.newLinkedHashSet(results).size(), 0);
+    }
+
+    @Test
+    public void testDifferentSeedsCPTSO() {
+        for (int i = 900; i <= 1500; i += 300) {
+            testAggregationWithConnectedTSO(i);
+        }
+    }
+
+    @Test
+    public void testDifferentSeedsRegular() {
+        for (int i = 900; i <= 1500; i += 300) {
+            testAggregationRunStepWithCurtailment(i);
+        }
     }
 
 }

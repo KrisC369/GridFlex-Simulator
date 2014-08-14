@@ -72,7 +72,7 @@ public class SiteTest {
     @Test
     public void testDeterministicGatherFlex() {
         List<List<FlexTuple>> res = Lists.newArrayList();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 750; i++) {
             ProductionLine line1 = new ProductionLine.ProductionLineBuilder()
                     .addShifted(7).addMultiCapExponentialConsuming(2, 15)
                     .addShifted(7).build();

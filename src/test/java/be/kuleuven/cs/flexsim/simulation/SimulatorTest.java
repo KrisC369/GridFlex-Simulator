@@ -169,7 +169,7 @@ public class SimulatorTest {
         for (int i = 0; i < 100; i++) {
             tmp = Lists.newArrayList();
             s = Simulator.createSimulator(2000);
-            for (int j = 0; j < 100000; j++) {
+            for (int j = 0; j < 10000; j++) {
                 tmp.add(s.getRandom().nextLong());
             }
             results.add(tmp);
@@ -222,10 +222,10 @@ public class SimulatorTest {
         List<Integer> res = Lists.newArrayList();
         List<Integer> t = Lists.newArrayList();
 
-        for (int i = 0; i < 25000; i++) {
+        for (int i = 0; i < 10000; i++) {
             sim = Simulator.createSimulator(24550);
             t = Lists.newArrayList();
-            for (int j = 0; j < 25000; j++) {
+            for (int j = 0; j < 10000; j++) {
                 t.add(sim.getRandom().nextInt(370) - 300);
             }
             res.add(t.hashCode());
