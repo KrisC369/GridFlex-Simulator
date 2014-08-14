@@ -86,12 +86,8 @@ public class NPermuteAndCombiner<T> {
      * of them, taking one element from each collection, and keeping the same
      * order in resultant lists as the one in original list of collections.
      * 
-     * <ul>
-     * Example
-     * <li>Input = { {a,b,c} , {1,2,3,4} }</li>
-     * <li>Output = { {a,1} , {a,2} , {a,3} , {a,4} , {b,1} , {b,2} , {b,3} ,
-     * {b,4} , {c,1} , {c,2} , {c,3} , {c,4} }</li>
-     * </ul>
+     * Example: Input = { {a,b,c} , {1,2,3,4} } Output = { {a,1} , {a,2} , {a,3}
+     * , {a,4} , {b,1} , {b,2} , {b,3} , {b,4} , {c,1} , {c,2} , {c,3} , {c,4} }
      * 
      * @param collections
      *            Original list of collections which elements have to be

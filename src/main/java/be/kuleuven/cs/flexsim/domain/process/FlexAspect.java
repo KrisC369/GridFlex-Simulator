@@ -20,9 +20,10 @@ import edu.uci.ics.jung.graph.Graph;
  *
  */
 interface FlexAspect {
-    FlexDTO<List<FlexTuple>, LinkedListMultimap<Long, Workstation>> getFlexibility(
+    List<FlexTuple> getFlexibility(
             List<? extends Workstation> curtailableStations,
-            List<? extends Workstation> curtailedStations);
+            List<? extends Workstation> curtailedStations,
+            LinkedListMultimap<Long, Workstation> profileMap);
 
     void initialize(UIDGenerator generator,
             Graph<Buffer<Resource>, Workstation> layout);

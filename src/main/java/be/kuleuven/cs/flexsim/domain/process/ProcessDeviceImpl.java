@@ -30,7 +30,7 @@ class ProcessDeviceImpl implements ProcessDevice {
     private final Graph<Buffer<Resource>, Workstation> layout;
     private boolean fresh;
     private List<FlexTuple> flexibility;
-    private final LinkedListMultimap<Long, Workstation> profileMap;
+    private LinkedListMultimap<Long, Workstation> profileMap;
     private UIDGenerator uid;
     private Set<FlexAspect> aspects;
 
@@ -69,6 +69,7 @@ class ProcessDeviceImpl implements ProcessDevice {
     private List<FlexTuple> recalculateFlex(
             List<CurtailableWorkstation> curtailableWorkstations,
             List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
+        this.profileMap = LinkedListMultimap.create();
         return gratuitousFlex(curtailableWorkstations,
                 tradeofSteerableWorkstations);
     }
@@ -84,11 +85,11 @@ class ProcessDeviceImpl implements ProcessDevice {
         List<CurtailableWorkstation> effectivelyCurtailableStations = getEffectivelyCurtailableStations(curtailableWorkstations);
         List<CurtailableWorkstation> curtailedStations = getCurtailedStations(curtailableWorkstations);
         for (FlexAspect aspect : aspects) {
-            FlexDTO<List<FlexTuple>, LinkedListMultimap<Long, Workstation>> dto = aspect
-                    .getFlexibility(effectivelyCurtailableStations,
-                            curtailedStations);
-            flexRet.addAll(dto.getFirst());
-            this.profileMap.putAll(dto.getSecond());
+            aspect.getFlexibility(effectivelyCurtailableStations,
+                    curtailedStations, profileMap);
+            flexRet.addAll(aspect.getFlexibility(
+                    effectivelyCurtailableStations, curtailedStations,
+                    profileMap));
         }
         flexRet = filterOutDuplicates(flexRet);
         flexRet = someOrNone(flexRet);
