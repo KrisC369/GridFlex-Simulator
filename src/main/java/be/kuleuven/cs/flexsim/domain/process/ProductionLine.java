@@ -67,12 +67,6 @@ public final class ProductionLine implements FlexProcess {
         this.uniques = Sets.newLinkedHashSet();
         this.layout = new SparseMultigraph<>();
         this.flexProcessor = new ProcessDeviceImpl(this);
-        this.flexProcessor
-                .addFlexAspect(new FlexAspectImpl.SingleStationDownFlex())
-                .addFlexAspect(new FlexAspectImpl.TwoStationsDownFlex())
-                .addFlexAspect(new FlexAspectImpl.ThreeStationsDownFlex())
-                .addFlexAspect(new FlexAspectImpl.UpFlex())
-                .addFlexAspect(new FlexAspectImpl.SteerFlex());
     }
 
     @Override
@@ -97,6 +91,13 @@ public final class ProductionLine implements FlexProcess {
     @Override
     public void initialize(SimulationContext context) {
         getFlexProcessor().setUID(context.getUIDGenerator());
+        this.flexProcessor
+                .addFlexAspect(new FlexAspectImpl.SingleStationDownFlex())
+                .addFlexAspect(new FlexAspectImpl.TwoStationsDownFlex())
+                .addFlexAspect(new FlexAspectImpl.ThreeStationsDownFlex())
+                .addFlexAspect(new FlexAspectImpl.UpFlex())
+                .addFlexAspect(new FlexAspectImpl.SteerFlex());
+
     }
 
     @Override
