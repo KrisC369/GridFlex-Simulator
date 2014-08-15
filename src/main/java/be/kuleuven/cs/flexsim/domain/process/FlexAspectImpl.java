@@ -22,16 +22,25 @@ import com.google.common.collect.Sets;
 import edu.uci.ics.jung.graph.Graph;
 
 /**
+ * Abstract helper super class for flex aspects.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 abstract class FlexAspectImpl implements FlexAspect {
     private static final String INITIALISE_ERR = "Initialise this aspect first. No layout present.";
-    private UIDGenerator generator;
+    private final UIDGenerator generator;
     private final Graph<Buffer<Resource>, Workstation> layout;
 
-    public FlexAspectImpl(UIDGenerator gen,
-            Graph<Buffer<Resource>, Workstation> layout) {
+    /**
+     * Constructor
+     * 
+     * @param gen
+     *            The generator to use for unique ids.
+     * @param layout
+     *            the layout of the process to calculate flex for.
+     */
+    FlexAspectImpl(UIDGenerator gen, Graph<Buffer<Resource>, Workstation> layout) {
         this.layout = layout;
         this.generator = gen;
     }

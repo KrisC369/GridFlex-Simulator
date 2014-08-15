@@ -66,7 +66,7 @@ public final class ProductionLine implements FlexProcess {
         this.registry = new PLRegisterable();
         this.uniques = Sets.newLinkedHashSet();
         this.layout = new SparseMultigraph<>();
-        this.flexProcessor = new ProcessDeviceImpl(this);
+        this.flexProcessor = new ProcessDeviceImpl();
     }
 
     @Override

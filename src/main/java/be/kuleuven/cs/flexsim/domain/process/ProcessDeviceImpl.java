@@ -33,7 +33,7 @@ class ProcessDeviceImpl implements ProcessDevice {
      * @param subject
      *            the subject PLine.
      */
-    ProcessDeviceImpl(ProductionLine subject) {
+    ProcessDeviceImpl() {
         this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
         this.aspects = Sets.newLinkedHashSet();
