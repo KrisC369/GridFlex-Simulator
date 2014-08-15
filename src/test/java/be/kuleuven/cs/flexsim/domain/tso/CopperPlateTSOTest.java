@@ -4,12 +4,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class CopperPlateTSOTest {
     private Site siteMock = mock(Site.class);
@@ -65,5 +69,25 @@ public class CopperPlateTSOTest {
         tso.tick(0);
         tso.afterTick(0);
         assertEquals(0, tso.getCurrentValue(0), 0);
+    }
+
+    @Test
+    public void testRegisterAndObserver() {
+        int initialbal = 20;
+        final int result = 253;
+        tso = new CopperPlateTSO(initialbal, new SteeringSignal() {
+
+            @Override
+            public int getCurrentValue(int timeMark) {
+                return 253;
+            }
+        }, siteMock);
+        Simulator s = Simulator.createSimulator(20);
+        Listener<Integer> mockListener = mock(Listener.class);
+        tso.addNewSteerValueListener(mockListener);
+        s.register(tso);
+        int answer = tso.getCurrentValue(1);
+        verify(mockListener, times(1)).eventOccurred(result);
+        assertEquals(answer, result, 0);
     }
 }
