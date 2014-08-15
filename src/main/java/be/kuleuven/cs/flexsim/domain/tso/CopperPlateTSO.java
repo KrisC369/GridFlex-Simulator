@@ -86,7 +86,13 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
         return result;
     }
 
-    void addNewSteerValueListener(Listener<? super Integer> listener) {
+    /**
+     * Add a new listener for new steervalue requests to this tso.
+     * 
+     * @param listener
+     *            The listener to add.
+     */
+    public void addNewSteerValueListener(Listener<? super Integer> listener) {
         this.newSteerValueListeners = MultiplexListener.plus(
                 this.newSteerValueListeners, listener);
     }
