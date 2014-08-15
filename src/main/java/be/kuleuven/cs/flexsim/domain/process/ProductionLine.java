@@ -55,7 +55,7 @@ public final class ProductionLine implements FlexProcess {
     private final Set<Workstation> uniques;
     private final PLRegisterable registry;
     private final Graph<Buffer<Resource>, Workstation> layout;
-    private final ProcessDeviceImpl flexProcessor;
+    private final ProcessDevice flexProcessor;
 
     private ProductionLine() {
         this.buffers = Lists.newArrayList();
@@ -66,7 +66,7 @@ public final class ProductionLine implements FlexProcess {
         this.registry = new PLRegisterable();
         this.uniques = Sets.newLinkedHashSet();
         this.layout = new SparseMultigraph<>();
-        flexProcessor = new ProcessDeviceImpl(this);
+        this.flexProcessor = new ProcessDeviceImpl();
     }
 
     @Override
@@ -90,7 +90,23 @@ public final class ProductionLine implements FlexProcess {
 
     @Override
     public void initialize(SimulationContext context) {
-        getFlexProcessor().setUID(context.getUIDGenerator());
+        this.flexProcessor
+                .addFlexAspect(
+                        new FlexAspectImpl.SingleStationDownFlex(context
+                                .getUIDGenerator(), layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.TwoStationsDownFlex(context
+                                .getUIDGenerator(), layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.ThreeStationsDownFlex(context
+                                .getUIDGenerator(), layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.UpFlex(context.getUIDGenerator(),
+                                layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.SteerFlex(context.getUIDGenerator(),
+                                layout));
+
     }
 
     @Override
@@ -195,7 +211,7 @@ public final class ProductionLine implements FlexProcess {
         return new ArrayList<>(this.workstations);
     }
 
-    ProcessDeviceImpl getFlexProcessor() {
+    ProcessDevice getFlexProcessor() {
         return this.flexProcessor;
     }
 

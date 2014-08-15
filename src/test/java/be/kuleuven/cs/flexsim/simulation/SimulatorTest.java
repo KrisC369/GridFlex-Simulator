@@ -30,8 +30,6 @@ public class SimulatorTest {
 
         @Override
         public void afterTick(int t) {
-            // TODO Auto-generated method stub
-
         }
 
         public Map<String, Object> getResult() {
@@ -53,7 +51,6 @@ public class SimulatorTest {
 
         @Override
         public List<SimulationComponent> getSimulationSubComponents() {
-            // TODO Auto-generated method stub
             return Collections.emptyList();
         }
     }

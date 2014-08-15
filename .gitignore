@@ -4,3 +4,4 @@ target/
 .settings/
 .DS_*  
 logs
+hs_er*

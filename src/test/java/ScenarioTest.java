@@ -330,7 +330,7 @@ public class ScenarioTest {
         }
         while (results.size() < expsize) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -355,7 +355,7 @@ public class ScenarioTest {
         }
         while (results.size() < expsize) {
             try {
-                Thread.sleep(200);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
