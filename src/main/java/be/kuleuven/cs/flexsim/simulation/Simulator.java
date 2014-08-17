@@ -196,8 +196,8 @@ public final class Simulator implements SimulationContext {
     }
 
     private void showProgressBar() {
-        if (getClock().getTimeCount() % (getDuration() / 10) == 0) {
-            int perc = getClock().getTimeCount() / (getDuration() / 100);
+        if (getClock().getTimeCount() * 10 % (getDuration()) == 0) {
+            int perc = getClock().getTimeCount() * 100 / (getDuration());
             printProgBar(perc);
         }
     }
