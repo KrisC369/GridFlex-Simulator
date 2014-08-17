@@ -8,18 +8,19 @@ package be.kuleuven.cs.flexsim.domain.util.listener;
  *            The type of the event arguments.
  *
  */
-public class MultiplexListener<A> implements Listener<A> {
-    final Listener<? super A> l1, l2;
+public final class MultiplexListener<A> implements Listener<A> {
+    final Listener<? super A> l1;
+    final Listener<? super A> l2;
+
+    private MultiplexListener(Listener<? super A> l1, Listener<? super A> l2) {
+        this.l1 = l1;
+        this.l2 = l2;
+    }
 
     @Override
     public void eventOccurred(A arg) {
         l1.eventOccurred(arg);
         l2.eventOccurred(arg);
-    }
-
-    private MultiplexListener(Listener<? super A> l1, Listener<? super A> l2) {
-        this.l1 = l1;
-        this.l2 = l2;
     }
 
     /**
@@ -33,10 +34,12 @@ public class MultiplexListener<A> implements Listener<A> {
      */
     public static <A> Listener<? super A> plus(Listener<? super A> l1,
             Listener<? super A> l2) {
-        if (l1 == NoopListener.INSTANCE)
+        if (l1 == NoopListener.INSTANCE) {
             return l2;
-        if (l2 == NoopListener.INSTANCE)
+        }
+        if (l2 == NoopListener.INSTANCE) {
             return l1;
+        }
         return new MultiplexListener<A>(l1, l2);
     }
 }

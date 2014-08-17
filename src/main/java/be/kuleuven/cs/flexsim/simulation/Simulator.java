@@ -64,7 +64,6 @@ public final class Simulator implements SimulationContext {
         this.components = Sets.newLinkedHashSet();
         this.instruComps = Sets.newLinkedHashSet();
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
-        // this.eventFac = new SimpleEventFactory();
         this.eventFac = new SimpleEventFactory() {
             private final EventFactory ef = new EventFactoryImplementation();
 

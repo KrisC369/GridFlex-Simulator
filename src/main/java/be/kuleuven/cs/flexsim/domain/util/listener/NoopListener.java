@@ -6,15 +6,17 @@ package be.kuleuven.cs.flexsim.domain.util.listener;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class NoopListener implements Listener<Object> {
-    private NoopListener() {
-    }
+public final class NoopListener implements Listener<Object> {
 
     /**
      * The singleton for this noop listener.
      */
     public static final NoopListener INSTANCE = new NoopListener();
 
+    private NoopListener() {
+    }
+
+    @Override
     public void eventOccurred(Object arg) {
     }
 }

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package be.kuleuven.cs.flexsim.time;
 
 /**
