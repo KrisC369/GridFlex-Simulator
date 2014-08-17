@@ -2,7 +2,6 @@ package be.kuleuven.cs.flexsim.simulation;
 
 import org.apache.commons.math3.random.RandomGenerator;
 
-import be.kuleuven.cs.flexsim.domain.util.SimpleEventFactory;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
 
 import com.google.common.eventbus.EventBus;

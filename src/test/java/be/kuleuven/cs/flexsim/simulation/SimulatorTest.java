@@ -166,7 +166,7 @@ public class SimulatorTest {
         for (int i = 0; i < 100; i++) {
             tmp = Lists.newArrayList();
             s = Simulator.createSimulator(2000);
-            for (int j = 0; j < 10000; j++) {
+            for (int j = 0; j < 4000; j++) {
                 tmp.add(s.getRandom().nextLong());
             }
             results.add(tmp);
@@ -179,7 +179,7 @@ public class SimulatorTest {
         for (int i = 0; i < 100; i++) {
             tmp = Lists.newArrayList();
             s = Simulator.createSimulator(31648);
-            for (int j = 0; j < 100000; j++) {
+            for (int j = 0; j < 4000; j++) {
                 tmp.add(s.getRandom().nextLong());
             }
             results.add(tmp);
@@ -192,7 +192,7 @@ public class SimulatorTest {
         for (int i = 0; i < 100; i++) {
             tmp = Lists.newArrayList();
             s = Simulator.createSimulator(12447);
-            for (int j = 0; j < 100000; j++) {
+            for (int j = 0; j < 4000; j++) {
                 tmp.add(s.getRandom().nextLong());
             }
             results.add(tmp);
@@ -205,7 +205,7 @@ public class SimulatorTest {
         for (int i = 0; i < 100; i++) {
             tmp = Lists.newArrayList();
             s = Simulator.createSimulator(358);
-            for (int j = 0; j < 100000; j++) {
+            for (int j = 0; j < 4000; j++) {
                 tmp.add(s.getRandom().nextLong());
             }
             results.add(tmp);
