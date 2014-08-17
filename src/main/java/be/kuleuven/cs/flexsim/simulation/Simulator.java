@@ -27,6 +27,10 @@ import com.google.common.eventbus.EventBus;
  */
 public final class Simulator implements SimulationContext {
 
+    private static final int PROGRESSBAR_LENGTH = 50;
+
+    private static final int PROGRESS_SCALE_FACTOR = 10;
+
     private static final String SIMSTOP_LITERAL = "simulation:stopped";
 
     private static final String SIMSTART_LITERAL = "simulation:started";
@@ -196,15 +200,16 @@ public final class Simulator implements SimulationContext {
     }
 
     private void showProgressBar() {
-        if (getClock().getTimeCount() * 10 % (getDuration()) == 0) {
-            int perc = getClock().getTimeCount() * 100 / (getDuration());
+        if (getClock().getTimeCount() * PROGRESS_SCALE_FACTOR % (getDuration()) == 0) {
+            int perc = getClock().getTimeCount() * PROGRESS_SCALE_FACTOR
+                    * PROGRESS_SCALE_FACTOR / (getDuration());
             printProgBar(perc);
         }
     }
 
     private void printProgBar(int percent) {
         StringBuilder bar = new StringBuilder("[");
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < PROGRESSBAR_LENGTH; i++) {
             if (i < (percent / 2)) {
                 bar.append("=");
             } else if (i == (percent / 2)) {

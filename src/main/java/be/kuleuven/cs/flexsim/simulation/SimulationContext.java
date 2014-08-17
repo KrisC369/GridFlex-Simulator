@@ -7,7 +7,10 @@ import be.kuleuven.cs.flexsim.time.VirtualClock;
 import com.google.common.eventbus.EventBus;
 
 /**
- * The interface for the simulation context.
+ * The interface for the simulation context. This is the central context in
+ * which simulations are performed. this context offers an eventbus that can be
+ * shared between all registered components as well as an eventfactory for using
+ * the bus. Also a unique ID generator is offered by this context.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
