@@ -152,12 +152,12 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     private void logFullCurtailment(Workstation c) {
-        LoggerFactory.getLogger(ProductionLine.class).info(
+        LoggerFactory.getLogger(ProductionLine.class).debug(
                 "Executing curtailment on {}", c);
     }
 
     private void logCancelCurtailment(Workstation c) {
-        LoggerFactory.getLogger(ProductionLine.class).info(
+        LoggerFactory.getLogger(ProductionLine.class).debug(
                 "Restoring curtailment on {}", c);
     }
 

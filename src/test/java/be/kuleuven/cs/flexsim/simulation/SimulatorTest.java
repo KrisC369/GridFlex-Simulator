@@ -56,7 +56,7 @@ public class SimulatorTest {
     }
 
     private SimulationComponent comp = mock(SimulationComponent.class);
-    private final long defaultRunTime = 1;
+    private final int defaultRunTime = 1;
     private Simulator s = Simulator.createSimulator(defaultRunTime);
 
     @Before
@@ -67,7 +67,7 @@ public class SimulatorTest {
 
     @Test
     public void testEventBus() {
-        long duration = 20;
+        int duration = 20;
         s = Simulator.createSimulator(duration);
         comp = new ChangeEventComponent();
         s.register(comp);
@@ -96,7 +96,7 @@ public class SimulatorTest {
 
     @Test
     public void testRunDurationImmediateReturn() {
-        long duration = 20;
+        int duration = 20;
         s = Simulator.createSimulator(duration);
         runSim(true);
         verify(comp, times(20)).tick(anyInt());
@@ -104,7 +104,7 @@ public class SimulatorTest {
 
     @Test
     public void testRunDurationImmediateReturnAfterTick() {
-        long duration = 20;
+        int duration = 20;
         s = Simulator.createSimulator(duration);
         runSim(true);
         verify(comp, times(20)).afterTick(anyInt());
@@ -112,7 +112,7 @@ public class SimulatorTest {
 
     @Test
     public void testSimDuration() {
-        long duration = 20;
+        int duration = 20;
         s = Simulator.createSimulator(duration);
         assertEquals(duration, s.getDuration());
     }

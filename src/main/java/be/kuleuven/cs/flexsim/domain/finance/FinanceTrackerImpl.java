@@ -27,6 +27,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
     private final RewardModel rewardMod;
     private final DebtModel debtMod;
     private long itemCount;
+    private long uid;
 
     /**
      * Default constructor based on trackable components.
@@ -50,6 +51,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
     @Override
     public void initialize(SimulationContext context) {
         this.context = Optional.of(context);
+        this.uid = context.getUIDGenerator().getNextUID();
     }
 
     /**
@@ -101,14 +103,14 @@ public final class FinanceTrackerImpl implements SimulationComponent,
         Event e = getContext().getEventFactory().build("report");
         e.setAttribute("pLinehash", this.hashCode());
         e.setAttribute("time", getContext().getSimulationClock().getTimeCount());
-        e.setAttribute("totalLaststepE", totalLaststep);
-        e.setAttribute("totalTotalE", totalTotal);
-        e.setAttribute("totalProfitM", profit);
+        e.setAttribute(uid + "totalLaststepE", totalLaststep);
+        e.setAttribute(uid + "totalTotalE", totalTotal);
+        e.setAttribute(uid + "totalProfitM", profit);
         int idx = 0;
         for (long i : buffSizes) {
-            e.setAttribute("buffer_" + idx++, i);
+            e.setAttribute(uid + "_buffer_" + idx++, i);
         }
-        e.setAttribute("buffer_Fin", getItemCount());
+        e.setAttribute(uid + "buffer_Fin", getItemCount());
         getContext().getEventbus().post(e);
 
     }

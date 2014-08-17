@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.time.SimulationClock;
@@ -33,7 +34,7 @@ public final class Simulator implements SimulationContext {
     private static final String TIMECOUNT_LITERAL = "clocktime";
 
     /** The scheduled duration of this simulator's run. */
-    private final long duration;
+    private final int duration;
 
     /** The internal clock reference. */
     private final SimulationClock clock;
@@ -51,18 +52,21 @@ public final class Simulator implements SimulationContext {
 
     private final UIDGenerator uidgen;
 
+    private final Logger logger;
+
     /**
      * Instantiates a new simulator.
      * 
      * @param duration
      *            the duration
      */
-    private Simulator(long duration) {
+    private Simulator(int duration) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new SimulationClock();
         this.components = Sets.newLinkedHashSet();
         this.instruComps = Sets.newLinkedHashSet();
+        this.logger = LoggerFactory.getLogger(Simulator.class);
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new SimpleEventFactory() {
             private final EventFactory ef = new EventFactoryImplementation();
@@ -106,7 +110,7 @@ public final class Simulator implements SimulationContext {
      * 
      * @return the duration
      */
-    public long getDuration() {
+    public int getDuration() {
         return this.duration;
     }
 
@@ -148,14 +152,14 @@ public final class Simulator implements SimulationContext {
         Event ev = eventFac.build(SIMSTART_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
-        LoggerFactory.getLogger(Simulator.class).info("Simulation started");
+        logger.info("Simulation started");
     }
 
     private void notifyStop() {
         Event ev = eventFac.build(SIMSTOP_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
-        LoggerFactory.getLogger(Simulator.class).info("Simulation stopped");
+        logger.info("Simulation stopped");
     }
 
     private synchronized void tickComponents() {
@@ -185,9 +189,32 @@ public final class Simulator implements SimulationContext {
     private void simloop() {
         while (shouldRun()) {
             getClock().addTimeStep(1);
+            showProgressBar();
             tickComponents();
             afterTickComponents();
         }
+    }
+
+    private void showProgressBar() {
+        if (getClock().getTimeCount() % (getDuration() / 10) == 0) {
+            int perc = getClock().getTimeCount() / (getDuration() / 100);
+            printProgBar(perc);
+        }
+    }
+
+    private void printProgBar(int percent) {
+        StringBuilder bar = new StringBuilder("[");
+        for (int i = 0; i < 50; i++) {
+            if (i < (percent / 2)) {
+                bar.append("=");
+            } else if (i == (percent / 2)) {
+                bar.append(">");
+            } else {
+                bar.append(" ");
+            }
+        }
+        bar.append("]   " + percent + "%     ");
+        logger.info("\r" + bar.toString());
     }
 
     /**
@@ -197,7 +224,7 @@ public final class Simulator implements SimulationContext {
      *            the duration the simulator should run for.
      * @return A new simulator object.
      */
-    public static Simulator createSimulator(long duration) {
+    public static Simulator createSimulator(int duration) {
         return new Simulator(duration);
     }
 
@@ -222,8 +249,7 @@ public final class Simulator implements SimulationContext {
     }
 
     private void logRegisterSC(SimulationComponent comp) {
-        LoggerFactory.getLogger(Simulator.class).debug(
-                "Simulation component registered: {}", comp);
+        logger.debug("Simulation component registered: {}", comp);
 
     }
 
@@ -240,9 +266,7 @@ public final class Simulator implements SimulationContext {
     }
 
     private void logRegisterIC(InstrumentationComponent comp) {
-        LoggerFactory.getLogger(Simulator.class).debug(
-                "Instrumentation component registered: {}", comp);
-
+        logger.debug("Instrumentation component registered: {}", comp);
     }
 
     @Override
