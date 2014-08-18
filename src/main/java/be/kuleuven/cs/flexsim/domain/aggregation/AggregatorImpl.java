@@ -88,7 +88,7 @@ public class AggregatorImpl implements SimulationComponent {
                     1));
         }
 
-        final int target = getTargetFlex();
+        final int target = getTargetFlex(t);
         logStep(t, target);
 
         Collection<Long> best = Lists.newArrayList();
@@ -139,8 +139,8 @@ public class AggregatorImpl implements SimulationComponent {
         return Math.abs(target - i);
     }
 
-    private int getTargetFlex() {
-        return getTso().getCurrentValue(0) * -1;
+    private int getTargetFlex(int t) {
+        return getTso().getCurrentValue(t) * 1;
     }
 
     private Map<Long, Integer> filterAndTransform(

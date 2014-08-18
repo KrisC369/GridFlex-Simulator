@@ -82,8 +82,8 @@ public class AggregatorImplTest {
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();
-        verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(1)).activateFlex(
+        verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
+        verify(clientDown, times(0)).activateFlex(
                 any(ActivateFlexCommand.class));
     }
 
@@ -100,8 +100,8 @@ public class AggregatorImplTest {
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();
-        verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(0)).activateFlex(
+        verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
+        verify(clientDown, times(1)).activateFlex(
                 any(ActivateFlexCommand.class));
     }
 
