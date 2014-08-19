@@ -156,4 +156,19 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         super.initialize(context);
     }
 
+    @Override
+    public int highConsumptionRate() {
+        return high;
+    }
+
+    @Override
+    public int lowConsumptionRate() {
+        return low;
+    }
+
+    @Override
+    public boolean isHigh() {
+        return isHigh;
+    }
+
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
+import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 
@@ -42,11 +43,12 @@ class ProcessDeviceImpl implements ProcessDevice {
     @Override
     public List<FlexTuple> getCurrentFlexbility(
             List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
+            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            List<DualModeWorkstation> dualModeWorkstations) {
 
         if (!fresh) {
             this.flexibility = recalculateFlex(curtailableWorkstations,
-                    tradeofSteerableWorkstations);
+                    tradeofSteerableWorkstations, dualModeWorkstations);
             this.fresh = true;
         }
         return this.flexibility;
@@ -54,15 +56,17 @@ class ProcessDeviceImpl implements ProcessDevice {
 
     private List<FlexTuple> recalculateFlex(
             List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
+            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            List<DualModeWorkstation> dualModeWorkstations) {
         this.profileMap = LinkedListMultimap.create();
-        return gratuitousFlex(curtailableWorkstations,
-                tradeofSteerableWorkstations);
+        return calcInstantaneousFlex(curtailableWorkstations,
+                tradeofSteerableWorkstations, dualModeWorkstations);
     }
 
-    private List<FlexTuple> gratuitousFlex(
+    private List<FlexTuple> calcInstantaneousFlex(
             List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations) {
+            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            List<DualModeWorkstation> dualModeWorkstations) {
         if (curtailableWorkstations.isEmpty()
                 && tradeofSteerableWorkstations.isEmpty()) {
             return Lists.newArrayList(FlexTuple.createNONE());
@@ -73,7 +77,7 @@ class ProcessDeviceImpl implements ProcessDevice {
         for (FlexAspect aspect : aspects) {
             flexRet.addAll(aspect.getFlexibility(
                     effectivelyCurtailableStations, curtailedStations,
-                    profileMap));
+                    dualModeWorkstations, profileMap));
         }
         flexRet = filterOutDuplicates(flexRet);
         flexRet = someOrNone(flexRet);
@@ -99,20 +103,19 @@ class ProcessDeviceImpl implements ProcessDevice {
 
     private List<CurtailableWorkstation> getEffectivelyCurtailableStations(
             List<CurtailableWorkstation> curtailableWorkstations) {
-        List<CurtailableWorkstation> toret = Lists.newArrayList();
-        for (CurtailableWorkstation w : curtailableWorkstations) {
-            if (!w.isCurtailed()) {
-                toret.add(w);
-            }
-        }
-        return toret;
+        return testAndFilterCurtailedStation(curtailableWorkstations, false);
     }
 
     private List<CurtailableWorkstation> getCurtailedStations(
             List<CurtailableWorkstation> curtailableWorkstations) {
+        return testAndFilterCurtailedStation(curtailableWorkstations, true);
+    }
+
+    private List<CurtailableWorkstation> testAndFilterCurtailedStation(
+            List<CurtailableWorkstation> curtailableWorkstations, boolean isCurt) {
         List<CurtailableWorkstation> toret = Lists.newArrayList();
         for (CurtailableWorkstation w : curtailableWorkstations) {
-            if (w.isCurtailed()) {
+            if (w.isCurtailed() == isCurt) {
                 toret.add(w);
             }
         }

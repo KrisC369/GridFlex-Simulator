@@ -7,6 +7,7 @@ import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
+import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 
 /**
@@ -59,9 +60,12 @@ interface ProcessDevice {
      *            The stations that can curtail.
      * @param tradeofSteerableWorkstations
      *            The stations that can steer their output.
+     * @param dualModeStations
+     *            The stations that have two distinct modes of consumption.
      * @return the list of flexibility tuples for this process.
      */
     List<FlexTuple> getCurrentFlexbility(
             List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations);
+            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            List<DualModeWorkstation> dualModeStations);
 }

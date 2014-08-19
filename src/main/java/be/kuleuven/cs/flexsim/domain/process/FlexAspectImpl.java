@@ -5,6 +5,8 @@ package be.kuleuven.cs.flexsim.domain.process;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
+import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
 
@@ -213,6 +216,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         public List<FlexTuple> getFlexibility(
                 List<? extends Workstation> effectivelyCurtableStations,
                 List<? extends Workstation> curtailedStations,
+                List<DualModeWorkstation> dualModeWorkstations,
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
             for (Workstation c : effectivelyCurtableStations) {
@@ -233,6 +237,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         public List<FlexTuple> getFlexibility(
                 List<? extends Workstation> effectivelyCurtableStations,
                 List<? extends Workstation> curtailedStations,
+                List<DualModeWorkstation> dualModeWorkstations,
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
             flexRet.addAll(findTwoStationsFlex(profileMap,
@@ -271,6 +276,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         public List<FlexTuple> getFlexibility(
                 List<? extends Workstation> effectivelyCurtableStations,
                 List<? extends Workstation> curtailedStations,
+                List<DualModeWorkstation> dualModeWorkstations,
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
             flexRet.addAll(findThreeStationFlex(profileMap,
@@ -311,6 +317,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         public List<FlexTuple> getFlexibility(
                 List<? extends Workstation> curtailableStations,
                 List<? extends Workstation> curtailedStations,
+                List<DualModeWorkstation> dualModeWorkstations,
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
             List<Set<Workstation>> sets2 = Lists.newArrayList(Sets
@@ -336,10 +343,67 @@ abstract class FlexAspectImpl implements FlexAspect {
         public List<FlexTuple> getFlexibility(
                 List<? extends Workstation> curtailableStations,
                 List<? extends Workstation> curtailedStations,
+                List<DualModeWorkstation> dualModeWorkstations,
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
             // TODO Implement!
             return flexRet;
+        }
+    }
+
+    static class DualModeFlex extends FlexAspectImpl {
+        DualModeFlex(UIDGenerator gen,
+                Graph<Buffer<Resource>, Workstation> layout) {
+            super(gen, layout);
+        }
+
+        @Override
+        public List<FlexTuple> getFlexibility(
+                List<? extends Workstation> curtailableStations,
+                List<? extends Workstation> curtailedStations,
+                List<DualModeWorkstation> dualModeWorkstations,
+                LinkedListMultimap<Long, Workstation> profileMap) {
+            final List<FlexTuple> flexRet = Lists.newArrayList();
+
+            List<DualModeWorkstation> highs = getOnlyHighs(dualModeWorkstations);
+            List<DualModeWorkstation> lows = getOnlyLows(dualModeWorkstations);
+            flexRet.addAll(getUpFlex(lows));
+            flexRet.addAll(getDownFlex(highs));
+
+            return flexRet;
+        }
+
+        private Collection<? extends FlexTuple> getDownFlex(
+                List<DualModeWorkstation> highs) {
+            // TODO Auto-generated method stub
+            return Collections.emptyList();
+        }
+
+        private Collection<? extends FlexTuple> getUpFlex(
+                List<DualModeWorkstation> lows) {
+            // TODO Auto-generated method stub
+            return Collections.emptyList();
+        }
+
+        private List<DualModeWorkstation> getOnlyLows(
+                List<DualModeWorkstation> dualModeWorkstations) {
+            return filterByMode(dualModeWorkstations, false);
+        }
+
+        private List<DualModeWorkstation> getOnlyHighs(
+                List<DualModeWorkstation> dualModeWorkstations) {
+            return filterByMode(dualModeWorkstations, true);
+        }
+
+        private List<DualModeWorkstation> filterByMode(
+                List<DualModeWorkstation> stations, boolean isHigh) {
+            List<DualModeWorkstation> toRet = Lists.newArrayList();
+            for (DualModeWorkstation s : stations) {
+                if (s.isHigh() == isHigh) {
+                    toRet.add(s);
+                }
+            }
+            return toRet;
         }
     }
 }

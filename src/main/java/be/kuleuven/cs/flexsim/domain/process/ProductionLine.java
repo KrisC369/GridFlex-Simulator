@@ -218,7 +218,8 @@ public final class ProductionLine implements FlexProcess {
     @Override
     public List<FlexTuple> getCurrentFlexbility() {
         return getFlexProcessor().getCurrentFlexbility(
-                getCurtailableStations(), getSteerableStations());
+                getCurtailableStations(), getSteerableStations(),
+                getDualModeStations());
     }
 
     @Override

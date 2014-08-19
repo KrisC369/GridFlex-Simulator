@@ -15,4 +15,25 @@ public interface DualModeWorkstation extends Workstation {
      * Switch low consumption mode on.
      */
     void signalLowConsumption();
+
+    /**
+     * Returns the Energy consumption rate when in high consumption.
+     * 
+     * @return the consumption rate.
+     */
+    int highConsumptionRate();
+
+    /**
+     * Returns the Energy consumption rate when in low consumption.
+     * 
+     * @return the consumption rate.
+     */
+    int lowConsumptionRate();
+
+    /**
+     * Returns whether this instance is in high consumption mode.
+     * 
+     * @return true if in high consumption mode.
+     */
+    boolean isHigh();
 }
