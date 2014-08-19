@@ -41,11 +41,11 @@ public class SteerableStationDecorator extends
         super.registerWith(subject);
     }
 
-    private void setProcessingSpeed(int i) {
+    void setProcessingSpeed(int i) {
         this.speedfactor = i;
     }
 
-    private int getProcessingSpeed() {
+    protected int getProcessingSpeed() {
         return speedfactor;
     }
 

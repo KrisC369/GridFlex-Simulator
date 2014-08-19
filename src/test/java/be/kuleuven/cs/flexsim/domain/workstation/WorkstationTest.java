@@ -490,6 +490,7 @@ public class WorkstationTest {
         steer.getDelegate().tick(1);
         steer.getDelegate().afterTick(1);
         assertEquals(335, steer.getLastStepConsumption(), 4);
+        int speed = steer.getProcessingSpeed();
 
         steer.triggerChange(15);
         steer.getDelegate().tick(1);
@@ -501,6 +502,8 @@ public class WorkstationTest {
         steer.getDelegate().tick(1);
         steer.getDelegate().afterTick(1);
         assertEquals(750, steer.getLastStepConsumption(), 4);
+        int speedAft = steer.getProcessingSpeed();
+        assertTrue(speed < speedAft);
 
         steer.triggerChange(10);
         steer.getDelegate().tick(1);

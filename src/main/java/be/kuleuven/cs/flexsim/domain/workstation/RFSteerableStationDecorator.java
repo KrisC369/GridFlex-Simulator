@@ -18,6 +18,11 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         implements DualModeWorkstation {
 
     /**
+     * The amount to shift in speedfactor when switching between high and low.
+     */
+    private static final int SPEEDFACTOR_SHIFT = 1;
+
+    /**
      * Width of the random noise band.
      */
     private final int n;
@@ -38,9 +43,6 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         this.n = width;
     }
 
-    // TODO decide on speed incr. when switching between high and low
-    // consumption. Otherwise
-    // remove dependency on steerableStationDec.
     @Override
     public void signalHighConsumption() {
         if (isHigh) {
@@ -50,6 +52,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         this.isHigh = true;
         final int diff = this.high - (this.low + this.getOffset());
         getDelegate().increaseRatedMaxVarECons(diff);
+        favorSpeedOverFixedEConsumption(diff, SPEEDFACTOR_SHIFT);
         resetOffset();
     }
 
@@ -62,7 +65,20 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         this.isHigh = false;
         final int diff = (this.high + this.getOffset()) - this.low;
         getDelegate().decreaseRatedMaxVarECons(diff);
+        favorFixedEConsumptionOverSpeed(diff, SPEEDFACTOR_SHIFT);
         resetOffset();
+    }
+
+    @Override
+    public void favorSpeedOverFixedEConsumption(int consumptionShift,
+            int speedShift) {
+        setProcessingSpeed(getProcessingSpeed() + speedShift);
+    }
+
+    @Override
+    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
+            int speedShift) {
+        setProcessingSpeed(getProcessingSpeed() - speedShift);
     }
 
     @Override
