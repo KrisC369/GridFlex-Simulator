@@ -5,6 +5,8 @@ import org.apache.commons.math3.random.RandomGenerator;
 
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
+import com.google.common.annotations.VisibleForTesting;
+
 /**
  * A decorator for decorating workstation instances that steerable with a random
  * noise factor on the variable consumption.
@@ -69,6 +71,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
         super.tick(t);
     }
 
+    @VisibleForTesting
     void triggerChange(final int r) {
         final int newVal = getTarget() - n / 2 + r;
         final int diff = newVal - (getTarget() + getOffset());

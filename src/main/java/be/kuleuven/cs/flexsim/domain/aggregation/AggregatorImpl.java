@@ -37,7 +37,7 @@ public class AggregatorImpl implements SimulationComponent {
      * Default constructor.
      *
      * @param tso
-     *            the tso.
+     *            the tso to take steering signals from.
      * @param frequency
      *            the frequency with which to perform aggregation functions.
      */
@@ -143,6 +143,14 @@ public class AggregatorImpl implements SimulationComponent {
         return getTso().getCurrentValue(t) * 1;
     }
 
+    /**
+     * Returns a map from flexid to amount of power P that can be curtailed or
+     * increased depending on the sign of t.
+     * 
+     * @param flex
+     *            The set of flex tuples to start from.
+     * @return the transformed map of id's to power P.
+     */
     private Map<Long, Integer> filterAndTransform(
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
         Map<Long, Integer> res = Maps.newLinkedHashMap();
@@ -156,6 +164,13 @@ public class AggregatorImpl implements SimulationComponent {
         return res;
     }
 
+    /**
+     * Split the map of site to tuples into sets of ids per site.
+     * 
+     * @param flex
+     *            the map to start from.
+     * @return the splitted list of sets.
+     */
     private List<Set<Long>> split(
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
         List<Set<Long>> res = Lists.newArrayList();
