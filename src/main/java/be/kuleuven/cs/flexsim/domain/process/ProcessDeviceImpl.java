@@ -195,7 +195,7 @@ class ProcessDeviceImpl implements ProcessDevice {
         @Override
         public void register(Workstation workstation) {
         }
-    };
+    }
 
     private final class DownFlexVisitor implements WorkstationVisitor {
 
@@ -218,5 +218,5 @@ class ProcessDeviceImpl implements ProcessDevice {
         @Override
         public void register(Workstation workstation) {
         }
-    };
+    }
 }
