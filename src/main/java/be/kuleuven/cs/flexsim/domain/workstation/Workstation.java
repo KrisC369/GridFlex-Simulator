@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import be.kuleuven.cs.flexsim.domain.util.Visitor.Visitable;
+import be.kuleuven.cs.flexsim.domain.util.visitor.Visitable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 /**

@@ -1,7 +1,7 @@
-package be.kuleuven.cs.flexsim.domain.util.Visitor;
+package be.kuleuven.cs.flexsim.domain.util.visitor;
 
 /**
- * Interface representing an entity that can be visited by a visitor
+ * Interface representing an entity that can be visited by a visitor.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>

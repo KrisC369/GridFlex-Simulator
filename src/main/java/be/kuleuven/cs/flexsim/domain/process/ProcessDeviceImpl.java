@@ -30,6 +30,8 @@ class ProcessDeviceImpl implements ProcessDevice {
     private LinkedListMultimap<Long, Workstation> profileMap;
     private final Set<FlexAspect> aspects;
     private final Logger logger;
+    private final UpFlexVisitor upFlexVisitor;
+    private final DownFlexVisitor downFlexVisitor;
 
     /**
      * Default constructor
@@ -42,6 +44,8 @@ class ProcessDeviceImpl implements ProcessDevice {
         this.profileMap = LinkedListMultimap.create();
         this.aspects = Sets.newLinkedHashSet();
         this.logger = LoggerFactory.getLogger(ProductionLine.class);
+        this.upFlexVisitor = new UpFlexVisitor();
+        this.downFlexVisitor = new DownFlexVisitor();
     }
 
     @Override
@@ -135,28 +139,7 @@ class ProcessDeviceImpl implements ProcessDevice {
     public void executeDownFlexProfile(long id) {
         List<Workstation> stations = profileMap.get(id);
         for (Workstation t : stations) {
-            t.acceptVisitor(new WorkstationVisitor() {
-
-                @Override
-                public void register(DualModeWorkstation ws) {
-                    ws.signalLowConsumption();
-                    logDualModeLow(ws);
-                }
-
-                @Override
-                public void register(TradeofSteerableWorkstation ws) {
-                }
-
-                @Override
-                public void register(CurtailableWorkstation c) {
-                    c.doFullCurtailment();
-                    logFullCurtailment(c);
-                }
-
-                @Override
-                public void register(Workstation workstation) {
-                }
-            });
+            t.acceptVisitor(downFlexVisitor);
         }
     }
 
@@ -164,28 +147,7 @@ class ProcessDeviceImpl implements ProcessDevice {
     public void executeUpFlexProfile(long id) {
         List<Workstation> stations = profileMap.get(id);
         for (Workstation t : stations) {
-            t.acceptVisitor(new WorkstationVisitor() {
-
-                @Override
-                public void register(DualModeWorkstation ws) {
-                    ws.signalHighConsumption();
-                    logDualModeHigh(ws);
-                }
-
-                @Override
-                public void register(TradeofSteerableWorkstation ws) {
-                }
-
-                @Override
-                public void register(CurtailableWorkstation c) {
-                    c.restore();
-                    logCancelCurtailment(c);
-                }
-
-                @Override
-                public void register(Workstation workstation) {
-                }
-            });
+            t.acceptVisitor(upFlexVisitor);
         }
 
     }
@@ -211,4 +173,50 @@ class ProcessDeviceImpl implements ProcessDevice {
         this.aspects.add(aspect);
         return this;
     }
+
+    private final class UpFlexVisitor implements WorkstationVisitor {
+
+        @Override
+        public void register(DualModeWorkstation ws) {
+            ws.signalHighConsumption();
+            logDualModeHigh(ws);
+        }
+
+        @Override
+        public void register(TradeofSteerableWorkstation ws) {
+        }
+
+        @Override
+        public void register(CurtailableWorkstation c) {
+            c.restore();
+            logCancelCurtailment(c);
+        }
+
+        @Override
+        public void register(Workstation workstation) {
+        }
+    };
+
+    private final class DownFlexVisitor implements WorkstationVisitor {
+
+        @Override
+        public void register(DualModeWorkstation ws) {
+            ws.signalLowConsumption();
+            logDualModeLow(ws);
+        }
+
+        @Override
+        public void register(TradeofSteerableWorkstation ws) {
+        }
+
+        @Override
+        public void register(CurtailableWorkstation c) {
+            c.doFullCurtailment();
+            logFullCurtailment(c);
+        }
+
+        @Override
+        public void register(Workstation workstation) {
+        }
+    };
 }

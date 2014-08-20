@@ -209,7 +209,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         return makeTuple(profileMap, id, dP, (int) Math.ceil(dT), set, upflex);
     }
 
-    private final FlexTuple makeTuple(
+    private FlexTuple makeTuple(
             LinkedListMultimap<Long, Workstation> profileMap, long id,
             int deltaP, int deltaT, Iterable<Workstation> target, boolean upflex) {
         profileMap.putAll(id, target);
@@ -406,7 +406,6 @@ abstract class FlexAspectImpl implements FlexAspect {
                 combos.addAll(g.processSubsets(Lists.newArrayList(lows), i));
             }
 
-            // flexRet.add(findFlexForCombo(lows, profileMap, upFlex));
             for (List<DualModeWorkstation> options : combos) {
                 flexRet.add(findFlexForCombo(options, profileMap, upFlex));
             }
