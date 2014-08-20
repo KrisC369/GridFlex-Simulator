@@ -157,12 +157,12 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     }
 
     @Override
-    public int highConsumptionRate() {
+    public int getHighConsumptionRate() {
         return high;
     }
 
     @Override
-    public int lowConsumptionRate() {
+    public int getLowConsumptionRate() {
         return low;
     }
 

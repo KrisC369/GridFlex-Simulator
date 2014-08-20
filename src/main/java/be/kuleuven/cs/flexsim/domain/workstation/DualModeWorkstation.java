@@ -21,14 +21,14 @@ public interface DualModeWorkstation extends Workstation {
      * 
      * @return the consumption rate.
      */
-    int highConsumptionRate();
+    int getHighConsumptionRate();
 
     /**
      * Returns the Energy consumption rate when in low consumption.
      * 
      * @return the consumption rate.
      */
-    int lowConsumptionRate();
+    int getLowConsumptionRate();
 
     /**
      * Returns whether this instance is in high consumption mode.

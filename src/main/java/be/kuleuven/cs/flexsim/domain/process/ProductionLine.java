@@ -105,8 +105,10 @@ public final class ProductionLine implements FlexProcess {
                                 layout))
                 .addFlexAspect(
                         new FlexAspectImpl.SteerFlex(context.getUIDGenerator(),
-                                layout));
-
+                                layout))
+                .addFlexAspect(
+                        new FlexAspectImpl.DualModeFlex(context
+                                .getUIDGenerator(), layout));
     }
 
     @Override

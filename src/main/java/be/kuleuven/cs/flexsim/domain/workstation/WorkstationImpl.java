@@ -177,14 +177,14 @@ class WorkstationImpl implements ConfigurableWorkstation {
         setLastConsumption(getFixedConsumptionRate()
                 + getCurrentState().getVarConsumptionRate(
                         getRemainingStepsOfResource(),
-                        getRemainingMaxStepsOfResource(), stateContext));
+                        getMaxRemainingStepsOfResource(), stateContext));
     }
 
     private int getRemainingStepsOfResource() {
         return CollectionUtils.max(currentResource, CURRENT_REMAINING_STEPS);
     }
 
-    private int getRemainingMaxStepsOfResource() {
+    private int getMaxRemainingStepsOfResource() {
         return CollectionUtils.max(currentResource, MAX_REMAINING_STEPS);
     }
 
@@ -310,15 +310,15 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     private void recalculateProcessingRate() {
         final double cap = getRatedCapacity();
-        final double neededProc = (double) getRemainingMaxStepsOfResource() > 0 ? (double) getRemainingMaxStepsOfResource()
+        final double neededProc = (double) getMaxRemainingStepsOfResource() > 0 ? (double) getMaxRemainingStepsOfResource()
                 : Double.POSITIVE_INFINITY;
         setLastProcessingRate(cap / neededProc);
     }
 
     @Override
     public double getAverageConsumption() {
-        return (getMaxVarECons() * getRemainingMaxStepsOfResource() + getFixedConsumptionRate())
-                / (double) (getRemainingMaxStepsOfResource() + 1);
+        return (getMaxVarECons() * getMaxRemainingStepsOfResource() + getFixedConsumptionRate())
+                / (double) (getMaxRemainingStepsOfResource() + 1);
     }
 
     private void setLastProcessingRate(double value) {

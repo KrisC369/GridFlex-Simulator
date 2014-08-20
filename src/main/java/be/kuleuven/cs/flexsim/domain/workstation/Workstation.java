@@ -56,7 +56,8 @@ public interface Workstation extends SimulationComponent,
     int getRatedCapacity();
 
     /**
-     * Returns the rate of processing items.
+     * Returns the rate of processing items. This is calculated as: rated
+     * capacity of the station / time it takes the station to finish a resource.
      * 
      * @return The current processing rate.
      */

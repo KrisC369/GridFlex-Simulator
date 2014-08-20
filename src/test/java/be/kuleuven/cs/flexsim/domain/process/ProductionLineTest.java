@@ -276,8 +276,8 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         startSim();
         flex = l.getCurrentFlexbility();
-        assertEquals(1, flex.size(), 0);
-        assertTrue(flex.contains(FlexTuple.NONE));
+        assertEquals(15, flex.size(), 0);
+        assertFalse(flex.contains(FlexTuple.NONE));
     }
 
     @Test
@@ -387,6 +387,104 @@ public class ProductionLineTest {
                 return true;
         }
         return false;
+    }
+
+    @Test
+    public void testFlexDualModeUp1() {
+        int dur = 40;
+        int high = 900;
+        int low = 200;
+        int dT = 25;
+
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .setRfHighConsumption(high).setRfLowConsumption(low)
+                .addRFSteerableStation(1, dur).build();
+        sim = Simulator.createSimulator(simSteps);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(500, dT);
+        l.deliverResources(res);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertFalse(flex.get(0).equals(FlexTuple.NONE));
+        assertTrue(flex.get(0).getDirection());
+        assertEquals(high - low, flex.get(0).getDeltaP(), 0);
+        assertEquals(dT, flex.get(0).getT(), dur);
+    }
+
+    @Test
+    public void testFlexDualModeUp2() {
+        int dur = 40;
+        int high = 900;
+        int low = 200;
+        int dT = 25;
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .setRfHighConsumption(high).setRfLowConsumption(low)
+                .addRFSteerableStation(2, dur).build();
+        sim = Simulator.createSimulator(simSteps);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(500, 25);
+        l.deliverResources(res);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(3, flex.size(), 0);
+        assertFalse(flex.get(0).equals(FlexTuple.NONE));
+        assertTrue(flex.get(0).getDirection());
+        assertEquals(high - low, flex.get(0).getDeltaP(), 0);
+        assertEquals(25, flex.get(0).getT(), dur);
+    }
+
+    @Test
+    public void testFlexDualModeDown1() {
+        int dur = 40;
+        int high = 900;
+        int low = 200;
+        int dT = 25;
+
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .setRfHighConsumption(high).setRfLowConsumption(low)
+                .addRFSteerableStation(1, dur).build();
+        l.getDualModeStations().get(0).signalHighConsumption();
+        sim = Simulator.createSimulator(simSteps);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(500, dT);
+        l.deliverResources(res);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(1, flex.size(), 0);
+        assertFalse(flex.get(0).equals(FlexTuple.NONE));
+        assertFalse(flex.get(0).getDirection());
+        assertEquals(high - low, flex.get(0).getDeltaP(), 0);
+        assertEquals(dT, flex.get(0).getT(), dur);
+    }
+
+    @Test
+    public void testFlexDualModeDown2() {
+        int dur = 40;
+        int high = 900;
+        int low = 200;
+        int dT = 25;
+
+        ProductionLine l = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(10)
+                .setRfHighConsumption(high).setRfLowConsumption(low)
+                .addRFSteerableStation(2, dur).build();
+        l.getDualModeStations().get(0).signalHighConsumption();
+        l.getDualModeStations().get(1).signalHighConsumption();
+        sim = Simulator.createSimulator(simSteps);
+        sim.register(l);
+        List<Resource> res = ResourceFactory.createBulkMPResource(500, dT);
+        l.deliverResources(res);
+        startSim();
+        List<FlexTuple> flex = l.getCurrentFlexbility();
+        assertEquals(3, flex.size(), 0);
+        assertFalse(flex.get(0).equals(FlexTuple.NONE));
+        assertFalse(flex.get(0).getDirection());
+        assertEquals(high - low, flex.get(0).getDeltaP(), 0);
+        assertEquals(dT, flex.get(0).getT(), dur);
     }
 
     @Test

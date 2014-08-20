@@ -72,7 +72,7 @@ public class AggregatorImpl implements SimulationComponent {
         clients.add(client);
     }
 
-    void doAggregationStep(int t) {
+    private void doAggregationStep(int t) {
         // As of yet, only guaranteed working for 2 sites.
         // Add combinations using all sites
         LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();

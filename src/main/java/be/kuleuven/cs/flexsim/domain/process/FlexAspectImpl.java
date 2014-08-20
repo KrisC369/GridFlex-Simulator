@@ -6,12 +6,12 @@ package be.kuleuven.cs.flexsim.domain.process;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
+import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
@@ -195,14 +195,25 @@ abstract class FlexAspectImpl implements FlexAspect {
         Set<Workstation> set = Sets.newLinkedHashSet();
         set.add(a);
         set.addAll(Lists.newArrayList(cs));
-        return makeTuple(profileMap, id, (int) Math.round(sump), set, upflex);
+        return makeTuple(profileMap, id, (int) Math.round(sump), 1, set, upflex);
     }
 
-    private FlexTuple makeTuple(
+    protected final FlexTuple makeDualModeFlexTuple(
+            LinkedListMultimap<Long, Workstation> profileMap, int dP,
+            double dT, boolean upflex, List<? extends Workstation> cs) {
+        checkNotNull(this.generator,
+                "Initialize this aspect first. No generator present.");
+        UIDGenerator gen = generator;
+        long id = gen.getNextUID();
+        List<Workstation> set = Lists.newArrayList(cs);
+        return makeTuple(profileMap, id, dP, (int) Math.ceil(dT), set, upflex);
+    }
+
+    private final FlexTuple makeTuple(
             LinkedListMultimap<Long, Workstation> profileMap, long id,
-            int deltaP, Iterable<Workstation> target, boolean upflex) {
+            int deltaP, int deltaT, Iterable<Workstation> target, boolean upflex) {
         profileMap.putAll(id, target);
-        return FlexTuple.create(id, deltaP, upflex, 1, 0, 0);
+        return FlexTuple.create(id, deltaP, upflex, deltaT, 0, 0);
     }
 
     static class SingleStationDownFlex extends FlexAspectImpl {
@@ -367,22 +378,55 @@ abstract class FlexAspectImpl implements FlexAspect {
 
             List<DualModeWorkstation> highs = getOnlyHighs(dualModeWorkstations);
             List<DualModeWorkstation> lows = getOnlyLows(dualModeWorkstations);
-            flexRet.addAll(getUpFlex(lows));
-            flexRet.addAll(getDownFlex(highs));
+            flexRet.addAll(getUpFlex(profileMap, lows));
+            flexRet.addAll(getDownFlex(profileMap, highs));
 
             return flexRet;
         }
 
         private Collection<? extends FlexTuple> getDownFlex(
+                LinkedListMultimap<Long, Workstation> profileMap,
                 List<DualModeWorkstation> highs) {
-            // TODO Auto-generated method stub
-            return Collections.emptyList();
+            return getFlex(profileMap, highs, false);
         }
 
         private Collection<? extends FlexTuple> getUpFlex(
+                LinkedListMultimap<Long, Workstation> profileMap,
                 List<DualModeWorkstation> lows) {
-            // TODO Auto-generated method stub
-            return Collections.emptyList();
+            return getFlex(profileMap, lows, true);
+        }
+
+        private Collection<? extends FlexTuple> getFlex(
+                LinkedListMultimap<Long, Workstation> profileMap,
+                List<DualModeWorkstation> lows, boolean upFlex) {
+            List<FlexTuple> flexRet = Lists.newArrayList();
+            NPermuteAndCombiner<DualModeWorkstation> g = new NPermuteAndCombiner<>();
+            List<List<DualModeWorkstation>> combos = Lists.newArrayList();
+            for (int i = 1; i <= lows.size(); i++) {
+                combos.addAll(g.processSubsets(Lists.newArrayList(lows), i));
+            }
+
+            // flexRet.add(findFlexForCombo(lows, profileMap, upFlex));
+            for (List<DualModeWorkstation> options : combos) {
+                flexRet.add(findFlexForCombo(options, profileMap, upFlex));
+            }
+            return flexRet;
+        }
+
+        FlexTuple findFlexForCombo(List<DualModeWorkstation> options,
+                LinkedListMultimap<Long, Workstation> profileMap, boolean upFlex) {
+            int sumP = 0;
+            double maxT = 0;
+            for (DualModeWorkstation w : options) {
+                sumP += w.getHighConsumptionRate() - w.getLowConsumptionRate();
+                double currentT = w.getProcessingRate() != 0 ? w
+                        .getRatedCapacity() / w.getProcessingRate() : 1;
+                if (currentT > maxT) {
+                    maxT = currentT;
+                }
+            }
+            return makeDualModeFlexTuple(profileMap, sumP, maxT, upFlex,
+                    options);
         }
 
         private List<DualModeWorkstation> getOnlyLows(
