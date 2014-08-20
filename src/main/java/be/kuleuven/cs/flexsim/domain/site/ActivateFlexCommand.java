@@ -22,5 +22,5 @@ public interface ActivateFlexCommand {
      * 
      * @return true if curtailment is wanted.
      */
-    boolean isCurtailmentCommand();
+    boolean isDownFlexCommand();
 }

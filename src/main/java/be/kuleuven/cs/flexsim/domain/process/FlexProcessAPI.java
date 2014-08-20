@@ -13,7 +13,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public interface FlexProcessAPI {
+public interface FlexProcessAPI extends FlexControlAPI {
     /**
      * Query the process flexibility and get a list of flextuple profiles.
      * 
@@ -21,19 +21,4 @@ public interface FlexProcessAPI {
      */
     List<FlexTuple> getCurrentFlexbility();
 
-    /**
-     * Execute a curtailment profile in portfolio.
-     * 
-     * @param id
-     *            the identifier of the profile.
-     */
-    void executeCurtailmentProfile(long id);
-
-    /**
-     * Cancel curtailment according to a profile with a specified id.
-     * 
-     * @param id
-     *            the identifier of the profile;
-     */
-    void executeCancelCurtailmentProfile(long id);
 }

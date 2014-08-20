@@ -8,7 +8,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
-public interface WorkstationRegisterable {
+public interface WorkstationVisitor {
 
     /**
      * Register a regular workstation.

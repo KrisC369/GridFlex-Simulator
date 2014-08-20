@@ -269,7 +269,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     @Override
-    public void registerWith(WorkstationRegisterable subject) {
+    public void acceptVisitor(WorkstationVisitor subject) {
         subject.register(this);
 
     }

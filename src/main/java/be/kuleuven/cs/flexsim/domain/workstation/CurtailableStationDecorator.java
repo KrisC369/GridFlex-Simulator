@@ -74,9 +74,9 @@ class CurtailableStationDecorator<T extends Workstation> extends
     }
 
     @Override
-    public void registerWith(WorkstationRegisterable subject) {
+    public void acceptVisitor(WorkstationVisitor subject) {
         subject.register(this);
-        super.registerWith(subject);
+        super.acceptVisitor(subject);
     }
 
     /*

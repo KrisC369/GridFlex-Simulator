@@ -125,7 +125,7 @@ public class AggregatorImpl implements SimulationComponent {
                             }
 
                             @Override
-                            public boolean isCurtailmentCommand() {
+                            public boolean isDownFlexCommand() {
                                 return !tt.getDirection();
                             }
                         });

@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.process;
 import java.util.List;
 import java.util.Set;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
@@ -10,6 +11,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
+import be.kuleuven.cs.flexsim.domain.workstation.WorkstationVisitor;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
@@ -27,6 +29,7 @@ class ProcessDeviceImpl implements ProcessDevice {
     private List<FlexTuple> flexibility;
     private LinkedListMultimap<Long, Workstation> profileMap;
     private final Set<FlexAspect> aspects;
+    private final Logger logger;
 
     /**
      * Default constructor
@@ -38,6 +41,7 @@ class ProcessDeviceImpl implements ProcessDevice {
         this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
         this.aspects = Sets.newLinkedHashSet();
+        this.logger = LoggerFactory.getLogger(ProductionLine.class);
     }
 
     @Override
@@ -128,40 +132,78 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     @Override
-    public void executeCurtailment(long id, List<CurtailableWorkstation> list) {
+    public void executeDownFlexProfile(long id) {
         List<Workstation> stations = profileMap.get(id);
-        for (CurtailableWorkstation c : getEffectivelyCurtailableStations(list)) {
-            for (Workstation s : stations) {
-                if (c.equals(s)) {
+        for (Workstation t : stations) {
+            t.acceptVisitor(new WorkstationVisitor() {
+
+                @Override
+                public void register(DualModeWorkstation ws) {
+                    ws.signalLowConsumption();
+                    logDualModeLow(ws);
+                }
+
+                @Override
+                public void register(TradeofSteerableWorkstation ws) {
+                }
+
+                @Override
+                public void register(CurtailableWorkstation c) {
                     c.doFullCurtailment();
                     logFullCurtailment(c);
                 }
-            }
+
+                @Override
+                public void register(Workstation workstation) {
+                }
+            });
         }
     }
 
     @Override
-    public void executeCancelCurtailment(long id,
-            List<CurtailableWorkstation> curtailableStations) {
+    public void executeUpFlexProfile(long id) {
         List<Workstation> stations = profileMap.get(id);
-        for (CurtailableWorkstation c : curtailableStations) {
-            for (Workstation s : stations) {
-                if (c.equals(s)) {
+        for (Workstation t : stations) {
+            t.acceptVisitor(new WorkstationVisitor() {
+
+                @Override
+                public void register(DualModeWorkstation ws) {
+                    ws.signalHighConsumption();
+                    logDualModeHigh(ws);
+                }
+
+                @Override
+                public void register(TradeofSteerableWorkstation ws) {
+                }
+
+                @Override
+                public void register(CurtailableWorkstation c) {
                     c.restore();
                     logCancelCurtailment(c);
                 }
-            }
+
+                @Override
+                public void register(Workstation workstation) {
+                }
+            });
         }
+
+    }
+
+    private void logDualModeHigh(DualModeWorkstation ws) {
+        logger.debug("Executing singal High on {}", ws);
+    }
+
+    private void logDualModeLow(DualModeWorkstation ws) {
+        logger.debug("Executing singal Low on {}", ws);
     }
 
     private void logFullCurtailment(Workstation c) {
-        LoggerFactory.getLogger(ProductionLine.class).debug(
-                "Executing curtailment on {}", c);
+        logger.debug("Executing curtailment on {}", c);
     }
 
     private void logCancelCurtailment(Workstation c) {
-        LoggerFactory.getLogger(ProductionLine.class).debug(
-                "Restoring curtailment on {}", c);
+        logger.debug("Restoring curtailment on {}", c);
     }
 
     @Override

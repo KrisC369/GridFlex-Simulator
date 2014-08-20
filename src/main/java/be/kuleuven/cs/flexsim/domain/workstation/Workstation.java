@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import be.kuleuven.cs.flexsim.domain.util.Visitor.Visitable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 /**
@@ -10,7 +11,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * 
  */
 public interface Workstation extends SimulationComponent,
-        Registering<WorkstationRegisterable> {
+        Visitable<WorkstationVisitor> {
 
     /**
      * Returns the energy consumption amount during the last step.

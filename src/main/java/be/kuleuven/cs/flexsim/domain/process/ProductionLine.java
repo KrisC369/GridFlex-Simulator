@@ -15,7 +15,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
-import be.kuleuven.cs.flexsim.domain.workstation.WorkstationRegisterable;
+import be.kuleuven.cs.flexsim.domain.workstation.WorkstationVisitor;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -225,8 +225,8 @@ public final class ProductionLine implements FlexProcess {
     }
 
     @Override
-    public void executeCurtailmentProfile(long id) {
-        getFlexProcessor().executeCurtailment(id, getCurtailableStations());
+    public void executeDownFlexProfile(long id) {
+        getFlexProcessor().executeDownFlexProfile(id);
     }
 
     private void addToGraph(Workstation ws) {
@@ -261,9 +261,8 @@ public final class ProductionLine implements FlexProcess {
     }
 
     @Override
-    public void executeCancelCurtailmentProfile(long id) {
-        getFlexProcessor().executeCancelCurtailment(id,
-                getCurtailableStations());
+    public void executeUpFlexProfile(long id) {
+        getFlexProcessor().executeUpFlexProfile(id);
     }
 
     /**
@@ -324,7 +323,7 @@ public final class ProductionLine implements FlexProcess {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption, i % 2)
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -344,7 +343,7 @@ public final class ProductionLine implements FlexProcess {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption, shift)
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -362,7 +361,7 @@ public final class ProductionLine implements FlexProcess {
                 WorkstationFactory.createDefault(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1))
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -380,7 +379,7 @@ public final class ProductionLine implements FlexProcess {
                 WorkstationFactory.createConsuming(
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        idleConsumption, workingConsumption).registerWith(
+                        idleConsumption, workingConsumption).acceptVisitor(
                         prodline.registry);
             }
             return this;
@@ -403,7 +402,7 @@ public final class ProductionLine implements FlexProcess {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -425,7 +424,7 @@ public final class ProductionLine implements FlexProcess {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
 
             }
             return this;
@@ -449,7 +448,7 @@ public final class ProductionLine implements FlexProcess {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -470,7 +469,7 @@ public final class ProductionLine implements FlexProcess {
                         prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         rfLowConsumption, rfHighConsumption, rfWidth, cap)
-                        .registerWith(prodline.registry);
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -542,7 +541,7 @@ public final class ProductionLine implements FlexProcess {
 
     }
 
-    private final class PLRegisterable implements WorkstationRegisterable {
+    private final class PLRegisterable implements WorkstationVisitor {
 
         @Override
         public void register(Workstation ws) {

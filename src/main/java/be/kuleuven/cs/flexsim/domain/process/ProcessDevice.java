@@ -17,7 +17,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-interface ProcessDevice {
+interface ProcessDevice extends FlexControlAPI {
     /**
      * Add an aspect of flexibility to this process Device. The PD will now take
      * into account this aspect while calculating flex.
@@ -27,26 +27,6 @@ interface ProcessDevice {
      * @return the process device with this aspect added.
      */
     ProcessDevice addFlexAspect(FlexAspect aspect);
-
-    /**
-     * Execute this cancel curtailment request.
-     * 
-     * @param id
-     *            the id of the request.
-     * @param stations
-     *            The stations to work with.
-     */
-    void executeCancelCurtailment(long id, List<CurtailableWorkstation> stations);
-
-    /**
-     * Execute this curtailment request.
-     * 
-     * @param id
-     *            the id of the request.
-     * @param list
-     *            the List of curtailable stations to work with.
-     */
-    void executeCurtailment(long id, List<CurtailableWorkstation> list);
 
     /**
      * Invalidate the current cache of profiles.

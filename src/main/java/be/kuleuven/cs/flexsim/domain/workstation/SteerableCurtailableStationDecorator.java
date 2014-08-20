@@ -52,9 +52,9 @@ public class SteerableCurtailableStationDecorator extends
     }
 
     @Override
-    public void registerWith(WorkstationRegisterable subject) {
+    public void acceptVisitor(WorkstationVisitor subject) {
         subject.register((CurtailableWorkstation) this);
-        super.registerWith(subject);
+        super.acceptVisitor(subject);
     }
 
     /*
