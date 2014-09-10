@@ -121,7 +121,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        List<SimulationComponent> toret = new ArrayList<SimulationComponent>();
+        List<SimulationComponent> toret = new ArrayList<>();
         toret.add(getTarget());
         return toret;
     }

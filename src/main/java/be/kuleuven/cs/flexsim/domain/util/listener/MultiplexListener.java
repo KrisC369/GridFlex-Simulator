@@ -40,6 +40,6 @@ public final class MultiplexListener<A> implements Listener<A> {
         if (l2 == NoopListener.INSTANCE) {
             return l1;
         }
-        return new MultiplexListener<A>(l1, l2);
+        return new MultiplexListener<>(l1, l2);
     }
 }

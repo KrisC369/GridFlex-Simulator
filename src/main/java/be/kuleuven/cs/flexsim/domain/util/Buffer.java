@@ -27,7 +27,7 @@ public final class Buffer<T extends IBufferable> implements Serializable {
      * Instantiates a new buffer.
      */
     public Buffer() {
-        this.data = new LinkedList<T>();
+        this.data = new LinkedList<>();
     }
 
     /**
