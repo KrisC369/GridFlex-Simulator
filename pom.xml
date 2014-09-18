@@ -37,10 +37,10 @@
 			<artifactId>gridlock-events</artifactId>
 			<version>0.0.1</version>
 		</dependency>
-		<!-- <dependency> <groupId>org.jfree</groupId> <artifactId>jfreechart</artifactId> 
+		<!-- <dependency> <groupId>org.jfree</groupId> <artifactId>jfreechart</artifactId>
 			<version>1.0.17</version> </dependency> -->
-		<!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId> 
-			<version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId> 
+		<!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId>
+			<version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId>
 			<artifactId>jung-graph-impl</artifactId> <version>2.0.1</version> </dependency> -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -138,15 +138,15 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!-- <plugin> <groupId>com.github.github</groupId> <artifactId>downloads-maven-plugin</artifactId> 
-				<version>0.6</version> <configuration> <description>Official ${project.name} 
-				build of the ${project.version} release</description> <override>true</override> 
-				<includeAttached>true</includeAttached> <server>github</server> </configuration> 
-				<executions> <execution> <goals> <goal>upload</goal> </goals> <phase>install</phase> 
-				</execution> </executions> </plugin> <plugin> <groupId>com.github.github</groupId> 
-				<artifactId>site-maven-plugin</artifactId> <version>0.7</version> <configuration> 
-				<message>Building site for ${project.version}</message> <server>github</server> 
-				</configuration> <executions> <execution> <goals> <goal>site</goal> </goals> 
+			<!-- <plugin> <groupId>com.github.github</groupId> <artifactId>downloads-maven-plugin</artifactId>
+				<version>0.6</version> <configuration> <description>Official ${project.name}
+				build of the ${project.version} release</description> <override>true</override>
+				<includeAttached>true</includeAttached> <server>github</server> </configuration>
+				<executions> <execution> <goals> <goal>upload</goal> </goals> <phase>install</phase>
+				</execution> </executions> </plugin> <plugin> <groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId> <version>0.7</version> <configuration>
+				<message>Building site for ${project.version}</message> <server>github</server>
+				</configuration> <executions> <execution> <goals> <goal>site</goal> </goals>
 				<phase>site</phase> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
@@ -191,7 +191,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://kraken.cs.kuleuven.be:8080/job/Flexsim</url>
+		<url>http://feynman.cs.kuleuven.be:8080/job/Flexsim</url>
 		<notifiers>
 			<notifier>
 				<type>mail</type>
