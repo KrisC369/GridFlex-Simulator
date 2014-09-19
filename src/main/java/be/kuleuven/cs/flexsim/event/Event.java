@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.naming.directory.NoSuchAttributeException;
 
 /**
- * The basic event class
+ * The basic event class.
  * 
  * Ported, inspired from, and distilled from the Gridlock project.
  * 
@@ -21,7 +21,7 @@ public class Event {
     private final Map<String, Object> attributes;
 
     /**
-     * Create a new event
+     * Create a new event.
      * 
      * @param type
      *            the event type
@@ -39,7 +39,7 @@ public class Event {
     }
 
     /**
-     * Remove all attributes from the event
+     * Remove all attributes from the event.
      */
     void clearAttributes() {
         synchronized (this.attributes) {
@@ -48,16 +48,16 @@ public class Event {
     }
 
     /**
-     * Get an event attribute
+     * Get an event attribute.
      *
      * @param <T>
-     *            expected type of the attribute
+     *            expected type of the attribute.
      * @param key
-     *            key of the attribute
+     *            key of the attribute.
      * @param type
-     *            class the attribute should be cast to
+     *            class the attribute should be cast to.
      *
-     * @return the attribute registered under key cast as type
+     * @return the attribute registered under key cast as type.
      * @throws NoSuchAttributeException
      *             when this event does not have the specified attribute.
      */
@@ -73,11 +73,11 @@ public class Event {
     }
 
     /**
-     * Returns all attributes on this event in a map
+     * Returns all attributes on this event in a map.
      *
-     * The map will include the type pseudo attribute
+     * The map will include the type pseudo attribute.
      *
-     * @return all attributes including the event type
+     * @return all attributes including the event type.
      */
     public Map<String, Object> getAttributes() {
         Map<String, Object> copy;
@@ -91,7 +91,7 @@ public class Event {
     }
 
     /**
-     * Add an attribute to this event
+     * Add an attribute to this event.
      *
      * @param key
      *            the attribute key.
@@ -100,7 +100,7 @@ public class Event {
      */
     public void setAttribute(String key, Object value) {
 
-        if (key.equals("type")) {
+        if ("type".equals(key)) {
             throw new IllegalArgumentException(
                     "Attribute with key 'type' not allowed");
         }
@@ -114,7 +114,7 @@ public class Event {
      * Sets the arguments for this event.
      *
      * <strong>Warning: <em>all</em> previous arguments will be
-     * cleared!</strong>
+     * cleared!</strong>.
      *
      * @param args
      *            The arguments to set
@@ -131,15 +131,15 @@ public class Event {
     }
 
     private boolean canAcceptKey(String key) {
-        return key != null && !key.equals("type");
+        return key != null && !"type".equals(key);
     }
 
     /**
-     * Check whether there is an attribute associated with the key
+     * Check whether there is an attribute associated with the key.
      *
      * @param key
-     *            the key to check for
-     * @return true if there is an attribute for the key
+     *            the key to check for.
+     * @return true if there is an attribute for the key.
      */
     public boolean hasAttribute(String key) {
         synchronized (this.attributes) {
@@ -149,13 +149,13 @@ public class Event {
 
     /**
      * Check whether there is an attribute associated with the key and that that
-     * attribute is assignable to type
+     * attribute is assignable to type.
      *
      * @param key
-     *            the key to check for
+     *            the key to check for.
      * @param type
-     *            the type to check for
-     * @return true if there is an attribute for key of class type
+     *            the type to check for.
+     * @return true if there is an attribute for key of class type.
      */
     public boolean hasAttribute(String key, Class<?> type) {
         synchronized (this.attributes) {
