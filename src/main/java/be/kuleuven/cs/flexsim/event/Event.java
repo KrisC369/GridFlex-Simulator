@@ -12,7 +12,7 @@ import javax.naming.directory.NoSuchAttributeException;
  * Ported, inspired from, and distilled from the Gridlock project.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @author Rutger Claes <rutger.claes@cs.kuleuven.be>
+ * @author Rutger Claes (rutger.claes AT cs.kuleuven.be)
  */
 public class Event {
 
