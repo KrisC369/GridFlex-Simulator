@@ -22,10 +22,10 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
+import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
-import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.eventbus.Subscribe;
 

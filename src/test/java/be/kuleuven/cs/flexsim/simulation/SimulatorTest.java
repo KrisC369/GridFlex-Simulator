@@ -18,7 +18,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.gridlock.simulation.events.Event;
+import be.kuleuven.cs.flexsim.event.Event;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
