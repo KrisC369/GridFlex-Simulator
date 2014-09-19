@@ -39,16 +39,16 @@ public class BufferTest {
 
     @Test
     public void testBigNumberThroughput() {
-        Buffer<IBufferable> b = new Buffer<IBufferable>();
-        List<IBufferable> results = new ArrayList<IBufferable>();
-        IBufferable tmp;
+        Buffer<Bufferable> b = new Buffer<Bufferable>();
+        List<Bufferable> results = new ArrayList<Bufferable>();
+        Bufferable tmp;
         int n = 101912;
         for (int i = 0; i < n; i++) {
             tmp = ResourceFactory.createResource();
             b.push(tmp);
             results.add(tmp);
         }
-        for (IBufferable i : results) {
+        for (Bufferable i : results) {
             assertEquals(i, b.pull());
         }
     }

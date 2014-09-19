@@ -5,7 +5,7 @@ package be.kuleuven.cs.flexsim.domain.util;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public interface IBufferable {
+public interface Bufferable {
 
     /**
      * Sends a notification to this bufferable instance that it has entered a

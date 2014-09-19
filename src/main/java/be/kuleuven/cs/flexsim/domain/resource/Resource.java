@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.domain.resource;
 
 import java.io.Serializable;
 
-import be.kuleuven.cs.flexsim.domain.util.IBufferable;
+import be.kuleuven.cs.flexsim.domain.util.Bufferable;
 
 /**
  * Interface class for resource representations in the system.
@@ -10,7 +10,7 @@ import be.kuleuven.cs.flexsim.domain.util.IBufferable;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
-public interface Resource extends IBufferable, Serializable {
+public interface Resource extends Bufferable, Serializable {
 
     /**
      * Return the needed process time for this resource at this moment.

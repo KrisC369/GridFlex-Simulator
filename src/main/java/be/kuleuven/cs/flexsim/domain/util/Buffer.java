@@ -16,7 +16,7 @@ import com.google.common.collect.Sets;
  * @param <T>
  *            the generic type of contents in this buffer.
  */
-public final class Buffer<T extends IBufferable> implements Serializable {
+public final class Buffer<T extends Bufferable> implements Serializable {
 
     private static final long serialVersionUID = 9044791947885042068L;
 
