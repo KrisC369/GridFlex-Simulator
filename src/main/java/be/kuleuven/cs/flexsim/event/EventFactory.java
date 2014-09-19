@@ -1,14 +1,12 @@
-package be.kuleuven.cs.flexsim.simulation;
-
-import be.kuleuven.cs.gridlock.simulation.events.Event;
+package be.kuleuven.cs.flexsim.event;
 
 /**
- * EventFactory for simplified events not using an event manager.
+ * EventFactory for simplified events.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
-public interface SimpleEventFactory {
+public interface EventFactory {
 
     /**
      * Builds an event of a certain type.

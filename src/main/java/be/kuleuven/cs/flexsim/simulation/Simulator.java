@@ -11,11 +11,11 @@ import org.apache.commons.math3.random.RandomGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.kuleuven.cs.flexsim.event.Event;
+import be.kuleuven.cs.flexsim.event.EventFactoryImplementation;
+import be.kuleuven.cs.flexsim.event.EventFactory;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
-import be.kuleuven.cs.gridlock.simulation.events.Event;
-import be.kuleuven.cs.gridlock.simulation.events.EventFactory;
-import be.kuleuven.cs.gridlock.simulation.events.EventFactoryImplementation;
 
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.EventBus;
@@ -48,7 +48,7 @@ public final class Simulator implements SimulationContext {
 
     private final EventBus eventbus;
 
-    private final SimpleEventFactory eventFac;
+    private final EventFactory eventFac;
 
     private final Set<InstrumentationComponent> instruComps;
 
@@ -72,14 +72,7 @@ public final class Simulator implements SimulationContext {
         this.instruComps = Sets.newLinkedHashSet();
         this.logger = LoggerFactory.getLogger(Simulator.class);
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
-        this.eventFac = new SimpleEventFactory() {
-            private final EventFactory ef = new EventFactoryImplementation();
-
-            @Override
-            public Event build(String eventType) {
-                return ef.build(eventType, null);
-            }
-        };
+        this.eventFac = new EventFactoryImplementation();
         this.random = new MersenneTwister(duration);
         this.uidgen = new UIDGenerator() {
             private long count = 0;
@@ -124,7 +117,7 @@ public final class Simulator implements SimulationContext {
     }
 
     @Override
-    public SimpleEventFactory getEventFactory() {
+    public EventFactory getEventFactory() {
         return eventFac;
     }
 

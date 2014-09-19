@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.simulation;
 
 import org.apache.commons.math3.random.RandomGenerator;
 
+import be.kuleuven.cs.flexsim.event.EventFactory;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
 
 import com.google.common.eventbus.EventBus;
@@ -29,7 +30,7 @@ public interface SimulationContext {
      * 
      * @return an eventFactory.
      */
-    SimpleEventFactory getEventFactory();
+    EventFactory getEventFactory();
 
     /**
      * Return the simulation time keeper instance.

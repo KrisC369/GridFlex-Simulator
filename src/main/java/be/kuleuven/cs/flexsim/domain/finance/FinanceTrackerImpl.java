@@ -5,9 +5,9 @@ import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
+import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import be.kuleuven.cs.gridlock.simulation.events.Event;
 
 import com.google.common.base.Optional;
 
