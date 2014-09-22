@@ -23,7 +23,8 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
     private SteeringSignal signal;
     private final int initialImbalance;
     private int currentImbalance;
-    private Listener<? super Integer> newSteerValueListeners;
+    private Listener<? super Integer> newBalanceValueListener;
+    private int currentSignalOfset;
 
     /**
      * Default constructor.
@@ -53,7 +54,8 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
         this.signal = signal;
         this.initialImbalance = initialbal;
         this.currentImbalance = 0;
-        this.newSteerValueListeners = NoopListener.INSTANCE;
+        this.newBalanceValueListener = NoopListener.INSTANCE;
+        this.currentSignalOfset = 0;
     }
 
     @Override
@@ -67,10 +69,13 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
             bal += s.getAggregatedLastStepConsumptions();
         }
         currentImbalance = initialImbalance - bal;
+        newBalanceValueListener.eventOccurred(currentSignalOfset
+                + this.currentImbalance);
     }
 
     @Override
     public void tick(int t) {
+        this.currentSignalOfset = this.signal.getCurrentValue(t);
     }
 
     @Override
@@ -80,10 +85,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
 
     @Override
     public int getCurrentValue(int timeMark) {
-        int result = this.signal.getCurrentValue(timeMark)
-                + this.currentImbalance;
-        newSteerValueListeners.eventOccurred(result);
-        return result;
+        return currentSignalOfset + this.currentImbalance;
     }
 
     /**
@@ -92,8 +94,8 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
      * @param listener
      *            The listener to add.
      */
-    public void addNewSteerValueListener(Listener<? super Integer> listener) {
-        this.newSteerValueListeners = MultiplexListener.plus(
-                this.newSteerValueListeners, listener);
+    public void addNewBalanceValueListener(Listener<? super Integer> listener) {
+        this.newBalanceValueListener = MultiplexListener.plus(
+                this.newBalanceValueListener, listener);
     }
 }

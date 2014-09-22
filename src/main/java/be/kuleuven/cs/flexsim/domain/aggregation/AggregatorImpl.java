@@ -80,6 +80,7 @@ public class AggregatorImpl implements SimulationComponent {
 
         NPermuteAndCombiner<Long> g = new NPermuteAndCombiner<>();
         List<Set<Long>> splitted = split(flex);
+        // Very costly operation if 'splitted' list is big.
         List<List<Long>> possibleSolutions = Lists.newArrayList(Sets
                 .cartesianProduct(splitted));
         // Add possibility for only 1 site participating.

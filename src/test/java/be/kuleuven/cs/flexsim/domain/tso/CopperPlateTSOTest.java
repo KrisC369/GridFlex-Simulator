@@ -84,8 +84,10 @@ public class CopperPlateTSOTest {
         }, siteMock);
         Simulator s = Simulator.createSimulator(20);
         Listener<Integer> mockListener = mock(Listener.class);
-        tso.addNewSteerValueListener(mockListener);
+        tso.addNewBalanceValueListener(mockListener);
         s.register(tso);
+        tso.tick(1);
+        tso.afterTick(1);
         int answer = tso.getCurrentValue(1);
         verify(mockListener, times(1)).eventOccurred(result);
         assertEquals(answer, result, 0);
