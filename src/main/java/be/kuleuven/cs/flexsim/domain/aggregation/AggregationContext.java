@@ -15,6 +15,15 @@ import com.google.common.collect.LinkedListMultimap;
  *
  */
 interface AggregationContext {
+
+    /**
+     * Dispatch an activation signal.
+     * 
+     * @param flex
+     *            The flex mapping.
+     * @param ids
+     *            the ids that reference the profile to activate.
+     */
     void dispatchActivation(LinkedListMultimap<SiteFlexAPI, FlexTuple> flex,
             Set<Long> ids);
 }

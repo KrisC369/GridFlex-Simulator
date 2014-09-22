@@ -87,46 +87,10 @@ public class AggregatorImpl implements SimulationComponent {
 
     private void doAggregationStep(int t) {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
-
         final int target = getTargetFlex(t);
         logStep(t, target);
-
-        AggregationContext dispatch = new AggregationContext() {
-
-            @Override
-            public void dispatchActivation(
-                    LinkedListMultimap<SiteFlexAPI, FlexTuple> flex,
-                    Set<Long> ids) {
-                for (SiteFlexAPI s : flex.keySet()) {
-                    for (long i : ids) {
-                        for (FlexTuple t : flex.get(s)) {
-                            if (t.getId() == i) {
-                                final FlexTuple tt = t;
-                                if (tt.getDirection()) {
-                                    logRestore(tt);
-                                } else {
-                                    logCurtail(tt);
-                                }
-                                s.activateFlex(new ActivateFlexCommand() {
-                                    @Override
-                                    public long getReferenceID() {
-                                        return tt.getId();
-                                    }
-
-                                    @Override
-                                    public boolean isDownFlexCommand() {
-                                        return !tt.getDirection();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        };
-
-        this.strategy.performAggregationStep(dispatch, t, flex, target);
-
+        this.strategy.performAggregationStep(new AggregationDispatch(), t,
+                flex, target);
     }
 
     private int getTargetFlex(int t) {
@@ -177,5 +141,38 @@ public class AggregatorImpl implements SimulationComponent {
     private void logRestore(FlexTuple tt) {
         LoggerFactory.getLogger(AggregatorImpl.class).debug(
                 "Sending restore request based on profile {}", tt);
+    }
+
+    private class AggregationDispatch implements AggregationContext {
+
+        @Override
+        public void dispatchActivation(
+                LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
+            for (SiteFlexAPI s : flex.keySet()) {
+                for (long i : ids) {
+                    for (FlexTuple t : flex.get(s)) {
+                        if (t.getId() == i) {
+                            final FlexTuple tt = t;
+                            if (tt.getDirection()) {
+                                logRestore(tt);
+                            } else {
+                                logCurtail(tt);
+                            }
+                            s.activateFlex(new ActivateFlexCommand() {
+                                @Override
+                                public long getReferenceID() {
+                                    return tt.getId();
+                                }
+
+                                @Override
+                                public boolean isDownFlexCommand() {
+                                    return !tt.getDirection();
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
     }
 }
