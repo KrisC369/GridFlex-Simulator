@@ -14,7 +14,7 @@ import com.google.common.collect.LinkedListMultimap;
 public interface AggregationStrategy {
 
     /**
-     * Perform an aggregation step using the following:
+     * Perform an aggregation step using the following.
      * 
      * @param context
      *            the aggregators dispatch entity.
