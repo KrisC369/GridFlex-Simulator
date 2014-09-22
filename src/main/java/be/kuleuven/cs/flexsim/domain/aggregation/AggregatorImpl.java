@@ -28,9 +28,29 @@ public class AggregatorImpl implements SimulationComponent {
     private final SteeringSignal tso;
     private int tickcount;
     private final int aggFreq;
+    private final AggregationStrategy strategy;
 
     /**
-     * Default constructor.
+     * Constructor with custom aggregation strategy.
+     *
+     * @param tso
+     *            the tso to take steering signals from.
+     * @param frequency
+     *            the frequency with which to perform aggregation functions.
+     * @param strategy
+     *            The aggregation strategy to use.
+     */
+    public AggregatorImpl(SteeringSignal tso, int frequency,
+            AggregationStrategy strategy) {
+        this.clients = Sets.newLinkedHashSet();
+        this.tso = tso;
+        this.tickcount = 1;
+        this.aggFreq = frequency;
+        this.strategy = strategy;
+    }
+
+    /**
+     * Default constructor with default aggregation strategy: Cartesianproduct.
      *
      * @param tso
      *            the tso to take steering signals from.
@@ -38,10 +58,7 @@ public class AggregatorImpl implements SimulationComponent {
      *            the frequency with which to perform aggregation functions.
      */
     public AggregatorImpl(SteeringSignal tso, int frequency) {
-        this.clients = Sets.newLinkedHashSet();
-        this.tso = tso;
-        this.tickcount = 1;
-        this.aggFreq = frequency;
+        this(tso, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
     }
 
     /**
@@ -108,8 +125,7 @@ public class AggregatorImpl implements SimulationComponent {
             }
         };
 
-        AggregationStrategyImpl.CARTESIANPRODUCT.performAggregationStep(dispatch, t, flex,
-                target);
+        this.strategy.performAggregationStep(dispatch, t, flex, target);
 
     }
 
