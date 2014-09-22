@@ -12,11 +12,18 @@ import com.google.common.collect.LinkedListMultimap;
  *
  */
 public interface AggregationStrategy {
+
     /**
+     * Perform an aggregation step using the following:
+     * 
      * @param context
+     *            the aggregators dispatch entity.
      * @param t
+     *            the current time.
      * @param flex
+     *            the flexibility mapping.
      * @param target
+     *            the target flexibility to gather.
      */
     void performAggregationStep(AggregationContext context, int t,
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target);
