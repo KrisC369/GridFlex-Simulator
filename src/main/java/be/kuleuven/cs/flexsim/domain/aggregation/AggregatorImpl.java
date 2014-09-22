@@ -108,7 +108,7 @@ public class AggregatorImpl implements SimulationComponent {
             }
         };
 
-        AggStrategy.CARTESIANPRODUCT.performAggregationStep(dispatch, t, flex,
+        AggregationStrategyImpl.CARTESIANPRODUCT.performAggregationStep(dispatch, t, flex,
                 target);
 
     }

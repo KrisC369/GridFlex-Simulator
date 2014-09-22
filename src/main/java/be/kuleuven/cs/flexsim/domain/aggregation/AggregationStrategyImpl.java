@@ -15,10 +15,12 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
 /**
+ * Implementations of aggregation strategies.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public enum AggStrategy implements AggregationStrategy {
+public enum AggregationStrategyImpl implements AggregationStrategy {
     /**
      * An implementation that uses the cartesian product of sets to calculate
      * all possible solutions and then picks the best one. Costly,
