@@ -13,15 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImpl;
+import be.kuleuven.cs.flexsim.domain.energy.tso.SimpleTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteImpl;
-import be.kuleuven.cs.flexsim.domain.tso.CopperPlateTSO;
-import be.kuleuven.cs.flexsim.domain.tso.RandomTSO;
-import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
@@ -105,7 +105,7 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
         AggregatorImpl agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -222,7 +222,7 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
         AggregatorImpl agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -284,8 +284,8 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        CopperPlateTSO realTSO = new CopperPlateTSO(tso, site1, site2);
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        SimpleTSO realTSO = new SimpleTSO(tso, site1, site2);
         AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -339,7 +339,7 @@ public class ScenarioTest {
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
         tso = new RandomTSO(-300, 70, simulator.getRandom());
-        realTSO = new CopperPlateTSO(1600, tso, site1, site2);
+        realTSO = new SimpleTSO(1600, tso, site1, site2);
         agg = new AggregatorImpl(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -484,8 +484,8 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        CopperPlateTSO realTSO = new CopperPlateTSO(tso, site1, site2);
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        SimpleTSO realTSO = new SimpleTSO(tso, site1, site2);
         AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -539,7 +539,7 @@ public class ScenarioTest {
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
         tso = new RandomTSO(-300, 70, simulator.getRandom());
-        realTSO = new CopperPlateTSO(1600, tso, site1, site2);
+        realTSO = new SimpleTSO(1600, tso, site1, site2);
         agg = new AggregatorImpl(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -603,8 +603,8 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        CopperPlateTSO realTSO = new CopperPlateTSO(tso, site1, site2);
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        SimpleTSO realTSO = new SimpleTSO(tso, site1, site2);
         AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -659,7 +659,7 @@ public class ScenarioTest {
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
         tso = new RandomTSO(-300, 70, simulator.getRandom());
-        realTSO = new CopperPlateTSO(1600, tso, site1, site2);
+        realTSO = new SimpleTSO(1600, tso, site1, site2);
         agg = new AggregatorImpl(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);

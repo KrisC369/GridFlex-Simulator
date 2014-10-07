@@ -1,6 +1,8 @@
-package be.kuleuven.cs.flexsim.domain.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso;
 
 import org.apache.commons.math3.random.RandomGenerator;
+
+import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 
 /**
  * Represents a TSO implementation with random signal.
@@ -8,7 +10,7 @@ import org.apache.commons.math3.random.RandomGenerator;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class RandomTSO implements SteeringSignal {
+public class RandomTSO implements BalancingSignal {
     private final RandomGenerator g;
     private final int min;
     private final int max;
@@ -51,8 +53,12 @@ public class RandomTSO implements SteeringSignal {
     }
 
     @Override
-    public int getCurrentValue(int timeMark) {
+    public int getCurrentImbalance() {
         return getGenerator().nextInt(Math.abs(getMax() - getMin())) + getMin();
 
+    }
+
+    @Override
+    public void addNewBalanceValueListener(Listener<? super Integer> listener) {
     }
 }

@@ -7,8 +7,11 @@ import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSO;
+
 public class RandomTSOTest {
-    private SteeringSignal tso = mock(SteeringSignal.class);
+    private BalancingSignal tso = mock(BalancingSignal.class);
 
     private final int MIN = -44;
     private final int MAX = 70;
@@ -21,7 +24,7 @@ public class RandomTSOTest {
     @Test
     public void testSequence() {
         for (int i = 0; i < 30000; i++) {
-            int val = tso.getCurrentValue(0);
+            int val = tso.getCurrentImbalance();
             assertTrue(val <= MAX);
             assertTrue(val >= MIN);
         }

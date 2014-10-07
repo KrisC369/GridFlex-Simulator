@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ import com.google.common.collect.Lists;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
+public class SimpleTSO implements SimulationComponent, BalancingSignal {
 
     private List<Site> prosumers;
-    private SteeringSignal signal;
+    private BalancingSignal signal;
     private final int initialImbalance;
     private int currentImbalance;
     private Listener<? super Integer> newBalanceValueListener;
@@ -34,7 +34,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
      * @param sites
      *            The sites connected to this TSO
      */
-    public CopperPlateTSO(SteeringSignal signal, Site... sites) {
+    public SimpleTSO(BalancingSignal signal, Site... sites) {
         this(0, signal, sites);
     }
 
@@ -49,7 +49,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
      * @param sites
      *            The sites connected to this TSO
      */
-    public CopperPlateTSO(int initialbal, SteeringSignal signal, Site... sites) {
+    public SimpleTSO(int initialbal, BalancingSignal signal, Site... sites) {
         this.prosumers = Lists.newArrayList(sites);
         this.signal = signal;
         this.initialImbalance = initialbal;
@@ -66,7 +66,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
     public void afterTick(int t) {
         int bal = 0;
         for (Site s : prosumers) {
-            bal += s.getAggregatedLastStepConsumptions();
+            bal += s.getLastStepConsumption();
         }
         currentImbalance = initialImbalance - bal;
         newBalanceValueListener.eventOccurred(currentSignalOfset
@@ -75,7 +75,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
 
     @Override
     public void tick(int t) {
-        this.currentSignalOfset = this.signal.getCurrentValue(t);
+        this.currentSignalOfset = this.signal.getCurrentImbalance();
     }
 
     @Override
@@ -84,7 +84,7 @@ public class CopperPlateTSO implements SimulationComponent, SteeringSignal {
     }
 
     @Override
-    public int getCurrentValue(int timeMark) {
+    public int getCurrentImbalance() {
         return currentSignalOfset + this.currentImbalance;
     }
 

@@ -22,8 +22,8 @@ public final class FinanceTrackerImpl implements SimulationComponent,
 
     private final ResourceConsumptionTrackableComponent target;
     private Optional<SimulationContext> context;
-    private int totalReward;
-    private int totalCost;
+    private double totalReward;
+    private double totalCost;
     private final RewardModel rewardMod;
     private final DebtModel debtMod;
     private long itemCount;
@@ -68,7 +68,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
 
     private void calculateCost(int t) {
         incrementTotalCost(debtMod.calculateDebt(t, getTarget()
-                .getAggregatedLastStepConsumptions()));
+                .getLastStepConsumption()));
     }
 
     private void calculateReward(int t) {
@@ -89,13 +89,13 @@ public final class FinanceTrackerImpl implements SimulationComponent,
     }
 
     private void report() {
-        publishReport(getTarget().getAggregatedLastStepConsumptions(),
-                getTarget().getAggregatedTotalConsumptions(), getTarget()
-                        .getBufferOccupancyLevels(), getTotalProfit());
+        publishReport(getTarget().getLastStepConsumption(), getTarget()
+                .getTotalConsumption(), getTarget().getBufferOccupancyLevels(),
+                getTotalProfit());
     }
 
-    private void publishReport(int totalLaststep, int totalTotal,
-            List<Integer> buffSizes, int profit) {
+    private void publishReport(double totalLaststep, double totalTotal,
+            List<Integer> buffSizes, double profit) {
         if (!this.context.isPresent()) {
             throw new IllegalStateException(
                     "This component has not been correctly configured with a context.");
@@ -147,7 +147,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalReward()
      */
     @Override
-    public int getTotalReward() {
+    public double getTotalReward() {
         return this.totalReward;
     }
 
@@ -161,11 +161,11 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * @see be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalCost()
      */
     @Override
-    public int getTotalCost() {
+    public double getTotalCost() {
         return totalCost;
     }
 
-    private void incrementTotalCost(int incr) {
+    private void incrementTotalCost(double incr) {
         this.totalCost = this.totalCost + incr;
     }
 
@@ -176,7 +176,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalProfit()
      */
     @Override
-    public int getTotalProfit() {
+    public double getTotalProfit() {
         return getTotalReward() - getTotalCost();
     }
 

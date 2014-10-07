@@ -98,19 +98,19 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public int getAggregatedTotalConsumptions() {
-        int sum = 0;
+    public double getTotalConsumption() {
+        double sum = 0;
         for (FlexProcess fp : processes) {
-            sum += fp.getAggregatedTotalConsumptions();
+            sum += fp.getTotalConsumption();
         }
         return sum;
     }
 
     @Override
-    public int getAggregatedLastStepConsumptions() {
-        int sum = 0;
+    public double getLastStepConsumption() {
+        double sum = 0;
         for (FlexProcess fp : processes) {
-            sum += fp.getAggregatedLastStepConsumptions();
+            sum += fp.getLastStepConsumption();
         }
         return sum;
     }
@@ -170,5 +170,10 @@ public class SiteImpl implements Site {
         StringBuilder builder = new StringBuilder();
         builder.append("Site [hC=").append(hashCode()).append("]");
         return builder.toString();
+    }
+
+    @Override
+    public double getAverageConsumption() {
+        return getLastStepConsumption();
     }
 }

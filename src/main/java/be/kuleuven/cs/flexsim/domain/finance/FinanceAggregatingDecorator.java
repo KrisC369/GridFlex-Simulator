@@ -19,7 +19,7 @@ class FinanceAggregatingDecorator implements FinanceTracker {
     }
 
     @Override
-    public int getTotalReward() {
+    public double getTotalReward() {
         int sum = 0;
         for (FinanceTracker t : targets) {
             sum += t.getTotalReward();
@@ -28,7 +28,7 @@ class FinanceAggregatingDecorator implements FinanceTracker {
     }
 
     @Override
-    public int getTotalCost() {
+    public double getTotalCost() {
         int sum = 0;
         for (FinanceTracker t : targets) {
             sum += t.getTotalCost();
@@ -37,7 +37,7 @@ class FinanceAggregatingDecorator implements FinanceTracker {
     }
 
     @Override
-    public int getTotalProfit() {
+    public double getTotalProfit() {
         int sum = 0;
         for (FinanceTracker t : targets) {
             sum += t.getTotalProfit();

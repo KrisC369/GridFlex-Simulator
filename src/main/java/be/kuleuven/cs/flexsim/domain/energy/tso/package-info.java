@@ -4,5 +4,5 @@
  *
  */
 @ParametersAreNonnullByDefault
-package be.kuleuven.cs.flexsim.domain.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso;
 import javax.annotation.ParametersAreNonnullByDefault;

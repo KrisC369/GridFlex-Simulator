@@ -79,12 +79,12 @@ public final class ProductionLine implements FlexProcess {
     }
 
     @Override
-    public int getAggregatedLastStepConsumptions() {
+    public double getLastStepConsumption() {
         return CollectionUtils.sum(workstations, LASTSTEP_CONSUMPTION);
     }
 
     @Override
-    public int getAggregatedTotalConsumptions() {
+    public double getTotalConsumption() {
         return CollectionUtils.sum(workstations, TOTAL_CONSUMPTION);
     }
 
@@ -263,6 +263,11 @@ public final class ProductionLine implements FlexProcess {
     @Override
     public void executeUpFlexProfile(long id) {
         getFlexProcessor().executeUpFlexProfile(id);
+    }
+
+    @Override
+    public double getAverageConsumption() {
+        return getLastStepConsumption();
     }
 
     /**
