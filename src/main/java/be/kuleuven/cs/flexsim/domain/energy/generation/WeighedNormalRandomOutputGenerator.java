@@ -77,7 +77,7 @@ public class WeighedNormalRandomOutputGenerator extends
      *            1.0
      */
     public WeighedNormalRandomOutputGenerator(int min, int max, double weight) {
-        this(min, max, new MersenneTwister());
+        this(min, max, new MersenneTwister(), weight);
     }
 
     @Override

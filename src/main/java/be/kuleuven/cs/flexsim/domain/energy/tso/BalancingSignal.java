@@ -25,6 +25,5 @@ public interface BalancingSignal {
      * @param listener
      *            The listener to add.
      */
-    public abstract void addNewBalanceValueListener(
-            Listener<? super Integer> listener);
+    void addNewBalanceValueListener(Listener<? super Integer> listener);
 }
