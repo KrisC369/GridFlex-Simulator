@@ -288,7 +288,7 @@ public class ScenarioTest {
         Site site2 = new SiteImpl(line3, line4);
         EnergyProductionTrackable p1 = new WeighedNormalRandomOutputGenerator(
                 -1000, 1000);
-        EnergyProductionTrackable p2 = new ConstantOutputGenerator(29000);
+        EnergyProductionTrackable p2 = new ConstantOutputGenerator(10000);
         CopperplateTSO tso = new CopperplateTSO(site1, site2);
         tso.registerProducer(p1);
         tso.registerProducer(p2);
