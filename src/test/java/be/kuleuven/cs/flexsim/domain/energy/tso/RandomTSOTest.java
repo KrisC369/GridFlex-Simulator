@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;

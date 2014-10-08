@@ -49,11 +49,11 @@ public class ConstantOutputGenerator implements EnergyProductionTrackable {
 
     @Override
     public void afterTick(int t) {
+        this.total += this.output;
     }
 
     @Override
     public void tick(int t) {
-        this.total += this.output;
     }
 
     @Override

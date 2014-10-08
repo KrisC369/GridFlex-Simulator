@@ -2,8 +2,6 @@ package be.kuleuven.cs.flexsim.domain.energy.tso;
 
 import java.util.List;
 
-import org.apache.commons.math3.random.MersenneTwister;
-
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
@@ -28,43 +26,46 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
     private Listener<? super Integer> newBalanceValueListener;
 
     /**
-     * Default constructor.
-     * 
-     * @param signal
-     *            The steeringSignal to use as offset.
-     * @param sites
-     *            The sites connected to this TSO
-     */
-    public CopperplateTSO(BalancingSignal signal,
-            EnergyConsumptionTrackable... sites) {
-        this(0, signal, sites);
-    }
-
-    /**
-     * Default constructor.
+     * Constructor with consumption instances as parameter.
      * 
      * @param sites
-     *            The sites connected to this TSO
+     *            The consumption sites connected to this TSO
      */
     public CopperplateTSO(EnergyConsumptionTrackable... sites) {
-        this(0, new RandomTSO(0, 1, new MersenneTwister()), sites);
+        this(new EnergyProductionTrackable[0], sites);
     }
 
     /**
-     * Constructor including initial balance.
+     * Constructor with production instances as parameter.
      * 
-     * @param initialbal
-     *            the initial balance offset representing other prosumers'
-     *            balance
-     * @param signal
-     *            The steeringSignal to use as offset.
      * @param sites
-     *            The sites connected to this TSO
+     *            The production sites connected to this TSO
      */
-    public CopperplateTSO(int initialbal, BalancingSignal signal,
-            EnergyConsumptionTrackable... sites) {
-        this.consumers = Lists.newArrayList(sites);
-        this.producers = Lists.newArrayList();
+    public CopperplateTSO(EnergyProductionTrackable... sites) {
+        this(sites, new EnergyConsumptionTrackable[0]);
+    }
+
+    /**
+     * Constructor with no initial partakers.
+     * 
+     */
+    public CopperplateTSO() {
+        this(new EnergyProductionTrackable[0],
+                new EnergyConsumptionTrackable[0]);
+    }
+
+    /**
+     * Actual initializing constructor.
+     * 
+     * @param prod
+     *            the producers.
+     * @param cons
+     *            the consumers.
+     */
+    private CopperplateTSO(EnergyProductionTrackable[] prod,
+            EnergyConsumptionTrackable[] cons) {
+        this.consumers = Lists.newArrayList(cons);
+        this.producers = Lists.newArrayList(prod);
         this.currentImbalance = 0;
         this.newBalanceValueListener = NoopListener.INSTANCE;
     }
@@ -77,6 +78,16 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      */
     public void registerProducer(EnergyProductionTrackable producer) {
         this.producers.add(producer);
+    }
+
+    /**
+     * Add a consumer to this tso.
+     * 
+     * @param consumer
+     *            the consumer to add.
+     */
+    public void registerConsumer(EnergyConsumptionTrackable consumer) {
+        this.consumers.add(consumer);
     }
 
     @Override
@@ -103,7 +114,14 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
 
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Lists.newArrayList(consumers);
+        List<SimulationComponent> toret = Lists.newArrayList();
+        for (SimulationComponent c : consumers) {
+            toret.add(c);
+        }
+        for (SimulationComponent c : producers) {
+            toret.add(c);
+        }
+        return toret;
     }
 
     @Override
@@ -111,12 +129,6 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
         return this.currentImbalance;
     }
 
-    /**
-     * Add a new listener for new steer value requests to this tso.
-     * 
-     * @param listener
-     *            The listener to add.
-     */
     @Override
     public void addNewBalanceValueListener(Listener<? super Integer> listener) {
         this.newBalanceValueListener = MultiplexListener.plus(
