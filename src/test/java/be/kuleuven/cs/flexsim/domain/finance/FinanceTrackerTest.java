@@ -111,9 +111,9 @@ public class FinanceTrackerTest {
         sim.register(t);
         assertEquals(0, t.getTotalReward(), 0);
         ((Simulator) sim).start();
-        int reward = t.getTotalReward();
-        int cost = t.getTotalCost();
-        assertEquals(reward - cost, t.getTotalProfit());
+        double reward = t.getTotalReward();
+        double cost = t.getTotalCost();
+        assertEquals(reward - cost, t.getTotalProfit(), 0);
     }
 
     @Test
@@ -134,12 +134,12 @@ public class FinanceTrackerTest {
         FinanceTracker ta = FinanceTrackerImpl.createAggregate(t, t2);
         assertEquals(0, t.getTotalReward(), 0);
         ((Simulator) sim).start();
-        int reward = t.getTotalReward();
-        int cost = t.getTotalCost();
-        int reward2 = t2.getTotalReward();
-        int cost2 = t2.getTotalCost();
-        int profit = t.getTotalProfit();
-        int profit2 = t2.getTotalProfit();
+        double reward = t.getTotalReward();
+        double cost = t.getTotalCost();
+        double reward2 = t2.getTotalReward();
+        double cost2 = t2.getTotalCost();
+        double profit = t.getTotalProfit();
+        double profit2 = t2.getTotalProfit();
         assertEquals(cost + cost2, ta.getTotalCost(), 1);
         assertEquals(reward + reward2, ta.getTotalReward(), 1);
         assertEquals(profit + profit2, ta.getTotalProfit(), 1);

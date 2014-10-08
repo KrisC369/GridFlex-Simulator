@@ -13,7 +13,7 @@ public enum DebtModel {
     CONSTANT {
 
         @Override
-        public int calculateDebt(int timestep, int lastConsumption) {
+        public double calculateDebt(int timestep, double lastConsumption) {
             return lastConsumption;
         }
 
@@ -29,6 +29,6 @@ public enum DebtModel {
      *            The consumption amount.
      * @return the due payment amount.
      */
-    public abstract int calculateDebt(int timestep, int lastConsumption);
+    public abstract double calculateDebt(int timestep, double lastConsumption);
 
 }

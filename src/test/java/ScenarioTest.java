@@ -13,15 +13,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImpl;
+import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
+import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
+import be.kuleuven.cs.flexsim.domain.energy.generation.RandomOutputGenerator;
+import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.CopperplateTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteImpl;
-import be.kuleuven.cs.flexsim.domain.tso.CopperPlateTSO;
-import be.kuleuven.cs.flexsim.domain.tso.RandomTSO;
-import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
@@ -105,7 +109,7 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
         AggregatorImpl agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -185,7 +189,7 @@ public class ScenarioTest {
     }
 
     @Test
-    public void testSpecificResultRegressionWCurt() {
+    public void testSpecificResultRegressionWCurtAndRandomTSO() {
         // Before: no curtailment.
         int simSteps = 1500;
         ProductionLine line1 = new ProductionLineBuilder()
@@ -222,7 +226,72 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
+        AggregatorImpl agg = new AggregatorImpl(tso, 15);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+
+        simulator.register(agg);
+        simulator.register(site1);
+        simulator.register(site2);
+        simulator.register(t1);
+        simulator.register(t2);
+        simulator.register(t3);
+        simulator.register(t4);
+        log.info("Setup 1 done. Starting simulation.");
+        simulator.start();
+
+        double profitBefore = t1.getTotalProfit() + t2.getTotalProfit()
+                + t3.getTotalProfit() + t4.getTotalProfit();
+        log.info("Simulation 1 done.");
+        double expectedResult = -8540520;
+        assertEquals(expectedResult, profitBefore, 0);
+    }
+
+    @Test
+    public void testSpecificResultRegressionWCurtAndCopperplate() {
+        // Before: no curtailment.
+        int simSteps = 1500;
+        ProductionLine line1 = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(20)
+                .addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(4).addConsuming(3).build();
+        ProductionLine line2 = new ProductionLineBuilder()
+                .setWorkingConsumption(400).setIdleConsumption(60)
+                .addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(3).addConsuming(3).build();
+        ProductionLine line3 = new ProductionLineBuilder()
+                .setWorkingConsumption(600).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
+        ProductionLine line4 = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(15)
+                .addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(5).addConsuming(3).build();
+
+        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+
+        FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
+        FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
+        FinanceTrackerImpl t3 = FinanceTrackerImpl.createDefault(line3);
+        FinanceTrackerImpl t4 = FinanceTrackerImpl.createDefault(line4);
+
+        Simulator simulator = Simulator.createSimulator(simSteps);
+        Site site1 = new SiteImpl(line1, line2);
+        Site site2 = new SiteImpl(line3, line4);
+        EnergyProductionTrackable p1 = new WeighedNormalRandomOutputGenerator(
+                -1000, 1000);
+        EnergyProductionTrackable p2 = new ConstantOutputGenerator(10000);
+        CopperplateTSO tso = new CopperplateTSO(site1, site2);
+        tso.registerProducer(p1);
+        tso.registerProducer(p2);
         AggregatorImpl agg = new AggregatorImpl(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -284,8 +353,12 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        CopperPlateTSO realTSO = new CopperPlateTSO(tso, site1, site2);
+
+        EnergyProductionTrackable p1 = new ConstantOutputGenerator(0);
+        EnergyProductionTrackable p2 = new RandomOutputGenerator(0, 1);
+        CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p1);
+        realTSO.registerProducer(p2);
         AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -338,8 +411,12 @@ public class ScenarioTest {
         simulator = Simulator.createSimulator(simSteps);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
-        tso = new RandomTSO(-300, 70, simulator.getRandom());
-        realTSO = new CopperPlateTSO(1600, tso, site1, site2);
+
+        p1 = new ConstantOutputGenerator(1600);
+        p2 = new RandomOutputGenerator(-300, 70);
+        realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p1);
+        realTSO.registerProducer(p2);
         agg = new AggregatorImpl(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -484,8 +561,10 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        CopperPlateTSO realTSO = new CopperPlateTSO(tso, site1, site2);
+
+        EnergyProductionTrackable p2 = new RandomOutputGenerator(0, 1);
+        CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p2);
         AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -538,8 +617,13 @@ public class ScenarioTest {
         simulator = Simulator.createSimulator(simSteps);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
-        tso = new RandomTSO(-300, 70, simulator.getRandom());
-        realTSO = new CopperPlateTSO(1600, tso, site1, site2);
+
+        EnergyProductionTrackable p1 = new ConstantOutputGenerator(1600);
+        p2 = new RandomOutputGenerator(-300, 70);
+        realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p1);
+        realTSO.registerProducer(p2);
+
         agg = new AggregatorImpl(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -603,8 +687,10 @@ public class ScenarioTest {
         Simulator simulator = Simulator.createSimulator(simSteps);
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
-        SteeringSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        CopperPlateTSO realTSO = new CopperPlateTSO(tso, site1, site2);
+
+        EnergyProductionTrackable p2 = new RandomOutputGenerator(0, 1);
+        CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p2);
         AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -658,8 +744,12 @@ public class ScenarioTest {
         simulator = Simulator.createSimulator(simSteps);
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
-        tso = new RandomTSO(-300, 70, simulator.getRandom());
-        realTSO = new CopperPlateTSO(1600, tso, site1, site2);
+
+        EnergyProductionTrackable p1 = new ConstantOutputGenerator(1600);
+        p2 = new RandomOutputGenerator(-300, 70);
+        realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p1);
+        realTSO.registerProducer(p2);
         agg = new AggregatorImpl(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);

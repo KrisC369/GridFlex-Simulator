@@ -102,14 +102,14 @@ public class SiteTest {
                 .addShifted(3).addMultiCapExponentialConsuming(1, 15)
                 .addShifted(4).build();
         s = new SiteImpl(line1, line2);
-        int cons1 = line1.getAggregatedLastStepConsumptions();
-        int cons2 = line2.getAggregatedLastStepConsumptions();
-        int aggregate = s.getAggregatedLastStepConsumptions();
+        double cons1 = line1.getLastStepConsumption();
+        double cons2 = line2.getLastStepConsumption();
+        double aggregate = s.getLastStepConsumption();
         assertEquals(aggregate, cons1 + cons2, 0);
 
-        cons1 = line1.getAggregatedTotalConsumptions();
-        cons2 = line2.getAggregatedTotalConsumptions();
-        aggregate = s.getAggregatedTotalConsumptions();
+        cons1 = line1.getTotalConsumption();
+        cons2 = line2.getTotalConsumption();
+        aggregate = s.getTotalConsumption();
         assertEquals(aggregate, cons1 + cons2, 0);
 
         List<Integer> flex1 = line1.getBufferOccupancyLevels();

@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.util.visitor.Visitable;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
@@ -11,14 +12,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * 
  */
 public interface Workstation extends SimulationComponent,
-        Visitable<WorkstationVisitor> {
-
-    /**
-     * Returns the energy consumption amount during the last step.
-     * 
-     * @return an int representing consumption amount.
-     */
-    double getLastStepConsumption();
+        EnergyConsumptionTrackable, Visitable<WorkstationVisitor> {
 
     /**
      * Return the amount of items that has been processed by this workstation.
@@ -26,20 +20,6 @@ public interface Workstation extends SimulationComponent,
      * @return the processed items count
      */
     int getProcessedItemsCount();
-
-    /**
-     * Returns the total energy consumption amount.
-     * 
-     * @return the total energy consumed.
-     */
-    double getTotalConsumption();
-
-    /**
-     * Returns the current average energy consumption amount.
-     *
-     * @return The avg energy consumption.
-     */
-    double getAverageConsumption();
 
     /**
      * Returns wheter this machine is performing work during this time step or

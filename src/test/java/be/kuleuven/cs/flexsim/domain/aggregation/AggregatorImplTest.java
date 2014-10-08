@@ -3,7 +3,6 @@ package be.kuleuven.cs.flexsim.domain.aggregation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -12,16 +11,16 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 import com.google.common.collect.Lists;
 
 public class AggregatorImplTest {
-    SteeringSignal tso = mock(SteeringSignal.class);
+    BalancingSignal tso = mock(BalancingSignal.class);
     private int freq = 10;
     private AggregatorImpl agg = new AggregatorImpl(tso, freq);
     private SiteFlexAPI clientDown = mock(SiteFlexAPI.class);
@@ -30,7 +29,7 @@ public class AggregatorImplTest {
 
     @Before
     public void setUp() throws Exception {
-        doReturn(0).when(tso).getCurrentValue(anyInt());
+        doReturn(0).when(tso).getCurrentImbalance();
         this.agg = new AggregatorImpl(tso, freq);
         this.clientDown = mock(SiteFlexAPI.class);
         doReturn(
@@ -51,7 +50,7 @@ public class AggregatorImplTest {
     public void testCreation() {
         this.agg = new AggregatorImpl(tso, freq);
         assertEquals(0, agg.getClients().size());
-        assertEquals(0, agg.getTso().getCurrentValue(0));
+        assertEquals(0, agg.getTso().getCurrentImbalance());
     }
 
     @Test
@@ -77,8 +76,8 @@ public class AggregatorImplTest {
 
     @Test
     public void testSimpleAggregationUpFlex() {
-        tso = mock(SteeringSignal.class);
-        doReturn(5).when(tso).getCurrentValue(anyInt());
+        tso = mock(BalancingSignal.class);
+        doReturn(5).when(tso).getCurrentImbalance();
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();
@@ -95,8 +94,8 @@ public class AggregatorImplTest {
 
     @Test
     public void testSimpleAggregationDownFlex() {
-        tso = mock(SteeringSignal.class);
-        doReturn(-5).when(tso).getCurrentValue(anyInt());
+        tso = mock(BalancingSignal.class);
+        doReturn(-5).when(tso).getCurrentImbalance();
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();
@@ -107,8 +106,8 @@ public class AggregatorImplTest {
 
     @Test
     public void testSimpleAggregationDoubleDownFlex() {
-        tso = mock(SteeringSignal.class);
-        doReturn(15).when(tso).getCurrentValue(anyInt());
+        tso = mock(BalancingSignal.class);
+        doReturn(15).when(tso).getCurrentImbalance();
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();
@@ -119,8 +118,8 @@ public class AggregatorImplTest {
 
     @Test
     public void testSimpleAggregationDoubleUpFlex() {
-        tso = mock(SteeringSignal.class);
-        doReturn(-15).when(tso).getCurrentValue(anyInt());
+        tso = mock(BalancingSignal.class);
+        doReturn(-15).when(tso).getCurrentImbalance();
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();
@@ -131,14 +130,14 @@ public class AggregatorImplTest {
 
     @Test
     public void testUseOnlyOneProfile() {
-        tso = mock(SteeringSignal.class);
+        tso = mock(BalancingSignal.class);
         this.clientDown = mock(SiteFlexAPI.class);
         doReturn(
                 Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
                         FlexTuple.create(7, 5, false, 10, 0, 0),
                         FlexTuple.create(3, 10, true, 10, 0, 0))).when(
                 clientDown).getFlexTuples();
-        doReturn(5000).when(tso).getCurrentValue(anyInt());
+        doReturn(5000).when(tso).getCurrentImbalance();
         agg = new AggregatorImpl(tso, freq);
         doRegister();
         sim.start();

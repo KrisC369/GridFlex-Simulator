@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.tso.SteeringSignal;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -25,7 +25,7 @@ import com.google.common.collect.Sets;
  */
 public class AggregatorImpl implements SimulationComponent {
     private final Set<SiteFlexAPI> clients;
-    private final SteeringSignal tso;
+    private final BalancingSignal tso;
     private int tickcount;
     private final int aggFreq;
     private final AggregationStrategy strategy;
@@ -40,7 +40,7 @@ public class AggregatorImpl implements SimulationComponent {
      * @param strategy
      *            The aggregation strategy to use.
      */
-    public AggregatorImpl(SteeringSignal tso, int frequency,
+    public AggregatorImpl(BalancingSignal tso, int frequency,
             AggregationStrategy strategy) {
         this.clients = Sets.newLinkedHashSet();
         this.tso = tso;
@@ -57,7 +57,7 @@ public class AggregatorImpl implements SimulationComponent {
      * @param frequency
      *            the frequency with which to perform aggregation functions.
      */
-    public AggregatorImpl(SteeringSignal tso, int frequency) {
+    public AggregatorImpl(BalancingSignal tso, int frequency) {
         this(tso, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
     }
 
@@ -71,7 +71,7 @@ public class AggregatorImpl implements SimulationComponent {
     /**
      * @return the tso.
      */
-    final SteeringSignal getTso() {
+    final BalancingSignal getTso() {
         return tso;
     }
 
@@ -87,14 +87,14 @@ public class AggregatorImpl implements SimulationComponent {
 
     private void doAggregationStep(int t) {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
-        final int target = getTargetFlex(t);
+        final int target = getTargetFlex();
         logStep(t, target);
         this.strategy.performAggregationStep(new AggregationDispatch(), t,
                 flex, target);
     }
 
-    private int getTargetFlex(int t) {
-        return getTso().getCurrentValue(t) * 1;
+    private int getTargetFlex() {
+        return getTso().getCurrentImbalance() * 1;
     }
 
     private LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
