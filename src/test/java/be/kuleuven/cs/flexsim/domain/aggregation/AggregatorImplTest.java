@@ -17,6 +17,7 @@ import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 
 public class AggregatorImplTest {
@@ -143,5 +144,27 @@ public class AggregatorImplTest {
         sim.start();
         verify(clientDown, times(1)).activateFlex(
                 any(ActivateFlexCommand.class));
+    }
+
+    @Test
+    public void testFilterPositive() {
+        testFilter(true);
+    }
+
+    @Test
+    public void testFilterNegative() {
+        testFilter(false);
+    }
+
+    private void testFilter(boolean b) {
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = LinkedListMultimap
+                .create();
+        sorted.putAll(clientDown, clientDown.getFlexTuples());
+        sorted.putAll(clientUp, clientDown.getFlexTuples());
+        AggregationStrategyImpl.filter(sorted, b);
+        assertEquals(1, sorted.get(clientDown).size(), 0);
+        assertEquals(1, sorted.get(clientUp).size(), 0);
+        assertEquals(b, sorted.get(clientDown).get(0).getDirection());
+        assertEquals(b, sorted.get(clientUp).get(0).getDirection());
     }
 }

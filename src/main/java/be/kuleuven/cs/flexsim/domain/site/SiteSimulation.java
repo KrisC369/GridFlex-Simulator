@@ -110,7 +110,7 @@ public class SiteSimulation implements Site {
     @Override
     public void afterTick(int t) {
         updateConsumption(t);
-        calculateCurrentFlex();
+        // calculateCurrentFlex();
     }
 
     private void updateConsumption(int t) {
@@ -199,6 +199,19 @@ public class SiteSimulation implements Site {
      */
     private final int getMaxTuples() {
         return maxTuples;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("SiteSimulation [#T=").append(maxTuples)
+                .append(", cCons=").append(currentConsumption).append("]");
+        return builder.toString();
     }
 
 }
