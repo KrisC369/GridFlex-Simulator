@@ -30,7 +30,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     /**
      * An implementation that uses the cartesian product of sets to calculate
      * all possible solutions and then picks the best one. Costly,
-     * performancewise.
+     * performancewise. This is a brute force algorithm.
      */
     CARTESIANPRODUCT() {
 
@@ -66,7 +66,16 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
         }
 
     },
-    STATESEARCH() {
+
+    /**
+     * This strategy shifts the search horizon, specified by the minimal
+     * combination of all sites providing usefull flex and moves it just beyond
+     * the target. All greater amounts of flexibility are removed from the set.
+     * eventually the cartesianproduct version is called on the filtered
+     * flex-set.
+     * 
+     */
+    MOVINGHORIZON() {
 
         @Override
         public void performAggregationStep(AggregationContext context, int t,
@@ -81,24 +90,9 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
             }
             filterEmpty(flex);
             // Sort the maps
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = LinkedListMultimap
-                    .create();
-            for (SiteFlexAPI api : flex.keySet()) {
-                List<FlexTuple> sortPlaceholder = Lists.newArrayList(flex
-                        .get(api));
-                Collections.sort(sortPlaceholder, new Comparator<FlexTuple>() {
-                    @Override
-                    public int compare(@Nullable FlexTuple o1,
-                            @Nullable FlexTuple o2) {
-                        checkNotNull(o1);
-                        checkNotNull(o2);
-                        return o1.getDeltaP() - o2.getDeltaP();
-                    }
-                });
-                sorted.putAll(api, sortPlaceholder);
-            }
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = sort(flex);
 
-            // Find the state space front that surpaces the target and filter
+            // Find the state space front that surpasses the target and filter
             // out everything above it.
             List<SiteFlexAPI> sites = Lists.newArrayList(sorted.keySet());
             int[] indexlistUpper = new int[sites.size()];
@@ -121,9 +115,6 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                             .getDeltaP();
                 }
             }
-            // int[] indexlistLower = Arrays.copyOf(indexlistUpper,
-            // indexlistUpper.length);
-
             // The filtering step.
             LinkedListMultimap<SiteFlexAPI, FlexTuple> capped = LinkedListMultimap
                     .create();
@@ -134,8 +125,6 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                                 indexlistUpper[i] + 1));
             }
             CARTESIANPRODUCT.performAggregationStep(context, t, capped, target);
-            // FIXME: still a problem with profiles not corresponding to sites.
-            // activation gets lost.
         }
     };
 
@@ -189,10 +178,20 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
         return Math.abs(target - i);
     }
 
+    /**
+     * Filter flex in the opposing direction of the target, from the map.
+     * 
+     * @param flex
+     *            the input map.
+     * @param direction
+     *            the direction to filter in.
+     */
     static void filter(LinkedListMultimap<SiteFlexAPI, FlexTuple> flex,
             boolean direction) {
-        for (SiteFlexAPI api : flex.keySet()) {
-            for (FlexTuple t : flex.get(api)) {
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> copy = LinkedListMultimap
+                .create(flex);
+        for (SiteFlexAPI api : copy.keySet()) {
+            for (FlexTuple t : copy.get(api)) {
                 if (t.getDirection() != direction) {
                     flex.remove(api, t);
                 }
@@ -200,11 +199,46 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
         }
     }
 
+    /**
+     * Remove the empty sets from the flex map.
+     * 
+     * @param flex
+     *            the input map.
+     */
     static void filterEmpty(LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
-        for (SiteFlexAPI api : flex.keySet()) {
-            if (flex.get(api).isEmpty()) {
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> copy = LinkedListMultimap
+                .create(flex);
+        for (SiteFlexAPI api : copy.keySet()) {
+            if (copy.get(api).isEmpty()) {
                 flex.removeAll(api);
             }
         }
+    }
+
+    /**
+     * Sorts the input flex profiles according to delta-P values.
+     * 
+     * @param flex
+     *            The input.
+     * @return the sorted flex map.
+     */
+    private static LinkedListMultimap<SiteFlexAPI, FlexTuple> sort(
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = LinkedListMultimap
+                .create();
+        for (SiteFlexAPI api : flex.keySet()) {
+            List<FlexTuple> sortPlaceholder = Lists.newArrayList(flex.get(api));
+            Collections.sort(sortPlaceholder, new Comparator<FlexTuple>() {
+                @Override
+                public int compare(@Nullable FlexTuple o1,
+                        @Nullable FlexTuple o2) {
+                    checkNotNull(o1);
+                    checkNotNull(o2);
+                    return o1.getDeltaP() - o2.getDeltaP();
+                }
+            });
+            sorted.putAll(api, sortPlaceholder);
+        }
+        return sorted;
     }
 }

@@ -22,7 +22,6 @@ import com.google.common.collect.Lists;
  */
 public class SiteSimulation implements Site {
 
-    private final int baseConsumption;
     private final int maxLimitConsumption;
     private final int minLimitConsumption;
     private final int maxTuples;
@@ -44,11 +43,10 @@ public class SiteSimulation implements Site {
      *            The maximum tuples to generate per section of flex.
      */
     public SiteSimulation(int base, int min, int max, int maxTuples) {
-        this.baseConsumption = base;
         this.maxLimitConsumption = max;
         this.minLimitConsumption = min;
         this.maxTuples = maxTuples;
-        this.currentConsumption = this.baseConsumption;
+        this.currentConsumption = base;
         this.flexData = Lists.newArrayList();
         this.generator = new UIDGenerator() {
             @Override
@@ -90,6 +88,8 @@ public class SiteSimulation implements Site {
 
     @Override
     public void deliverResources(List<Resource> res) {
+        throw new UnsupportedOperationException(
+                "This implementation does not support resource handling stuff.");
     }
 
     @Override
@@ -171,13 +171,6 @@ public class SiteSimulation implements Site {
      */
     private final int getCurrentConsumption() {
         return currentConsumption;
-    }
-
-    /**
-     * @return the baseConsumption
-     */
-    private final int getBaseConsumption() {
-        return baseConsumption;
     }
 
     /**
