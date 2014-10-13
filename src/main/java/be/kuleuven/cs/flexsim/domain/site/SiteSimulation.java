@@ -109,11 +109,10 @@ public class SiteSimulation implements Site {
 
     @Override
     public void afterTick(int t) {
-        updateConsumption(t);
-        // calculateCurrentFlex();
+        updateConsumption();
     }
 
-    private void updateConsumption(int t) {
+    private void updateConsumption() {
         this.totalConsumption += getCurrentConsumption();
     }
 
@@ -169,28 +168,28 @@ public class SiteSimulation implements Site {
     /**
      * @return the currentConsumption
      */
-    private final int getCurrentConsumption() {
+    private int getCurrentConsumption() {
         return currentConsumption;
     }
 
     /**
      * @return the maxLimitConsumption
      */
-    private final int getMaxLimitConsumption() {
+    private int getMaxLimitConsumption() {
         return maxLimitConsumption;
     }
 
     /**
      * @return the minLimitConsumption
      */
-    private final int getMinLimitConsumption() {
+    private int getMinLimitConsumption() {
         return minLimitConsumption;
     }
 
     /**
      * @return the maxTuples
      */
-    private final int getMaxTuples() {
+    private int getMaxTuples() {
         return maxTuples;
     }
 

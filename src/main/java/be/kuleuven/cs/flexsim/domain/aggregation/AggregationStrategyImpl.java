@@ -80,8 +80,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
         @Override
         public void performAggregationStep(AggregationContext context, int t,
                 LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target) {
-            // Graph<SiteFlexAPI, FlexTuple> space = new
-            // DirectedOrderedSparseMultigraph<>();
+
             // filter maps for pos or neg.
             if (target > 0) {
                 filter(flex, true);
