@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImpl;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
@@ -292,7 +293,8 @@ public class ScenarioTest {
         CopperplateTSO tso = new CopperplateTSO(site1, site2);
         tso.registerProducer(p1);
         tso.registerProducer(p2);
-        AggregatorImpl agg = new AggregatorImpl(tso, 15);
+        AggregatorImpl agg = new AggregatorImpl(tso, 15,
+                AggregationStrategyImpl.MOVINGHORIZON);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
@@ -359,7 +361,8 @@ public class ScenarioTest {
         CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
         realTSO.registerProducer(p1);
         realTSO.registerProducer(p2);
-        AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
+        AggregatorImpl agg = new AggregatorImpl(realTSO, 15,
+                AggregationStrategyImpl.MOVINGHORIZON);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
 

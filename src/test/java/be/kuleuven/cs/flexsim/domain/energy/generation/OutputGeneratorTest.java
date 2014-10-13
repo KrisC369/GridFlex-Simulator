@@ -12,11 +12,6 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
-import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
-import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
-import be.kuleuven.cs.flexsim.domain.energy.generation.NormalRandomOutputGenerator;
-import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
-
 public class OutputGeneratorTest {
     private EnergyProductionTrackable gen = mock(ConstantOutputGenerator.class);
     private final int BASE = 200;
