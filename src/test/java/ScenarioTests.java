@@ -33,7 +33,7 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-public class ScenarioTest {
+public class ScenarioTests {
 
     private Simulator s;
     private ProductionLine p;

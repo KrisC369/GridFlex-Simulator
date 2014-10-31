@@ -14,17 +14,14 @@ import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTupleTest;
-import be.kuleuven.cs.flexsim.domain.util.listener.ListenerTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
-import be.kuleuven.cs.flexsim.event.EventTest;
-import be.kuleuven.cs.flexsim.time.ClockTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ClockTest.class, BufferTest.class, WorkstationTest.class,
+@SuiteClasses({ BufferTest.class, WorkstationTest.class,
         ProductionLineTest.class, ResourceTest.class, FinanceTrackerTest.class,
         FlexTupleTest.class, SiteTest.class, AggregatorImplTest.class,
         RandomTSOTest.class, NPermuteAndCombinerTest.class,
-        CopperPlateTSOTest.class, ListenerTest.class, EventTest.class,
-        OutputGeneratorTest.class, SiteSimulationTest.class })
-public class UnitTests {
+        CopperPlateTSOTest.class, OutputGeneratorTest.class,
+        SiteSimulationTest.class })
+public class DomainTests {
 }
