@@ -69,7 +69,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
 
     /**
      * This strategy shifts the search horizon, specified by the minimal
-     * combination of all sites providing usefull flex and moves it just beyond
+     * combination of all sites providing useful flex and moves it just beyond
      * the target. All greater amounts of flexibility are removed from the set.
      * eventually the cartesianproduct version is called on the filtered
      * flex-set.

@@ -62,7 +62,7 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      * @param cons
      *            the consumers.
      */
-    private CopperplateTSO(EnergyProductionTrackable[] prod,
+    protected CopperplateTSO(EnergyProductionTrackable[] prod,
             EnergyConsumptionTrackable[] cons) {
         this.consumers = Lists.newArrayList(cons);
         this.producers = Lists.newArrayList(prod);

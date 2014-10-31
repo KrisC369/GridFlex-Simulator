@@ -5,6 +5,7 @@ import org.junit.runners.Suite.SuiteClasses;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImplTest;
 import be.kuleuven.cs.flexsim.domain.energy.generation.OutputGeneratorTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.CopperPlateTSOTest;
+import be.kuleuven.cs.flexsim.domain.energy.tso.MarketClearingTSOTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSOTest;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerTest;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest;
@@ -22,6 +23,6 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         FlexTupleTest.class, SiteTest.class, AggregatorImplTest.class,
         RandomTSOTest.class, NPermuteAndCombinerTest.class,
         CopperPlateTSOTest.class, OutputGeneratorTest.class,
-        SiteSimulationTest.class })
+        SiteSimulationTest.class, MarketClearingTSOTest.class })
 public class DomainTests {
 }
