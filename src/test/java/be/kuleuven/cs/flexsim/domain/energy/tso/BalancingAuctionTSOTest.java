@@ -13,9 +13,9 @@ import be.kuleuven.cs.flexsim.domain.util.FlexBid;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
-public class MarketClearingTSOTest {
+public class BalancingAuctionTSOTest {
 
-    private MarketClearingTSO tso = mock(MarketClearingTSO.class);
+    private BalancingAuctionTSO tso = mock(BalancingAuctionTSO.class);
     private Simulator sim = Simulator.createSimulator(1);
     private double imbalance = 1000d;
     private int steps = 4;
@@ -24,7 +24,7 @@ public class MarketClearingTSOTest {
     public void setUp() throws Exception {
         EnergyProductionTrackable prod = mock(EnergyProductionTrackable.class);
         when(prod.getLastStepProduction()).thenReturn(imbalance);
-        tso = new MarketClearingTSO(prod);
+        tso = new BalancingAuctionTSO(prod);
         sim = Simulator.createSimulator(steps);
         sim.register(tso);
     }
@@ -44,7 +44,7 @@ public class MarketClearingTSOTest {
 
     @Test
     public void testRegisterClients() {
-        AuctionParticipant agg = mock(AuctionParticipant.class);
+        MechanismParticipant agg = mock(MechanismParticipant.class);
         tso.registerParticipant(agg);
         assertTrue(tso.getParticipants().contains(agg));
     }

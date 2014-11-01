@@ -12,7 +12,8 @@ import be.kuleuven.cs.flexsim.domain.util.AbstractBid;
  *            The type of bids to accept in this auction.
  *
  */
-public interface AbstractAuction<T extends AbstractBid> {
+public interface AbstractAuctionHost<T extends AbstractBid> extends
+        MechanismHost<MechanismParticipant> {
 
     /**
      * Return the outstanding bids of this auction.
@@ -28,13 +29,5 @@ public interface AbstractAuction<T extends AbstractBid> {
      *            The bid to place.
      */
     void placeBid(T bid);
-
-    /**
-     * Register an auction participant to this auction.
-     * 
-     * @param participant
-     *            The participant to register.
-     */
-    void registerParticipant(AuctionParticipant participant);
 
 }

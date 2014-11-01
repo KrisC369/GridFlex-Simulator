@@ -16,9 +16,9 @@ import com.google.common.collect.Lists;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class MarketClearingTSO extends CopperplateTSO implements
-        AbstractAuction<FlexBid> {
-    private List<AuctionParticipant> participants;
+public class BalancingAuctionTSO extends CopperplateTSO implements
+        AbstractAuctionHost<FlexBid> {
+    private List<MechanismParticipant> participants;
     private List<FlexBid> currentBids;
 
     /**
@@ -27,7 +27,7 @@ public class MarketClearingTSO extends CopperplateTSO implements
      * @param sites
      *            The consumption sites connected to this TSO
      */
-    public MarketClearingTSO(EnergyConsumptionTrackable... sites) {
+    public BalancingAuctionTSO(EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
     }
 
@@ -37,7 +37,7 @@ public class MarketClearingTSO extends CopperplateTSO implements
      * @param sites
      *            The production sites connected to this TSO
      */
-    public MarketClearingTSO(EnergyProductionTrackable... sites) {
+    public BalancingAuctionTSO(EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
     }
 
@@ -45,7 +45,7 @@ public class MarketClearingTSO extends CopperplateTSO implements
      * Constructor with no initial partakers.
      * 
      */
-    public MarketClearingTSO() {
+    public BalancingAuctionTSO() {
         this(new EnergyProductionTrackable[0],
                 new EnergyConsumptionTrackable[0]);
     }
@@ -58,7 +58,7 @@ public class MarketClearingTSO extends CopperplateTSO implements
      * @param cons
      *            the consumers.
      */
-    private MarketClearingTSO(EnergyProductionTrackable[] prod,
+    private BalancingAuctionTSO(EnergyProductionTrackable[] prod,
             EnergyConsumptionTrackable[] cons) {
         super(prod, cons);
         this.participants = Lists.newArrayList();
@@ -76,14 +76,14 @@ public class MarketClearingTSO extends CopperplateTSO implements
     }
 
     @Override
-    public void registerParticipant(AuctionParticipant participant) {
+    public void registerParticipant(MechanismParticipant participant) {
         this.participants.add(participant);
     }
 
     /**
      * @return the participants
      */
-    public List<AuctionParticipant> getParticipants() {
+    public List<MechanismParticipant> getParticipants() {
         return participants;
     }
 
