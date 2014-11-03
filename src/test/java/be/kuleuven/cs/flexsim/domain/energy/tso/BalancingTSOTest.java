@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -19,7 +21,7 @@ public class BalancingTSOTest {
     private BalancingTSO tso = mock(BalancingTSO.class);
     private Simulator sim = Simulator.createSimulator(1);
     private double imbalance = 1000d;
-    private int steps = 4;
+    private int steps = 1;
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -68,5 +70,42 @@ public class BalancingTSOTest {
         PowerCapabilityBand cap = PowerCapabilityBand.create(50, 100);
         tso.signalNewLimits(agg, cap);
         assertEquals(cap, tso.getContractualLimit(agg));
+    }
+
+    @Test
+    public void testActivation1() {
+        int capS1 = 40;
+        int capS2 = 400;
+        ContractualMechanismParticipant agg1 = mock(ContractualMechanismParticipant.class);
+        tso.registerParticipant(agg1);
+        ContractualMechanismParticipant agg2 = mock(ContractualMechanismParticipant.class);
+        tso.registerParticipant(agg2);
+        PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
+        PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
+        tso.signalNewLimits(agg1, cap1);
+        tso.signalNewLimits(agg2, cap2);
+        sim.start();
+        verify(agg1, times(1)).signalTarget(capS1 * 2);
+        verify(agg2, times(1)).signalTarget(capS2 * 2);
+    }
+
+    @Test
+    public void testActivation2() {
+        int capS1 = 500;
+        int capS2 = 5000;
+        double factor = 0.0909090909;
+        ContractualMechanismParticipant agg1 = mock(ContractualMechanismParticipant.class);
+        tso.registerParticipant(agg1);
+        ContractualMechanismParticipant agg2 = mock(ContractualMechanismParticipant.class);
+        tso.registerParticipant(agg2);
+        PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
+        PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
+        tso.signalNewLimits(agg1, cap1);
+        tso.signalNewLimits(agg2, cap2);
+        sim.start();
+        verify(agg1, times(1)).signalTarget(
+                (int) Math.round(capS1 * 2 * factor));
+        verify(agg2, times(1)).signalTarget(
+                (int) Math.round(capS2 * 2 * factor));
     }
 }

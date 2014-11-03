@@ -5,6 +5,8 @@ import java.util.Map;
 
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -80,6 +82,61 @@ public class BalancingTSO extends CopperplateTSO implements
     @Override
     public void afterTick(int t) {
         super.afterTick(t);
+        calculateAndSignal();
+    }
+
+    private void calculateAndSignal() {
+        if (getCurrentImbalance() > 0) {
+            int sum = CollectionUtils.sum(
+                    Lists.newArrayList(powerLimits.values()),
+                    new IntNNFunction<PowerCapabilityBand>() {
+                        @Override
+                        public int apply(PowerCapabilityBand input) {
+                            return input.getUp();
+                        }
+                    });
+
+            if (sum <= getCurrentImbalance()) {
+                sendSignal(1, true);
+            } else {
+                sendSignal(getFactor(sum, getCurrentImbalance()), true);
+            }
+        } else if (getCurrentImbalance() < 0) {
+            int sum = CollectionUtils.sum(
+                    Lists.newArrayList(powerLimits.values()),
+                    new IntNNFunction<PowerCapabilityBand>() {
+                        @Override
+                        public int apply(PowerCapabilityBand input) {
+                            return input.getDown();
+                        }
+                    });
+            if (sum <= getCurrentImbalance()) {
+                sendSignal(1, false);
+            } else {
+                sendSignal(getFactor(sum, getCurrentImbalance()), false);
+            }
+        }
+    }
+
+    private void sendSignal(double frac, boolean upflex) {
+        for (java.util.Map.Entry<ContractualMechanismParticipant, PowerCapabilityBand> e : powerLimits
+                .entrySet()) {
+            int value = 0;
+            if (upflex) {
+                value = e.getValue().getUp();
+            } else {
+                value = e.getValue().getDown() * -1;
+            }
+            e.getKey().signalTarget((int) Math.round(value * frac));
+        }
+
+    }
+
+    private double getFactor(double sum, double currentImbalance) {
+        if (sum == 0 || currentImbalance == 0) {
+            return 0;
+        }
+        return currentImbalance / sum;
     }
 
     @Override
