@@ -82,10 +82,10 @@ public class BalancingTSO extends CopperplateTSO implements
     @Override
     public void afterTick(int t) {
         super.afterTick(t);
-        calculateAndSignal();
+        calculateAndSignal(t);
     }
 
-    private void calculateAndSignal() {
+    private void calculateAndSignal(int timestep) {
         if (getCurrentImbalance() > 0) {
             int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
@@ -97,9 +97,10 @@ public class BalancingTSO extends CopperplateTSO implements
                     });
 
             if (sum <= getCurrentImbalance()) {
-                sendSignal(1, true);
+                sendSignal(timestep, 1, true);
             } else {
-                sendSignal(getFactor(sum, getCurrentImbalance()), true);
+                sendSignal(timestep, getFactor(sum, getCurrentImbalance()),
+                        true);
             }
         } else if (getCurrentImbalance() < 0) {
             int sum = CollectionUtils.sum(
@@ -111,14 +112,15 @@ public class BalancingTSO extends CopperplateTSO implements
                         }
                     });
             if (sum <= getCurrentImbalance()) {
-                sendSignal(1, false);
+                sendSignal(timestep, 1, false);
             } else {
-                sendSignal(getFactor(sum, getCurrentImbalance()), false);
+                sendSignal(timestep, getFactor(sum, getCurrentImbalance()),
+                        false);
             }
         }
     }
 
-    private void sendSignal(double frac, boolean upflex) {
+    private void sendSignal(int t, double frac, boolean upflex) {
         for (java.util.Map.Entry<ContractualMechanismParticipant, PowerCapabilityBand> e : powerLimits
                 .entrySet()) {
             int value = 0;
@@ -127,7 +129,7 @@ public class BalancingTSO extends CopperplateTSO implements
             } else {
                 value = e.getValue().getDown() * -1;
             }
-            e.getKey().signalTarget((int) Math.round(value * frac));
+            e.getKey().signalTarget(t, (int) Math.round(value * frac));
         }
 
     }

@@ -20,10 +20,10 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 
-public class AggregatorImplTest {
+public class IndependentAggregatorTest {
     private BalancingSignal tso = mock(BalancingSignal.class);
     private int freq = 10;
-    private AggregatorImpl agg = new AggregatorImpl(tso, freq);
+    private IndependentAggregator agg = new IndependentAggregator(tso, freq);
     private SiteFlexAPI clientDown = mock(SiteFlexAPI.class);
     private SiteFlexAPI clientUp = mock(SiteFlexAPI.class);
     private Simulator sim = Simulator.createSimulator(2 * freq - 2);
@@ -31,7 +31,7 @@ public class AggregatorImplTest {
     @Before
     public void setUp() throws Exception {
         doReturn(0).when(tso).getCurrentImbalance();
-        this.agg = new AggregatorImpl(tso, freq);
+        this.agg = new IndependentAggregator(tso, freq);
         this.clientDown = mock(SiteFlexAPI.class);
         doReturn(
                 Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
@@ -49,14 +49,14 @@ public class AggregatorImplTest {
 
     @Test
     public void testCreation() {
-        this.agg = new AggregatorImpl(tso, freq);
+        this.agg = new IndependentAggregator(tso, freq);
         assertEquals(0, agg.getClients().size());
         assertEquals(0, agg.getTso().getCurrentImbalance());
     }
 
     @Test
     public void testRegisterClients() {
-        this.agg = new AggregatorImpl(tso, freq);
+        this.agg = new IndependentAggregator(tso, freq);
         agg.registerClient(clientUp);
         agg.registerClient(clientDown);
         assertEquals(2, agg.getClients().size());
@@ -79,7 +79,7 @@ public class AggregatorImplTest {
     public void testSimpleAggregationUpFlex() {
         tso = mock(BalancingSignal.class);
         doReturn(5).when(tso).getCurrentImbalance();
-        agg = new AggregatorImpl(tso, freq);
+        agg = new IndependentAggregator(tso, freq);
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
@@ -97,7 +97,7 @@ public class AggregatorImplTest {
     public void testSimpleAggregationDownFlex() {
         tso = mock(BalancingSignal.class);
         doReturn(-5).when(tso).getCurrentImbalance();
-        agg = new AggregatorImpl(tso, freq);
+        agg = new IndependentAggregator(tso, freq);
         doRegister();
         sim.start();
         verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
@@ -109,7 +109,7 @@ public class AggregatorImplTest {
     public void testSimpleAggregationDoubleDownFlex() {
         tso = mock(BalancingSignal.class);
         doReturn(15).when(tso).getCurrentImbalance();
-        agg = new AggregatorImpl(tso, freq);
+        agg = new IndependentAggregator(tso, freq);
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
@@ -121,7 +121,7 @@ public class AggregatorImplTest {
     public void testSimpleAggregationDoubleUpFlex() {
         tso = mock(BalancingSignal.class);
         doReturn(-15).when(tso).getCurrentImbalance();
-        agg = new AggregatorImpl(tso, freq);
+        agg = new IndependentAggregator(tso, freq);
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
@@ -139,7 +139,7 @@ public class AggregatorImplTest {
                         FlexTuple.create(3, 10, true, 10, 0, 0))).when(
                 clientDown).getFlexTuples();
         doReturn(5000).when(tso).getCurrentImbalance();
-        agg = new AggregatorImpl(tso, freq);
+        agg = new IndependentAggregator(tso, freq);
         doRegister();
         sim.start();
         verify(clientDown, times(1)).activateFlex(
@@ -173,7 +173,7 @@ public class AggregatorImplTest {
 
         this.tso = mock(BalancingSignal.class);
         doReturn(-140).when(this.tso).getCurrentImbalance();
-        this.agg = new AggregatorImpl(this.tso, freq,
+        this.agg = new IndependentAggregator(this.tso, freq,
                 AggregationStrategyImpl.MOVINGHORIZON);
         doReturn(
                 Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),

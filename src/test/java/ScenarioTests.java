@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
-import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorImpl;
+import be.kuleuven.cs.flexsim.domain.aggregation.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.RandomOutputGenerator;
@@ -111,7 +111,7 @@ public class ScenarioTests {
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
         BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        AggregatorImpl agg = new AggregatorImpl(tso, 15);
+        IndependentAggregator agg = new IndependentAggregator(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
@@ -165,7 +165,7 @@ public class ScenarioTests {
         site1 = new SiteImpl(line1, line2);
         site2 = new SiteImpl(line3, line4);
         tso = new RandomTSO(-500, 1000, simulator.getRandom());
-        agg = new AggregatorImpl(tso, 15);
+        agg = new IndependentAggregator(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
@@ -228,7 +228,7 @@ public class ScenarioTests {
         Site site1 = new SiteImpl(line1, line2);
         Site site2 = new SiteImpl(line3, line4);
         BalancingSignal tso = new RandomTSO(0, 1, simulator.getRandom());
-        AggregatorImpl agg = new AggregatorImpl(tso, 15);
+        IndependentAggregator agg = new IndependentAggregator(tso, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
@@ -293,7 +293,7 @@ public class ScenarioTests {
         CopperplateTSO tso = new CopperplateTSO(site1, site2);
         tso.registerProducer(p1);
         tso.registerProducer(p2);
-        AggregatorImpl agg = new AggregatorImpl(tso, 15,
+        IndependentAggregator agg = new IndependentAggregator(tso, 15,
                 AggregationStrategyImpl.MOVINGHORIZON);
         agg.registerClient(site1);
         agg.registerClient(site2);
@@ -361,7 +361,7 @@ public class ScenarioTests {
         CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
         realTSO.registerProducer(p1);
         realTSO.registerProducer(p2);
-        AggregatorImpl agg = new AggregatorImpl(realTSO, 15,
+        IndependentAggregator agg = new IndependentAggregator(realTSO, 15,
                 AggregationStrategyImpl.MOVINGHORIZON);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
@@ -420,7 +420,7 @@ public class ScenarioTests {
         realTSO = new CopperplateTSO(site1, site2);
         realTSO.registerProducer(p1);
         realTSO.registerProducer(p2);
-        agg = new AggregatorImpl(realTSO, 15);
+        agg = new IndependentAggregator(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
@@ -568,7 +568,7 @@ public class ScenarioTests {
         EnergyProductionTrackable p2 = new RandomOutputGenerator(0, 1);
         CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
         realTSO.registerProducer(p2);
-        AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
+        IndependentAggregator agg = new IndependentAggregator(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
 
@@ -627,7 +627,7 @@ public class ScenarioTests {
         realTSO.registerProducer(p1);
         realTSO.registerProducer(p2);
 
-        agg = new AggregatorImpl(realTSO, 15);
+        agg = new IndependentAggregator(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 
@@ -694,7 +694,7 @@ public class ScenarioTests {
         EnergyProductionTrackable p2 = new RandomOutputGenerator(0, 1);
         CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
         realTSO.registerProducer(p2);
-        AggregatorImpl agg = new AggregatorImpl(realTSO, 15);
+        IndependentAggregator agg = new IndependentAggregator(realTSO, 15);
         // agg.registerClient(site1);
         // agg.registerClient(site2);
 
@@ -753,7 +753,7 @@ public class ScenarioTests {
         realTSO = new CopperplateTSO(site1, site2);
         realTSO.registerProducer(p1);
         realTSO.registerProducer(p2);
-        agg = new AggregatorImpl(realTSO, 15);
+        agg = new IndependentAggregator(realTSO, 15);
         agg.registerClient(site1);
         agg.registerClient(site2);
 

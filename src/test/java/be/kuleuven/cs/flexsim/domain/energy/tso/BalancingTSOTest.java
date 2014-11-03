@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.energy.tso;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -39,13 +40,6 @@ public class BalancingTSOTest {
         sim.start();
         assertEquals(imbalance, tso.getCurrentImbalance(), 0);
     }
-
-    // @Test
-    // public void testPlaceBids() {
-    // FlexBid bid = new FlexBid(FlexTuple.create(1, 500, false, 0, 0, 0), 125);
-    // tso.placeBid(bid);
-    // assertTrue(tso.getCurrentOutstandingBids().contains(bid));
-    // }
 
     @Test
     public void testRegisterClients() {
@@ -85,8 +79,8 @@ public class BalancingTSOTest {
         tso.signalNewLimits(agg1, cap1);
         tso.signalNewLimits(agg2, cap2);
         sim.start();
-        verify(agg1, times(1)).signalTarget(capS1 * 2);
-        verify(agg2, times(1)).signalTarget(capS2 * 2);
+        verify(agg1, times(1)).signalTarget(anyInt(), capS1 * 2);
+        verify(agg2, times(1)).signalTarget(anyInt(), capS2 * 2);
     }
 
     @Test
@@ -103,9 +97,9 @@ public class BalancingTSOTest {
         tso.signalNewLimits(agg1, cap1);
         tso.signalNewLimits(agg2, cap2);
         sim.start();
-        verify(agg1, times(1)).signalTarget(
+        verify(agg1, times(1)).signalTarget(anyInt(),
                 (int) Math.round(capS1 * 2 * factor));
-        verify(agg2, times(1)).signalTarget(
+        verify(agg2, times(1)).signalTarget(anyInt(),
                 (int) Math.round(capS2 * 2 * factor));
     }
 }
