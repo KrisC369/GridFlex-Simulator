@@ -18,4 +18,5 @@ public interface ContractualMechanismParticipant extends MechanismParticipant {
      *            The amount to reach.
      */
     void signalTarget(int timestep, int target);
+
 }
