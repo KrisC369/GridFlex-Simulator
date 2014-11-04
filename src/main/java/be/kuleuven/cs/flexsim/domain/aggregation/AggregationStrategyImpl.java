@@ -221,7 +221,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
      *            The input.
      * @return the sorted flex map.
      */
-    private static LinkedListMultimap<SiteFlexAPI, FlexTuple> sort(
+    static LinkedListMultimap<SiteFlexAPI, FlexTuple> sort(
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = LinkedListMultimap
                 .create();

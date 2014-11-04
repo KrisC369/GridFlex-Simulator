@@ -61,14 +61,14 @@ abstract class Aggregator {
         clients.add(client);
     }
 
-    protected void doAggregationStep(int t, final int target) {
-        LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
+    protected final void doAggregationStep(int t, final int target,
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
         logStep(t, target);
         this.strategy.performAggregationStep(new AggregationDispatch(), t,
                 flex, target);
     }
 
-    private LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
+    protected final LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> res = LinkedListMultimap
                 .create();
         for (SiteFlexAPI s : this.clients) {
@@ -125,5 +125,12 @@ abstract class Aggregator {
                 }
             }
         }
+    }
+
+    /**
+     * @return the strategy
+     */
+    protected final AggregationStrategy getStrategy() {
+        return strategy;
     }
 }

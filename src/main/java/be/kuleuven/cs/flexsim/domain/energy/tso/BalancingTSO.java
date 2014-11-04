@@ -96,7 +96,7 @@ public class BalancingTSO extends CopperplateTSO implements
                         }
                     });
 
-            if (sum <= getCurrentImbalance()) {
+            if (sum <= Math.abs(getCurrentImbalance())) {
                 sendSignal(timestep, 1, true);
             } else {
                 sendSignal(timestep, getFactor(sum, getCurrentImbalance()),
@@ -111,12 +111,14 @@ public class BalancingTSO extends CopperplateTSO implements
                             return input.getDown();
                         }
                     });
-            if (sum <= getCurrentImbalance()) {
+            if (sum <= Math.abs(getCurrentImbalance())) {
                 sendSignal(timestep, 1, false);
             } else {
                 sendSignal(timestep, getFactor(sum, getCurrentImbalance()),
                         false);
             }
+        } else {
+            sendSignal(timestep, 0, true);
         }
     }
 
@@ -138,7 +140,7 @@ public class BalancingTSO extends CopperplateTSO implements
         if (sum == 0 || currentImbalance == 0) {
             return 0;
         }
-        return currentImbalance / sum;
+        return Math.abs(currentImbalance) / sum;
     }
 
     @Override

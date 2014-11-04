@@ -65,7 +65,7 @@ public class IndependentAggregator extends Aggregator implements
     @Override
     public void tick(int t) {
         if (tickcount++ % aggFreq == 0) {
-            doAggregationStep(t, getTargetFlex());
+            doAggregationStep(t, getTargetFlex(), gatherFlexInfo());
         }
     }
 

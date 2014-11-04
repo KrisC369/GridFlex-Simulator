@@ -10,7 +10,7 @@ package be.kuleuven.cs.flexsim.domain.energy.tso;
  */
 public interface MechanismHost<T> {
     /**
-     * Register a mechanism client-participant to this mechanism.
+     * Register a mechanism client/participant to this mechanism.
      * 
      * @param participant
      *            The participant to register.
