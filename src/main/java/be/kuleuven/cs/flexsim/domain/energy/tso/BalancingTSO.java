@@ -82,7 +82,15 @@ public class BalancingTSO extends CopperplateTSO implements
     @Override
     public void afterTick(int t) {
         super.afterTick(t);
+        pollCapacities();
         calculateAndSignal(t);
+    }
+
+    private void pollCapacities() {
+        for (ContractualMechanismParticipant p : participants) {
+            testValidParticipant(p);
+            this.powerLimits.put(p, p.getPowerCapacity());
+        }
     }
 
     private void calculateAndSignal(int timestep) {

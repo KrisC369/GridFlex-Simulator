@@ -11,7 +11,6 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.LinkedListMultimap;
 
 /**
@@ -80,8 +79,7 @@ public class ReactiveMechanismAggregator extends Aggregator implements
         signalCapacity();
     }
 
-    @VisibleForTesting
-    void signalCapacity() {
+    private void signalCapacity() {
         int up = findMaxUpInPortfolio();
         int down = findMaxDownInPortfolio();
         host.signalNewLimits(this, PowerCapabilityBand.create(down, up));
@@ -112,5 +110,12 @@ public class ReactiveMechanismAggregator extends Aggregator implements
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
         return Collections.emptyList();
+    }
+
+    @Override
+    public PowerCapabilityBand getPowerCapacity() {
+        int up = findMaxUpInPortfolio();
+        int down = findMaxDownInPortfolio();
+        return PowerCapabilityBand.create(down, up);
     }
 }

@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
+import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class TSOBackwardsCompatibilityTest {
     private SiteSimulation site12 = mock(SiteSimulation.class);
     private SiteSimulation site21 = mock(SiteSimulation.class);
     private SiteSimulation site22 = mock(SiteSimulation.class);
-    private int simsteps = 20;
+    private int simsteps = 70;
 
     @Before
     public void setUp() throws Exception {
@@ -58,6 +59,8 @@ public class TSOBackwardsCompatibilityTest {
         agg2.registerClient(site22);
         sim1.register(tso1);
         sim1.register(agg1);
+        sim2.register(tso2);
+        sim2.register(agg2);
     }
 
     @Test
@@ -66,6 +69,25 @@ public class TSOBackwardsCompatibilityTest {
         sim1.start();
         sim2.start();
         assertTrue(c.eval());
+    }
+
+    @Test
+    public void testMersenneTwister() {
+        MersenneTwister u1 = new MersenneTwister(70);
+        MersenneTwister u2 = new MersenneTwister(70);
+        List<Integer> res1 = Lists.newArrayList();
+        List<Integer> res2 = Lists.newArrayList();
+        for (int i = 0; i < 100000; i++) {
+            res1.add((int) (u1.nextDouble() * 100));
+            res2.add((int) (u2.nextDouble() * 100));
+        }
+        boolean ass = true;
+        for (int i = 0; i < res1.size(); i++) {
+            if (!res1.get(i).equals(res2.get(i))) {
+                ass = false;
+            }
+        }
+        assertTrue(ass);
     }
 
     private class ComparingModule {
@@ -79,13 +101,18 @@ public class TSOBackwardsCompatibilityTest {
                 @Override
                 public void eventOccurred(Integer arg) {
                     values1.add(arg);
-
+                    if (values1.size() == 9) {
+                        return;
+                    }
                 }
             });
             tso2.addNewBalanceValueListener(new Listener<Integer>() {
 
                 public void eventOccurred(Integer arg) {
                     values2.add(arg);
+                    if (values2.size() == 9) {
+                        return;
+                    }
                 }
             });
         }

@@ -19,4 +19,11 @@ public interface ContractualMechanismParticipant extends MechanismParticipant {
      */
     void signalTarget(int timestep, int target);
 
+    /**
+     * Returns the capabilities in terms of flexibility for this participant.
+     * 
+     * @return A power capability bandwith.
+     */
+    PowerCapabilityBand getPowerCapacity();
+
 }
