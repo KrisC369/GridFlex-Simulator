@@ -75,9 +75,9 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public void tick(int t) {
-        signalCapacity();
         currentFlex = gatherFlexInfo();// only call this once.
         doAggregationStep(t, currentTarget, currentFlex);
+        signalCapacity();
     }
 
     @VisibleForTesting
