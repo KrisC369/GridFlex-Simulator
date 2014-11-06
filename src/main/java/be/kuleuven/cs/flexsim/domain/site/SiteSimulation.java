@@ -1,11 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
+import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -29,6 +32,7 @@ public class SiteSimulation implements Site {
     private List<FlexTuple> flexData;
     private UIDGenerator generator;
     private int totalConsumption;
+    private int baseProduction;
 
     /**
      * Default constructor for this mock simulating site.
@@ -43,11 +47,13 @@ public class SiteSimulation implements Site {
      *            The maximum tuples to generate per section of flex.
      */
     public SiteSimulation(int base, int min, int max, int maxTuples) {
+        checkArgument(min <= base && base <= max);
         this.maxLimitConsumption = max;
         this.minLimitConsumption = min;
         this.maxTuples = maxTuples;
         this.currentConsumption = base;
         this.flexData = Lists.newArrayList();
+        this.baseProduction = 20;
         this.generator = new UIDGenerator() {
             @Override
             public long getNextUID() {
@@ -83,7 +89,14 @@ public class SiteSimulation implements Site {
 
     @Override
     public Collection<Resource> takeResources() {
-        return Collections.emptyList();
+        List<Resource> res = Lists.newArrayList();
+        double factor = (double) (getCurrentConsumption() - getMinLimitConsumption())
+                / (double) (getMaxLimitConsumption() - getMinLimitConsumption());
+
+        for (int i = 0; i < Math.ceil(factor) * baseProduction; i++) {
+            res.add(ResourceFactory.createResource(0));
+        }
+        return res;
     }
 
     @Override

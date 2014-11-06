@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.site;
 import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 
 /**
  * API for gathering data about the flexibility for an entity.
@@ -25,4 +26,12 @@ public interface SiteFlexAPI {
      *            list of controls requested
      */
     void activateFlex(ActivateFlexCommand schedule);
+
+    /**
+     * Adds a listener to activation commands.
+     * 
+     * @param listener
+     *            the listener to attach.
+     */
+    void addActivationListener(Listener<ActivateFlexCommand> listener);
 }

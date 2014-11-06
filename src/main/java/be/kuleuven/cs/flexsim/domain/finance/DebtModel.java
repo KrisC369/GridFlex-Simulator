@@ -14,7 +14,7 @@ public enum DebtModel {
 
         @Override
         public double calculateDebt(int timestep, double lastConsumption) {
-            return lastConsumption;
+            return lastConsumption * FACTOR;
         }
 
     };
@@ -31,4 +31,5 @@ public enum DebtModel {
      */
     public abstract double calculateDebt(int timestep, double lastConsumption);
 
+    private static final double FACTOR = 48.8;
 }

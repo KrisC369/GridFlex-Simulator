@@ -17,8 +17,7 @@ import com.google.common.base.Optional;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * 
  */
-public final class FinanceTrackerImpl implements SimulationComponent,
-        FinanceTracker {
+public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     private final ResourceConsumptionTrackableComponent target;
     private Optional<SimulationContext> context;
@@ -39,7 +38,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
      * @param dm
      *            The debtModel to use.
      */
-    private FinanceTrackerImpl(ResourceConsumptionTrackableComponent target,
+    protected FinanceTrackerImpl(ResourceConsumptionTrackableComponent target,
             RewardModel rm, DebtModel dm) {
         this.target = target;
         this.context = Optional.absent();
@@ -151,7 +150,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
         return this.totalReward;
     }
 
-    private void increaseTotalReward(int increment) {
+    protected final void increaseTotalReward(int increment) {
         this.totalReward = this.totalReward + increment;
     }
 
@@ -165,7 +164,7 @@ public final class FinanceTrackerImpl implements SimulationComponent,
         return totalCost;
     }
 
-    private void incrementTotalCost(double incr) {
+    protected final void incrementTotalCost(double incr) {
         this.totalCost = this.totalCost + incr;
     }
 
