@@ -1,64 +1,47 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 /**
- * Represents an energy aggregator implementation.
- *
+ * An abstract aggregator instance with logic to perform aggregation functions.
+ * This class needs to be subclassed to specify how and when to trigger
+ * aggregation.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class AggregatorImpl implements SimulationComponent {
+abstract class Aggregator {
     private final Set<SiteFlexAPI> clients;
-    private final BalancingSignal tso;
-    private int tickcount;
-    private final int aggFreq;
     private final AggregationStrategy strategy;
 
     /**
      * Constructor with custom aggregation strategy.
      *
-     * @param tso
-     *            the tso to take steering signals from.
-     * @param frequency
-     *            the frequency with which to perform aggregation functions.
      * @param strategy
      *            The aggregation strategy to use.
      */
-    public AggregatorImpl(BalancingSignal tso, int frequency,
-            AggregationStrategy strategy) {
+    public Aggregator(AggregationStrategy strategy) {
         this.clients = Sets.newLinkedHashSet();
-        this.tso = tso;
-        this.tickcount = 1;
-        this.aggFreq = frequency;
         this.strategy = strategy;
     }
 
     /**
      * Default constructor with default aggregation strategy: Cartesianproduct.
      *
-     * @param tso
-     *            the tso to take steering signals from.
-     * @param frequency
-     *            the frequency with which to perform aggregation functions.
      */
-    public AggregatorImpl(BalancingSignal tso, int frequency) {
-        this(tso, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
+    public Aggregator() {
+        this(AggregationStrategyImpl.CARTESIANPRODUCT);
     }
 
     /**
@@ -66,13 +49,6 @@ public class AggregatorImpl implements SimulationComponent {
      */
     final List<SiteFlexAPI> getClients() {
         return Lists.newArrayList(clients);
-    }
-
-    /**
-     * @return the tso.
-     */
-    final BalancingSignal getTso() {
-        return tso;
     }
 
     /**
@@ -85,19 +61,14 @@ public class AggregatorImpl implements SimulationComponent {
         clients.add(client);
     }
 
-    private void doAggregationStep(int t) {
-        LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
-        final int target = getTargetFlex();
+    protected final void doAggregationStep(int t, final int target,
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
         logStep(t, target);
         this.strategy.performAggregationStep(new AggregationDispatch(), t,
                 flex, target);
     }
 
-    private int getTargetFlex() {
-        return getTso().getCurrentImbalance() * 1;
-    }
-
-    private LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
+    protected final LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> res = LinkedListMultimap
                 .create();
         for (SiteFlexAPI s : this.clients) {
@@ -106,40 +77,27 @@ public class AggregatorImpl implements SimulationComponent {
         return res;
     }
 
-    @Override
-    public void initialize(SimulationContext context) {
-    }
-
-    @Override
-    public void afterTick(int t) {
-    }
-
-    @Override
-    public void tick(int t) {
-        if (tickcount++ % aggFreq == 0) {
-            doAggregationStep(t);
-        }
-    }
-
-    @Override
-    public List<SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
+    /**
+     * @return the strategy
+     */
+    protected final AggregationStrategy getStrategy() {
+        return strategy;
     }
 
     private void logStep(int t, int target) {
         LoggerFactory
-                .getLogger(AggregatorImpl.class)
+                .getLogger(IndependentAggregator.class)
                 .debug("Performing aggregation step at time step {} with flextarget {}",
                         t, target);
     }
 
     private void logCurtail(FlexTuple tt) {
-        LoggerFactory.getLogger(AggregatorImpl.class).debug(
+        LoggerFactory.getLogger(IndependentAggregator.class).debug(
                 "Sending curtail request based on profile {}", tt);
     }
 
     private void logRestore(FlexTuple tt) {
-        LoggerFactory.getLogger(AggregatorImpl.class).debug(
+        LoggerFactory.getLogger(IndependentAggregator.class).debug(
                 "Sending restore request based on profile {}", tt);
     }
 

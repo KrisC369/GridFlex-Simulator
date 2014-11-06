@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -229,5 +230,24 @@ public class SimulatorTest {
         }
         // System.out.println(Arrays.toString(res.toArray()));
         assertEquals(1, Sets.newLinkedHashSet(res).size(), 0);
+    }
+
+    @Test
+    public void testMersenneTwister() {
+        MersenneTwister u1 = new MersenneTwister(70);
+        MersenneTwister u2 = new MersenneTwister(70);
+        List<Integer> res1 = Lists.newArrayList();
+        List<Integer> res2 = Lists.newArrayList();
+        for (int i = 0; i < 100000; i++) {
+            res1.add((int) (u1.nextDouble() * 100));
+            res2.add((int) (u2.nextDouble() * 100));
+        }
+        boolean ass = true;
+        for (int i = 0; i < res1.size(); i++) {
+            if (!res1.get(i).equals(res2.get(i))) {
+                ass = false;
+            }
+        }
+        assertTrue(ass);
     }
 }

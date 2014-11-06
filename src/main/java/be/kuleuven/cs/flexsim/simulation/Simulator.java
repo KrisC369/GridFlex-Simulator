@@ -12,8 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.event.Event;
-import be.kuleuven.cs.flexsim.event.EventFactoryImplementation;
 import be.kuleuven.cs.flexsim.event.EventFactory;
+import be.kuleuven.cs.flexsim.event.EventFactoryImplementation;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
 
