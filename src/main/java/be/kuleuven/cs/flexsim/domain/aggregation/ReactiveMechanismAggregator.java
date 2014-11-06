@@ -75,13 +75,6 @@ public class ReactiveMechanismAggregator extends Aggregator implements
     @Override
     public void tick(int t) {
         doAggregationStep(t, currentTarget, currentFlex);
-        signalCapacity();
-    }
-
-    private void signalCapacity() {
-        int up = findMaxUpInPortfolio();
-        int down = findMaxDownInPortfolio();
-        host.signalNewLimits(this, PowerCapabilityBand.create(down, up));
     }
 
     private int findMaxUpInPortfolio() {

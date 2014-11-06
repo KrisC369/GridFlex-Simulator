@@ -1,11 +1,11 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
-import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,30 +64,23 @@ public class TSOBackwardsCompatibilityTest {
     }
 
     @Test
+    public void testCompareRunner() {
+        for (int i = 50; i < 1000; i += 50) {
+            simsteps = i;
+            try {
+                setUp();
+                testCompareBothStep1();
+            } catch (Exception e) {
+                fail();
+            }
+        }
+    }
+
     public void testCompareBothStep1() {
         ComparingModule c = new ComparingModule(tso1, tso2);
         sim1.start();
         sim2.start();
         assertTrue(c.eval());
-    }
-
-    @Test
-    public void testMersenneTwister() {
-        MersenneTwister u1 = new MersenneTwister(70);
-        MersenneTwister u2 = new MersenneTwister(70);
-        List<Integer> res1 = Lists.newArrayList();
-        List<Integer> res2 = Lists.newArrayList();
-        for (int i = 0; i < 100000; i++) {
-            res1.add((int) (u1.nextDouble() * 100));
-            res2.add((int) (u2.nextDouble() * 100));
-        }
-        boolean ass = true;
-        for (int i = 0; i < res1.size(); i++) {
-            if (!res1.get(i).equals(res2.get(i))) {
-                ass = false;
-            }
-        }
-        assertTrue(ass);
     }
 
     private class ComparingModule {
@@ -101,18 +94,20 @@ public class TSOBackwardsCompatibilityTest {
                 @Override
                 public void eventOccurred(Integer arg) {
                     values1.add(arg);
-                    if (values1.size() == 9) {
-                        return;
-                    }
+                    // //for debugging only
+                    // if (values1.size() == 9) {
+                    // return;
+                    // }
                 }
             });
             tso2.addNewBalanceValueListener(new Listener<Integer>() {
 
                 public void eventOccurred(Integer arg) {
                     values2.add(arg);
-                    if (values2.size() == 9) {
-                        return;
-                    }
+                    // //for debugging only
+                    // if (values2.size() == 9) {
+                    // return;
+                    // }
                 }
             });
         }

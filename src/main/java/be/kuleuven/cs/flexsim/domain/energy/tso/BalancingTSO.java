@@ -77,13 +77,13 @@ public class BalancingTSO extends CopperplateTSO implements
     @Override
     public void tick(int t) {
         super.tick(t);
-        pollCapacities();
-        calculateAndSignal(t);
     }
 
     @Override
     public void afterTick(int t) {
         super.afterTick(t);
+        pollCapacities();
+        calculateAndSignal(t);
     }
 
     private void pollCapacities() {
