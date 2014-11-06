@@ -1,15 +1,12 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.PowerCapabilityBand;
@@ -48,11 +45,12 @@ public class ReactiveMechanismAggregatorTest {
         agg.tick(0);
         // agg.signalCapacity();
 
-        ArgumentCaptor<PowerCapabilityBand> argument = ArgumentCaptor
-                .forClass(PowerCapabilityBand.class);
-        verify(tso, times(1)).signalNewLimits(eq(agg), argument.capture());
-        assertEquals(120, argument.getValue().getUp());
-        assertEquals(100, argument.getValue().getDown());
+        PowerCapabilityBand arg = agg.getPowerCapacity();
+        // ArgumentCaptor<PowerCapabilityBand> argument = ArgumentCaptor
+        // .forClass(PowerCapabilityBand.class);
+        // verify(tso, times(1)).signalNewLimits(eq(agg), argument.capture());
+        assertEquals(120, arg.getUp());
+        assertEquals(100, arg.getDown());
     }
 
     @Test

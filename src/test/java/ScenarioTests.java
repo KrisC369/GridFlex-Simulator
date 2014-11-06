@@ -14,11 +14,13 @@ import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.IndependentAggregator;
+import be.kuleuven.cs.flexsim.domain.aggregation.ReactiveMechanismAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.RandomOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
@@ -772,6 +774,134 @@ public class ScenarioTests {
         log.info("Profit no curt: {} Profit Curt: {}", profitBefore,
                 profitAfter);
         assertTrue(profitBefore < profitAfter);
+        return profitAfter - profitBefore;
+    }
+
+    @Test
+    public void testAggregationWithBalancingTSO() {
+        testAggregationWithBalancingTSO(1000);
+    }
+
+    public double testAggregationWithBalancingTSO(int simSteps) {
+        ProductionLine line1 = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(20)
+                .addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(4).addConsuming(3).build();
+        ProductionLine line2 = new ProductionLineBuilder()
+                .setWorkingConsumption(400).setIdleConsumption(60)
+                .addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(3).addConsuming(3).build();
+        ProductionLine line3 = new ProductionLineBuilder()
+                .setWorkingConsumption(600).setIdleConsumption(10)
+                .addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
+        ProductionLine line4 = new ProductionLineBuilder()
+                .setWorkingConsumption(500).setIdleConsumption(15)
+                .addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(5).addConsuming(3).build();
+
+        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+
+        FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
+        FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
+        FinanceTrackerImpl t3 = FinanceTrackerImpl.createDefault(line3);
+        FinanceTrackerImpl t4 = FinanceTrackerImpl.createDefault(line4);
+
+        Simulator simulator = Simulator.createSimulator(simSteps);
+        Site site1 = new SiteImpl(line1, line2);
+        Site site2 = new SiteImpl(line3, line4);
+
+        EnergyProductionTrackable p1 = new ConstantOutputGenerator(1600);
+        EnergyProductionTrackable p2 = new RandomOutputGenerator(-300, 70);
+        CopperplateTSO realTSO = new CopperplateTSO(site1, site2);
+        realTSO.registerProducer(p1);
+        realTSO.registerProducer(p2);
+        IndependentAggregator agg = new IndependentAggregator(realTSO, 1,
+                AggregationStrategyImpl.MOVINGHORIZON);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+
+        simulator.register(agg);
+        simulator.register(realTSO);
+        simulator.register(t1);
+        simulator.register(t2);
+        simulator.register(t3);
+        simulator.register(t4);
+        // System.out.println("setup 1 done");
+        simulator.start();
+
+        double profitBefore = t1.getTotalProfit() + t2.getTotalProfit()
+                + t3.getTotalProfit() + t4.getTotalProfit();
+        // System.out.println("simulation 1 done");
+
+        // After: CopperplateTSO
+        line1 = new ProductionLineBuilder().setWorkingConsumption(500)
+                .setIdleConsumption(20).addConsuming(3)
+                .addCurtailableShifted(6).addCurtailableShifted(4)
+                .addConsuming(3).build();
+        line2 = new ProductionLineBuilder().setWorkingConsumption(400)
+                .setIdleConsumption(60).addConsuming(3)
+                .addCurtailableShifted(6).addCurtailableShifted(3)
+                .addConsuming(3).build();
+        line3 = new ProductionLineBuilder().setWorkingConsumption(600)
+                .setIdleConsumption(10).addConsuming(3)
+                .addCurtailableShifted(4).addCurtailableShifted(4)
+                .addConsuming(3).build();
+        line4 = new ProductionLineBuilder().setWorkingConsumption(500)
+                .setIdleConsumption(15).addConsuming(4)
+                .addCurtailableShifted(4).addCurtailableShifted(5)
+                .addConsuming(3).build();
+
+        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
+                3, 3));
+
+        t1 = FinanceTrackerImpl.createDefault(line1);
+        t2 = FinanceTrackerImpl.createDefault(line2);
+        t3 = FinanceTrackerImpl.createDefault(line3);
+        t4 = FinanceTrackerImpl.createDefault(line4);
+
+        simulator = Simulator.createSimulator(simSteps);
+        site1 = new SiteImpl(line1, line2);
+        site2 = new SiteImpl(line3, line4);
+
+        p1 = new ConstantOutputGenerator(1600);
+        p2 = new RandomOutputGenerator(-300, 70);
+        BalancingTSO realTSO2 = new BalancingTSO(site1, site2);
+        realTSO2.registerProducer(p1);
+        realTSO2.registerProducer(p2);
+        ReactiveMechanismAggregator agg2 = new ReactiveMechanismAggregator(
+                realTSO2, AggregationStrategyImpl.MOVINGHORIZON);
+        agg2.registerClient(site1);
+        agg2.registerClient(site2);
+
+        simulator.register(agg2);
+        simulator.register(realTSO2);
+        simulator.register(t1);
+        simulator.register(t2);
+        simulator.register(t3);
+        simulator.register(t4);
+        log.info("Setup 2 done. Starting simulation.");
+        simulator.start();
+        log.info("Simulation 2 done");
+        double profitAfter = t1.getTotalProfit() + t2.getTotalProfit()
+                + t3.getTotalProfit() + t4.getTotalProfit();
+
+        log.info("Profit BalancingTSO: {} Profit OldTSO: {}", profitBefore,
+                profitAfter);
+        assertEquals(profitBefore, profitAfter, 0);
         return profitAfter - profitBefore;
     }
 }
