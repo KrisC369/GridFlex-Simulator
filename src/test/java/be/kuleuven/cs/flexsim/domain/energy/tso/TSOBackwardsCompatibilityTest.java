@@ -31,7 +31,7 @@ public class TSOBackwardsCompatibilityTest {
     private SiteSimulation site12 = mock(SiteSimulation.class);
     private SiteSimulation site21 = mock(SiteSimulation.class);
     private SiteSimulation site22 = mock(SiteSimulation.class);
-    private int simsteps = 70;
+    private int simsteps = 200;
 
     @Before
     public void setUp() throws Exception {

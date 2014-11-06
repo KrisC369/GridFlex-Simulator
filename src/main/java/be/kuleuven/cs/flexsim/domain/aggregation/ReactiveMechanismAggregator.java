@@ -74,7 +74,6 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public void tick(int t) {
-        currentFlex = gatherFlexInfo();// only call this once.
         doAggregationStep(t, currentTarget, currentFlex);
         signalCapacity();
     }
@@ -114,6 +113,7 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public PowerCapabilityBand getPowerCapacity() {
+        currentFlex = gatherFlexInfo();// only call this once.
         int up = findMaxUpInPortfolio();
         int down = findMaxDownInPortfolio();
         return PowerCapabilityBand.create(down, up);
