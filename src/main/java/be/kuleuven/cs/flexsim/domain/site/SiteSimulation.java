@@ -10,6 +10,7 @@ import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
@@ -217,6 +218,12 @@ public class SiteSimulation implements Site {
         builder.append("SiteSimulation [#T=").append(maxTuples)
                 .append(", cCons=").append(currentConsumption).append("]");
         return builder.toString();
+    }
+
+    @Override
+    public void addActivationListener(Listener<ActivateFlexCommand> listener) {
+        // TODO Auto-generated method stub
+
     }
 
 }

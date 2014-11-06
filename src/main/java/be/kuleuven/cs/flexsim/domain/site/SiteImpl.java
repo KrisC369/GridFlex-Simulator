@@ -7,6 +7,7 @@ import java.util.List;
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -175,5 +176,11 @@ public class SiteImpl implements Site {
     @Override
     public double getAverageConsumption() {
         return getLastStepConsumption();
+    }
+
+    @Override
+    public void addActivationListener(Listener<ActivateFlexCommand> listener) {
+        // TODO Auto-generated method stub
+
     }
 }
