@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -76,11 +77,13 @@ public class BalancingTSOTest {
         tso.registerParticipant(agg2);
         PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
         PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
+        when(agg1.getPowerCapacity()).thenReturn(cap1);
+        when(agg2.getPowerCapacity()).thenReturn(cap2);
         tso.signalNewLimits(agg1, cap1);
         tso.signalNewLimits(agg2, cap2);
         sim.start();
-        verify(agg1, times(1)).signalTarget(anyInt(), capS1 * 2);
-        verify(agg2, times(1)).signalTarget(anyInt(), capS2 * 2);
+        verify(agg1, times(1)).signalTarget(anyInt(), eq(capS1 * 2));
+        verify(agg2, times(1)).signalTarget(anyInt(), eq(capS2 * 2));
     }
 
     @Test
@@ -94,12 +97,14 @@ public class BalancingTSOTest {
         tso.registerParticipant(agg2);
         PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
         PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
+        when(agg1.getPowerCapacity()).thenReturn(cap1);
+        when(agg2.getPowerCapacity()).thenReturn(cap2);
         tso.signalNewLimits(agg1, cap1);
         tso.signalNewLimits(agg2, cap2);
         sim.start();
         verify(agg1, times(1)).signalTarget(anyInt(),
-                (int) Math.round(capS1 * 2 * factor));
+                eq((int) Math.round(capS1 * 2 * factor)));
         verify(agg2, times(1)).signalTarget(anyInt(),
-                (int) Math.round(capS2 * 2 * factor));
+                eq((int) Math.round(capS2 * 2 * factor)));
     }
 }

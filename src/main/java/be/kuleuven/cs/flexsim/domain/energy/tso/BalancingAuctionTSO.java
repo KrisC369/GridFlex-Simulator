@@ -88,11 +88,6 @@ public class BalancingAuctionTSO extends CopperplateTSO implements
     }
 
     @Override
-    public void tick(int t) {
-        super.tick(t);
-    }
-
-    @Override
     public void afterTick(int t) {
         super.afterTick(t);
         clearMarket();

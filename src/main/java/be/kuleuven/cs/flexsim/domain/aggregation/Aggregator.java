@@ -77,6 +77,13 @@ abstract class Aggregator {
         return res;
     }
 
+    /**
+     * @return the strategy
+     */
+    protected final AggregationStrategy getStrategy() {
+        return strategy;
+    }
+
     private void logStep(int t, int target) {
         LoggerFactory
                 .getLogger(IndependentAggregator.class)
@@ -125,12 +132,5 @@ abstract class Aggregator {
                 }
             }
         }
-    }
-
-    /**
-     * @return the strategy
-     */
-    protected final AggregationStrategy getStrategy() {
-        return strategy;
     }
 }

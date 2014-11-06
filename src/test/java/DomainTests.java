@@ -6,6 +6,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.IndependentAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.ReactiveMechanismAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.energy.generation.OutputGeneratorTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingAuctionTSOTest;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSOTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.CopperPlateTSOTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSOTest;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerTest;
@@ -25,6 +26,6 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
         NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
         OutputGeneratorTest.class, SiteSimulationTest.class,
-        BalancingAuctionTSOTest.class })
+        BalancingAuctionTSOTest.class, BalancingTSOTest.class })
 public class DomainTests {
 }

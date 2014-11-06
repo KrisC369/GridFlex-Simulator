@@ -29,7 +29,7 @@ public class ReactiveMechanismAggregator extends Aggregator implements
     private final int aggFreq;
 
     /**
-     * Default constructor
+     * Default constructor.
      * 
      * @param host
      *            The host to register to.
@@ -38,19 +38,6 @@ public class ReactiveMechanismAggregator extends Aggregator implements
     public ReactiveMechanismAggregator(BalancingTSO host) {
         this(host, AggregationStrategyImpl.CARTESIANPRODUCT);
     }
-
-    // /**
-    // * Constructor with all settable params.
-    // *
-    // * @param host
-    // * The host to register to.
-    // * @param frequency
-    // * The frequency of aggregation (how often...).
-    // *
-    // */
-    // public ReactiveMechanismAggregator(BalancingTSO host, int frequency) {
-    // this(host, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
-    // }
 
     /**
      * Constructor with all settable params.
@@ -73,7 +60,7 @@ public class ReactiveMechanismAggregator extends Aggregator implements
     }
 
     /**
-     * Default frequency constructor
+     * Default frequency constructor.
      * 
      * @param host
      *            The host to register to.
@@ -137,7 +124,8 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public PowerCapabilityBand getPowerCapacity() {
-        currentFlex = gatherFlexInfo();// only call this once.
+        currentFlex = gatherFlexInfo();
+        // only call this once.
         int up = findMaxUpInPortfolio();
         int down = findMaxDownInPortfolio();
         return PowerCapabilityBand.create(down, up);
