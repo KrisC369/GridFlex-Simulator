@@ -23,9 +23,10 @@ import com.google.common.collect.LinkedListMultimap;
 public class ReactiveMechanismAggregator extends Aggregator implements
         ContractualMechanismParticipant, SimulationComponent {
 
-    private BalancingTSO host;
     private int currentTarget;
     private LinkedListMultimap<SiteFlexAPI, FlexTuple> currentFlex;
+    private int tickcount;
+    private final int aggFreq;
 
     /**
      * Default constructor
@@ -38,22 +39,50 @@ public class ReactiveMechanismAggregator extends Aggregator implements
         this(host, AggregationStrategyImpl.CARTESIANPRODUCT);
     }
 
+    // /**
+    // * Constructor with all settable params.
+    // *
+    // * @param host
+    // * The host to register to.
+    // * @param frequency
+    // * The frequency of aggregation (how often...).
+    // *
+    // */
+    // public ReactiveMechanismAggregator(BalancingTSO host, int frequency) {
+    // this(host, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
+    // }
+
     /**
-     * Default constructor
+     * Constructor with all settable params.
+     * 
+     * @param host
+     *            The host to register to.
+     * @param frequency
+     *            The frequency of aggregation (how often...).
+     * @param strategy
+     *            The strategy to adopt.
+     * 
+     */
+    private ReactiveMechanismAggregator(BalancingTSO host, int frequency,
+            AggregationStrategy strategy) {
+        super(strategy);
+        host.registerParticipant(this);
+        this.currentTarget = 0;
+        this.currentFlex = LinkedListMultimap.create();
+        this.aggFreq = frequency;
+    }
+
+    /**
+     * Default frequency constructor
      * 
      * @param host
      *            The host to register to.
      * @param strategy
      *            The strategy to adopt.
-     * 
      */
     public ReactiveMechanismAggregator(BalancingTSO host,
             AggregationStrategy strategy) {
-        super(strategy);
-        this.host = host;
-        host.registerParticipant(this);
-        this.currentTarget = 0;
-        this.currentFlex = LinkedListMultimap.create();
+        this(host, 1, strategy);
     }
 
     @Override
@@ -74,7 +103,9 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public void tick(int t) {
-        doAggregationStep(t, currentTarget, currentFlex);
+        if (tickcount++ % aggFreq == 0) {
+            doAggregationStep(t, currentTarget, currentFlex);
+        }
     }
 
     private int findMaxUpInPortfolio() {
