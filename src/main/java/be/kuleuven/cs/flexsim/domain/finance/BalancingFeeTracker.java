@@ -17,7 +17,7 @@ import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
  */
 class BalancingFeeTracker extends FinanceTrackerImpl {
 
-    private final int FIXED_ACTIVATION_FEE;
+    private final int fixedActivationFee;
     private int activationCount;
     private Site target;
 
@@ -31,13 +31,13 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
      */
     BalancingFeeTracker(Site s, int reward) {
         super(s, RewardModel.CONSTANT, DebtModel.CONSTANT);
-        this.FIXED_ACTIVATION_FEE = reward;
+        this.fixedActivationFee = reward;
         this.activationCount = 0;
         this.target = s;
         s.addActivationListener(new Listener<ActivateFlexCommand>() {
             @Override
             public void eventOccurred(ActivateFlexCommand arg) {
-                increaseTotalReward(FIXED_ACTIVATION_FEE);
+                increaseTotalReward(fixedActivationFee);
                 incrementCount();
                 logCount();
             }

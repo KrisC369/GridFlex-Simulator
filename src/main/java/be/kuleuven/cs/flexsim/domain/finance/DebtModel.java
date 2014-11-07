@@ -19,6 +19,8 @@ public enum DebtModel {
 
     };
 
+    private static final double FACTOR = 48.8;
+
     /**
      * Calculates the payment price for a specified consumption amount for a
      * given timestep.
@@ -31,5 +33,4 @@ public enum DebtModel {
      */
     public abstract double calculateDebt(int timestep, double lastConsumption);
 
-    private static final double FACTOR = 48.8;
 }

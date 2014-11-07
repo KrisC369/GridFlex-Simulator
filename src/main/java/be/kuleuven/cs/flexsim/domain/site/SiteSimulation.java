@@ -35,8 +35,9 @@ public class SiteSimulation implements Site {
     private List<FlexTuple> flexData;
     private UIDGenerator generator;
     private int totalConsumption;
-    private int baseProduction;
+    private final int baseProduction;
     private Listener<? super ActivateFlexCommand> activationListener;
+    private static final int DEFAULT_BASE_PRODUCTION = 20;
 
     /**
      * Default constructor for this mock simulating site.
@@ -58,7 +59,7 @@ public class SiteSimulation implements Site {
         this.maxTuples = maxTuples;
         this.currentConsumption = base;
         this.flexData = Lists.newArrayList();
-        this.baseProduction = 20;
+        this.baseProduction = DEFAULT_BASE_PRODUCTION;
         this.generator = new UIDGenerator() {
             @Override
             public long getNextUID() {
