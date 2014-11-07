@@ -19,7 +19,7 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
 
     private final int fixedActivationFee;
     private int activationCount;
-    private Site target;
+    private final Site target;
 
     /**
      * Default constructor.
