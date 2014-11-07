@@ -33,5 +33,5 @@ public interface SiteFlexAPI {
      * @param listener
      *            the listener to attach.
      */
-    void addActivationListener(Listener<ActivateFlexCommand> listener);
+    void addActivationListener(Listener<? super ActivateFlexCommand> listener);
 }

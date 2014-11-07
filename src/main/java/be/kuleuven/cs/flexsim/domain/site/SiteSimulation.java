@@ -11,6 +11,8 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
+import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
+import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
@@ -34,6 +36,7 @@ public class SiteSimulation implements Site {
     private UIDGenerator generator;
     private int totalConsumption;
     private int baseProduction;
+    private Listener<? super ActivateFlexCommand> activationListener;
 
     /**
      * Default constructor for this mock simulating site.
@@ -49,6 +52,7 @@ public class SiteSimulation implements Site {
      */
     public SiteSimulation(int base, int min, int max, int maxTuples) {
         checkArgument(min <= base && base <= max);
+        this.activationListener = NoopListener.INSTANCE;
         this.maxLimitConsumption = max;
         this.minLimitConsumption = min;
         this.maxTuples = maxTuples;
@@ -77,8 +81,8 @@ public class SiteSimulation implements Site {
                     currentConsumption -= f.getDeltaP();
                 } else {
                     currentConsumption += f.getDeltaP();
-
                 }
+                this.activationListener.eventOccurred(schedule);
             }
         }
     }
@@ -215,14 +219,17 @@ public class SiteSimulation implements Site {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("SiteSimulation [#T=").append(maxTuples)
-                .append(", cCons=").append(currentConsumption).append("]");
+        builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=")
+                .append(hashCode()).append(", cCons=")
+                .append(currentConsumption).append("]");
         return builder.toString();
     }
 
     @Override
-    public void addActivationListener(Listener<ActivateFlexCommand> listener) {
-        // TODO Auto-generated method stub
+    public void addActivationListener(
+            Listener<? super ActivateFlexCommand> listener) {
+        this.activationListener = MultiplexListener.plus(
+                this.activationListener, listener);
 
     }
 

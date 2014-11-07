@@ -63,8 +63,10 @@ public final class Simulator implements SimulationContext {
      * 
      * @param duration
      *            the duration
+     * @param seed
+     *            The seed.
      */
-    private Simulator(int duration) {
+    private Simulator(int duration, int seed) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new SimulationClock();
@@ -73,7 +75,7 @@ public final class Simulator implements SimulationContext {
         this.logger = LoggerFactory.getLogger(Simulator.class);
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new EventFactoryImplementation();
-        this.random = new MersenneTwister(duration);
+        this.random = new MersenneTwister(seed);
         this.uidgen = new UIDGenerator() {
             private long count = 0;
 
@@ -82,6 +84,16 @@ public final class Simulator implements SimulationContext {
                 return count++;
             }
         };
+    }
+
+    /**
+     * Instantiates a new simulator.
+     * 
+     * @param duration
+     *            the duration
+     */
+    private Simulator(int duration2) {
+        this(duration2, duration2);
     }
 
     /**
@@ -224,6 +236,19 @@ public final class Simulator implements SimulationContext {
      */
     public static Simulator createSimulator(int duration) {
         return new Simulator(duration);
+    }
+
+    /**
+     * Creates and instantiates a new simulator with a given seed for the PRNG.
+     * 
+     * @param duration
+     *            the duration the simulator should run for.
+     * @param seed
+     *            The seed.
+     * @return A new simulator object.
+     */
+    public static Simulator createSimulator(int duration, int seed) {
+        return new Simulator(duration, seed);
     }
 
     /*

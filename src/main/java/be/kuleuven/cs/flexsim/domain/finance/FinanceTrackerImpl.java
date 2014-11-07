@@ -5,6 +5,7 @@ import java.util.List;
 
 import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
+import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
@@ -221,5 +222,16 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      */
     public static FinanceTracker createAggregate(FinanceTracker... tt) {
         return new FinanceAggregatingDecorator(tt);
+    }
+
+    /**
+     * Create a new finance tracker with activation-rewards.
+     * 
+     * @param target
+     *            the target.
+     * @return a FinanceTracker instance.
+     */
+    public static FinanceTracker createBalancingFeeTracker(Site target) {
+        return new BalancingFeeTracker(target);
     }
 }

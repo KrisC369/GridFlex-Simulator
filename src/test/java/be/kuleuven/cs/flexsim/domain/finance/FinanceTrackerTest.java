@@ -20,6 +20,9 @@ import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest.ChangeEventCompo
 import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
+import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
@@ -152,5 +155,33 @@ public class FinanceTrackerTest {
         t = FinanceTrackerImpl.createDefault(mockPL);
         exception.expect(IllegalStateException.class);
         ((FinanceTrackerImpl) t).afterTick(1);
+    }
+
+    @Test
+    public void testBalancingFee() {
+        final Site s = new SiteSimulation(200, 50, 200, 4);
+        t = (FinanceTrackerImpl) FinanceTrackerImpl
+                .createBalancingFeeTracker(s);
+        ActivateFlexCommand c = mock(ActivateFlexCommand.class);
+
+        sim = Simulator.createSimulator(1);
+        sim.register(s);
+        sim.register(t);
+        ((Simulator) sim).start();
+        final long id = s.getFlexTuples().get(0).getId();
+        assertEquals(240, t.getTotalProfit(), 0);
+        s.activateFlex(new ActivateFlexCommand() {
+
+            @Override
+            public boolean isDownFlexCommand() {
+                return false;
+            }
+
+            @Override
+            public long getReferenceID() {
+                return id;
+            }
+        });
+        assertEquals(540, t.getTotalProfit(), 0);
     }
 }

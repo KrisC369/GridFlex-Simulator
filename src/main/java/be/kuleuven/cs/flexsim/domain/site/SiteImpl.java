@@ -8,6 +8,8 @@ import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
+import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
+import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -25,6 +27,7 @@ public class SiteImpl implements Site {
 
     private final List<FlexProcess> processes;
     private Multimap<FlexProcess, FlexTuple> flex;
+    private Listener<? super ActivateFlexCommand> activationListener;
 
     /**
      * Default constructor based on lines.
@@ -33,8 +36,9 @@ public class SiteImpl implements Site {
      *            The lines present in this site.
      */
     public SiteImpl(FlexProcess... lines) {
-        processes = Lists.newArrayList(lines);
+        this.processes = Lists.newArrayList(lines);
         this.flex = LinkedListMultimap.create();
+        this.activationListener = NoopListener.INSTANCE;
     }
 
     @Override
@@ -53,6 +57,7 @@ public class SiteImpl implements Site {
                     } else {
                         p.executeUpFlexProfile(t.getId());
                     }
+                    this.activationListener.eventOccurred(schedule);
                 }
             }
         }
@@ -179,8 +184,9 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public void addActivationListener(Listener<ActivateFlexCommand> listener) {
-        // TODO Auto-generated method stub
-
+    public void addActivationListener(
+            Listener<? super ActivateFlexCommand> listener) {
+        this.activationListener = MultiplexListener.plus(
+                this.activationListener, listener);
     }
 }
