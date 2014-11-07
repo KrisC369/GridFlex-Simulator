@@ -229,9 +229,12 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      * 
      * @param target
      *            the target.
+     * @param reward
+     *            the reward for an activation.
      * @return a FinanceTracker instance.
      */
-    public static FinanceTracker createBalancingFeeTracker(Site target) {
-        return new BalancingFeeTracker(target);
+    public static FinanceTracker createBalancingFeeTracker(Site target,
+            int reward) {
+        return new BalancingFeeTracker(target, reward);
     }
 }

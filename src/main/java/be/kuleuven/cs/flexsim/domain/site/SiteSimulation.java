@@ -98,7 +98,7 @@ public class SiteSimulation implements Site {
         double factor = (double) (getCurrentConsumption() - getMinLimitConsumption())
                 / (double) (getMaxLimitConsumption() - getMinLimitConsumption());
 
-        for (int i = 0; i < Math.ceil(factor) * baseProduction; i++) {
+        for (int i = 0; i < Math.ceil(factor * baseProduction); i++) {
             res.add(ResourceFactory.createResource(0));
         }
         return res;

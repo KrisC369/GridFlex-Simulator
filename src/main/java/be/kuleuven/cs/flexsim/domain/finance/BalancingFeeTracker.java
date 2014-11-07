@@ -26,10 +26,12 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
      * 
      * @param s
      *            The site to attach to.
+     * @param reward
+     *            The reward for an activation.
      */
-    BalancingFeeTracker(Site s) {
+    BalancingFeeTracker(Site s, int reward) {
         super(s, RewardModel.CONSTANT, DebtModel.CONSTANT);
-        this.FIXED_ACTIVATION_FEE = 300000;
+        this.FIXED_ACTIVATION_FEE = reward;
         this.activationCount = 0;
         this.target = s;
         s.addActivationListener(new Listener<ActivateFlexCommand>() {

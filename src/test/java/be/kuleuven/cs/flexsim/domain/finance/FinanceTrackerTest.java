@@ -160,8 +160,8 @@ public class FinanceTrackerTest {
     @Test
     public void testBalancingFee() {
         final Site s = new SiteSimulation(200, 50, 200, 4);
-        t = (FinanceTrackerImpl) FinanceTrackerImpl
-                .createBalancingFeeTracker(s);
+        t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
+                s, 300);
         ActivateFlexCommand c = mock(ActivateFlexCommand.class);
 
         sim = Simulator.createSimulator(1);
