@@ -51,7 +51,7 @@ public class SiteSimulation implements Site {
      * @param maxTuples
      *            The maximum tuples to generate per section of flex.
      */
-    public SiteSimulation(int base, int min, int max, int maxTuples) {
+    SiteSimulation(int base, int min, int max, int maxTuples) {
         checkArgument(min <= base && base <= max);
         this.activationListener = NoopListener.INSTANCE;
         this.maxLimitConsumption = max;
@@ -135,7 +135,7 @@ public class SiteSimulation implements Site {
         this.totalConsumption += getCurrentConsumption();
     }
 
-    private void calculateCurrentFlex() {
+    protected void calculateCurrentFlex() {
         List<FlexTuple> upFlex = Lists.newArrayList();
         List<FlexTuple> downFlex = Lists.newArrayList();
         // upFlex:
@@ -152,7 +152,7 @@ public class SiteSimulation implements Site {
         resetFlex(upFlex, downFlex);
     }
 
-    private FlexTuple makeTuple(int power, boolean isUpflex) {
+    protected final FlexTuple makeTuple(int power, boolean isUpflex) {
         return FlexTuple.create(newId(), power, isUpflex, 0, 0, 0);
     }
 
@@ -160,7 +160,7 @@ public class SiteSimulation implements Site {
         return generator.getNextUID();
     }
 
-    private void resetFlex(List<FlexTuple> upFlex, List<FlexTuple> downFlex) {
+    protected void resetFlex(List<FlexTuple> upFlex, List<FlexTuple> downFlex) {
         this.flexData = Lists.newArrayList(upFlex);
         this.flexData.addAll(downFlex);
     }
@@ -187,28 +187,28 @@ public class SiteSimulation implements Site {
     /**
      * @return the currentConsumption
      */
-    private int getCurrentConsumption() {
+    protected final int getCurrentConsumption() {
         return currentConsumption;
     }
 
     /**
      * @return the maxLimitConsumption
      */
-    private int getMaxLimitConsumption() {
+    protected final int getMaxLimitConsumption() {
         return maxLimitConsumption;
     }
 
     /**
      * @return the minLimitConsumption
      */
-    private int getMinLimitConsumption() {
+    protected final int getMinLimitConsumption() {
         return minLimitConsumption;
     }
 
     /**
      * @return the maxTuples
      */
-    private int getMaxTuples() {
+    protected final int getMaxTuples() {
         return maxTuples;
     }
 
@@ -231,6 +231,45 @@ public class SiteSimulation implements Site {
             Listener<? super ActivateFlexCommand> listener) {
         this.activationListener = MultiplexListener.plus(
                 this.activationListener, listener);
+
+    }
+
+    /**
+     * Default constructor for this mock simulating site.
+     * 
+     * @param base
+     *            The base consumption to start from.
+     * @param min
+     *            The minimum limit for consumption.
+     * @param max
+     *            The maximum limit for consumption.
+     * @param maxTuples
+     *            The maximum tuples to generate per section of flex.
+     * @return A new SiteSimulation object.
+     */
+    public static SiteSimulation createDefault(int base, int min, int max,
+            int maxTuples) {
+        return new SiteSimulation(base, min, max, maxTuples);
+
+    }
+
+    /**
+     * Constructor for a simulating site with equidistant flex.
+     * 
+     * @param base
+     *            The base consumption to start from.
+     * @param min
+     *            The minimum limit for consumption.
+     * @param max
+     *            The maximum limit for consumption.
+     * @param maxTuples
+     *            The maximum tuples to generate per section of flex. * @return
+     *            A new SiteSimulation object.
+     * @return A new SiteSimulation object.
+     */
+    public static SiteSimulation createEquidistantFlex(int base, int min,
+            int max, int maxTuples) {
+        return new EquidistantSiteSimulation(base, min, max, maxTuples);
 
     }
 

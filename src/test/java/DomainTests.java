@@ -12,6 +12,7 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSOTest;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerTest;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLineTest;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceTest;
+import be.kuleuven.cs.flexsim.domain.site.EquidistantSiteSimulationTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteSimulationTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
@@ -26,6 +27,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
         NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
         OutputGeneratorTest.class, SiteSimulationTest.class,
-        BalancingAuctionTSOTest.class, BalancingTSOTest.class })
+        BalancingAuctionTSOTest.class, BalancingTSOTest.class,
+        EquidistantSiteSimulationTest.class })
 public class DomainTests {
 }

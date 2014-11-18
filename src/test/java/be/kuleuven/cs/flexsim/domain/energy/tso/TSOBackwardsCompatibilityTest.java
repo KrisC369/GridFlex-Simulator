@@ -45,10 +45,10 @@ public class TSOBackwardsCompatibilityTest {
         agg2 = new IndependentAggregator(tso2, 1);
         sim1 = Simulator.createSimulator(simsteps);
         sim2 = Simulator.createSimulator(simsteps);
-        site11 = new SiteSimulation(300, 100, 450, 4);
-        site12 = new SiteSimulation(200, 150, 500, 4);
-        site21 = new SiteSimulation(300, 100, 450, 4);
-        site22 = new SiteSimulation(200, 150, 500, 4);
+        site11 = SiteSimulation.createDefault(300, 100, 450, 4);
+        site12 = SiteSimulation.createDefault(200, 150, 500, 4);
+        site21 = SiteSimulation.createDefault(300, 100, 450, 4);
+        site22 = SiteSimulation.createDefault(200, 150, 500, 4);
         tso1.registerConsumer(site11);
         tso1.registerConsumer(site12);
         tso2.registerConsumer(site21);
