@@ -5,6 +5,9 @@ import java.util.Arrays;
 import javax.annotation.Nullable;
 
 /**
+ * Class representing an entry in the payoff table. Keeps tracks of indices for
+ * values.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
