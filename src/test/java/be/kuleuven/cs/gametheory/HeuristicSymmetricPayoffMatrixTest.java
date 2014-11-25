@@ -9,8 +9,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-public class HeuristicPayoffMatrixTest {
-    private HeuristicPayoffMatrix table = mock(HeuristicPayoffMatrix.class);
+public class HeuristicSymmetricPayoffMatrixTest {
+    private HeuristicSymmetricPayoffMatrix table = mock(HeuristicSymmetricPayoffMatrix.class);
     private int agents = 3;
     private int actions = 2;
 
@@ -19,7 +19,7 @@ public class HeuristicPayoffMatrixTest {
 
     @Before
     public void setUp() throws Exception {
-        this.table = new HeuristicPayoffMatrix(agents, actions);
+        this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
     }
 
     @Test
@@ -29,32 +29,32 @@ public class HeuristicPayoffMatrixTest {
 
     @Test
     public void testCompleteFalse() {
-        int value = 34;
+        int[] value = new int[] { 34, 34, 34 };
         table.addEntry(value, 1, 2);
         assertFalse(this.table.isComplete());
 
-        this.table = new HeuristicPayoffMatrix(agents, 3);
+        this.table = new HeuristicSymmetricPayoffMatrix(agents, 3);
         table.addEntry(value, 1, 0, 2);
         assertFalse(this.table.isComplete());
     }
 
     @Test
     public void testAddEntryInvalid() {
-        int value = 34;
+        int[] value = new int[] { 34, 34, 34 };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3);
     }
 
     @Test
     public void testAddEntryInvalid2() {
-        int value = 34;
+        int[] value = new int[] { 34, 34, 34 };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3, 4, 3);
     }
 
     @Test
     public void testAddEntryInvalidGet() {
-        int value = 34;
+        int[] value = new int[] { 34, 34, 34 };
         table.addEntry(value, 1, 2);
         exception.expect(IllegalArgumentException.class);
         table.getEntry(2, 1);
@@ -62,7 +62,7 @@ public class HeuristicPayoffMatrixTest {
 
     @Test
     public void testCompleteTrue() {
-        int value = 34;
+        int[] value = new int[] { 34, 34, 34 };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -70,13 +70,14 @@ public class HeuristicPayoffMatrixTest {
     }
 
     @Test
-    public void testDoubleTrue() {
-        int value = 34;
+    public void testDoubleGetTrue() {
+        int[] value = new int[] { 34, 34, 34 };
+        int[] value2 = new int[] { 17, 17, 17 };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
         assertTrue(table.isComplete());
-        table.addEntry(value / 2, 3, 0);
-        assertTrue(table.getEntry(3, 0) < value);
+        table.addEntry(value2, 3, 0);
+        assertTrue(table.getEntry(3, 0)[0] < value[0]);
     }
 }

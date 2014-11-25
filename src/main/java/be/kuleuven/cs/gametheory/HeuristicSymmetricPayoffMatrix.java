@@ -16,22 +16,23 @@ import com.google.common.collect.Maps;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class HeuristicPayoffMatrix {
+public class HeuristicSymmetricPayoffMatrix {
     private final int agents;
     private final int actions;
-    private final Map<PayoffEntry, Long> table;
+    private final Map<PayoffEntry, Long[]> table;
     private final Map<PayoffEntry, Integer> tableCount;
     private final long numberOfCombinations;
 
     /**
-     * Default constructor using the dimensions of the table.
+     * Default constructor using the dimensions of the table. and having only
+     * all multicombinations as entries.
      * 
      * @param agents
      *            the amount of agents.
      * @param actions
      *            the amount of actions.
      */
-    public HeuristicPayoffMatrix(int agents, int actions) {
+    public HeuristicSymmetricPayoffMatrix(int agents, int actions) {
         this.agents = agents;
         this.actions = actions;
         this.table = Maps.newLinkedHashMap();
@@ -60,12 +61,13 @@ public class HeuristicPayoffMatrix {
      * Adds a new entry to this payoff matrix.
      * 
      * @param value
-     *            The payoff value.
+     *            [] The payoff values.
      * @param key
      *            The population shares as indeces for the value
      */
-    public void addEntry(int value, int... key) {
+    public void addEntry(int[] value, int... key) {
         checkArgument(testKey(key));
+        checkArgument(testValues(value));
         PayoffEntry entry = PayoffEntry.from(key);
         if (getEntryCount(entry) == 0) {
             newEntry(entry, value);
@@ -75,13 +77,33 @@ public class HeuristicPayoffMatrix {
         }
     }
 
-    private void plusEntry(PayoffEntry entry, int value) {
-        this.table.put(entry, table.get(entry) + value);
+    private boolean testValues(int[] value) {
+        if (value.length != agents) {
+            return false;
+        }
+        return true;
+    }
+
+    private void plusEntry(PayoffEntry entry, int[] value) {
+
+        this.table.put(entry, arrayAdd(table.get(entry), value));
         this.tableCount.put(entry, tableCount.get(entry) + 1);
     }
 
-    private void newEntry(PayoffEntry entry, int value) {
-        this.table.put(entry, (long) value);
+    private Long[] arrayAdd(Long[] first, int[] second) {
+        Long[] toret = new Long[first.length];
+        for (int i = 0; i < first.length; i++) {
+            toret[i] = first[i] + second[i];
+        }
+        return toret;
+    }
+
+    private void newEntry(PayoffEntry entry, int[] value) {
+        Long[] toret = new Long[value.length];
+        for (int i = 0; i < value.length; i++) {
+            toret[i] = (long) value[i];
+        }
+        this.table.put(entry, toret);
         this.tableCount.put(entry, 1);
     }
 
@@ -113,10 +135,15 @@ public class HeuristicPayoffMatrix {
      *            the index keys.
      * @return the value recorded in the matrix.
      */
-    public double getEntry(int... key) {
+    public double[] getEntry(int... key) {
         checkArgument(testKey(key));
         PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        return (table.get(entry) / tableCount.get(entry));
+        Long[] sums = table.get(entry);
+        double[] toret = new double[sums.length];
+        for (int i = 0; i < sums.length; i++) {
+            toret[i] = sums[i] / tableCount.get(entry);
+        }
+        return toret;
     }
 }
