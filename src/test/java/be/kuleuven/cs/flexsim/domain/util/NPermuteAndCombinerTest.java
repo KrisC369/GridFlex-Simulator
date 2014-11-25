@@ -150,4 +150,27 @@ public class NPermuteAndCombinerTest {
         assertTrue(result7.containsAll(result9));
         assertTrue(result9.containsAll(result7));
     }
+
+    @Test
+    public void testCombinationSize() {
+        int k = 3, n = 20;
+        int result = 231;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 3;
+        n = 6;
+        result = 28;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 3;
+        n = 8;
+        result = 45;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 3;
+        n = 10;
+        result = 66;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 6;
+        n = 4;
+        result = 126;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+    }
 }
