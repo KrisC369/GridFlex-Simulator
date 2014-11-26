@@ -50,8 +50,9 @@ public class HeuristicSymmetricPayoffMatrix {
      */
     public boolean isComplete() {
         long possibilities = getNumberOfPossibilities();
-        if (this.table.size() != possibilities)
+        if (this.table.size() != possibilities) {
             return false;
+        }
         return true;
     }
 
@@ -144,7 +145,7 @@ public class HeuristicSymmetricPayoffMatrix {
         Long[] sums = table.get(entry);
         double[] toret = new double[sums.length];
         for (int i = 0; i < sums.length; i++) {
-            toret[i] = sums[i] / tableCount.get(entry);
+            toret[i] = sums[i] / (double) tableCount.get(entry);
         }
         return toret;
     }

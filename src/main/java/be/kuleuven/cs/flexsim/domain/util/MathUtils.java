@@ -6,7 +6,10 @@ package be.kuleuven.cs.flexsim.domain.util;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class MathUtils {
+public final class MathUtils {
+
+    private MathUtils() {
+    }
 
     /**
      * Calculates the number of multicombinations of n elements in sets of
@@ -41,4 +44,5 @@ public class MathUtils {
         }
         return result;
     }
+
 }
