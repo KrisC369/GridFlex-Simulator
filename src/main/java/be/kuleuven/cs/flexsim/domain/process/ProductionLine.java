@@ -283,7 +283,7 @@ public final class ProductionLine implements FlexProcess {
         private static final int IDLE_CONSUMPTION = 100;
         private static final int WORKING_CONSUMPTION = 200;
         private static final int RFWIDTH = 300;
-        private int rfWidth = RFWIDTH;
+        private int rfWidth;
         private int workingConsumption;
         private int idleConsumption;
         private int multicapWorkingConsumption;
@@ -301,6 +301,7 @@ public final class ProductionLine implements FlexProcess {
             workingConsumption = WORKING_CONSUMPTION;
             idleConsumption = IDLE_CONSUMPTION;
             multicapWorkingConsumption = MULTICAP_WORKING_CONSUMPTION;
+            rfWidth = RFWIDTH;
             rfLowConsumption = RF_LOW;
             rfHighConsumption = RF_HIGH;
         }
