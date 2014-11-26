@@ -25,7 +25,7 @@ import com.google.common.collect.Maps;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class ExpGameInstance implements GameInstance<Site, Aggregator> {
+public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
 
     // private static final int AGGSTEPS = 1;
     private final Simulator sim;
@@ -33,23 +33,27 @@ public class ExpGameInstance implements GameInstance<Site, Aggregator> {
     private final List<Aggregator> aggs;
     private BalancingTSO tso;
     private final List<FinanceTrackerImpl> ft;
-    private final int current = 800, min = 500, max = 1000;
     private int count;
     private Map<Site, Aggregator> choiceMap;
+    private final int baseConsumption;
 
     /**
+     * Default constructor for this game with two actions.
      * 
      * @param seed
-     * @param n1
-     * @param n2
+     *            The seed for this experiment.
+     * @param baselineConsumption
+     *            The baseline for the sites consumption. This is used to base
+     *            production params on.
      */
-    public ExpGameInstance(int seed, int n1, int n2) {
-        sim = Simulator.createSimulator(1000, seed);
-        aggs = Lists.newArrayList();
-        sites = Lists.newArrayList();
-        ft = Lists.newArrayList();
-        tso = new BalancingTSO();
+    public TwoActionGameExample(int seed, int baselineConsumption) {
+        this.sim = Simulator.createSimulator(1000, seed);
+        this.aggs = Lists.newArrayList();
+        this.sites = Lists.newArrayList();
+        this.ft = Lists.newArrayList();
+        this.tso = new BalancingTSO();
         this.count = 0;
+        this.baseConsumption = baselineConsumption;
         this.choiceMap = Maps.newLinkedHashMap();
         this.aggs.add(new ReactiveMechanismAggregator(tso,
                 AggregationStrategyImpl.CARTESIANPRODUCT));
@@ -59,15 +63,10 @@ public class ExpGameInstance implements GameInstance<Site, Aggregator> {
 
     @Override
     public Map<Site, Long> getPayOffs() {
-        // long[] toRet = new long[sites.size()];
-        // for (int i = 0; i < toRet.length; i++) {
-        // toRet[i] = (long) ft.get(i).getTotalProfit();
-        // }
         Map<Site, Long> r = Maps.newLinkedHashMap();
         for (int ag = 0; ag < sites.size(); ag++) {
             r.put(sites.get(ag), (long) ft.get(ag).getTotalProfit());
         }
-        // return toRet;
         return r;
     }
 
@@ -91,24 +90,16 @@ public class ExpGameInstance implements GameInstance<Site, Aggregator> {
 
     @Override
     public void init() {
-        // for (int i = 0; i < getNumberOfAgents(); i++) {
-        // sites.add(SiteSimulation.createDefault(current, min, max, 12));
-        // }
-        // Deliver resources to these lines.
         // Add finance trackers keeping track of profit and consumptions.
         for (int i = 0; i < getNumberOfAgents(); i++) {
             ft.add((FinanceTrackerImpl) FinanceTrackerImpl
                     .createBalancingFeeTracker((sites.get(i)), 30000));
         }
 
-        // Add the tso with the random signal for the aggregator and the sites
-        // connected to it.
-        EnergyProductionTrackable p1 = new ConstantOutputGenerator(current
-                * getNumberOfAgents());
+        EnergyProductionTrackable p1 = new ConstantOutputGenerator(
+                baseConsumption * getNumberOfAgents());
         EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
                 -1500, 1500, 0.010);
-        tso = new BalancingTSO(sites.toArray(new Site[getNumberOfAgents()]));
-        // tso = new CopperplateTSO();
         for (Aggregator agg : this.aggs) {
             sim.register(agg);
         }

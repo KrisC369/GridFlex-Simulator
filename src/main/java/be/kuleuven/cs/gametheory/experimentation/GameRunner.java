@@ -5,13 +5,18 @@ import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.gametheory.Game;
 
 /**
+ * An example class running some experiments.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public class GameRunner {
 
     /**
+     * Runs some experiments as a PoC.
+     * 
      * @param args
+     *            commandline args.
      */
     public static void main(String[] args) {
         GameConfiguratorEx ex = new GameConfiguratorEx();

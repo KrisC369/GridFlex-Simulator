@@ -25,7 +25,7 @@ public class GameConfiguratorEx implements AgentGenerator<Site>,
 
     @Override
     public GameInstance<Site, Aggregator> generateInstance() {
-        return new ExpGameInstance(twister.nextInt(), 2, 2);
+        return new TwoActionGameExample(twister.nextInt(), current);
     }
 
 }

@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
 public class Game<N, K> {
     private final int agents;
     private final int actions;
-    // private final ActionGenerator<K> actionGen;
     private final AgentGenerator<N> agentGen;
     private final HeuristicSymmetricPayoffMatrix payoffs;
     private final GameInstanceGenerator<N, K> instanceGen;
@@ -39,16 +38,16 @@ public class Game<N, K> {
      *            The number of agents.
      * @param agentGen
      *            The generator for agents.
-     * @param action
-     *            The number of actions.
+     * @param actions
+     *            The amount of actions. Determined by the instances.
      * @param instanceGen
      *            The generator for game instances.
+     * @param reps
+     *            The number of repetitions.
      */
     public Game(int agents, AgentGenerator<N> agentGen, int actions,
-    // ActionGenerator<K> actionGen,
             GameInstanceGenerator<N, K> instanceGen, int reps) {
         this.agents = agents;
-        // this.actionGen = actionGen;
         this.actions = actions;
         this.agentGen = agentGen;
         this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents,
@@ -57,7 +56,7 @@ public class Game<N, K> {
         this.reps = reps;
     }
 
-    void fillMatrix() {
+    private void fillMatrix() {
         for (int iterations = 0; iterations < reps; iterations++) {
             long combinations = MathUtils.multiCombinationSize(actions, agents);
             for (int i = 0; i < combinations; i++) {
