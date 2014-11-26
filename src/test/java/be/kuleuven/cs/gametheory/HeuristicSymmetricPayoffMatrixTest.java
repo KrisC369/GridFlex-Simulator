@@ -29,7 +29,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testCompleteFalse() {
-        int[] value = new int[] { 34, 34, 34 };
+        long[] value = new long[] { 34, 34, 34 };
         table.addEntry(value, 1, 2);
         assertFalse(this.table.isComplete());
 
@@ -40,21 +40,21 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testAddEntryInvalid() {
-        int[] value = new int[] { 34, 34, 34 };
+        long[] value = new long[] { 34, 34, 34 };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3);
     }
 
     @Test
     public void testAddEntryInvalid2() {
-        int[] value = new int[] { 34, 34, 34 };
+        long[] value = new long[] { 34, 34, 34 };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3, 4, 3);
     }
 
     @Test
     public void testAddEntryInvalidGet() {
-        int[] value = new int[] { 34, 34, 34 };
+        long[] value = new long[] { 34, 34, 34 };
         table.addEntry(value, 1, 2);
         exception.expect(IllegalArgumentException.class);
         table.getEntry(2, 1);
@@ -62,7 +62,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testCompleteTrue() {
-        int[] value = new int[] { 34, 34, 34 };
+        long[] value = new long[] { 34, 34, 34 };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -71,8 +71,8 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testDoubleGetTrue() {
-        int[] value = new int[] { 34, 34, 34 };
-        int[] value2 = new int[] { 17, 17, 17 };
+        long[] value = new long[] { 34, 34, 34 };
+        long[] value2 = new long[] { 17, 17, 17 };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }

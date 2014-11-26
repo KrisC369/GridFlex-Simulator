@@ -2,7 +2,9 @@ package be.kuleuven.cs.gametheory;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 
@@ -65,7 +67,7 @@ public class HeuristicSymmetricPayoffMatrix {
      * @param key
      *            The population shares as indeces for the value
      */
-    public void addEntry(int[] value, int... key) {
+    public void addEntry(long[] value, int... key) {
         checkArgument(testKey(key));
         checkArgument(testValues(value));
         PayoffEntry entry = PayoffEntry.from(key);
@@ -77,20 +79,20 @@ public class HeuristicSymmetricPayoffMatrix {
         }
     }
 
-    private boolean testValues(int[] value) {
+    private boolean testValues(long[] value) {
         if (value.length != agents) {
             return false;
         }
         return true;
     }
 
-    private void plusEntry(PayoffEntry entry, int[] value) {
+    private void plusEntry(PayoffEntry entry, long[] value) {
 
         this.table.put(entry, arrayAdd(table.get(entry), value));
         this.tableCount.put(entry, tableCount.get(entry) + 1);
     }
 
-    private Long[] arrayAdd(Long[] first, int[] second) {
+    private Long[] arrayAdd(Long[] first, long[] second) {
         Long[] toret = new Long[first.length];
         for (int i = 0; i < first.length; i++) {
             toret[i] = first[i] + second[i];
@@ -98,7 +100,7 @@ public class HeuristicSymmetricPayoffMatrix {
         return toret;
     }
 
-    private void newEntry(PayoffEntry entry, int[] value) {
+    private void newEntry(PayoffEntry entry, long[] value) {
         Long[] toret = new Long[value.length];
         for (int i = 0; i < value.length; i++) {
             toret[i] = (long) value[i];
@@ -145,5 +147,21 @@ public class HeuristicSymmetricPayoffMatrix {
             toret[i] = sums[i] / tableCount.get(entry);
         }
         return toret;
+    }
+
+    /**
+     * Prints the content of this matrix
+     */
+    public void printMatrix() {
+        for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+            Long[] corr = new Long[e.getValue().length];
+            for (int i = 0; i < e.getValue().length; i++) {
+                corr[i] = e.getValue()[i] / tableCount.get(e.getKey());
+            }
+            System.out
+                    .println("V:" + e.getKey() + "->" + Arrays.toString(corr));
+            System.out.println("C:" + e.getKey() + "->"
+                    + tableCount.get(e.getKey()));
+        }
     }
 }

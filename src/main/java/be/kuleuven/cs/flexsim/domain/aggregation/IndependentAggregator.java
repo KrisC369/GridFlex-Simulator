@@ -13,8 +13,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class IndependentAggregator extends Aggregator implements
-        SimulationComponent {
+public class IndependentAggregator extends Aggregator {
 
     private int tickcount;
     private final int aggFreq;

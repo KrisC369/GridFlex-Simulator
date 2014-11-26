@@ -15,5 +15,5 @@ public interface AgentGenerator<T> {
      * 
      * @return The element.
      */
-    Agent<T> getElement();
+    T getAgent();
 }

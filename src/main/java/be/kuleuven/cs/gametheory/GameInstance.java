@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ public interface GameInstance<N, K> {
      * 
      * @return The payoff vector.
      */
-    Map<Agent<N>, Long> getPayOffs();
+    Map<N, Long> getPayOffs();
 
     /**
      * Fix a certain agent to a action. Call for every agent.
@@ -40,4 +41,18 @@ public interface GameInstance<N, K> {
      * Initialize the simulation components.
      */
     void init();
+
+    /**
+     * Returns the set of actions available to agents.
+     * 
+     * @return list of actions.
+     */
+    List<K> getActionSet();
+
+    /**
+     * Returns the map from sites to actions.
+     * 
+     * @return the mapping.
+     */
+    Map<N, K> getAgentToActionMapping();
 }

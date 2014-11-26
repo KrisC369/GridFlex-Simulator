@@ -9,6 +9,9 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.paukov.combinatorics.Factory;
+import org.paukov.combinatorics.Generator;
+import org.paukov.combinatorics.ICombinatoricsVector;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -172,5 +175,13 @@ public class NPermuteAndCombinerTest {
         n = 4;
         result = 126;
         assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+
+        ICombinatoricsVector<String> initialVector = Factory
+                .createVector(new String[] { "a", "b", "c", "d", "e", "f", });
+        Generator<String> gen = Factory.createMultiCombinationGenerator(
+                initialVector, n);
+
+        assertEquals(MathUtils.multiCombinationSize(k, n),
+                gen.getNumberOfGeneratedObjects(), 0);
     }
 }

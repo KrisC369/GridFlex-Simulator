@@ -21,7 +21,7 @@ import com.google.common.collect.LinkedListMultimap;
  *
  */
 public class ReactiveMechanismAggregator extends Aggregator implements
-        ContractualMechanismParticipant, SimulationComponent {
+        ContractualMechanismParticipant {
 
     private int currentTarget;
     private LinkedListMultimap<SiteFlexAPI, FlexTuple> currentFlex;

@@ -15,5 +15,5 @@ public interface ActionGenerator<T> {
      * 
      * @return The element.
      */
-    Action<T> getElement();
+    T getAction();
 }
