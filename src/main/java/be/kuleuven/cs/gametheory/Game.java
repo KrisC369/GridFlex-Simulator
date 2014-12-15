@@ -7,6 +7,8 @@ import java.util.Map.Entry;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 
@@ -30,36 +32,36 @@ public class Game<N, K> {
     private final HeuristicSymmetricPayoffMatrix payoffs;
     private final GameInstanceGenerator<N, K> instanceGen;
     private final int reps;
+    private final Logger logger;
 
     /**
      * Default constructor.
      * 
      * @param agents
      *            The number of agents.
-     * @param agentGen
-     *            The generator for agents.
-     * @param actions
-     *            The amount of actions. Determined by the instances.
-     * @param instanceGen
-     *            The generator for game instances.
+     * @param config
+     *            The configurator instance.
      * @param reps
      *            The number of repetitions.
      */
-    public Game(int agents, AgentGenerator<N> agentGen, int actions,
-            GameInstanceGenerator<N, K> instanceGen, int reps) {
+    public Game(int agents, GameConfigurator<N, K> config, int reps) {
         this.agents = agents;
-        this.actions = actions;
-        this.agentGen = agentGen;
+        this.actions = config.getActionSpaceSize();
+        this.agentGen = config;
         this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents,
                 this.actions);
-        this.instanceGen = instanceGen;
+        this.instanceGen = config;
         this.reps = reps;
+        this.logger = LoggerFactory.getLogger(Game.class);
     }
 
     private void fillMatrix() {
+        int progressCounter = 0;
         for (int iterations = 0; iterations < reps; iterations++) {
             long combinations = MathUtils.multiCombinationSize(actions, agents);
             for (int i = 0; i < combinations; i++) {
+                progressCounter++;
+                printProgress(progressCounter, reps * combinations);
                 GameInstance<N, K> instance = this.instanceGen
                         .generateInstance();
                 List<K> actionSet = instance.getActionSet();
@@ -97,6 +99,13 @@ public class Game<N, K> {
                 this.payoffs.addEntry(values, entry);
             }
         }
+    }
+
+    private void printProgress(int progressCounter, long l) {
+        StringBuilder b = new StringBuilder();
+        b.append("Simulating instance: ").append(progressCounter).append("/")
+                .append(l);
+        logger.warn(b.toString());
     }
 
     private int getIndexFor(List<K> set, K element) {

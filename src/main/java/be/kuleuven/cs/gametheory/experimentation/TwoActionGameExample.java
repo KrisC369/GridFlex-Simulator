@@ -22,12 +22,13 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
+ * Represents a game with two possible actions to choose between.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
-
-    // private static final int AGGSTEPS = 1;
+    private static final int actionSpaceSize = 2;
     private final Simulator sim;
     private final List<Site> sites;
     private final List<Aggregator> aggs;
@@ -120,6 +121,13 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
     @Override
     public Map<Site, Aggregator> getAgentToActionMapping() {
         return Maps.newLinkedHashMap(choiceMap);
+    }
+
+    /**
+     * @return the actionspacesize
+     */
+    public static final int getActionspacesize() {
+        return actionSpaceSize;
     }
 
 }

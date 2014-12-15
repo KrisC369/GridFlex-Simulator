@@ -17,4 +17,11 @@ public interface GameInstanceGenerator<T1, T2> {
      * @return the game instance.
      */
     GameInstance<T1, T2> generateInstance();
+
+    /**
+     * Returns the size of the action of the generated instances.
+     * 
+     * @return the size of the action set.
+     */
+    int getActionSpaceSize();
 }

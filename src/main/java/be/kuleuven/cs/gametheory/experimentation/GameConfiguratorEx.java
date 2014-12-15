@@ -5,16 +5,17 @@ import org.apache.commons.math3.random.MersenneTwister;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
-import be.kuleuven.cs.gametheory.AgentGenerator;
+import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
-import be.kuleuven.cs.gametheory.GameInstanceGenerator;
 
 /**
+ * Configuration provider. This is a factory for generating participating
+ * elements according to the implemented generator interfaces.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class GameConfiguratorEx implements AgentGenerator<Site>,
-        GameInstanceGenerator<Site, Aggregator> {
+public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
     private final int current = 800, min = 500, max = 1000;
     private MersenneTwister twister = new MersenneTwister(2412);
 
@@ -26,6 +27,11 @@ public class GameConfiguratorEx implements AgentGenerator<Site>,
     @Override
     public GameInstance<Site, Aggregator> generateInstance() {
         return new TwoActionGameExample(twister.nextInt(), current);
+    }
+
+    @Override
+    public int getActionSpaceSize() {
+        return TwoActionGameExample.getActionspacesize();
     }
 
 }
