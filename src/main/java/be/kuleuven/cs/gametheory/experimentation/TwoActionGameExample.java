@@ -28,14 +28,14 @@ import com.google.common.collect.Maps;
  *
  */
 public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
-    private static final int actionSpaceSize = 2;
+    private static final int ACTIONSPACE_SIZE = 2;
     private final Simulator sim;
     private final List<Site> sites;
     private final List<Aggregator> aggs;
-    private BalancingTSO tso;
+    private final BalancingTSO tso;
     private final List<FinanceTrackerImpl> ft;
     private int count;
-    private Map<Site, Aggregator> choiceMap;
+    private final Map<Site, Aggregator> choiceMap;
     private final int baseConsumption;
 
     /**
@@ -94,7 +94,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
         // Add finance trackers keeping track of profit and consumptions.
         for (int i = 0; i < getNumberOfAgents(); i++) {
             ft.add((FinanceTrackerImpl) FinanceTrackerImpl
-                    .createBalancingFeeTracker((sites.get(i)), 30000));
+                    .createBalancingFeeTracker(sites.get(i), 30000));
         }
 
         EnergyProductionTrackable p1 = new ConstantOutputGenerator(
@@ -127,7 +127,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
      * @return the actionspacesize
      */
     public static final int getActionspacesize() {
-        return actionSpaceSize;
+        return ACTIONSPACE_SIZE;
     }
 
 }

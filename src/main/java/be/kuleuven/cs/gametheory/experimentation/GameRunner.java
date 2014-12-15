@@ -12,6 +12,9 @@ import be.kuleuven.cs.gametheory.Game;
  */
 public class GameRunner {
 
+    private GameRunner() {
+    }
+
     /**
      * Runs some experiments as a PoC.
      * 

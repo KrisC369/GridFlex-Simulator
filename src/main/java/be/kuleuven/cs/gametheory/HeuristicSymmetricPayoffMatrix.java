@@ -151,7 +151,7 @@ public class HeuristicSymmetricPayoffMatrix {
     }
 
     /**
-     * Prints the content of this matrix
+     * Prints the content of this matrix.
      */
     public void printMatrix() {
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {

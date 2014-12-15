@@ -16,17 +16,19 @@ import be.kuleuven.cs.gametheory.GameInstance;
  *
  */
 public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
-    private final int current = 800, min = 500, max = 1000;
-    private MersenneTwister twister = new MersenneTwister(2412);
+    private static final int CURRENT = 800;
+    private static final int MIN = 500;
+    private static final int MAX = 1000;
+    private final MersenneTwister twister = new MersenneTwister(2412);
 
     @Override
     public Site getAgent() {
-        return SiteSimulation.createDefault(current, min, max, 12);
+        return SiteSimulation.createDefault(CURRENT, MIN, MAX, 12);
     }
 
     @Override
     public GameInstance<Site, Aggregator> generateInstance() {
-        return new TwoActionGameExample(twister.nextInt(), current);
+        return new TwoActionGameExample(twister.nextInt(), CURRENT);
     }
 
     @Override

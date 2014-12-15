@@ -72,7 +72,7 @@ public class Game<N, K> {
 
                 List<ICombinatoricsVector<K>> possCombinatoricsVectors = gen
                         .generateAllObjects();
-                assert (possCombinatoricsVectors.size() == combinations);
+                assert possCombinatoricsVectors.size() == combinations;
                 for (K k : possCombinatoricsVectors.get(i)) {
                     instance.fixActionToAgent(agentGen.getAgent(), k);
                 }
