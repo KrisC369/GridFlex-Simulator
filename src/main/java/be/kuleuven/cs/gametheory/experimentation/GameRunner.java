@@ -10,7 +10,7 @@ import be.kuleuven.cs.gametheory.Game;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class GameRunner {
+public final class GameRunner {
 
     private GameRunner() {
     }

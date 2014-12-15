@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
  *
  */
 class PayoffEntry {
-    private int[] entries;
+    private final int[] entries;
 
     PayoffEntry(int... entries) {
         this.entries = entries;
