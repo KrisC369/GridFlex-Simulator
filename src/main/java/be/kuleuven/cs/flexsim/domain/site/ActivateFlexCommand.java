@@ -23,4 +23,11 @@ public interface ActivateFlexCommand {
      * @return true if curtailment is wanted.
      */
     boolean isDownFlexCommand();
+
+    /**
+     * Returns the size of the activation in terms of Power.
+     * 
+     * @return the amount of power to curtail or increase.
+     */
+    int getSizeOfP();
 }

@@ -37,7 +37,7 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
         s.addActivationListener(new Listener<ActivateFlexCommand>() {
             @Override
             public void eventOccurred(ActivateFlexCommand arg) {
-                increaseTotalReward(fixedActivationFee);
+                increaseTotalReward(fixedActivationFee / 10 * arg.getSizeOfP());
                 incrementCount();
                 logCount();
             }

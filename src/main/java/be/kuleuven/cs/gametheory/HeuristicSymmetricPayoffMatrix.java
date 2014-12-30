@@ -165,4 +165,5 @@ public class HeuristicSymmetricPayoffMatrix {
                     + tableCount.get(e.getKey()));
         }
     }
+    // TODO Check if summation is good?
 }

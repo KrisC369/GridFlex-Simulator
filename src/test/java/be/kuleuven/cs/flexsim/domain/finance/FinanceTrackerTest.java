@@ -181,6 +181,12 @@ public class FinanceTrackerTest {
             public long getReferenceID() {
                 return id;
             }
+
+            @Override
+            public int getSizeOfP() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
         });
         assertEquals(540, t.getTotalProfit(), 0);
     }

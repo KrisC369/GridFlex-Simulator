@@ -127,6 +127,11 @@ public abstract class Aggregator implements SimulationComponent {
                                 public boolean isDownFlexCommand() {
                                     return !tt.getDirection();
                                 }
+
+                                @Override
+                                public int getSizeOfP() {
+                                    return tt.getDeltaP();
+                                }
                             });
                         }
                     }

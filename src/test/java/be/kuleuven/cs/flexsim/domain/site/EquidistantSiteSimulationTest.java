@@ -89,6 +89,12 @@ public class EquidistantSiteSimulationTest {
             public long getReferenceID() {
                 return t.getId();
             }
+
+            @Override
+            public int getSizeOfP() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
         });
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
