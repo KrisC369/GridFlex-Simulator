@@ -57,7 +57,7 @@ public class Game<N, K> {
 
     private void fillMatrix() {
         int progressCounter = 0;
-        for (int iterations = 0; iterations < reps; iterations++) {
+        for (int iteration = 0; iteration < reps; iteration++) {
             long combinations = MathUtils.multiCombinationSize(actions, agents);
             for (int i = 0; i < combinations; i++) {
                 progressCounter++;

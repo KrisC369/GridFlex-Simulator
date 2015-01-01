@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -79,5 +80,28 @@ public class HeuristicSymmetricPayoffMatrixTest {
         assertTrue(table.isComplete());
         table.addEntry(value2, 3, 0);
         assertTrue(table.getEntry(3, 0)[0] < value[0]);
+    }
+
+    @Test
+    public void testAvg() {
+        this.agents = 1;
+        this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
+        int high = 34;
+        int low = 17;
+        long[] value = new long[] { 34 };
+        long[] value2 = new long[] { 17 };
+        for (int i = 0; i <= agents; i++) {
+            table.addEntry(value, agents - i, i);
+        }
+        for (int i = 0; i <= agents; i++) {
+            table.addEntry(value2, agents - i, i);
+        }
+        assertTrue(table.isComplete());
+        for (int i = 0; i <= agents; i++) {
+            // table.addEntry(value2, agents - i, i);
+            double[] current = table.getEntry(agents - i, i);
+            assertTrue(current[0] > low && current[0] < high);
+            assertEquals(current[0], (high + low) / 2.0, 0.5);
+        }
     }
 }
