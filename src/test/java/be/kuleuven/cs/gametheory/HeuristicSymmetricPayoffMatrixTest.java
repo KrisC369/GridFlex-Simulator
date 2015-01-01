@@ -88,20 +88,25 @@ public class HeuristicSymmetricPayoffMatrixTest {
         this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
         int high = 34;
         int low = 17;
-        long[] value = new long[] { 34 };
-        long[] value2 = new long[] { 17 };
+        int higher = 53;
+        long[] value = new long[] { high };
+        long[] value2 = new long[] { low };
+        long[] value3 = new long[] { higher };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value2, agents - i, i);
         }
+        for (int i = 0; i <= agents; i++) {
+            table.addEntry(value3, agents - i, i);
+        }
         assertTrue(table.isComplete());
         for (int i = 0; i <= agents; i++) {
             // table.addEntry(value2, agents - i, i);
             double[] current = table.getEntry(agents - i, i);
-            assertTrue(current[0] > low && current[0] < high);
-            assertEquals(current[0], (high + low) / 2.0, 0.5);
+            assertTrue(current[0] > low && current[0] < higher);
+            assertEquals(current[0], (high + low + higher) / 3.0, 0.5);
         }
     }
 }

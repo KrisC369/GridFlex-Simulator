@@ -155,25 +155,6 @@ public class HeuristicSymmetricPayoffMatrix {
         return toret;
     }
 
-    // /**
-    // * Returns the avg entry in the payoff matrix.
-    // *
-    // * @param key
-    // * the index keys.
-    // * @return the value recorded in the matrix.
-    // */
-    // public double[] getAvgEntry(int... key) {
-    // checkArgument(testKey(key));
-    // PayoffEntry entry = PayoffEntry.from(key);
-    // checkArgument(tableCount.containsKey(entry));
-    // Long[] sums = table.get(entry);
-    // double[] toret = new double[sums.length];
-    // for (int i = 0; i < sums.length; i++) {
-    // toret[i] = sums[i] / (double) tableCount.get(entry);
-    // }
-    // return toret;
-    // }
-
     /**
      * Prints the content of this matrix.
      */
@@ -181,7 +162,7 @@ public class HeuristicSymmetricPayoffMatrix {
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
             Long[] corr = new Long[e.getValue().length];
             for (int i = 0; i < e.getValue().length; i++) {
-                corr[i] = e.getValue()[i] / tableCount.get(e.getKey());
+                corr[i] = e.getValue()[i];
             }
             System.out
                     .println("V:" + e.getKey() + "->" + Arrays.toString(corr));
@@ -189,5 +170,4 @@ public class HeuristicSymmetricPayoffMatrix {
                     + tableCount.get(e.getKey()));
         }
     }
-    // TODO Check if summation is good?
 }

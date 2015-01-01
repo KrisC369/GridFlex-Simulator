@@ -1,6 +1,3 @@
-/**
- * 
- */
 package be.kuleuven.cs.gametheory.experimentation;
 
 import java.util.List;
@@ -28,6 +25,7 @@ import com.google.common.collect.Maps;
  *
  */
 public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
+
     private static final int ACTIONSPACE_SIZE = 2;
     private final Simulator sim;
     private final List<Site> sites;
@@ -48,7 +46,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
      *            production params on.
      */
     public TwoActionGameExample(int seed, int baselineConsumption) {
-        this.sim = Simulator.createSimulator(1000, seed);
+        this.sim = Simulator.createSimulator(500, seed);
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
         this.ft = Lists.newArrayList();
@@ -77,7 +75,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
         tso.registerConsumer(agent);
         choiceMap.put(agent, action);
         FinanceTrackerImpl fti = (FinanceTrackerImpl) FinanceTrackerImpl
-                .createBalancingFeeTracker(agent, 30000);
+                .createBalancingFeeTracker(agent, 3000);
         ft.add(fti);
         sim.register(fti);
         action.registerClient(agent);
@@ -92,11 +90,6 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
     @Override
     public void init() {
         // Add finance trackers keeping track of profit and consumptions.
-        for (int i = 0; i < getNumberOfAgents(); i++) {
-            ft.add((FinanceTrackerImpl) FinanceTrackerImpl
-                    .createBalancingFeeTracker(sites.get(i), 30000));
-        }
-
         EnergyProductionTrackable p1 = new ConstantOutputGenerator(
                 baseConsumption * getNumberOfAgents());
         EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
@@ -129,5 +122,4 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
     public static final int getActionspacesize() {
         return ACTIONSPACE_SIZE;
     }
-
 }
