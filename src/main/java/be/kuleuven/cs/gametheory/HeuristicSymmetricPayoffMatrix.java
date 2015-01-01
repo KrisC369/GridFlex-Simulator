@@ -3,11 +3,13 @@ package be.kuleuven.cs.gametheory;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -79,7 +81,6 @@ public class HeuristicSymmetricPayoffMatrix {
         PayoffEntry entry = PayoffEntry.from(key);
         if (getEntryCount(entry) == 0) {
             newEntry(entry, value);
-
         } else {
             plusEntry(entry, value);
         }
@@ -93,7 +94,6 @@ public class HeuristicSymmetricPayoffMatrix {
     }
 
     private void plusEntry(PayoffEntry entry, long[] value) {
-
         this.table.put(entry, arrayAdd(table.get(entry), value));
         this.tableCount.put(entry, tableCount.get(entry) + 1);
     }
@@ -160,14 +160,55 @@ public class HeuristicSymmetricPayoffMatrix {
      */
     public void printMatrix() {
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
-            Long[] corr = new Long[e.getValue().length];
-            for (int i = 0; i < e.getValue().length; i++) {
-                corr[i] = e.getValue()[i];
-            }
-            System.out
-                    .println("V:" + e.getKey() + "->" + Arrays.toString(corr));
+            System.out.println("V:" + e.getKey() + "->"
+                    + Arrays.toString(e.getValue()));
             System.out.println("C:" + e.getKey() + "->"
                     + tableCount.get(e.getKey()));
         }
+        System.out.println("Dynamics equation params:");
+        for (Double d : getDynamicsArguments()) {
+            System.out.println(d);
+        }
+    }
+
+    /**
+     * Returns the entries to this payoff table.
+     * 
+     * @return a map from PayoffEntry to long values.
+     */
+    public Map<PayoffEntry, Long[]> getPayoffEntries() {
+        return Maps.newLinkedHashMap(this.table);
+    }
+
+    /**
+     * Returns the amount of entries for each entry.
+     * 
+     * @return a map from PayoffEntry to integer representing the count.
+     */
+    public Map<PayoffEntry, Integer> getEntryCounts() {
+        return Maps.newLinkedHashMap(this.tableCount);
+    }
+
+    public List<Double> getDynamicsArguments() {
+        // TODO rethink naming... xD
+        List<Double> toReturn = Lists.newArrayList();
+        for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+            PayoffEntry entry = e.getKey();
+            Long[] values = e.getValue();
+            int coeffDone = 0;
+            for (int i = 0; i < entry.getEntries().length; i++) {
+                int currCoeff = entry.getEntries()[i];
+                long sum = 0;
+                for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
+                    sum += values[j];
+                }
+                if (currCoeff > 0) {
+                    double avg = sum / (double) currCoeff;
+                    toReturn.add(avg);
+                }
+                coeffDone += currCoeff;
+            }
+        }
+        return toReturn;
     }
 }
