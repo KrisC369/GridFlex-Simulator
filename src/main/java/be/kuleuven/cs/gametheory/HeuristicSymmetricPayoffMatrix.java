@@ -16,6 +16,11 @@ import com.google.common.collect.Maps;
  * meant to be filled in with experimentation results. A table consists out of
  * entries for every combination of agents over the action space.
  * 
+ * Adding entries with already-present keys will sum the values. Retrieving a
+ * value pertaining to a certain key will divide it by the amount of entries,
+ * therefore effectively returning an average of the values entered with the
+ * corresponding key.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class HeuristicSymmetricPayoffMatrix {
@@ -149,6 +154,25 @@ public class HeuristicSymmetricPayoffMatrix {
         }
         return toret;
     }
+
+    // /**
+    // * Returns the avg entry in the payoff matrix.
+    // *
+    // * @param key
+    // * the index keys.
+    // * @return the value recorded in the matrix.
+    // */
+    // public double[] getAvgEntry(int... key) {
+    // checkArgument(testKey(key));
+    // PayoffEntry entry = PayoffEntry.from(key);
+    // checkArgument(tableCount.containsKey(entry));
+    // Long[] sums = table.get(entry);
+    // double[] toret = new double[sums.length];
+    // for (int i = 0; i < sums.length; i++) {
+    // toret[i] = sums[i] / (double) tableCount.get(entry);
+    // }
+    // return toret;
+    // }
 
     /**
      * Prints the content of this matrix.
