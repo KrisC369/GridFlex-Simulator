@@ -189,6 +189,12 @@ public class HeuristicSymmetricPayoffMatrix {
         return Maps.newLinkedHashMap(this.tableCount);
     }
 
+    /**
+     * Generate all unique coefficients that are used for specifying dynamics
+     * equations.
+     * 
+     * @return A list of coefficients.
+     */
     public List<Double> getDynamicsArguments() {
         // TODO rethink naming... xD
         List<Double> toReturn = Lists.newArrayList();
