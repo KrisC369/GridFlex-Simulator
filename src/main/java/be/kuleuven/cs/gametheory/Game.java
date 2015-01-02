@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import be.kuleuven.cs.gametheory.experimentation.Writable;
 
 import com.google.common.collect.Lists;
 
@@ -25,7 +26,7 @@ import com.google.common.collect.Lists;
  * @param <K>
  *            The type of actions.
  */
-public class Game<N, K> {
+public class Game<N, K> implements Writable {
     private final int agents;
     private final int actions;
     private final AgentGenerator<N> agentGen;
@@ -123,5 +124,25 @@ public class Game<N, K> {
     public void runExperiment() {
         fillMatrix();
         payoffs.printMatrix();
+    }
+
+    @Override
+    public String getFormattedResultString() {
+        return payoffs.toString();
+    }
+
+    /**
+     * Returns the parameters of the dynamics in a formatted string.
+     * 
+     * @return the params in a MATLAB style formatted string.
+     */
+    public String getDynamicsParametersString() {
+        StringBuilder b = new StringBuilder();
+        char character = 'a';
+        b.append("\n");
+        for (Double d : payoffs.getDynamicsArguments()) {
+            b.append(character++).append("=").append(d).append(";\n");
+        }
+        return b.toString();
     }
 }

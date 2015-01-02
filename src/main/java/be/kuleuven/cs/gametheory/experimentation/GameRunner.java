@@ -25,6 +25,6 @@ public final class GameRunner {
         GameConfiguratorEx ex = new GameConfiguratorEx();
         Game<Site, Aggregator> g = new Game<>(3, ex, 10);
         g.runExperiment();
+        new GameResultWriter<>(g).write();
     }
-
 }

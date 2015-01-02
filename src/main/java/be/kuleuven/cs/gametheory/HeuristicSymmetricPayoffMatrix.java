@@ -171,6 +171,18 @@ public class HeuristicSymmetricPayoffMatrix {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+            b.append("V:").append(e.getKey()).append("->")
+                    .append(Arrays.toString(e.getValue())).append("\n");
+            b.append("C:").append(e.getKey()).append("->")
+                    .append(tableCount.get(e.getKey())).append("\n");
+        }
+        return b.toString();
+    }
+
     /**
      * Returns the entries to this payoff table.
      * 
