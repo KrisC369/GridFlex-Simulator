@@ -19,6 +19,7 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
     private static final int CURRENT = 800;
     private static final int MIN = 500;
     private static final int MAX = 1000;
+    private static final int STEPS = 12;
     private final MersenneTwister twister = new MersenneTwister(2412);
     private final double retributionFactor;
 
@@ -34,7 +35,16 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
 
     @Override
     public Site getAgent() {
-        return SiteSimulation.createDefault(CURRENT, MIN, MAX, 12);
+        int current = (int) (twister.nextGaussian() * ((MAX - MIN) / 4))
+                + CURRENT;
+        int steps = (int) Math.round(twister.nextGaussian() * 4 + STEPS);
+        if (current < MIN) {
+            current = MIN;
+        }
+        if (current > MAX) {
+            current = MAX;
+        }
+        return SiteSimulation.createDefault(current, MIN, MAX, steps);
     }
 
     @Override

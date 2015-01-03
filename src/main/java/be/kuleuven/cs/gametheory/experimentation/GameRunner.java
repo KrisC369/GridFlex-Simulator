@@ -23,7 +23,7 @@ public final class GameRunner {
      */
     public static void main(String[] args) {
         GameConfiguratorEx ex = new GameConfiguratorEx(1);
-        Game<Site, Aggregator> g = new Game<>(3, ex, 10);
+        Game<Site, Aggregator> g = new Game<>(3, ex, 20);
         g.runExperiment();
         new GameResultWriter<>(g).write();
     }

@@ -22,9 +22,9 @@ public final class RetributionFactorSensitivityRunner {
      *            commandline args.
      */
     public static void main(String[] args) {
-        for (double d = 1; d < 1000; d += 100) {
+        for (double d = 1; d < 1500; d += 75) {
             GameConfiguratorEx ex = new GameConfiguratorEx(d);
-            Game<Site, Aggregator> g = new Game<>(3, ex, 10);
+            Game<Site, Aggregator> g = new Game<>(3, ex, 20);
             g.runExperiment();
             ResultWriter rw = new GameResultWriter<>(g);
             rw.addResultComponent("RetributionFactor", String.valueOf(d));
