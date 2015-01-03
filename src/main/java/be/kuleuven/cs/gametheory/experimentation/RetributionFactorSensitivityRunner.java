@@ -10,9 +10,9 @@ import be.kuleuven.cs.gametheory.Game;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public final class GameRunner {
+public final class RetributionFactorSensitivityRunner {
 
-    private GameRunner() {
+    private RetributionFactorSensitivityRunner() {
     }
 
     /**
@@ -22,9 +22,11 @@ public final class GameRunner {
      *            commandline args.
      */
     public static void main(String[] args) {
-        GameConfiguratorEx ex = new GameConfiguratorEx(1);
-        Game<Site, Aggregator> g = new Game<>(3, ex, 10);
-        g.runExperiment();
-        new GameResultWriter<>(g).write();
+        for (double d = 1; d < 10; d++) {
+            GameConfiguratorEx ex = new GameConfiguratorEx(d);
+            Game<Site, Aggregator> g = new Game<>(3, ex, 10);
+            g.runExperiment();
+            new GameResultWriter<>(g).write();
+        }
     }
 }

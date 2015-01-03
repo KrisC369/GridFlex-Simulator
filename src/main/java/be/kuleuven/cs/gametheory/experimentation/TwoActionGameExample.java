@@ -35,6 +35,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
     private int count;
     private final Map<Site, Aggregator> choiceMap;
     private final int baseConsumption;
+    private final double factor;
 
     /**
      * Default constructor for this game with two actions.
@@ -44,8 +45,10 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
      * @param baselineConsumption
      *            The baseline for the sites consumption. This is used to base
      *            production params on.
+     * @param factor
+     *            The retribution factor.
      */
-    public TwoActionGameExample(int seed, int baselineConsumption) {
+    public TwoActionGameExample(int seed, int baselineConsumption, double factor) {
         this.sim = Simulator.createSimulator(500, seed);
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
@@ -58,6 +61,21 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
                 AggregationStrategyImpl.CARTESIANPRODUCT));
         this.aggs.add(new ReactiveMechanismAggregator(tso,
                 AggregationStrategyImpl.MOVINGHORIZON));
+        this.factor = factor;
+    }
+
+    /**
+     * Default constructor for this game with two actions.
+     * 
+     * @param seed
+     *            The seed for this experiment.
+     * @param baselineConsumption
+     *            The baseline for the sites consumption. This is used to base
+     *            production params on.
+     */
+    public TwoActionGameExample(int seed, int baselineConsumption) {
+        this(seed, baselineConsumption, 1);
+
     }
 
     @Override
@@ -74,8 +92,14 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
         sites.add(agent);
         tso.registerConsumer(agent);
         choiceMap.put(agent, action);
-        FinanceTrackerImpl fti = (FinanceTrackerImpl) FinanceTrackerImpl
-                .createBalancingFeeTracker(agent, 3000);
+        FinanceTrackerImpl fti;
+        if (aggs.get(1).equals(action)) {
+            fti = (FinanceTrackerImpl) FinanceTrackerImpl
+                    .createCustomBalancingFeeTracker(agent, 3000, this.factor);
+        } else {
+            fti = (FinanceTrackerImpl) FinanceTrackerImpl
+                    .createCustomBalancingFeeTracker(agent, 3000, 1);
+        }
         ft.add(fti);
         sim.register(fti);
         action.registerClient(agent);

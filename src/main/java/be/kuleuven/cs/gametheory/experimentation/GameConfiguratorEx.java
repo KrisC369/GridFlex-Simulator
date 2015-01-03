@@ -20,6 +20,17 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
     private static final int MIN = 500;
     private static final int MAX = 1000;
     private final MersenneTwister twister = new MersenneTwister(2412);
+    private final double retributionFactor;
+
+    /**
+     * Constructor for these experiments.
+     * 
+     * @param factor
+     *            the retribution factor.
+     */
+    public GameConfiguratorEx(double factor) {
+        this.retributionFactor = factor;
+    }
 
     @Override
     public Site getAgent() {
@@ -28,7 +39,8 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
 
     @Override
     public GameInstance<Site, Aggregator> generateInstance() {
-        return new TwoActionGameExample(twister.nextInt(), CURRENT);
+        return new TwoActionGameExample(twister.nextInt(), CURRENT,
+                retributionFactor);
     }
 
     @Override
