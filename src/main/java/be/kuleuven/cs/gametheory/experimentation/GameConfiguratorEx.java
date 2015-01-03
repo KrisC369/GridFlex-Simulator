@@ -50,12 +50,15 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
     public Site getAgent() {
         int current = (int) (twister.nextGaussian() * ((MAX - MIN) / 4))
                 + CURRENT;
-        int steps = (int) Math.round(twister.nextGaussian() * 4 + STEPS);
+        int steps = (int) Math.round(twister.nextGaussian() * 2 + STEPS);
         if (current < MIN) {
             current = MIN;
         }
         if (current > MAX) {
             current = MAX;
+        }
+        if (steps <= 0) {
+            steps = 1;
         }
         return SiteSimulation.createDefault(current, MIN, MAX, steps);
     }
