@@ -27,7 +27,7 @@ public final class RetributionFactorSensitivityRunner4A {
      * Run the experiments.
      */
     public void runExperiments() {
-        for (double d = 1; d < 1500; d += 75) {
+        for (double d = 1; d < 500; d += 25) {
             GameConfiguratorEx ex = new GameConfiguratorEx(d, twister);
             Game<Site, Aggregator> g = new Game<>(nAgents, ex, repititions);
             g.runExperiment();
