@@ -19,7 +19,7 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
     private static final int CURRENT = 800;
     private static final int MIN = 500;
     private static final int MAX = 1000;
-    private static final int STEPS = 12;
+    private static final int STEPS = 8;
     private final MersenneTwister twister;
     private final double retributionFactor;
 
