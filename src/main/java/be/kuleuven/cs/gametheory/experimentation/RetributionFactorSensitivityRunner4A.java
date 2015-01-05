@@ -12,14 +12,14 @@ import be.kuleuven.cs.gametheory.Game;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public final class RetributionFactorSensitivityRunner {
+public final class RetributionFactorSensitivityRunner4A {
 
     private static final int SEED = 3722;
     private MersenneTwister twister;
-    private final int nAgents = 3;
-    private final int repititions = 20;
+    private final int nAgents = 4;
+    private final int repititions = 15;
 
-    private RetributionFactorSensitivityRunner() {
+    private RetributionFactorSensitivityRunner4A() {
         this.twister = new MersenneTwister(SEED);
     }
 
@@ -46,6 +46,6 @@ public final class RetributionFactorSensitivityRunner {
      *            commandline args.
      */
     public static void main(String[] args) {
-        new RetributionFactorSensitivityRunner().runExperiments();
+        new RetributionFactorSensitivityRunner4A().runExperiments();
     }
 }
