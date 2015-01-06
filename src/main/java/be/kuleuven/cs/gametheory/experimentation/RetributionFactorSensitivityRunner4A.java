@@ -16,11 +16,14 @@ public final class RetributionFactorSensitivityRunner4A {
 
     private static final int SEED = 3722;
     private MersenneTwister twister;
-    private final int nAgents = 4;
+    private final int nAgents = 5;
     private final int repititions = 15;
+    private static final int THREADS = 8;
+    private volatile int threadCount;
 
     private RetributionFactorSensitivityRunner4A() {
         this.twister = new MersenneTwister(SEED);
+        this.threadCount = 0;
     }
 
     /**
@@ -28,15 +31,46 @@ public final class RetributionFactorSensitivityRunner4A {
      */
     public void runExperiments() {
         for (double d = 1; d < 500; d += 25) {
-            GameConfiguratorEx ex = new GameConfiguratorEx(d, twister);
-            Game<Site, Aggregator> g = new Game<>(nAgents, ex, repititions);
-            g.runExperiment();
-            ResultWriter rw = new GameResultWriter<>(g);
-            rw.addResultComponent("RetributionFactor", String.valueOf(d));
-            rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
-            rw.addResultComponent("Reps", String.valueOf(repititions));
-            rw.write();
+            while (threadCount >= THREADS) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            final double dd = d;
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    doExperimentRun(dd);
+                    decreaseThreadCount();
+                }
+            }).start();
+            threadCount++;
+
         }
+    }
+
+    private synchronized void decreaseThreadCount() {
+        this.threadCount--;
+    }
+
+    /**
+     * @param retributionFactor
+     */
+    private void doExperimentRun(double retributionFactor) {
+        GameConfiguratorEx ex = new GameConfiguratorEx(retributionFactor,
+                twister);
+        Game<Site, Aggregator> g = new Game<>(nAgents, ex, repititions);
+        g.runExperiment();
+        ResultWriter rw = new GameResultWriter<>(g);
+        rw.addResultComponent("RetributionFactor",
+                String.valueOf(retributionFactor));
+        rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
+        rw.addResultComponent("Reps", String.valueOf(repititions));
+        rw.write();
     }
 
     /**

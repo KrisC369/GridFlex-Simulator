@@ -34,7 +34,7 @@ public class ResultWriter {
     /**
      * Write the outputs of the target.
      */
-    public void write() {
+    public synchronized void write() {
         writeToLogger();
     }
 
