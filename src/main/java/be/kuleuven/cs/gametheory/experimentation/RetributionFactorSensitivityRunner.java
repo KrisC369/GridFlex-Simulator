@@ -12,40 +12,30 @@ import be.kuleuven.cs.gametheory.Game;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public final class RetributionFactorSensitivityRunner {
+public class RetributionFactorSensitivityRunner implements RunnableExperiment {
 
     private static final int SEED = 3722;
     private MersenneTwister twister;
-    private final int nAgents = 3;
-    private final int repititions = 20;
+    private final int nAgents;
+    private final int repititions;
 
-    private RetributionFactorSensitivityRunner() {
+    protected RetributionFactorSensitivityRunner(int repititions, int nAgents) {
         this.twister = new MersenneTwister(SEED);
+        this.nAgents = nAgents;
+        this.repititions = repititions;
     }
 
-    /**
-     * Run the experiments.
-     */
-    public void runExperiments() {
-        for (double d = 1; d < 500; d += 25) {
-            GameConfiguratorEx ex = new GameConfiguratorEx(d, twister);
-            Game<Site, Aggregator> g = new Game<>(nAgents, ex, repititions);
-            g.runExperiment();
-            ResultWriter rw = new GameResultWriter<>(g);
-            rw.addResultComponent("RetributionFactor", String.valueOf(d));
-            rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
-            rw.addResultComponent("Reps", String.valueOf(repititions));
-            rw.write();
-        }
-    }
-
-    /**
-     * Runs some experiments as a PoC.
-     * 
-     * @param args
-     *            commandline args.
-     */
-    public static void main(String[] args) {
-        new RetributionFactorSensitivityRunner().runExperiments();
+    @Override
+    public final void doExperimentRun(double retributionFactor) {
+        GameConfiguratorEx ex = new GameConfiguratorEx(retributionFactor,
+                twister);
+        Game<Site, Aggregator> g = new Game<>(nAgents, ex, repititions);
+        g.runExperiment();
+        ResultWriter rw = new GameResultWriter<>(g);
+        rw.addResultComponent("RetributionFactor",
+                String.valueOf(retributionFactor));
+        rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
+        rw.addResultComponent("Reps", String.valueOf(repititions));
+        rw.write();
     }
 }
