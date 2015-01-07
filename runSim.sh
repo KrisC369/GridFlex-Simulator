@@ -1,2 +1,3 @@
 #!/bin/sh
-mvn exec:java -Dexec.mainClass=be.kuleuven.cs.gametheory.experimentation.RetributionFactorSensitivityRunner -Dexec.classpathScope=runtime
+TARGET=RetributionFactorSensitivityRunner4A
+mvn exec:java -Dexec.mainClass=be.kuleuven.cs.gametheory.experimentation.$TARGET -Dexec.classpathScope=runtime
