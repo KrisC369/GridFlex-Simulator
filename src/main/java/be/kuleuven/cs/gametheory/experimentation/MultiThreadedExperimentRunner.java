@@ -6,7 +6,7 @@ package be.kuleuven.cs.gametheory.experimentation;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public final class MultiThreadedExperimentRunner {
+public class MultiThreadedExperimentRunner {
 
     private final int threads;
     private volatile int threadCount;
