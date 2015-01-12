@@ -9,7 +9,7 @@ package be.kuleuven.cs.gametheory.experimentation;
 public class MultiThreadedExperimentRunner {
 
     private final int threads;
-    private volatile int threadCount;
+    private int threadCount;
     private RunnableExperiment experiment;
 
     /**

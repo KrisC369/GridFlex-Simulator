@@ -26,6 +26,6 @@ public final class RetributionFactorSensitivityRunner6A extends
      */
     public static void main(String[] args) {
         new MultiThreadedExperimentRunner(
-                new RetributionFactorSensitivityRunner6A(), 8).runExperiments();
+                new RetributionFactorSensitivityRunner6A()).runExperiments();
     }
 }
