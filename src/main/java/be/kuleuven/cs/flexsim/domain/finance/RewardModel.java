@@ -19,7 +19,19 @@ public enum RewardModel {
             return REWARD_RATE;
         }
 
+    },
+    /**
+     * No reward given.
+     */
+    NONE {
+
+        @Override
+        public int calculateReward(int timestep, Resource r) {
+            return 0;
+        }
+
     };
+    ;
     private static final int REWARD_RATE = 500;
 
     /**

@@ -93,12 +93,12 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
         tso.registerConsumer(agent);
         choiceMap.put(agent, action);
         FinanceTrackerImpl fti;
-        if (aggs.get(1).equals(action)) {
+        if (aggs.get(0).equals(action)) {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
                     .createCustomBalancingFeeTracker(agent, 3000, this.factor);
         } else {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
-                    .createCustomBalancingFeeTracker(agent, 3000, 1);
+                    .createCustomBalancingFeeTracker(agent, 3000, 0);
         }
         ft.add(fti);
         sim.register(fti);
