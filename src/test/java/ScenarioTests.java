@@ -247,7 +247,7 @@ public class ScenarioTests {
         double profitBefore = t1.getTotalProfit() + t2.getTotalProfit()
                 + t3.getTotalProfit() + t4.getTotalProfit();
         log.info("Simulation 1 done.");
-        double expectedResult = -8540520;
+        double expectedResult = -1.240177876E9;
         assertEquals(expectedResult, profitBefore, 0);
     }
 
@@ -313,7 +313,7 @@ public class ScenarioTests {
         double profitBefore = t1.getTotalProfit() + t2.getTotalProfit()
                 + t3.getTotalProfit() + t4.getTotalProfit();
         log.info("Simulation 1 done.");
-        double expectedResult = -8540520;
+        double expectedResult = -1.240177876E9;
         assertEquals(expectedResult, profitBefore, 0);
     }
 

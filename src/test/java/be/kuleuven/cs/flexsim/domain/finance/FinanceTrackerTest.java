@@ -185,9 +185,9 @@ public class FinanceTrackerTest {
             @Override
             public int getSizeOfP() {
                 // TODO Auto-generated method stub
-                return 0;
+                return 10;
             }
         });
-        assertEquals(540, t.getTotalProfit(), 0);
+        assertEquals(3240, t.getTotalProfit(), 0);
     }
 }
