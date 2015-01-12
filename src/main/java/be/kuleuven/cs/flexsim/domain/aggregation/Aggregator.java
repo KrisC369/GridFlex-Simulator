@@ -132,6 +132,11 @@ public abstract class Aggregator implements SimulationComponent {
                                 public int getSizeOfP() {
                                     return tt.getDeltaP();
                                 }
+
+                                @Override
+                                public int getSizeOfT() {
+                                    return tt.getT();
+                                }
                             });
                         }
                     }

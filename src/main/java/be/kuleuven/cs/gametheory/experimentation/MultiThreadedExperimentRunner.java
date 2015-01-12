@@ -40,7 +40,7 @@ public class MultiThreadedExperimentRunner {
      * Run the experiments in different threads.
      */
     public void runExperiments() {
-        for (double d = 1; d < 500; d += 25) {
+        for (double d = 0; d <= 1; d += 0.10) {
             while (threadCount >= threads) {
                 try {
                     Thread.sleep(1000);

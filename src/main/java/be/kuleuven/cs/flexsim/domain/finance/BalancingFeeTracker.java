@@ -46,7 +46,7 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
      */
     BalancingFeeTracker(Site s, int reward, double factor) {
         super(s, RewardModel.CONSTANT, DebtModel.CONSTANT);
-        this.retributionFactor = factor;
+        this.retributionFactor = 1 - factor;
         this.fixedActivationFee = reward;
         this.activationCount = 0;
         this.target = s;
@@ -54,7 +54,8 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
             @Override
             public void eventOccurred(ActivateFlexCommand arg) {
                 increaseTotalReward((int) (fixedActivationFee
-                        * retributionFactor * arg.getSizeOfP()));
+                        * retributionFactor * arg.getSizeOfP() * arg
+                        .getSizeOfT()));
                 incrementCount();
                 logCount();
             }

@@ -187,6 +187,12 @@ public class FinanceTrackerTest {
                 // TODO Auto-generated method stub
                 return 10;
             }
+
+            @Override
+            public int getSizeOfT() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
         });
         assertEquals(3240, t.getTotalProfit(), 0);
     }

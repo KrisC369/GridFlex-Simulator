@@ -95,6 +95,12 @@ public class EquidistantSiteSimulationTest {
                 // TODO Auto-generated method stub
                 return 0;
             }
+
+            @Override
+            public int getSizeOfT() {
+                // TODO Auto-generated method stub
+                return 0;
+            }
         });
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);

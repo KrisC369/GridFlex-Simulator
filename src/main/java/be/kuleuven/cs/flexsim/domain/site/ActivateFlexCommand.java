@@ -30,4 +30,11 @@ public interface ActivateFlexCommand {
      * @return the amount of power to curtail or increase.
      */
     int getSizeOfP();
+
+    /**
+     * Returns the time of the activation.
+     * 
+     * @return The duration of the curtailment or increase.
+     */
+    int getSizeOfT();
 }
