@@ -26,7 +26,19 @@ public class ResultWriter {
      *            The target to take results from.
      */
     public ResultWriter(Writable target) {
-        logger = LoggerFactory.getLogger("RESULTS");
+        this(target, "RESULTS");
+    }
+
+    /**
+     * Constructor creating new logger programmatically.
+     * 
+     * @param target
+     *            The target to take results from.
+     * @param filename
+     *            The filename for the logger.
+     */
+    public ResultWriter(Writable target, String filename) {
+        logger = LoggerFactory.getLogger(filename);
         this.target = target;
         this.resultComponents = Maps.newLinkedHashMap();
     }

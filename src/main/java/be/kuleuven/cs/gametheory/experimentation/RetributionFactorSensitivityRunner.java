@@ -18,11 +18,18 @@ public class RetributionFactorSensitivityRunner implements RunnableExperiment {
     private MersenneTwister twister;
     private final int nAgents;
     private final int repititions;
+    private final String loggerTag;
 
     protected RetributionFactorSensitivityRunner(int repititions, int nAgents) {
+        this(repititions, nAgents, "");
+    }
+
+    protected RetributionFactorSensitivityRunner(int repititions, int nAgents,
+            String loggerTag) {
         this.twister = new MersenneTwister(SEED);
         this.nAgents = nAgents;
         this.repititions = repititions;
+        this.loggerTag = loggerTag;
     }
 
     @Override
@@ -31,7 +38,12 @@ public class RetributionFactorSensitivityRunner implements RunnableExperiment {
                 twister);
         Game<Site, Aggregator> g = new Game<>(nAgents, ex, repititions);
         g.runExperiment();
-        ResultWriter rw = new GameResultWriter<>(g);
+        ResultWriter rw;
+        if (loggerTag.isEmpty()) {
+            rw = new GameResultWriter<>(g);
+        } else {
+            rw = new GameResultWriter<>(g, loggerTag);
+        }
         rw.addResultComponent("RetributionFactor",
                 String.valueOf(retributionFactor));
         rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));

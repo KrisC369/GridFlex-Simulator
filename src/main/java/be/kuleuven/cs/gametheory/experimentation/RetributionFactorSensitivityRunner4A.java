@@ -12,9 +12,10 @@ public final class RetributionFactorSensitivityRunner4A extends
     private static final int NAGENTS = 4;
     private static final int REPITITIONS = 15;
     private static final int THREADS = 3;
+    private static final String TAG = "RESULT4A";
 
     protected RetributionFactorSensitivityRunner4A() {
-        super(REPITITIONS, NAGENTS);
+        super(REPITITIONS, NAGENTS, TAG);
     }
 
     /**
