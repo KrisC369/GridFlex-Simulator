@@ -10,7 +10,7 @@ public final class RetributionFactorSensitivityRunner3A extends
         RetributionFactorSensitivityRunner {
 
     private static final int NAGENTS = 3;
-    private static final int REPITITIONS = 15;
+    private static final int REPITITIONS = 20;
     private static final int THREADS = 3;
     private static final String TAG = "RESULT3A";
 
