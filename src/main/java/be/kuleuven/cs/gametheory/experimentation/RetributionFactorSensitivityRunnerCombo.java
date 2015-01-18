@@ -41,5 +41,13 @@ public class RetributionFactorSensitivityRunnerCombo {
                         .runExperiments();
             }
         }).start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                new MultiThreadedExperimentRunner(
+                        new RetributionFactorSensitivityRunner5A(), THREADS)
+                        .runExperiments();
+            }
+        }).start();
     }
 }

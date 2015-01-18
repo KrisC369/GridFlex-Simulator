@@ -27,6 +27,7 @@ import com.google.common.collect.Maps;
 public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
 
     private static final int ACTIONSPACE_SIZE = 2;
+    private static final int ACTPAYMENT = 50;
     private final Simulator sim;
     private final List<Site> sites;
     private final List<Aggregator> aggs;
@@ -95,10 +96,11 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
         FinanceTrackerImpl fti;
         if (aggs.get(0).equals(action)) {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
-                    .createCustomBalancingFeeTracker(agent, 3000, this.factor);
+                    .createCustomBalancingFeeTracker(agent, ACTPAYMENT,
+                            this.factor);
         } else {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
-                    .createCustomBalancingFeeTracker(agent, 3000, 0);
+                    .createCustomBalancingFeeTracker(agent, ACTPAYMENT, 0);
         }
         ft.add(fti);
         sim.register(fti);
