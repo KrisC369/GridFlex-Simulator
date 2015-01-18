@@ -170,7 +170,7 @@ public class SiteSimulation implements Site {
     protected final FlexTuple makeTuple(int power, boolean isUpflex) {
         // return FlexTuple.create(newId(), power, isUpflex,
         // (int) (Math.random() * 50), 0, (int) (Math.random() * 10));
-        return FlexTuple.create(newId(), power, isUpflex, 0, 0, 0);
+        return FlexTuple.create(newId(), power, isUpflex, 1, 0, 0);
     }
 
     private long newId() {
