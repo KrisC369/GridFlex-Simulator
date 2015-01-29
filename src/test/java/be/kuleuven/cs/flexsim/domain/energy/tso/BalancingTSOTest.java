@@ -48,6 +48,45 @@ public class BalancingTSOTest {
         tso.registerParticipant(agg);
         assertTrue(tso.getParticipants().contains(agg));
         assertTrue(tso.getContractualLimit(agg).isZero());
+        ContractualMechanismParticipant agg2 = new ContractualMechanismParticipant() {
+            @Override
+            public void signalTarget(int timestep, int target) {
+            }
+
+            @Override
+            public PowerCapabilityBand getPowerCapacity() {
+                return PowerCapabilityBand.create(20, 20);
+            }
+        };
+        tso.registerParticipant(agg2);
+        assertTrue(tso.getParticipants().contains(agg2));
+        assertFalse(tso.getContractualLimit(agg2).isZero());
+        ContractualMechanismParticipant agg3 = new ContractualMechanismParticipant() {
+            @Override
+            public void signalTarget(int timestep, int target) {
+            }
+
+            @Override
+            public PowerCapabilityBand getPowerCapacity() {
+                return PowerCapabilityBand.create(0, 20);
+            }
+        };
+        tso.registerParticipant(agg3);
+        assertTrue(tso.getParticipants().contains(agg3));
+        assertFalse(tso.getContractualLimit(agg3).isZero());
+        ContractualMechanismParticipant agg4 = new ContractualMechanismParticipant() {
+            @Override
+            public void signalTarget(int timestep, int target) {
+            }
+
+            @Override
+            public PowerCapabilityBand getPowerCapacity() {
+                return PowerCapabilityBand.create(20, 0);
+            }
+        };
+        tso.registerParticipant(agg4);
+        assertTrue(tso.getParticipants().contains(agg4));
+        assertFalse(tso.getContractualLimit(agg4).isZero());
     }
 
     @Test

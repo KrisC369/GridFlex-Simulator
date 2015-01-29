@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -235,7 +236,7 @@ public class ProductionLineTest {
     }
 
     /**
-     * 
+     *
      */
     private void startSim() {
         ((Simulator) sim).start();
@@ -492,5 +493,15 @@ public class ProductionLineTest {
         ProductionLine l = new ProductionLineBuilder().addConsuming(3)
                 .addShifted(4).addMultiCapConstantConsuming(3, 12).build();
         assertTrue(l.toString().contains(l.getLayout().toString()));
+    }
+
+    @Test
+    public void testActivationUp() {
+        throw new NotImplementedException("TODO");
+    }
+
+    @Test
+    public void testActivationDown() {
+        throw new NotImplementedException("TODO");
     }
 }

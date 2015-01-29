@@ -5,3 +5,6 @@ target/
 .DS_*  
 logs
 hs_er*
+META-INF/
+build.properties
+

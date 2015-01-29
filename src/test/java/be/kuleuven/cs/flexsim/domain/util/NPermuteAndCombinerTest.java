@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -117,6 +118,13 @@ public class NPermuteAndCombinerTest {
         assertTrue(result.contains(Lists.newArrayList("D", "X")));
         assertTrue(result.contains(Lists.newArrayList("D", "Y")));
         assertTrue(result.contains(Lists.newArrayList("D", "Z")));
+    }
+
+    @Test
+    public void testEmpty() {
+        Collection<List<String>> result = g
+                .permutations(new ArrayList<Collection<String>>());
+        assertTrue(result.isEmpty());
     }
 
     @Test

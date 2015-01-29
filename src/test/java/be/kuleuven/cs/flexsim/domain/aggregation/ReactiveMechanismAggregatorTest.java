@@ -43,7 +43,7 @@ public class ReactiveMechanismAggregatorTest {
         agg.registerClient(s1);
         agg.registerClient(s2);
         agg.tick(0);
-        // agg.signalCapacity();
+        agg.tick(1);
 
         PowerCapabilityBand arg = agg.getPowerCapacity();
         // ArgumentCaptor<PowerCapabilityBand> argument = ArgumentCaptor
