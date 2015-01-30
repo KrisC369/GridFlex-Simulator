@@ -92,15 +92,16 @@ public class SiteSimulationTest {
             @Override
             public int getSizeOfP() {
                 // TODO Auto-generated method stub
-                return 0;
+                return 50;
             }
 
             @Override
             public int getSizeOfT() {
                 // TODO Auto-generated method stub
-                return 0;
+                return 6;
             }
         });
+        // TODO Change sitesim flex profiles.
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
         s.start();
