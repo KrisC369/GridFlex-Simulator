@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -495,13 +494,4 @@ public class ProductionLineTest {
         assertTrue(l.toString().contains(l.getLayout().toString()));
     }
 
-    @Test
-    public void testActivationUp() {
-        throw new NotImplementedException("TODO");
-    }
-
-    @Test
-    public void testActivationDown() {
-        throw new NotImplementedException("TODO");
-    }
 }

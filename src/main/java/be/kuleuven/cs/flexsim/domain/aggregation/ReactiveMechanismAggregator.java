@@ -16,7 +16,7 @@ import com.google.common.collect.LinkedListMultimap;
 /**
  * Subclasses the aggregator abstract class to add the behavior of reacting to
  * tso requests directly.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -30,10 +30,10 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     /**
      * Default constructor.
-     * 
+     *
      * @param host
      *            The host to register to.
-     * 
+     *
      */
     public ReactiveMechanismAggregator(BalancingTSO host) {
         this(host, AggregationStrategyImpl.CARTESIANPRODUCT);
@@ -41,14 +41,14 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     /**
      * Constructor with all settable params.
-     * 
+     *
      * @param host
      *            The host to register to.
      * @param frequency
      *            The frequency of aggregation (how often...).
      * @param strategy
      *            The strategy to adopt.
-     * 
+     *
      */
     private ReactiveMechanismAggregator(BalancingTSO host, int frequency,
             AggregationStrategy strategy) {
@@ -61,7 +61,7 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     /**
      * Default frequency constructor.
-     * 
+     *
      * @param host
      *            The host to register to.
      * @param strategy
@@ -90,9 +90,9 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public void tick(int t) {
-        if (tickcount++ % aggFreq == 0) {
-            doAggregationStep(t, currentTarget, currentFlex);
-        }
+        // if (tickcount++ % aggFreq == 0) {
+        doAggregationStep(t, currentTarget, currentFlex);
+        // }
     }
 
     private int findMaxUpInPortfolio() {

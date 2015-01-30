@@ -159,9 +159,12 @@ public class FinanceTrackerTest {
 
     @Test
     public void testBalancingFee() {
+        final int p = 10;
+        final int pay = 300;
+        final int tt = 10;
         final Site s = SiteSimulation.createDefault(200, 50, 200, 4);
         t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
-                s, 300);
+                s, pay);
         ActivateFlexCommand c = mock(ActivateFlexCommand.class);
 
         sim = Simulator.createSimulator(1);
@@ -169,7 +172,7 @@ public class FinanceTrackerTest {
         sim.register(t);
         ((Simulator) sim).start();
         final long id = s.getFlexTuples().get(0).getId();
-        assertEquals(240, t.getTotalProfit(), 0);
+        assertEquals(0, t.getTotalProfit(), 0);
         s.activateFlex(new ActivateFlexCommand() {
 
             @Override
@@ -184,16 +187,56 @@ public class FinanceTrackerTest {
 
             @Override
             public int getSizeOfP() {
-                // TODO Auto-generated method stub
-                return 10;
+                return p;
             }
 
             @Override
             public int getSizeOfT() {
-                // TODO Auto-generated method stub
                 return 0;
             }
         });
-        assertEquals(3240, t.getTotalProfit(), 0);
+        assertEquals(pay * p, t.getTotalProfit(), 0);
+
+    }
+
+    @Test
+    public void testBalancingFee2() {
+        final int p = 10;
+        final int pay = 300;
+        final int tt = 10;
+        final Site s = SiteSimulation.createDefault(200, 50, 200, 4);
+        t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
+                s, pay);
+        ActivateFlexCommand c = mock(ActivateFlexCommand.class);
+
+        sim = Simulator.createSimulator(1);
+        sim.register(s);
+        sim.register(t);
+        ((Simulator) sim).start();
+        final long id = s.getFlexTuples().get(0).getId();
+        assertEquals(0, t.getTotalProfit(), 0);
+        s.activateFlex(new ActivateFlexCommand() {
+
+            @Override
+            public boolean isDownFlexCommand() {
+                return false;
+            }
+
+            @Override
+            public long getReferenceID() {
+                return id;
+            }
+
+            @Override
+            public int getSizeOfP() {
+                return p;
+            }
+
+            @Override
+            public int getSizeOfT() {
+                return tt;
+            }
+        });
+        assertEquals(pay * p * tt, t.getTotalProfit(), 0);
     }
 }

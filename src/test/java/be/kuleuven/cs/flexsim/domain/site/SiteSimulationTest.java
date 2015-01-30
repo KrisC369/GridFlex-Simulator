@@ -7,7 +7,6 @@ import static org.mockito.Mockito.mock;
 
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -115,15 +114,5 @@ public class SiteSimulationTest {
         assertTrue(res.contains("SiteSimulation"));
         assertTrue(res.contains(String.valueOf(BASE)));
         assertTrue(res.contains(String.valueOf(MAXTUPLES)));
-    }
-
-    @Test
-    public void testActivationUp() {
-        throw new NotImplementedException("TODO");
-    }
-
-    @Test
-    public void testActivationDown() {
-        throw new NotImplementedException("TODO");
     }
 }

@@ -46,6 +46,8 @@ public class BalancingTSOTest {
     public void testRegisterClients() {
         ContractualMechanismParticipant agg = mock(ContractualMechanismParticipant.class);
         tso.registerParticipant(agg);
+        when(agg.getPowerCapacity()).thenReturn(
+                PowerCapabilityBand.createZero());
         assertTrue(tso.getParticipants().contains(agg));
         assertTrue(tso.getContractualLimit(agg).isZero());
         ContractualMechanismParticipant agg2 = new ContractualMechanismParticipant() {
@@ -59,6 +61,7 @@ public class BalancingTSOTest {
             }
         };
         tso.registerParticipant(agg2);
+        tso.afterTick(0);
         assertTrue(tso.getParticipants().contains(agg2));
         assertFalse(tso.getContractualLimit(agg2).isZero());
         ContractualMechanismParticipant agg3 = new ContractualMechanismParticipant() {
@@ -72,6 +75,7 @@ public class BalancingTSOTest {
             }
         };
         tso.registerParticipant(agg3);
+        tso.afterTick(0);
         assertTrue(tso.getParticipants().contains(agg3));
         assertFalse(tso.getContractualLimit(agg3).isZero());
         ContractualMechanismParticipant agg4 = new ContractualMechanismParticipant() {
@@ -85,6 +89,7 @@ public class BalancingTSOTest {
             }
         };
         tso.registerParticipant(agg4);
+        tso.afterTick(0);
         assertTrue(tso.getParticipants().contains(agg4));
         assertFalse(tso.getContractualLimit(agg4).isZero());
     }
