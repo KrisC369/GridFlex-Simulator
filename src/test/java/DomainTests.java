@@ -19,7 +19,6 @@ import be.kuleuven.cs.flexsim.domain.util.BufferTest;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTupleTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
-import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrixTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ BufferTest.class, WorkstationTest.class,
@@ -29,6 +28,6 @@ import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrixTest;
         NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
         OutputGeneratorTest.class, SiteSimulationTest.class,
         BalancingAuctionTSOTest.class, BalancingTSOTest.class,
-        EquidistantSiteSimulationTest.class, HeuristicSymmetricPayoffMatrixTest.class })
+        EquidistantSiteSimulationTest.class })
 public class DomainTests {
 }

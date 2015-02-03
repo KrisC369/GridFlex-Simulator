@@ -1,5 +1,7 @@
 package be.kuleuven.cs.gametheory.experimentation;
 
+import be.kuleuven.cs.gametheory.experimentation.runners.MultiThreadedExperimentRunner;
+
 /**
  * Runs a combination of experiments for 2A, 3A and 4A
  * 

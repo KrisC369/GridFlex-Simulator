@@ -1,10 +1,10 @@
-package be.kuleuven.cs.gametheory.experimentation;
+package be.kuleuven.cs.gametheory.experimentation.io;
 
 import be.kuleuven.cs.gametheory.Game;
 
 /**
  * Writes game results to this writer.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <N>
  *            Param N.
@@ -17,7 +17,7 @@ public class GameResultWriter<N, K> extends ResultWriter {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param target
      *            the game target.
      */
@@ -28,7 +28,7 @@ public class GameResultWriter<N, K> extends ResultWriter {
 
     /**
      * Constructor for filenames.
-     * 
+     *
      * @param target
      *            the game target.
      * @param loggerTag

@@ -1,5 +1,7 @@
 package be.kuleuven.cs.gametheory.experimentation;
 
+import be.kuleuven.cs.gametheory.experimentation.runners.MultiThreadedExperimentRunner;
+
 /**
  * An example class running some experiments.
  * 

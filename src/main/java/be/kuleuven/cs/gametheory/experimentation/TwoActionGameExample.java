@@ -20,7 +20,7 @@ import com.google.common.collect.Maps;
 
 /**
  * Represents a game with two possible actions to choose between.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -40,7 +40,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
 
     /**
      * Default constructor for this game with two actions.
-     * 
+     *
      * @param seed
      *            The seed for this experiment.
      * @param baselineConsumption
@@ -67,7 +67,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
 
     /**
      * Default constructor for this game with two actions.
-     * 
+     *
      * @param seed
      *            The seed for this experiment.
      * @param baselineConsumption

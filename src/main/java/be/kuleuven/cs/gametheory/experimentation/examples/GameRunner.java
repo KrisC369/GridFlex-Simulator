@@ -1,8 +1,10 @@
-package be.kuleuven.cs.gametheory.experimentation;
+package be.kuleuven.cs.gametheory.experimentation.examples;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.gametheory.Game;
+import be.kuleuven.cs.gametheory.experimentation.GameConfiguratorEx;
+import be.kuleuven.cs.gametheory.experimentation.io.GameResultWriter;
 
 /**
  * An example class running some experiments.

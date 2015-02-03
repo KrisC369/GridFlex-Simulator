@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gametheory.experimentation;
+package be.kuleuven.cs.gametheory.experimentation.io;
 
 /**
  * Interface representing an instance capable of serving up results that can be

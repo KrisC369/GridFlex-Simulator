@@ -11,14 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
-import be.kuleuven.cs.gametheory.experimentation.Writable;
+import be.kuleuven.cs.gametheory.experimentation.io.Writable;
 
 import com.google.common.collect.Lists;
 
 /**
  * A representation of a full game specification for all configurations of
  * agents over the action space.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  * @param <N>
@@ -37,7 +37,7 @@ public class Game<N, K> implements Writable {
 
     /**
      * Default constructor.
-     * 
+     *
      * @param agents
      *            The number of agents.
      * @param config
@@ -123,7 +123,18 @@ public class Game<N, K> implements Writable {
      */
     public void runExperiment() {
         fillMatrix();
-        payoffs.printMatrix();
+        printResultsToSysOut();
+    }
+
+    /**
+     * 
+     */
+    private void printResultsToSysOut() {
+        System.out.println(payoffs.toString());
+        System.out.println("Dynamics equation params:");
+        for (Double d : payoffs.getDynamicsArguments()) {
+            System.out.println(d);
+        }
     }
 
     @Override
@@ -133,7 +144,7 @@ public class Game<N, K> implements Writable {
 
     /**
      * Returns the parameters of the dynamics in a formatted string.
-     * 
+     *
      * @return the params in a MATLAB style formatted string.
      */
     public String getDynamicsParametersString() {

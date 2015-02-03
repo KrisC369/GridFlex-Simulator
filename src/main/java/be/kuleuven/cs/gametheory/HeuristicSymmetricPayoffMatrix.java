@@ -17,12 +17,12 @@ import com.google.common.collect.Maps;
  * stems from the experimentally gathered values in this table. This table is
  * meant to be filled in with experimentation results. A table consists out of
  * entries for every combination of agents over the action space.
- * 
+ *
  * Adding entries with already-present keys will sum the values. Retrieving a
  * value pertaining to a certain key will divide it by the amount of entries,
  * therefore effectively returning an average of the values entered with the
  * corresponding key.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class HeuristicSymmetricPayoffMatrix {
@@ -35,7 +35,7 @@ public class HeuristicSymmetricPayoffMatrix {
     /**
      * Default constructor using the dimensions of the table. and having only
      * all multicombinations as entries.
-     * 
+     *
      * @param agents
      *            the amount of agents.
      * @param actions
@@ -52,7 +52,7 @@ public class HeuristicSymmetricPayoffMatrix {
 
     /**
      * Returns true if every space in the table is filled in with a value.
-     * 
+     *
      * @return true if every entry has a value.
      */
     public boolean isComplete() {
@@ -69,7 +69,7 @@ public class HeuristicSymmetricPayoffMatrix {
 
     /**
      * Adds a new entry to this payoff matrix.
-     * 
+     *
      * @param value
      *            [] The payoff values.
      * @param key
@@ -84,6 +84,20 @@ public class HeuristicSymmetricPayoffMatrix {
         } else {
             plusEntry(entry, value);
         }
+    }
+
+    private boolean testKey(int[] key) {
+        if (key.length != actions) {
+            return false;
+        }
+        int count = 0;
+        for (int i : key) {
+            count += i;
+        }
+        if (count != agents) {
+            return false;
+        }
+        return true;
     }
 
     private boolean testValues(long[] value) {
@@ -122,23 +136,9 @@ public class HeuristicSymmetricPayoffMatrix {
         return 0;
     }
 
-    private boolean testKey(int[] key) {
-        if (key.length != actions) {
-            return false;
-        }
-        int count = 0;
-        for (int i : key) {
-            count += i;
-        }
-        if (count != agents) {
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Returns an entry in the payoff matrix.
-     * 
+     *
      * @param key
      *            the index keys.
      * @return the value recorded in the matrix.
@@ -155,22 +155,6 @@ public class HeuristicSymmetricPayoffMatrix {
         return toret;
     }
 
-    /**
-     * Prints the content of this matrix.
-     */
-    public void printMatrix() {
-        for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
-            System.out.println("V:" + e.getKey() + "->"
-                    + Arrays.toString(e.getValue()));
-            System.out.println("C:" + e.getKey() + "->"
-                    + tableCount.get(e.getKey()));
-        }
-        System.out.println("Dynamics equation params:");
-        for (Double d : getDynamicsArguments()) {
-            System.out.println(d);
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder b = new StringBuilder();
@@ -184,27 +168,9 @@ public class HeuristicSymmetricPayoffMatrix {
     }
 
     /**
-     * Returns the entries to this payoff table.
-     * 
-     * @return a map from PayoffEntry to long values.
-     */
-    public Map<PayoffEntry, Long[]> getPayoffEntries() {
-        return Maps.newLinkedHashMap(this.table);
-    }
-
-    /**
-     * Returns the amount of entries for each entry.
-     * 
-     * @return a map from PayoffEntry to integer representing the count.
-     */
-    public Map<PayoffEntry, Integer> getEntryCounts() {
-        return Maps.newLinkedHashMap(this.tableCount);
-    }
-
-    /**
      * Generate all unique coefficients that are used for specifying dynamics
      * equations.
-     * 
+     *
      * @return A list of coefficients.
      */
     public List<Double> getDynamicsArguments() {

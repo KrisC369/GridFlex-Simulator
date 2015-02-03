@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gametheory.experimentation;
+package be.kuleuven.cs.gametheory.experimentation.io;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -10,7 +10,7 @@ import com.google.common.collect.Maps;
 
 /**
  * Writes the results from experimentation to certain outputs. eg. Sysout.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -21,7 +21,7 @@ public class ResultWriter {
 
     /**
      * Default constructor
-     * 
+     *
      * @param target
      *            The target to take results from.
      */
@@ -31,7 +31,7 @@ public class ResultWriter {
 
     /**
      * Constructor creating new logger programmatically.
-     * 
+     *
      * @param target
      *            The target to take results from.
      * @param filename
@@ -68,7 +68,7 @@ public class ResultWriter {
 
     /**
      * Add a key/value string component to this result writer.
-     * 
+     *
      * @param key
      *            the string indicating the key.
      * @param value

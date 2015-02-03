@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 /**
  * Class representing a site module that makes abstraction of the underlying
  * mechanism and produces flex and consumption patterns.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -44,7 +44,7 @@ public class SiteSimulation implements Site {
 
     /**
      * Default constructor for this mock simulating site.
-     * 
+     *
      * @param base
      *            The base consumption to start from.
      * @param min
@@ -92,7 +92,7 @@ public class SiteSimulation implements Site {
                 } else {
                     currentConsumption += f.getDeltaP();
                 }
-                startTheClock(f.getT(), f.getTR());
+                startTheClock(f.getT(), f.getTC());
                 this.activationListener.eventOccurred(schedule);
             }
         }
@@ -184,11 +184,11 @@ public class SiteSimulation implements Site {
 
     @Override
     public void tick(int t) {
-        if (flexTimer > 0) {
-            flexTimer--;
-        }
         if (flexTimer == 0) {
             resetCons();
+        }
+        if (flexTimer > 0) {
+            flexTimer--;
         }
         if (noFlexTimer > 0) {
             noFlexTimer--;
@@ -266,7 +266,7 @@ public class SiteSimulation implements Site {
 
     /**
      * Default constructor for this mock simulating site.
-     * 
+     *
      * @param base
      *            The base consumption to start from.
      * @param min
@@ -285,7 +285,7 @@ public class SiteSimulation implements Site {
 
     /**
      * Constructor for a simulating site with equidistant flex.
-     * 
+     *
      * @param base
      *            The base consumption to start from.
      * @param min
