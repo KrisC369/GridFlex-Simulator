@@ -159,13 +159,11 @@ public class FinanceTrackerTest {
 
     @Test
     public void testBalancingFee() {
-        final int p = 10;
         final int pay = 300;
-        final int tt = 10;
-        final Site s = SiteSimulation.createDefault(200, 50, 200, 4);
+        final int min = 50, max = 300, base = 200, tuples = 4;
+        final Site s = SiteSimulation.createDefault(base, min, max, tuples);
         t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
                 s, pay);
-        ActivateFlexCommand c = mock(ActivateFlexCommand.class);
 
         sim = Simulator.createSimulator(1);
         sim.register(s);
@@ -176,38 +174,22 @@ public class FinanceTrackerTest {
         s.activateFlex(new ActivateFlexCommand() {
 
             @Override
-            public boolean isDownFlexCommand() {
-                return false;
-            }
-
-            @Override
             public long getReferenceID() {
                 return id;
             }
 
-            @Override
-            public int getSizeOfP() {
-                return p;
-            }
-
-            @Override
-            public int getSizeOfT() {
-                return 0;
-            }
         });
-        assertEquals(pay * p, t.getTotalProfit(), 0);
+        assertEquals(pay * (max - base) / tuples, t.getTotalProfit(), 0);
 
     }
 
     @Test
     public void testBalancingFee2() {
-        final int p = 10;
         final int pay = 300;
-        final int tt = 10;
-        final Site s = SiteSimulation.createDefault(200, 50, 200, 4);
+        final int min = 50, max = 300, base = 200, tuples = 4;
+        final Site s = SiteSimulation.createDefault(base, min, max, tuples);
         t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
                 s, pay);
-        ActivateFlexCommand c = mock(ActivateFlexCommand.class);
 
         sim = Simulator.createSimulator(1);
         sim.register(s);
@@ -218,25 +200,10 @@ public class FinanceTrackerTest {
         s.activateFlex(new ActivateFlexCommand() {
 
             @Override
-            public boolean isDownFlexCommand() {
-                return false;
-            }
-
-            @Override
             public long getReferenceID() {
                 return id;
             }
-
-            @Override
-            public int getSizeOfP() {
-                return p;
-            }
-
-            @Override
-            public int getSizeOfT() {
-                return tt;
-            }
         });
-        assertEquals(pay * p * tt, t.getTotalProfit(), 0);
+        assertEquals(pay * (max - base) / tuples, t.getTotalProfit(), 0);
     }
 }

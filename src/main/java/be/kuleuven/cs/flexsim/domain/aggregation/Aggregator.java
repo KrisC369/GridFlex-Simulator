@@ -18,7 +18,7 @@ import com.google.common.collect.Sets;
  * An abstract aggregator instance with logic to perform aggregation functions.
  * This class needs to be subclassed to specify how and when to trigger
  * aggregation.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -121,21 +121,6 @@ public abstract class Aggregator implements SimulationComponent {
                                 @Override
                                 public long getReferenceID() {
                                     return tt.getId();
-                                }
-
-                                @Override
-                                public boolean isDownFlexCommand() {
-                                    return !tt.getDirection();
-                                }
-
-                                @Override
-                                public int getSizeOfP() {
-                                    return tt.getDeltaP();
-                                }
-
-                                @Override
-                                public int getSizeOfT() {
-                                    return tt.getT();
                                 }
                             });
                         }

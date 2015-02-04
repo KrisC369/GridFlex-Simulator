@@ -36,7 +36,7 @@ public class SiteSimulation implements Site {
     private UIDGenerator generator;
     private int totalConsumption;
     private final int baseProduction;
-    private Listener<? super ActivateFlexCommand> activationListener;
+    private Listener<? super FlexTuple> activationListener;
     private static final int DEFAULT_BASE_PRODUCTION = 20;
     private final int baseConsumption;
     private int noFlexTimer;
@@ -87,13 +87,13 @@ public class SiteSimulation implements Site {
     public void activateFlex(ActivateFlexCommand schedule) {
         for (FlexTuple f : flexData) {
             if (f.getId() == schedule.getReferenceID()) {
-                if (schedule.isDownFlexCommand()) {
+                if (!f.getDirection()) {
                     currentConsumption -= f.getDeltaP();
                 } else {
                     currentConsumption += f.getDeltaP();
                 }
                 startTheClock(f.getT(), f.getTC());
-                this.activationListener.eventOccurred(schedule);
+                this.activationListener.eventOccurred(f);
             }
         }
     }
@@ -257,8 +257,7 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void addActivationListener(
-            Listener<? super ActivateFlexCommand> listener) {
+    public void addActivationListener(Listener<? super FlexTuple> listener) {
         this.activationListener = MultiplexListener.plus(
                 this.activationListener, listener);
 

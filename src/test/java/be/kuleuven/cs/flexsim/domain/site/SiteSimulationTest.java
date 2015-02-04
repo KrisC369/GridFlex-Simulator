@@ -76,32 +76,14 @@ public class SiteSimulationTest {
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
         s.start();
-        final FlexTuple t = site.getFlexTuples().get(0);
+        final FlexTuple t = site.getFlexTuples().get(10);
         site.activateFlex(new ActivateFlexCommand() {
-
-            @Override
-            public boolean isDownFlexCommand() {
-                return true;
-            }
 
             @Override
             public long getReferenceID() {
                 return t.getId();
             }
-
-            @Override
-            public int getSizeOfP() {
-                // TODO Auto-generated method stub
-                return 50;
-            }
-
-            @Override
-            public int getSizeOfT() {
-                // TODO Auto-generated method stub
-                return 6;
-            }
         });
-        // TODO Change sitesim flex profiles.
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
         s.start();

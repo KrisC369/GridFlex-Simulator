@@ -175,23 +175,8 @@ public class SiteTest {
         s.activateFlex(new ActivateFlexCommand() {
 
             @Override
-            public boolean isDownFlexCommand() {
-                return true;
-            }
-
-            @Override
             public long getReferenceID() {
                 return t.getId();
-            }
-
-            @Override
-            public int getSizeOfP() {
-                return 0;
-            }
-
-            @Override
-            public int getSizeOfT() {
-                return 0;
             }
         });
         sim = Simulator.createSimulator(SIMSTEPS);
@@ -220,25 +205,9 @@ public class SiteTest {
         sim.start();
         final FlexTuple t = s.getFlexTuples().get(1);
         s.activateFlex(new ActivateFlexCommand() {
-
-            @Override
-            public boolean isDownFlexCommand() {
-                return false;
-            }
-
             @Override
             public long getReferenceID() {
                 return t.getId();
-            }
-
-            @Override
-            public int getSizeOfP() {
-                return 0;
-            }
-
-            @Override
-            public int getSizeOfT() {
-                return 0;
             }
         });
         sim = Simulator.createSimulator(SIMSTEPS);

@@ -19,7 +19,7 @@ import com.google.common.collect.Multimap;
 
 /**
  * An implementation for the Site interface.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -27,11 +27,11 @@ public class SiteImpl implements Site {
 
     private final List<FlexProcess> processes;
     private Multimap<FlexProcess, FlexTuple> flex;
-    private Listener<? super ActivateFlexCommand> activationListener;
+    private Listener<? super FlexTuple> activationListener;
 
     /**
      * Default constructor based on lines.
-     * 
+     *
      * @param lines
      *            The lines present in this site.
      */
@@ -52,12 +52,12 @@ public class SiteImpl implements Site {
         for (FlexProcess p : flex.keySet()) {
             for (FlexTuple t : flex.get(p)) {
                 if (t.getId() == schedule.getReferenceID()) {
-                    if (schedule.isDownFlexCommand()) {
+                    if (!t.getDirection()) {
                         p.executeDownFlexProfile(t.getId());
                     } else {
                         p.executeUpFlexProfile(t.getId());
                     }
-                    this.activationListener.eventOccurred(schedule);
+                    this.activationListener.eventOccurred(t);
                 }
             }
         }
@@ -184,8 +184,7 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public void addActivationListener(
-            Listener<? super ActivateFlexCommand> listener) {
+    public void addActivationListener(Listener<? super FlexTuple> listener) {
         this.activationListener = MultiplexListener.plus(
                 this.activationListener, listener);
     }
