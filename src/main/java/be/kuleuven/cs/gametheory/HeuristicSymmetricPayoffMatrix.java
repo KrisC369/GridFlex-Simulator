@@ -159,8 +159,11 @@ public class HeuristicSymmetricPayoffMatrix {
     public String toString() {
         StringBuilder b = new StringBuilder();
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
-            b.append("V:").append(e.getKey()).append("->")
-                    .append(Arrays.toString(e.getValue())).append("\n");
+            b.append("V:")
+                    .append(e.getKey())
+                    .append("->")
+                    .append(Arrays.toString(this.getEntry(e.getKey()
+                            .getEntries()))).append("\n");
             b.append("C:").append(e.getKey()).append("->")
                     .append(tableCount.get(e.getKey())).append("\n");
         }
@@ -178,7 +181,7 @@ public class HeuristicSymmetricPayoffMatrix {
         List<Double> toReturn = Lists.newArrayList();
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
             PayoffEntry entry = e.getKey();
-            Long[] values = e.getValue();
+            double[] values = getEntry(e.getKey().getEntries());
             int coeffDone = 0;
             for (int i = 0; i < entry.getEntries().length; i++) {
                 int currCoeff = entry.getEntries()[i];

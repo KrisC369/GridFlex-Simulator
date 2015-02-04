@@ -176,12 +176,14 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testToString() {
+        int valueL = 34;
         System.out.println(table.toString());
         assertTrue(this.table.toString().isEmpty());
-        long[] value = new long[] { 34, 34, 34 };
+        long[] value = new long[] { valueL, valueL, valueL };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
         assertFalse(this.table.toString().isEmpty());
+        assertTrue(this.table.toString().contains(String.valueOf(valueL)));
     }
 }

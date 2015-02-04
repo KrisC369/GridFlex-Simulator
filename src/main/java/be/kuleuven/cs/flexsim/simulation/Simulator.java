@@ -60,7 +60,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Instantiates a new simulator.
-     * 
+     *
      * @param duration
      *            the duration
      * @param seed
@@ -88,7 +88,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Instantiates a new simulator.
-     * 
+     *
      * @param duration
      *            the duration
      */
@@ -98,7 +98,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Gets the simulation components.
-     * 
+     *
      * @return the tick-receiving components of this simulation
      */
     public Collection<SimulationComponent> getSimulationComponents() {
@@ -107,7 +107,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Returns the instrumentation components of this simulator.
-     * 
+     *
      * @return the instrumentation components.
      */
     public Collection<InstrumentationComponent> getInstrumentationComponents() {
@@ -116,7 +116,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Gets the scheduled duration of this simulation.
-     * 
+     *
      * @return the duration
      */
     public int getDuration() {
@@ -140,7 +140,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Gets the elapsed simulation time.
-     * 
+     *
      * @return the simulation time
      */
     public int getSimulationTime() {
@@ -149,7 +149,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Starts this simulation by running the simulation loop.
-     * 
+     *
      */
     public void start() {
         notifyStart();
@@ -229,7 +229,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Creates and instantiates a new simulator.
-     * 
+     *
      * @param duration
      *            the duration the simulator should run for.
      * @return A new simulator object.
@@ -240,7 +240,7 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Creates and instantiates a new simulator with a given seed for the PRNG.
-     * 
+     *
      * @param duration
      *            the duration the simulator should run for.
      * @param seed
