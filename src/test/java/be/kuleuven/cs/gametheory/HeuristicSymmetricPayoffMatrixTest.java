@@ -128,7 +128,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
             value = new long[] { reward, reward, reward };
             table.addEntry(value, agents - i, i);
         }
-        List<Double> result = table.getDynamicsArguments();
+        List<Double> result = table.getDynamicEquationFactors();
 
         // Test values:
         assertEquals(34, result.get(0), 0);
@@ -161,7 +161,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
         value = new long[] { reward, reward };
         table.addEntry(value, 0, 0, 2);
 
-        List<Double> result = table.getDynamicsArguments();
+        List<Double> result = table.getDynamicEquationFactors();
         assertEquals(9, result.size(), 0);
         // Test values:
         assertEquals(34, result.get(0), 0);

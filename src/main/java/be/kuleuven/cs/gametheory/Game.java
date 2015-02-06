@@ -34,6 +34,7 @@ public class Game<N, K> implements Writable {
     private final GameInstanceGenerator<N, K> instanceGen;
     private final int reps;
     private final Logger logger;
+    private final static String console = "CONSOLE";
 
     /**
      * Default constructor.
@@ -53,7 +54,7 @@ public class Game<N, K> implements Writable {
                 this.actions);
         this.instanceGen = config;
         this.reps = reps;
-        this.logger = LoggerFactory.getLogger(Game.class);
+        this.logger = LoggerFactory.getLogger(console);
     }
 
     private void fillMatrix() {
@@ -123,18 +124,20 @@ public class Game<N, K> implements Writable {
      */
     public void runExperiment() {
         fillMatrix();
-        printResultsToSysOut();
+        logResults();
     }
 
     /**
-     * 
+     *
      */
-    private void printResultsToSysOut() {
-        System.out.println(payoffs.toString());
-        System.out.println("Dynamics equation params:");
-        for (Double d : payoffs.getDynamicsArguments()) {
-            System.out.println(d);
+    private void logResults() {
+        StringBuilder b = new StringBuilder();
+        b.append(getFormattedResultString()).append("\n")
+                .append("Dynamics equation params:");
+        for (Double d : payoffs.getDynamicEquationFactors()) {
+            b.append(d).append("\n");
         }
+        logger.info(b.toString());
     }
 
     @Override
@@ -151,7 +154,7 @@ public class Game<N, K> implements Writable {
         StringBuilder b = new StringBuilder();
         char character = 'a';
         b.append("\n");
-        for (Double d : payoffs.getDynamicsArguments()) {
+        for (Double d : payoffs.getDynamicEquationFactors()) {
             b.append(character++).append("=").append(d).append(";\n");
         }
         return b.toString();
