@@ -1,5 +1,7 @@
 package be.kuleuven.cs.gametheory.experimentation.runners;
 
+import org.slf4j.LoggerFactory;
+
 /**
  * An example class running some experiments.
  *
@@ -63,11 +65,13 @@ public class MultiThreadedExperimentRunner {
      */
     public void runExperiments() {
         for (int d = 0; d <= 1 * factor; d += stepSize * factor) {
-            while (threadCount >= threads) {
+            while (getThreadCount() >= threads) {
                 try {
                     Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    LoggerFactory
+                            .getLogger(MultiThreadedExperimentRunner.class)
+                            .error(e.getStackTrace().toString());
                 }
             }
             final double dd = d / factor;
@@ -88,6 +92,10 @@ public class MultiThreadedExperimentRunner {
 
     private synchronized void decreaseThreadCount() {
         this.threadCount--;
+    }
+
+    private synchronized int getThreadCount() {
+        return this.threadCount;
     }
 
     /**

@@ -34,7 +34,7 @@ public class Game<N, K> implements Writable {
     private final GameInstanceGenerator<N, K> instanceGen;
     private final int reps;
     private final Logger logger;
-    private final static String console = "CONSOLE";
+    private static final String CONSOLE = "CONSOLE";
 
     /**
      * Default constructor.
@@ -54,7 +54,7 @@ public class Game<N, K> implements Writable {
                 this.actions);
         this.instanceGen = config;
         this.reps = reps;
-        this.logger = LoggerFactory.getLogger(console);
+        this.logger = LoggerFactory.getLogger(CONSOLE);
     }
 
     private void fillMatrix() {
