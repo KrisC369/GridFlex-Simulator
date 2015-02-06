@@ -17,6 +17,15 @@ public enum DebtModel {
             return lastConsumption * FACTOR;
         }
 
+    },
+    /**
+     * Charging no price at all.
+     */
+    NONE {
+        @Override
+        public double calculateDebt(int timestep, double lastConsumption) {
+            return 0;
+        }
     };
 
     private static final double FACTOR = 48.8;

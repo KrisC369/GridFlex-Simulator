@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 
 /**
  * Utility class for generation of Permutation and combinations of items.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The elements that will be permuted or recombined.
@@ -21,7 +21,7 @@ public class NPermuteAndCombiner<T> {
 
     /**
      * Process a list and partition it in all unique k-size combinations.
-     * 
+     *
      * @param set
      *            the source set of items.
      * @param k
@@ -58,7 +58,7 @@ public class NPermuteAndCombiner<T> {
 
     /**
      * Creates all k-size permutations of the input list.
-     * 
+     *
      * @param list
      *            The input list.
      * @param n
@@ -85,10 +85,10 @@ public class NPermuteAndCombiner<T> {
      * Combines several collections of elements and create permutations of all
      * of them, taking one element from each collection, and keeping the same
      * order in resultant lists as the one in original list of collections.
-     * 
+     *
      * Example: Input = { {a,b,c} , {1,2,3,4} } Output = { {a,1} , {a,2} , {a,3}
      * , {a,4} , {b,1} , {b,2} , {b,3} , {b,4} , {c,1} , {c,2} , {c,3} , {c,4} }
-     * 
+     *
      * @param collections
      *            Original list of collections which elements have to be
      *            combined.
@@ -97,13 +97,12 @@ public class NPermuteAndCombiner<T> {
      * @deprecated Use Guava's Sets.carthesianProduct instead
      */
     public Collection<List<T>> permutations(List<Collection<T>> collections) {
-        if (collections == null || collections.isEmpty()) {
+        if (collections.isEmpty()) {
             return Collections.emptyList();
         }
         Collection<List<T>> res = Lists.newLinkedList();
         permutationsImpl(collections, res, 0, new LinkedList<T>());
         return res;
-
     }
 
     /** Recursive implementation for {@link #permutations(List, Collection)} */

@@ -22,7 +22,7 @@ import com.google.common.collect.Lists;
 /**
  * Class representing a site module that makes abstraction of the underlying
  * mechanism and produces flex and consumption patterns.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -36,12 +36,15 @@ public class SiteSimulation implements Site {
     private UIDGenerator generator;
     private int totalConsumption;
     private final int baseProduction;
-    private Listener<? super ActivateFlexCommand> activationListener;
+    private Listener<? super FlexTuple> activationListener;
     private static final int DEFAULT_BASE_PRODUCTION = 20;
+    private final int baseConsumption;
+    private int noFlexTimer;
+    private int flexTimer;
 
     /**
      * Default constructor for this mock simulating site.
-     * 
+     *
      * @param base
      *            The base consumption to start from.
      * @param min
@@ -66,26 +69,38 @@ public class SiteSimulation implements Site {
                 return 0;
             }
         };
+        this.noFlexTimer = 0;
+        this.flexTimer = 0;
+        this.baseConsumption = base;
     }
 
     @Override
     public List<FlexTuple> getFlexTuples() {
-        calculateCurrentFlex();
-        return Lists.newArrayList(flexData);
+        if (this.noFlexTimer == 0) {
+            calculateCurrentFlex();
+            return Lists.newArrayList(flexData);
+        }
+        return Lists.newArrayList();
     }
 
     @Override
     public void activateFlex(ActivateFlexCommand schedule) {
         for (FlexTuple f : flexData) {
             if (f.getId() == schedule.getReferenceID()) {
-                if (schedule.isDownFlexCommand()) {
+                if (!f.getDirection()) {
                     currentConsumption -= f.getDeltaP();
                 } else {
                     currentConsumption += f.getDeltaP();
                 }
-                this.activationListener.eventOccurred(schedule);
+                startTheClock(f.getT(), f.getTC());
+                this.activationListener.eventOccurred(f);
             }
         }
+    }
+
+    private void startTheClock(int steps, int cease) {
+        this.noFlexTimer = steps + cease;
+        this.flexTimer = steps;
     }
 
     @Override
@@ -153,7 +168,9 @@ public class SiteSimulation implements Site {
     }
 
     protected final FlexTuple makeTuple(int power, boolean isUpflex) {
-        return FlexTuple.create(newId(), power, isUpflex, 0, 0, 0);
+        // return FlexTuple.create(newId(), power, isUpflex,
+        // (int) (Math.random() * 50), 0, (int) (Math.random() * 10));
+        return FlexTuple.create(newId(), power, isUpflex, 1, 0, 0);
     }
 
     private long newId() {
@@ -167,6 +184,19 @@ public class SiteSimulation implements Site {
 
     @Override
     public void tick(int t) {
+        if (flexTimer == 0) {
+            resetCons();
+        }
+        if (flexTimer > 0) {
+            flexTimer--;
+        }
+        if (noFlexTimer > 0) {
+            noFlexTimer--;
+        }
+    }
+
+    private void resetCons() {
+        this.currentConsumption = baseConsumption;
     }
 
     @Override
@@ -227,8 +257,7 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void addActivationListener(
-            Listener<? super ActivateFlexCommand> listener) {
+    public void addActivationListener(Listener<? super FlexTuple> listener) {
         this.activationListener = MultiplexListener.plus(
                 this.activationListener, listener);
 
@@ -236,7 +265,7 @@ public class SiteSimulation implements Site {
 
     /**
      * Default constructor for this mock simulating site.
-     * 
+     *
      * @param base
      *            The base consumption to start from.
      * @param min
@@ -255,7 +284,7 @@ public class SiteSimulation implements Site {
 
     /**
      * Constructor for a simulating site with equidistant flex.
-     * 
+     *
      * @param base
      *            The base consumption to start from.
      * @param min

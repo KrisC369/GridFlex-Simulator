@@ -159,29 +159,51 @@ public class FinanceTrackerTest {
 
     @Test
     public void testBalancingFee() {
-        final Site s = SiteSimulation.createDefault(200, 50, 200, 4);
+        final int pay = 300;
+        final int min = 50, max = 300, base = 200, tuples = 4;
+        final Site s = SiteSimulation.createDefault(base, min, max, tuples);
         t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
-                s, 300);
-        ActivateFlexCommand c = mock(ActivateFlexCommand.class);
+                s, pay);
 
         sim = Simulator.createSimulator(1);
         sim.register(s);
         sim.register(t);
         ((Simulator) sim).start();
         final long id = s.getFlexTuples().get(0).getId();
-        assertEquals(240, t.getTotalProfit(), 0);
+        assertEquals(0, t.getTotalProfit(), 0);
         s.activateFlex(new ActivateFlexCommand() {
 
             @Override
-            public boolean isDownFlexCommand() {
-                return false;
+            public long getReferenceID() {
+                return id;
             }
+
+        });
+        assertEquals(pay * (max - base) / tuples, t.getTotalProfit(), 0);
+
+    }
+
+    @Test
+    public void testBalancingFee2() {
+        final int pay = 300;
+        final int min = 50, max = 300, base = 200, tuples = 4;
+        final Site s = SiteSimulation.createDefault(base, min, max, tuples);
+        t = (FinanceTrackerImpl) FinanceTrackerImpl.createBalancingFeeTracker(
+                s, pay);
+
+        sim = Simulator.createSimulator(1);
+        sim.register(s);
+        sim.register(t);
+        ((Simulator) sim).start();
+        final long id = s.getFlexTuples().get(0).getId();
+        assertEquals(0, t.getTotalProfit(), 0);
+        s.activateFlex(new ActivateFlexCommand() {
 
             @Override
             public long getReferenceID() {
                 return id;
             }
         });
-        assertEquals(540, t.getTotalProfit(), 0);
+        assertEquals(pay * (max - base) / tuples, t.getTotalProfit(), 0);
     }
 }

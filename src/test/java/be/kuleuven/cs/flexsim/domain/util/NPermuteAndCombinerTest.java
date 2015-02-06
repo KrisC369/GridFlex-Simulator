@@ -3,12 +3,16 @@ package be.kuleuven.cs.flexsim.domain.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.paukov.combinatorics.Factory;
+import org.paukov.combinatorics.Generator;
+import org.paukov.combinatorics.ICombinatoricsVector;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
@@ -117,6 +121,13 @@ public class NPermuteAndCombinerTest {
     }
 
     @Test
+    public void testEmpty() {
+        Collection<List<String>> result = g
+                .permutations(new ArrayList<Collection<String>>());
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
     public void testGuavaEquivalence() {
         Collection<String> k = Lists.newArrayList("X", "Y", "Z");
         Set<String> f1 = Sets.newLinkedHashSet(k);
@@ -149,5 +160,36 @@ public class NPermuteAndCombinerTest {
         }
         assertTrue(result7.containsAll(result9));
         assertTrue(result9.containsAll(result7));
+    }
+
+    @Test
+    public void testCombinationSize() {
+        int k = 3, n = 20;
+        int result = 231;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 3;
+        n = 6;
+        result = 28;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 3;
+        n = 8;
+        result = 45;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 3;
+        n = 10;
+        result = 66;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+        k = 6;
+        n = 4;
+        result = 126;
+        assertEquals(MathUtils.multiCombinationSize(k, n), result, 0);
+
+        ICombinatoricsVector<String> initialVector = Factory
+                .createVector(new String[] { "a", "b", "c", "d", "e", "f", });
+        Generator<String> gen = Factory.createMultiCombinationGenerator(
+                initialVector, n);
+
+        assertEquals(MathUtils.multiCombinationSize(k, n),
+                gen.getNumberOfGeneratedObjects(), 0);
     }
 }

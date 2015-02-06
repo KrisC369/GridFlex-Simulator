@@ -12,6 +12,7 @@ import org.junit.Test;
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 import com.google.common.collect.Lists;
@@ -20,6 +21,7 @@ import com.google.common.collect.Sets;
 public class SiteTest {
 
     Site s = new SiteImpl();
+    private static final int SIMSTEPS = 10;
 
     @Before
     public void setUp() throws Exception {
@@ -150,5 +152,94 @@ public class SiteTest {
         s = new SiteImpl(line1, line2);
         String res = s.toString();
         assertTrue(res.contains(((Integer) s.hashCode()).toString()));
+    }
+
+    @Test
+    public void testChangeConsumptionToLow() {
+        s = genHighSite();
+        Simulator sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+        sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+
+        double before = s.getTotalConsumption();
+
+        s = genHighSite();
+
+        sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+        final FlexTuple t = s.getFlexTuples().get(1);
+        s.activateFlex(new ActivateFlexCommand() {
+
+            @Override
+            public long getReferenceID() {
+                return t.getId();
+            }
+        });
+        sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+        double after = s.getTotalConsumption();
+        assertTrue(before > after);
+    }
+
+    @Test
+    public void testChangeConsumptionToHigh() {
+        s = genLowSite();
+        Simulator sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+        sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+
+        double before = s.getTotalConsumption();
+
+        s = genLowSite();
+
+        sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+        final FlexTuple t = s.getFlexTuples().get(1);
+        s.activateFlex(new ActivateFlexCommand() {
+            @Override
+            public long getReferenceID() {
+                return t.getId();
+            }
+        });
+        sim = Simulator.createSimulator(SIMSTEPS);
+        sim.register(s);
+        sim.start();
+        double after = s.getTotalConsumption();
+        assertTrue(before < after);
+    }
+
+    private Site genHighSite() {
+        ProductionLine line1 = new ProductionLine.ProductionLineBuilder()
+                .addRFSteerableStation(2, 20).build();
+        ProductionLine line2 = new ProductionLine.ProductionLineBuilder()
+                .addRFSteerableStation(2, 20).build();
+        for (DualModeWorkstation w : line1.getDualModeStations()) {
+            w.signalHighConsumption();
+        }
+        for (DualModeWorkstation w : line2.getDualModeStations()) {
+            w.signalHighConsumption();
+        }
+        line1.deliverResources(ResourceFactory.createBulkMPResource(1000, 5));
+        line2.deliverResources(ResourceFactory.createBulkMPResource(1000, 5));
+        return new SiteImpl(line1, line2);
+    }
+
+    private Site genLowSite() {
+        ProductionLine line1 = new ProductionLine.ProductionLineBuilder()
+                .addRFSteerableStation(2, 20).build();
+        ProductionLine line2 = new ProductionLine.ProductionLineBuilder()
+                .addRFSteerableStation(2, 20).build();
+        line1.deliverResources(ResourceFactory.createBulkMPResource(1000, 5));
+        line2.deliverResources(ResourceFactory.createBulkMPResource(1000, 5));
+        return new SiteImpl(line1, line2);
     }
 }

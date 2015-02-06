@@ -76,13 +76,8 @@ public class SiteSimulationTest {
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
         s.start();
-        final FlexTuple t = site.getFlexTuples().get(1);
+        final FlexTuple t = site.getFlexTuples().get(10);
         site.activateFlex(new ActivateFlexCommand() {
-
-            @Override
-            public boolean isDownFlexCommand() {
-                return true;
-            }
 
             @Override
             public long getReferenceID() {

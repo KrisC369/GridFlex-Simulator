@@ -79,12 +79,6 @@ public class EquidistantSiteSimulationTest {
         s.start();
         final FlexTuple t = site.getFlexTuples().get(1);
         site.activateFlex(new ActivateFlexCommand() {
-
-            @Override
-            public boolean isDownFlexCommand() {
-                return true;
-            }
-
             @Override
             public long getReferenceID() {
                 return t.getId();
@@ -107,11 +101,6 @@ public class EquidistantSiteSimulationTest {
         s.start();
         List<FlexTuple> tuples = site.getFlexTuples();
         for (int i = 3; i < tuples.size(); i++) {
-            // if (tuples.get(i).getDeltaP() - tuples.get(i - 1).getDeltaP() !=
-            // tuples
-            // .get(i - 1).getDeltaP() - tuples.get(i - 2).getDeltaP()) {
-            // fail();
-            // }
             if (tuples.get(i).getDeltaP() - tuples.get(i - 1).getDeltaP() != (MAX - MIN)
                     / MAXTUPLES) {
                 fail();

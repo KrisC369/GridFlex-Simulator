@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
@@ -17,11 +18,11 @@ import com.google.common.collect.Sets;
  * An abstract aggregator instance with logic to perform aggregation functions.
  * This class needs to be subclassed to specify how and when to trigger
  * aggregation.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-abstract class Aggregator {
+public abstract class Aggregator implements SimulationComponent {
     private final Set<SiteFlexAPI> clients;
     private final AggregationStrategy strategy;
 
@@ -120,11 +121,6 @@ abstract class Aggregator {
                                 @Override
                                 public long getReferenceID() {
                                     return tt.getId();
-                                }
-
-                                @Override
-                                public boolean isDownFlexCommand() {
-                                    return !tt.getDirection();
                                 }
                             });
                         }

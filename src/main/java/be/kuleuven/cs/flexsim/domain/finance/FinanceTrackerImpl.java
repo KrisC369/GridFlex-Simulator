@@ -237,4 +237,20 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
             int reward) {
         return new BalancingFeeTracker(target, reward);
     }
+
+    /**
+     * Create a new finance tracker with activation-rewards.
+     * 
+     * @param target
+     *            The target.
+     * @param reward
+     *            The reward for an activation.
+     * @param factor
+     *            The retribution factor.
+     * @return a FinanceTracker instance.
+     */
+    public static FinanceTracker createCustomBalancingFeeTracker(Site target,
+            int reward, double factor) {
+        return new BalancingFeeTracker(target, reward, factor);
+    }
 }

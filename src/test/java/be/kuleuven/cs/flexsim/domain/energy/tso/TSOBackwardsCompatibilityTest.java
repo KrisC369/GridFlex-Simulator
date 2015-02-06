@@ -76,7 +76,7 @@ public class TSOBackwardsCompatibilityTest {
         }
     }
 
-    public void testCompareBothStep1() {
+    private void testCompareBothStep1() {
         ComparingModule c = new ComparingModule(tso1, tso2);
         sim1.start();
         sim2.start();
@@ -94,8 +94,8 @@ public class TSOBackwardsCompatibilityTest {
                 @Override
                 public void eventOccurred(Integer arg) {
                     values1.add(arg);
-                    // //for debugging only
-                    // if (values1.size() == 9) {
+                    // for debugging only
+                    // if (values1.size() == 3) {
                     // return;
                     // }
                 }
@@ -104,8 +104,8 @@ public class TSOBackwardsCompatibilityTest {
 
                 public void eventOccurred(Integer arg) {
                     values2.add(arg);
-                    // //for debugging only
-                    // if (values2.size() == 9) {
+                    // for debugging only
+                    // if (values2.size() == 3) {
                     // return;
                     // }
                 }

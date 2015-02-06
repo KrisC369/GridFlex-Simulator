@@ -235,7 +235,7 @@ public class ProductionLineTest {
     }
 
     /**
-     * 
+     *
      */
     private void startSim() {
         ((Simulator) sim).start();
@@ -493,4 +493,5 @@ public class ProductionLineTest {
                 .addShifted(4).addMultiCapConstantConsuming(3, 12).build();
         assertTrue(l.toString().contains(l.getLayout().toString()));
     }
+
 }
