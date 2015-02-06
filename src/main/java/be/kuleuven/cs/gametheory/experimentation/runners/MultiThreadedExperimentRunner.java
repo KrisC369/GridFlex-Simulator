@@ -71,7 +71,7 @@ public class MultiThreadedExperimentRunner {
                 } catch (InterruptedException e) {
                     LoggerFactory
                             .getLogger(MultiThreadedExperimentRunner.class)
-                            .error(e.getStackTrace().toString());
+                            .error("Interrupt called!", e);
                 }
             }
             final double dd = d / factor;
