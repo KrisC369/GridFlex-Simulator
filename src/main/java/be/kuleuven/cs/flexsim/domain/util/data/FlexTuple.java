@@ -3,9 +3,11 @@ package be.kuleuven.cs.flexsim.domain.util.data;
 import javax.annotation.Nullable;
 
 /**
- * Tuples representing flexibility.
+ * Tuples representing a power flexibility profile. This tuple is a 6-element
+ * tuple consisting of a unique ID, the amount of power represented by this
+ * profile, the direction (increase or decrease of consumption), the duration,
+ * the lead time needed to activate and the time needed to recover afterwards.
  *
- * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -36,7 +38,7 @@ public class FlexTuple {
 
     /**
      * Creation method for a FlexTuple.
-     * 
+     *
      * @param id
      *            The id
      * @param deltaP
@@ -58,7 +60,7 @@ public class FlexTuple {
 
     /**
      * Returns a tuple representing no flex.
-     * 
+     *
      * @return an empty tuple.
      */
     public static FlexTuple createNONE() {
@@ -73,7 +75,8 @@ public class FlexTuple {
     }
 
     /**
-     * @return the deltaP
+     * @return the deltaP value. This value represents the amount of power
+     *         available in KW.
      */
     public final int getDeltaP() {
         return deltaP;
@@ -83,29 +86,32 @@ public class FlexTuple {
      * Returns the direction of flexibility. Positive flexibility represents the
      * ability to consume more, while negative flexibility represents the
      * ability to curtail.
-     * 
-     * @return the direction
+     *
+     * @return the direction of flexibility. True for upflex (consume more) and
+     *         False for downflex (curtailment).
      */
     public final boolean getDirection() {
         return direction;
     }
 
     /**
-     * @return the t
+     * @return the duration for which the deltaP power amount can be made
+     *         available.
      */
     public final int getT() {
         return t;
     }
 
     /**
-     * @return the t_r
+     * @return the lead time needed to activate the full profile.
      */
     public final int getTR() {
         return tR;
     }
 
     /**
-     * @return the t_c
+     * @return the cease time after activation. This is the time this activation
+     *         needs to recover.
      */
     public final int getTC() {
         return tC;
