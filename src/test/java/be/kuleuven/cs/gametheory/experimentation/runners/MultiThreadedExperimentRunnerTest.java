@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gametheory.experimentation.runners;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
@@ -27,9 +28,18 @@ public class MultiThreadedExperimentRunnerTest {
         blockWait(runner);
         assertEquals(21, list.size());
         int count = 0;
-        for (float i = 0; i <= 1.0; i += 0.05) {
-            assertEquals(i, list.get(count++), 0.05);
+        for (double i = 0; i <= 1.0; i += 0.05) {
+            assertTrue(containsAprox(list, i, 0.01));
         }
+    }
+
+    private boolean containsAprox(List<Double> list, double elem, double error) {
+        for (Double d : list) {
+            if (Math.abs(d - elem) < error) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Test

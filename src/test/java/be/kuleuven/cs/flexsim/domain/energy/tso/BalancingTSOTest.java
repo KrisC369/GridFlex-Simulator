@@ -13,17 +13,24 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
+@RunWith(Theories.class)
 public class BalancingTSOTest {
 
     private BalancingTSO tso = mock(BalancingTSO.class);
     private Simulator sim = Simulator.createSimulator(1);
     private double imbalance = 1000d;
     private int steps = 1;
+    public static @DataPoints double[] candidates = { 1000d, -1000d, 0 };
+
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
@@ -37,7 +44,14 @@ public class BalancingTSOTest {
     }
 
     @Test
-    public void testImbalanceValueInit() {
+    @Theory
+    public void testImbalanceValueInit(double candidate) {
+        imbalance = candidate;
+        try {
+            setUp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         sim.start();
         assertEquals(imbalance, tso.getCurrentImbalance(), 0);
     }
