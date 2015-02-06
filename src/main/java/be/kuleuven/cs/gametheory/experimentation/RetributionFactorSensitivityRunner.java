@@ -5,7 +5,7 @@ import org.apache.commons.math3.random.MersenneTwister;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.gametheory.Game;
-import be.kuleuven.cs.gametheory.experimentation.io.GameResultWriter;
+import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.experimentation.io.ResultWriter;
 import be.kuleuven.cs.gametheory.experimentation.runners.RunnableExperiment;
 

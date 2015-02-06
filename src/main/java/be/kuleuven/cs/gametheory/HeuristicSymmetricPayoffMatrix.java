@@ -176,8 +176,7 @@ public class HeuristicSymmetricPayoffMatrix {
      *
      * @return A list of coefficients.
      */
-    public List<Double> getDynamicsArguments() {
-        // TODO rethink naming... xD
+    public List<Double> getDynamicEquationFactors() {
         List<Double> toReturn = Lists.newArrayList();
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
             PayoffEntry entry = e.getKey();

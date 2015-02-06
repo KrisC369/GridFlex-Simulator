@@ -25,9 +25,8 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     private int currentTarget;
     private LinkedListMultimap<SiteFlexAPI, FlexTuple> currentFlex;
-
-    // private int tickcount;
-    // private final int aggFreq;
+    private int tickcount;
+    private final int aggFreq;
 
     /**
      * Default constructor.
@@ -57,7 +56,7 @@ public class ReactiveMechanismAggregator extends Aggregator implements
         host.registerParticipant(this);
         this.currentTarget = 0;
         this.currentFlex = LinkedListMultimap.create();
-        // this.aggFreq = frequency;
+        this.aggFreq = frequency;
     }
 
     /**
@@ -91,9 +90,9 @@ public class ReactiveMechanismAggregator extends Aggregator implements
 
     @Override
     public void tick(int t) {
-        // if (tickcount++ % aggFreq == 0) {
-        doAggregationStep(t, currentTarget, currentFlex);
-        // }
+        if (tickcount++ % aggFreq == 0) {
+            doAggregationStep(t, currentTarget, currentFlex);
+        }
     }
 
     private int findMaxUpInPortfolio() {

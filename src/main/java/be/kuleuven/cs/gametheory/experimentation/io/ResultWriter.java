@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 /**
- * Writes the results from experimentation to certain outputs. eg. Sysout.
+ * Writes the results from experimentation to certain outputs (eg. a logger).
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
@@ -20,7 +20,7 @@ public class ResultWriter {
     private final Map<String, String> resultComponents;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
      * @param target
      *            The target to take results from.

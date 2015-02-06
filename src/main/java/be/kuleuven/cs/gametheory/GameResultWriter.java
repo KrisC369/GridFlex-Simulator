@@ -1,6 +1,6 @@
-package be.kuleuven.cs.gametheory.experimentation.io;
+package be.kuleuven.cs.gametheory;
 
-import be.kuleuven.cs.gametheory.Game;
+import be.kuleuven.cs.gametheory.experimentation.io.ResultWriter;
 
 /**
  * Writes game results to this writer.

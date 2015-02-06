@@ -4,9 +4,9 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
 
 /**
  * The Reward model representation.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
+ *
  */
 public enum RewardModel {
     /**
@@ -31,12 +31,12 @@ public enum RewardModel {
         }
 
     };
-    ;
+
     private static final int REWARD_RATE = 500;
 
     /**
      * Calculate a reward for finishing a certain resource at timestep r.
-     * 
+     *
      * @param timestep
      *            The timestep.
      * @param r

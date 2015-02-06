@@ -33,8 +33,8 @@ import be.kuleuven.cs.flexsim.domain.site.SiteImpl;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.gametheory.Game;
+import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.experimentation.GameConfiguratorEx;
-import be.kuleuven.cs.gametheory.experimentation.io.GameResultWriter;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
