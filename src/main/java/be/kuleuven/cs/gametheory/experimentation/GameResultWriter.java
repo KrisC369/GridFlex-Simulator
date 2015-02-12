@@ -1,19 +1,17 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.experimentation;
 
-import be.kuleuven.cs.gametheory.experimentation.io.ResultWriter;
+import be.kuleuven.cs.gametheory.GameDirector;
+import be.kuleuven.cs.gametheory.io.ResultWriter;
 
 /**
  * Writes game results to this writer.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <N>
- *            Param N.
- * @param <K>
- *            Param K.
+ *
  *
  */
-public class GameResultWriter<N, K> extends ResultWriter {
-    private final Game<N, K> g;
+public class GameResultWriter extends ResultWriter {
+    private final GameDirector g;
 
     /**
      * Default constructor.
@@ -21,8 +19,8 @@ public class GameResultWriter<N, K> extends ResultWriter {
      * @param target
      *            the game target.
      */
-    public GameResultWriter(Game<N, K> target) {
-        super(target);
+    public GameResultWriter(GameDirector target) {
+        super(target.getFormattedResults());
         this.g = target;
     }
 
@@ -34,15 +32,15 @@ public class GameResultWriter<N, K> extends ResultWriter {
      * @param loggerTag
      *            The result writer tag.
      */
-    public GameResultWriter(Game<N, K> target, String loggerTag) {
-        super(target, loggerTag);
+    public GameResultWriter(GameDirector target, String loggerTag) {
+        super(target.getFormattedResults(), loggerTag);
         this.g = target;
     }
 
     @Override
     public void write() {
         addResultComponent("Game dynamics results",
-                g.getDynamicsParametersString());
+                g.getDynamicEquationArguments());
         super.write();
     }
 }

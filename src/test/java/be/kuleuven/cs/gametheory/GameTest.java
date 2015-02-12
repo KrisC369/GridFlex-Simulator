@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 public class GameTest {
     private GameConfigurator config = mock(GameConfigurator.class);
     private Game<Site, Aggregator> g = mock(Game.class);
+    private GameDirector director = mock(GameDirector.class);
     private List<Site> players = Lists.newArrayList();
     private int agents = 3;
     private int reps = 20;
@@ -49,7 +50,7 @@ public class GameTest {
                     private Aggregator agg2 = mock(Aggregator.class);
 
                     @Override
-                    public void start() {
+                    public void play() {
                     }
 
                     @Override
@@ -97,14 +98,15 @@ public class GameTest {
             }
         };
         g = new Game<>(agents, config, reps);
+        this.director = new GameDirector(g);
     }
 
     @Test
     public void testGame() {
-        g.runExperiment();
-        System.out.println(g.getFormattedResultString());
-        System.out.println(g.getDynamicsParametersString());
+        director.playAutonomously();
+        // System.out.println(g.getResultString());
+        // System.out.println(g.getDynamicsParametersString());
         assertTrue(g.getDynamicsParametersString().contains("34.0"));
-        assertTrue(g.getFormattedResultString().contains("[34.0, 34.0, 34.0]"));
+        assertTrue(g.getResultString().contains("[34.0, 34.0, 34.0]"));
     }
 }
