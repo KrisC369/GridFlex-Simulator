@@ -7,6 +7,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.slf4j.LoggerFactory;
+
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentRunner;
 
@@ -50,7 +52,8 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
         try {
             executor.invokeAll(todo);
         } catch (InterruptedException e1) {
-            e1.printStackTrace();
+            LoggerFactory.getLogger(MultiThreadedExperimentRunner.class).warn(
+                    "Interrupt called during invocation", e1);
         }
         executor.shutdown();
     }
