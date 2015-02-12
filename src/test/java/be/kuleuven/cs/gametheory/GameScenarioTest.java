@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.gametheory.experimentation.GameConfiguratorEx;
-import be.kuleuven.cs.gametheory.experimentation.GameResultWriter;
+import be.kuleuven.cs.gametheory.io.GameResultWriter;
 
 public class GameScenarioTest {
 
@@ -27,6 +27,7 @@ public class GameScenarioTest {
         assertTrue(game.getResultString().contains("C:PayoffEntry [0, 3]->20"));
         assertTrue(game.getResultString().contains(
                 "V:PayoffEntry [0, 3]->[729632.5, 763297.5, 678570.0]"));
-
+        assertFalse(game.getDynamicsParametersString().isEmpty());
     }
+
 }

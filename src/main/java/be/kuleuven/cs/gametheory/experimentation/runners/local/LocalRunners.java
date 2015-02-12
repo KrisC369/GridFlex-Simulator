@@ -1,7 +1,6 @@
-package be.kuleuven.cs.gametheory.experimentation.runners;
+package be.kuleuven.cs.gametheory.experimentation.runners.local;
 
-import be.kuleuven.cs.gametheory.experimentation.runners.local.MultiThreadedExperimentRunner;
-import be.kuleuven.cs.gametheory.experimentation.runners.local.SingleThreadedExperimentRunner;
+import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentRunner;
 
 /**
  * Factory for creating experiment Runners.
@@ -9,11 +8,11 @@ import be.kuleuven.cs.gametheory.experimentation.runners.local.SingleThreadedExp
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public final class RunnerFactory {
+public final class LocalRunners {
     private static final int DEFAULT_THREADS = 4;
 
-    private RunnerFactory() {
-    };
+    private LocalRunners() {
+    }
 
     /**
      * Creates a blocking multi-threaded runner.
