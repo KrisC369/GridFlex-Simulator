@@ -1,10 +1,8 @@
 package be.kuleuven.cs.gametheory.experimentation;
 
-import be.kuleuven.cs.gametheory.experimentation.runners.MultiThreadedExperimentRunner;
-
 /**
  * An example class running some experiments.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -13,7 +11,6 @@ public final class RetributionFactorSensitivityRunner3A extends
 
     private static final int NAGENTS = 3;
     private static final int REPITITIONS = 200;
-    private static final int THREADS = 3;
     private static final String TAG = "RESULT3A";
 
     protected RetributionFactorSensitivityRunner3A() {
@@ -27,8 +24,6 @@ public final class RetributionFactorSensitivityRunner3A extends
      *            commandline args.
      */
     public static void main(String[] args) {
-        new MultiThreadedExperimentRunner(
-                new RetributionFactorSensitivityRunner3A(), THREADS)
-                .runExperiments();
+        new RetributionFactorSensitivityRunner3A().execute();
     }
 }

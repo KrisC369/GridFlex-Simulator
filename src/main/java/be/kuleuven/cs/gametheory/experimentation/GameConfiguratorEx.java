@@ -9,9 +9,15 @@ import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
 
 /**
+<<<<<<< HEAD
  * Configuration provider. This is a factory for generating participating
  * elements according to the implemented generator interfaces.
  * 
+=======
+ * This is a factory for generating participating elements according to the
+ * implemented generator interfaces.
+ *
+>>>>>>> master
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -25,7 +31,11 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
 
     /**
      * Constructor for these experiments.
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> master
      * @param factor
      *            the retribution factor.
      */
@@ -35,7 +45,11 @@ public class GameConfiguratorEx implements GameConfigurator<Site, Aggregator> {
 
     /**
      * Constructor for these experiments.
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> master
      * @param factor
      *            the retribution factor.
      * @param twister

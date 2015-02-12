@@ -16,4 +16,5 @@ public interface RunnableExperiment {
      *            the parameter value to differentiate in.
      */
     void doExperimentRun(double varParam);
+
 }

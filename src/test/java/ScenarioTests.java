@@ -9,11 +9,13 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
-import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.ReactiveMechanismAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
@@ -32,13 +34,13 @@ import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteImpl;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
-import be.kuleuven.cs.gametheory.Game;
-import be.kuleuven.cs.gametheory.GameResultWriter;
-import be.kuleuven.cs.gametheory.experimentation.GameConfiguratorEx;
+import be.kuleuven.cs.gametheory.GameScenarioTest;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
+@RunWith(Suite.class)
+@SuiteClasses({ GameScenarioTest.class })
 public class ScenarioTests {
 
     private Simulator s;
@@ -908,17 +910,4 @@ public class ScenarioTests {
         assertEquals(profitBefore, profitAfter, 0);
         return profitAfter - profitBefore;
     }
-
-    @Test
-    public void testGameScenarioExample1() {
-        GameConfiguratorEx ex = new GameConfiguratorEx(0);
-        Game<Site, Aggregator> g = new Game<>(3, ex, 20);
-        g.runExperiment();
-        new GameResultWriter<>(g, "CONSOLE").write();
-        assertTrue(g.getFormattedResultString().contains(
-                "C:PayoffEntry [0, 3]->20"));
-        assertTrue(g.getFormattedResultString().contains(
-                "V:PayoffEntry [0, 3]->[729632.5, 763297.5, 678570.0]"));
-    }
-
 }

@@ -109,7 +109,7 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
     }
 
     @Override
-    public void start() {
+    public void play() {
         sim.start();
     }
 
