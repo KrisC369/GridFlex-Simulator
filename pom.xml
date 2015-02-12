@@ -4,6 +4,7 @@
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-core</artifactId>
 	<version>0.0.5-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>FlexSimulator</name>
 	<description>A simple project for some flex-representation experiments.</description>
 	<dependencies>
@@ -142,6 +143,28 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>make-assembly</id> <!-- this is used for inheritance merges -->
+						<phase>package</phase> <!-- bind to the packaging phase -->
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>be.kuleuven.cs.gametheory.experimentation.RetributionFactorSensitivityRunner2A</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
 			</plugin>
 			<!-- <plugin> <groupId>com.github.github</groupId> <artifactId>downloads-maven-plugin</artifactId>
 				<version>0.6</version> <configuration> <description>Official ${project.name}
