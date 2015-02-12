@@ -1,6 +1,5 @@
 package be.kuleuven.cs.gametheory.experimentation;
 
-
 /**
  * An example class running some experiments.
  *
@@ -12,11 +11,10 @@ public final class RetributionFactorSensitivityRunner6A extends
 
     private static final int NAGENTS = 6;
     private static final int REPITITIONS = 10;
-
-    // private static final int THREADS = 3;
+    private static final String TAG = "RESULT6A";
 
     protected RetributionFactorSensitivityRunner6A() {
-        super(REPITITIONS, NAGENTS);
+        super(REPITITIONS, NAGENTS, TAG);
     }
 
     /**

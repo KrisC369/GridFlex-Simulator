@@ -12,14 +12,11 @@ import org.junit.Test;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gametheory.experimentation.runners.RunnableExperiment;
-import be.kuleuven.cs.gametheory.experimentation.runners.RunnerFactory;
 
 import com.google.common.collect.Lists;
 
 public class MultiThreadedExperimentRunnerTest {
 
-    private RunnableExperiment expmock = mock(RunnableExperiment.class);
     private ExperimentRunner runner = mock(MultiThreadedExperimentRunner.class);
     private List<ExperimentAtom> experiments = Lists.newArrayList();
 
@@ -31,7 +28,7 @@ public class MultiThreadedExperimentRunnerTest {
     @Test
     public void testMultiThreadedExperimentRunnerRunnableExperimentInt() {
         List<Double> list = Lists.newArrayList();
-        runner = RunnerFactory.createDefaultMultiThreadedRunner();
+        runner = LocalRunners.createDefaultMultiThreadedRunner();
         // Damn float and double inaccuracies.
         for (int i = 0; i <= 100; i += 5) {
             ExpTester tester = new ExpTester(list);
@@ -58,7 +55,7 @@ public class MultiThreadedExperimentRunnerTest {
     @Test
     public void testSingleThreadedExperimentRunner() {
         List<Double> list = Lists.newArrayList();
-        runner = RunnerFactory.createDefaultSingleThreadedRunner();
+        runner = LocalRunners.createDefaultSingleThreadedRunner();
         for (double i = 0; i <= 1.0; i += 0.2) {
             ExpTester tester = new ExpTester(list);
             tester.doExperimentRun(i);
@@ -76,7 +73,7 @@ public class MultiThreadedExperimentRunnerTest {
     @Test
     public void testSingleThreadedExperimentRunner2() {
         List<Double> list = Lists.newArrayList();
-        runner = RunnerFactory.createCustomMultiThreadedRunner(2);
+        runner = LocalRunners.createCustomMultiThreadedRunner(2);
         for (double i = 0; i <= 1.0; i += 0.1) {
             ExpTester tester = new ExpTester(list);
             tester.doExperimentRun(i);

@@ -1,6 +1,5 @@
 package be.kuleuven.cs.gametheory;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -17,11 +16,10 @@ import com.google.common.collect.Sets;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class GameDirector implements Serializable {
+public class GameDirector {
 
-    private static final long serialVersionUID = 3521800307605408441L;
     private final Game<?, ?> game;
-    private Set<Playable> playables;
+    private final Set<Playable> playables;
 
     /**
      * Default constructor.

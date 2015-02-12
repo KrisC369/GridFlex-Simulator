@@ -13,7 +13,8 @@ import be.kuleuven.cs.gametheory.Playable;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentCallback;
-import be.kuleuven.cs.gametheory.experimentation.runners.RunnerFactory;
+import be.kuleuven.cs.gametheory.experimentation.runners.local.LocalRunners;
+import be.kuleuven.cs.gametheory.io.GameResultWriter;
 import be.kuleuven.cs.gametheory.io.ResultWriter;
 
 import com.google.common.collect.Lists;
@@ -78,7 +79,7 @@ public class RetributionFactorSensitivityRunner {
 
             final List<ExperimentAtom> experiments = adapt(director);
 
-            RunnerFactory.createCustomMultiThreadedRunner(availableProcs)
+            LocalRunners.createCustomMultiThreadedRunner(availableProcs)
                     .runExperiments(experiments);
 
             final ResultWriter rw;
@@ -142,7 +143,7 @@ public class RetributionFactorSensitivityRunner {
             resetTwister();
             metaExp.add(batch);
         }
-        RunnerFactory.createCustomMultiThreadedRunner(availableProcs)
+        LocalRunners.createCustomMultiThreadedRunner(availableProcs)
                 .runExperiments(metaExp);
 
     }
