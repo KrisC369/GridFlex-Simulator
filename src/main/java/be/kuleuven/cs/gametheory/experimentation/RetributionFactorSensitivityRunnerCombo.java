@@ -6,7 +6,10 @@ package be.kuleuven.cs.gametheory.experimentation;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class RetributionFactorSensitivityRunnerCombo {
+public final class RetributionFactorSensitivityRunnerCombo {
+
+    private RetributionFactorSensitivityRunnerCombo() {
+    }
 
     /**
      * Run it.

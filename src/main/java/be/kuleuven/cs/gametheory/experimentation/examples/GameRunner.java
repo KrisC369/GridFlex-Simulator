@@ -12,6 +12,8 @@ import be.kuleuven.cs.gametheory.experimentation.GameResultWriter;
  *
  */
 public final class GameRunner {
+    private static final int AGENTS = 3;
+    private static final int REPITITIONS = 20;
 
     private GameRunner() {
     }
@@ -24,7 +26,7 @@ public final class GameRunner {
      */
     public static void main(String[] args) {
         GameConfiguratorEx ex = new GameConfiguratorEx(1);
-        GameDirector g = new GameDirector(new Game<>(3, ex, 20));
+        GameDirector g = new GameDirector(new Game<>(AGENTS, ex, REPITITIONS));
         g.playAutonomously();
         new GameResultWriter(g).write();
     }
