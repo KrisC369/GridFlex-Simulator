@@ -9,12 +9,12 @@ import org.slf4j.LoggerFactory;
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.Game;
 import be.kuleuven.cs.gametheory.GameDirector;
+import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.gametheory.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.gametheory.experimentation.runners.local.LocalRunners;
-import be.kuleuven.cs.gametheory.io.GameResultWriter;
 import be.kuleuven.cs.gametheory.io.ResultWriter;
 
 import com.google.common.collect.Lists;
@@ -173,6 +173,6 @@ public class RetributionFactorSensitivityRunner {
         StringBuilder b = new StringBuilder();
         b.append("Simulating instance: ").append(progressCounter).append("/")
                 .append(factor * repititions * totalCombinations);
-        logger.warn(b.toString());
+        logger.info(b.toString());
     }
 }

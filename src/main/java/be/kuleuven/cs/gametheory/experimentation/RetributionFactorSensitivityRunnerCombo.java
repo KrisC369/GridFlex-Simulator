@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gametheory.experimentation;
 
 /**
- * Runs a combination of experiments for 2A, 3A and 4A
+ * Runs a combination of experiments for 2A, 3A and 4A.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
