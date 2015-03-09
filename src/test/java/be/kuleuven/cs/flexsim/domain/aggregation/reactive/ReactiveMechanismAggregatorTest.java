@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.aggregation;
+package be.kuleuven.cs.flexsim.domain.aggregation.reactive;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -8,10 +8,11 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSO;
-import be.kuleuven.cs.flexsim.domain.energy.tso.PowerCapabilityBand;
+import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 
 import com.google.common.collect.Lists;
 

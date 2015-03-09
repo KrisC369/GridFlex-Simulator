@@ -1,13 +1,17 @@
-package be.kuleuven.cs.flexsim.domain.aggregation;
+package be.kuleuven.cs.flexsim.domain.aggregation.reactive;
 
 import java.util.Collections;
 import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSO;
-import be.kuleuven.cs.flexsim.domain.energy.tso.ContractualMechanismParticipant;
-import be.kuleuven.cs.flexsim.domain.energy.tso.PowerCapabilityBand;
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregationUtils;
+import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.ContractualMechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -106,8 +110,8 @@ public class ReactiveMechanismAggregator extends Aggregator implements
     private int findmax(boolean up) {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> flex = LinkedListMultimap
                 .create(currentFlex);
-        AggregationStrategyImpl.filter(flex, up);
-        LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = AggregationStrategyImpl
+        AggregationUtils.filter(flex, up);
+        LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = AggregationUtils
                 .sort(flex);
         int sum = 0;
         for (SiteFlexAPI site : sorted.keySet()) {

@@ -10,10 +10,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.IndependentAggregator;
-import be.kuleuven.cs.flexsim.domain.aggregation.ReactiveMechanismAggregator;
+import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
+import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.simulation.Simulator;

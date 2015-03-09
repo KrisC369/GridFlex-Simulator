@@ -1,17 +1,18 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
+import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 /**
@@ -46,10 +47,13 @@ public abstract class Aggregator implements SimulationComponent {
     }
 
     /**
-     * @return the clients.
+     * Get the clients for this aggregator.
+     *
+     * @return an Unmodifiable view of the clients of this aggregator.
      */
-    final List<SiteFlexAPI> getClients() {
-        return Lists.newArrayList(clients);
+    @VisibleForTesting
+    public final Set<SiteFlexAPI> getClients() {
+        return Collections.unmodifiableSet(clients);
     }
 
     /**

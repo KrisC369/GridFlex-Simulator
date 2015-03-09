@@ -7,8 +7,8 @@ import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
-import be.kuleuven.cs.flexsim.domain.energy.tso.RandomTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 
 public class RandomTSOTest {
     private BalancingSignal tso = mock(BalancingSignal.class);

@@ -1,4 +1,7 @@
-package be.kuleuven.cs.flexsim.domain.energy.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
+
+import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismParticipant;
+import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 
 /**
  * Represents a participant in a mechanism where a contract is in place

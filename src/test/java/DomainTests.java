@@ -2,8 +2,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.IndependentAggregatorTest;
-import be.kuleuven.cs.flexsim.domain.aggregation.ReactiveMechanismAggregatorTest;
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorTest;
+import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregatorTest;
+import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.energy.generation.OutputGeneratorTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingAuctionTSOTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSOTest;
@@ -23,11 +24,11 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
 @RunWith(Suite.class)
 @SuiteClasses({ BufferTest.class, WorkstationTest.class,
         ProductionLineTest.class, ResourceTest.class, FinanceTrackerTest.class,
-        FlexTupleTest.class, SiteTest.class, IndependentAggregatorTest.class,
-        ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
-        NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
-        OutputGeneratorTest.class, SiteSimulationTest.class,
-        BalancingAuctionTSOTest.class, BalancingTSOTest.class,
-        EquidistantSiteSimulationTest.class })
+        FlexTupleTest.class, SiteTest.class, AggregatorTest.class,
+        IndependentAggregatorTest.class, ReactiveMechanismAggregatorTest.class,
+        RandomTSOTest.class, NPermuteAndCombinerTest.class,
+        CopperPlateTSOTest.class, OutputGeneratorTest.class,
+        SiteSimulationTest.class, BalancingAuctionTSOTest.class,
+        BalancingTSOTest.class, EquidistantSiteSimulationTest.class })
 public class DomainTests {
 }

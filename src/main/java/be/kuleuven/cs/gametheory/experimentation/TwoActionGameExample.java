@@ -5,11 +5,11 @@ import java.util.Map;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
-import be.kuleuven.cs.flexsim.domain.aggregation.ReactiveMechanismAggregator;
+import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
-import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.simulation.Simulator;

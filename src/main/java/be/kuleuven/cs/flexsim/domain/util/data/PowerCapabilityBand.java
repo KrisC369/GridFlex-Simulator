@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.tso;
+package be.kuleuven.cs.flexsim.domain.util.data;
 
 /**
  * Data class signifying a band of operation concerning the power for an entity.

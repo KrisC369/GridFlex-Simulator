@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
+import be.kuleuven.cs.flexsim.domain.energy.tso.auctioning.BalancingAuctionTSO;
 import be.kuleuven.cs.flexsim.domain.util.FlexBid;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;

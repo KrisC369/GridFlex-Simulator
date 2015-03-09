@@ -1,7 +1,8 @@
-package be.kuleuven.cs.flexsim.domain.energy.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso.random;
 
 import org.apache.commons.math3.random.RandomGenerator;
 
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 
 /**

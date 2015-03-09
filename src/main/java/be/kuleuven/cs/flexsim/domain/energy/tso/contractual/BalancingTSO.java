@@ -1,12 +1,15 @@
-package be.kuleuven.cs.flexsim.domain.energy.tso;
+package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 
 import java.util.List;
 import java.util.Map;
 
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
+import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
+import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
+import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,7 +17,7 @@ import com.google.common.collect.Maps;
 /**
  * A TSO implementation that can accept bids for balancing actions and clears
  * the bids, optimally selecting the best choices.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -25,7 +28,7 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Constructor with consumption instances as parameter.
-     * 
+     *
      * @param sites
      *            The consumption sites connected to this TSO
      */
@@ -35,7 +38,7 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Constructor with production instances as parameter.
-     * 
+     *
      * @param sites
      *            The production sites connected to this TSO
      */
@@ -45,7 +48,7 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Constructor with no initial partakers.
-     * 
+     *
      */
     public BalancingTSO() {
         this(new EnergyProductionTrackable[0],
@@ -54,7 +57,7 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Actual initializing constructor.
-     * 
+     *
      * @param prod
      *            the producers.
      * @param cons
@@ -155,7 +158,7 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Returns the contractual limits registered to a participant.
-     * 
+     *
      * @param agg
      *            The client to check.
      * @return The limits.
@@ -179,7 +182,7 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Signal that this participant has a new margin of power capabilities.
-     * 
+     *
      * @param agg
      *            The client
      * @param cap

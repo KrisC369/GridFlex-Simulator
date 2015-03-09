@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
-import be.kuleuven.cs.flexsim.domain.energy.tso.CopperplateTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
