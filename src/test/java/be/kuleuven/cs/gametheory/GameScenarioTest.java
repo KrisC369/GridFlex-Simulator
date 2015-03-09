@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.gametheory.experimentation.GameConfiguratorEx;
+import be.kuleuven.cs.flexsim.experimentation.GameConfiguratorEx;
 
 public class GameScenarioTest {
 
