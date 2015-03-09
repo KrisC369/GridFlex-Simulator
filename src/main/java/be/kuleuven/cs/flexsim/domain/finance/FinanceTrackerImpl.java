@@ -14,9 +14,9 @@ import com.google.common.base.Optional;
 
 /**
  * Tracks and finalizes the finances of productionlines.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
+ *
  */
 public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
@@ -31,7 +31,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /**
      * Default constructor based on trackable components.
-     * 
+     *
      * @param target
      *            the target component to track.
      * @param rm
@@ -183,7 +183,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
     /**
      * Factory method for creating finance tracker object with default reward
      * and debt models.
-     * 
+     *
      * @param target
      *            The trackable target to inspect.
      * @return A fully instantiated FinanceTracker object.
@@ -198,7 +198,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
     /**
      * Factory method for creating finance tracker object with custom reward and
      * debt models.
-     * 
+     *
      * @param target
      *            The trackable target to inspect.
      * @param rm
@@ -215,7 +215,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /**
      * Aggregates multiple finance tracker instances together and sums values.
-     * 
+     *
      * @param tt
      *            the targets.
      * @return a FinanceTracker instance.
@@ -226,7 +226,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /**
      * Create a new finance tracker with activation-rewards.
-     * 
+     *
      * @param target
      *            the target.
      * @param reward
@@ -240,7 +240,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /**
      * Create a new finance tracker with activation-rewards.
-     * 
+     *
      * @param target
      *            The target.
      * @param reward
