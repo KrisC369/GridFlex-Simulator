@@ -10,15 +10,15 @@ import com.google.common.collect.LinkedListMultimap;
 /**
  * A context for the aggregation strategy. This represents an entity capable of
  * dispatching the final activation requests.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-interface AggregationContext {
+public interface AggregationContext {
 
     /**
      * Dispatch an activation signal.
-     * 
+     *
      * @param flex
      *            The flex mapping.
      * @param ids

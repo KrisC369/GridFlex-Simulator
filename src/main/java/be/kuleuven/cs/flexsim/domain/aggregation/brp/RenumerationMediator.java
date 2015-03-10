@@ -16,13 +16,18 @@ import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
  */
 public class RenumerationMediator extends FinanceTrackerImpl {
     private SiteFlexAPI target;
-    private long currentBudget;
+    private long currentReservationBudget;
+    private long currentActivationBudget;
+    private double reservationPortion;
+    private double activationPortion;
 
-    private RenumerationMediator(Site client, double reservePortion,
-            double activationPortion) {
+    private RenumerationMediator(Site client, double reservePortion) {
         super(client, RewardModel.NONE, DebtModel.NONE);
         this.target = client;
-        this.currentBudget = 0;
+        this.currentReservationBudget = 0;
+        this.currentActivationBudget = 0;
+        this.reservationPortion = reservePortion;
+        this.activationPortion = 1 - reservePortion;
     }
 
     /**
@@ -41,14 +46,10 @@ public class RenumerationMediator extends FinanceTrackerImpl {
      *            The target client.
      * @param reservePortion
      *            The portion of the budget to use for reservation payments.
-     * @param activationPortion
-     *            The portion of the budget to use for activation payments.
      * @return The newly created RenumerationMediator object.
      */
-    public static RenumerationMediator create(Site client,
-            double reservePortion, double activationPortion) {
-        return new RenumerationMediator(client, reservePortion,
-                activationPortion);
+    public static RenumerationMediator create(Site client, double reservePortion) {
+        return new RenumerationMediator(client, reservePortion);
     }
 
     /**
@@ -59,10 +60,71 @@ public class RenumerationMediator extends FinanceTrackerImpl {
      */
     public void setBudget(long budget) {
         checkArgument(budget >= 0, "Budget should not be negative.");
-        this.currentBudget = budget;
+        this.currentActivationBudget = (long) (budget * getActivationPortion());
+        this.currentReservationBudget = (long) (budget * getReservationPortion());
+
+    }
+
+    private double getActivationPortion() {
+        return this.activationPortion;
+    }
+
+    private double getReservationPortion() {
+        return this.reservationPortion;
+    }
+
+    private long getActivationBudget() {
+        return this.currentActivationBudget;
+    }
+
+    private long getReservationBudget() {
+        return this.currentReservationBudget;
     }
 
     long getCurrentBudget() {
-        return this.currentBudget;
+        return getActivationBudget() + getReservationBudget();
+    }
+
+    // /**
+    // * This method refines the following documentation by registering payments
+    // * before report is made in super. {@inheritDoc}s
+    // */
+    // @Override
+    // public void afterTick(int t) {
+    // enforcePayments();
+    // super.afterTick(t);
+    // }
+
+    // private void enforcePayments() {
+    // // TODO Auto-generated method stub
+    //
+    // }
+
+    /**
+     * Register a payment for reservation by specifying the portion of the
+     * reservation budget should be awarded.
+     *
+     * @param proportion
+     *            The proportion ( a double between 0 and 1 inclusive) of the
+     *            budget to award.
+     */
+    public void registerReservation(double proportion) {
+        checkArgument(proportion >= 0 && proportion <= 1,
+                "Proportions should be between 0 and 1");
+        increaseTotalReward((int) (getReservationBudget() * proportion));
+    }
+
+    /**
+     * Register a payment for activation by specifying the portion of the
+     * activation budget should be awarded.
+     *
+     * @param proportion
+     *            The proportion ( a double between 0 and 1 inclusive) of the
+     *            budget to award.
+     */
+    public void registerActivation(double proportion) {
+        checkArgument(proportion >= 0 && proportion <= 1,
+                "Proportions should be between 0 and 1");
+        increaseTotalReward((int) (getActivationBudget() * proportion));
     }
 }

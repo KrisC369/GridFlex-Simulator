@@ -26,6 +26,7 @@ import com.google.common.collect.Sets;
 public abstract class Aggregator implements SimulationComponent {
     private final Set<SiteFlexAPI> clients;
     private final AggregationStrategy strategy;
+    private final AggregationContext dispatcher;
 
     /**
      * Constructor with custom aggregation strategy.
@@ -36,6 +37,7 @@ public abstract class Aggregator implements SimulationComponent {
     public Aggregator(AggregationStrategy strategy) {
         this.clients = Sets.newLinkedHashSet();
         this.strategy = strategy;
+        this.dispatcher = new AggregationDispatch();
     }
 
     /**
@@ -69,8 +71,18 @@ public abstract class Aggregator implements SimulationComponent {
     protected final void doAggregationStep(int t, final int target,
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
         logStep(t, target);
-        this.strategy.performAggregationStep(new AggregationDispatch(), t,
-                flex, target);
+        this.strategy.performAggregationStep(getAggregationContext(), t, flex,
+                target);
+    }
+
+    /**
+     * Get the Aggregation context specifying the dispatch logic. To be used
+     * when calling aggregation strategy implementations.
+     *
+     * @return The default local dispatching context.
+     */
+    protected AggregationContext getAggregationContext() {
+        return this.dispatcher;
     }
 
     protected final LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {

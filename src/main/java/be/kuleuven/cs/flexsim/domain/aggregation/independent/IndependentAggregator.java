@@ -52,7 +52,7 @@ public class IndependentAggregator extends Aggregator {
         this(tso, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
     }
 
-    private int getTargetFlex() {
+    protected final int getTargetFlex() {
         return getTso().getCurrentImbalance() * 1;
     }
 
