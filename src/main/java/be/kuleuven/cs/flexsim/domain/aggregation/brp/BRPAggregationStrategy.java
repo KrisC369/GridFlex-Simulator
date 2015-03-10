@@ -30,7 +30,6 @@ public class BRPAggregationStrategy implements AggregationStrategy {
     @Override
     public void performAggregationStep(AggregationContext context, int t,
             LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target) {
-        // TODO Auto-generated method stub
 
     }
 

@@ -11,6 +11,8 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
 import com.google.common.collect.LinkedListMultimap;
@@ -28,19 +30,22 @@ public class BRPAggregator extends IndependentAggregator {
     private Map<SiteFlexAPI, RenumerationMediator> paymentMapper;
     private double activationPortion;
     private double reservePortion;
+    private PriceSignal imbalancePricing;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
      * @param tso
      *            The balancing signal to follow.
+     * @param pricing
+     *            The pricing signal for the imbalance prices.
      * @param reservation
      *            The reservation payment portion marker.
      * @param activation
      *            The activation payment portion marker.
      */
-    public BRPAggregator(BalancingSignal tso, double reservation,
-            double activation) {
+    public BRPAggregator(BalancingSignal tso, PriceSignal pricing,
+            double reservation, double activation) {
         super(tso, 1);
         checkArgument(reservation + activation >= 0
                 && reservation + activation <= 1,
@@ -48,6 +53,23 @@ public class BRPAggregator extends IndependentAggregator {
         this.paymentMapper = Maps.newLinkedHashMap();
         this.activationPortion = activation;
         this.reservePortion = reservation;
+        this.imbalancePricing = pricing;
+    }
+
+    /**
+     * Register a Site to this aggregator. Dispatches to superclass
+     * registerClient(SiteFlexAPI client)-method.
+     *
+     * @param client
+     *            The site to register.
+     */
+    public void registerClient(Site client) {
+        super.registerClient(client);
+        this.paymentMapper.put(client, createMediator(client));
+    }
+
+    private RenumerationMediator createMediator(Site client) {
+        return RenumerationMediator.create(client, reservePortion);
     }
 
     /**
@@ -67,51 +89,78 @@ public class BRPAggregator extends IndependentAggregator {
         return this.paymentMapper.get(s);
     }
 
-    /**
-     * Register a Site to this aggregator. Dispatches to superclass
-     * registerClient(SiteFlexAPI client)-method.
-     *
-     * @param client
-     *            The site to register.
-     */
-    public void registerClient(Site client) {
-        super.registerClient(client);
-        this.paymentMapper.put(client, createMediator(client));
-    }
-
-    private RenumerationMediator createMediator(Site client) {
-        return RenumerationMediator.create(client, reservePortion);
-    }
-
     @Override
     public void tick(int t) {
+        // Get target and budget and set budgets.
+        // TODO
+        calculateAndDivideBudgets();
+        // Make reservation payments
         Multimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
         payReservationFees(flex);
+
         // Perform aggregation and dispatch.
         // super.tick(t);
         doAggregationStep(t, getTargetFlex(), gatherFlexInfo());
     }
 
-    private void payReservationFees(Multimap<SiteFlexAPI, FlexTuple> flex) {
-        // TODO Auto-generated method stub
-
+    private void calculateAndDivideBudgets() {
+        int currentImbalancePrice = imbalancePricing.getCurrentPrice();
+        int currentImbalVol = getTargetFlex();
+        int budget = currentImbalVol * currentImbalancePrice;
+        int incentives = (int) (budget * (activationPortion + reservePortion));
+        dispatchBudgets(incentives);
     }
 
-    @Override
-    public void afterTick(int t) {
+    private void dispatchBudgets(int incentives) {
+        for (RenumerationMediator m : paymentMapper.values()) {
+            m.setBudget(incentives);
+        }
+    }
 
-        super.afterTick(t);
+    private void payReservationFees(Multimap<SiteFlexAPI, FlexTuple> flex) {
+        int sumFlex = 0;
+        Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
+        for (SiteFlexAPI api : flex.keySet()) {
+            int maxFlexInProfile = CollectionUtils.max(flex.get(api),
+                    new IntNNFunction<FlexTuple>() {
+
+                        @Override
+                        public int apply(FlexTuple input) {
+                            return input.getDeltaP();
+                        }
+                    });
+            sumFlex += maxFlexInProfile;
+            portions.put(api, maxFlexInProfile);
+        }
+        for (SiteFlexAPI api : portions.keySet()) {
+            getActualPaymentMediatorFor(api).registerReservation(
+                    portions.get(api) / (double) sumFlex);
+        }
+    }
+
+    private void payActivationFees(
+            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
+        int sumFlex = 0;
+        Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
+        for (SiteFlexAPI api : flex.keySet()) {
+            for (long i : ids) {
+                for (FlexTuple t : flex.get(api)) {
+                    if (t.getId() == i) {
+                        sumFlex += t.getDeltaP();
+                        portions.put(api, t.getDeltaP());
+                    }
+                }
+            }
+        }
+        for (SiteFlexAPI api : portions.keySet()) {
+            getActualPaymentMediatorFor(api).registerActivation(
+                    portions.get(api) / (double) sumFlex);
+        }
     }
 
     @Override
     protected AggregationContext getAggregationContext() {
         return new AggregationDispatch(super.getAggregationContext());
-    }
-
-    private void payActivationFees(
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
-        // TODO Auto-generated method stub
-
     }
 
     private class AggregationDispatch implements AggregationContext {
@@ -125,8 +174,8 @@ public class BRPAggregator extends IndependentAggregator {
         public void dispatchActivation(
                 LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
 
-            payActivationFees(flex, ids);
             delegate.dispatchActivation(flex, ids);
+            payActivationFees(flex, ids);
         }
     }
 }
