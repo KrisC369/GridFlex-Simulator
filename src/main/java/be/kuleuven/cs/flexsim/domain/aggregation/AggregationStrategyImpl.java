@@ -11,6 +11,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 /**
@@ -29,7 +30,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
 
         @Override
         public void performAggregationStep(AggregationContext context, int t,
-                LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target) {
+                Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
             Map<Long, Integer> flexFiltered = AggregationUtils
                     .filterAndTransform(flex);
 
@@ -73,7 +74,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
 
         @Override
         public void performAggregationStep(AggregationContext context, int t,
-                LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target) {
+                Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
 
             // filter maps for pos or neg.
             if (target > 0) {
@@ -124,7 +125,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
 
     @Override
     public abstract void performAggregationStep(AggregationContext context,
-            int t, LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target);
+            int t, Multimap<SiteFlexAPI, FlexTuple> flex, int target);
 
     private static int diff(int i, int target) {
         return Math.abs(target - i);

@@ -5,7 +5,7 @@ import java.util.Set;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
-import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * A context for the aggregation strategy. This represents an entity capable of
@@ -24,6 +24,5 @@ public interface AggregationContext {
      * @param ids
      *            the ids that reference the profile to activate.
      */
-    void dispatchActivation(LinkedListMultimap<SiteFlexAPI, FlexTuple> flex,
-            Set<Long> ids);
+    void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids);
 }

@@ -13,6 +13,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 
 /**
@@ -69,7 +70,7 @@ public abstract class Aggregator implements SimulationComponent {
     }
 
     protected final void doAggregationStep(int t, final int target,
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
+            Multimap<SiteFlexAPI, FlexTuple> flex) {
         logStep(t, target);
         this.strategy.performAggregationStep(getAggregationContext(), t, flex,
                 target);
@@ -121,8 +122,8 @@ public abstract class Aggregator implements SimulationComponent {
     private class AggregationDispatch implements AggregationContext {
 
         @Override
-        public void dispatchActivation(
-                LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
+        public void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
+                Set<Long> ids) {
             for (SiteFlexAPI s : flex.keySet()) {
                 for (long i : ids) {
                     for (FlexTuple t : flex.get(s)) {

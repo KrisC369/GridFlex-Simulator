@@ -15,7 +15,6 @@ import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
@@ -100,13 +99,13 @@ public class BRPAggregator extends IndependentAggregator {
 
         // Perform aggregation and dispatch.
         // super.tick(t);
-        doAggregationStep(t, getTargetFlex(), gatherFlexInfo());
+        doAggregationStep(t, getTargetFlex(), flex);
     }
 
     private void calculateAndDivideBudgets() {
         int currentImbalancePrice = imbalancePricing.getCurrentPrice();
         int currentImbalVol = getTargetFlex();
-        int budget = currentImbalVol * currentImbalancePrice;
+        int budget = Math.abs(currentImbalVol) * currentImbalancePrice;
         int incentives = (int) (budget * (activationPortion + reservePortion));
         dispatchBudgets(incentives);
     }
@@ -138,8 +137,8 @@ public class BRPAggregator extends IndependentAggregator {
         }
     }
 
-    private void payActivationFees(
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
+    private void payActivationFees(Multimap<SiteFlexAPI, FlexTuple> flex,
+            Set<Long> ids) {
         int sumFlex = 0;
         Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
         for (SiteFlexAPI api : flex.keySet()) {
@@ -171,8 +170,8 @@ public class BRPAggregator extends IndependentAggregator {
         }
 
         @Override
-        public void dispatchActivation(
-                LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids) {
+        public void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
+                Set<Long> ids) {
 
             delegate.dispatchActivation(flex, ids);
             payActivationFees(flex, ids);

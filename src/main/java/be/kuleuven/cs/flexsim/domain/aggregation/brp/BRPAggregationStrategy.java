@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
-import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * AggregationStrategy to use with BRP implementation of aggregator
@@ -29,7 +29,7 @@ public class BRPAggregationStrategy implements AggregationStrategy {
      */
     @Override
     public void performAggregationStep(AggregationContext context, int t,
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex, int target) {
+            Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
 
     }
 

@@ -97,8 +97,7 @@ public final class AggregationUtils {
      * @param flex
      *            the input map.
      */
-    public static void filterEmpty(
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> flex) {
+    public static void filterEmpty(Multimap<SiteFlexAPI, FlexTuple> flex) {
         LinkedListMultimap<SiteFlexAPI, FlexTuple> copy = LinkedListMultimap
                 .create(flex);
         for (SiteFlexAPI api : copy.keySet()) {
