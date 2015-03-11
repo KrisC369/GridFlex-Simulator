@@ -65,16 +65,16 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
 
             @Override
             public int getCurrentPrice() {
-                return 100;
+                return 10;
             }
-        }, factor, 1 - factor));
+        }, 0, 1));
         this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
 
             @Override
             public int getCurrentPrice() {
-                return 100;
+                return 10;
             }
-        }, 1 - factor, factor));
+        }, factor, 1 - factor));
         this.factor = factor;
     }
 
