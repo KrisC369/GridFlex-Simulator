@@ -191,6 +191,25 @@ public class RenumerationGameRunner {
      *            commandline args.
      */
     public static void main(String[] args) {
-        new RenumerationGameRunner(200, 3).execute();
+        if (args.length == 0) {
+            new RenumerationGameRunner(200, 3).execute();
+        } else if (args.length == 1) {
+            try {
+                final int agents = Integer.valueOf(args[0]);
+                new RenumerationGameRunner(200, agents).execute();
+            } catch (Exception e) {
+                throw new IllegalArgumentException(
+                        "Unparseable cl parameters passed");
+            }
+        } else if (args.length == 2) {
+            try {
+                final int agents = Integer.valueOf(args[1]);
+                final int reps = Integer.valueOf(args[0]);
+                new RenumerationGameRunner(reps, agents).execute();
+            } catch (Exception e) {
+                throw new IllegalArgumentException(
+                        "Unparseable cl parameters passed");
+            }
+        }
     }
 }
