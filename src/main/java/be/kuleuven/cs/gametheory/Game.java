@@ -180,4 +180,13 @@ public class Game<N, K> {
         }
         return b.toString();
     }
+
+    public GameResult getResults() {
+        GameResult result = new GameResult();
+        result.addDescription("Reps", String.valueOf(reps));
+        result.addDescription("agents", String.valueOf(agents));
+        result.addDescription("actions", String.valueOf(actions));
+        result.addResult(payoffs.getDynamicEquationFactors());
+        return result;
+    }
 }

@@ -95,4 +95,8 @@ public class GameDirector {
     public String getDynamicEquationArguments() {
         return game.getDynamicsParametersString();
     }
+
+    public GameResult getResults() {
+        return game.getResults();
+    }
 }

@@ -1,10 +1,13 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
+import java.io.StringWriter;
 import java.util.List;
 
 import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
@@ -13,6 +16,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.io.ResultWriter;
 import be.kuleuven.cs.gametheory.Game;
 import be.kuleuven.cs.gametheory.GameDirector;
+import be.kuleuven.cs.gametheory.GameResult;
 import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
 
@@ -38,6 +42,7 @@ public class RenumerationGameRunner {
     private final Logger logger;
     private int counter;
     private int totalCombinations;
+    private List<GameResult> results;
 
     protected RenumerationGameRunner(int repititions, int nAgents) {
         this(repititions, nAgents, "", DEF_STEPSIZE);
@@ -62,6 +67,7 @@ public class RenumerationGameRunner {
         this.counter = 0;
         this.totalCombinations = (int) MathUtils.multiCombinationSize(2,
                 nAgents);
+        this.results = Lists.newArrayList();
     }
 
     /**
@@ -98,8 +104,28 @@ public class RenumerationGameRunner {
                 rw.addResultComponent("Reps", String.valueOf(repititions));
                 rw.write();
                 resetTwister();
+
+                // create and store yaml.
+                GameResult result = director.getResults();
+                result.addDescription("RetributionFactor1",
+                        String.valueOf(retrb1));
+                result.addDescription("RetributionFactor2",
+                        String.valueOf(retrb2));
+                this.results.add(result);
+
             }
         }
+        dumpYamlResults();
+    }
+
+    private void dumpYamlResults() {
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        options.setAllowReadOnlyProperties(true);
+        Yaml yaml = new Yaml(options);
+        StringWriter writer = new StringWriter();
+        yaml.dumpAll(results.iterator(), writer);
+        LoggerFactory.getLogger("YAML").info(writer.toString());
     }
 
     private List<ExperimentAtom> adapt(final GameDirector dir) {
