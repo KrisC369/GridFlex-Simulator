@@ -8,9 +8,6 @@ import org.apache.commons.math3.random.MersenneTwister;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.PriceSignal;
-import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
-import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
-import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
@@ -30,16 +27,18 @@ import com.google.common.collect.Maps;
 public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
 
     private static final int ACTIONSPACE_SIZE = 2;
-    private static final int ACTPAYMENT = 50;
+    // private static final int ACTPAYMENT = 50;
     private final Simulator sim;
     private final List<Site> sites;
     private final List<BRPAggregator> aggs;
     private final RandomTSO tso;
     private final List<FinanceTracker> ft;
-    private int count;
+    // private int count;
     private final Map<Site, BRPAggregator> choiceMap;
-    private final int baseConsumption;
-    private final double factor;
+
+    // private final int baseConsumption;
+    // private final double factor1;
+    // private final double factor2;
 
     /**
      * Default constructor for this game with two actions.
@@ -49,17 +48,20 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      * @param baselineConsumption
      *            The baseline for the sites consumption. This is used to base
      *            production params on.
-     * @param factor
-     *            The retribution factor.
+     * @param factor1
+     *            The retribution factor for agent 1.
+     * @param factor2
+     *            The retribution factor for agent 2
      */
-    public RenumerationGame(int seed, int baselineConsumption, double factor) {
+    public RenumerationGame(int seed, int baselineConsumption, double factor1,
+            double factor2) {
         this.sim = Simulator.createSimulator(500, seed);
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
         this.ft = Lists.newArrayList();
         this.tso = new RandomTSO(-200, 200, new MersenneTwister(seed));
-        this.count = 0;
-        this.baseConsumption = baselineConsumption;
+        // this.count = 0;
+        // this.baseConsumption = baselineConsumption;
         this.choiceMap = Maps.newLinkedHashMap();
         this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
 
@@ -67,15 +69,16 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
             public int getCurrentPrice() {
                 return 10;
             }
-        }, 0, 1));
+        }, factor1, 1 - factor1));
         this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
 
             @Override
             public int getCurrentPrice() {
                 return 10;
             }
-        }, factor, 1 - factor));
-        this.factor = factor;
+        }, factor2, 1 - factor2));
+        // this.factor1 = factor1;
+        // this.factor2 = factor2;
     }
 
     /**
@@ -88,7 +91,7 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      *            production params on.
      */
     public RenumerationGame(int seed, int baselineConsumption) {
-        this(seed, baselineConsumption, 1);
+        this(seed, baselineConsumption, 1, 1);
 
     }
 
@@ -104,22 +107,13 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
     @Override
     public void fixActionToAgent(Site agent, BRPAggregator action) {
         sites.add(agent);
-        // tso.registerConsumer(agent);
         choiceMap.put(agent, action);
         FinanceTracker fti;
         action.registerClient(agent);
         fti = action.getFinanceTrackerFor(agent);
-        // if (aggs.get(0).equals(action)) {
-        // fti = (FinanceTrackerImpl) FinanceTrackerImpl
-        // .createCustomBalancingFeeTracker(agent, ACTPAYMENT,
-        // this.factor);
-        // } else {
-        // fti = (FinanceTrackerImpl) FinanceTrackerImpl
-        // .createCustomBalancingFeeTracker(agent, ACTPAYMENT, 0);
-        // }
         ft.add(fti);
         sim.register((FinanceTrackerImpl) fti);
-        this.count++;
+        // this.count++;
     }
 
     @Override
@@ -129,21 +123,9 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
 
     @Override
     public void init() {
-        // Add finance trackers keeping track of profit and consumptions.
-        EnergyProductionTrackable p1 = new ConstantOutputGenerator(
-                baseConsumption * getNumberOfAgents());
-        EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
-                -1500, 1500, 0.010);
         for (Aggregator agg : this.aggs) {
             sim.register(agg);
         }
-        // tso.registerProducer(p1);
-        // tso.registerProducer(p2);
-        // sim.register(tso);
-    }
-
-    private int getNumberOfAgents() {
-        return count;
     }
 
     @Override

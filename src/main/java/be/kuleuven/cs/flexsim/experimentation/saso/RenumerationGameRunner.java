@@ -70,30 +70,37 @@ public class RenumerationGameRunner {
      * Main start hook for these experimentations.
      */
     public final void execute() {
-        for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
+        for (int retributionFactor1 = 0; retributionFactor1 <= 1 * factor; retributionFactor1 += stepSize
                 * factor) {
-            double retrb = retributionFactor / factor;
-            RenumerationGameConfigurator config = new RenumerationGameConfigurator(
-                    retrb, twister);
-            GameDirector director = new GameDirector(new Game<>(nAgents,
-                    config, repititions));
+            for (int retributionFactor2 = 0; retributionFactor2 <= 1 * factor; retributionFactor2 += stepSize
+                    * factor) {
+                double retrb1 = retributionFactor1 / factor;
+                double retrb2 = retributionFactor2 / factor;
+                RenumerationGameConfigurator config = new RenumerationGameConfigurator(
+                        retrb1, retrb2, twister);
+                GameDirector director = new GameDirector(new Game<>(nAgents,
+                        config, repititions));
 
-            final List<ExperimentAtom> experiments = adapt(director);
+                final List<ExperimentAtom> experiments = adapt(director);
 
-            LocalRunners.createCustomMultiThreadedRunner(availableProcs)
-                    .runExperiments(experiments);
+                LocalRunners.createCustomMultiThreadedRunner(availableProcs)
+                        .runExperiments(experiments);
 
-            final ResultWriter rw;
-            if (loggerTag.isEmpty()) {
-                rw = new GameResultWriter(director);
-            } else {
-                rw = new GameResultWriter(director, loggerTag);
+                final ResultWriter rw;
+                if (loggerTag.isEmpty()) {
+                    rw = new GameResultWriter(director);
+                } else {
+                    rw = new GameResultWriter(director, loggerTag);
+                }
+                rw.addResultComponent("RetributionFactor1",
+                        String.valueOf(retrb1));
+                rw.addResultComponent("RetributionFactor1",
+                        String.valueOf(retrb2));
+                rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
+                rw.addResultComponent("Reps", String.valueOf(repititions));
+                rw.write();
+                resetTwister();
             }
-            rw.addResultComponent("RetributionFactor", String.valueOf(retrb));
-            rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
-            rw.addResultComponent("Reps", String.valueOf(repititions));
-            rw.write();
-            resetTwister();
         }
     }
 

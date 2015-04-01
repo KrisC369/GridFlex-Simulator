@@ -23,7 +23,8 @@ public class RenumerationGameConfigurator implements
     private static final int MAX = 1000;
     private static final int STEPS = 8;
     private final MersenneTwister twister;
-    private final double retributionFactor;
+    private final double retributionFactor1;
+    private final double retributionFactor2;
 
     /**
      * Constructor for these experiments.
@@ -31,8 +32,8 @@ public class RenumerationGameConfigurator implements
      * @param factor
      *            the retribution factor.
      */
-    public RenumerationGameConfigurator(double factor) {
-        this(factor, new MersenneTwister(2412));
+    public RenumerationGameConfigurator(double factor1, double factor2) {
+        this(factor1, factor2, new MersenneTwister(2412));
     }
 
     /**
@@ -43,8 +44,10 @@ public class RenumerationGameConfigurator implements
      * @param twister
      *            The random generator to use.
      */
-    public RenumerationGameConfigurator(double factor, MersenneTwister twister) {
-        this.retributionFactor = factor;
+    public RenumerationGameConfigurator(double factor1, double factor2,
+            MersenneTwister twister) {
+        this.retributionFactor1 = factor1;
+        this.retributionFactor2 = factor2;
         this.twister = twister;
     }
 
@@ -68,7 +71,7 @@ public class RenumerationGameConfigurator implements
     @Override
     public GameInstance<Site, BRPAggregator> generateInstance() {
         return new RenumerationGame(twister.nextInt(), CURRENT,
-                retributionFactor);
+                retributionFactor1, retributionFactor2);
     }
 
     @Override
