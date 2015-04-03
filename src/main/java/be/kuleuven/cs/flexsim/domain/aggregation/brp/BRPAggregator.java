@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext;
+import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
@@ -45,7 +46,7 @@ public class BRPAggregator extends IndependentAggregator {
      */
     public BRPAggregator(BalancingSignal tso, PriceSignal pricing,
             double reservation, double activation) {
-        super(tso, 1);
+        super(tso, 1, AggregationStrategyImpl.MOVINGHORIZON);
         checkArgument(reservation + activation >= 0
                 && reservation + activation <= 1,
                 "Reservation and activation should some to x with 0 <= x <= 1");
