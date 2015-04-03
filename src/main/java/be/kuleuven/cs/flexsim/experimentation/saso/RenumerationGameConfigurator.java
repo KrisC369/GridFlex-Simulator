@@ -70,7 +70,7 @@ public class RenumerationGameConfigurator implements
 
     @Override
     public GameInstance<Site, BRPAggregator> generateInstance() {
-        return new RenumerationGame(twister.nextInt(), CURRENT,
+        return new RenumerationGame2ImbSig(twister.nextInt(), CURRENT,
                 retributionFactor1, retributionFactor2);
     }
 
