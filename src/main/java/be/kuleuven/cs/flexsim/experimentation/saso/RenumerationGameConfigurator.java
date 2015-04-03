@@ -21,7 +21,7 @@ public class RenumerationGameConfigurator implements
     private static final int CURRENT = 800;
     private static final int MIN = 500;
     private static final int MAX = 1000;
-    private static final int STEPS = 6;
+    private static final int STEPS = 8;
     private final MersenneTwister twister;
     private final double retributionFactor1;
     private final double retributionFactor2;

@@ -24,13 +24,13 @@ import com.google.common.collect.Maps;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
+public class RenumerationGame2ImbSig implements
+        GameInstance<Site, BRPAggregator> {
 
     private static final int ACTIONSPACE_SIZE = 2;
     private final Simulator sim;
     private final List<Site> sites;
     private final List<BRPAggregator> aggs;
-    private final RandomTSO tso;
     private final List<FinanceTracker> ft;
     private final Map<Site, BRPAggregator> choiceMap;
 
@@ -47,22 +47,24 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      * @param factor2
      *            The retribution factor for agent 2
      */
-    public RenumerationGame(int seed, int baselineConsumption, double factor1,
-            double factor2) {
+    public RenumerationGame2ImbSig(int seed, int baselineConsumption,
+            double factor1, double factor2) {
         this.sim = Simulator.createSimulator(500, seed);
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
         this.ft = Lists.newArrayList();
-        this.tso = new RandomTSO(-200, 200, new MersenneTwister(seed));
+        RandomTSO tso1 = new RandomTSO(-200, 200, new MersenneTwister(seed));
+        RandomTSO tso2 = new RandomTSO(-100, 100, new MersenneTwister(seed));
+
         this.choiceMap = Maps.newLinkedHashMap();
-        this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
+        this.aggs.add(new BRPAggregator(tso1, new PriceSignal() {
 
             @Override
             public int getCurrentPrice() {
                 return 100;
             }
         }, factor1, 1 - factor1));
-        this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
+        this.aggs.add(new BRPAggregator(tso2, new PriceSignal() {
 
             @Override
             public int getCurrentPrice() {
@@ -80,7 +82,7 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      *            The baseline for the sites consumption. This is used to base
      *            production params on.
      */
-    public RenumerationGame(int seed, int baselineConsumption) {
+    public RenumerationGame2ImbSig(int seed, int baselineConsumption) {
         this(seed, baselineConsumption, 1, 1);
 
     }
