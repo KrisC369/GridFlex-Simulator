@@ -87,7 +87,8 @@ public class BRPAggregatorTest {
         // t.setBudget(_400);
         sim.start();
 
-        assertEquals(_400, t.getTotalProfit(), 0.01);
+        assertEquals(_400 * 0.5 * (200 / (double) _400), t.getTotalProfit(),
+                0.01);
     }
 
     @Test
@@ -123,7 +124,9 @@ public class BRPAggregatorTest {
         when(price.getCurrentPrice()).thenReturn(1);
         sim.start();
 
-        assertEquals(2 * _400 * 0.5, t.getTotalProfit(), 0.01);
+        assertEquals(2 * _400 * 0.5 * (200 / (double) _400)
+                + (_400 * 0.5 * (200 / (double) _400)), t.getTotalProfit(),
+                0.01);
     }
 
     @Test
