@@ -29,7 +29,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     CARTESIANPRODUCT() {
 
         @Override
-        public void performAggregationStep(AggregationContext context, int t,
+        public int performAggregationStep(AggregationContext context, int t,
                 Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
             Map<Long, Integer> flexFiltered = AggregationUtils
                     .filterAndTransform(flex);
@@ -55,9 +55,10 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                 if (diff(flexSum, target) < diff(score, target)) {
                     score = flexSum;
                     best = poss;
-                }
+                }// TODO test fairness
             }
             context.dispatchActivation(flex, Sets.newLinkedHashSet(best));
+            return score;
         }
 
     },
@@ -73,7 +74,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     MOVINGHORIZON() {
 
         @Override
-        public void performAggregationStep(AggregationContext context, int t,
+        public int performAggregationStep(AggregationContext context, int t,
                 Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
 
             // filter maps for pos or neg.
@@ -119,12 +120,13 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                         sorted.get(sites.get(i)).subList(0,
                                 indexlistUpper[i] + 1));
             }
-            CARTESIANPRODUCT.performAggregationStep(context, t, capped, target);
+            return CARTESIANPRODUCT.performAggregationStep(context, t, capped,
+                    target);
         }
     };
 
     @Override
-    public abstract void performAggregationStep(AggregationContext context,
+    public abstract int performAggregationStep(AggregationContext context,
             int t, Multimap<SiteFlexAPI, FlexTuple> flex, int target);
 
     private static int diff(int i, int target) {

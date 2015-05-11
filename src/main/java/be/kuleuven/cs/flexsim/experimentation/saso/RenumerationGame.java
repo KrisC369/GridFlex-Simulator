@@ -8,10 +8,12 @@ import org.apache.commons.math3.random.MersenneTwister;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.PriceSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.simulation.InstrumentationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.gametheory.GameInstance;
 
@@ -54,6 +56,7 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
         this.sites = Lists.newArrayList();
         this.ft = Lists.newArrayList();
         this.tso = new RandomTSO(-200, 200, new MersenneTwister(seed));
+        this.sim.register(tso);
         this.choiceMap = Maps.newLinkedHashMap();
         this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
 
@@ -132,5 +135,13 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      */
     public static final int getActionspacesize() {
         return ACTIONSPACE_SIZE;
+    }
+
+    protected void addSimComponent(InstrumentationComponent comp) {
+        this.sim.register(comp);
+    }
+
+    protected List<BalancingSignal> getBalancingSignals() {
+        return Lists.newArrayList((BalancingSignal) tso);
     }
 }

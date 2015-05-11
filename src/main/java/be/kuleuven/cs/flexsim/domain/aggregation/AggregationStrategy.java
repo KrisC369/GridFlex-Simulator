@@ -24,8 +24,9 @@ public interface AggregationStrategy {
      *            the flexibility mapping.
      * @param target
      *            the target flexibility to gather.
+     * @return the actually gathered flexibility.
      */
-    void performAggregationStep(AggregationContext context, int t,
+    int performAggregationStep(AggregationContext context, int t,
             Multimap<SiteFlexAPI, FlexTuple> flex, int target);
 
 }

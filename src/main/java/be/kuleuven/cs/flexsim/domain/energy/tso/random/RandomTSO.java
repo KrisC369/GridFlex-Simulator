@@ -1,24 +1,33 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.random;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.commons.math3.random.RandomGenerator;
 
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
+import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
+import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 /**
  * Represents a TSO implementation with random signal.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class RandomTSO implements BalancingSignal {
+public class RandomTSO implements BalancingSignal, SimulationComponent {
     private final RandomGenerator g;
     private final int min;
     private final int max;
+    private int currentValue;
+    private Listener<? super Integer> newBalanceValueListener;
 
     /**
      * Default constructor.
-     * 
+     *
      * @param min
      *            the minimum value for the random generator.
      * @param max
@@ -30,6 +39,8 @@ public class RandomTSO implements BalancingSignal {
         this.min = min;
         this.max = max;
         this.g = g;
+        currentValue = 0;
+        this.newBalanceValueListener = NoopListener.INSTANCE;
     }
 
     /**
@@ -55,11 +66,33 @@ public class RandomTSO implements BalancingSignal {
 
     @Override
     public int getCurrentImbalance() {
-        return getGenerator().nextInt(Math.abs(getMax() - getMin())) + getMin();
-
+        return currentValue;
     }
 
     @Override
     public void addNewBalanceValueListener(Listener<? super Integer> listener) {
+        this.newBalanceValueListener = MultiplexListener.plus(
+                this.newBalanceValueListener, listener);
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+    }
+
+    @Override
+    public void afterTick(int t) {
+        this.currentValue = getGenerator().nextInt(
+                Math.abs(getMax() - getMin()))
+                + getMin();
+    }
+
+    @Override
+    public void tick(int t) {
+        newBalanceValueListener.eventOccurred(currentValue);
+    }
+
+    @Override
+    public List<? extends SimulationComponent> getSimulationSubComponents() {
+        return Collections.emptyList();
     }
 }

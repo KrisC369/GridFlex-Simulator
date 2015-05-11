@@ -69,11 +69,11 @@ public abstract class Aggregator implements SimulationComponent {
         clients.add(client);
     }
 
-    protected final void doAggregationStep(int t, final int target,
+    protected final int doAggregationStep(int t, final int target,
             Multimap<SiteFlexAPI, FlexTuple> flex) {
         logStep(t, target);
-        this.strategy.performAggregationStep(getAggregationContext(), t, flex,
-                target);
+        return this.strategy.performAggregationStep(getAggregationContext(), t,
+                flex, target);
     }
 
     /**

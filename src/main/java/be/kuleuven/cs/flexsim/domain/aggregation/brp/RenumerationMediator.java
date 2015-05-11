@@ -111,6 +111,7 @@ public class RenumerationMediator extends FinanceTrackerImpl {
     public void registerReservation(double proportion) {
         checkArgument(proportion >= 0 && proportion <= 1,
                 "Proportions should be between 0 and 1");
+
         increaseTotalReward((int) (getReservationBudget() * proportion));
     }
 

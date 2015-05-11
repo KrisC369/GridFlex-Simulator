@@ -53,9 +53,11 @@ public class RenumerationGame2ImbSig implements
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
         this.ft = Lists.newArrayList();
+
         RandomTSO tso1 = new RandomTSO(-200, 200, new MersenneTwister(seed));
         RandomTSO tso2 = new RandomTSO(-100, 100, new MersenneTwister(seed));
-
+        this.sim.register(tso1);
+        this.sim.register(tso2);
         this.choiceMap = Maps.newLinkedHashMap();
         this.aggs.add(new BRPAggregator(tso1, new PriceSignal() {
 

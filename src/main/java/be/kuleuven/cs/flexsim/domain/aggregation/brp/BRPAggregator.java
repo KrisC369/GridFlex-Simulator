@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext;
-import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
@@ -46,7 +45,7 @@ public class BRPAggregator extends IndependentAggregator {
      */
     public BRPAggregator(BalancingSignal tso, PriceSignal pricing,
             double reservation, double activation) {
-        super(tso, 1, AggregationStrategyImpl.MOVINGHORIZON);
+        super(tso, 1);
         checkArgument(reservation + activation >= 0
                 && reservation + activation <= 1,
                 "Reservation and activation should some to x with 0 <= x <= 1");
@@ -92,21 +91,20 @@ public class BRPAggregator extends IndependentAggregator {
     @Override
     public void tick(int t) {
         // Get target and budget and set budgets.
-        // TODO
-        calculateAndDivideBudgets();
+        int currentImbalVol = getTargetFlex();
         // Make reservation payments
         Multimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
+        int remediedImbalance = doAggregationStep(t, currentImbalVol, flex);
+        calculateAndDivideBudgets(remediedImbalance);
         payReservationFees(flex);
 
         // Perform aggregation and dispatch.
         // super.tick(t);
-        doAggregationStep(t, getTargetFlex(), flex);
     }
 
-    private void calculateAndDivideBudgets() {
+    private void calculateAndDivideBudgets(int targetFlex) {
         int currentImbalancePrice = imbalancePricing.getCurrentPrice();
-        int currentImbalVol = getTargetFlex();
-        int budget = Math.abs(currentImbalVol) * currentImbalancePrice;
+        int budget = Math.abs(targetFlex) * currentImbalancePrice;
         int incentives = (int) (budget * (activationPortion + reservePortion));
         dispatchBudgets(incentives);
     }
