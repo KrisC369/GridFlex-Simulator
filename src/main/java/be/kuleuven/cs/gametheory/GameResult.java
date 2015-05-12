@@ -52,6 +52,7 @@ public final class GameResult {
      * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @SuppressWarnings("unused")
     @Override
     public boolean equals(@Nullable Object obj) {
         if (this == obj)

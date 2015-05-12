@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gametheory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,7 @@ public class GameScenarioTest {
         new GameResultWriter(g, "CONSOLE").write();
         assertTrue(game.getResultString().contains("C:PayoffEntry [0, 3]->20"));
         assertTrue(game.getResultString().contains(
-                "V:PayoffEntry [0, 3]->[729632.5, 763297.5, 678570.0]"));
+                "V:PayoffEntry [0, 3]->[628830.0, 633277.5, 581825.0]"));
         assertFalse(game.getDynamicsParametersString().isEmpty());
     }
 
