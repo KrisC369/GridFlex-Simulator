@@ -55,7 +55,7 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
         this.ft = Lists.newArrayList();
-        this.tso = new RandomTSO(-200, 200, new MersenneTwister(seed));
+        this.tso = new RandomTSO(-800, 800, new MersenneTwister(seed));
         this.sim.register(tso);
         this.choiceMap = Maps.newLinkedHashMap();
         this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
