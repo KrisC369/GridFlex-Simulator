@@ -188,11 +188,11 @@ public class Game<N, K> {
      *         for this game.
      */
     GameResult getResults() {
-        GameResult result = new GameResult();
-        result.addDescription("Reps", String.valueOf(reps));
-        result.addDescription("agents", String.valueOf(agents));
-        result.addDescription("actions", String.valueOf(actions));
-        result.addResult(payoffs.getDynamicEquationFactors());
+        GameResult result = GameResult.builder()
+                .withDescription("Reps", String.valueOf(reps))
+                .withDescription("agents", String.valueOf(agents))
+                .withDescription("actions", String.valueOf(actions))
+                .setResult(payoffs.getDynamicEquationFactors()).build();
         return result;
     }
 }
