@@ -96,7 +96,15 @@ public class GameDirector {
         return game.getDynamicsParametersString();
     }
 
+    /**
+     * Constructs the results from the current game.
+     *
+     * @return A gameresult object based on the currently available result date
+     *         for this game.
+     */
     public GameResult getResults() {
         return game.getResults();
     }
+    // TODO check state (have experiments been run or not, before drawing upon
+    // results).
 }

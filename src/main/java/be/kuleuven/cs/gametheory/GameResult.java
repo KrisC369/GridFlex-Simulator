@@ -1,6 +1,3 @@
-/**
- *
- */
 package be.kuleuven.cs.gametheory;
 
 import java.util.List;
@@ -12,22 +9,42 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
+ * Value class for game results.
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
 public final class GameResult {
-    private Map<String, String> description;
-    private List<Double> results;
+    private final Map<String, String> description;
+    private final List<Double> results;
 
-    public GameResult() {
+    /**
+     * Default constructor
+     */
+    GameResult() {
         this.description = Maps.newLinkedHashMap();
         this.results = Lists.newArrayList();
     }
 
+    /**
+     * Add a description field
+     *
+     * @param key
+     *            The descriptor field.
+     * @param value
+     *            the value for the descriptor field.
+     */
     public void addDescription(String key, String value) {
         this.description.put(key, value);
     }
 
+    /**
+     * Add a concrete result.
+     *
+     * @param dynamicEquationFactors
+     *            a list of doubles representing the different factors in
+     *            solution equation.
+     */
     public void addResult(List<Double> dynamicEquationFactors) {
         this.results.addAll(dynamicEquationFactors);
     }
@@ -79,29 +96,14 @@ public final class GameResult {
      * @return the description
      */
     public final Map<String, String> getDescription() {
-        return description;
-    }
-
-    /**
-     * @param description
-     *            the description to set
-     */
-    private final void setDescription(Map<String, String> description) {
-        this.description = description;
+        return Maps.newLinkedHashMap(description);
     }
 
     /**
      * @return the results
      */
     public final List<Double> getResults() {
-        return results;
+        return Lists.newArrayList(results);
     }
 
-    /**
-     * @param results
-     *            the results to set
-     */
-    private final void setResults(List<Double> results) {
-        this.results = results;
-    }
 }

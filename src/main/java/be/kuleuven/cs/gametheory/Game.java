@@ -181,7 +181,13 @@ public class Game<N, K> {
         return b.toString();
     }
 
-    public GameResult getResults() {
+    /**
+     * Constructs the results from the current game.
+     *
+     * @return A gameresult object based on the currently available result date
+     *         for this game.
+     */
+    GameResult getResults() {
         GameResult result = new GameResult();
         result.addDescription("Reps", String.valueOf(reps));
         result.addDescription("agents", String.valueOf(agents));

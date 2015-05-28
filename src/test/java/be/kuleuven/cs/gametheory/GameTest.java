@@ -108,5 +108,9 @@ public class GameTest {
         // System.out.println(g.getDynamicsParametersString());
         assertTrue(g.getDynamicsParametersString().contains("34.0"));
         assertTrue(g.getResultString().contains("[34.0, 34.0, 34.0]"));
+        assertTrue(director.getResults().getDescription().get("Reps")
+                .contains(String.valueOf(20)));
+        assertTrue(director.getResults().getResults()
+                .contains(Double.valueOf(34.0)));
     }
 }

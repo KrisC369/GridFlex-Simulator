@@ -7,7 +7,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.Site;
@@ -15,7 +17,8 @@ import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class BRPAggregatorTest {
-
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
     private static final long _400 = 400;
     private BRPAggregator agg = mock(BRPAggregator.class);
     private Site site1 = mock(Site.class);
@@ -145,5 +148,45 @@ public class BRPAggregatorTest {
         double proportion = 0.5;
         assertEquals(_400 * proportion, t1.getTotalProfit(), 0.01);
         assertEquals(_400 * proportion, t2.getTotalProfit(), 0.01);
+    }
+
+    @Test
+    public void testPaymentMediator1() {
+        sim.register(agg);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        thrown.expect(IllegalArgumentException.class);
+        t1.registerActivation(1.1);
+    }
+
+    @Test
+    public void testPaymentMediator2() {
+        sim.register(agg);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        thrown.expect(IllegalArgumentException.class);
+        t1.registerActivation(-0.5);
+    }
+
+    @Test
+    public void testPaymentMediator3() {
+        sim.register(agg);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        thrown.expect(IllegalArgumentException.class);
+        t1.registerReservation(1.1);
+    }
+
+    @Test
+    public void testPaymentMediator4() {
+        sim.register(agg);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        thrown.expect(IllegalArgumentException.class);
+        t1.registerReservation(-0.5);
     }
 }

@@ -1,10 +1,8 @@
-package be.kuleuven.cs.flexsim.experimentation;
+package be.kuleuven.cs.flexsim.experimentation.techReport;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
-import be.kuleuven.cs.flexsim.experimentation.techReport.RetributionFactorSensitivityRunner;
 
 /**
  * An example class running some experiments.
@@ -15,7 +13,7 @@ import be.kuleuven.cs.flexsim.experimentation.techReport.RetributionFactorSensit
 public final class TimingTest {
 
     private static final int NAGENTS = 2;
-    private static final int REPITITIONS = 100;
+    private static final int REPITITIONS = 10;
     private static final int FACTOR = 1000;
 
     private static final String TAG = "TEST";

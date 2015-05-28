@@ -132,9 +132,8 @@ public class FinanceTrackerTest {
         mockPL.deliverResources(res);
         res = ResourceFactory.createBulkMPResource(n, 3, 1);
         mockPL.deliverResources(res);
-        sim.register(t);
-        sim.register(t2);
         FinanceTracker ta = FinanceTrackerImpl.createAggregate(t, t2);
+        sim.register(ta);
         assertEquals(0, t.getTotalReward(), 0);
         ((Simulator) sim).start();
         double reward = t.getTotalReward();
