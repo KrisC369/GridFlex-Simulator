@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.experimentation.RetributionFactorSensitivityRunner;
+import be.kuleuven.cs.flexsim.experimentation.techReport.RetributionFactorSensitivityRunner;
 
 /**
  * An example class running some experiments.

@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation;
+package be.kuleuven.cs.flexsim.experimentation.techReport;
 
 /**
  * An example class running some experiments.

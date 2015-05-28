@@ -1,8 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation;
 
-import java.util.List;
-import java.util.Map;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
@@ -12,11 +9,6 @@ import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutput
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
-import be.kuleuven.cs.gametheory.GameInstance;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * Represents a game with two possible actions to choose between.
@@ -24,17 +16,12 @@ import com.google.common.collect.Maps;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
+public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
 
     private static final int ACTIONSPACE_SIZE = 2;
     private static final int ACTPAYMENT = 50;
-    private final Simulator sim;
-    private final List<Site> sites;
-    private final List<Aggregator> aggs;
     private final BalancingTSO tso;
-    private final List<FinanceTrackerImpl> ft;
     private int count;
-    private final Map<Site, Aggregator> choiceMap;
     private final int baseConsumption;
     private final double factor;
 
@@ -50,17 +37,13 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
      *            The retribution factor.
      */
     public TwoActionGameExample(int seed, int baselineConsumption, double factor) {
-        this.sim = Simulator.createSimulator(500, seed);
-        this.aggs = Lists.newArrayList();
-        this.sites = Lists.newArrayList();
-        this.ft = Lists.newArrayList();
+        super(seed);
         this.tso = new BalancingTSO();
         this.count = 0;
         this.baseConsumption = baselineConsumption;
-        this.choiceMap = Maps.newLinkedHashMap();
-        this.aggs.add(new ReactiveMechanismAggregator(tso,
+        addAggregator(new ReactiveMechanismAggregator(tso,
                 AggregationStrategyImpl.CARTESIANPRODUCT));
-        this.aggs.add(new ReactiveMechanismAggregator(tso,
+        addAggregator(new ReactiveMechanismAggregator(tso,
                 AggregationStrategyImpl.MOVINGHORIZON));
         this.factor = factor;
     }
@@ -80,21 +63,12 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
     }
 
     @Override
-    public Map<Site, Long> getPayOffs() {
-        Map<Site, Long> r = Maps.newLinkedHashMap();
-        for (int ag = 0; ag < sites.size(); ag++) {
-            r.put(sites.get(ag), (long) ft.get(ag).getTotalProfit());
-        }
-        return r;
-    }
-
-    @Override
     public void fixActionToAgent(Site agent, Aggregator action) {
-        sites.add(agent);
+        addSite(agent);
         tso.registerConsumer(agent);
-        choiceMap.put(agent, action);
+        addChoice(agent, action);
         FinanceTrackerImpl fti;
-        if (aggs.get(0).equals(action)) {
+        if (getAggregators().get(0).equals(action)) {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
                     .createCustomBalancingFeeTracker(agent, ACTPAYMENT,
                             this.factor);
@@ -102,15 +76,9 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
                     .createCustomBalancingFeeTracker(agent, ACTPAYMENT, 0);
         }
-        ft.add(fti);
-        sim.register(fti);
+        addFinanceTracker(fti);
         action.registerClient(agent);
         this.count++;
-    }
-
-    @Override
-    public void play() {
-        sim.start();
     }
 
     @Override
@@ -120,26 +88,16 @@ public class TwoActionGameExample implements GameInstance<Site, Aggregator> {
                 baseConsumption * getNumberOfAgents());
         EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
                 -1500, 1500, 0.010);
-        for (Aggregator agg : this.aggs) {
-            sim.register(agg);
+        for (Aggregator agg : this.getAggregators()) {
+            addSimComponent(agg);
         }
         tso.registerProducer(p1);
         tso.registerProducer(p2);
-        sim.register(tso);
+        addSimComponent(tso);
     }
 
     private int getNumberOfAgents() {
         return count;
-    }
-
-    @Override
-    public List<Aggregator> getActionSet() {
-        return Lists.newArrayList(aggs);
-    }
-
-    @Override
-    public Map<Site, Aggregator> getAgentToActionMapping() {
-        return Maps.newLinkedHashMap(choiceMap);
     }
 
     /**

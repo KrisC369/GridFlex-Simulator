@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation;
+package be.kuleuven.cs.flexsim.experimentation.techReport;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
@@ -73,7 +74,7 @@ public class RetributionFactorSensitivityRunner {
         for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
                 * factor) {
             double retrb = retributionFactor / factor;
-            GameConfiguratorEx ex = new GameConfiguratorEx(retrb, twister);
+            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb, twister);
             GameDirector director = new GameDirector(new Game<>(nAgents, ex,
                     repititions));
 
@@ -104,7 +105,7 @@ public class RetributionFactorSensitivityRunner {
         for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
                 * factor) {
             double retrb = retributionFactor / factor;
-            GameConfiguratorEx ex = new GameConfiguratorEx(retrb / factor,
+            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb / factor,
                     twister);
             GameDirector director = new GameDirector(new Game<>(nAgents, ex,
                     repititions));

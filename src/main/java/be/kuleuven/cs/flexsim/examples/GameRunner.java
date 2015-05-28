@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.examples;
 
-import be.kuleuven.cs.flexsim.experimentation.GameConfiguratorEx;
+import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.gametheory.Game;
 import be.kuleuven.cs.gametheory.GameDirector;
 import be.kuleuven.cs.gametheory.GameResultWriter;
@@ -25,7 +25,7 @@ public final class GameRunner {
      *            commandline args.
      */
     public static void main(String[] args) {
-        GameConfiguratorEx ex = new GameConfiguratorEx(1);
+        DefaultGameConfigurator ex = new DefaultGameConfigurator(1);
         GameDirector g = new GameDirector(new Game<>(AGENTS, ex, REPITITIONS));
         g.playAutonomously();
         new GameResultWriter(g).write();

@@ -10,6 +10,7 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.experimentation.AggregationGame;
 
 import com.google.common.collect.Lists;
 

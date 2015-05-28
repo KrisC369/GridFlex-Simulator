@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.experimentation.GameConfiguratorEx;
+import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 
 public class GameScenarioTest {
 
@@ -19,7 +19,7 @@ public class GameScenarioTest {
 
     @Test
     public void testGameScenarioExample1() {
-        GameConfiguratorEx ex = new GameConfiguratorEx(0);
+        DefaultGameConfigurator ex = new DefaultGameConfigurator(0);
         Game<Site, Aggregator> game = new Game<>(3, ex, 20);
         GameDirector g = new GameDirector(game);
         g.playAutonomously();

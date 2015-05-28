@@ -4,7 +4,7 @@ import org.apache.commons.math3.random.MersenneTwister;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
+import be.kuleuven.cs.flexsim.experimentation.DefaultSiteAgentGenerator;
 import be.kuleuven.cs.flexsim.experimentation.TwoActionGameExample;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
@@ -29,8 +29,10 @@ public class RenumerationGameConfigurator implements
     /**
      * Constructor for these experiments.
      *
-     * @param factor
-     *            the retribution factor.
+     * @param factor1
+     *            The budget division factor for agg1.
+     * @param factor2
+     *            The budget division factor for agg2.
      */
     public RenumerationGameConfigurator(double factor1, double factor2) {
         this(factor1, factor2, new MersenneTwister(2412));
@@ -39,8 +41,10 @@ public class RenumerationGameConfigurator implements
     /**
      * Constructor for these experiments.
      *
-     * @param factor
-     *            the retribution factor.
+     * @param factor1
+     *            The budget division factor for agg1.
+     * @param factor2
+     *            The budget division factor for agg2.
      * @param twister
      *            The random generator to use.
      */
@@ -53,19 +57,8 @@ public class RenumerationGameConfigurator implements
 
     @Override
     public Site getAgent() {
-        int current = (int) (twister.nextGaussian() * ((MAX - MIN) / 4))
-                + CURRENT;
-        int steps = (int) Math.round(twister.nextGaussian() * 2 + STEPS);
-        if (current < MIN) {
-            current = MIN;
-        }
-        if (current > MAX) {
-            current = MAX;
-        }
-        if (steps <= 0) {
-            steps = 1;
-        }
-        return SiteSimulation.createDefault(current, MIN, MAX, steps);
+        return DefaultSiteAgentGenerator.getAgent(twister, MAX, MIN, CURRENT,
+                STEPS);
     }
 
     @Override

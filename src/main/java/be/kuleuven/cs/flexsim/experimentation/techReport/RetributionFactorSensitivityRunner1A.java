@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation;
+package be.kuleuven.cs.flexsim.experimentation.techReport;
 
 /**
  * An example class running some experiments.
@@ -6,14 +6,14 @@ package be.kuleuven.cs.flexsim.experimentation;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public final class RetributionFactorSensitivityRunner6A extends
+public final class RetributionFactorSensitivityRunner1A extends
         RetributionFactorSensitivityRunner {
 
-    private static final int NAGENTS = 6;
-    private static final int REPITITIONS = 10;
-    private static final String TAG = "RESULT6A";
+    private static final int NAGENTS = 1;
+    private static final int REPITITIONS = 400;
+    private static final String TAG = "RESULT1A";
 
-    protected RetributionFactorSensitivityRunner6A() {
+    protected RetributionFactorSensitivityRunner1A() {
         super(REPITITIONS, NAGENTS, TAG);
     }
 
@@ -24,6 +24,6 @@ public final class RetributionFactorSensitivityRunner6A extends
      *            commandline args.
      */
     public static void main(String[] args) {
-        new RetributionFactorSensitivityRunner6A().execute();
+        new RetributionFactorSensitivityRunner1A().execute();
     }
 }

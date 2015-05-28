@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.saso;
+package be.kuleuven.cs.flexsim.experimentation;
 
 import java.util.List;
 import java.util.Map;
@@ -112,7 +112,7 @@ public abstract class AggregationGame<S, A extends Aggregator> implements
     /**
      * @return the aggs
      */
-    protected final List<A> getAggs() {
+    protected final List<A> getAggregators() {
         return Lists.newArrayList(aggs);
     }
 
