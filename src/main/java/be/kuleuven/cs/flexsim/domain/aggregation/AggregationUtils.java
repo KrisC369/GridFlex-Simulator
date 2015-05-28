@@ -106,6 +106,12 @@ public final class AggregationUtils {
         for (SiteFlexAPI api : copy.keySet()) {
             if (copy.get(api).isEmpty()) {
                 flex.removeAll(api);
+            } else {
+                for (FlexTuple t : copy.get(api)) {
+                    if (t.getDeltaP() == 0) {
+                        flex.get(api).remove(t);
+                    }
+                }
             }
         }
     }

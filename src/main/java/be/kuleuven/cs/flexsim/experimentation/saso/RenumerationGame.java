@@ -45,7 +45,6 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
         this.addSimComponent(tso);
 
         this.addAggregator(new BRPAggregator(tso, new PriceSignal() {
-
             @Override
             public int getCurrentPrice() {
                 return 100;

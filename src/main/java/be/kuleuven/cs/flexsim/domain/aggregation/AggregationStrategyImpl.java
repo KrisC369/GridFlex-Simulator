@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.math3.random.MersenneTwister;
+
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
@@ -31,6 +33,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
         @Override
         public int performAggregationStep(AggregationContext context, int t,
                 Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
+            AggregationUtils.filterEmpty(flex);
             Map<Long, Integer> flexFiltered = AggregationUtils
                     .filterAndTransform(flex);
 
@@ -46,7 +49,9 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
             }
 
             Collection<Long> best = Lists.newArrayList();
+            List<Collection<Long>> bestAlt = Lists.newArrayList();
             int score = 0;
+            int with = 0;
             for (Collection<Long> poss : possibleSolutions) {
                 int flexSum = 0;
                 for (long l : poss) {
@@ -54,10 +59,26 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                 }
                 if (diff(flexSum, target) < diff(score, target)) {
                     score = flexSum;
-                    best = poss;
-                }// TODO test fairness
+                    with = poss.size();
+                    bestAlt = Lists.newArrayList();
+                    bestAlt.add(poss);
+                } else if (diff(flexSum, target) == diff(score, target)) {
+                    if (poss.size() < with) {
+                        with = poss.size();
+                        bestAlt = Lists.newArrayList();
+                        bestAlt.add(poss);
+                    } else if (poss.size() == with) {
+                        bestAlt.add(poss);
+                    }
+                }
             }
-            context.dispatchActivation(flex, Sets.newLinkedHashSet(best));
+            if (!bestAlt.isEmpty()) {
+                MersenneTwister r = new MersenneTwister(RANDOM_SEED);
+                best = bestAlt.get(r.nextInt(bestAlt.size()));
+            }
+            if (!best.isEmpty()) {
+                context.dispatchActivation(flex, Sets.newLinkedHashSet(best));
+            }
             return score;
         }
 
@@ -124,6 +145,8 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                     target);
         }
     };
+
+    private static final int RANDOM_SEED = 1423;
 
     @Override
     public abstract int performAggregationStep(AggregationContext context,
