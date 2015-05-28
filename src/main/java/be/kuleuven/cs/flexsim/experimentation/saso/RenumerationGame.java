@@ -6,7 +6,7 @@ import org.apache.commons.math3.random.MersenneTwister;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.PriceSignal;
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.site.Site;
@@ -24,8 +24,6 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
 
     private static final int ACTIONSPACE_SIZE = 2;
     private final RandomTSO tso;
-
-    // private final List<FinanceTracker> ft;
 
     /**
      * Default constructor for this game with two actions.

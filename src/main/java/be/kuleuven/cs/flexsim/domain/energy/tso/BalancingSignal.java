@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
+package be.kuleuven.cs.flexsim.domain.energy.tso;
 
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 

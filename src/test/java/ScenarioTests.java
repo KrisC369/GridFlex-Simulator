@@ -22,7 +22,7 @@ import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.RandomOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;

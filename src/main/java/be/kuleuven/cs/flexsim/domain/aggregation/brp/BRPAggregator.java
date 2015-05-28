@@ -3,11 +3,12 @@ package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
@@ -26,10 +27,10 @@ import com.google.common.collect.Multimap;
  */
 public class BRPAggregator extends IndependentAggregator {
 
-    private Map<SiteFlexAPI, RenumerationMediator> paymentMapper;
-    private double activationPortion;
-    private double reservePortion;
-    private PriceSignal imbalancePricing;
+    private final Map<SiteFlexAPI, RenumerationMediator> paymentMapper;
+    private final double activationPortion;
+    private final double reservePortion;
+    private final PriceSignal imbalancePricing;
 
     /**
      * Default constructor.
@@ -97,9 +98,6 @@ public class BRPAggregator extends IndependentAggregator {
         int remediedImbalance = doAggregationStep(t, currentImbalVol, flex);
         calculateAndDivideBudgets(remediedImbalance);
         payReservationFees(flex);
-
-        // Perform aggregation and dispatch.
-        // super.tick(t);
     }
 
     private void calculateAndDivideBudgets(int targetFlex) {
@@ -130,9 +128,9 @@ public class BRPAggregator extends IndependentAggregator {
             sumFlex += maxFlexInProfile;
             portions.put(api, maxFlexInProfile);
         }
-        for (SiteFlexAPI api : portions.keySet()) {
-            getActualPaymentMediatorFor(api).registerReservation(
-                    portions.get(api) / (double) sumFlex);
+        for (Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
+            getActualPaymentMediatorFor(entry.getKey()).registerReservation(
+                    entry.getValue() / (double) sumFlex);
         }
     }
 
@@ -150,9 +148,9 @@ public class BRPAggregator extends IndependentAggregator {
                 }
             }
         }
-        for (SiteFlexAPI api : portions.keySet()) {
-            getActualPaymentMediatorFor(api).registerActivation(
-                    portions.get(api) / (double) sumFlex);
+        for (Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
+            getActualPaymentMediatorFor(entry.getKey()).registerActivation(
+                    entry.getValue() / (double) sumFlex);
         }
     }
 
@@ -164,6 +162,12 @@ public class BRPAggregator extends IndependentAggregator {
     private class AggregationDispatch implements AggregationContext {
         private AggregationContext delegate;
 
+        /**
+         * Default constructor for this delegating dispatch
+         *
+         * @param delegate
+         *            the target to delegate to.
+         */
         public AggregationDispatch(AggregationContext delegate) {
             this.delegate = delegate;
         }

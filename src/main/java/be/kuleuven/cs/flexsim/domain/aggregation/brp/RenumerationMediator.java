@@ -14,7 +14,7 @@ import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class RenumerationMediator extends FinanceTrackerImpl {
+public final class RenumerationMediator extends FinanceTrackerImpl {
     private SiteFlexAPI target;
     private long currentReservationBudget;
     private long currentActivationBudget;
@@ -84,21 +84,6 @@ public class RenumerationMediator extends FinanceTrackerImpl {
     long getCurrentBudget() {
         return getActivationBudget() + getReservationBudget();
     }
-
-    // /**
-    // * This method refines the following documentation by registering payments
-    // * before report is made in super. {@inheritDoc}s
-    // */
-    // @Override
-    // public void afterTick(int t) {
-    // enforcePayments();
-    // super.afterTick(t);
-    // }
-
-    // private void enforcePayments() {
-    // // TODO Auto-generated method stub
-    //
-    // }
 
     /**
      * Register a payment for reservation by specifying the portion of the

@@ -1,8 +1,10 @@
-package be.kuleuven.cs.flexsim.experimentation.techReport;
+package be.kuleuven.cs.flexsim.experimentation.techreport;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
+
+import be.kuleuven.cs.flexsim.experimentation.techreport.RetributionFactorSensitivityRunner;
 
 /**
  * An example class running some experiments.

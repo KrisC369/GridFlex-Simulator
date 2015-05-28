@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.math3.random.RandomGenerator;
 
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
 import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;

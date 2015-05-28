@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.techReport;
+package be.kuleuven.cs.flexsim.experimentation.techreport;
 
 /**
  * Runs a combination of experiments for 2A, 3A and 4A.

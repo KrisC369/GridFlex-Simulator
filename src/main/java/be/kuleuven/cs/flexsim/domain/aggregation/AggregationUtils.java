@@ -22,7 +22,7 @@ import com.google.common.collect.Sets;
 /**
  * Utility class provind some static utility functions to be used by aggregation
  * engines.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -136,5 +136,5 @@ public final class AggregationUtils {
             sorted.putAll(api, sortPlaceholder);
         }
         return sorted;
-    };
+    }
 }

@@ -27,7 +27,7 @@ public final class GameResult {
     }
 
     /**
-     * Add a description field
+     * Add a description field.
      *
      * @param key
      *            The descriptor field.
@@ -72,23 +72,29 @@ public final class GameResult {
     @SuppressWarnings("unused")
     @Override
     public boolean equals(@Nullable Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         GameResult other = (GameResult) obj;
         if (description == null) {
             if (other.description != null)
                 return false;
-        } else if (!description.equals(other.description))
+        } else if (!description.equals(other.description)) {
             return false;
+        }
         if (results == null) {
-            if (other.results != null)
+            if (other.results != null) {
                 return false;
-        } else if (!results.equals(other.results))
+            }
+        } else if (!results.equals(other.results)) {
             return false;
+        }
         return true;
     }
 

@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.techReport;
+package be.kuleuven.cs.flexsim.experimentation.techreport;
 
 import java.util.List;
 

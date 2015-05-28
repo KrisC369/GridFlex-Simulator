@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;

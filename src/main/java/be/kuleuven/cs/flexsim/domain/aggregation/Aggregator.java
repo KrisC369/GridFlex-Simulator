@@ -5,7 +5,6 @@ import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
@@ -104,18 +103,18 @@ public abstract class Aggregator implements SimulationComponent {
 
     private void logStep(int t, int target) {
         LoggerFactory
-                .getLogger(IndependentAggregator.class)
+                .getLogger(Aggregator.class)
                 .debug("Performing aggregation step at time step {} with flextarget {}",
                         t, target);
     }
 
     private void logCurtail(FlexTuple tt) {
-        LoggerFactory.getLogger(IndependentAggregator.class).debug(
+        LoggerFactory.getLogger(Aggregator.class).debug(
                 "Sending curtail request based on profile {}", tt);
     }
 
     private void logRestore(FlexTuple tt) {
-        LoggerFactory.getLogger(IndependentAggregator.class).debug(
+        LoggerFactory.getLogger(Aggregator.class).debug(
                 "Sending restore request based on profile {}", tt);
     }
 

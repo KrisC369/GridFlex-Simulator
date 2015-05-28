@@ -13,6 +13,9 @@ import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
  */
 public final class DefaultSiteAgentGenerator {
 
+    private DefaultSiteAgentGenerator() {
+    }
+
     /**
      * Creates a new sitesimulation agent with actual parameters chosen from
      * following parameters with guassian noise.
@@ -32,7 +35,7 @@ public final class DefaultSiteAgentGenerator {
      */
     public static Site getAgent(MersenneTwister twister, int max, int min,
             int starting, int meanSteps) {
-        int current = (int) (twister.nextGaussian() * ((max - min) / 4))
+        int current = (int) (twister.nextGaussian() * ((max - min) / (double) 4))
                 + starting;
         int steps = (int) Math.round(twister.nextGaussian() * 2 + meanSteps);
         if (current < min) {
