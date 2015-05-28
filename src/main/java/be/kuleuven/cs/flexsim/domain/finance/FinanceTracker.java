@@ -1,12 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.finance;
 
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+
 /**
  * Represents an entity for tracking financing data about trackable instances.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public interface FinanceTracker {
+public interface FinanceTracker extends SimulationComponent {
 
     /**
      * Returns the total reward metric value for this tracker.

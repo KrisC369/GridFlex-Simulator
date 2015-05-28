@@ -1,24 +1,17 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.math3.random.MersenneTwister;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.PriceSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
-import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.simulation.InstrumentationComponent;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
-import be.kuleuven.cs.gametheory.GameInstance;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * Represents a game with two possible actions to choose between.
@@ -26,15 +19,12 @@ import com.google.common.collect.Maps;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
-public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
+public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
 
     private static final int ACTIONSPACE_SIZE = 2;
-    private final Simulator sim;
-    private final List<Site> sites;
-    private final List<BRPAggregator> aggs;
     private final RandomTSO tso;
-    private final List<FinanceTracker> ft;
-    private final Map<Site, BRPAggregator> choiceMap;
+
+    // private final List<FinanceTracker> ft;
 
     /**
      * Default constructor for this game with two actions.
@@ -51,21 +41,18 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      */
     public RenumerationGame(int seed, int baselineConsumption, double factor1,
             double factor2) {
-        this.sim = Simulator.createSimulator(500, seed);
-        this.aggs = Lists.newArrayList();
-        this.sites = Lists.newArrayList();
-        this.ft = Lists.newArrayList();
+        super(seed);
         this.tso = new RandomTSO(-200, 200, new MersenneTwister(seed));
-        this.sim.register(tso);
-        this.choiceMap = Maps.newLinkedHashMap();
-        this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
+        this.addSimComponent(tso);
+
+        this.addAggregator(new BRPAggregator(tso, new PriceSignal() {
 
             @Override
             public int getCurrentPrice() {
                 return 100;
             }
         }, factor1, 1 - factor1));
-        this.aggs.add(new BRPAggregator(tso, new PriceSignal() {
+        this.addAggregator(new BRPAggregator(tso, new PriceSignal() {
 
             @Override
             public int getCurrentPrice() {
@@ -89,45 +76,13 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
     }
 
     @Override
-    public Map<Site, Long> getPayOffs() {
-        Map<Site, Long> r = Maps.newLinkedHashMap();
-        for (int ag = 0; ag < sites.size(); ag++) {
-            r.put(sites.get(ag), (long) ft.get(ag).getTotalProfit());
-        }
-        return r;
-    }
-
-    @Override
     public void fixActionToAgent(Site agent, BRPAggregator action) {
-        sites.add(agent);
-        choiceMap.put(agent, action);
+        this.addSite(agent);
+        addChoice(agent, action);
         FinanceTracker fti;
         action.registerClient(agent);
         fti = action.getFinanceTrackerFor(agent);
-        ft.add(fti);
-        sim.register((FinanceTrackerImpl) fti);
-    }
-
-    @Override
-    public void play() {
-        sim.start();
-    }
-
-    @Override
-    public void init() {
-        for (Aggregator agg : this.aggs) {
-            sim.register(agg);
-        }
-    }
-
-    @Override
-    public List<BRPAggregator> getActionSet() {
-        return Lists.newArrayList(aggs);
-    }
-
-    @Override
-    public Map<Site, BRPAggregator> getAgentToActionMapping() {
-        return Maps.newLinkedHashMap(choiceMap);
+        addFinanceTracker(fti);
     }
 
     /**
@@ -135,10 +90,6 @@ public class RenumerationGame implements GameInstance<Site, BRPAggregator> {
      */
     public static final int getActionspacesize() {
         return ACTIONSPACE_SIZE;
-    }
-
-    protected void addSimComponent(InstrumentationComponent comp) {
-        this.sim.register(comp);
     }
 
     protected List<BalancingSignal> getBalancingSignals() {

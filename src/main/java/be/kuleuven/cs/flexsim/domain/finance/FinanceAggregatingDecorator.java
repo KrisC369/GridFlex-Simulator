@@ -2,11 +2,14 @@ package be.kuleuven.cs.flexsim.domain.finance;
 
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+
 import com.google.common.collect.Lists;
 
 /**
  * Adapter class for aggregating and summing multiple trackers.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  *
  */
@@ -43,5 +46,36 @@ class FinanceAggregatingDecorator implements FinanceTracker {
             sum += t.getTotalProfit();
         }
         return sum;
+    }
+
+    @Override
+    public void afterTick(int t) {
+        for (FinanceTracker tr : targets) {
+            tr.afterTick(t);
+        }
+
+    }
+
+    @Override
+    public void tick(int t) {
+        for (FinanceTracker tr : targets) {
+            tr.tick(t);
+        }
+    }
+
+    @Override
+    public List<? extends SimulationComponent> getSimulationSubComponents() {
+        List<SimulationComponent> subcomp = Lists.newArrayList();
+        for (FinanceTracker tr : targets) {
+            subcomp.addAll(tr.getSimulationSubComponents());
+        }
+        return subcomp;
+    }
+
+    @Override
+    public void initialize(SimulationContext context) {
+        for (FinanceTracker tr : targets) {
+            tr.initialize(context);
+        }
     }
 }
