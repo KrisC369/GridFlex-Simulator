@@ -12,7 +12,7 @@
 
 
 	<groupId>be.kuleuven.cs</groupId>
-	<artifactId>flexsim-nucleus</artifactId>
+	<artifactId>flexsim-core</artifactId>
 	<version>0.0.5</version>
 	<packaging>jar</packaging>
 	<name>FlexSimulator core</name>
