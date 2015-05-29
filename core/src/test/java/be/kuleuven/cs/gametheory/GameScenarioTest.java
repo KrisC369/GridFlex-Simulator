@@ -24,9 +24,13 @@ public class GameScenarioTest {
         GameDirector g = new GameDirector(game);
         g.playAutonomously();
         new GameResultWriter(g, "CONSOLE").write();
-        assertTrue(game.getResultString().contains("C:PayoffEntry [0, 3]->20"));
+        System.out.println(game.getResultString());
         assertTrue(game.getResultString().contains(
-                "V:PayoffEntry [0, 3]->[628830.0, 633277.5, 581825.0]"));
+                "C:PayoffEntry{entries=[0, 3]}->20"));
+        assertTrue(game
+                .getResultString()
+                .contains(
+                        "V:PayoffEntry{entries=[0, 3]}->[628830.0, 633277.5, 581825.0]"));
         assertFalse(game.getDynamicsParametersString().isEmpty());
     }
 
