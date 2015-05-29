@@ -16,18 +16,19 @@ public class GameResultTest {
 
     @Test
     public void testCreate() {
-        GameResult res = GameResult.builder().withDescription("test", "val")
-                .setResult(Lists.newArrayList(Double.valueOf(2))).build();
+        GameResult res = GameResult.create(
+                Lists.newArrayList(Double.valueOf(2))).withDescription("test",
+                "val");
         assertEquals(res.getDescription().get("test"), "val");
         assertEquals(res.getResults().get(0), 2, 0);
     }
 
     @Test
     public void testCreate2() {
-        GameResult res = GameResult.builder().withDescription("test", "val")
-                .setResult(Lists.newArrayList(Double.valueOf(2))).build();
-        GameResult res2 = GameResult.from(res).withDescription("test2", "val2")
-                .build();
+        GameResult res = GameResult.create(
+                Lists.newArrayList(Double.valueOf(2))).withDescription("test",
+                "val");
+        GameResult res2 = res.withDescription("test2", "val2");
         assertEquals("val", res2.getDescription().get("test"));
         assertEquals("val2", res2.getDescription().get("test2"));
         assertEquals(2, res2.getResults().get(0), 0);
