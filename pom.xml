@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-main</artifactId>
@@ -11,10 +11,10 @@
 	<modules>
 		<module>project</module>
 		<module>core</module>
-    <module>game</module>
-    <module>example</module>
-    <module>domain</module>
-  </modules>
+		<module>game</module>
+		<module>example</module>
+		<module>domain</module>
+	</modules>
 
 	<dependencies>
 		<dependency>
@@ -38,9 +38,6 @@
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.7.7</version>
 		</dependency>
-	</dependencies>
-	<dependencyManagement>
-		<dependencies>
 			<dependency>
 				<groupId>org.mockito</groupId>
 				<artifactId>mockito-all</artifactId>
@@ -56,14 +53,7 @@
 				<artifactId>commons-collections4</artifactId>
 				<version>4.0</version>
 			</dependency>
-			<!-- <dependency> <groupId>be.kuleuven.cs.gridlock</groupId> <artifactId>gridlock-events</artifactId>
-				<version>0.0.1</version> </dependency> -->
-			<!-- <dependency> <groupId>org.jfree</groupId> <artifactId>jfreechart</artifactId>
-				<version>1.0.17</version> </dependency> -->
-			<!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId>
-				<version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId>
-				<artifactId>jung-graph-impl</artifactId> <version>2.0.1</version> </dependency> -->
-			<dependency>
+				<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-math3</artifactId>
 				<version>3.3</version>
@@ -73,6 +63,17 @@
 				<artifactId>commons-lang3</artifactId>
 				<version>3.3.2</version>
 			</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<!-- <dependency> <groupId>be.kuleuven.cs.gridlock</groupId> <artifactId>gridlock-events</artifactId>
+				<version>0.0.1</version> </dependency> -->
+			<!-- <dependency> <groupId>org.jfree</groupId> <artifactId>jfreechart</artifactId>
+				<version>1.0.17</version> </dependency> -->
+			<!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId>
+				<version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId>
+				<artifactId>jung-graph-impl</artifactId> <version>2.0.1</version> </dependency> -->
+
 			<dependency>
 				<groupId>net.sf.jung</groupId>
 				<artifactId>jung2</artifactId>
@@ -88,11 +89,6 @@
 				<groupId>com.googlecode.combinatoricslib</groupId>
 				<artifactId>combinatoricslib</artifactId>
 				<version>2.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.yaml</groupId>
-				<artifactId>snakeyaml</artifactId>
-				<version>1.16-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>com.google.auto.value</groupId>
@@ -224,7 +220,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
