@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.kuleuven.cs</groupId>
-	<artifactId>flexsim-core</artifactId>
+	<artifactId>flexsim-main</artifactId>
 	<version>0.0.5</version>
 	<packaging>pom</packaging>
 	<name>FlexSimulator</name>

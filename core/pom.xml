@@ -5,14 +5,14 @@
 
 	<parent>
 		<groupId>be.kuleuven.cs</groupId>
-		<artifactId>flexsim-core</artifactId>
+		<artifactId>flexsim-main</artifactId>
 		<version>0.0.5</version>
 		<relativePath>..</relativePath>
 	</parent>
 
 
 	<groupId>be.kuleuven.cs</groupId>
-	<artifactId>flexsim-core-core</artifactId>
+	<artifactId>flexsim-nucleus</artifactId>
 	<version>0.0.5</version>
 	<packaging>jar</packaging>
 	<name>FlexSimulator core</name>
