@@ -106,12 +106,12 @@ public class RenumerationGameRunner {
                 resetTwister();
 
                 // create and store yaml.
-                GameResult result = GameResult
-                        .from(director.getResults())
+                GameResult result = director
+                        .getResults()
                         .withDescription("RetributionFactor1",
                                 String.valueOf(retrb1))
                         .withDescription("RetributionFactor2",
-                                String.valueOf(retrb2)).build();
+                                String.valueOf(retrb2));
                 this.results.add(result);
 
             }

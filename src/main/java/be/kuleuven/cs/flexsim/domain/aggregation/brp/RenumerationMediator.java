@@ -15,11 +15,11 @@ import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
  *
  */
 public final class RenumerationMediator extends FinanceTrackerImpl {
-    private SiteFlexAPI target;
+    private final SiteFlexAPI target;
     private long currentReservationBudget;
     private long currentActivationBudget;
-    private double reservationPortion;
-    private double activationPortion;
+    private final double reservationPortion;
+    private final double activationPortion;
 
     private RenumerationMediator(Site client, double reservePortion) {
         super(client, RewardModel.NONE, DebtModel.NONE);
