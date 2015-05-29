@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.kuleuven.cs</groupId>
-	<artifactId>flexsim-main</artifactId>
+	<artifactId>flexsim-core</artifactId>
 	<version>0.0.5</version>
 	<packaging>pom</packaging>
 	<name>FlexSimulator</name>
@@ -154,7 +154,7 @@
 										<limit implementation="org.jacoco.report.check.Limit">
 											<counter>COMPLEXITY</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.10</minimum>
+											<minimum>0.00</minimum>
 										</limit>
 									</limits>
 								</rule>
