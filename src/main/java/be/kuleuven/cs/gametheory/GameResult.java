@@ -1,6 +1,5 @@
 package be.kuleuven.cs.gametheory;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,61 +17,51 @@ import com.google.common.collect.Maps;
  */
 @AutoValue
 public abstract class GameResult {
+
     /**
-     * @return the description
+     * @return the description of theses result in String key-value pairs.
      */
     public abstract ImmutableMap<String, String> getDescription();
 
     /**
-     * @return the results
+     * @return the results of this game as a list of values.
      */
     public abstract ImmutableList<Double> getResults();
 
-    // static GameResultBuilder builder() {
-    // return new AutoValue_GameResult2.GameResultBuilder();
-    // }
-
-    // static GameResult2 create(Map<String, String> descr, List<Double> res) {
-    // // return new AutoValue_GameResult2(ImmutableMap.copyOf(descr),
-    // // ImmutableList.copyOf(res));
-    // // return new AutoValue_GameResult2
-    // }
-
-    public static Builder builder() {
-        return create(new LinkedHashMap<String, String>(),
-                new ArrayList<Double>()).createBuilder();
-    }
-
-    public static Builder from(GameResult target) {
-        return target.createBuilder();
-    }
-
-    Builder createBuilder() {
-        return new Builder();
-    }
-
-    static GameResult create(Map<String, String> description,
-            List<Double> results) {
-        return new AutoValue_GameResult(ImmutableMap.copyOf(description),
+    /**
+     * Static factory method.
+     *
+     * @param results
+     *            The result value to construct this result object from.
+     * @return A GameResult object with no description and with the specified
+     *         results.
+     */
+    public static GameResult create(List<Double> results) {
+        return new AutoValue_GameResult(
+                ImmutableMap.copyOf(new LinkedHashMap<String, String>()),
                 ImmutableList.copyOf(results));
     }
 
-    public class Builder {
+    /**
+     * Creates a new result object from a specific result object but with the
+     * addition of a new description key-pair.
+     *
+     * @param key
+     *            The description key.
+     * @param val
+     *            the description value.
+     * @return a new game result.
+     */
+    public GameResult withDescription(String key, String val) {
+        Map<String, String> newMap = Maps.newLinkedHashMap();
+        newMap.putAll(getDescription());
+        newMap.put(key, val);
+        return create(newMap, getResults());
+    }
 
-        public Builder withDescription(String key, String val) {
-            Map<String, String> newMap = Maps.newLinkedHashMap();
-            newMap.putAll(getDescription());
-            newMap.put(key, val);
-            return create(newMap, getResults()).createBuilder();
-        }
-
-        public Builder setResult(List<Double> res) {
-            return create(getDescription(), res).createBuilder();
-
-        }
-
-        public GameResult build() {
-            return create(getDescription(), getResults());
-        }
+    private static GameResult create(Map<String, String> description,
+            List<Double> results) {
+        return new AutoValue_GameResult(ImmutableMap.copyOf(description),
+                ImmutableList.copyOf(results));
     }
 }
