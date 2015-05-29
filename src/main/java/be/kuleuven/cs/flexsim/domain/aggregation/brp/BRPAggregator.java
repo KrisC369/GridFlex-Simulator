@@ -160,7 +160,7 @@ public class BRPAggregator extends IndependentAggregator {
     }
 
     private class AggregationDispatch implements AggregationContext {
-        private AggregationContext delegate;
+        private final AggregationContext delegate;
 
         /**
          * Default constructor for this delegating dispatch

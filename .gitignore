@@ -7,7 +7,4 @@ logs
 hs_er*
 META-INF/
 build.properties
-<<<<<<< HEAD
-=======
-
->>>>>>> CoordPaperExpUpdate
+.factorypath

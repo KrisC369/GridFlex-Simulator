@@ -74,7 +74,8 @@ public class RetributionFactorSensitivityRunner {
         for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
                 * factor) {
             double retrb = retributionFactor / factor;
-            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb, twister);
+            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb,
+                    twister);
             GameDirector director = new GameDirector(new Game<>(nAgents, ex,
                     repititions));
 
@@ -105,8 +106,8 @@ public class RetributionFactorSensitivityRunner {
         for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
                 * factor) {
             double retrb = retributionFactor / factor;
-            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb / factor,
-                    twister);
+            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb
+                    / factor, twister);
             GameDirector director = new GameDirector(new Game<>(nAgents, ex,
                     repititions));
 

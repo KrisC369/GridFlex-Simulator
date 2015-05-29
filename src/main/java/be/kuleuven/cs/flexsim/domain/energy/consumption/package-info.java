@@ -5,4 +5,6 @@
  */
 @ParametersAreNonnullByDefault
 package be.kuleuven.cs.flexsim.domain.energy.consumption;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+

@@ -3,7 +3,6 @@
  */
 package be.kuleuven.cs.flexsim.domain.util;
 
-
 /**
  * This class represents some generic utility function making use of mapping
  * functions.

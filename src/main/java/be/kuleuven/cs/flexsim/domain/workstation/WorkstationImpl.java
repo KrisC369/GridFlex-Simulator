@@ -19,9 +19,9 @@ import com.google.common.annotations.VisibleForTesting;
 /**
  * Main workstation class representing machines that perform work and consume
  * energy.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
+ *
  */
 class WorkstationImpl implements ConfigurableWorkstation {
 
@@ -59,7 +59,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     /**
      * Constructor that creates a workstation instance from an in and an out
      * buffer.
-     * 
+     *
      * @param bufferIn
      *            The In buffer.
      * @param bufferOut
@@ -152,7 +152,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     /**
-     * 
+     *
      */
     private void pushOut() {
         int size = getCurrentResources().size();
@@ -219,7 +219,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     /**
      * Returns the current capacity of this workstation.
-     * 
+     *
      * @return the capacity
      */
     @Override

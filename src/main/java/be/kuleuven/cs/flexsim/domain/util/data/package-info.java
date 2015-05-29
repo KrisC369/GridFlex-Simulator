@@ -5,4 +5,6 @@
  */
 @ParametersAreNonnullByDefault
 package be.kuleuven.cs.flexsim.domain.util.data;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+

@@ -5,4 +5,6 @@
  */
 @ParametersAreNonnullByDefault
 package be.kuleuven.cs.flexsim.domain.aggregation;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+

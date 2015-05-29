@@ -34,7 +34,7 @@ public abstract class AggregationGame<S, A extends Aggregator> implements
 
     /**
      * Default constructor.
-     * 
+     *
      * @param seed
      *            The seed to use for the simulator in this game.
      */

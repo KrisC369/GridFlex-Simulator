@@ -10,9 +10,9 @@ import com.google.common.annotations.VisibleForTesting;
 /**
  * A decorator for decorating workstation instances that steerable with a random
  * noise factor on the variable consumption.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
+ *
  */
 public class RFSteerableStationDecorator extends SteerableStationDecorator
         implements DualModeWorkstation {

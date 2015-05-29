@@ -28,7 +28,7 @@ import edu.uci.ics.jung.graph.util.EdgeType;
 
 /**
  * A production line representing buffers and workstations.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public final class ProductionLine implements FlexProcess {
@@ -127,7 +127,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Deliver all the resources and use it as input for the line.
-     * 
+     *
      * @param res
      *            the resources to use.
      */
@@ -138,7 +138,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Take all the processed resources from the end of the line.
-     * 
+     *
      * @return the processed resources.
      */
     @Override
@@ -148,7 +148,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Returns the number of workstations in this line.
-     * 
+     *
      * @return The number of workstations in this line.
      */
     public int getNumberOfWorkstations() {
@@ -158,7 +158,7 @@ public final class ProductionLine implements FlexProcess {
     /**
      * Creates a production line with a custom layout specified by the
      * arguments.
-     * 
+     *
      * @param initialStations
      *            the mandatory first line workstation amount.
      * @param furtherStations
@@ -178,7 +178,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Returns the stations that are curtailable in this production line.
-     * 
+     *
      * @return a list of pointers to curtailable instances.
      */
     public List<CurtailableWorkstation> getCurtailableStations() {
@@ -188,7 +188,7 @@ public final class ProductionLine implements FlexProcess {
     /**
      * Returns the stations that are dual mode operational in this production
      * line.
-     * 
+     *
      * @return a list of pointers to dual mode instances.
      */
     public List<DualModeWorkstation> getDualModeStations() {
@@ -197,7 +197,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Returns the stations that are curtailable in this production line.
-     * 
+     *
      * @return a list of pointers to curtailable instances.
      */
     public List<TradeofSteerableWorkstation> getSteerableStations() {
@@ -206,7 +206,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Returns all workstations in this production line.
-     * 
+     *
      * @return the workstations present.
      */
     List<Workstation> getWorkstations() {
@@ -253,7 +253,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Returns the layout of this production line instance.
-     * 
+     *
      * @return an unmodifiable graph instance representing the layout.
      */
     public Graph<Buffer<Resource>, Workstation> getLayout() {
@@ -272,7 +272,7 @@ public final class ProductionLine implements FlexProcess {
 
     /**
      * Builder class for building production line instances.
-     * 
+     *
      * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
      */
     public static class ProductionLineBuilder {
@@ -308,7 +308,7 @@ public final class ProductionLine implements FlexProcess {
 
         /**
          * Builds the configured production line.
-         * 
+         *
          * @return The production line.
          */
         public ProductionLine build() {
@@ -317,7 +317,7 @@ public final class ProductionLine implements FlexProcess {
 
         /**
          * Adds a number of parallel one-step-shifted workstations to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @return the current builder instance
@@ -336,7 +336,7 @@ public final class ProductionLine implements FlexProcess {
 
         /**
          * Adds a number of parallel curtailable workstations to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @return the current builder instance
@@ -356,7 +356,7 @@ public final class ProductionLine implements FlexProcess {
 
         /**
          * * Adds a number of parallel default workstations to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @return the current builder instance
@@ -374,7 +374,7 @@ public final class ProductionLine implements FlexProcess {
 
         /**
          * Adds a number of parallel EnergyConsuming workstations to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @return the current builder instance
@@ -394,7 +394,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of parallel constant energy consuming workstations that
          * can handle multiple items at once, to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @param cap
@@ -416,7 +416,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of parallel linear energy consuming workstations that
          * can handle multiple items at once, to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @param cap
@@ -439,7 +439,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of parallel exponential energy consuming workstations
          * that can handle multiple items at once, to the line.
-         * 
+         *
          * @param n
          *            the number of parallel stations
          * @param cap
@@ -461,7 +461,7 @@ public final class ProductionLine implements FlexProcess {
 
         /**
          * Adds a number of RFSteerable stations to the line.
-         * 
+         *
          * @param n
          *            the amount of instances
          * @param cap

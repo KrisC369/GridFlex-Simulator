@@ -4,4 +4,6 @@
  */
 @ParametersAreNonnullByDefault
 package be.kuleuven.cs.flexsim.domain.energy.generation;
+
 import javax.annotation.ParametersAreNonnullByDefault;
+

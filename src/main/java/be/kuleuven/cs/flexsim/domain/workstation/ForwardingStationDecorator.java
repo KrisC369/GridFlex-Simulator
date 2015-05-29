@@ -9,7 +9,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 /**
  * Abstract base class implementing the decorator pattern for Workstation
  * instances.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The type of workstation we are decorating. Only Workstation
@@ -23,7 +23,7 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
 
     /**
      * Default constructor that has to be called by subclasses.
-     * 
+     *
      * @param ws
      *            the delegate workstation of this decorator
      */
@@ -68,7 +68,7 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
 
     /**
      * Returns the delegate instance for this forwarding decorator.
-     * 
+     *
      * @return the delegated instance.
      */
     protected final T getDelegate() {
