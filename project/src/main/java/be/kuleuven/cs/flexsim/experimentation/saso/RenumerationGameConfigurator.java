@@ -18,6 +18,7 @@ import be.kuleuven.cs.gametheory.GameInstance;
  */
 public class RenumerationGameConfigurator implements
         GameConfigurator<Site, BRPAggregator> {
+    private static final int SEED = 2412;
     private static final int CURRENT = 800;
     private static final int MIN = 500;
     private static final int MAX = 1000;
@@ -35,7 +36,7 @@ public class RenumerationGameConfigurator implements
      *            The budget division factor for agg2.
      */
     public RenumerationGameConfigurator(double factor1, double factor2) {
-        this(factor1, factor2, new MersenneTwister(2412));
+        this(factor1, factor2, new MersenneTwister(SEED));
     }
 
     /**
@@ -63,8 +64,8 @@ public class RenumerationGameConfigurator implements
 
     @Override
     public GameInstance<Site, BRPAggregator> generateInstance() {
-        return new RenumerationGame(twister.nextInt(), CURRENT,
-                retributionFactor1, retributionFactor2);
+        return new RenumerationGame(twister.nextInt(), retributionFactor1,
+                retributionFactor2);
     }
 
     @Override

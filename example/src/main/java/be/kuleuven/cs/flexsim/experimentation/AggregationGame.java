@@ -26,6 +26,7 @@ import com.google.common.collect.Maps;
 public abstract class AggregationGame<S, A extends Aggregator> implements
         GameInstance<S, A> {
 
+    private static final int SIM_LENGTH = 500;
     private final Simulator sim;
     private final List<S> sites;
     private final List<A> aggs;
@@ -39,7 +40,7 @@ public abstract class AggregationGame<S, A extends Aggregator> implements
      *            The seed to use for the simulator in this game.
      */
     protected AggregationGame(int seed) {
-        this.sim = Simulator.createSimulator(500, seed);
+        this.sim = Simulator.createSimulator(SIM_LENGTH, seed);
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
         this.choiceMap = Maps.newLinkedHashMap();

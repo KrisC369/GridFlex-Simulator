@@ -45,20 +45,20 @@ public class RenumerationGameRunner {
     private List<GameResult> results;
 
     protected RenumerationGameRunner(int repititions, int nAgents) {
-        this(repititions, nAgents, "", DEF_STEPSIZE);
+        this(repititions, nAgents, DEF_STEPSIZE);
     }
 
     protected RenumerationGameRunner(int repititions, int nAgents,
             String loggerTag) {
-        this(repititions, nAgents, loggerTag, DEF_STEPSIZE);
+        this(repititions, nAgents, DEF_STEPSIZE);
     }
 
     protected RenumerationGameRunner(int repititions, int nAgents,
-            String loggerTag, double stepsize) {
+            double stepsize) {
         this.twister = new MersenneTwister(SEED);
         this.nAgents = nAgents;
         this.repititions = repititions;
-        this.loggerTag = "RESULT" + String.valueOf(nAgents) + "A";
+        this.loggerTag = "RESULT" + nAgents + "A";
         this.stepSize = stepsize;
         this.factor = 1.0 / stepsize;
         int rt = Runtime.getRuntime().availableProcessors() - 1;
