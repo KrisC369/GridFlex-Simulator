@@ -20,6 +20,7 @@ import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTupleTest;
+import be.kuleuven.cs.flexsim.domain.util.listener.ListenerTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
 
 @RunWith(Suite.class)
@@ -31,6 +32,6 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
         OutputGeneratorTest.class, SiteSimulationTest.class,
         BalancingAuctionTSOTest.class, BalancingTSOTest.class,
-        EquidistantSiteSimulationTest.class })
+        EquidistantSiteSimulationTest.class, ListenerTest.class, })
 public class DomainTests {
 }

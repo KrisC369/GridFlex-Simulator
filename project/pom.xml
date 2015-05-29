@@ -25,6 +25,16 @@
 			<version>0.0.5</version>
 		</dependency>
 		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-game</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-example</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
