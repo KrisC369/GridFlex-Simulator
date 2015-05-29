@@ -21,7 +21,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
-			<artifactId>flexsim-core</artifactId>
+			<artifactId>flexsim-nucleus</artifactId>
 			<version>0.0.5</version>
 		</dependency>
 		<dependency>
