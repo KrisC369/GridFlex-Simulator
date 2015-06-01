@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+
+	<parent>
+		<groupId>be.kuleuven.cs</groupId>
+		<artifactId>flexsim-main</artifactId>
+		<version>0.0.5</version>
+		<relativePath>..</relativePath>
+	</parent>
+
+
+	<groupId>be.kuleuven.cs</groupId>
+	<artifactId>flexsim-project</artifactId>
+	<version>0.0.5</version>
+	<packaging>jar</packaging>
+	<name>FlexSimulator projects</name>
+	<description>Projects using flexsim to produce results.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-nucleus</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-game</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-example</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.16-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<sonar.language>java</sonar.language>
+	</properties>
+</project>

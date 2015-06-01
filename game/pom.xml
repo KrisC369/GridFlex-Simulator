@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>be.kuleuven.cs</groupId>
+		<artifactId>flexsim-main</artifactId>
+		<version>0.0.5</version>
+	</parent>
+	<groupId>be.kuleuven.cs</groupId>
+	<artifactId>flexsim-game</artifactId>
+	<version>0.0.5</version>
+	<name>FlexSimulator game</name>
+	<description>Gametheory abstractions</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-nucleus</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-domain</artifactId>
+			<version>0.0.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.combinatoricslib</groupId>
+			<artifactId>combinatoricslib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.auto.value</groupId>
+			<artifactId>auto-value</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+</project>
