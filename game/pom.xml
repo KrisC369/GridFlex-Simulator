@@ -6,11 +6,11 @@
 	<parent>
 		<groupId>be.kuleuven.cs</groupId>
 		<artifactId>flexsim-main</artifactId>
-		<version>0.0.5</version>
+		<version>0.0.6</version>
 	</parent>
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-game</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.6</version>
 	<name>FlexSimulator game</name>
 	<description>Gametheory abstractions</description>
 	<properties>
@@ -20,12 +20,12 @@
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
 			<artifactId>flexsim-nucleus</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
 			<artifactId>flexsim-domain</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.combinatoricslib</groupId>
