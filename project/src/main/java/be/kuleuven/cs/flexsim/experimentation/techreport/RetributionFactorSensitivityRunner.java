@@ -28,18 +28,18 @@ import com.google.common.collect.Lists;
  */
 public class RetributionFactorSensitivityRunner {
 
-    private static final int SEED = 3722;
+    protected static final int SEED = 3722;
     private MersenneTwister twister;
-    private final int nAgents;
-    private final int repititions;
-    private final String loggerTag;
-    private static final double DEF_STEPSIZE = 0.10;
-    private final double stepSize;
-    private final double factor;
-    private final int availableProcs;
-    private final Logger logger;
+    protected final int nAgents;
+    protected final int repititions;
+    protected final String loggerTag;
+    protected static final double DEF_STEPSIZE = 0.10;
+    protected final double stepSize;
+    protected final double factor;
+    protected final int availableProcs;
+    protected final Logger logger;
     private int counter;
-    private int totalCombinations;
+    protected final int totalCombinations;
 
     protected RetributionFactorSensitivityRunner(int repititions, int nAgents) {
         this(repititions, nAgents, "", DEF_STEPSIZE);
@@ -70,7 +70,7 @@ public class RetributionFactorSensitivityRunner {
     /**
      * Main start hook for these experimentations.
      */
-    public final void execute() {
+    public void execute() {
         for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
                 * factor) {
             double retrb = retributionFactor / factor;
@@ -167,7 +167,7 @@ public class RetributionFactorSensitivityRunner {
         return experiments;
     }
 
-    private void resetTwister() {
+    protected final void resetTwister() {
         this.twister = new MersenneTwister(SEED);
     }
 
@@ -177,4 +177,27 @@ public class RetributionFactorSensitivityRunner {
                 .append(factor * repititions * totalCombinations);
         logger.warn(b.toString());
     }
+
+    /**
+     * @return the twister
+     */
+    protected final MersenneTwister getTwister() {
+        return twister;
+    }
+
+    /**
+     * @return the counter
+     */
+    protected final int getCounter() {
+        return counter;
+    }
+
+    /**
+     * @param counter
+     *            the counter to set
+     */
+    protected final void incrementCounter() {
+        this.counter = counter + 1;
+    }
+
 }

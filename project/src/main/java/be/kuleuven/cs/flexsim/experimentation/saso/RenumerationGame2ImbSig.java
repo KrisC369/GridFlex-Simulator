@@ -25,16 +25,12 @@ public class RenumerationGame2ImbSig extends
      *
      * @param seed
      *            The seed for this experiment.
-     * @param baselineConsumption
-     *            The baseline for the sites consumption. This is used to base
-     *            production params on.
      * @param factor1
      *            The retribution factor for agent 1.
      * @param factor2
      *            The retribution factor for agent 2
      */
-    public RenumerationGame2ImbSig(int seed, int baselineConsumption,
-            double factor1, double factor2) {
+    public RenumerationGame2ImbSig(int seed, double factor1, double factor2) {
         super(seed);
 
         RandomTSO tso1 = new RandomTSO(-200, 200, new MersenneTwister(seed));
@@ -62,12 +58,9 @@ public class RenumerationGame2ImbSig extends
      *
      * @param seed
      *            The seed for this experiment.
-     * @param baselineConsumption
-     *            The baseline for the sites consumption. This is used to base
-     *            production params on.
      */
-    public RenumerationGame2ImbSig(int seed, int baselineConsumption) {
-        this(seed, baselineConsumption, 1, 1);
+    public RenumerationGame2ImbSig(int seed) {
+        this(seed, 1, 1);
 
     }
 
