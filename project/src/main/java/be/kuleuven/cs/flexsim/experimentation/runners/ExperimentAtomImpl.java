@@ -16,6 +16,10 @@ public abstract class ExperimentAtomImpl implements ExperimentAtom {
 
     @Override
     public void run() {
+        doRun();
+    }
+
+    protected final void doRun() {
         execute();
         for (ExperimentCallback c : callbacks) {
             c.callback(this);

@@ -10,7 +10,6 @@ import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.io.ResultWriter;
 import be.kuleuven.cs.gametheory.Game;
@@ -96,58 +95,6 @@ public class RetributionFactorSensitivityRunner {
             rw.write();
             resetTwister();
         }
-    }
-
-    /**
-     * Main start hook for these experimentations.
-     */
-    public final void executeBatch() {
-        List<ExperimentAtom> metaExp = Lists.newArrayList();
-        for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
-                * factor) {
-            double retrb = retributionFactor / factor;
-            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb
-                    / factor, twister);
-            GameDirector director = new GameDirector(new Game<>(nAgents, ex,
-                    repititions));
-
-            final List<ExperimentAtom> experiments = adapt(director);
-
-            // batched
-            final ExperimentAtom batch = new ExperimentAtomImpl() {
-                @Override
-                protected void execute() {
-                    for (ExperimentAtom e : experiments) {
-                        e.run();
-                    }
-                }
-
-            };
-            //
-
-            final ResultWriter rw;
-            if (loggerTag.isEmpty()) {
-                rw = new GameResultWriter(director);
-            } else {
-                rw = new GameResultWriter(director, loggerTag);
-            }
-            rw.addResultComponent("RetributionFactor", String.valueOf(retrb));
-            rw.addResultComponent("NumberOfAgents", String.valueOf(nAgents));
-            rw.addResultComponent("Reps", String.valueOf(repititions));
-
-            batch.registerCallbackOnFinish(new ExperimentCallback() {
-
-                @Override
-                public void callback(ExperimentAtom instance) {
-                    rw.write();
-                }
-            });
-            resetTwister();
-            metaExp.add(batch);
-        }
-        LocalRunners.createCustomMultiThreadedRunner(availableProcs)
-                .runExperiments(metaExp);
-
     }
 
     private List<ExperimentAtom> adapt(final GameDirector dir) {
