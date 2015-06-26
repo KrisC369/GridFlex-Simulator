@@ -33,5 +33,10 @@
 			<groupId>com.googlecode.combinatoricslib</groupId>
 			<artifactId>combinatoricslib</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.google.auto.value</groupId>
+			<artifactId>auto-value</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

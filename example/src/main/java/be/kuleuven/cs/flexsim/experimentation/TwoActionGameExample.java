@@ -106,4 +106,9 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
     public static final int getActionspacesize() {
         return ACTIONSPACE_SIZE;
     }
+
+    @Override
+    public long getExternalityValue() {
+        return 0;
+    }
 }

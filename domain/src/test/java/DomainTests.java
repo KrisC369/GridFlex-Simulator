@@ -4,6 +4,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregatorTest;
+import be.kuleuven.cs.flexsim.domain.aggregation.brp.NominationTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.energy.generation.OutputGeneratorTest;
@@ -32,6 +33,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
         OutputGeneratorTest.class, SiteSimulationTest.class,
         BalancingAuctionTSOTest.class, BalancingTSOTest.class,
-        EquidistantSiteSimulationTest.class, ListenerTest.class, })
+        EquidistantSiteSimulationTest.class, ListenerTest.class,
+        NominationTest.class })
 public class DomainTests {
 }

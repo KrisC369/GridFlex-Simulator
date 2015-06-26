@@ -89,6 +89,11 @@ public class GameTest {
                     public void fixActionToAgent(Site agent, Aggregator action) {
 
                     }
+
+                    @Override
+                    public long getExternalityValue() {
+                        return 0;
+                    }
                 };
             }
 

@@ -3,7 +3,10 @@ package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -191,5 +194,16 @@ public class BRPAggregatorTest {
         RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
         thrown.expect(IllegalArgumentException.class);
         t1.registerReservation(-0.5);
+    }
+
+    @Test
+    public void testNomination() {
+        sim.register(agg);
+        agg.registerClient(site1);
+        agg.registerClient(site2);
+        AncilServiceNominationManager asnm = mock(AncilServiceNominationManager.class);
+        agg.registerNominationManager(asnm);
+        sim.start();
+        verify(asnm, times(1)).registerNomination(any(Nomination.class));
     }
 }

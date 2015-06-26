@@ -52,4 +52,12 @@ public interface GameInstance<N, K> extends Playable {
      * @return the mapping.
      */
     Map<N, K> getAgentToActionMapping();
+
+    /**
+     * Returns the value for the externality of this game instance. This
+     * externality can be positive or negative.
+     *
+     * @return positive or negative externality for this game.
+     */
+    long getExternalityValue();
 }

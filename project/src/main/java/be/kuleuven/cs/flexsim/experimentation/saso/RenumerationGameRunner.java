@@ -139,7 +139,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
      */
     public static void main(String[] args) {
         if (args.length == 0) {
-            new RenumerationGameRunner(200, 3).execute();
+            new RenumerationGameRunner(1, 8).execute();
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.valueOf(args[0]);

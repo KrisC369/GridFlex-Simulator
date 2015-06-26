@@ -176,6 +176,8 @@ public class HeuristicSymmetricPayoffMatrix {
      *
      * @return A list of coefficients.
      */
+    // TODO Refactor out this analysis specific data computation + calculate
+    // other specs in the refactored out module.
     public List<Double> getDynamicEquationFactors() {
         List<Double> toReturn = Lists.newArrayList();
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {

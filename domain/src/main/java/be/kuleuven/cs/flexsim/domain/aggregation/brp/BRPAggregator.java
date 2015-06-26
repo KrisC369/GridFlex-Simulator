@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -16,6 +17,7 @@ import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 
@@ -31,6 +33,7 @@ public class BRPAggregator extends IndependentAggregator {
     private final double activationPortion;
     private final double reservePortion;
     private final PriceSignal imbalancePricing;
+    private List<AncilServiceNominationManager> nominationManagers;
 
     /**
      * Default constructor.
@@ -54,6 +57,7 @@ public class BRPAggregator extends IndependentAggregator {
         this.activationPortion = activation;
         this.reservePortion = reservation;
         this.imbalancePricing = pricing;
+        this.nominationManagers = Lists.newArrayList();
     }
 
     /**
@@ -98,6 +102,15 @@ public class BRPAggregator extends IndependentAggregator {
         int remediedImbalance = doAggregationStep(t, currentImbalVol, flex);
         calculateAndDivideBudgets(remediedImbalance);
         payReservationFees(flex);
+        nominateAncillaryServiceActivation(currentImbalVol, remediedImbalance);
+    }
+
+    private void nominateAncillaryServiceActivation(int currentImbalVol,
+            int remediedImbalance) {
+        Nomination n = Nomination.create(currentImbalVol, remediedImbalance);
+        for (AncilServiceNominationManager asnm : nominationManagers) {
+            asnm.registerNomination(n);
+        }
     }
 
     private void calculateAndDivideBudgets(int targetFlex) {
@@ -159,6 +172,16 @@ public class BRPAggregator extends IndependentAggregator {
         return new AggregationDispatch(super.getAggregationContext());
     }
 
+    /**
+     * Register a nomination manager to this Aggregator.
+     *
+     * @param manager
+     *            The manager to register.
+     */
+    public void registerNominationManager(AncilServiceNominationManager manager) {
+        this.nominationManagers.add(manager);
+    }
+
     private class AggregationDispatch implements AggregationContext {
         private final AggregationContext delegate;
 
@@ -175,7 +198,6 @@ public class BRPAggregator extends IndependentAggregator {
         @Override
         public void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
                 Set<Long> ids) {
-
             delegate.dispatchActivation(flex, ids);
             payActivationFees(flex, ids);
         }
