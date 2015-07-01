@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 
 /**
  * This class represents heuristic payoff tables or matrices. The heuristic part
@@ -46,8 +46,7 @@ public class HeuristicSymmetricPayoffMatrix {
         this.actions = actions;
         this.table = Maps.newLinkedHashMap();
         this.tableCount = Maps.newLinkedHashMap();
-        this.numberOfCombinations = MathUtils.multiCombinationSize(actions,
-                agents);
+        this.numberOfCombinations = MathUtils.multiCombinationSize(actions, agents);
     }
 
     /**
@@ -73,7 +72,7 @@ public class HeuristicSymmetricPayoffMatrix {
      * @param value
      *            [] The payoff values.
      * @param key
-     *            The population shares as indeces for the value
+     *            The population shares as indices for the value
      */
     public void addEntry(long[] value, int... key) {
         checkArgument(testKey(key));
@@ -159,13 +158,9 @@ public class HeuristicSymmetricPayoffMatrix {
     public String toString() {
         StringBuilder b = new StringBuilder();
         for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
-            b.append("V:")
-                    .append(e.getKey())
-                    .append("->")
-                    .append(Arrays.toString(this.getEntry(e.getKey()
-                            .getEntries()))).append("\n");
-            b.append("C:").append(e.getKey()).append("->")
-                    .append(tableCount.get(e.getKey())).append("\n");
+            b.append("V:").append(e.getKey()).append("->")
+                    .append(Arrays.toString(this.getEntry(e.getKey().getEntries()))).append("\n");
+            b.append("C:").append(e.getKey()).append("->").append(tableCount.get(e.getKey())).append("\n");
         }
         return b.toString();
     }

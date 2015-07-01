@@ -38,8 +38,7 @@ public class GameResultWriter extends ResultWriter {
 
     @Override
     public void write() {
-        addResultComponent("Game dynamics results",
-                g.getDynamicEquationArguments());
+        addResultComponent("Game dynamics results", g.getDynamicEquationArguments());
         super.write();
     }
 }

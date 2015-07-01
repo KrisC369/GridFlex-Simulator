@@ -11,9 +11,9 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
-
 import com.google.common.collect.Lists;
+
+import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 
 /**
  * A representation of a full game specification for all configurations of
@@ -53,8 +53,7 @@ public class Game<N, K> {
         this.agents = agents;
         this.actions = config.getActionSpaceSize();
         this.agentGen = config;
-        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents,
-                this.actions);
+        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents, this.actions);
         this.instanceGen = config;
         this.reps = reps;
         this.logger = LoggerFactory.getLogger(CONSOLE);
@@ -62,7 +61,8 @@ public class Game<N, K> {
     }
 
     /**
-     * Configure and set-up the game specifics.
+     * Configure and set-up the game specifics for different iterations of games
+     * over the strategy space.
      */
     void configureInstances() {
         this.instanceList = Lists.newArrayList();
@@ -72,16 +72,12 @@ public class Game<N, K> {
             for (int i = 0; i < combinations; i++) {
                 progressCounter++;
                 printConfigProgress(progressCounter, reps * combinations);
-                GameInstance<N, K> instance = this.instanceGen
-                        .generateInstance();
+                GameInstance<N, K> instance = this.instanceGen.generateInstance();
                 List<K> actionSet = instance.getActionSet();
-                ICombinatoricsVector<K> initialVector = Factory
-                        .createVector(actionSet);
-                Generator<K> gen = Factory.createMultiCombinationGenerator(
-                        initialVector, agents);
+                ICombinatoricsVector<K> initialVector = Factory.createVector(actionSet);
+                Generator<K> gen = Factory.createMultiCombinationGenerator(initialVector, agents);
 
-                List<ICombinatoricsVector<K>> possCombinatoricsVectors = gen
-                        .generateAllObjects();
+                List<ICombinatoricsVector<K>> possCombinatoricsVectors = gen.generateAllObjects();
                 assert possCombinatoricsVectors.size() == combinations;
                 for (K k : possCombinatoricsVectors.get(i)) {
                     instance.fixActionToAgent(agentGen.getAgent(), k);
@@ -118,8 +114,7 @@ public class Game<N, K> {
             long[] values = new long[payoffResults.keySet().size()];
             int j = 0;
             for (Entry<N, Long> e : payoffResults.entrySet()) {
-                int whichAction = getIndexFor(actionSet,
-                        mapping.get(e.getKey()));
+                int whichAction = getIndexFor(actionSet, mapping.get(e.getKey()));
                 entry[whichAction] = entry[whichAction] + 1;
                 values[j] = e.getValue();
                 j++;
@@ -154,8 +149,7 @@ public class Game<N, K> {
 
     void logResults() {
         StringBuilder b = new StringBuilder();
-        b.append(getResultString()).append("\n")
-                .append("Dynamics equation params:");
+        b.append(getResultString()).append("\n").append("Dynamics equation params:");
         for (Double d : payoffs.getDynamicEquationFactors()) {
             b.append(d).append("\n");
         }
@@ -188,10 +182,8 @@ public class Game<N, K> {
      *         for this game.
      */
     GameResult getResults() {
-        GameResult result = GameResult
-                .create(payoffs.getDynamicEquationFactors())
-                .withDescription("Reps", String.valueOf(reps))
-                .withDescription("agents", String.valueOf(agents))
+        GameResult result = GameResult.create(payoffs.getDynamicEquationFactors())
+                .withDescription("Reps", String.valueOf(reps)).withDescription("agents", String.valueOf(agents))
                 .withDescription("actions", String.valueOf(actions));
         return result;
     }
