@@ -9,12 +9,12 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
-import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
+import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
 
 public class GameTest {
     private GameConfigurator config = mock(GameConfigurator.class);
@@ -29,7 +29,8 @@ public class GameTest {
     public void setUp() throws Exception {
         players = Lists.newArrayList();
         for (int i = 0; i < agents; i++) {
-            players.add(SiteSimulation.createEquidistantFlex(200, 50, 400, 6));
+            players.add(SiteBuilder.newEquidistantSiteSimulation().withBaseConsumption(200).withMinConsumption(50)
+                    .withMaxConsumption(400).withTuples(6).create());
         }
         config = new GameConfigurator<Site, Aggregator>() {
             private int i = 0;
@@ -113,9 +114,7 @@ public class GameTest {
         // System.out.println(g.getDynamicsParametersString());
         assertTrue(g.getDynamicsParametersString().contains("34.0"));
         assertTrue(g.getResultString().contains("[34.0, 34.0, 34.0]"));
-        assertTrue(director.getResults().getDescription().get("Reps")
-                .contains(String.valueOf(20)));
-        assertTrue(director.getResults().getResults()
-                .contains(Double.valueOf(34.0)));
+        assertTrue(director.getResults().getDescription().get("Reps").contains(String.valueOf(20)));
+        assertTrue(director.getResults().getResults().contains(Double.valueOf(34.0)));
     }
 }

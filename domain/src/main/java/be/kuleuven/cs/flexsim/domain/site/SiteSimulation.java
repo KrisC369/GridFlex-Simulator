@@ -293,8 +293,7 @@ public class SiteSimulation implements Site {
      *            the cease time for activation.
      * @return A new SiteSimulation object.
      */
-    public static SiteSimulation createDefault(int base, int min, int max, int maxTuples, int duration, int ramp,
-            int cease) {
+    static SiteSimulation createDefault(int base, int min, int max, int maxTuples, int duration, int ramp, int cease) {
         return new SiteSimulation(base, min, max, maxTuples, duration, ramp, cease);
         // TODO make this method package private. only call builder.
 
@@ -314,7 +313,7 @@ public class SiteSimulation implements Site {
      *            A new SiteSimulation object.
      * @return A new SiteSimulation object.
      */
-    public static SiteSimulation createEquidistantFlex(int base, int min, int max, int maxTuples) {
+    static SiteSimulation createEquidistantFlex(int base, int min, int max, int maxTuples) {
         return new EquidistantSiteSimulation(base, min, max, maxTuples);
         // TODO make this method package private. only call builder.
     }
