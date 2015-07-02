@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.experimentation;
 import org.apache.commons.math3.random.MersenneTwister;
 
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
+import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
 
 /**
  * Utility factory for creating site agents for simulation purposes.
@@ -33,10 +33,8 @@ public final class DefaultSiteAgentGenerator {
      *            max.
      * @return A sitesimulation agent.
      */
-    public static Site getAgent(MersenneTwister twister, int max, int min,
-            int starting, int meanSteps) {
-        int current = (int) (twister.nextGaussian() * ((max - min) / (double) 4))
-                + starting;
+    public static Site getAgent(MersenneTwister twister, int max, int min, int starting, int meanSteps) {
+        int current = (int) (twister.nextGaussian() * ((max - min) / (double) 4)) + starting;
         int steps = (int) Math.round(twister.nextGaussian() * 2 + meanSteps);
         if (current < min) {
             current = min;
@@ -47,6 +45,7 @@ public final class DefaultSiteAgentGenerator {
         if (steps <= 0) {
             steps = 1;
         }
-        return SiteSimulation.createDefault(current, min, max, steps);
+        return SiteBuilder.newSiteSimulation().withBaseConsumption(current).withMinConsumption(min)
+                .withMaxConsumption(max).withTuples(steps).create();
     }
 }

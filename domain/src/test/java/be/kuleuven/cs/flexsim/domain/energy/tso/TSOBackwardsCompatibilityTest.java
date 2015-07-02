@@ -10,17 +10,18 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.ConstantOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.generation.WeighedNormalRandomOutputGenerator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
+import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
 import be.kuleuven.cs.flexsim.domain.site.SiteSimulation;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
-
-import com.google.common.collect.Lists;
 
 public class TSOBackwardsCompatibilityTest {
 
@@ -48,10 +49,15 @@ public class TSOBackwardsCompatibilityTest {
         agg2 = new IndependentAggregator(tso2, 1);
         sim1 = Simulator.createSimulator(simsteps);
         sim2 = Simulator.createSimulator(simsteps);
-        site11 = SiteSimulation.createDefault(300, 100, 450, 4);
-        site12 = SiteSimulation.createDefault(200, 150, 500, 4);
-        site21 = SiteSimulation.createDefault(300, 100, 450, 4);
-        site22 = SiteSimulation.createDefault(200, 150, 500, 4);
+        site11 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(300).withMinConsumption(100)
+                .withMaxConsumption(450).withTuples(4).create();
+        site12 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(200).withMinConsumption(150)
+                .withMaxConsumption(500).withTuples(4).create();
+        site21 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(300).withMinConsumption(100)
+                .withMaxConsumption(450).withTuples(4).create();
+        site22 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(200).withMinConsumption(150)
+                .withMaxConsumption(500).withTuples(4).create();
+
         tso1.registerConsumer(site11);
         tso1.registerConsumer(site12);
         tso2.registerConsumer(site21);

@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -16,8 +18,6 @@ import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
-
-import com.google.common.collect.Lists;
 
 /**
  * Class representing a site module that makes abstraction of the underlying
@@ -31,6 +31,9 @@ public class SiteSimulation implements Site {
     private final int maxLimitConsumption;
     private final int minLimitConsumption;
     private final int maxTuples;
+    private final int ramp;
+    private final int cease;
+    private final int duration;
     private int currentConsumption;
     private List<FlexTuple> flexData;
     private UIDGenerator generator;
@@ -41,6 +44,10 @@ public class SiteSimulation implements Site {
     private final int baseConsumption;
     private int noFlexTimer;
     private int flexTimer;
+
+    SiteSimulation(int base, int min, int max, int maxTuples) {
+        this(base, min, max, maxTuples, 1, 0, 0);
+    }
 
     /**
      * Default constructor for this mock simulating site.
@@ -53,8 +60,14 @@ public class SiteSimulation implements Site {
      *            The maximum limit for consumption.
      * @param maxTuples
      *            The maximum tuples to generate per section of flex.
+     * @param duration
+     *            the duration of flex profiles.
+     * @param ramp
+     *            the ramp up time for activation.
+     * @param cease
+     *            the cease time for activation.
      */
-    SiteSimulation(int base, int min, int max, int maxTuples) {
+    SiteSimulation(int base, int min, int max, int maxTuples, int duration, int ramp, int cease) {
         checkArgument(min <= base && base <= max);
         this.activationListener = NoopListener.INSTANCE;
         this.maxLimitConsumption = max;
@@ -72,6 +85,9 @@ public class SiteSimulation implements Site {
         this.noFlexTimer = 0;
         this.flexTimer = 0;
         this.baseConsumption = base;
+        this.ramp = ramp;
+        this.cease = cease;
+        this.duration = duration;
     }
 
     @Override
@@ -122,8 +138,7 @@ public class SiteSimulation implements Site {
 
     @Override
     public void deliverResources(List<Resource> res) {
-        throw new UnsupportedOperationException(
-                "This implementation does not support resource handling stuff.");
+        throw new UnsupportedOperationException("This implementation does not support resource handling stuff.");
     }
 
     @Override
@@ -168,7 +183,7 @@ public class SiteSimulation implements Site {
     }
 
     protected final FlexTuple makeTuple(int power, boolean isUpflex) {
-        return FlexTuple.create(newId(), power, isUpflex, 1, 0, 0);
+        return FlexTuple.create(newId(), power, isUpflex, duration, ramp, cease);
     }
 
     private long newId() {
@@ -183,7 +198,7 @@ public class SiteSimulation implements Site {
     @Override
     public void tick(int t) {
         if (flexTimer == 0) {
-            resetCons();
+            resetConsumption();
         }
         if (flexTimer > 0) {
             flexTimer--;
@@ -193,7 +208,7 @@ public class SiteSimulation implements Site {
         }
     }
 
-    private void resetCons() {
+    private void resetConsumption() {
         this.currentConsumption = baseConsumption;
     }
 
@@ -248,16 +263,14 @@ public class SiteSimulation implements Site {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=")
-                .append(hashCode()).append(", cCons=")
+        builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=").append(hashCode()).append(", cCons=")
                 .append(currentConsumption).append("]");
         return builder.toString();
     }
 
     @Override
     public void addActivationListener(Listener<? super FlexTuple> listener) {
-        this.activationListener = MultiplexListener.plus(
-                this.activationListener, listener);
+        this.activationListener = MultiplexListener.plus(this.activationListener, listener);
 
     }
 
@@ -272,11 +285,18 @@ public class SiteSimulation implements Site {
      *            The maximum limit for consumption.
      * @param maxTuples
      *            The maximum tuples to generate per section of flex.
+     * @param duration
+     *            the duration of flex profiles.
+     * @param ramp
+     *            the ramp up time for activation.
+     * @param cease
+     *            the cease time for activation.
      * @return A new SiteSimulation object.
      */
-    public static SiteSimulation createDefault(int base, int min, int max,
-            int maxTuples) {
-        return new SiteSimulation(base, min, max, maxTuples);
+    public static SiteSimulation createDefault(int base, int min, int max, int maxTuples, int duration, int ramp,
+            int cease) {
+        return new SiteSimulation(base, min, max, maxTuples, duration, ramp, cease);
+        // TODO make this method package private. only call builder.
 
     }
 
@@ -294,10 +314,9 @@ public class SiteSimulation implements Site {
      *            A new SiteSimulation object.
      * @return A new SiteSimulation object.
      */
-    public static SiteSimulation createEquidistantFlex(int base, int min,
-            int max, int maxTuples) {
+    public static SiteSimulation createEquidistantFlex(int base, int min, int max, int maxTuples) {
         return new EquidistantSiteSimulation(base, min, max, maxTuples);
-
+        // TODO make this method package private. only call builder.
     }
 
 }
