@@ -19,21 +19,18 @@ import be.kuleuven.cs.flexsim.domain.site.EquidistantSiteSimulationTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteSimulationTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
+import be.kuleuven.cs.flexsim.domain.util.CongestionProfileTest;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTupleTest;
 import be.kuleuven.cs.flexsim.domain.util.listener.ListenerTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BufferTest.class, WorkstationTest.class,
-        ProductionLineTest.class, ResourceTest.class, FinanceTrackerTest.class,
-        FlexTupleTest.class, SiteTest.class, AggregatorTest.class,
-        BRPAggregatorTest.class, IndependentAggregatorTest.class,
-        ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
-        NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
-        OutputGeneratorTest.class, SiteSimulationTest.class,
-        BalancingAuctionTSOTest.class, BalancingTSOTest.class,
-        EquidistantSiteSimulationTest.class, ListenerTest.class,
-        NominationTest.class })
+@SuiteClasses({ BufferTest.class, WorkstationTest.class, ProductionLineTest.class, ResourceTest.class,
+        FinanceTrackerTest.class, FlexTupleTest.class, SiteTest.class, AggregatorTest.class, BRPAggregatorTest.class,
+        IndependentAggregatorTest.class, ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
+        NPermuteAndCombinerTest.class, CopperPlateTSOTest.class, OutputGeneratorTest.class, SiteSimulationTest.class,
+        BalancingAuctionTSOTest.class, BalancingTSOTest.class, EquidistantSiteSimulationTest.class, ListenerTest.class,
+        NominationTest.class, CongestionProfileTest.class })
 public class DomainTests {
 }

@@ -273,49 +273,4 @@ public class SiteSimulation implements Site {
         this.activationListener = MultiplexListener.plus(this.activationListener, listener);
 
     }
-
-    /**
-     * Default constructor for this mock simulating site.
-     *
-     * @param base
-     *            The base consumption to start from.
-     * @param min
-     *            The minimum limit for consumption.
-     * @param max
-     *            The maximum limit for consumption.
-     * @param maxTuples
-     *            The maximum tuples to generate per section of flex.
-     * @param duration
-     *            the duration of flex profiles.
-     * @param ramp
-     *            the ramp up time for activation.
-     * @param cease
-     *            the cease time for activation.
-     * @return A new SiteSimulation object.
-     */
-    static SiteSimulation createDefault(int base, int min, int max, int maxTuples, int duration, int ramp, int cease) {
-        return new SiteSimulation(base, min, max, maxTuples, duration, ramp, cease);
-        // TODO make this method package private. only call builder.
-
-    }
-
-    /**
-     * Constructor for a simulating site with equidistant flex.
-     *
-     * @param base
-     *            The base consumption to start from.
-     * @param min
-     *            The minimum limit for consumption.
-     * @param max
-     *            The maximum limit for consumption.
-     * @param maxTuples
-     *            The maximum tuples to generate per section of flex. * @return
-     *            A new SiteSimulation object.
-     * @return A new SiteSimulation object.
-     */
-    static SiteSimulation createEquidistantFlex(int base, int min, int max, int maxTuples) {
-        return new EquidistantSiteSimulation(base, min, max, maxTuples);
-        // TODO make this method package private. only call builder.
-    }
-
 }

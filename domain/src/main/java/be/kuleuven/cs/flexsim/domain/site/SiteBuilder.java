@@ -232,7 +232,7 @@ public abstract class SiteBuilder {
 
         @Override
         public Site create() {
-            return SiteSimulation.createDefault(base, min, max, tuples, duration, ramp, cease);
+            return new SiteSimulation(base, min, max, tuples, duration, ramp, cease);
         }
 
     }
@@ -240,7 +240,7 @@ public abstract class SiteBuilder {
     private static class EquidistantSiteBuilder extends SiteSimulationBuilder {
         @Override
         public Site create() {
-            return SiteSimulation.createEquidistantFlex(base, min, max, tuples);
+            return new EquidistantSiteSimulation(base, min, max, tuples, duration, ramp, cease);
         }
     }
 }
