@@ -1,39 +1,87 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+
 public class CongestionProfileTest {
+
+    private CongestionProfile profile = mock(CongestionProfile.class);
+    private static String column = "test";
+    private static String file = "test.csv";
 
     @Before
     public void setUp() throws Exception {
+        profile = new CongestionProfile();
+        try {
+            profile = (CongestionProfile) CongestionProfile.createFromCSV(file, column);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
     public void testMean() {
-        fail("Not yet implemented");
+        assertEquals(0, profile.mean(), 0);
+        profile = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        assertEquals(6.5, profile.mean(), 0.01);
     }
 
     @Test
     public void testMedian() {
-        fail("Not yet implemented");
+        assertEquals(0, profile.median(), 0);
+        profile = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        assertEquals(6.5, profile.median(), 0.05);
     }
 
     @Test
     public void testStd() {
-        fail("Not yet implemented");
+        assertEquals(0, profile.std(), 0);
+        profile = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        assertEquals(1.29, profile.std(), 0.05);
     }
 
     @Test
-    public void testLoad() {
-        fail("Not yet implemented");
+    public void testCopyConstructor() {
+        CongestionProfile profile2;
+        try {
+            profile2 = (CongestionProfile) CongestionProfile.createFromTimeSeries(profile);
+            assertEquals(Arrays.toString(profile2.values()), Arrays.toString(profile.values()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
     public void testCreateFromCSV() {
-        fail("Not yet implemented");
+        TimeSeries profile;
+        try {
+            profile = CongestionProfile.createFromCSV(file, column);
+            assertTrue(profile.values().length > 0);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
 }
