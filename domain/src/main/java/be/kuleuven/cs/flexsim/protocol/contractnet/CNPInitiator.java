@@ -41,7 +41,6 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
     private void resetCommunication() {
         this.messageCount = 0;
         props = Maps.newLinkedHashMap();
-        description = null;
     }
 
     private void startCNP(Proposal p) {
@@ -52,12 +51,12 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
 
                 @Override
                 public void reject() {
-                    phase1Reject();
+                    phase1Reject(); // refuse
                 }
 
                 @Override
                 public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) {
-                    phase1Accept(prop, ant);
+                    phase1Accept(prop, ant); // propose
                 }
 
             }, this.description);
@@ -84,9 +83,7 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
         }
     }
 
-    private void signalNoSolutionFound() {
-
-    }
+    protected abstract void signalNoSolutionFound();
 
     private void cnpPhaseTwo(Map<Proposal, AnswerAnticipator<Proposal>> props, Proposal description) {
         Proposal best = findBestProposal(Lists.newArrayList(props.keySet()), description);
@@ -98,15 +95,15 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
 
     private void notifyAcceptPhase2(Proposal best, Map<Proposal, AnswerAnticipator<Proposal>> props) {
         final Proposal description2 = description;
-        props.get(best).affirmative(description2, new AnswerAnticipator<Proposal>() {
+        props.get(best).affirmative(description2, new AnswerAnticipator<Proposal>() { // accept-proposal
             // Completion or failure notification.
             @Override
-            public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) {
+            public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) { // inform-done
                 // TODO Auto-generated method stub
             }
 
             @Override
-            public void reject() {
+            public void reject() { // failure
                 // TODO Auto-generated method stub
             }
         });
@@ -114,7 +111,7 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
 
     private void notifyRejects(Map<Proposal, AnswerAnticipator<Proposal>> rejects) {
         for (AnswerAnticipator<Proposal> e : rejects.values()) {
-            e.reject();
+            e.reject(); // reject-proposal
         }
     }
 

@@ -6,8 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,15 +35,15 @@ public class CNPInitiatorTest {
     private ArgumentCaptor<Proposal> proposalCaptor;
 
     @Before
-    public void setUp() throws Exception {
-        subj = new ConcreteCNPInitiator();
+    public void SetUp() throws Exception {
+        subj = new TestConcreteCNPInitiator();
         subj.registerResponder(mockResp1);
         subj.registerResponder(mockResp2);
     }
 
     @Test
     public void testRegister() {
-        subj = new ConcreteCNPInitiator();
+        subj = new TestConcreteCNPInitiator();
         subj.registerResponder(mockResp1);
         assertEquals(1, subj.getResponders().size());
         mockResp1 = mock(CNPResponder.class);
@@ -74,16 +72,5 @@ public class CNPInitiatorTest {
 
         verify(reply1, times(1)).affirmative(any(Proposal.class), any(AnswerAnticipator.class));
         verify(reply, times(1)).reject();
-    }
-
-    private class ConcreteCNPInitiator extends CNPInitiator {
-        public ConcreteCNPInitiator() {
-            super();
-        }
-
-        @Override
-        public Proposal findBestProposal(List<Proposal> props, Proposal description) {
-            return props.get(0);
-        }
     }
 }
