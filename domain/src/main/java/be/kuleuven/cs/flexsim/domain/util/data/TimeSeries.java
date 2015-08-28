@@ -49,4 +49,17 @@ public interface TimeSeries {
      */
     double[] values();
 
+    /**
+     * Returns the value at a certain index in the time series.
+     * 
+     * @param index
+     *            an index between [0..timeseries.length()-1];
+     * @return the corresponding value.
+     */
+    double value(int index);
+
+    /**
+     * @return Returns the length of this time series.
+     */
+    int length();
 }

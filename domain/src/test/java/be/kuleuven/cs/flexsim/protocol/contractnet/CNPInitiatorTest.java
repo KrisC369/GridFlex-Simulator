@@ -53,7 +53,7 @@ public class CNPInitiatorTest {
 
     @Test
     public void testDispatchCNP() {
-        subj.sollicitWork(mockProposal);
+        subj.sollicitWork();
         verify(mockResp1, times(1)).callForProposal(any(AnswerAnticipator.class), any(Proposal.class));
         verify(mockResp2, times(1)).callForProposal(any(AnswerAnticipator.class), any(Proposal.class));
     }
@@ -61,7 +61,7 @@ public class CNPInitiatorTest {
     @Test
     public void testChooseProposal() {
         boolean flag = false;
-        subj.sollicitWork(mockProposal);
+        subj.sollicitWork();
         AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
         verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(), proposalCaptor.capture());
         answerCaptor1.getValue().affirmative(mock(Proposal.class), reply1);

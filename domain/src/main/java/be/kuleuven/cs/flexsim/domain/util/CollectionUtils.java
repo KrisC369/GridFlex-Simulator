@@ -3,6 +3,10 @@
  */
 package be.kuleuven.cs.flexsim.domain.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import java.util.Iterator;
+
 /**
  * This class represents some generic utility function making use of mapping
  * functions.
@@ -35,6 +39,34 @@ public final class CollectionUtils {
             }
         }
         return max;
+    }
+
+    /**
+     * This calculates and returns the element of the list for which the
+     * application of f to that element reaches its maximum.
+     *
+     * @param list
+     *            the list of elements.
+     * @param f
+     *            the function to apply to an element to get the value to
+     *            compare with the maximum.
+     * @param <T>
+     *            the type representing the elements to apply function f to.
+     * @return the argument attaining the maximum in f.
+     */
+    public static <T> T argMax(Iterable<T> list, IntNNFunction<T> f) {
+        checkArgument(list.iterator().hasNext(), "Can't provide empty list to this function");
+        int max = 0;
+        Iterator<T> it = list.iterator();
+        T currentMax = it.next();
+        while (it.hasNext()) {
+            T current = it.next();
+            if (f.apply(current) > max) {
+                max = f.apply(current);
+                currentMax = current;
+            }
+        }
+        return currentMax;
     }
 
     /**

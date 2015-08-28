@@ -4,7 +4,7 @@ import java.util.List;
 
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 
-public class TestConcreteCNPInitiator extends CNPInitiator {
+public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
     public TestConcreteCNPInitiator() {
         super();
     }
@@ -16,5 +16,11 @@ public class TestConcreteCNPInitiator extends CNPInitiator {
 
     @Override
     protected void signalNoSolutionFound() {
+    }
+
+    @Override
+    public Proposal getWorkUnitDescription() {
+        return new Proposal() {
+        };
     }
 }

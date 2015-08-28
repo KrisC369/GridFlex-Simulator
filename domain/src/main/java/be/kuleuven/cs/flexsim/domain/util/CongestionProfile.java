@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -139,6 +141,17 @@ public class CongestionProfile implements TimeSeries {
     @Override
     public double[] values() {
         return Arrays.copyOf(dataValues, dataValues.length);
+    }
+
+    @Override
+    public double value(int index) {
+        checkArgument(index >= 0 && index < dataValues.length);
+        return dataValues[index];
+    }
+
+    @Override
+    public int length() {
+        return this.dataValues.length;
     }
 
 }

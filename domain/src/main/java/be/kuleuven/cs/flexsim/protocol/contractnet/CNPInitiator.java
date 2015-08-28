@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.protocol.contractnet;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import autovalue.shaded.com.google.common.common.collect.Maps;
@@ -13,27 +14,34 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
+ * @param <T>
  *
  */
-public abstract class CNPInitiator implements Initiator<Proposal> {
-    private List<Responder<Proposal>> responders;
-    private Map<Proposal, AnswerAnticipator<Proposal>> props = Maps.newLinkedHashMap();
-    private Proposal description;
+public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
+
+    private List<Responder<T>> responders;
+    private Map<T, AnswerAnticipator<T>> props = Maps.newLinkedHashMap();
+    private Optional<T> description;
     private int messageCount = 0;
 
-    public CNPInitiator() {
+    protected CNPInitiator() {
         responders = Lists.newArrayList();
         this.messageCount = 0;
         this.props = Maps.newLinkedHashMap();
-        this.description = new CNPProposal();
+        this.description = Optional.absent();
     }
 
     @Override
-    public void registerResponder(Responder<Proposal> r) {
+    public void registerResponder(Responder<T> r) {
         this.responders.add(r);
     }
 
-    public void sollicitWork(Proposal p) {
+    /**
+     * Signals this initiator that works need to be done. This method
+     * immediately calls {@code CNPInitiator.getWorkUnitDescription()}.
+     */
+    public void sollicitWork() {
+        T p = getWorkUnitDescription();
         resetCommunication();
         startCNP(p);
     }
@@ -43,11 +51,11 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
         props = Maps.newLinkedHashMap();
     }
 
-    private void startCNP(Proposal p) {
-        this.description = new CNPProposal();
-        final Map<Proposal, AnswerAnticipator<Proposal>> props = Maps.newLinkedHashMap();
-        for (Responder<Proposal> r : responders) {
-            r.callForProposal(new AnswerAnticipator<Proposal>() {
+    private void startCNP(T p) {
+        this.description = Optional.fromNullable(p);
+        final Map<Proposal, AnswerAnticipator<T>> props = Maps.newLinkedHashMap();
+        for (Responder<T> r : responders) {
+            r.callForProposal(new AnswerAnticipator<T>() {
 
                 @Override
                 public void reject() {
@@ -55,11 +63,11 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
                 }
 
                 @Override
-                public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) {
+                public void affirmative(T prop, AnswerAnticipator<T> ant) {
                     phase1Accept(prop, ant); // propose
                 }
 
-            }, this.description);
+            }, this.description.get());
         }
     }
 
@@ -67,7 +75,7 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
         this.messageCount++;
     }
 
-    private void phase1Accept(Proposal prop, AnswerAnticipator<Proposal> ant) {
+    private void phase1Accept(T prop, AnswerAnticipator<T> ant) {
         this.messageCount++;
         props.put(prop, ant);
         if (messageCount == responders.size()) {
@@ -77,7 +85,7 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
 
     private void asynchronousPhase2() {
         if (!props.isEmpty()) {
-            cnpPhaseTwo(props, description);
+            cnpPhaseTwo(props, this.description.get());
         } else {
             signalNoSolutionFound();
         }
@@ -85,20 +93,19 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
 
     protected abstract void signalNoSolutionFound();
 
-    private void cnpPhaseTwo(Map<Proposal, AnswerAnticipator<Proposal>> props, Proposal description) {
-        Proposal best = findBestProposal(Lists.newArrayList(props.keySet()), description);
-        Map<Proposal, AnswerAnticipator<Proposal>> rejects = Maps.newLinkedHashMap(props);
+    private void cnpPhaseTwo(Map<T, AnswerAnticipator<T>> props, T description) {
+        T best = findBestProposal(Lists.newArrayList(props.keySet()), description);
+        Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
         rejects.remove(best);
         notifyRejects(rejects);
         notifyAcceptPhase2(best, props);
     }
 
-    private void notifyAcceptPhase2(Proposal best, Map<Proposal, AnswerAnticipator<Proposal>> props) {
-        final Proposal description2 = description;
-        props.get(best).affirmative(description2, new AnswerAnticipator<Proposal>() { // accept-proposal
+    private void notifyAcceptPhase2(final T best, Map<T, AnswerAnticipator<T>> props) {
+        props.get(best).affirmative(best, new AnswerAnticipator<T>() { // accept-proposal
             // Completion or failure notification.
             @Override
-            public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) { // inform-done
+            public void affirmative(T prop, AnswerAnticipator<T> ant) { // inform-done
                 // TODO Auto-generated method stub
             }
 
@@ -109,8 +116,8 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
         });
     }
 
-    private void notifyRejects(Map<Proposal, AnswerAnticipator<Proposal>> rejects) {
-        for (AnswerAnticipator<Proposal> e : rejects.values()) {
+    private void notifyRejects(Map<T, AnswerAnticipator<T>> rejects) {
+        for (AnswerAnticipator<T> e : rejects.values()) {
             e.reject(); // reject-proposal
         }
     }
@@ -120,16 +127,27 @@ public abstract class CNPInitiator implements Initiator<Proposal> {
      * a work unit given.
      * 
      * @param props
+     *            The proposals
      * @param description
-     * @return
+     *            The original call.
+     * @return the best fitting proposal.
      */
-    public abstract Proposal findBestProposal(List<Proposal> props, Proposal description);
+    public abstract T findBestProposal(List<T> props, T description);
+
+    /**
+     * This method is called immediately after a sollicitWork-call and should
+     * return a description of the work that needs to be done, including
+     * relevant data.
+     * 
+     * @return a Proposal to be used as a Call for Proposals.
+     */
+    public abstract T getWorkUnitDescription();
 
     /**
      * 
      * @return a copy of the responders list for this initiator.
      */
-    public List<Responder<Proposal>> getResponders() {
+    public List<Responder<T>> getResponders() {
         return Lists.newArrayList(responders);
     }
 }

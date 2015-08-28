@@ -3,6 +3,8 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 import java.util.Collections;
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.protocol.Responder;
+import be.kuleuven.cs.flexsim.protocol.contractnet.CNPResponder;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -38,6 +40,7 @@ public class DSMPartner implements SimulationComponent {
     private final int interactivationTime;
     private final int activationDuration;
     private final int flexPowerRate;
+    private final CNPResponder<DSMProposal> dsmAPI;
 
     /**
      * Default constructor according to r3dp specs.
@@ -51,6 +54,7 @@ public class DSMPartner implements SimulationComponent {
         this.interactivationTime = INTERACTIVATION_TIME;
         this.activationDuration = ACTIVATION_DURATION;
         this.flexPowerRate = powerRate;
+        this.dsmAPI = new DSMCNPResponder();
     }
 
     private void moveHorizons(int t) {
@@ -101,6 +105,30 @@ public class DSMPartner implements SimulationComponent {
      */
     public final int getFlexPowerRate() {
         return flexPowerRate;
+    }
+
+    /**
+     * @return Returns the dsm communication api for the role of responder in
+     *         this dsm partner.
+     */
+    public Responder<DSMProposal> getDSMAPI() {
+        return this.dsmAPI;
+    }
+
+    private class DSMCNPResponder extends CNPResponder<DSMProposal> {
+
+        @Override
+        protected DSMProposal makeProposalForCNP(DSMProposal arg) throws CanNotFindProposalException {
+            // TODO Auto-generated method stub
+            return DSMProposal.create("", 0, null, null);
+        }
+
+        @Override
+        protected boolean performWorkUnitFor(DSMProposal arg) {
+            // TODO Auto-generated method stub
+            return false;
+        }
+
     }
 
 }
