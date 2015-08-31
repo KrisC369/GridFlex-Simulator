@@ -1,6 +1,11 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
+import java.math.BigDecimal;
 import java.util.List;
+
+import javax.annotation.Nullable;
+
+import org.apache.commons.math3.util.FastMath;
 
 import com.google.common.collect.Lists;
 
@@ -24,6 +29,34 @@ public class CongestionSolver implements SimulationComponent {
     private int tick;
     private final int forecastHorizon;
     private CNPInitiator<DSMProposal> solverInstance;
+    private BigDecimal remediedCongestionCount;
+    private final CongestionProfile afterDSMprofile;
+    private final IntNNFunction<DSMProposal> valueFunction = new IntNNFunction<DSMProposal>() {
+        @Override
+        public int apply(DSMProposal input) {
+            // TODO maximize efficiency also.
+            // This maximizes to no-activation.
+            // TODO take responder valuation in account
+            double sum = 0;
+            for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
+                sum += afterDSMprofile.value(getTick() + i) - (input.getTargetValue() / 4.0);
+            }
+            return (int) (sum * 100);
+        }
+    };
+    private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
+        @Override
+        public int apply(DSMProposal input) {
+            double sum = 0;
+            for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
+                sum += FastMath.min(afterDSMprofile.value(getTick() + i), (input.getTargetValue() / 4.0));
+            }
+            double theoreticalMax = DSM_ALLOCATION_DURATION * (input.getTargetValue() / 4);
+            double relativeSucc = sum / theoreticalMax;
+
+            return (int) (relativeSucc * input.getValuation() * 1000);
+        }
+    };
 
     /**
      * Default constructor.
@@ -39,6 +72,8 @@ public class CongestionSolver implements SimulationComponent {
         this.tick = 0;
         this.solverInstance = new DSMCNPInitiator();
         this.forecastHorizon = forecastHorizon;
+        this.remediedCongestionCount = new BigDecimal(0);
+        this.afterDSMprofile = CongestionProfile.createFromTimeSeries(profile);
     }
 
     /**
@@ -58,12 +93,26 @@ public class CongestionSolver implements SimulationComponent {
 
     @Override
     public void afterTick(int t) {
+        getWorkResults();
         incrementTick();
     }
 
     @Override
     public void tick(int t) {
         doTick();
+    }
+
+    private void getWorkResults() {
+        for (DSMPartner d : getDsms()) {
+            double dsmv = d.getCurtailment(getTick()) / 4.0;
+            if (dsmv >= afterDSMprofile.value(getTick())) {
+                this.remediedCongestionCount = this.remediedCongestionCount
+                        .add(BigDecimal.valueOf(afterDSMprofile.value(getTick())));
+            } else {
+                this.remediedCongestionCount = this.remediedCongestionCount.add(BigDecimal.valueOf(dsmv));
+            }
+            this.afterDSMprofile.changeValue(getTick(), afterDSMprofile.value(getTick()) - dsmv);
+        }
     }
 
     private void doTick() {
@@ -118,6 +167,17 @@ public class CongestionSolver implements SimulationComponent {
         return this.forecastHorizon;
     }
 
+    /**
+     * @return Returns the total remedied congestion so far.
+     */
+    public double getTotalRemediedCongestion() {
+        return this.remediedCongestionCount.doubleValue();
+    }
+
+    public CongestionProfile getProfileAfterDSM() {
+        return CongestionProfile.createFromTimeSeries(afterDSMprofile);
+    }
+
     private class DSMCNPInitiator extends CNPInitiator<DSMProposal> {
 
         @Override
@@ -126,24 +186,25 @@ public class CongestionSolver implements SimulationComponent {
         }
 
         @Override
-        public DSMProposal findBestProposal(List<DSMProposal> props, DSMProposal description) {
-            return CollectionUtils.argMax(props, new IntNNFunction<DSMProposal>() {
-                @Override
-                public int apply(DSMProposal input) {
-                    double sum = 0;
-                    for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
-                        sum += getCongestion().value(i) - input.getTargetValue();
-                    }
-                    return (int) (sum * 100);
-                }
-            });
+        public @Nullable DSMProposal findBestProposal(List<DSMProposal> props, DSMProposal description) {
+            DSMProposal best = CollectionUtils.argMax(props, usefullnessFunction);
+            int score = valueFunction.apply(best);
+            if (score >= 0 * 8 * 100) {
+                return best;
+            }
+            return null;
         }
 
         @Override
         public DSMProposal getWorkUnitDescription() {
             double cong = getCongestion().value(getTick());
-            return DSMProposal.create("CNP for activation for tick: " + getTick(), cong, getTick(),
+            return DSMProposal.create("CNP for activation for tick: " + getTick(), cong, 0, getTick(),
                     getTick() + DSM_ALLOCATION_DURATION);
+        }
+
+        @Override
+        public void notifyWorkDone(DSMProposal prop) {
+            // noop
         }
 
     }

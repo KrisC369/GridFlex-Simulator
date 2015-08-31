@@ -3,6 +3,8 @@ package be.kuleuven.cs.flexsim.protocol.contractnet;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
@@ -73,11 +75,16 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     private void phase1Reject() {
         this.messageCount++;
+        moveToPhase2();
     }
 
     private void phase1Accept(T prop, AnswerAnticipator<T> ant) {
         this.messageCount++;
         props.put(prop, ant);
+        moveToPhase2();
+    }
+
+    protected void moveToPhase2() {
         if (messageCount == responders.size()) {
             asynchronousPhase2();
         }
@@ -98,7 +105,11 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
         Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
         rejects.remove(best);
         notifyRejects(rejects);
-        notifyAcceptPhase2(best, props);
+        if (best != null) {
+            notifyAcceptPhase2(best, props);
+        } else {
+            signalNoSolutionFound();
+        }
     }
 
     private void notifyAcceptPhase2(final T best, Map<T, AnswerAnticipator<T>> props) {
@@ -106,12 +117,11 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
             // Completion or failure notification.
             @Override
             public void affirmative(T prop, AnswerAnticipator<T> ant) { // inform-done
-                // TODO Auto-generated method stub
+                notifyWorkDone(prop);
             }
 
             @Override
             public void reject() { // failure
-                // TODO Auto-generated method stub
             }
         });
     }
@@ -132,7 +142,7 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
      *            The original call.
      * @return the best fitting proposal.
      */
-    public abstract T findBestProposal(List<T> props, T description);
+    public abstract @Nullable T findBestProposal(List<T> props, T description);
 
     /**
      * This method is called immediately after a sollicitWork-call and should
@@ -150,4 +160,12 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
     public List<Responder<T>> getResponders() {
         return Lists.newArrayList(responders);
     }
+
+    /**
+     * Notifies that a work package has been completed.
+     * 
+     * @param prop
+     *            the work package description of the completed work.
+     */
+    public abstract void notifyWorkDone(T prop);
 }

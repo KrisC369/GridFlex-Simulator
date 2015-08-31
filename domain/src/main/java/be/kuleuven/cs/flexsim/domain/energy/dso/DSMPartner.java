@@ -3,6 +3,8 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.math3.util.FastMath;
+
 import be.kuleuven.cs.flexsim.protocol.Responder;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPResponder;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -36,11 +38,15 @@ public class DSMPartner implements SimulationComponent {
      * The activation duration according to R3DP specs is (max) 2 hours.
      */
     public static final int ACTIVATION_DURATION = 4 * 2;
+    private static final int OPERATING_TIME_LIMIT = 4 * 24 * 365;
+
     private final int maxActivations;
     private final int interactivationTime;
     private final int activationDuration;
     private final int flexPowerRate;
     private final CNPResponder<DSMProposal> dsmAPI;
+    private final int[] activationMarker;
+    private int currentActivations;
 
     /**
      * Default constructor according to r3dp specs.
@@ -50,11 +56,17 @@ public class DSMPartner implements SimulationComponent {
      *            increase during activations.
      */
     public DSMPartner(int powerRate) {
-        this.maxActivations = R3DPMAX_ACTIVATIONS;
-        this.interactivationTime = INTERACTIVATION_TIME;
-        this.activationDuration = ACTIVATION_DURATION;
-        this.flexPowerRate = powerRate;
+        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate);
+    }
+
+    DSMPartner(int maxActivations, int interactivationTime, int activationDuration, int flexPowerRate) {
+        this.maxActivations = maxActivations;
+        this.interactivationTime = interactivationTime;
+        this.activationDuration = activationDuration;
+        this.flexPowerRate = flexPowerRate;
         this.dsmAPI = new DSMCNPResponder();
+        this.activationMarker = new int[OPERATING_TIME_LIMIT];
+        this.currentActivations = 0;
     }
 
     private void moveHorizons(int t) {
@@ -115,18 +127,101 @@ public class DSMPartner implements SimulationComponent {
         return this.dsmAPI;
     }
 
+    /**
+     * Returns the amount of power consumption increased at the specified time
+     * step.
+     * 
+     * @param timeMark
+     *            The mark to check.
+     * @return the power increase amount.
+     */
+    public double getCurtailment(int timeMark) {
+        return activationMarker[timeMark] * getFlexPowerRate();
+    }
+
+    /**
+     * @return the current number of activations planned or triggered.
+     */
+    public final int getCurrentActivations() {
+        return this.currentActivations;
+    }
+
+    /**
+     * Mark activation
+     * 
+     * @param begin
+     *            BeginMark
+     * @param end
+     *            EndMark
+     */
+    private void markActivation(Integer begin, Integer end) {
+        for (int i = 0; i < end; i++) {
+            activationMarker[i] = 1;
+        }
+        incrementActivations();
+    }
+
+    private void incrementActivations() {
+        this.currentActivations += 1;
+    }
+
+    private boolean canActivateDuring(Integer begin, Integer end) {
+        if (begin < 0 || end + getActivationDuration() >= OPERATING_TIME_LIMIT) {
+            return false;
+        }
+
+        if (getCurrentActivations() >= getMaxActivations()) {
+            return false;
+        }
+        for (int i = begin; i < end; i++) {
+            if (activationMarker[i] == 1) {
+                return false;
+            }
+        }
+        for (int i = FastMath.max(0, begin - getInteractivationTime()); i < begin; i++) {
+            if (activationMarker[i] == 1) {
+                return false;
+            }
+        }
+        for (int i = (begin + getActivationDuration()); i < FastMath
+                .min(begin + getActivationDuration() + getInteractivationTime(), OPERATING_TIME_LIMIT); i++) {
+            if (activationMarker[i] == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private double getValuation(DSMProposal prop) {
+        double factor = maxActivations / OPERATING_TIME_LIMIT;
+        double goal = prop.getBeginMark().get() * factor; // todo test
+        if (currentActivations > goal) {
+            return (1 - ((currentActivations - goal) / (maxActivations - goal))) * (0.5);
+        } else if (currentActivations < goal) {
+            return ((1 - (currentActivations / goal)) * 0.5) + 0.5;
+        }
+        return 0.5;
+    }
+
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {
 
         @Override
         protected DSMProposal makeProposalForCNP(DSMProposal arg) throws CanNotFindProposalException {
-            // TODO Auto-generated method stub
-            return DSMProposal.create("", 0, null, null);
+            if (canActivateDuring(arg.getBeginMark().get(), arg.getEndMark().get())) {
+                StringBuilder b = new StringBuilder("Proposal from ").append(this.toString()).append(" with ")
+                        .append(getFlexPowerRate()).append("kW");
+                return DSMProposal.create(b.toString(), getFlexPowerRate(), getValuation(arg), arg.getBeginMark().get(),
+                        arg.getEndMark().get());
+            }
+            throw new CanNotFindProposalException();
         }
 
         @Override
         protected boolean performWorkUnitFor(DSMProposal arg) {
-            // TODO Auto-generated method stub
-            return false;
+            boolean succesfull = false;
+            markActivation(arg.getBeginMark().get(), arg.getEndMark().get());
+            succesfull = true;
+            return succesfull;
         }
 
     }

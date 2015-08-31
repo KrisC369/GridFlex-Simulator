@@ -129,12 +129,8 @@ public class CongestionProfile implements TimeSeries {
      * @param series
      *            The series to copy from.
      * @return the time series.
-     * @throws IOException
-     *             If reading from the file is not possible.
-     * @throws FileNotFoundException
-     *             If the file with that name cannot be found.
      */
-    public static TimeSeries createFromTimeSeries(TimeSeries series) throws FileNotFoundException, IOException {
+    public static CongestionProfile createFromTimeSeries(TimeSeries series) {
         return new CongestionProfile(series.values());
     }
 
@@ -154,4 +150,16 @@ public class CongestionProfile implements TimeSeries {
         return this.dataValues.length;
     }
 
+    /**
+     * Change the value of a certain element in the time series.
+     * 
+     * @param index
+     *            the index of the value to change.
+     * @param value
+     *            the new value.
+     */
+    public void changeValue(int index, double value) {
+        checkArgument(index >= 0 && index < length(), "Index(" + index + ") should be within range of time series.");
+        this.dataValues[index] = value;
+    }
 }

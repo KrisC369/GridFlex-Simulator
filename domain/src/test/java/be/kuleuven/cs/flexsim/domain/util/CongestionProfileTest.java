@@ -59,13 +59,9 @@ public class CongestionProfileTest {
     @Test
     public void testCopyConstructor() {
         CongestionProfile profile2;
-        try {
-            profile2 = (CongestionProfile) CongestionProfile.createFromTimeSeries(profile);
-            assertEquals(Arrays.toString(profile2.values()), Arrays.toString(profile.values()));
-        } catch (IOException e) {
-            e.printStackTrace();
-            fail();
-        }
+        profile2 = (CongestionProfile) CongestionProfile.createFromTimeSeries(profile);
+        assertEquals(Arrays.toString(profile2.values()), Arrays.toString(profile.values()));
+
     }
 
     @Test

@@ -36,6 +36,12 @@ public abstract class DSMProposal implements Proposal {
     public abstract Optional<Integer> getEndMark();
 
     /**
+     * 
+     * @return The value for the agent supplying this proposal.
+     */
+    public abstract double getValuation();
+
+    /**
      * @return true if the optionals for the time constraints are not absent.
      */
     public boolean hasTimeConstraints() {
@@ -51,7 +57,9 @@ public abstract class DSMProposal implements Proposal {
      *            the target imbalance volume that was effectively remedied.
      * @return a nomination value object. //
      */
-    static DSMProposal create(String description, double target, @Nullable Integer begin, @Nullable Integer end) {
-        return new AutoValue_DSMProposal(description, target, Optional.fromNullable(begin), Optional.fromNullable(end));
+    static DSMProposal create(String description, double target, double valuation, @Nullable Integer begin,
+            @Nullable Integer end) {
+        return new AutoValue_DSMProposal(description, target, Optional.fromNullable(begin), Optional.fromNullable(end),
+                valuation);
     }
 }

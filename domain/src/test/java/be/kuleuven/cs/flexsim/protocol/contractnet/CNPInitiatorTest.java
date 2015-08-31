@@ -73,4 +73,20 @@ public class CNPInitiatorTest {
         verify(reply1, times(1)).affirmative(any(Proposal.class), any(AnswerAnticipator.class));
         verify(reply, times(1)).reject();
     }
+
+    @Test
+    public void testEndWithReject() {
+        boolean flag = false;
+        subj.sollicitWork();
+        AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
+        verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(), proposalCaptor.capture());
+        answerCaptor1.getValue().affirmative(mock(Proposal.class), reply1);
+
+        verify(mockResp2, times(1)).callForProposal(answerCaptor2.capture(), proposalCaptor.capture());
+        AnswerAnticipator<Proposal> reply = mock(AnswerAnticipator.class);
+        answerCaptor2.getValue().reject();
+
+        verify(reply1, times(1)).affirmative(any(Proposal.class), any(AnswerAnticipator.class));
+        // verify(reply, times(1)).reject();
+    }
 }
