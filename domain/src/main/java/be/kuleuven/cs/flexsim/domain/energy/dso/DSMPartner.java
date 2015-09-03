@@ -39,6 +39,7 @@ public class DSMPartner implements SimulationComponent {
      */
     public static final int ACTIVATION_DURATION = 4 * 2;
     private static final int OPERATING_TIME_LIMIT = 4 * 24 * 365;
+    private static double CURRENT_ALLOWED_DEVIATION = 0.05;
 
     private final int maxActivations;
     private final int interactivationTime;
@@ -47,6 +48,7 @@ public class DSMPartner implements SimulationComponent {
     private final CNPResponder<DSMProposal> dsmAPI;
     private final int[] activationMarker;
     private int currentActivations;
+    private double currentAllowedDeviation;
 
     /**
      * Default constructor according to r3dp specs.
@@ -56,10 +58,22 @@ public class DSMPartner implements SimulationComponent {
      *            increase during activations.
      */
     public DSMPartner(int powerRate) {
-        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate);
+        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate, CURRENT_ALLOWED_DEVIATION);
     }
 
-    DSMPartner(int maxActivations, int interactivationTime, int activationDuration, int flexPowerRate) {
+    /**
+     * Default constructor according to r3dp specs.
+     * 
+     * @param powerRate
+     *            The amount of instantaneous power this partners is able to
+     *            increase during activations.
+     */
+    public DSMPartner(int powerRate, double deviation) {
+        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate, deviation);
+    }
+
+    DSMPartner(int maxActivations, int interactivationTime, int activationDuration, int flexPowerRate,
+            double deviation) {
         this.maxActivations = maxActivations;
         this.interactivationTime = interactivationTime;
         this.activationDuration = activationDuration;
@@ -67,6 +81,7 @@ public class DSMPartner implements SimulationComponent {
         this.dsmAPI = new DSMCNPResponder();
         this.activationMarker = new int[OPERATING_TIME_LIMIT];
         this.currentActivations = 0;
+        this.currentAllowedDeviation = deviation;
     }
 
     private void moveHorizons(int t) {
@@ -166,6 +181,9 @@ public class DSMPartner implements SimulationComponent {
     }
 
     private boolean canActivateDuring(Integer begin, Integer end) {
+        if (getValuation(begin) >= currentAllowedDeviation) {
+            return false;
+        }
         if (begin < 0 || end + getActivationDuration() >= OPERATING_TIME_LIMIT) {
             return false;
         }
@@ -192,15 +210,29 @@ public class DSMPartner implements SimulationComponent {
         return true;
     }
 
+    // private double getValuation(DSMProposal prop) {
+    // // TODO test
+    // // TODO keep a certain distance from goal.
+    // double factor = maxActivations / OPERATING_TIME_LIMIT;
+    // double goal = prop.getBeginMark().get() * factor;
+    // if (currentActivations > goal) {
+    // return (1 - ((currentActivations - goal) / (maxActivations - goal))) *
+    // (0.5);
+    // } else if (currentActivations < goal) {
+    // return ((1 - (currentActivations / goal)) * 0.5) + 0.5;
+    // }
+    // return 0.5;
+    // }
     private double getValuation(DSMProposal prop) {
-        double factor = maxActivations / OPERATING_TIME_LIMIT;
-        double goal = prop.getBeginMark().get() * factor; // todo test
-        if (currentActivations > goal) {
-            return (1 - ((currentActivations - goal) / (maxActivations - goal))) * (0.5);
-        } else if (currentActivations < goal) {
-            return ((1 - (currentActivations / goal)) * 0.5) + 0.5;
-        }
-        return 0.5;
+        return getValuation(prop.getBeginMark().get());
+    }
+
+    private double getValuation(int beginMark) {
+        // TODO test
+        // DONE keep a certain distance from goal.
+        double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
+        double goal = beginMark * factor;
+        return ((currentActivations - goal) / maxActivations);
     }
 
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {

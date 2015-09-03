@@ -30,8 +30,8 @@ public class DSOIntegrationTest {
     @Before
     public void setUp() throws Exception {
         congestionSolver = new CongestionSolver(congestionProfile, 8);
-        dsm1 = new DSMPartner(0, 48, 8, 100);
-        dsm2 = new DSMPartner(0, 48, 8, 50);
+        dsm1 = new DSMPartner(0, 48, 8, 100, -1);
+        dsm2 = new DSMPartner(0, 48, 8, 50, -1);
         when(congestionProfile.value(anyInt())).thenReturn(175.0);
         when(congestionProfile.values()).thenReturn(new double[4 * 24 * 365]);
 
@@ -42,8 +42,8 @@ public class DSOIntegrationTest {
     @Test
     public void testNoActivation() {
         congestionSolver = new CongestionSolver(congestionProfile, 8);
-        dsm1 = new DSMPartner(0, 48, 8, 100);
-        dsm2 = new DSMPartner(0, 48, 8, 50);
+        dsm1 = new DSMPartner(0, 48, 8, 100, -1);
+        dsm2 = new DSMPartner(0, 48, 8, 50, -1);
         register();
         sim.register(congestionSolver);
         sim.start();
@@ -59,8 +59,8 @@ public class DSOIntegrationTest {
     @Test
     public void testPosActivation() {
         congestionSolver = new CongestionSolver(congestionProfile, 8);
-        dsm1 = new DSMPartner(40, 48, 8, 100);
-        dsm2 = new DSMPartner(40, 48, 8, 50);
+        dsm1 = new DSMPartner(40, 48, 8, 100, -1);
+        dsm2 = new DSMPartner(40, 48, 8, 50, -1);
         register();
         sim.register(congestionSolver);
         sim.start();
@@ -73,7 +73,7 @@ public class DSOIntegrationTest {
     public void testPosActivationNumberActivations() {
         int power = 100;
         congestionSolver = new CongestionSolver(congestionProfile, 8);
-        dsm1 = new DSMPartner(40, 48, 8, power);
+        dsm1 = new DSMPartner(40, 48, 8, power, -1);
         register();
         sim.register(congestionSolver);
         sim.start();

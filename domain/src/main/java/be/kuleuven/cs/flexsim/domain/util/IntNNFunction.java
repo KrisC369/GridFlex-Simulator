@@ -3,10 +3,10 @@ package be.kuleuven.cs.flexsim.domain.util;
 /**
  * Determines an output int value based on an input value.
  * <p>
- * See the Guava User Guide article on <a href=
- * "http://code.google.com/p/guava-libraries/wiki/FunctionalExplained">the use
- * of {@code Function}</a> for more information on a similar function interface
- * that is Nullable.
+ * See the Guava User Guide article on
+ * <a href= "http://code.google.com/p/guava-libraries/wiki/FunctionalExplained">
+ * the use of {@code Function}</a> for more information on a similar function
+ * interface that is Nullable.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <F>

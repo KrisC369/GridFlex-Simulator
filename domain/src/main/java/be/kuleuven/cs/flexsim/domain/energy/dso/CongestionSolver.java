@@ -41,7 +41,7 @@ public class CongestionSolver implements SimulationComponent {
             for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
                 sum += afterDSMprofile.value(getTick() + i) - (input.getTargetValue() / 4.0);
             }
-            return (int) (sum * 100);
+            return (int) (sum);
         }
     };
     private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
