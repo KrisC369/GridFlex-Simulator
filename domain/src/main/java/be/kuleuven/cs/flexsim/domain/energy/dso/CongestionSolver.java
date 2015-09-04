@@ -33,7 +33,7 @@ public class CongestionSolver implements SimulationComponent {
     private CNPInitiator<DSMProposal> solverInstance;
     private BigDecimal remediedCongestionCount;
     private final CongestionProfile afterDSMprofile;
-    private static int RELATIVE_MAX_VALUE_PERCENT = 0;
+    private int RELATIVE_MAX_VALUE_PERCENT;
     private final IntNNFunction<DSMProposal> valueFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
@@ -42,20 +42,24 @@ public class CongestionSolver implements SimulationComponent {
             // TODO take responder valuation in account
             // double sum = 0;
             double max = 0;
-            for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
+            for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
+                    afterDSMprofile.length() - getTick() - 1); i++) { // TODO
+                                                                      // check
+                                                                      // bounds.
                 double res = afterDSMprofile.value(getTick() + i)
                         - (input.getTargetValue() / 4.0);
                 // sum += res < 0 ? res : 0;
                 max = res < max ? res : max;
             }
-            return (int) ((-max / input.getTargetValue()) * 100);
+            return (int) ((-max / (input.getTargetValue() / 4.0)) * 100);
         }
     };
     private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
             double sum = 0;
-            for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
+            for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
+                    afterDSMprofile.length() - getTick() - 1); i++) {
                 sum += FastMath.min(afterDSMprofile.value(getTick() + i),
                         (input.getTargetValue() / 4.0));
             }
@@ -76,6 +80,21 @@ public class CongestionSolver implements SimulationComponent {
      *            The forecast horizon.
      */
     public CongestionSolver(CongestionProfile profile, int forecastHorizon) {
+        this(profile, forecastHorizon, 0);
+    }
+
+    /**
+     * Default constructor.
+     * 
+     * @param profile
+     *            The congestion profile to solve.
+     * @param forecastHorizon
+     *            The forecast horizon.
+     * @param maxRelativeValue
+     *            The maximum relative congestion resolve value.
+     */
+    public CongestionSolver(CongestionProfile profile, int forecastHorizon,
+            int maxRelativeValue) {
         this.congestion = profile;
         this.dsms = Lists.newArrayList();
         this.tick = 0;
@@ -83,6 +102,7 @@ public class CongestionSolver implements SimulationComponent {
         this.forecastHorizon = forecastHorizon;
         this.remediedCongestionCount = new BigDecimal(0);
         this.afterDSMprofile = CongestionProfile.createFromTimeSeries(profile);
+        this.RELATIVE_MAX_VALUE_PERCENT = maxRelativeValue;
     }
 
     /**

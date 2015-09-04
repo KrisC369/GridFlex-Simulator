@@ -74,6 +74,19 @@ public class DSMPartner implements SimulationComponent {
                 powerRate, deviation);
     }
 
+    /**
+     * Full argument constructor.
+     * 
+     * @param maxActivations
+     * @param interactivationTime
+     * @param activationDuration
+     * @param powerRate
+     *            The amount of instantaneous power this partners is able to
+     *            increase during activations.
+     * @param deviation
+     *            The allowed relative deviation to the mean goal number of
+     *            activations so far.
+     */
     DSMPartner(int maxActivations, int interactivationTime,
             int activationDuration, int flexPowerRate, double deviation) {
         this.maxActivations = maxActivations;
