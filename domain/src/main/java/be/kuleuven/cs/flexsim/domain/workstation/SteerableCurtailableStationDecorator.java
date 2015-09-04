@@ -5,10 +5,9 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * curtailable.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
-public class SteerableCurtailableStationDecorator extends
-        SteerableStationDecorator implements CurtailableWorkstation {
+public class SteerableCurtailableStationDecorator
+        extends SteerableStationDecorator implements CurtailableWorkstation {
 
     private final CurtailableWorkstation cs;
 
@@ -59,7 +58,6 @@ public class SteerableCurtailableStationDecorator extends
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

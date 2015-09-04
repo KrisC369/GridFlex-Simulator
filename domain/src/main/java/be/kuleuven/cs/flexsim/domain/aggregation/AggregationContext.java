@@ -12,7 +12,6 @@ import com.google.common.collect.Multimap;
  * dispatching the final activation requests.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface AggregationContext {
 
@@ -24,5 +23,6 @@ public interface AggregationContext {
      * @param ids
      *            the ids that reference the profile to activate.
      */
-    void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex, Set<Long> ids);
+    void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
+            Set<Long> ids);
 }

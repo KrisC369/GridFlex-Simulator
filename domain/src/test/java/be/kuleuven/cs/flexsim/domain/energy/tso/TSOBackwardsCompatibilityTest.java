@@ -27,7 +27,8 @@ public class TSOBackwardsCompatibilityTest {
 
     private BalancingTSO tso1 = mock(BalancingTSO.class);
     private CopperplateTSO tso2 = mock(CopperplateTSO.class);
-    private ReactiveMechanismAggregator agg1 = mock(ReactiveMechanismAggregator.class);
+    private ReactiveMechanismAggregator agg1 = mock(
+            ReactiveMechanismAggregator.class);
     private IndependentAggregator agg2 = mock(IndependentAggregator.class);
     private Simulator sim1 = Simulator.createSimulator(1);
     private Simulator sim2 = Simulator.createSimulator(1);
@@ -42,20 +43,26 @@ public class TSOBackwardsCompatibilityTest {
         tso1 = new BalancingTSO();
         tso2 = new CopperplateTSO();
         tso1.registerProducer(new ConstantOutputGenerator(500));
-        tso1.registerProducer(new WeighedNormalRandomOutputGenerator(-200, 200));
+        tso1.registerProducer(
+                new WeighedNormalRandomOutputGenerator(-200, 200));
         tso2.registerProducer(new ConstantOutputGenerator(500));
-        tso2.registerProducer(new WeighedNormalRandomOutputGenerator(-200, 200));
+        tso2.registerProducer(
+                new WeighedNormalRandomOutputGenerator(-200, 200));
         agg1 = new ReactiveMechanismAggregator(tso1);
         agg2 = new IndependentAggregator(tso2, 1);
         sim1 = Simulator.createSimulator(simsteps);
         sim2 = Simulator.createSimulator(simsteps);
-        site11 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(300).withMinConsumption(100)
+        site11 = (SiteSimulation) SiteBuilder.newSiteSimulation()
+                .withBaseConsumption(300).withMinConsumption(100)
                 .withMaxConsumption(450).withTuples(4).create();
-        site12 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(200).withMinConsumption(150)
+        site12 = (SiteSimulation) SiteBuilder.newSiteSimulation()
+                .withBaseConsumption(200).withMinConsumption(150)
                 .withMaxConsumption(500).withTuples(4).create();
-        site21 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(300).withMinConsumption(100)
+        site21 = (SiteSimulation) SiteBuilder.newSiteSimulation()
+                .withBaseConsumption(300).withMinConsumption(100)
                 .withMaxConsumption(450).withTuples(4).create();
-        site22 = (SiteSimulation) SiteBuilder.newSiteSimulation().withBaseConsumption(200).withMinConsumption(150)
+        site22 = (SiteSimulation) SiteBuilder.newSiteSimulation()
+                .withBaseConsumption(200).withMinConsumption(150)
                 .withMaxConsumption(500).withTuples(4).create();
 
         tso1.registerConsumer(site11);

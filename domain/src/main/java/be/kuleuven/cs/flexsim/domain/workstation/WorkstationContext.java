@@ -5,7 +5,6 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * context class.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 interface WorkstationContext {
 

@@ -26,7 +26,6 @@ public class SimpleResource implements Resource {
 
     /*
      * (non-Javadoc)
-     * 
      * @see domain.IResource#getNeededProcessTime()
      */
     @Override
@@ -45,7 +44,6 @@ public class SimpleResource implements Resource {
 
     /*
      * (non-Javadoc)
-     * 
      * @see domain.IResource#process(int)
      */
     @Override

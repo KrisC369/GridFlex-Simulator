@@ -10,7 +10,6 @@ import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
  * Builder class for building Site implementations.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public abstract class SiteBuilder {
 
@@ -46,11 +45,11 @@ public abstract class SiteBuilder {
      * 
      * @param line
      *            the line to add.
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder addLine(FlexProcess line) {
-        throw new UnsupportedOperationException("You cannot add lines to this site.");
+        throw new UnsupportedOperationException(
+                "You cannot add lines to this site.");
     }
 
     /**
@@ -58,11 +57,11 @@ public abstract class SiteBuilder {
      * 
      * @param ceaseTime
      *            The cease time.
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder withCeaseTime(int ceaseTime) {
-        throw new UnsupportedOperationException("You cannot set a cease time for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a cease time for this site.");
     }
 
     /**
@@ -70,11 +69,11 @@ public abstract class SiteBuilder {
      * 
      * @param rampTime
      *            the ramp up time
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder withReactionTime(int rampTime) {
-        throw new UnsupportedOperationException("You cannot set a reaction time for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a reaction time for this site.");
     }
 
     /**
@@ -82,11 +81,11 @@ public abstract class SiteBuilder {
      * 
      * @param duration
      *            The flex duration
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder withFlexDuration(int duration) {
-        throw new UnsupportedOperationException("You cannot set a flex duration for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a flex duration for this site.");
     }
 
     /**
@@ -94,12 +93,12 @@ public abstract class SiteBuilder {
      * 
      * @param min
      *            the minimum consumption level.
-     * 
      * @return a sitebuilder (Fluent API).
      */
 
     public SiteBuilder withMinConsumption(int min) {
-        throw new UnsupportedOperationException("You cannot set a min consumption time for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a min consumption time for this site.");
     }
 
     /**
@@ -107,11 +106,11 @@ public abstract class SiteBuilder {
      * 
      * @param max
      *            The maximum consumption level.
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder withMaxConsumption(int max) {
-        throw new UnsupportedOperationException("You cannot set a max consumption time for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a max consumption time for this site.");
     }
 
     /**
@@ -119,11 +118,11 @@ public abstract class SiteBuilder {
      * 
      * @param base
      *            The base consumption level.
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder withBaseConsumption(int base) {
-        throw new UnsupportedOperationException("You cannot set a base consumption time for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a base consumption time for this site.");
     }
 
     /**
@@ -131,11 +130,11 @@ public abstract class SiteBuilder {
      * 
      * @param tuples
      *            The number of tuples.
-     * 
      * @return a sitebuilder (Fluent API).
      */
     public SiteBuilder withTuples(int tuples) {
-        throw new UnsupportedOperationException("You cannot set a a number of tuples for this site.");
+        throw new UnsupportedOperationException(
+                "You cannot set a a number of tuples for this site.");
     }
 
     /**
@@ -154,7 +153,8 @@ public abstract class SiteBuilder {
 
         @Override
         public SiteBuilder addLine(FlexProcess line) {
-            throw new UnsupportedOperationException("You cannot add lines to this site.");
+            throw new UnsupportedOperationException(
+                    "You cannot add lines to this site.");
         }
 
         @Override
@@ -232,7 +232,8 @@ public abstract class SiteBuilder {
 
         @Override
         public Site create() {
-            return new SiteSimulation(base, min, max, tuples, duration, ramp, cease);
+            return new SiteSimulation(base, min, max, tuples, duration, ramp,
+                    cease);
         }
 
     }
@@ -240,7 +241,8 @@ public abstract class SiteBuilder {
     private static class EquidistantSiteBuilder extends SiteSimulationBuilder {
         @Override
         public Site create() {
-            return new EquidistantSiteSimulation(base, min, max, tuples, duration, ramp, cease);
+            return new EquidistantSiteSimulation(base, min, max, tuples,
+                    duration, ramp, cease);
         }
     }
 }

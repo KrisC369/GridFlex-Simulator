@@ -6,7 +6,6 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * subtype. (Similarities with visitors)
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public interface WorkstationVisitor {
 

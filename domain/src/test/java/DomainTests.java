@@ -26,11 +26,15 @@ import be.kuleuven.cs.flexsim.domain.util.listener.ListenerTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ BufferTest.class, WorkstationTest.class, ProductionLineTest.class, ResourceTest.class,
-        FinanceTrackerTest.class, FlexTupleTest.class, SiteTest.class, AggregatorTest.class, BRPAggregatorTest.class,
-        IndependentAggregatorTest.class, ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
-        NPermuteAndCombinerTest.class, CopperPlateTSOTest.class, OutputGeneratorTest.class, SiteSimulationTest.class,
-        BalancingAuctionTSOTest.class, BalancingTSOTest.class, EquidistantSiteSimulationTest.class, ListenerTest.class,
+@SuiteClasses({ BufferTest.class, WorkstationTest.class,
+        ProductionLineTest.class, ResourceTest.class, FinanceTrackerTest.class,
+        FlexTupleTest.class, SiteTest.class, AggregatorTest.class,
+        BRPAggregatorTest.class, IndependentAggregatorTest.class,
+        ReactiveMechanismAggregatorTest.class, RandomTSOTest.class,
+        NPermuteAndCombinerTest.class, CopperPlateTSOTest.class,
+        OutputGeneratorTest.class, SiteSimulationTest.class,
+        BalancingAuctionTSOTest.class, BalancingTSOTest.class,
+        EquidistantSiteSimulationTest.class, ListenerTest.class,
         NominationTest.class, CongestionProfileTest.class })
 public class DomainTests {
 }

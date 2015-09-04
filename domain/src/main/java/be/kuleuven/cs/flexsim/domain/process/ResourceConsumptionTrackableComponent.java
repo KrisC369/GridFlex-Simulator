@@ -11,10 +11,9 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
  * steered in terms of input-output of resources.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
-public interface ResourceConsumptionTrackableComponent extends
-        EnergyConsumptionTrackable {
+public interface ResourceConsumptionTrackableComponent
+        extends EnergyConsumptionTrackable {
 
     /**
      * Get an list of the buffer levels ordered by the location of the buffer in

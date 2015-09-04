@@ -33,16 +33,14 @@ public class IndependentAggregatorTest {
         doReturn(0).when(tso).getCurrentImbalance();
         this.agg = new IndependentAggregator(tso, freq);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
-                        FlexTuple.create(3, 10, true, 10, 0, 0))).when(
-                clientDown).getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
+                FlexTuple.create(3, 10, true, 10, 0, 0))).when(clientDown)
+                        .getFlexTuples();
 
         this.clientUp = mock(SiteFlexAPI.class);
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0),
-                        FlexTuple.create(4, 10, false, 10, 0, 0))).when(
-                clientUp).getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0),
+                FlexTuple.create(4, 10, false, 10, 0, 0))).when(clientUp)
+                        .getFlexTuples();
 
         doRegister();
     }
@@ -71,8 +69,8 @@ public class IndependentAggregatorTest {
         doRegister();
         sim.start();
         verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(0)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(0))
+                .activateFlex(any(ActivateFlexCommand.class));
     }
 
     @Test
@@ -83,8 +81,8 @@ public class IndependentAggregatorTest {
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(0)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(0))
+                .activateFlex(any(ActivateFlexCommand.class));
     }
 
     private void doRegister() {
@@ -101,8 +99,8 @@ public class IndependentAggregatorTest {
         doRegister();
         sim.start();
         verify(clientUp, times(0)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(1)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(1))
+                .activateFlex(any(ActivateFlexCommand.class));
     }
 
     @Test
@@ -113,8 +111,8 @@ public class IndependentAggregatorTest {
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(1)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(1))
+                .activateFlex(any(ActivateFlexCommand.class));
     }
 
     @Test
@@ -125,25 +123,24 @@ public class IndependentAggregatorTest {
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(1)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(1))
+                .activateFlex(any(ActivateFlexCommand.class));
     }
 
     @Test
     public void testUseOnlyOneProfile() {
         tso = mock(BalancingSignal.class);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
-                        FlexTuple.create(7, 5, false, 10, 0, 0),
-                        FlexTuple.create(3, 10, true, 10, 0, 0))).when(
-                clientDown).getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
+                FlexTuple.create(7, 5, false, 10, 0, 0),
+                FlexTuple.create(3, 10, true, 10, 0, 0))).when(clientDown)
+                        .getFlexTuples();
         doReturn(5000).when(tso).getCurrentImbalance();
         agg = new IndependentAggregator(tso, freq);
         doRegister();
         sim.start();
-        verify(clientDown, times(1)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(1))
+                .activateFlex(any(ActivateFlexCommand.class));
     }
 
     @Test
@@ -153,23 +150,21 @@ public class IndependentAggregatorTest {
         doReturn(-140).when(this.tso).getCurrentImbalance();
         this.agg = new IndependentAggregator(this.tso, freq,
                 AggregationStrategyImpl.MOVINGHORIZON);
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),
-                        FlexTuple.create(7, 50, false, 10, 0, 0),
-                        FlexTuple.create(9, 500, false, 10, 0, 0),
-                        FlexTuple.create(3, -10, true, 10, 0, 0))).when(
-                clientDown).getFlexTuples();
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),
-                        FlexTuple.create(7, 100, false, 10, 0, 0),
-                        FlexTuple.create(12, 500, false, 10, 0, 0),
-                        FlexTuple.create(3, -300, true, 10, 0, 0))).when(
-                clientUp).getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),
+                FlexTuple.create(7, 50, false, 10, 0, 0),
+                FlexTuple.create(9, 500, false, 10, 0, 0),
+                FlexTuple.create(3, -10, true, 10, 0, 0))).when(clientDown)
+                        .getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),
+                FlexTuple.create(7, 100, false, 10, 0, 0),
+                FlexTuple.create(12, 500, false, 10, 0, 0),
+                FlexTuple.create(3, -300, true, 10, 0, 0))).when(clientUp)
+                        .getFlexTuples();
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));
-        verify(clientDown, times(1)).activateFlex(
-                any(ActivateFlexCommand.class));
+        verify(clientDown, times(1))
+                .activateFlex(any(ActivateFlexCommand.class));
 
     }
 

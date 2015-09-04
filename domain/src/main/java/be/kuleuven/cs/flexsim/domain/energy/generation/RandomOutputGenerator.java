@@ -17,7 +17,6 @@ import com.google.common.annotations.VisibleForTesting;
  * Represents a TSO implementation with random signal.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class RandomOutputGenerator implements EnergyProductionTrackable {
     private RandomGenerator g;

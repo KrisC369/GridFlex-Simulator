@@ -70,7 +70,8 @@ public class FlexTupleTest {
         FlexTuple tuple3 = FlexTuple.create(id, deltaP, dir, t, tr + 5, tc);
         FlexTuple tuple4 = FlexTuple.create(id + 1, deltaP, dir, t, tr, tc);
         StringBuilder b = new StringBuilder();
-        b.append("FlexTuple [id=%s, deltaP=%s, direction=%s, t=%s, tR=%s, tC=%s]");
+        b.append(
+                "FlexTuple [id=%s, deltaP=%s, direction=%s, t=%s, tR=%s, tC=%s]");
         Formatter formatter = new Formatter();
         formatter.format(b.toString(), id, deltaP, dir, t, tr, tc);
         assertEquals(tuple.toString(), formatter.toString());

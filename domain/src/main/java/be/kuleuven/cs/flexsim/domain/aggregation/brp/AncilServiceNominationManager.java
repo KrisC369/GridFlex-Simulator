@@ -10,6 +10,9 @@ public interface AncilServiceNominationManager {
 
     /**
      * Register a nomination with this nominationManager.
+     * 
+     * @param target
+     *            The nomination to register.
      */
     void registerNomination(Nomination target);
 }

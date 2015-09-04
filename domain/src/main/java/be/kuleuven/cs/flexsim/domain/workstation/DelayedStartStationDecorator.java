@@ -6,8 +6,8 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-class DelayedStartStationDecorator extends
-        ForwardingStationDecorator<Workstation> {
+class DelayedStartStationDecorator
+        extends ForwardingStationDecorator<Workstation> {
 
     private int shiftTime;
     private int shiftTimeAfter;
@@ -19,7 +19,6 @@ class DelayedStartStationDecorator extends
      *            The amount of time steps to wait.
      * @param workstationImpl
      *            The time steps to delay execution.
-     * 
      */
     DelayedStartStationDecorator(int shift, Workstation workstationImpl) {
         super(workstationImpl);
@@ -53,7 +52,6 @@ class DelayedStartStationDecorator extends
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

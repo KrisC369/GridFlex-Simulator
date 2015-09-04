@@ -12,10 +12,9 @@ import be.kuleuven.cs.flexsim.domain.util.AbstractBid;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The type of bids to accept in this auction.
- *
  */
-public interface AbstractAuctionHost<T extends AbstractBid> extends
-        MechanismHost<MechanismParticipant> {
+public interface AbstractAuctionHost<T extends AbstractBid>
+        extends MechanismHost<MechanismParticipant> {
 
     /**
      * Return the outstanding bids of this auction.

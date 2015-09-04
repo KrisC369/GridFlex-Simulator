@@ -31,8 +31,8 @@ public enum ConsumptionModel {
         @Override
         public double getVarConsumptionRate(int remainingSteps, int maxSteps,
                 int maxRate) {
-            return Math.pow(Math.pow(maxRate, 1 / (double) maxSteps), maxSteps
-                    - remainingSteps + 1);
+            return Math.pow(Math.pow(maxRate, 1 / (double) maxSteps),
+                    maxSteps - remainingSteps + 1);
         }
 
     },

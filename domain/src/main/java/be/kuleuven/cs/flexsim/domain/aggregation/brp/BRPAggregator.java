@@ -25,7 +25,6 @@ import com.google.common.collect.Multimap;
  * Represents an BRP-aggregator trying to balance a portfolio.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class BRPAggregator extends IndependentAggregator {
 
@@ -50,8 +49,8 @@ public class BRPAggregator extends IndependentAggregator {
     public BRPAggregator(BalancingSignal tso, PriceSignal pricing,
             double reservation, double activation) {
         super(tso, 1);
-        checkArgument(reservation + activation >= 0
-                && reservation + activation <= 1,
+        checkArgument(
+                reservation + activation >= 0 && reservation + activation <= 1,
                 "Reservation and activation should some to x with 0 <= x <= 1");
         this.paymentMapper = Maps.newLinkedHashMap();
         this.activationPortion = activation;
@@ -142,8 +141,8 @@ public class BRPAggregator extends IndependentAggregator {
             portions.put(api, maxFlexInProfile);
         }
         for (Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
-            getActualPaymentMediatorFor(entry.getKey()).registerReservation(
-                    entry.getValue() / (double) sumFlex);
+            getActualPaymentMediatorFor(entry.getKey())
+                    .registerReservation(entry.getValue() / (double) sumFlex);
         }
     }
 
@@ -162,8 +161,8 @@ public class BRPAggregator extends IndependentAggregator {
             }
         }
         for (Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
-            getActualPaymentMediatorFor(entry.getKey()).registerActivation(
-                    entry.getValue() / (double) sumFlex);
+            getActualPaymentMediatorFor(entry.getKey())
+                    .registerActivation(entry.getValue() / (double) sumFlex);
         }
     }
 
@@ -178,7 +177,8 @@ public class BRPAggregator extends IndependentAggregator {
      * @param manager
      *            The manager to register.
      */
-    public void registerNominationManager(AncilServiceNominationManager manager) {
+    public void registerNominationManager(
+            AncilServiceNominationManager manager) {
         this.nominationManagers.add(manager);
     }
 

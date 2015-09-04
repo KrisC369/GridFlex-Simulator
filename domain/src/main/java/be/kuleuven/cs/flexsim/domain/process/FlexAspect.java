@@ -13,7 +13,6 @@ import com.google.common.collect.LinkedListMultimap;
  * represented by this instance. Allows for the calculation of this aspect.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 interface FlexAspect {
     /**

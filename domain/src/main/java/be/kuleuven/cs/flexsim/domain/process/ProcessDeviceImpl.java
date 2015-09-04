@@ -21,7 +21,6 @@ import com.google.common.collect.Sets;
  * Implements the process device interface.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 class ProcessDeviceImpl implements ProcessDevice {
 
@@ -80,12 +79,13 @@ class ProcessDeviceImpl implements ProcessDevice {
             return Lists.newArrayList(FlexTuple.createNONE());
         }
         List<FlexTuple> flexRet = Lists.newArrayList();
-        List<CurtailableWorkstation> effectivelyCurtailableStations = getEffectivelyCurtailableStations(curtailableWorkstations);
-        List<CurtailableWorkstation> curtailedStations = getCurtailedStations(curtailableWorkstations);
+        List<CurtailableWorkstation> effectivelyCurtailableStations = getEffectivelyCurtailableStations(
+                curtailableWorkstations);
+        List<CurtailableWorkstation> curtailedStations = getCurtailedStations(
+                curtailableWorkstations);
         for (FlexAspect aspect : aspects) {
-            flexRet.addAll(aspect.getFlexibility(
-                    effectivelyCurtailableStations, curtailedStations,
-                    dualModeWorkstations, profileMap));
+            flexRet.addAll(aspect.getFlexibility(effectivelyCurtailableStations,
+                    curtailedStations, dualModeWorkstations, profileMap));
         }
         flexRet = filterOutDuplicates(flexRet);
         flexRet = someOrNone(flexRet);
@@ -120,7 +120,8 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     private List<CurtailableWorkstation> testAndFilterCurtailedStation(
-            List<CurtailableWorkstation> curtailableWorkstations, boolean isCurt) {
+            List<CurtailableWorkstation> curtailableWorkstations,
+            boolean isCurt) {
         List<CurtailableWorkstation> toret = Lists.newArrayList();
         for (CurtailableWorkstation w : curtailableWorkstations) {
             if (w.isCurtailed() == isCurt) {

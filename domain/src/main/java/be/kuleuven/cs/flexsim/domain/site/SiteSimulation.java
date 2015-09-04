@@ -24,7 +24,6 @@ import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
  * mechanism and produces flex and consumption patterns.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class SiteSimulation implements Site {
 
@@ -67,7 +66,8 @@ public class SiteSimulation implements Site {
      * @param cease
      *            the cease time for activation.
      */
-    SiteSimulation(int base, int min, int max, int maxTuples, int duration, int ramp, int cease) {
+    SiteSimulation(int base, int min, int max, int maxTuples, int duration,
+            int ramp, int cease) {
         checkArgument(min <= base && base <= max);
         this.activationListener = NoopListener.INSTANCE;
         this.maxLimitConsumption = max;
@@ -127,8 +127,10 @@ public class SiteSimulation implements Site {
     @Override
     public Collection<Resource> takeResources() {
         List<Resource> res = Lists.newArrayList();
-        double factor = (double) (getCurrentConsumption() - getMinLimitConsumption())
-                / (double) (getMaxLimitConsumption() - getMinLimitConsumption());
+        double factor = (double) (getCurrentConsumption()
+                - getMinLimitConsumption())
+                / (double) (getMaxLimitConsumption()
+                        - getMinLimitConsumption());
 
         for (int i = 0; i < Math.ceil(factor * baseProduction); i++) {
             res.add(ResourceFactory.createResource(0));
@@ -138,7 +140,8 @@ public class SiteSimulation implements Site {
 
     @Override
     public void deliverResources(List<Resource> res) {
-        throw new UnsupportedOperationException("This implementation does not support resource handling stuff.");
+        throw new UnsupportedOperationException(
+                "This implementation does not support resource handling stuff.");
     }
 
     @Override
@@ -183,7 +186,8 @@ public class SiteSimulation implements Site {
     }
 
     protected final FlexTuple makeTuple(int power, boolean isUpflex) {
-        return FlexTuple.create(newId(), power, isUpflex, duration, ramp, cease);
+        return FlexTuple.create(newId(), power, isUpflex, duration, ramp,
+                cease);
     }
 
     private long newId() {
@@ -257,20 +261,21 @@ public class SiteSimulation implements Site {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=").append(hashCode()).append(", cCons=")
+        builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=")
+                .append(hashCode()).append(", cCons=")
                 .append(currentConsumption).append("]");
         return builder.toString();
     }
 
     @Override
     public void addActivationListener(Listener<? super FlexTuple> listener) {
-        this.activationListener = MultiplexListener.plus(this.activationListener, listener);
+        this.activationListener = MultiplexListener
+                .plus(this.activationListener, listener);
 
     }
 }

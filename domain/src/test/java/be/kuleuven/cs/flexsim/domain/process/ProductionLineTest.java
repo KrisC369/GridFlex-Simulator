@@ -144,8 +144,8 @@ public class ProductionLineTest {
     @Test
     public void testCustomSetup() {
         ProductionLine lineSimple = ProductionLine.createCustomLayout(1, 3, 1);
-        ProductionLine lineExtended = ProductionLine.createCustomLayout(4, 3,
-                1, 2);
+        ProductionLine lineExtended = ProductionLine.createCustomLayout(4, 3, 1,
+                2);
         assertEquals(5, lineSimple.getNumberOfWorkstations());
         assertEquals(10, lineExtended.getNumberOfWorkstations());
     }
@@ -168,7 +168,8 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         assertEquals(7, l.getNumberOfWorkstations());
         startSim();
-        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
+        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(),
+                DELTA);
     }
 
     @Test
@@ -178,7 +179,8 @@ public class ProductionLineTest {
         setupForSim(l, simSteps);
         assertEquals(8, l.getNumberOfWorkstations());
         startSim();
-        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(), DELTA);
+        assertEquals(0, l.getWorkstations().get(3).getTotalConsumption(),
+                DELTA);
     }
 
     @Test

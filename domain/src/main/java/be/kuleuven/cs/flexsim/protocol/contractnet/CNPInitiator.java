@@ -17,7 +17,6 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
- *
  */
 public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
@@ -55,7 +54,8 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     private void startCNP(T p) {
         this.description = Optional.fromNullable(p);
-        final Map<Proposal, AnswerAnticipator<T>> props = Maps.newLinkedHashMap();
+        final Map<Proposal, AnswerAnticipator<T>> props = Maps
+                .newLinkedHashMap();
         for (Responder<T> r : responders) {
             r.callForProposal(new AnswerAnticipator<T>() {
 
@@ -100,8 +100,10 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     protected abstract void signalNoSolutionFound();
 
-    private void cnpPhaseTwo(Map<T, AnswerAnticipator<T>> props, T description) {
-        T best = findBestProposal(Lists.newArrayList(props.keySet()), description);
+    private void cnpPhaseTwo(Map<T, AnswerAnticipator<T>> props,
+            T description) {
+        T best = findBestProposal(Lists.newArrayList(props.keySet()),
+                description);
         Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
         rejects.remove(best);
         notifyRejects(rejects);
@@ -112,7 +114,8 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
         }
     }
 
-    private void notifyAcceptPhase2(final T best, Map<T, AnswerAnticipator<T>> props) {
+    private void notifyAcceptPhase2(final T best,
+            Map<T, AnswerAnticipator<T>> props) {
         props.get(best).affirmative(best, new AnswerAnticipator<T>() { // accept-proposal
             // Completion or failure notification.
             @Override
@@ -154,7 +157,6 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
     public abstract T getWorkUnitDescription();
 
     /**
-     * 
      * @return a copy of the responders list for this initiator.
      */
     public List<Responder<T>> getResponders() {

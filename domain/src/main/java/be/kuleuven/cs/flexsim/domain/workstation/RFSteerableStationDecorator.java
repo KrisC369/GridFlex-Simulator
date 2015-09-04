@@ -12,7 +12,6 @@ import com.google.common.annotations.VisibleForTesting;
  * noise factor on the variable consumption.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class RFSteerableStationDecorator extends SteerableStationDecorator
         implements DualModeWorkstation {
@@ -137,16 +136,14 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append("RFSteerableStation [high=").append(high)
-                .append(", low=").append(low).append(", isHigh=")
-                .append(isHigh).append(", hc=").append(this.hashCode())
-                .append("]");
+                .append(", low=").append(low).append(", isHigh=").append(isHigh)
+                .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();
     }
 

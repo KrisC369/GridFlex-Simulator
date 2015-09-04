@@ -5,9 +5,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 /**
  * Data class representing a bid for flexibility.
  * 
- * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class FlexBid implements AbstractBid {
     private final FlexTuple flex;

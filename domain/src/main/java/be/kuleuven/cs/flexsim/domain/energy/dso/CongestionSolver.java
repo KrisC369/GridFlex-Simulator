@@ -43,7 +43,8 @@ public class CongestionSolver implements SimulationComponent {
             // double sum = 0;
             double max = 0;
             for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
-                double res = afterDSMprofile.value(getTick() + i) - (input.getTargetValue() / 4.0);
+                double res = afterDSMprofile.value(getTick() + i)
+                        - (input.getTargetValue() / 4.0);
                 // sum += res < 0 ? res : 0;
                 max = res < max ? res : max;
             }
@@ -55,9 +56,11 @@ public class CongestionSolver implements SimulationComponent {
         public int apply(DSMProposal input) {
             double sum = 0;
             for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
-                sum += FastMath.min(afterDSMprofile.value(getTick() + i), (input.getTargetValue() / 4.0));
+                sum += FastMath.min(afterDSMprofile.value(getTick() + i),
+                        (input.getTargetValue() / 4.0));
             }
-            double theoreticalMax = DSM_ALLOCATION_DURATION * (input.getTargetValue() / 4.0);
+            double theoreticalMax = DSM_ALLOCATION_DURATION
+                    * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
             return (int) (relativeSucc * input.getValuation() * 1000);
@@ -120,14 +123,17 @@ public class CongestionSolver implements SimulationComponent {
             }
             if (toCorrect > 0) {
                 if (dsmv >= toCorrect) {
-                    this.remediedCongestionCount = this.remediedCongestionCount.add(BigDecimal.valueOf(toCorrect));
+                    this.remediedCongestionCount = this.remediedCongestionCount
+                            .add(BigDecimal.valueOf(toCorrect));
                     toCorrect = 0;
                 } else {
-                    this.remediedCongestionCount = this.remediedCongestionCount.add(BigDecimal.valueOf(dsmv));
+                    this.remediedCongestionCount = this.remediedCongestionCount
+                            .add(BigDecimal.valueOf(dsmv));
                     toCorrect -= dsmv;
                 }
             }
-            this.afterDSMprofile.changeValue(getTick(), afterDSMprofile.value(getTick()) - dsmv);
+            this.afterDSMprofile.changeValue(getTick(),
+                    afterDSMprofile.value(getTick()) - dsmv);
         }
     }
 
@@ -206,17 +212,21 @@ public class CongestionSolver implements SimulationComponent {
         }
 
         @Override
-        public @Nullable DSMProposal findBestProposal(List<DSMProposal> props, DSMProposal description) {
+        public @Nullable DSMProposal findBestProposal(List<DSMProposal> props,
+                DSMProposal description) {
 
-            List<DSMProposal> filtered = Lists.newArrayList(Collections2.filter(props, new MyPredicate<DSMProposal>() {
-                @Override
-                public boolean apply(@Nullable DSMProposal input) {
-                    if (input == null) {
-                        return false;
-                    }
-                    return valueFunction.apply(input) <= RELATIVE_MAX_VALUE_PERCENT ? true : false;
-                }
-            }));
+            List<DSMProposal> filtered = Lists.newArrayList(
+                    Collections2.filter(props, new MyPredicate<DSMProposal>() {
+                        @Override
+                        public boolean apply(@Nullable DSMProposal input) {
+                            if (input == null) {
+                                return false;
+                            }
+                            return valueFunction
+                                    .apply(input) <= RELATIVE_MAX_VALUE_PERCENT
+                                            ? true : false;
+                        }
+                    }));
             if (filtered.isEmpty()) {
                 return null;
             }
@@ -226,8 +236,9 @@ public class CongestionSolver implements SimulationComponent {
         @Override
         public DSMProposal getWorkUnitDescription() {
             double cong = getCongestion().value(getTick());
-            return DSMProposal.create("CNP for activation for tick: " + getTick(), cong, 0, getTick(),
-                    getTick() + DSM_ALLOCATION_DURATION);
+            return DSMProposal.create(
+                    "CNP for activation for tick: " + getTick(), cong, 0,
+                    getTick(), getTick() + DSM_ALLOCATION_DURATION);
         }
 
         @Override

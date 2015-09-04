@@ -4,7 +4,6 @@ package be.kuleuven.cs.flexsim.domain.workstation;
  * This class represents the commonalities of the state specific behavior.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 abstract class StationStateImpl implements StationState {
     private final ConsumptionModel model;
@@ -29,7 +28,6 @@ abstract class StationStateImpl implements StationState {
 
         /*
          * (non-Javadoc)
-         * 
          * @see domain.IStationState#handleTick(domain.IStationContext)
          */
         @Override
@@ -42,7 +40,6 @@ abstract class StationStateImpl implements StationState {
 
         /*
          * (non-Javadoc)
-         * 
          * @see domain.IStationState#isProcessing()
          */
         @Override
@@ -71,7 +68,6 @@ abstract class StationStateImpl implements StationState {
 
         /*
          * (non-Javadoc)
-         * 
          * @see domain.IStationState#handleTick(domain.IStationContext)
          */
         @Override
@@ -84,7 +80,6 @@ abstract class StationStateImpl implements StationState {
 
         /*
          * (non-Javadoc)
-         * 
          * @see domain.IStationState#isProcessing()
          */
         @Override

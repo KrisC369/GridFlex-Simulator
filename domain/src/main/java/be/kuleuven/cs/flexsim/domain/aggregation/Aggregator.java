@@ -21,7 +21,6 @@ import com.google.common.collect.Sets;
  * aggregation.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public abstract class Aggregator implements SimulationComponent {
     private final Set<SiteFlexAPI> clients;
@@ -42,7 +41,6 @@ public abstract class Aggregator implements SimulationComponent {
 
     /**
      * Default constructor with default aggregation strategy: Cartesianproduct.
-     *
      */
     public Aggregator() {
         this(AggregationStrategyImpl.CARTESIANPRODUCT);
@@ -102,20 +100,19 @@ public abstract class Aggregator implements SimulationComponent {
     }
 
     private void logStep(int t, int target) {
-        LoggerFactory
-                .getLogger(Aggregator.class)
-                .debug("Performing aggregation step at time step {} with flextarget {}",
-                        t, target);
+        LoggerFactory.getLogger(Aggregator.class).debug(
+                "Performing aggregation step at time step {} with flextarget {}",
+                t, target);
     }
 
     private void logCurtail(FlexTuple tt) {
-        LoggerFactory.getLogger(Aggregator.class).debug(
-                "Sending curtail request based on profile {}", tt);
+        LoggerFactory.getLogger(Aggregator.class)
+                .debug("Sending curtail request based on profile {}", tt);
     }
 
     private void logRestore(FlexTuple tt) {
-        LoggerFactory.getLogger(Aggregator.class).debug(
-                "Sending restore request based on profile {}", tt);
+        LoggerFactory.getLogger(Aggregator.class)
+                .debug("Sending restore request based on profile {}", tt);
     }
 
     private class AggregationDispatch implements AggregationContext {

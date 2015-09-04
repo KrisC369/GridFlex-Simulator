@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-class CurtailableStationDecorator<T extends Workstation> extends
-        ForwardingStationDecorator<T> implements CurtailableWorkstation {
+class CurtailableStationDecorator<T extends Workstation>
+        extends ForwardingStationDecorator<T>implements CurtailableWorkstation {
 
     private boolean curtailed;
 
@@ -81,7 +81,6 @@ class CurtailableStationDecorator<T extends Workstation> extends
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -101,13 +100,13 @@ class CurtailableStationDecorator<T extends Workstation> extends
     }
 
     private void logCurtailment() {
-        LoggerFactory.getLogger(CurtailableWorkstation.class).debug(
-                "Full curtailment active on {}", this);
+        LoggerFactory.getLogger(CurtailableWorkstation.class)
+                .debug("Full curtailment active on {}", this);
 
     }
 
     private void logRestoration() {
-        LoggerFactory.getLogger(CurtailableWorkstation.class).debug(
-                "Restoring curtailment on {}", this);
+        LoggerFactory.getLogger(CurtailableWorkstation.class)
+                .debug("Restoring curtailment on {}", this);
     }
 }

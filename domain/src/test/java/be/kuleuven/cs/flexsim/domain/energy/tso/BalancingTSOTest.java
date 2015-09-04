@@ -61,10 +61,11 @@ public class BalancingTSOTest {
 
     @Test
     public void testRegisterClients() {
-        ContractualMechanismParticipant agg = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg = mock(
+                ContractualMechanismParticipant.class);
         tso.registerParticipant(agg);
-        when(agg.getPowerCapacity()).thenReturn(
-                PowerCapabilityBand.createZero());
+        when(agg.getPowerCapacity())
+                .thenReturn(PowerCapabilityBand.createZero());
         assertTrue(tso.getParticipants().contains(agg));
         assertTrue(tso.getContractualLimit(agg).isZero());
         ContractualMechanismParticipant agg2 = new ContractualMechanismParticipant() {
@@ -113,7 +114,8 @@ public class BalancingTSOTest {
 
     @Test
     public void testWrongRegisterClients() {
-        ContractualMechanismParticipant agg = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg = mock(
+                ContractualMechanismParticipant.class);
         exception.expect(IllegalStateException.class);
         assertFalse(tso.getParticipants().contains(agg));
         assertTrue(tso.getContractualLimit(agg).isZero());
@@ -121,7 +123,8 @@ public class BalancingTSOTest {
 
     @Test
     public void testSignalPowerFlex() {
-        ContractualMechanismParticipant agg = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg = mock(
+                ContractualMechanismParticipant.class);
         tso.registerParticipant(agg);
         PowerCapabilityBand cap = PowerCapabilityBand.create(50, 100);
         tso.signalNewLimits(agg, cap);
@@ -132,9 +135,11 @@ public class BalancingTSOTest {
     public void testActivation1() {
         int capS1 = 40;
         int capS2 = 400;
-        ContractualMechanismParticipant agg1 = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg1 = mock(
+                ContractualMechanismParticipant.class);
         tso.registerParticipant(agg1);
-        ContractualMechanismParticipant agg2 = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg2 = mock(
+                ContractualMechanismParticipant.class);
         tso.registerParticipant(agg2);
         PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
         PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
@@ -152,9 +157,11 @@ public class BalancingTSOTest {
         int capS1 = 500;
         int capS2 = 5000;
         double factor = 0.0909090909;
-        ContractualMechanismParticipant agg1 = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg1 = mock(
+                ContractualMechanismParticipant.class);
         tso.registerParticipant(agg1);
-        ContractualMechanismParticipant agg2 = mock(ContractualMechanismParticipant.class);
+        ContractualMechanismParticipant agg2 = mock(
+                ContractualMechanismParticipant.class);
         tso.registerParticipant(agg2);
         PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
         PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);

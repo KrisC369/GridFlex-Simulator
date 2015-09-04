@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
  * the lead time needed to activate and the time needed to recover afterwards.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class FlexTuple {
 
@@ -119,7 +118,6 @@ public class FlexTuple {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -143,7 +141,6 @@ public class FlexTuple {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -161,7 +158,6 @@ public class FlexTuple {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override

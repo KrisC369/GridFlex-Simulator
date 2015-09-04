@@ -9,7 +9,6 @@ import com.google.common.collect.Multimap;
  * A strategy for performing aggregation duties.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface AggregationStrategy {
 

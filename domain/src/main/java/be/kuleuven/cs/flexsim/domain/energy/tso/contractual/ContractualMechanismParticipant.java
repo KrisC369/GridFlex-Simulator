@@ -8,7 +8,6 @@ import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
  * guaranteeing compliance to a tso request for activation of flexibility.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface ContractualMechanismParticipant extends MechanismParticipant {
     /**
@@ -16,7 +15,6 @@ public interface ContractualMechanismParticipant extends MechanismParticipant {
      * 
      * @param timestep
      *            The time of this invocation.
-     * 
      * @param target
      *            The amount to reach.
      */

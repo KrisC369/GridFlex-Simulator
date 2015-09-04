@@ -65,8 +65,10 @@ public class DSOIntegrationTest {
         sim.register(congestionSolver);
         sim.start();
         assertNotEquals(0.0, congestionSolver.getTotalRemediedCongestion());
-        assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS, dsm1.getCurrentActivations(), 0);
-        assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS, dsm2.getCurrentActivations(), 0);
+        assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS,
+                dsm1.getCurrentActivations(), 0);
+        assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS,
+                dsm2.getCurrentActivations(), 0);
     }
 
     @Test
@@ -78,8 +80,10 @@ public class DSOIntegrationTest {
         sim.register(congestionSolver);
         sim.start();
         assertNotEquals(0.0, congestionSolver.getTotalRemediedCongestion());
-        assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS, dsm1.getCurrentActivations(), 0);
-        assertTrue(congestionSolver.getTotalRemediedCongestion() <= power * DSMPartner.R3DPMAX_ACTIVATIONS * 2);
+        assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS,
+                dsm1.getCurrentActivations(), 0);
+        assertTrue(congestionSolver.getTotalRemediedCongestion() <= power
+                * DSMPartner.R3DPMAX_ACTIVATIONS * 2);
     }
 
 }

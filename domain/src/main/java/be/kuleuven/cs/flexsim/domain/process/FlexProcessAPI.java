@@ -11,7 +11,6 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
  * Represents a flexibility management api.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface FlexProcessAPI extends FlexControlAPI {
     /**

@@ -17,7 +17,6 @@ import com.google.common.collect.Lists;
  * A TSO that serves as a copper plate connection to all sites present.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class CopperplateTSO implements SimulationComponent, BalancingSignal {
 
@@ -48,7 +47,6 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
 
     /**
      * Constructor with no initial partakers.
-     * 
      */
     public CopperplateTSO() {
         this(new EnergyProductionTrackable[0],
@@ -132,7 +130,7 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
 
     @Override
     public void addNewBalanceValueListener(Listener<? super Integer> listener) {
-        this.newBalanceValueListener = MultiplexListener.plus(
-                this.newBalanceValueListener, listener);
+        this.newBalanceValueListener = MultiplexListener
+                .plus(this.newBalanceValueListener, listener);
     }
 }

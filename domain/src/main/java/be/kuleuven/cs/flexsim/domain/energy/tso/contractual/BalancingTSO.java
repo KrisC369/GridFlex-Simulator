@@ -19,10 +19,9 @@ import com.google.common.collect.Maps;
  * the bids, optimally selecting the best choices.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public class BalancingTSO extends CopperplateTSO implements
-        MechanismHost<ContractualMechanismParticipant> {
+public class BalancingTSO extends CopperplateTSO
+        implements MechanismHost<ContractualMechanismParticipant> {
     private List<ContractualMechanismParticipant> participants;
     private Map<ContractualMechanismParticipant, PowerCapabilityBand> powerLimits;
 
@@ -48,7 +47,6 @@ public class BalancingTSO extends CopperplateTSO implements
 
     /**
      * Constructor with no initial partakers.
-     *
      */
     public BalancingTSO() {
         this(new EnergyProductionTrackable[0],
@@ -150,7 +148,8 @@ public class BalancingTSO extends CopperplateTSO implements
     }
 
     @Override
-    public void registerParticipant(ContractualMechanismParticipant participant) {
+    public void registerParticipant(
+            ContractualMechanismParticipant participant) {
         this.participants.add(participant);
         this.powerLimits.put(participant, PowerCapabilityBand.createZero());
 

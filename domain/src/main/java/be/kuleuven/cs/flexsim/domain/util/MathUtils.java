@@ -4,7 +4,6 @@ package be.kuleuven.cs.flexsim.domain.util;
  * Class for math-based utility functions.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class MathUtils {
 

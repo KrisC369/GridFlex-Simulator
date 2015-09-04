@@ -8,7 +8,6 @@ import be.kuleuven.cs.flexsim.domain.util.Bufferable;
  * Interface class for resource representations in the system.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public interface Resource extends Bufferable, Serializable {
 

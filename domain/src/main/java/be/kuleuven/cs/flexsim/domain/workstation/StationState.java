@@ -14,7 +14,6 @@ interface StationState {
      *            The total steps needed for the duration spent in this state.
      * @param context
      *            The context of this state specific operation.
-     * 
      * @return the consumption rate.
      */
     double getVarConsumptionRate(int remainingSteps, int totalSteps,

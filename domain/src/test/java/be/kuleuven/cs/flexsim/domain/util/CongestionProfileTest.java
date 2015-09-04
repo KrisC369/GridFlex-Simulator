@@ -24,7 +24,8 @@ public class CongestionProfileTest {
     public void setUp() throws Exception {
         profile = new CongestionProfile();
         try {
-            profile = (CongestionProfile) CongestionProfile.createFromCSV(file, column);
+            profile = (CongestionProfile) CongestionProfile.createFromCSV(file,
+                    column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
@@ -59,8 +60,10 @@ public class CongestionProfileTest {
     @Test
     public void testCopyConstructor() {
         CongestionProfile profile2;
-        profile2 = (CongestionProfile) CongestionProfile.createFromTimeSeries(profile);
-        assertEquals(Arrays.toString(profile2.values()), Arrays.toString(profile.values()));
+        profile2 = (CongestionProfile) CongestionProfile
+                .createFromTimeSeries(profile);
+        assertEquals(Arrays.toString(profile2.values()),
+                Arrays.toString(profile.values()));
 
     }
 

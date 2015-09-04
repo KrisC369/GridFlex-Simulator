@@ -10,7 +10,8 @@ public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
     }
 
     @Override
-    public Proposal findBestProposal(List<Proposal> props, Proposal description) {
+    public Proposal findBestProposal(List<Proposal> props,
+            Proposal description) {
         return props.get(0);
     }
 

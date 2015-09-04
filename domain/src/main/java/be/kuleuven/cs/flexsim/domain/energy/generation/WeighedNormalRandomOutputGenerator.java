@@ -10,10 +10,9 @@ import org.apache.commons.math3.random.RandomGenerator;
  * distribution.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public class WeighedNormalRandomOutputGenerator extends
-        NormalRandomOutputGenerator {
+public class WeighedNormalRandomOutputGenerator
+        extends NormalRandomOutputGenerator {
     private double weightOfNewVal;
 
     /**
@@ -84,7 +83,7 @@ public class WeighedNormalRandomOutputGenerator extends
     protected int calculateNewValue() {
         double oldVal = getLastStepProduction();
         int newVal = super.calculateNewValue();
-        return (int) Math.round((newVal * weightOfNewVal)
-                + (oldVal * (1 - weightOfNewVal)));
+        return (int) Math.round(
+                (newVal * weightOfNewVal) + (oldVal * (1 - weightOfNewVal)));
     }
 }

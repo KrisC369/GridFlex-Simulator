@@ -6,7 +6,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * This entity is capable of producing energy.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface EnergyProductionTrackable extends SimulationComponent {
     /**

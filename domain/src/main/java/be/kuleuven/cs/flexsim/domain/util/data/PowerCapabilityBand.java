@@ -5,7 +5,6 @@ package be.kuleuven.cs.flexsim.domain.util.data;
  * Has an upper limit in up and down area.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class PowerCapabilityBand {
     private final int downMax;
@@ -69,7 +68,6 @@ public final class PowerCapabilityBand {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

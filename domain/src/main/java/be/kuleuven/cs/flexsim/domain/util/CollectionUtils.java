@@ -12,7 +12,6 @@ import java.util.Iterator;
  * functions.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class CollectionUtils {
     private CollectionUtils() {
@@ -55,7 +54,8 @@ public final class CollectionUtils {
      * @return the argument attaining the maximum in f.
      */
     public static <T> T argMax(Iterable<T> list, IntNNFunction<T> f) {
-        checkArgument(list.iterator().hasNext(), "Can't provide empty list to this function");
+        checkArgument(list.iterator().hasNext(),
+                "Can't provide empty list to this function");
         int max = 0;
         Iterator<T> it = list.iterator();
         T currentMax = it.next();

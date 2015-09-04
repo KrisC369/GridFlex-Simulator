@@ -9,7 +9,6 @@ import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
  * API for gathering data about the flexibility for an entity.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface SiteFlexAPI {
     /**

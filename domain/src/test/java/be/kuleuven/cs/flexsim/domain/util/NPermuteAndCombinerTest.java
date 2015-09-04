@@ -104,8 +104,8 @@ public class NPermuteAndCombinerTest {
     public void testCombiner() {
         Collection<String> k = Lists.newArrayList("X", "Y", "Z");
         Collection<String> ff = f;
-        Collection<List<String>> result = g.permutations(Lists.newArrayList(ff,
-                k));
+        Collection<List<String>> result = g
+                .permutations(Lists.newArrayList(ff, k));
         assertTrue(result.contains(Lists.newArrayList("A", "X")));
         assertTrue(result.contains(Lists.newArrayList("A", "Y")));
         assertTrue(result.contains(Lists.newArrayList("A", "Z")));
@@ -132,10 +132,10 @@ public class NPermuteAndCombinerTest {
         Collection<String> k = Lists.newArrayList("X", "Y", "Z");
         Set<String> f1 = Sets.newLinkedHashSet(k);
         Set<String> ff = Sets.newLinkedHashSet(f);
-        Collection<List<String>> result = g.permutations(Lists.newArrayList(ff,
-                k));
-        Set<List<String>> result2 = Sets.cartesianProduct(Lists.newArrayList(
-                ff, f1));
+        Collection<List<String>> result = g
+                .permutations(Lists.newArrayList(ff, k));
+        Set<List<String>> result2 = Sets
+                .cartesianProduct(Lists.newArrayList(ff, f1));
         // System.out.println(result);
         // System.out.println(result2);
         assertTrue(result.containsAll(result2));
@@ -149,8 +149,8 @@ public class NPermuteAndCombinerTest {
         for (int i = 1; i <= f.size(); i++) {
             result7.addAll(g.processSubsets(f, i));
         }
-        List<Set<String>> result8 = Lists.newArrayList(Sets.powerSet(Sets
-                .newLinkedHashSet(f)));
+        List<Set<String>> result8 = Lists
+                .newArrayList(Sets.powerSet(Sets.newLinkedHashSet(f)));
         result8.remove(Sets.newLinkedHashSet());
         // System.out.println(result7);
         // System.out.println(result8);
@@ -186,8 +186,8 @@ public class NPermuteAndCombinerTest {
 
         ICombinatoricsVector<String> initialVector = Factory
                 .createVector(new String[] { "a", "b", "c", "d", "e", "f", });
-        Generator<String> gen = Factory.createMultiCombinationGenerator(
-                initialVector, n);
+        Generator<String> gen = Factory
+                .createMultiCombinationGenerator(initialVector, n);
 
         assertEquals(MathUtils.multiCombinationSize(k, n),
                 gen.getNumberOfGeneratedObjects(), 0);

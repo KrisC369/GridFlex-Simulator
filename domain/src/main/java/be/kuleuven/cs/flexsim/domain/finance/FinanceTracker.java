@@ -6,7 +6,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * Represents an entity for tracking financing data about trackable instances.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface FinanceTracker extends SimulationComponent {
 

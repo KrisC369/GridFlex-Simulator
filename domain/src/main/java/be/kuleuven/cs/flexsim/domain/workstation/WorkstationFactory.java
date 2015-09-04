@@ -7,7 +7,6 @@ import be.kuleuven.cs.flexsim.domain.util.Buffer;
  * Helper class for creating and instantiating workstation objects.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public final class WorkstationFactory {
 
@@ -105,7 +104,6 @@ public final class WorkstationFactory {
      *            The energy consumption in idle state.
      * @param working
      *            The energy consumption in working state.
-     * 
      * @param capacity
      *            The capacity of this workstation in terms of resources.
      * @return A Ready to use Workstation object.
@@ -129,14 +127,12 @@ public final class WorkstationFactory {
      *            The energy consumption in idle state.
      * @param working
      *            The energy consumption in working state.
-     * 
      * @param capacity
      *            The capacity of this workstation in terms of resources.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createMultiCapLinearConsuming(
-            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
-            int capacity) {
+    public static Workstation createMultiCapLinearConsuming(Buffer<Resource> in,
+            Buffer<Resource> out, int idle, int working, int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.LINEAR));
 
@@ -154,7 +150,6 @@ public final class WorkstationFactory {
      *            The energy consumption in idle state.
      * @param working
      *            The energy consumption in working state.
-     * 
      * @param capacity
      *            The capacity of this workstation in terms of resources.
      * @return A Ready to use Workstation object.
@@ -179,7 +174,6 @@ public final class WorkstationFactory {
      *            The energy consumption in low consumption state.
      * @param working
      *            The energy consumption in high consumption state.
-     * 
      * @param capacity
      *            The capacity of this workstation in terms of resources.
      * @param width
@@ -187,7 +181,8 @@ public final class WorkstationFactory {
      * @return A Ready to use Workstation object.
      */
     public static Workstation createRFDualModeStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int width, int capacity) {
+            Buffer<Resource> out, int idle, int working, int width,
+            int capacity) {
         return new RFSteerableStationDecorator(new WorkstationImpl(in, out, 0,
                 idle, capacity, ConsumptionModel.CONSTANT), working, idle,
                 width);

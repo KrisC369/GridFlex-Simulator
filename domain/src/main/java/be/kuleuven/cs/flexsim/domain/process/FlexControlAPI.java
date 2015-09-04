@@ -4,7 +4,6 @@ package be.kuleuven.cs.flexsim.domain.process;
  * Interface for controlling flexibility and executing flex profiles.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface FlexControlAPI {
     /**

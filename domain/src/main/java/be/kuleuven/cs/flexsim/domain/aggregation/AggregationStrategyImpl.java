@@ -20,7 +20,6 @@ import com.google.common.collect.Sets;
  * Some implementations of aggregation strategies.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public enum AggregationStrategyImpl implements AggregationStrategy {
     /**
@@ -40,12 +39,12 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
             NPermuteAndCombiner<Long> g = new NPermuteAndCombiner<>();
             List<Set<Long>> splitted = AggregationUtils.split(flex);
             // Very costly operation if 'splitted' list is big.
-            List<List<Long>> possibleSolutions = Lists.newArrayList(Sets
-                    .cartesianProduct(splitted));
+            List<List<Long>> possibleSolutions = Lists
+                    .newArrayList(Sets.cartesianProduct(splitted));
             // Add possibility for only 1 site participating.
             for (Collection<Long> key : splitted) {
-                possibleSolutions.addAll(g.processSubsets(
-                        Lists.newArrayList(key), 1));
+                possibleSolutions
+                        .addAll(g.processSubsets(Lists.newArrayList(key), 1));
             }
 
             Collection<Long> best = Lists.newArrayList();
@@ -90,7 +89,6 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
      * the target. All greater amounts of flexibility are removed from the set.
      * eventually the cartesianproduct version is called on the filtered
      * flex-set.
-     *
      */
     MOVINGHORIZON() {
 
@@ -124,7 +122,8 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                 hasChanged = false;
                 sum = 0;
                 for (int i = 0; i < indexlistUpper.length; i++) {
-                    if (indexlistUpper[i] < sorted.get(sites.get(i)).size() - 1) {
+                    if (indexlistUpper[i] < sorted.get(sites.get(i)).size()
+                            - 1) {
                         indexlistUpper[i] += 1;
                         hasChanged = true;
                     }
@@ -136,10 +135,8 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
             LinkedListMultimap<SiteFlexAPI, FlexTuple> capped = LinkedListMultimap
                     .create();
             for (int i = 0; i < indexlistUpper.length; i++) {
-                capped.putAll(
-                        sites.get(i),
-                        sorted.get(sites.get(i)).subList(0,
-                                indexlistUpper[i] + 1));
+                capped.putAll(sites.get(i), sorted.get(sites.get(i)).subList(0,
+                        indexlistUpper[i] + 1));
             }
             return CARTESIANPRODUCT.performAggregationStep(context, t, capped,
                     target);

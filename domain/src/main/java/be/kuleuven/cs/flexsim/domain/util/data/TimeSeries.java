@@ -5,7 +5,6 @@ package be.kuleuven.cs.flexsim.domain.util.data;
  * occurs at most once. Basic operations ont hese time series are also provided.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface TimeSeries {
 

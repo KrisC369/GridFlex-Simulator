@@ -9,7 +9,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
  * represent machines that perform work and consume energy.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public interface Workstation extends SimulationComponent,
         EnergyConsumptionTrackable, Visitable<WorkstationVisitor> {

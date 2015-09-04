@@ -21,7 +21,6 @@ import com.google.common.collect.Multimap;
  * An implementation for the Site interface.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class SiteImpl implements Site {
 
@@ -161,14 +160,13 @@ public class SiteImpl implements Site {
     public void deliverResources(List<Resource> res) {
         Deque<Resource> q = Lists.newLinkedList(res);
         for (int i = 0; i < res.size(); i++) {
-            processes.get(i % processes.size()).deliverResources(
-                    Lists.newArrayList(q.pop()));
+            processes.get(i % processes.size())
+                    .deliverResources(Lists.newArrayList(q.pop()));
         }
     }
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -185,7 +183,7 @@ public class SiteImpl implements Site {
 
     @Override
     public void addActivationListener(Listener<? super FlexTuple> listener) {
-        this.activationListener = MultiplexListener.plus(
-                this.activationListener, listener);
+        this.activationListener = MultiplexListener
+                .plus(this.activationListener, listener);
     }
 }

@@ -6,7 +6,6 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
  * Represents an instance capable of handling the processing of resources.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 interface Processor {
     /**

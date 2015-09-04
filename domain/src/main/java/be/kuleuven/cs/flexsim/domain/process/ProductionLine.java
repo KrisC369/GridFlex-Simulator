@@ -91,24 +91,18 @@ public final class ProductionLine implements FlexProcess {
     @Override
     public void initialize(SimulationContext context) {
         this.flexProcessor
-                .addFlexAspect(
-                        new FlexAspectImpl.SingleStationDownFlex(context
-                                .getUIDGenerator(), layout))
-                .addFlexAspect(
-                        new FlexAspectImpl.TwoStationsDownFlex(context
-                                .getUIDGenerator(), layout))
-                .addFlexAspect(
-                        new FlexAspectImpl.ThreeStationsDownFlex(context
-                                .getUIDGenerator(), layout))
-                .addFlexAspect(
-                        new FlexAspectImpl.UpFlex(context.getUIDGenerator(),
-                                layout))
-                .addFlexAspect(
-                        new FlexAspectImpl.SteerFlex(context.getUIDGenerator(),
-                                layout))
-                .addFlexAspect(
-                        new FlexAspectImpl.DualModeFlex(context
-                                .getUIDGenerator(), layout));
+                .addFlexAspect(new FlexAspectImpl.SingleStationDownFlex(
+                        context.getUIDGenerator(), layout))
+                .addFlexAspect(new FlexAspectImpl.TwoStationsDownFlex(
+                        context.getUIDGenerator(), layout))
+                .addFlexAspect(new FlexAspectImpl.ThreeStationsDownFlex(
+                        context.getUIDGenerator(), layout))
+                .addFlexAspect(new FlexAspectImpl.UpFlex(
+                        context.getUIDGenerator(), layout))
+                .addFlexAspect(new FlexAspectImpl.SteerFlex(
+                        context.getUIDGenerator(), layout))
+                .addFlexAspect(new FlexAspectImpl.DualModeFlex(
+                        context.getUIDGenerator(), layout));
     }
 
     @Override
@@ -219,9 +213,8 @@ public final class ProductionLine implements FlexProcess {
 
     @Override
     public List<FlexTuple> getCurrentFlexbility() {
-        return getFlexProcessor().getCurrentFlexbility(
-                getCurtailableStations(), getSteerableStations(),
-                getDualModeStations());
+        return getFlexProcessor().getCurrentFlexbility(getCurtailableStations(),
+                getSteerableStations(), getDualModeStations());
     }
 
     @Override
@@ -241,7 +234,6 @@ public final class ProductionLine implements FlexProcess {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -325,8 +317,9 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addShifted(int n) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createShiftableWorkstation(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createShiftableWorkstation(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption, i % 2)
                         .acceptVisitor(prodline.registry);
@@ -345,8 +338,9 @@ public final class ProductionLine implements FlexProcess {
             prodline.addBuffer(new Buffer<Resource>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
-                WorkstationFactory.createCurtailableStation(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createCurtailableStation(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption, shift)
                         .acceptVisitor(prodline.registry);
@@ -364,8 +358,9 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addDefault(int n) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createDefault(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createDefault(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1))
                         .acceptVisitor(prodline.registry);
             }
@@ -382,11 +377,12 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addConsuming(int n) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createConsuming(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createConsuming(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
-                        idleConsumption, workingConsumption).acceptVisitor(
-                        prodline.registry);
+                        idleConsumption, workingConsumption)
+                        .acceptVisitor(prodline.registry);
             }
             return this;
         }
@@ -401,11 +397,13 @@ public final class ProductionLine implements FlexProcess {
          *            the capapcity of parallel stations
          * @return the current builder instance
          */
-        public ProductionLineBuilder addMultiCapConstantConsuming(int n, int cap) {
+        public ProductionLineBuilder addMultiCapConstantConsuming(int n,
+                int cap) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createMultiCapConsuming(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createMultiCapConsuming(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
                         .acceptVisitor(prodline.registry);
@@ -423,11 +421,13 @@ public final class ProductionLine implements FlexProcess {
          *            the capapcity of parallel stations
          * @return the current builder instance
          */
-        public ProductionLineBuilder addMultiCapLinearConsuming(int n, int cap) {
+        public ProductionLineBuilder addMultiCapLinearConsuming(int n,
+                int cap) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createMultiCapLinearConsuming(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createMultiCapLinearConsuming(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
                         .acceptVisitor(prodline.registry);
@@ -450,8 +450,9 @@ public final class ProductionLine implements FlexProcess {
                 int cap) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createMultiCapExponentialConsuming(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createMultiCapExponentialConsuming(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
                         .acceptVisitor(prodline.registry);
@@ -471,8 +472,9 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addRFSteerableStation(int n, int cap) {
             prodline.addBuffer(new Buffer<Resource>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory.createRFDualModeStation(
-                        prodline.buffers.get(prodline.buffers.size() - 2),
+                WorkstationFactory
+                        .createRFDualModeStation(prodline.buffers
+                                .get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         rfLowConsumption, rfHighConsumption, rfWidth, cap)
                         .acceptVisitor(prodline.registry);

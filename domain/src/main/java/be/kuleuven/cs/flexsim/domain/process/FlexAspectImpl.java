@@ -28,7 +28,6 @@ import edu.uci.ics.jung.graph.Graph;
  * Abstract helper super class for flex aspects.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 abstract class FlexAspectImpl implements FlexAspect {
     private static final String INITIALISE_ERR = "Initialise this aspect first. No layout present.";
@@ -43,7 +42,8 @@ abstract class FlexAspectImpl implements FlexAspect {
      * @param layout
      *            the layout of the process to calculate flex for.
      */
-    FlexAspectImpl(UIDGenerator gen, Graph<Buffer<Resource>, Workstation> layout) {
+    FlexAspectImpl(UIDGenerator gen,
+            Graph<Buffer<Resource>, Workstation> layout) {
         this.layout = layout;
         this.generator = gen;
     }
@@ -105,7 +105,8 @@ abstract class FlexAspectImpl implements FlexAspect {
     private double calculatePreviousPhaseRate(Workstation c) {
         checkNotNull(this.layout, INITIALISE_ERR);
         Graph<Buffer<Resource>, Workstation> layout2 = layout;
-        return aggregateProcessingRate(layout2.getInEdges(layout2.getSource(c)));
+        return aggregateProcessingRate(
+                layout2.getInEdges(layout2.getSource(c)));
     }
 
     private void splitLists(Workstation firstPhaseExample,
@@ -173,12 +174,9 @@ abstract class FlexAspectImpl implements FlexAspect {
             return makeCurtFlexTuple(profileMap, upflex, cs.get(0),
                     new CurtailableWorkstation[0]);
         }
-        return makeCurtFlexTuple(
-                profileMap,
-                upflex,
-                cs.get(0),
-                cs.subList(1, cs.size()).toArray(
-                        new CurtailableWorkstation[cs.size() - 1]));
+        return makeCurtFlexTuple(profileMap, upflex, cs.get(0),
+                cs.subList(1, cs.size())
+                        .toArray(new CurtailableWorkstation[cs.size() - 1]));
     }
 
     private FlexTuple makeCurtFlexTuple(
@@ -195,12 +193,13 @@ abstract class FlexAspectImpl implements FlexAspect {
         Set<Workstation> set = Sets.newLinkedHashSet();
         set.add(a);
         set.addAll(Lists.newArrayList(cs));
-        return makeTuple(profileMap, id, (int) Math.round(sump), 1, set, upflex);
+        return makeTuple(profileMap, id, (int) Math.round(sump), 1, set,
+                upflex);
     }
 
     protected final FlexTuple makeDualModeFlexTuple(
-            LinkedListMultimap<Long, Workstation> profileMap, int dP,
-            double dT, boolean upflex, List<? extends Workstation> cs) {
+            LinkedListMultimap<Long, Workstation> profileMap, int dP, double dT,
+            boolean upflex, List<? extends Workstation> cs) {
         checkNotNull(this.generator,
                 "Initialize this aspect first. No generator present.");
         UIDGenerator gen = generator;
@@ -211,7 +210,8 @@ abstract class FlexAspectImpl implements FlexAspect {
 
     private FlexTuple makeTuple(
             LinkedListMultimap<Long, Workstation> profileMap, long id,
-            int deltaP, int deltaT, Iterable<Workstation> target, boolean upflex) {
+            int deltaP, int deltaT, Iterable<Workstation> target,
+            boolean upflex) {
         profileMap.putAll(id, target);
         return FlexTuple.create(id, deltaP, upflex, deltaT, 0, 0);
     }
@@ -264,8 +264,7 @@ abstract class FlexAspectImpl implements FlexAspect {
             int size = curtailableStations.size();
             for (int i = 0; i <= size - 2; i++) {
                 for (int j = i + 1; j <= size - 1; j++) {
-                    flexRet.add(findFlex(profileMap,
-                            curtailableStations.get(i),
+                    flexRet.add(findFlex(profileMap, curtailableStations.get(i),
                             curtailableStations.get(j)));
                 }
             }
@@ -304,10 +303,10 @@ abstract class FlexAspectImpl implements FlexAspect {
             for (int i = 0; i < size - 2; i++) {
                 for (int j = i + 1; j < size - 1; j++) {
                     for (int k = j + 1; k < size - 1; k++) {
-                        flexRet.add(findFlex(profileMap,
-                                curtailableStations.get(i),
-                                curtailableStations.get(j),
-                                curtailableStations.get(k)));
+                        flexRet.add(
+                                findFlex(profileMap, curtailableStations.get(i),
+                                        curtailableStations.get(j),
+                                        curtailableStations.get(k)));
                     }
                 }
             }
@@ -331,8 +330,8 @@ abstract class FlexAspectImpl implements FlexAspect {
                 List<DualModeWorkstation> dualModeWorkstations,
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
-            List<Set<Workstation>> sets2 = Lists.newArrayList(Sets
-                    .powerSet(Sets.newLinkedHashSet(curtailedStations)));
+            List<Set<Workstation>> sets2 = Lists.newArrayList(
+                    Sets.powerSet(Sets.newLinkedHashSet(curtailedStations)));
             sets2.remove(Sets.newLinkedHashSet());
 
             for (Set<Workstation> lc : sets2) {
@@ -346,7 +345,8 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     static class SteerFlex extends FlexAspectImpl {
-        SteerFlex(UIDGenerator gen, Graph<Buffer<Resource>, Workstation> layout) {
+        SteerFlex(UIDGenerator gen,
+                Graph<Buffer<Resource>, Workstation> layout) {
             super(gen, layout);
         }
 
@@ -376,7 +376,8 @@ abstract class FlexAspectImpl implements FlexAspect {
                 LinkedListMultimap<Long, Workstation> profileMap) {
             final List<FlexTuple> flexRet = Lists.newArrayList();
 
-            List<DualModeWorkstation> highs = getOnlyHighs(dualModeWorkstations);
+            List<DualModeWorkstation> highs = getOnlyHighs(
+                    dualModeWorkstations);
             List<DualModeWorkstation> lows = getOnlyLows(dualModeWorkstations);
             flexRet.addAll(getUpFlex(profileMap, lows));
             flexRet.addAll(getDownFlex(profileMap, highs));
@@ -413,13 +414,14 @@ abstract class FlexAspectImpl implements FlexAspect {
         }
 
         FlexTuple findFlexForCombo(List<DualModeWorkstation> options,
-                LinkedListMultimap<Long, Workstation> profileMap, boolean upFlex) {
+                LinkedListMultimap<Long, Workstation> profileMap,
+                boolean upFlex) {
             int sumP = 0;
             double maxT = 0;
             for (DualModeWorkstation w : options) {
                 sumP += w.getHighConsumptionRate() - w.getLowConsumptionRate();
-                double currentT = w.getProcessingRate() != 0 ? w
-                        .getRatedCapacity() / w.getProcessingRate() : 1;
+                double currentT = w.getProcessingRate() != 0
+                        ? w.getRatedCapacity() / w.getProcessingRate() : 1;
                 if (currentT > maxT) {
                     maxT = currentT;
                 }

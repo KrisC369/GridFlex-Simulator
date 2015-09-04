@@ -8,7 +8,6 @@ import java.util.List;
  * Factory instance for creating resource instances.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public final class ResourceFactory {
 
@@ -48,9 +47,8 @@ public final class ResourceFactory {
         } else if (neededProcessing.length == 1) {
             return new SimpleResource(neededProcessing[0]);
         } else {
-            return new MultiProcessResource(neededProcessing[0],
-                    Arrays.copyOfRange(neededProcessing, 1,
-                            neededProcessing.length));
+            return new MultiProcessResource(neededProcessing[0], Arrays
+                    .copyOfRange(neededProcessing, 1, neededProcessing.length));
         }
     }
 }

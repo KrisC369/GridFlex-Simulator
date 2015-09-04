@@ -7,7 +7,6 @@ import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
  * grid.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface BalancingSignal {
     /**

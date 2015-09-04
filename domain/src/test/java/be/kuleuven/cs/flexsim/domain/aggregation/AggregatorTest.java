@@ -30,16 +30,14 @@ public class AggregatorTest {
         doReturn(0).when(tso).getCurrentImbalance();
         this.agg = new IndependentAggregator(tso, freq);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
-                        FlexTuple.create(3, 10, true, 10, 0, 0))).when(
-                clientDown).getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
+                FlexTuple.create(3, 10, true, 10, 0, 0))).when(clientDown)
+                        .getFlexTuples();
 
         this.clientUp = mock(SiteFlexAPI.class);
-        doReturn(
-                Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0),
-                        FlexTuple.create(4, 10, false, 10, 0, 0))).when(
-                clientUp).getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0),
+                FlexTuple.create(4, 10, false, 10, 0, 0))).when(clientUp)
+                        .getFlexTuples();
 
         doRegister();
     }

@@ -15,7 +15,6 @@ import com.google.common.collect.Lists;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The elements that will be permuted or recombined.
- *
  */
 public class NPermuteAndCombiner<T> {
 
@@ -50,7 +49,8 @@ public class NPermuteAndCombiner<T> {
         } else {
             for (int j = nextIndex; j < set.size(); j++) {
                 subset.set(subsetSize, set.get(j));
-                processLargerSubsets(result, set, subset, subsetSize + 1, j + 1);
+                processLargerSubsets(result, set, subset, subsetSize + 1,
+                        j + 1);
             }
         }
         return result;
@@ -85,7 +85,6 @@ public class NPermuteAndCombiner<T> {
      * Combines several collections of elements and create permutations of all
      * of them, taking one element from each collection, and keeping the same
      * order in resultant lists as the one in original list of collections.
-     *
      * Example: Input = { {a,b,c} , {1,2,3,4} } Output = { {a,1} , {a,2} , {a,3}
      * , {a,4} , {b,1} , {b,2} , {b,3} , {b,4} , {c,1} , {c,2} , {c,3} , {c,4} }
      *

@@ -11,7 +11,6 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
  * mechanism and produces flex and consumption patterns.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class EquidistantSiteSimulation extends SiteSimulation {
     /**
@@ -32,7 +31,8 @@ public class EquidistantSiteSimulation extends SiteSimulation {
      * @param cease
      *            the cease time for activation.
      */
-    EquidistantSiteSimulation(int base, int min, int max, int maxTuples, int duration, int ramp, int cease) {
+    EquidistantSiteSimulation(int base, int min, int max, int maxTuples,
+            int duration, int ramp, int cease) {
         super(base, min, max, maxTuples, duration, ramp, cease);
     }
 
@@ -40,7 +40,8 @@ public class EquidistantSiteSimulation extends SiteSimulation {
     protected void calculateCurrentFlex() {
         List<FlexTuple> upFlex = Lists.newArrayList();
         List<FlexTuple> downFlex = Lists.newArrayList();
-        int bandwidth = (getMaxLimitConsumption() - getMinLimitConsumption()) / getMaxTuples();
+        int bandwidth = (getMaxLimitConsumption() - getMinLimitConsumption())
+                / getMaxTuples();
         for (int i = 1; i <= getMaxTuples(); i++) {
             int setpoint = getMinLimitConsumption() + i * bandwidth;
             int target = setpoint - getCurrentConsumption();

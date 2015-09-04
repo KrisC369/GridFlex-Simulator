@@ -7,7 +7,6 @@ import org.apache.commons.math3.random.RandomGenerator;
  * distribution.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class NormalRandomOutputGenerator extends RandomOutputGenerator {
     /**

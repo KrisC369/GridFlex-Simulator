@@ -12,7 +12,6 @@ import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
  * an aggregator.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class RenumerationMediator extends FinanceTrackerImpl {
     private final SiteFlexAPI target;
@@ -48,7 +47,8 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
      *            The portion of the budget to use for reservation payments.
      * @return The newly created RenumerationMediator object.
      */
-    public static RenumerationMediator create(Site client, double reservePortion) {
+    public static RenumerationMediator create(Site client,
+            double reservePortion) {
         return new RenumerationMediator(client, reservePortion);
     }
 
@@ -61,7 +61,8 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
     public void setBudget(long budget) {
         checkArgument(budget >= 0, "Budget should not be negative.");
         this.currentActivationBudget = (long) (budget * getActivationPortion());
-        this.currentReservationBudget = (long) (budget * getReservationPortion());
+        this.currentReservationBudget = (long) (budget
+                * getReservationPortion());
 
     }
 

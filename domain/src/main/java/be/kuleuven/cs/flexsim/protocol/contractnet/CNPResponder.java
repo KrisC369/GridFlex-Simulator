@@ -8,7 +8,6 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
- *
  */
 public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
 
@@ -43,7 +42,8 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
         }
     }
 
-    protected abstract T makeProposalForCNP(T arg) throws CanNotFindProposalException;
+    protected abstract T makeProposalForCNP(T arg)
+            throws CanNotFindProposalException;
 
     protected abstract boolean performWorkUnitFor(T arg);
 
@@ -52,7 +52,6 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
      * data.
      * 
      * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
-     *
      */
     public static class CanNotFindProposalException extends Exception {
 

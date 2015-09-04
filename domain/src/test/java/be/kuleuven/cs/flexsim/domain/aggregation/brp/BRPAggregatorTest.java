@@ -33,8 +33,10 @@ public class BRPAggregatorTest {
     @Before
     public void setUp() throws Exception {
         agg = new BRPAggregator(tso, price, 0.5, 0.5);
-        site1 = SiteBuilder.newSiteSimulation().withBaseConsumption(200).withMaxConsumption(400).withTuples(2).create();
-        site2 = SiteBuilder.newSiteSimulation().withBaseConsumption(200).withMaxConsumption(400).withTuples(2).create();
+        site1 = SiteBuilder.newSiteSimulation().withBaseConsumption(200)
+                .withMaxConsumption(400).withTuples(2).create();
+        site2 = SiteBuilder.newSiteSimulation().withBaseConsumption(200)
+                .withMaxConsumption(400).withTuples(2).create();
         sim = Simulator.createSimulator(1);
     }
 
@@ -93,7 +95,8 @@ public class BRPAggregatorTest {
         // t.setBudget(_400);
         sim.start();
 
-        assertEquals(_400 * 0.5 * (200 / (double) _400), t.getTotalProfit(), 0.01);
+        assertEquals(_400 * 0.5 * (200 / (double) _400), t.getTotalProfit(),
+                0.01);
     }
 
     @Test
@@ -129,8 +132,10 @@ public class BRPAggregatorTest {
         when(price.getCurrentPrice()).thenReturn(1);
         sim.start();
 
-        assertEquals(2 * _400 * 0.5 * (200 / (double) _400) + (_400 * 0.5 * (200 / (double) _400)), t.getTotalProfit(),
-                0.01);
+        assertEquals(
+                2 * _400 * 0.5 * (200 / (double) _400)
+                        + (_400 * 0.5 * (200 / (double) _400)),
+                t.getTotalProfit(), 0.01);
     }
 
     @Test
@@ -199,7 +204,8 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        AncilServiceNominationManager asnm = mock(AncilServiceNominationManager.class);
+        AncilServiceNominationManager asnm = mock(
+                AncilServiceNominationManager.class);
         agg.registerNominationManager(asnm);
         sim.start();
         verify(asnm, times(1)).registerNomination(any(Nomination.class));

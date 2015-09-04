@@ -13,7 +13,6 @@ import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
  * A tracker that can observe flex activations and value them economically.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 class BalancingFeeTracker extends FinanceTrackerImpl {
 
@@ -54,9 +53,9 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
             @Override
             public void eventOccurred(FlexTuple arg) {
                 double t = arg.getT();
-                increaseTotalReward((int) (fixedActivationFee
-                        * retributionFactor * arg.getDeltaP() * (t > 0 ? t
-                        : 1.0)));
+                increaseTotalReward(
+                        (int) (fixedActivationFee * retributionFactor
+                                * arg.getDeltaP() * (t > 0 ? t : 1.0)));
                 incrementCount();
                 logCount();
             }

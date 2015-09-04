@@ -26,13 +26,15 @@ public class EquidistantSiteSimulationTest {
 
     @Before
     public void setUp() throws Exception {
-        site = SiteBuilder.newEquidistantSiteSimulation().withBaseConsumption(BASE).withMinConsumption(MIN)
+        site = SiteBuilder.newEquidistantSiteSimulation()
+                .withBaseConsumption(BASE).withMinConsumption(MIN)
                 .withMaxConsumption(MAX).withTuples(MAXTUPLES).create();
     }
 
     @Test
     public void testInit() {
-        site = site = SiteBuilder.newEquidistantSiteSimulation().withBaseConsumption(BASE).withMinConsumption(MIN)
+        site = site = SiteBuilder.newEquidistantSiteSimulation()
+                .withBaseConsumption(BASE).withMinConsumption(MIN)
                 .withMaxConsumption(MAX).withTuples(MAXTUPLES).create();
         assertEquals(BASE, site.getAverageConsumption(), 0);
         assertEquals(BASE, site.getLastStepConsumption(), 0);
@@ -40,7 +42,8 @@ public class EquidistantSiteSimulationTest {
         assertEquals(MAXTUPLES, site.getFlexTuples().size(), 0);
         assertEquals(0, site.getBufferOccupancyLevels().size());
         assertFalse(site.containsLine(mock(FlexProcess.class)));
-        assertEquals(20 * ((double) (BASE - MIN) / (double) (MAX - MIN)), site.takeResources().size(), 0);
+        assertEquals(20 * ((double) (BASE - MIN) / (double) (MAX - MIN)),
+                site.takeResources().size(), 0);
         thrown.expect(UnsupportedOperationException.class);
         site.deliverResources(mock(List.class));
     }
@@ -48,7 +51,9 @@ public class EquidistantSiteSimulationTest {
     @Test
     public void testGetTuples() {
         List<FlexTuple> tuples = site.getFlexTuples();
-        assertEquals((MAX - MIN) / MAXTUPLES, Math.abs(tuples.get(0).getDeltaP() - tuples.get(1).getDeltaP()), 0);
+        assertEquals((MAX - MIN) / MAXTUPLES,
+                Math.abs(tuples.get(0).getDeltaP() - tuples.get(1).getDeltaP()),
+                0);
     }
 
     @Test
@@ -56,7 +61,8 @@ public class EquidistantSiteSimulationTest {
         Simulator s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
         s.start();
-        assertEquals(site.getLastStepConsumption() * SIMSTEPS, site.getTotalConsumption(), 0);
+        assertEquals(site.getLastStepConsumption() * SIMSTEPS,
+                site.getTotalConsumption(), 0);
     }
 
     @Test
@@ -70,7 +76,8 @@ public class EquidistantSiteSimulationTest {
 
         double before = site.getTotalConsumption();
 
-        site = site = SiteBuilder.newEquidistantSiteSimulation().withBaseConsumption(BASE).withMinConsumption(MIN)
+        site = site = SiteBuilder.newEquidistantSiteSimulation()
+                .withBaseConsumption(BASE).withMinConsumption(MIN)
                 .withMaxConsumption(MAX).withTuples(MAXTUPLES).create();
         s = Simulator.createSimulator(SIMSTEPS);
         s.register(site);
@@ -99,7 +106,9 @@ public class EquidistantSiteSimulationTest {
         s.start();
         List<FlexTuple> tuples = site.getFlexTuples();
         for (int i = 3; i < tuples.size(); i++) {
-            if (tuples.get(i).getDeltaP() - tuples.get(i - 1).getDeltaP() != (MAX - MIN) / MAXTUPLES) {
+            if (tuples.get(i).getDeltaP()
+                    - tuples.get(i - 1).getDeltaP() != (MAX - MIN)
+                            / MAXTUPLES) {
                 fail();
             }
         }

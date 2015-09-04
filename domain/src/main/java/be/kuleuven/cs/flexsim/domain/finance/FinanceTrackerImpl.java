@@ -16,7 +16,6 @@ import com.google.common.base.Optional;
  * Tracks and finalizes the finances of productionlines.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
@@ -67,8 +66,8 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
     }
 
     private void calculateCost(int t) {
-        incrementTotalCost(debtMod.calculateDebt(t, getTarget()
-                .getLastStepConsumption()));
+        incrementTotalCost(
+                debtMod.calculateDebt(t, getTarget().getLastStepConsumption()));
     }
 
     private void calculateReward(int t) {
@@ -89,9 +88,9 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
     }
 
     private void report() {
-        publishReport(getTarget().getLastStepConsumption(), getTarget()
-                .getTotalConsumption(), getTarget().getBufferOccupancyLevels(),
-                getTotalProfit());
+        publishReport(getTarget().getLastStepConsumption(),
+                getTarget().getTotalConsumption(),
+                getTarget().getBufferOccupancyLevels(), getTotalProfit());
     }
 
     private void publishReport(double totalLaststep, double totalTotal,
@@ -102,7 +101,8 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
         }
         Event e = getContext().getEventFactory().build("report");
         e.setAttribute("pLinehash", this.hashCode());
-        e.setAttribute("time", getContext().getSimulationClock().getTimeCount());
+        e.setAttribute("time",
+                getContext().getSimulationClock().getTimeCount());
         e.setAttribute(uid + "totalLaststepE", totalLaststep);
         e.setAttribute(uid + "totalTotalE", totalTotal);
         e.setAttribute(uid + "totalProfitM", profit);
@@ -142,7 +142,6 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
      * be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalReward()
      */
@@ -157,7 +156,6 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /*
      * (non-Javadoc)
-     * 
      * @see be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalCost()
      */
     @Override
@@ -171,7 +169,6 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
      * be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalProfit()
      */

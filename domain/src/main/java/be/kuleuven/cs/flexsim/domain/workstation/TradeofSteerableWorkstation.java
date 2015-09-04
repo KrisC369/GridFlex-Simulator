@@ -1,13 +1,11 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
 /**
- * 
  * This implementation represents a steerable workstation where one can steer
  * the ratio between Fixed, variable consumption and processing speed. Examples
  * include but are not limited to: Industrial freezers.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public interface TradeofSteerableWorkstation extends Workstation {
     /**

@@ -54,8 +54,10 @@ public class CNPInitiatorTest {
     @Test
     public void testDispatchCNP() {
         subj.sollicitWork();
-        verify(mockResp1, times(1)).callForProposal(any(AnswerAnticipator.class), any(Proposal.class));
-        verify(mockResp2, times(1)).callForProposal(any(AnswerAnticipator.class), any(Proposal.class));
+        verify(mockResp1, times(1)).callForProposal(
+                any(AnswerAnticipator.class), any(Proposal.class));
+        verify(mockResp2, times(1)).callForProposal(
+                any(AnswerAnticipator.class), any(Proposal.class));
     }
 
     @Test
@@ -63,14 +65,17 @@ public class CNPInitiatorTest {
         boolean flag = false;
         subj.sollicitWork();
         AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
-        verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(), proposalCaptor.capture());
+        verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(),
+                proposalCaptor.capture());
         answerCaptor1.getValue().affirmative(mock(Proposal.class), reply1);
 
-        verify(mockResp2, times(1)).callForProposal(answerCaptor2.capture(), proposalCaptor.capture());
+        verify(mockResp2, times(1)).callForProposal(answerCaptor2.capture(),
+                proposalCaptor.capture());
         AnswerAnticipator<Proposal> reply = mock(AnswerAnticipator.class);
         answerCaptor2.getValue().affirmative(mock(Proposal.class), reply);
 
-        verify(reply1, times(1)).affirmative(any(Proposal.class), any(AnswerAnticipator.class));
+        verify(reply1, times(1)).affirmative(any(Proposal.class),
+                any(AnswerAnticipator.class));
         verify(reply, times(1)).reject();
     }
 
@@ -79,14 +84,17 @@ public class CNPInitiatorTest {
         boolean flag = false;
         subj.sollicitWork();
         AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
-        verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(), proposalCaptor.capture());
+        verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(),
+                proposalCaptor.capture());
         answerCaptor1.getValue().affirmative(mock(Proposal.class), reply1);
 
-        verify(mockResp2, times(1)).callForProposal(answerCaptor2.capture(), proposalCaptor.capture());
+        verify(mockResp2, times(1)).callForProposal(answerCaptor2.capture(),
+                proposalCaptor.capture());
         AnswerAnticipator<Proposal> reply = mock(AnswerAnticipator.class);
         answerCaptor2.getValue().reject();
 
-        verify(reply1, times(1)).affirmative(any(Proposal.class), any(AnswerAnticipator.class));
+        verify(reply1, times(1)).affirmative(any(Proposal.class),
+                any(AnswerAnticipator.class));
         // verify(reply, times(1)).reject();
     }
 }

@@ -37,8 +37,8 @@ public class SiteSimulationTest {
         assertEquals(MAXTUPLES * 2, site.getFlexTuples().size(), 0);
         assertEquals(0, site.getBufferOccupancyLevels().size());
         assertFalse(site.containsLine(mock(FlexProcess.class)));
-        assertEquals(20 * ((double) (BASE - MIN) / (double) (MAX - MIN)), site
-                .takeResources().size(), 0);
+        assertEquals(20 * ((double) (BASE - MIN) / (double) (MAX - MIN)),
+                site.takeResources().size(), 0);
         thrown.expect(UnsupportedOperationException.class);
         site.deliverResources(mock(List.class));
     }
@@ -46,8 +46,7 @@ public class SiteSimulationTest {
     @Test
     public void testGetTuples() {
         List<FlexTuple> tuples = site.getFlexTuples();
-        assertEquals(
-                25,
+        assertEquals(25,
                 Math.abs(tuples.get(0).getDeltaP() - tuples.get(1).getDeltaP()),
                 0);
     }

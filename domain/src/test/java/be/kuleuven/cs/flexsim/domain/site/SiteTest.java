@@ -131,8 +131,8 @@ public class SiteTest {
                 .addShifted(3).addMultiCapExponentialConsuming(1, 15)
                 .addShifted(4).build();
         s = new SiteImpl(line1, line2);
-        s.deliverResources(ResourceFactory.createBulkMPResource(50, 3, 3, 3, 3,
-                3, 3));
+        s.deliverResources(
+                ResourceFactory.createBulkMPResource(50, 3, 3, 3, 3, 3, 3));
         assertTrue(line1.getBufferOccupancyLevels().get(0) > 0);
         assertTrue(line2.getBufferOccupancyLevels().get(0) > 0);
         Simulator sim = Simulator.createSimulator(1000);

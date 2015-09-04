@@ -16,7 +16,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * Represents a TSO implementation with random signal.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class RandomTSO implements BalancingSignal, SimulationComponent {
     private final RandomGenerator g;
@@ -71,8 +70,8 @@ public class RandomTSO implements BalancingSignal, SimulationComponent {
 
     @Override
     public void addNewBalanceValueListener(Listener<? super Integer> listener) {
-        this.newBalanceValueListener = MultiplexListener.plus(
-                this.newBalanceValueListener, listener);
+        this.newBalanceValueListener = MultiplexListener
+                .plus(this.newBalanceValueListener, listener);
     }
 
     @Override
@@ -81,9 +80,8 @@ public class RandomTSO implements BalancingSignal, SimulationComponent {
 
     @Override
     public void afterTick(int t) {
-        this.currentValue = getGenerator().nextInt(
-                Math.abs(getMax() - getMin()))
-                + getMin();
+        this.currentValue = getGenerator()
+                .nextInt(Math.abs(getMax() - getMin())) + getMin();
     }
 
     @Override

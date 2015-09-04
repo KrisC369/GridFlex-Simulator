@@ -15,13 +15,11 @@ import com.google.common.collect.Multimap;
  * functionality.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class BRPAggregationStrategy implements AggregationStrategy {
 
     /*
      * (non-Javadoc)
-     * 
      * @see be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy#
      * performAggregationStep
      * (be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext, int,

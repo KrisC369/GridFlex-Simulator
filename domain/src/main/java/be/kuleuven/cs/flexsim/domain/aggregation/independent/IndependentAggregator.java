@@ -14,7 +14,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * Represents an energy aggregator implementation.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class IndependentAggregator extends Aggregator {
 

@@ -38,7 +38,8 @@ public class BalancingAuctionTSOTest {
 
     @Test
     public void testPlaceBids() {
-        FlexBid bid = new FlexBid(FlexTuple.create(1, 500, false, 0, 0, 0), 125);
+        FlexBid bid = new FlexBid(FlexTuple.create(1, 500, false, 0, 0, 0),
+                125);
         tso.placeBid(bid);
         assertTrue(tso.getCurrentOutstandingBids().contains(bid));
     }

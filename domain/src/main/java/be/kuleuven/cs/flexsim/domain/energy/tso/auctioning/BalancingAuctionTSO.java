@@ -16,10 +16,9 @@ import com.google.common.collect.Lists;
  * the bids, optimally selecting the best choices.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public class BalancingAuctionTSO extends CopperplateTSO implements
-        AbstractAuctionHost<FlexBid> {
+public class BalancingAuctionTSO extends CopperplateTSO
+        implements AbstractAuctionHost<FlexBid> {
     private List<MechanismParticipant> participants;
     private List<FlexBid> currentBids;
 
@@ -45,7 +44,6 @@ public class BalancingAuctionTSO extends CopperplateTSO implements
 
     /**
      * Constructor with no initial partakers.
-     * 
      */
     public BalancingAuctionTSO() {
         this(new EnergyProductionTrackable[0],

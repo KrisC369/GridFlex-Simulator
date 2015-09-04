@@ -7,18 +7,15 @@ import com.google.auto.value.AutoValue;
  * ancillary services.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 @AutoValue
 public abstract class Nomination {
     /**
      * @return the target imbalance volume that needs to be corrected.
-     *
      */
     public abstract long getTargetImbalanceVolume();
 
     /**
-     *
      * @return the target imbalance volume that was effectively remedied.
      */
     public abstract long getRemediedImbalanceVolume();

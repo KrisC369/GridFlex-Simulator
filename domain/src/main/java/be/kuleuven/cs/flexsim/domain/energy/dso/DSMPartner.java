@@ -14,15 +14,12 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * DSMPartners represent industrial companies offering power consumption
  * flexibility. The flexibility wanted is mainly the increase in power
  * consumption to decrease congestion on distribution networks caused by RES.
- * 
  * The specs for this DSM participant are similar to the specs of the R3DP
  * product by Elia. R3DP specifies curtailment in stead of increased power
- * consumption, though.
- * 
- * The time scale discretization for this DSM partner is set at 15 minutes.
+ * consumption, though. The time scale discretization for this DSM partner is
+ * set at 15 minutes.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class DSMPartner implements SimulationComponent {
     /**
@@ -58,7 +55,8 @@ public class DSMPartner implements SimulationComponent {
      *            increase during activations.
      */
     public DSMPartner(int powerRate) {
-        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate, CURRENT_ALLOWED_DEVIATION);
+        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
+                powerRate, CURRENT_ALLOWED_DEVIATION);
     }
 
     /**
@@ -72,11 +70,12 @@ public class DSMPartner implements SimulationComponent {
      *            activations so far.
      */
     public DSMPartner(int powerRate, double deviation) {
-        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate, deviation);
+        this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
+                powerRate, deviation);
     }
 
-    DSMPartner(int maxActivations, int interactivationTime, int activationDuration, int flexPowerRate,
-            double deviation) {
+    DSMPartner(int maxActivations, int interactivationTime,
+            int activationDuration, int flexPowerRate, double deviation) {
         this.maxActivations = maxActivations;
         this.interactivationTime = interactivationTime;
         this.activationDuration = activationDuration;
@@ -187,7 +186,8 @@ public class DSMPartner implements SimulationComponent {
         if (getValuation(begin) >= currentAllowedDeviation) {
             return false;
         }
-        if (begin < 0 || end + getActivationDuration() >= OPERATING_TIME_LIMIT) {
+        if (begin < 0
+                || end + getActivationDuration() >= OPERATING_TIME_LIMIT) {
             return false;
         }
 
@@ -199,13 +199,15 @@ public class DSMPartner implements SimulationComponent {
                 return false;
             }
         }
-        for (int i = FastMath.max(0, begin - getInteractivationTime()); i < begin; i++) {
+        for (int i = FastMath.max(0,
+                begin - getInteractivationTime()); i < begin; i++) {
             if (activationMarker[i] == 1) {
                 return false;
             }
         }
-        for (int i = (begin + getActivationDuration()); i < FastMath
-                .min(begin + getActivationDuration() + getInteractivationTime(), OPERATING_TIME_LIMIT); i++) {
+        for (int i = (begin + getActivationDuration()); i < FastMath.min(
+                begin + getActivationDuration() + getInteractivationTime(),
+                OPERATING_TIME_LIMIT); i++) {
             if (activationMarker[i] == 1) {
                 return false;
             }
@@ -226,11 +228,15 @@ public class DSMPartner implements SimulationComponent {
 
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {
         @Override
-        protected DSMProposal makeProposalForCNP(DSMProposal arg) throws CanNotFindProposalException {
-            if (canActivateDuring(arg.getBeginMark().get(), arg.getEndMark().get())) {
-                StringBuilder b = new StringBuilder("Proposal from ").append(this.toString()).append(" with ")
+        protected DSMProposal makeProposalForCNP(DSMProposal arg)
+                throws CanNotFindProposalException {
+            if (canActivateDuring(arg.getBeginMark().get(),
+                    arg.getEndMark().get())) {
+                StringBuilder b = new StringBuilder("Proposal from ")
+                        .append(this.toString()).append(" with ")
                         .append(getFlexPowerRate()).append("kW");
-                return DSMProposal.create(b.toString(), getFlexPowerRate(), getValuation(arg), arg.getBeginMark().get(),
+                return DSMProposal.create(b.toString(), getFlexPowerRate(),
+                        getValuation(arg), arg.getBeginMark().get(),
                         arg.getEndMark().get());
             }
             throw new CanNotFindProposalException();

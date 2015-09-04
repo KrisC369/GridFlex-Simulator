@@ -6,11 +6,10 @@ import be.kuleuven.cs.flexsim.domain.resource.Resource;
  * A decorator for decorating workstation instances introducing Steerability.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
-public class SteerableStationDecorator extends
-        ForwardingStationDecorator<ConfigurableWorkstation> implements
-        TradeofSteerableWorkstation {
+public class SteerableStationDecorator
+        extends ForwardingStationDecorator<ConfigurableWorkstation>
+        implements TradeofSteerableWorkstation {
 
     private int speedfactor;
 

@@ -24,7 +24,6 @@ import com.google.common.collect.Sets;
  * engines.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class AggregationUtils {
     private AggregationUtils() {

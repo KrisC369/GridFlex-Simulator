@@ -22,10 +22,9 @@ import com.google.common.collect.LinkedListMultimap;
  * tso requests directly.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public class ReactiveMechanismAggregator extends Aggregator implements
-        ContractualMechanismParticipant {
+public class ReactiveMechanismAggregator extends Aggregator
+        implements ContractualMechanismParticipant {
 
     private int currentTarget;
     private LinkedListMultimap<SiteFlexAPI, FlexTuple> currentFlex;
@@ -37,7 +36,6 @@ public class ReactiveMechanismAggregator extends Aggregator implements
      *
      * @param host
      *            The host to register to.
-     *
      */
     public ReactiveMechanismAggregator(BalancingTSO host) {
         this(host, AggregationStrategyImpl.CARTESIANPRODUCT);
@@ -52,7 +50,6 @@ public class ReactiveMechanismAggregator extends Aggregator implements
      *            The frequency of aggregation (how often...).
      * @param strategy
      *            The strategy to adopt.
-     *
      */
     private ReactiveMechanismAggregator(BalancingTSO host, int frequency,
             AggregationStrategy strategy) {

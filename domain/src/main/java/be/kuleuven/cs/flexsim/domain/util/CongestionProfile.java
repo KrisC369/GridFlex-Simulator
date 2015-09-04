@@ -38,7 +38,6 @@ public class CongestionProfile implements TimeSeries {
 
     /*
      * (non-Javadoc)
-     * 
      * @see be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#mean()
      */
     @Override
@@ -50,7 +49,6 @@ public class CongestionProfile implements TimeSeries {
 
     /*
      * (non-Javadoc)
-     * 
      * @see be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#median()
      */
     @Override
@@ -62,7 +60,6 @@ public class CongestionProfile implements TimeSeries {
 
     /*
      * (non-Javadoc)
-     * 
      * @see be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#std()
      */
     @Override
@@ -74,12 +71,12 @@ public class CongestionProfile implements TimeSeries {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
      * be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#load(java.io.File)
      */
     @Override
-    public void load(String filename, String column) throws FileNotFoundException, IOException {
+    public void load(String filename, String column)
+            throws FileNotFoundException, IOException {
         List<Double> dataRead = Lists.newArrayList();
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(filename).getFile());
@@ -117,7 +114,8 @@ public class CongestionProfile implements TimeSeries {
      * @throws FileNotFoundException
      *             If the file with that name cannot be found.
      */
-    public static TimeSeries createFromCSV(String filename, String column) throws FileNotFoundException, IOException {
+    public static TimeSeries createFromCSV(String filename, String column)
+            throws FileNotFoundException, IOException {
         CongestionProfile cp = new CongestionProfile();
         cp.load(filename, column);
         return cp;
@@ -159,7 +157,8 @@ public class CongestionProfile implements TimeSeries {
      *            the new value.
      */
     public void changeValue(int index, double value) {
-        checkArgument(index >= 0 && index < length(), "Index(" + index + ") should be within range of time series.");
+        checkArgument(index >= 0 && index < length(),
+                "Index(" + index + ") should be within range of time series.");
         this.dataValues[index] = value;
     }
 }

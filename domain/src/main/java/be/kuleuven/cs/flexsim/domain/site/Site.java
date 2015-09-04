@@ -7,10 +7,9 @@ import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableCompone
  * Represents a production site with possibly multiple production lines.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public interface Site extends SiteFlexAPI,
-        ResourceConsumptionTrackableComponent {
+public interface Site
+        extends SiteFlexAPI, ResourceConsumptionTrackableComponent {
 
     /**
      * Tests if this site has the specified process.

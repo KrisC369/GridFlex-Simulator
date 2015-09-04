@@ -116,8 +116,8 @@ public class WorkstationTest {
 
     @Test
     public void testFactoryMethodInitial() {
-        Workstation iw = WorkstationFactory.createDefault(
-                new Buffer<Resource>(), new Buffer<Resource>());
+        Workstation iw = WorkstationFactory
+                .createDefault(new Buffer<Resource>(), new Buffer<Resource>());
         assertTrue(iw.isIdle());
     }
 
@@ -450,8 +450,8 @@ public class WorkstationTest {
 
     @Test
     public void testRandomDecorator() {
-        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700,
-                100, 12);
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700, 100,
+                12);
         multiPushResource(24, 5000);
         RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
         steer.getDelegate().tick(1);
@@ -530,8 +530,8 @@ public class WorkstationTest {
 
     @Test
     public void testRandomDecoratorMultIncr() {
-        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700,
-                100, 12);
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700, 100,
+                12);
         multiPushResource(24, 5000);
         RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
         steer.signalHighConsumption();
@@ -541,8 +541,8 @@ public class WorkstationTest {
 
     @Test
     public void testRandomDecoratorMultDecr() {
-        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700,
-                100, 12);
+        iew = WorkstationFactory.createRFDualModeStation(in, out, 300, 700, 100,
+                12);
         multiPushResource(24, 5000);
         RFSteerableStationDecorator steer = (RFSteerableStationDecorator) iew;
         steer.signalHighConsumption();

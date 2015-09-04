@@ -15,7 +15,6 @@ import be.kuleuven.cs.flexsim.domain.workstation.TradeofSteerableWorkstation;
  * process.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 interface ProcessDevice extends FlexControlAPI {
     /**

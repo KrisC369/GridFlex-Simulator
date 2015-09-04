@@ -21,7 +21,6 @@ import com.google.common.annotations.VisibleForTesting;
  * energy.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 class WorkstationImpl implements ConfigurableWorkstation {
 
@@ -95,7 +94,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     /*
      * (non-Javadoc)
-     * 
      * @see domain.workstation.IWorkstation#getProcessedItemsCount()
      */
     @Override
@@ -110,7 +108,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
      * simulation.ISimulationComponent#initialize(simulation.ISimulationContext)
      */
@@ -120,7 +117,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     /*
      * (non-Javadoc)
-     * 
      * @see domain.workstation.IWorkstation#isIdle()
      */
     @Override
@@ -163,7 +159,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     /*
      * (non-Javadoc)
-     * 
      * @see simulation.ISimulationComponent#tick()
      */
     @Override
@@ -174,9 +169,8 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     private void calculateLastConsumption() {
-        setLastConsumption(getFixedConsumptionRate()
-                + getCurrentState().getVarConsumptionRate(
-                        getRemainingStepsOfResource(),
+        setLastConsumption(getFixedConsumptionRate() + getCurrentState()
+                .getVarConsumptionRate(getRemainingStepsOfResource(),
                         getMaxRemainingStepsOfResource(), stateContext));
     }
 
@@ -289,7 +283,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
@@ -310,14 +303,16 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     private void recalculateProcessingRate() {
         final double cap = getRatedCapacity();
-        final double neededProc = (double) getMaxRemainingStepsOfResource() > 0 ? (double) getMaxRemainingStepsOfResource()
+        final double neededProc = (double) getMaxRemainingStepsOfResource() > 0
+                ? (double) getMaxRemainingStepsOfResource()
                 : Double.POSITIVE_INFINITY;
         setLastProcessingRate(cap / neededProc);
     }
 
     @Override
     public double getAverageConsumption() {
-        return (getMaxVarECons() * getMaxRemainingStepsOfResource() + getFixedConsumptionRate())
+        return (getMaxVarECons() * getMaxRemainingStepsOfResource()
+                + getFixedConsumptionRate())
                 / (double) (getMaxRemainingStepsOfResource() + 1);
     }
 

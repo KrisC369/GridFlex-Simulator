@@ -56,7 +56,8 @@ public class CNPResponderTest {
         subjPos.callForProposal(new AnswerAnticipator<Proposal>() {
 
             @Override
-            public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) {
+            public void affirmative(Proposal prop,
+                    AnswerAnticipator<Proposal> ant) {
                 ant.affirmative(mockProposal, reply);
             }
 
@@ -64,7 +65,8 @@ public class CNPResponderTest {
             public void reject() {
             }
         }, mockProposal);
-        verify(reply, times(1)).affirmative(any(Proposal.class), Matchers.<AnswerAnticipator<Proposal>> any());
+        verify(reply, times(1)).affirmative(any(Proposal.class),
+                Matchers.<AnswerAnticipator<Proposal>> any());
     }
 
     @Test
@@ -74,7 +76,8 @@ public class CNPResponderTest {
         subjNeg.callForProposal(new AnswerAnticipator<Proposal>() {
 
             @Override
-            public void affirmative(Proposal prop, AnswerAnticipator<Proposal> ant) {
+            public void affirmative(Proposal prop,
+                    AnswerAnticipator<Proposal> ant) {
                 ant.affirmative(mockProposal, reply);
             }
 
@@ -91,7 +94,8 @@ public class CNPResponderTest {
         }
 
         @Override
-        public Proposal makeProposalForCNP(Proposal arg) throws CanNotFindProposalException {
+        public Proposal makeProposalForCNP(Proposal arg)
+                throws CanNotFindProposalException {
             return new Proposal() {
             };
         }
@@ -108,7 +112,8 @@ public class CNPResponderTest {
         }
 
         @Override
-        public Proposal makeProposalForCNP(Proposal arg) throws CanNotFindProposalException {
+        public Proposal makeProposalForCNP(Proposal arg)
+                throws CanNotFindProposalException {
             throw new CanNotFindProposalException();
         }
 
@@ -124,7 +129,8 @@ public class CNPResponderTest {
         }
 
         @Override
-        public Proposal makeProposalForCNP(Proposal arg) throws CanNotFindProposalException {
+        public Proposal makeProposalForCNP(Proposal arg)
+                throws CanNotFindProposalException {
             return new Proposal() {
             };
         }

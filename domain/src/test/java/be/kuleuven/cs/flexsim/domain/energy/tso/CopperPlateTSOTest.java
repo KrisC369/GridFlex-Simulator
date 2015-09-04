@@ -19,7 +19,8 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 public class CopperPlateTSOTest {
     private Site siteMock = mock(Site.class);
     private CopperplateTSO tso = mock(CopperplateTSO.class);
-    private EnergyProductionTrackable out = mock(EnergyProductionTrackable.class);
+    private EnergyProductionTrackable out = mock(
+            EnergyProductionTrackable.class);
 
     @Before
     public void setUp() throws Exception {

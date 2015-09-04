@@ -10,7 +10,6 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  * Electricity generator capable of producing a constant output.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class ConstantOutputGenerator implements EnergyProductionTrackable {
 
