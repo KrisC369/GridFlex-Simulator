@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.math3.util.FastMath;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -31,17 +33,21 @@ public class CongestionSolver implements SimulationComponent {
     private CNPInitiator<DSMProposal> solverInstance;
     private BigDecimal remediedCongestionCount;
     private final CongestionProfile afterDSMprofile;
+    private static int RELATIVE_MAX_VALUE_PERCENT = 0;
     private final IntNNFunction<DSMProposal> valueFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
             // TODO maximize efficiency also.
             // This maximizes to no-activation.
             // TODO take responder valuation in account
-            double sum = 0;
+            // double sum = 0;
+            double max = 0;
             for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
-                sum += afterDSMprofile.value(getTick() + i) - (input.getTargetValue() / 4.0);
+                double res = afterDSMprofile.value(getTick() + i) - (input.getTargetValue() / 4.0);
+                // sum += res < 0 ? res : 0;
+                max = res < max ? res : max;
             }
-            return (int) (sum);
+            return (int) ((-max / input.getTargetValue()) * 100);
         }
     };
     private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
@@ -51,7 +57,7 @@ public class CongestionSolver implements SimulationComponent {
             for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
                 sum += FastMath.min(afterDSMprofile.value(getTick() + i), (input.getTargetValue() / 4.0));
             }
-            double theoreticalMax = DSM_ALLOCATION_DURATION * (input.getTargetValue() / 4);
+            double theoreticalMax = DSM_ALLOCATION_DURATION * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
             return (int) (relativeSucc * input.getValuation() * 1000);
@@ -103,13 +109,23 @@ public class CongestionSolver implements SimulationComponent {
     }
 
     private void getWorkResults() {
+        double toCorrect = afterDSMprofile.value(getTick());
         for (DSMPartner d : getDsms()) {
             double dsmv = d.getCurtailment(getTick()) / 4.0;
-            if (dsmv >= afterDSMprofile.value(getTick())) {
-                this.remediedCongestionCount = this.remediedCongestionCount
-                        .add(BigDecimal.valueOf(afterDSMprofile.value(getTick())));
-            } else {
-                this.remediedCongestionCount = this.remediedCongestionCount.add(BigDecimal.valueOf(dsmv));
+            if (dsmv < 0) {
+                System.out.println("oops");
+            }
+            if (this.remediedCongestionCount.signum() < 0) {
+                System.out.println("oops again");
+            }
+            if (toCorrect > 0) {
+                if (dsmv >= toCorrect) {
+                    this.remediedCongestionCount = this.remediedCongestionCount.add(BigDecimal.valueOf(toCorrect));
+                    toCorrect = 0;
+                } else {
+                    this.remediedCongestionCount = this.remediedCongestionCount.add(BigDecimal.valueOf(dsmv));
+                    toCorrect -= dsmv;
+                }
             }
             this.afterDSMprofile.changeValue(getTick(), afterDSMprofile.value(getTick()) - dsmv);
         }
@@ -174,6 +190,10 @@ public class CongestionSolver implements SimulationComponent {
         return this.remediedCongestionCount.doubleValue();
     }
 
+    /**
+     * @return Returns the remaining congestion profile after application of
+     *         dsm.
+     */
     public CongestionProfile getProfileAfterDSM() {
         return CongestionProfile.createFromTimeSeries(afterDSMprofile);
     }
@@ -187,12 +207,20 @@ public class CongestionSolver implements SimulationComponent {
 
         @Override
         public @Nullable DSMProposal findBestProposal(List<DSMProposal> props, DSMProposal description) {
-            DSMProposal best = CollectionUtils.argMax(props, usefullnessFunction);
-            int score = valueFunction.apply(best);
-            if (score >= 0 * 8 * 100) {
-                return best;
+
+            List<DSMProposal> filtered = Lists.newArrayList(Collections2.filter(props, new MyPredicate<DSMProposal>() {
+                @Override
+                public boolean apply(@Nullable DSMProposal input) {
+                    if (input == null) {
+                        return false;
+                    }
+                    return valueFunction.apply(input) <= RELATIVE_MAX_VALUE_PERCENT ? true : false;
+                }
+            }));
+            if (filtered.isEmpty()) {
+                return null;
             }
-            return null;
+            return CollectionUtils.argMax(filtered, usefullnessFunction);
         }
 
         @Override
@@ -209,4 +237,14 @@ public class CongestionSolver implements SimulationComponent {
 
     }
 
+    private abstract class MyPredicate<T> implements Predicate<T> {
+
+        @Override
+        public abstract boolean apply(@Nullable T input);
+
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            return super.equals(obj);
+        }
+    }
 }

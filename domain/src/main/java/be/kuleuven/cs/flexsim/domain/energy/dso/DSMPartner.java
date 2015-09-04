@@ -39,7 +39,7 @@ public class DSMPartner implements SimulationComponent {
      */
     public static final int ACTIVATION_DURATION = 4 * 2;
     private static final int OPERATING_TIME_LIMIT = 4 * 24 * 365;
-    private static double CURRENT_ALLOWED_DEVIATION = 0.05;
+    private static double CURRENT_ALLOWED_DEVIATION = 0.10;
 
     private final int maxActivations;
     private final int interactivationTime;
@@ -67,6 +67,9 @@ public class DSMPartner implements SimulationComponent {
      * @param powerRate
      *            The amount of instantaneous power this partners is able to
      *            increase during activations.
+     * @param deviation
+     *            The allowed relative deviation to the mean goal number of
+     *            activations so far.
      */
     public DSMPartner(int powerRate, double deviation) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION, powerRate, deviation);
@@ -210,33 +213,18 @@ public class DSMPartner implements SimulationComponent {
         return true;
     }
 
-    // private double getValuation(DSMProposal prop) {
-    // // TODO test
-    // // TODO keep a certain distance from goal.
-    // double factor = maxActivations / OPERATING_TIME_LIMIT;
-    // double goal = prop.getBeginMark().get() * factor;
-    // if (currentActivations > goal) {
-    // return (1 - ((currentActivations - goal) / (maxActivations - goal))) *
-    // (0.5);
-    // } else if (currentActivations < goal) {
-    // return ((1 - (currentActivations / goal)) * 0.5) + 0.5;
-    // }
-    // return 0.5;
-    // }
     private double getValuation(DSMProposal prop) {
         return getValuation(prop.getBeginMark().get());
     }
 
     private double getValuation(int beginMark) {
         // TODO test
-        // DONE keep a certain distance from goal.
         double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
         double goal = beginMark * factor;
         return ((currentActivations - goal) / maxActivations);
     }
 
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {
-
         @Override
         protected DSMProposal makeProposalForCNP(DSMProposal arg) throws CanNotFindProposalException {
             if (canActivateDuring(arg.getBeginMark().get(), arg.getEndMark().get())) {
@@ -255,7 +243,5 @@ public class DSMPartner implements SimulationComponent {
             succesfull = true;
             return succesfull;
         }
-
     }
-
 }
