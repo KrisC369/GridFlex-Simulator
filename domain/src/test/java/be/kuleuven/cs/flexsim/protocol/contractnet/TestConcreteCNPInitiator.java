@@ -28,4 +28,9 @@ public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
     @Override
     public void notifyWorkDone(Proposal prop) {
     }
+
+    @Override
+    public Proposal updateWorkDescription(Proposal best) {
+        return best;
+    }
 }
