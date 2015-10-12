@@ -44,4 +44,93 @@ public final class MathUtils {
         return result;
     }
 
+    /**
+     * Calculates the positive surface under the trapezoid formed by the
+     * arguments.
+     * 
+     * @param n1y
+     *            The y coordinate of the first number. (The x coord is 0.)
+     * @param n2y
+     *            the y coordinate of the second number.
+     * @param n2x
+     *            The x coordinate of the second number.
+     * @return the positive surface area.
+     */
+    public static double trapzPos(double n1y, double n2y, double n2x) {
+        if (n1y * n2y > 0) {
+            if (n1y > 0) {
+                if (n1y > 0) {
+                    if (n2y > n1y) {
+                        return case1(n1y, n2y, n2x);
+                    }
+                    return case2(n1y, n2y, n2x);
+                }
+            } else if (n1y < 0) {
+                return case5(n1y, n2y, n2x);
+            }
+        } else if (n1y * n2y < 0) {
+            if (n2y > n1y) {
+                return case4(n1y, n2y, n2x);
+            }
+            return case3(n1y, n2y, n2x);
+        } else {
+            if (n2y > n1y) {
+                if (n1y < 0) {
+                    return case9(n1y, n2y, n2x);
+                } else if (n1y == 0) {
+                    return case8(n1y, n2y, n2x);
+                }
+            } else if (n2y < n1y) {
+                if (n1y > 0) {
+                    return case6(n1y, n2y, n2x);
+                } else if (n1y == 0) {
+                    return case7(n1y, n2y, n2x);
+                }
+            }
+        }
+        return 0;
+    }
+
+    private static double case5(double n1y, double n2y, double n2x) {
+        return 0;
+    }
+
+    private static double case1(double n1y, double n2y, double n2x) {
+        return n2x * (n1y + (n2y - n1y) / 2d);
+    }
+
+    private static double case2(double n1y, double n2y, double n2x) {
+        return n2x * (n2y + (n1y - n2y) / 2d);
+    }
+
+    private static double case4(double n1y, double n2y, double n2x) {
+        double a = getA(n1y, n2y, n2x);
+        return ((n2x - a) * n2y) / 2d;
+    }
+
+    private static double case3(double n1y, double n2y, double n2x) {
+        double a = getA(n1y, n2y, n2x);
+        return (a * n1y) / 2d;
+    }
+
+    private static double getA(double n1y, double n2y, double n2x) {
+        return (-n1y * n2x) / (n2y - n1y);
+    }
+
+    private static double case9(double n1y, double n2y, double n2x) {
+        return 0;
+    }
+
+    private static double case8(double n1y, double n2y, double n2x) {
+        return (n2y * n2x) / 2d;
+    }
+
+    private static double case6(double n1y, double n2y, double n2x) {
+        return (n1y * n2x) / 2d;
+    }
+
+    private static double case7(double n1y, double n2y, double n2x) {
+        return 0;
+    }
+
 }

@@ -114,19 +114,30 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
         }
     }
 
+    /**
+     * Optional step to update the work description before being sent out to the
+     * responders.
+     * 
+     * @param best
+     *            The winner of the auction.
+     * @return An updated proposal.
+     */
+    public abstract T updateWorkDescription(T best);
+
     private void notifyAcceptPhase2(final T best,
             Map<T, AnswerAnticipator<T>> props) {
-        props.get(best).affirmative(best, new AnswerAnticipator<T>() { // accept-proposal
-            // Completion or failure notification.
-            @Override
-            public void affirmative(T prop, AnswerAnticipator<T> ant) { // inform-done
-                notifyWorkDone(prop);
-            }
+        props.get(best).affirmative(updateWorkDescription(best),
+                new AnswerAnticipator<T>() { // accept-proposal
+                    // Completion or failure notification.
+                    @Override
+                    public void affirmative(T prop, AnswerAnticipator<T> ant) { // inform-done
+                        notifyWorkDone(prop);
+                    }
 
-            @Override
-            public void reject() { // failure
-            }
-        });
+                    @Override
+                    public void reject() { // failure
+                    }
+                });
     }
 
     private void notifyRejects(Map<T, AnswerAnticipator<T>> rejects) {
@@ -170,4 +181,5 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
      *            the work package description of the completed work.
      */
     public abstract void notifyWorkDone(T prop);
+
 }

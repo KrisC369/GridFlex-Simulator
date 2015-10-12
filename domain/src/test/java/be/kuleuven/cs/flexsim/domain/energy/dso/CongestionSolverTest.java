@@ -11,7 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CongestionSolverTest {
 
-    private CongestionSolver subj;
+    private AbstractCongestionSolver subj;
     @Mock
     private DSMPartner mockDSMPartner;
 

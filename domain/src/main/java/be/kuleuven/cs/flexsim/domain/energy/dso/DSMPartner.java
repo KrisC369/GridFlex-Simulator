@@ -41,9 +41,9 @@ public class DSMPartner implements SimulationComponent {
     private final int maxActivations;
     private final int interactivationTime;
     private final int activationDuration;
-    private final int flexPowerRate;
+    private int flexPowerRate;
     private final CNPResponder<DSMProposal> dsmAPI;
-    private final int[] activationMarker;
+    private final double[] activationMarker;
     private int currentActivations;
     private double currentAllowedDeviation;
 
@@ -94,7 +94,7 @@ public class DSMPartner implements SimulationComponent {
         this.activationDuration = activationDuration;
         this.flexPowerRate = flexPowerRate;
         this.dsmAPI = new DSMCNPResponder();
-        this.activationMarker = new int[OPERATING_TIME_LIMIT];
+        this.activationMarker = new double[OPERATING_TIME_LIMIT];
         this.currentActivations = 0;
         this.currentAllowedDeviation = deviation;
     }
@@ -166,7 +166,7 @@ public class DSMPartner implements SimulationComponent {
      * @return the power increase amount.
      */
     public double getCurtailment(int timeMark) {
-        return activationMarker[timeMark] * getFlexPowerRate();
+        return activationMarker[timeMark];
     }
 
     /**
@@ -184,9 +184,10 @@ public class DSMPartner implements SimulationComponent {
      * @param end
      *            EndMark
      */
-    private void markActivation(Integer begin, Integer end) {
+    private void markActivation(Integer begin, Integer end,
+            double targetPowerRate) {
         for (int i = 0; i < end; i++) {
-            activationMarker[i] = 1;
+            activationMarker[i] = targetPowerRate;
         }
         incrementActivations();
     }
@@ -208,20 +209,20 @@ public class DSMPartner implements SimulationComponent {
             return false;
         }
         for (int i = begin; i < end; i++) {
-            if (activationMarker[i] == 1) {
+            if (activationMarker[i] > 0) {
                 return false;
             }
         }
         for (int i = FastMath.max(0,
                 begin - getInteractivationTime()); i < begin; i++) {
-            if (activationMarker[i] == 1) {
+            if (activationMarker[i] > 0) {
                 return false;
             }
         }
         for (int i = (begin + getActivationDuration()); i < FastMath.min(
                 begin + getActivationDuration() + getInteractivationTime(),
                 OPERATING_TIME_LIMIT); i++) {
-            if (activationMarker[i] == 1) {
+            if (activationMarker[i] > 0) {
                 return false;
             }
         }
@@ -258,9 +259,14 @@ public class DSMPartner implements SimulationComponent {
         @Override
         protected boolean performWorkUnitFor(DSMProposal arg) {
             boolean succesfull = false;
-            markActivation(arg.getBeginMark().get(), arg.getEndMark().get());
+            markActivation(arg.getBeginMark().get(), arg.getEndMark().get(),
+                    arg.getTargetValue());
             succesfull = true;
             return succesfull;
         }
+    }
+
+    void setPowerRate(int powerRate) {
+        this.flexPowerRate = powerRate;
     }
 }

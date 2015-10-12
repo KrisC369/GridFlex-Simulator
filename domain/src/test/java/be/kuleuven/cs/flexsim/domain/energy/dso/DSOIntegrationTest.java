@@ -19,7 +19,7 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 public class DSOIntegrationTest {
     private static String column = "test";
     private static String file = "test.csv";
-    private CongestionSolver congestionSolver;
+    private AbstractCongestionSolver congestionSolver;
 
     private CongestionProfile congestionProfile;
 
@@ -41,7 +41,8 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CongestionSolver(congestionProfile, 8);
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+                8);
         dsm1 = new DSMPartner(0, 48, 8, 100, 1);
         dsm2 = new DSMPartner(0, 48, 8, 50, 1);
         // when(congestionProfile.value(anyInt())).thenReturn(175.0);
@@ -54,7 +55,8 @@ public class DSOIntegrationTest {
 
     @Test
     public void testNoActivation() {
-        congestionSolver = new CongestionSolver(congestionProfile, 8);
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+                8);
         dsm1 = new DSMPartner(0, 48, 8, 100, 1);
         dsm2 = new DSMPartner(0, 48, 8, 50, 1);
         register();
@@ -71,7 +73,8 @@ public class DSOIntegrationTest {
 
     @Test
     public void testPosActivation() {
-        congestionSolver = new CongestionSolver(congestionProfile, 8, 100);
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+                100);
         dsm1 = new DSMPartner(40, 48, 8, 100, 1);
         dsm2 = new DSMPartner(40, 48, 8, 50, 1);
         register();
@@ -89,7 +92,8 @@ public class DSOIntegrationTest {
     @Test
     public void testPosActivationNumberActivations() {
         int power = 100;
-        congestionSolver = new CongestionSolver(congestionProfile, 8, 100);
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+                100);
         dsm1 = new DSMPartner(40, 48, 8, power, 1);
         register();
         sim.register(congestionSolver);
