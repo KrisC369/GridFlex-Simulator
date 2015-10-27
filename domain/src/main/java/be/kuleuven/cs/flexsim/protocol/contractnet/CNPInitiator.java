@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
-import autovalue.shaded.com.google.common.common.collect.Maps;
 import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
 import be.kuleuven.cs.flexsim.protocol.Initiator;
 import be.kuleuven.cs.flexsim.protocol.Proposal;
