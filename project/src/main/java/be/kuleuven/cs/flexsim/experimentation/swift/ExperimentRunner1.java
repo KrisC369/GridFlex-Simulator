@@ -6,7 +6,6 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -35,7 +34,7 @@ public class ExperimentRunner1 {
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 10;
-    private static final int ALLOWED_EXCESS = 20;
+    private static final int ALLOWED_EXCESS = 50;
     private final List<Double> result1 = Lists.newArrayList();
     private final List<Double> result2 = Lists.newArrayList();
     private boolean competitive = true;
@@ -45,10 +44,10 @@ public class ExperimentRunner1 {
      */
     public static void main(String[] args) {
 
-        GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-                R3DP_GAMMA_SCALE);
-        System.out.println(Arrays.toString(gd.sample(10000)));
+        // GammaDistribution gd = new GammaDistribution(
+        // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+        // R3DP_GAMMA_SCALE);
+        // System.out.println(Arrays.toString(gd.sample(10000)));
 
         ExperimentRunner1 er = new ExperimentRunner1();
         er.runBatch();

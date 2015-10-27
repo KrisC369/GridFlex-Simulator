@@ -93,7 +93,7 @@ public class ExperimentInstance {
 
     private void displayEfficiency() {
         double eff = solver.getTotalRemediedCongestion()
-                / ((40.0 * 2.0 * POWERRATE) + (40.0 * 2.0 * POWERRATE / 2));
+                / (getTotalPowerRates() * 40.0 * 2.0);
         System.out.println("Efficiency is " + eff);
     }
 
