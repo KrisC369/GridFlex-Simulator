@@ -2,6 +2,8 @@ package be.kuleuven.cs.flexsim.protocol.contractnet;
 
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 
 public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
@@ -20,9 +22,10 @@ public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
     }
 
     @Override
-    public Proposal getWorkUnitDescription() {
-        return new Proposal() {
+    public Optional<Proposal> getWorkUnitDescription() {
+        Proposal p = new Proposal() {
         };
+        return Optional.fromNullable(p);
     }
 
     @Override
