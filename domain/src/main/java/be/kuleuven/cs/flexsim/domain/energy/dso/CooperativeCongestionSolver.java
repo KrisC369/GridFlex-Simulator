@@ -30,8 +30,8 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             // TODO maximize efficiency also.
             // This maximizes to no-activation.
             // TODO take responder valuation in account
-            // double sum = 0;
-            double max = 0;
+            double sum = 0;
+            // double max = 0;
             for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
                     getModifiableProfileAfterDSM().length() - getTick()
                             - 1); i++) { // TODO
@@ -39,10 +39,10 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                 // bounds.
                 double res = getModifiableProfileAfterDSM().value(getTick() + i)
                         - (input.getTargetValue() / 4.0);
-                // sum += res < 0 ? res : 0;
-                max = res < max ? res : max;
+                sum += res < 0 ? res : 0;
+                // max = res < max ? res : max;
             }
-            return (int) ((-max / (input.getTargetValue() / 4.0)) * 100);
+            return (int) ((-sum / ((input.getTargetValue() / 4.0) * 8)) * 100);
         }
     };
     private final IntNNFunction<DSMProposal> choiceFunction = new IntNNFunction<DSMProposal>() {

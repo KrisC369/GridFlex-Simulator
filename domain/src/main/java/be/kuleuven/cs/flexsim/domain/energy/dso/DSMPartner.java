@@ -41,7 +41,7 @@ public class DSMPartner implements SimulationComponent {
     private final int maxActivations;
     private final int interactivationTime;
     private final int activationDuration;
-    private int flexPowerRate;
+    private final int flexPowerRate;
     private final CNPResponder<DSMProposal> dsmAPI;
     private final double[] activationMarker;
     private int currentActivations;
@@ -266,7 +266,21 @@ public class DSMPartner implements SimulationComponent {
         }
     }
 
-    void setPowerRate(int powerRate) {
-        this.flexPowerRate = powerRate;
+    // void setPowerRate(int powerRate) {
+    // this.flexPowerRate = powerRate;
+    // }
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("DSMPartner [flexPowerRate=").append(flexPowerRate)
+                .append(", currentActivations=").append(currentActivations)
+                .append("]");
+        return builder.toString();
     }
+
 }

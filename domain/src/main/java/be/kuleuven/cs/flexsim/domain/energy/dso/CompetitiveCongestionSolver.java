@@ -62,7 +62,13 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
                     * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
-            return (int) (relativeSucc * input.getValuation() * 1000);
+            // return (int) (relativeSucc * input.getValuation() * 1000);
+            return (int) (theoreticalMax * 1000); // higher
+                                                  // power
+                                                  // rate
+                                                  // is
+                                                  // higher
+                                                  // score.
         }
     };
 
@@ -72,8 +78,8 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
             // TODO maximize efficiency also.
             // This maximizes to no-activation.
             // TODO take responder valuation in account
-            // double sum = 0;
-            double max = 0;
+            double sum = 0;
+            // double max = 0;
             for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
                     getModifiableProfileAfterDSM().length() - getTick()
                             - 1); i++) { // TODO
@@ -81,10 +87,10 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
                 // bounds.
                 double res = getModifiableProfileAfterDSM().value(getTick() + i)
                         - (input.getTargetValue() / 4.0);
-                // sum += res < 0 ? res : 0;
-                max = res < max ? res : max;
+                sum += res < 0 ? res : 0;
+                // max = res < max ? res : max;
             }
-            return (int) ((-max / (input.getTargetValue() / 4.0)) * 100);
+            return (int) ((-sum / ((input.getTargetValue() / 4.0) * 8)) * 100);
         }
     };
     private final IntNNFunction<DSMProposal> choiceFunction = new IntNNFunction<DSMProposal>() {
@@ -162,6 +168,10 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
         @Override
         public @Nullable DSMProposal findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
+
+            // if (description.getBeginMark().get() == 2513) {
+            // System.out.println("test");
+            // }
             secondBest = Optional.absent();
 
             List<DSMProposal> filtered = Lists.newArrayList(
@@ -171,7 +181,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
                             if (input == null) {
                                 return false;
                             }
-                            return valueFunction
+                            return filterFunction
                                     .apply(input) <= RELATIVE_MAX_VALUE_PERCENT
                                             ? true : false;
                         }
@@ -205,7 +215,15 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
         @Override
         public DSMProposal updateWorkDescription(DSMProposal best) {
-            if (secondBest.isPresent()) {
+            // if (best.getTargetValue() < secondBest.get().getTargetValue()) {
+            // throw new IllegalStateException(
+            // "Some weird shit happened. Secondbest with higher activation? at
+            // tick "
+            // + best.getBeginMark().get());
+            // }
+            if (secondBest.isPresent() && best.getTargetValue() > secondBest
+                    .get().getTargetValue()) {
+                // System.out.println("SetLow");
                 return DSMProposal.create(best.getDescription(),
                         secondBest.get().getTargetValue(), best.getValuation(),
                         best.getBeginMark().get(), best.getEndMark().get());
