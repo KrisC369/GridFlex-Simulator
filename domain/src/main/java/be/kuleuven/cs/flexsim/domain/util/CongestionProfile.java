@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 
 import com.google.common.collect.Lists;
@@ -27,6 +30,8 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 public class CongestionProfile implements TimeSeries {
 
     double[] dataValues;
+
+    private @Nullable Double maxcache = null;
 
     CongestionProfile() {
         dataValues = new double[] {};
@@ -160,5 +165,16 @@ public class CongestionProfile implements TimeSeries {
         checkArgument(index >= 0 && index < length(),
                 "Index(" + index + ") should be within range of time series.");
         this.dataValues[index] = value;
+    }
+
+    @Override
+    public double max() {
+        if (this.maxcache != null) {
+            return maxcache;
+        }
+        Max m = new Max();
+        m.setData(values());
+        maxcache = m.evaluate();
+        return maxcache;
     }
 }

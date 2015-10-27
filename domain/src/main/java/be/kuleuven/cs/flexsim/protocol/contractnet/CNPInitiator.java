@@ -42,9 +42,11 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
      * immediately calls {@code CNPInitiator.getWorkUnitDescription()}.
      */
     public void sollicitWork() {
-        T p = getWorkUnitDescription();
+        Optional<T> p = getWorkUnitDescription();
         resetCommunication();
-        startCNP(p);
+        if (p.isPresent()) {
+            startCNP(p.get());
+        }
     }
 
     private void resetCommunication() {
@@ -161,11 +163,13 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
     /**
      * This method is called immediately after a sollicitWork-call and should
      * return a description of the work that needs to be done, including
-     * relevant data.
+     * relevant data, or it should return an empty optional if there is no work
+     * to be done.
      * 
-     * @return a Proposal to be used as a Call for Proposals.
+     * @return an optional proposal to be used as a Call for Proposals or
+     *         nothing if no work is to be done.
      */
-    public abstract T getWorkUnitDescription();
+    public abstract Optional<T> getWorkUnitDescription();
 
     /**
      * @return a copy of the responders list for this initiator.

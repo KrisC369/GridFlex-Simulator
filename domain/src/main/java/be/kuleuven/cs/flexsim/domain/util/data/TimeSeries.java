@@ -61,4 +61,10 @@ public interface TimeSeries {
      * @return Returns the length of this time series.
      */
     int length();
+
+    /**
+     * @return Returns the max value of this series.
+     * @return
+     */
+    double max();
 }

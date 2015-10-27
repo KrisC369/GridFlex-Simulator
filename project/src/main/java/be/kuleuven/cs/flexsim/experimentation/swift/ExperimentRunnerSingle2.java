@@ -6,6 +6,7 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -27,23 +28,23 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.SingleThreadedExperi
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ExperimentRunnerSingle {
+public class ExperimentRunnerSingle2 {
 
-    private static int N = 100;
+    private static int N = 10000;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 10;
-    private static final int ALLOWED_EXCESS = 45;
+    private static final int ALLOWED_EXCESS = 50;
     private final List<Double> result1 = Lists.newArrayList();
     private final List<Double> result2 = Lists.newArrayList();
-    private boolean competitive = true;
+    private boolean competitive = false;
     private boolean allowLessActivations = true;
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        ExperimentRunnerSingle er = new ExperimentRunnerSingle();
+        ExperimentRunnerSingle2 er = new ExperimentRunnerSingle2();
         // er.runBatch();
         er.runSingle();
     }
@@ -53,6 +54,7 @@ public class ExperimentRunnerSingle {
      */
     protected void runSingle() {
         CongestionProfile profile;
+        double[] result = new double[100];
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
@@ -61,21 +63,26 @@ public class ExperimentRunnerSingle {
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
                 ExperimentInstance p = (new ExperimentInstance(NAGENTS,
-                        getSolverBuilder(), gd.sample(NAGENTS), profile,
-                        allowLessActivations));
+                        getSolverBuilder(ALLOWED_EXCESS), gd.sample(NAGENTS),
+                        profile, allowLessActivations));
                 p.startExperiment();
-                System.out.println(p.getEfficiency());
+                result[i / 100] += p.getEfficiency();
+                // System.out.println(p.getEfficiency());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+        for (int i = 0; i < N / 100; i++) {
+            result[i] /= 100.0;
+        }
+        System.out.println("distribution of eff = " + Arrays.toString(result));
     }
 
-    private SolverBuilder getSolverBuilder() {
+    private SolverBuilder getSolverBuilder(int i) {
         if (competitive) {
             return new CompetitiveSolverBuilder();
         }
-        return new CooperativeSolverBuilder();
+        return new CooperativeSolverBuilder(i);
     }
 
     private String getLabel() {
@@ -141,9 +148,9 @@ public class ExperimentRunnerSingle {
         }
 
         private void setup() {
-            this.p = (new ExperimentInstance(NAGENTS, getSolverBuilder(),
-                    checkNotNull(real), checkNotNull(profile),
-                    allowLessActivations));
+            this.p = (new ExperimentInstance(NAGENTS,
+                    getSolverBuilder(ALLOWED_EXCESS), checkNotNull(real),
+                    checkNotNull(profile), allowLessActivations));
         }
 
         @Override
@@ -162,11 +169,16 @@ public class ExperimentRunnerSingle {
     }
 
     class CooperativeSolverBuilder implements SolverBuilder {
+        int i;
+
+        public CooperativeSolverBuilder(int i) {
+            this.i = i;
+        }
 
         @Override
         public AbstractCongestionSolver getSolver(CongestionProfile profile,
                 int n) {
-            return new CooperativeCongestionSolver(profile, 8, ALLOWED_EXCESS);
+            return new CooperativeCongestionSolver(profile, 8, i);
         }
     }
 }

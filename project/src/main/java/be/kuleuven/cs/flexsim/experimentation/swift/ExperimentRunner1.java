@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
@@ -24,35 +25,77 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.MultiThreadedExperimentRunner;
+import be.kuleuven.cs.flexsim.experimentation.saso.RenumerationGameRunner;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ExperimentRunner1 {
 
-    private static int N = 1000;
+    private int N = 1000;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int NAGENTS = 10;
-    private static final int ALLOWED_EXCESS = 50;
+    private int NAGENTS = 5;
+    private int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newCopyOnWriteArrayList();
     private final List<Double> result2 = Lists.newCopyOnWriteArrayList();
     private boolean competitive = true;
+    private boolean allowLessActivations = true;
+
+    private ExperimentRunner1(int N, int nagents, int allowed) {
+        this.N = N;
+        this.NAGENTS = nagents;
+        this.ALLOWED_EXCESS = allowed;
+    }
 
     /**
      * @param args
      */
     public static void main(String[] args) {
 
+        if (args.length == 0) {
+            new ExperimentRunner1(1000, 10, 33).execute();
+        } else if (args.length == 1) {
+            try {
+                final int agents = Integer.valueOf(args[0]);
+                new ExperimentRunner1(1000, agents, 33).execute();
+            } catch (Exception e) {
+                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                        .error("Unparseable cl parameters passed");
+                throw e;
+            }
+        } else if (args.length == 2) {
+            try {
+                final int agents = Integer.valueOf(args[1]);
+                final int reps = Integer.valueOf(args[0]);
+                new ExperimentRunner1(reps, agents, 33).execute();
+            } catch (Exception e) {
+                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                        .error("Unparseable cl parameters passed");
+                throw e;
+            }
+        } else if (args.length == 3) {
+            try {
+                final int agents = Integer.valueOf(args[1]);
+                final int reps = Integer.valueOf(args[0]);
+                final int allowed = Integer.valueOf(args[2]);
+                new ExperimentRunner1(reps, agents, allowed).execute();
+            } catch (Exception e) {
+                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                        .error("Unparseable cl parameters passed");
+                throw e;
+            }
+        }
+    }
+
+    public void execute() {
         // GammaDistribution gd = new GammaDistribution(
         // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
         // R3DP_GAMMA_SCALE);
         // System.out.println(Arrays.toString(gd.sample(10000)));
-
-        ExperimentRunner1 er = new ExperimentRunner1();
-        er.runBatch();
-        er.competitive = false;
-        er.runBatch();
+        runBatch();
+        competitive = false;
+        runBatch();
         // er.runSingle();
     }
 
@@ -69,7 +112,8 @@ public class ExperimentRunner1 {
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
                 ExperimentInstance p = (new ExperimentInstance(NAGENTS,
-                        getSolverBuilder(), gd, profile));
+                        getSolverBuilder(), gd.sample(NAGENTS), profile,
+                        allowLessActivations));
                 p.startExperiment();
                 System.out.println(p.getEfficiency());
             }
@@ -154,7 +198,8 @@ public class ExperimentRunner1 {
 
         private void setup() {
             this.p = (new ExperimentInstance(NAGENTS, getSolverBuilder(),
-                    checkNotNull(real), checkNotNull(profile)));
+                    checkNotNull(real), checkNotNull(profile),
+                    allowLessActivations));
         }
 
         @Override

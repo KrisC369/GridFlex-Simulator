@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.apache.commons.math3.util.FastMath;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
@@ -113,30 +113,29 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
         public @Nullable DSMProposal findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
 
-            List<DSMProposal> filtered = Lists.newArrayList(
-                    Collections2.filter(props, new MyPredicate<DSMProposal>() {
-                        @Override
-                        public boolean apply(@Nullable DSMProposal input) {
-                            if (input == null) {
-                                return false;
-                            }
-                            return filterFunction
-                                    .apply(input) <= RELATIVE_MAX_VALUE_PERCENT
-                                            ? true : false;
-                        }
-                    }));
-            if (filtered.isEmpty()) {
+            if (props.isEmpty()) {
                 return null;
             }
-            return CollectionUtils.argMax(filtered, choiceFunction);
+            return CollectionUtils.argMax(props, choiceFunction);
         }
 
         @Override
-        public DSMProposal getWorkUnitDescription() {
+        public Optional<DSMProposal> getWorkUnitDescription() {
             double cong = getCongestion().value(getTick());
-            return DSMProposal.create(
+            double sum = 0;
+            Min m = new Min();
+            m.setData(new double[] { getTick() + 8, 35040 });
+            for (int i = getTick(); i < m.evaluate(); i++) {
+                sum += getCongestion().value(i);
+            }
+            if ((sum / (getCongestion().max() * 8.0)
+                    * 100) < RELATIVE_MAX_VALUE_PERCENT) {
+                return Optional.absent();
+            }
+
+            return Optional.fromNullable(DSMProposal.create(
                     "CNP for activation for tick: " + getTick(), cong, 0,
-                    getTick(), getTick() + DSM_ALLOCATION_DURATION);
+                    getTick(), getTick() + DSM_ALLOCATION_DURATION));
         }
 
         @Override
