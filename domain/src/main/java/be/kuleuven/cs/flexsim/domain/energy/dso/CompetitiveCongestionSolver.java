@@ -6,11 +6,11 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.math3.util.FastMath;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
-import autovalue.shaded.com.google.common.common.base.Optional;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;

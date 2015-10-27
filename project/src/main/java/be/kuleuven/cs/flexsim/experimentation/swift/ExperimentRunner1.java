@@ -35,8 +35,8 @@ public class ExperimentRunner1 {
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 10;
     private static final int ALLOWED_EXCESS = 50;
-    private final List<Double> result1 = Lists.newArrayList();
-    private final List<Double> result2 = Lists.newArrayList();
+    private final List<Double> result1 = Lists.newCopyOnWriteArrayList();
+    private final List<Double> result2 = Lists.newCopyOnWriteArrayList();
     private boolean competitive = true;
 
     /**

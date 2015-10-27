@@ -54,8 +54,8 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     private void startCNP(T p) {
         this.description = Optional.fromNullable(p);
-        final Map<Proposal, AnswerAnticipator<T>> props = Maps
-                .newLinkedHashMap();
+        // final Map<Proposal, AnswerAnticipator<T>> props = Maps
+        // .newLinkedHashMap();
         for (Responder<T> r : responders) {
             r.callForProposal(new AnswerAnticipator<T>() {
 
