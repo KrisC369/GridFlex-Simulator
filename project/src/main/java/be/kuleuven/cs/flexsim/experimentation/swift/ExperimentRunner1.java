@@ -96,6 +96,7 @@ public class ExperimentRunner1 {
         runBatch();
         competitive = false;
         runBatch();
+        printResult();
         // er.runSingle();
     }
 
@@ -156,12 +157,17 @@ public class ExperimentRunner1 {
         // ExperimentRunner r = new SingleThreadedExperimentRunner();
 
         r.runExperiments(instances);
-        System.out.println(result1);
-        System.out.println(result2);
+    }
+
+    private void printResult() {
+        System.out.println("BEGINRESULT:");
+        System.out.println("Res1=" + result1);
+        System.out.println("Res2=" + result2);
         System.out.println(
                 "Not meeting 40 acts: " + String.valueOf(N - result1.size()));
         System.out.println(
                 "Not meeting 40 acts: " + String.valueOf(N - result2.size()));
+        System.out.println("ENDRESULT:");
     }
 
     private synchronized void addResult(String lable, double eff) {
