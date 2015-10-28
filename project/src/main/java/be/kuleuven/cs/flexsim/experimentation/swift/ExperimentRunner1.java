@@ -35,7 +35,7 @@ public class ExperimentRunner1 {
     private int N = 1000;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private int NAGENTS = 5;
+    private int NAGENTS;
     private int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newCopyOnWriteArrayList();
     private final List<Double> result2 = Lists.newCopyOnWriteArrayList();
@@ -52,6 +52,17 @@ public class ExperimentRunner1 {
      * @param args
      */
     public static void main(String[] args) {
+        GammaDistribution gd = new GammaDistribution(
+                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                R3DP_GAMMA_SCALE);
+        // int n = 1;
+        // for (int i = 0; i < 20; i++) {
+        // int[] t = new int[n];
+        // for (int j = 0; j < n; j++) {
+        // t[j] = (int) gd.sample();
+        // }
+        // System.out.println(Arrays.toString(t));
+        // }
 
         if (args.length == 0) {
             new ExperimentRunner1(1000, 10, 33).execute();
@@ -147,8 +158,8 @@ public class ExperimentRunner1 {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
             for (int i = 0; i < N; i++) {
-                instances.add(new ExperimentAtomImplementation(gd.sample(10),
-                        profile));
+                instances.add(new ExperimentAtomImplementation(
+                        gd.sample(NAGENTS), profile));
             }
         } catch (IOException e) {
             e.printStackTrace();
