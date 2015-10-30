@@ -6,7 +6,6 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
  * Factory for creating experiment Runners.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class LocalRunners {
     private static final int DEFAULT_THREADS = 4;
@@ -42,5 +41,16 @@ public final class LocalRunners {
     public static ExperimentRunner createCustomMultiThreadedRunner(
             int availableProcs) {
         return new MultiThreadedExperimentRunner(availableProcs);
+    }
+
+    /**
+     * Creates a multiprocessor runner with as many threads in the pool as there
+     * are cores available.
+     *
+     * @return The specified ExperimentRunner.
+     */
+    public static ExperimentRunner createOSTunedMultiThreadedRunner() {
+        return new MultiThreadedExperimentRunner(
+                Runtime.getRuntime().availableProcessors());
     }
 }

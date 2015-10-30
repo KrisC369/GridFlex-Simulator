@@ -24,7 +24,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.runners.local.MultiThreadedExperimentRunner;
+import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.experimentation.saso.RenumerationGameRunner;
 
 /**
@@ -55,8 +55,8 @@ public class ExperimentRunner1 {
         GammaDistribution gd = new GammaDistribution(
                 new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
-        // int n = 1;
-        // for (int i = 0; i < 20; i++) {
+        // int n = 3;
+        // for (int i = 0; i < 21; i++) {
         // int[] t = new int[n];
         // for (int j = 0; j < n; j++) {
         // t[j] = (int) gd.sample();
@@ -164,9 +164,8 @@ public class ExperimentRunner1 {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ExperimentRunner r = new MultiThreadedExperimentRunner(8);
+        ExperimentRunner r = LocalRunners.createOSTunedMultiThreadedRunner();
         // ExperimentRunner r = new SingleThreadedExperimentRunner();
-
         r.runExperiments(instances);
     }
 
