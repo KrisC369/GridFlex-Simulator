@@ -35,6 +35,7 @@ public class ExperimentRunner1 {
     private int N = 1000;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
+    private static final int PROGRESSBAR_LENGTH = 50;
     private int NAGENTS;
     private int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newCopyOnWriteArrayList();
@@ -65,7 +66,7 @@ public class ExperimentRunner1 {
         // }
 
         if (args.length == 0) {
-            new ExperimentRunner1(1000, 10, 33).execute();
+            new ExperimentRunner1(100, 81, 33).execute();
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.valueOf(args[0]);
@@ -180,10 +181,10 @@ public class ExperimentRunner1 {
         System.out.println("ENDRESULT:");
     }
 
-    private synchronized void addResult(String lable, double eff) {
-        if ("comp".equals(lable)) {
+    private synchronized void addResult(String label, double eff) {
+        if ("comp".equals(label)) {
             result1.add(eff);
-        } else if ("coop".equals(lable)) {
+        } else if ("coop".equals(label)) {
             result2.add(eff);
         }
     }

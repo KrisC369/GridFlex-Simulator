@@ -30,11 +30,11 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.SingleThreadedExperi
  */
 public class ExperimentRunnerSingle2 {
 
-    private static int N = 10000;
+    private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int NAGENTS = 10;
-    private static final int ALLOWED_EXCESS = 50;
+    private static final int NAGENTS = 100;
+    private static final int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newArrayList();
     private final List<Double> result2 = Lists.newArrayList();
     private boolean competitive = false;
@@ -63,16 +63,16 @@ public class ExperimentRunnerSingle2 {
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
                 ExperimentInstance p = (new ExperimentInstance(NAGENTS,
-                        getSolverBuilder(ALLOWED_EXCESS), gd.sample(NAGENTS),
+                        getSolverBuilder(i / (N / 100)), gd.sample(NAGENTS),
                         profile, allowLessActivations));
                 p.startExperiment();
-                result[i / 100] += p.getEfficiency();
+                result[i / (N / 100)] += p.getEfficiency();
                 // System.out.println(p.getEfficiency());
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (int i = 0; i < N / 100; i++) {
+        for (int i = 0; i < 100; i++) {
             result[i] /= 100.0;
         }
         System.out.println("distribution of eff = " + Arrays.toString(result));
@@ -80,7 +80,7 @@ public class ExperimentRunnerSingle2 {
 
     private SolverBuilder getSolverBuilder(int i) {
         if (competitive) {
-            return new CompetitiveSolverBuilder();
+            return new CompetitiveSolverBuilder(i);
         }
         return new CooperativeSolverBuilder(i);
     }
@@ -161,10 +161,16 @@ public class ExperimentRunnerSingle2 {
     }
 
     class CompetitiveSolverBuilder implements SolverBuilder {
+        int i;
+
+        public CompetitiveSolverBuilder(int i) {
+            this.i = i;
+        }
+
         @Override
         public AbstractCongestionSolver getSolver(CongestionProfile profile,
                 int n) {
-            return new CompetitiveCongestionSolver(profile, 8, ALLOWED_EXCESS);
+            return new CompetitiveCongestionSolver(profile, 8, i);
         }
     }
 

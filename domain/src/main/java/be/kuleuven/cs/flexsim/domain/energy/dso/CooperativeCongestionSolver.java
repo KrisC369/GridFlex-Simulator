@@ -45,6 +45,25 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             return (int) ((-sum / ((input.getTargetValue() / 4.0) * 8)) * 100);
         }
     };
+    // private final IntNNFunction<DSMProposal> choiceFunction = new
+    // IntNNFunction<DSMProposal>() {
+    // @Override
+    // public int apply(DSMProposal input) {
+    // double sum = 0;
+    // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
+    // getModifiableProfileAfterDSM().length() - getTick()
+    // - 1); i++) {
+    // sum += FastMath.min(
+    // getModifiableProfileAfterDSM().value(getTick() + i),
+    // (input.getTargetValue() / 4.0));
+    // }
+    // double theoreticalMax = DSM_ALLOCATION_DURATION
+    // * (input.getTargetValue() / 4.0);
+    // double relativeSucc = sum / theoreticalMax;
+    //
+    // return (int) (relativeSucc * input.getValuation() * 1000);
+    // }
+    // };
     private final IntNNFunction<DSMProposal> choiceFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
@@ -60,7 +79,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                     * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
-            return (int) (relativeSucc * input.getValuation() * 1000);
+            return (int) (relativeSucc * 1000);
         }
     };
 

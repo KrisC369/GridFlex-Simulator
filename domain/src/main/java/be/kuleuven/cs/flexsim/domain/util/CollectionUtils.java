@@ -56,9 +56,9 @@ public final class CollectionUtils {
     public static <T> T argMax(Iterable<T> list, IntNNFunction<T> f) {
         checkArgument(list.iterator().hasNext(),
                 "Can't provide empty list to this function");
-        int max = 0;
         Iterator<T> it = list.iterator();
-        T currentMax = it.next();
+        T currentMax = it.next();// todo THIS IS WRONG!!!!!
+        int max = f.apply(currentMax);
         while (it.hasNext()) {
             T current = it.next();
             if (f.apply(current) > max) {

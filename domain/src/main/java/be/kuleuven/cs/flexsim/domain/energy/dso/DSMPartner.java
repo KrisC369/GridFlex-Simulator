@@ -186,8 +186,8 @@ public class DSMPartner implements SimulationComponent {
      */
     private void markActivation(Integer begin, Integer end,
             double targetPowerRate) {
-        for (int i = 0; i < end; i++) {
-            activationMarker[i] = targetPowerRate;
+        for (int i = 0; i < end - begin; i++) {
+            activationMarker[begin + i] = targetPowerRate;
         }
         incrementActivations();
     }
