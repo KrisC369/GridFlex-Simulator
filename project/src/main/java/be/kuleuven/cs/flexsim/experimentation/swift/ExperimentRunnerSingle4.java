@@ -28,7 +28,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.SingleThreadedExperi
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ExperimentRunnerSingle3 {
+public class ExperimentRunnerSingle4 {
 
     private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
@@ -44,7 +44,7 @@ public class ExperimentRunnerSingle3 {
      * @param args
      */
     public static void main(String[] args) {
-        ExperimentRunnerSingle3 er = new ExperimentRunnerSingle3();
+        ExperimentRunnerSingle4 er = new ExperimentRunnerSingle4();
         // er.runBatch();
         er.runSingle();
     }

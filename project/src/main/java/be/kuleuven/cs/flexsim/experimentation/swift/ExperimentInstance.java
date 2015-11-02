@@ -66,6 +66,15 @@ public class ExperimentInstance {
                 / (getTotalPowerRates() * 40.0 * 2.0);
     }
 
+    public double getActivationRate() {
+        int sum = 0;
+        for (DSMPartner p : partners) {
+            sum += p.getCurrentActivations();
+        }
+        return sum / (double) (partners.size()
+                * partners.get(0).getMaxActivations());
+    }
+
     private double getTotalPowerRates() {
         int sum = 0;
         for (DSMPartner p : partners) {
