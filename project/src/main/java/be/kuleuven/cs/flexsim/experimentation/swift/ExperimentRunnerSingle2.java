@@ -33,7 +33,7 @@ public class ExperimentRunnerSingle2 {
     private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int NAGENTS = 10;
+    private static final int NAGENTS = 2;
     private static final int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newArrayList();
     private final List<Double> result2 = Lists.newArrayList();
@@ -73,7 +73,7 @@ public class ExperimentRunnerSingle2 {
             e.printStackTrace();
         }
         for (int i = 0; i < 100; i++) {
-            result[i] /= 100.0;
+            result[i] /= (N / 100);
         }
         System.out.println("distribution of eff = " + Arrays.toString(result));
     }

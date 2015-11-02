@@ -19,7 +19,9 @@ import autovalue.shaded.com.google.common.common.collect.Lists;
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
@@ -57,6 +59,7 @@ public class ExperimentRunnerSingle3 {
         CongestionProfile profile;
         double[] resA = new double[100];
         for (int j = 1; j < 100; j++) {
+            System.out.println("run" + j);
             double[] result = new double[100];
             try {
                 profile = (CongestionProfile) CongestionProfile.createFromCSV(
@@ -76,11 +79,22 @@ public class ExperimentRunnerSingle3 {
                 e.printStackTrace();
             }
             for (int i = 0; i < 100; i++) {
-                result[i] /= 100.0;
+                result[i] /= (N / 100);
             }
             Max max = new Max();
             max.setData(result);
-            resA[j] = max.evaluate();
+            List<Double> reslist = Lists.newArrayList();
+            for (double d : result) {
+                reslist.add(d);
+            }
+            resA[j] = CollectionUtils.argMax(reslist,
+                    new IntNNFunction<Double>() {
+
+                        @Override
+                        public int apply(Double input) {
+                            return (int) (input * 100);
+                        }
+                    });
         }
         System.out.println("distribution of eff = " + Arrays.toString(resA));
     }
