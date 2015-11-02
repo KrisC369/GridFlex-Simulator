@@ -213,12 +213,12 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
         @Override
         public DSMProposal updateWorkDescription(DSMProposal best) {
-            // if (best.getTargetValue() < secondBest.get().getTargetValue()) {
-            // throw new IllegalStateException(
-            // "Some weird shit happened. Secondbest with higher activation? at
-            // tick "
-            // + best.getBeginMark().get());
-            // }
+            if (secondBest.isPresent() && best.getTargetValue() < secondBest
+                    .get().getTargetValue()) {
+                throw new IllegalStateException(
+                        "Some weird shit happened. Secondbest with higher activation? at tick "
+                                + best.getBeginMark().get());
+            }
             if (secondBest.isPresent() && best.getTargetValue() > secondBest
                     .get().getTargetValue()) {
                 // System.out.println("SetLow");

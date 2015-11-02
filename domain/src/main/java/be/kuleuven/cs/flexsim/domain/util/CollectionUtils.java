@@ -57,7 +57,7 @@ public final class CollectionUtils {
         checkArgument(list.iterator().hasNext(),
                 "Can't provide empty list to this function");
         Iterator<T> it = list.iterator();
-        T currentMax = it.next();// todo THIS IS WRONG!!!!!
+        T currentMax = it.next();
         int max = f.apply(currentMax);
         while (it.hasNext()) {
             T current = it.next();

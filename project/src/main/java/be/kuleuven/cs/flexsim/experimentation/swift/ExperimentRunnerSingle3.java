@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.stat.descriptive.rank.Max;
 
 import autovalue.shaded.com.google.common.common.collect.Lists;
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
@@ -28,7 +29,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.SingleThreadedExperi
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ExperimentRunnerSingle2 {
+public class ExperimentRunnerSingle3 {
 
     private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
@@ -44,7 +45,7 @@ public class ExperimentRunnerSingle2 {
      * @param args
      */
     public static void main(String[] args) {
-        ExperimentRunnerSingle2 er = new ExperimentRunnerSingle2();
+        ExperimentRunnerSingle3 er = new ExperimentRunnerSingle3();
         // er.runBatch();
         er.runSingle();
     }
@@ -54,28 +55,34 @@ public class ExperimentRunnerSingle2 {
      */
     protected void runSingle() {
         CongestionProfile profile;
-        double[] result = new double[100];
-        try {
-            profile = (CongestionProfile) CongestionProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            GammaDistribution gd = new GammaDistribution(
-                    new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-                    R3DP_GAMMA_SCALE);
-            for (int i = 0; i < N; i++) {
-                ExperimentInstance p = (new ExperimentInstance(NAGENTS,
-                        getSolverBuilder(i / (N / 100)), gd.sample(NAGENTS),
-                        profile, allowLessActivations));
-                p.startExperiment();
-                result[i / (N / 100)] += p.getEfficiency();
-                // System.out.println(p.getEfficiency());
+        double[] resA = new double[100];
+        for (int j = 1; j < 100; j++) {
+            double[] result = new double[100];
+            try {
+                profile = (CongestionProfile) CongestionProfile.createFromCSV(
+                        "4kwartOpEnNeer.csv", "verlies aan energie");
+                GammaDistribution gd = new GammaDistribution(
+                        new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                        R3DP_GAMMA_SCALE);
+                for (int i = 0; i < N; i++) {
+                    ExperimentInstance p = (new ExperimentInstance(j,
+                            getSolverBuilder(i / (N / 100)), gd.sample(j),
+                            profile, allowLessActivations));
+                    p.startExperiment();
+                    result[i / (N / 100)] += p.getEfficiency();
+                    // System.out.println(p.getEfficiency());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            for (int i = 0; i < 100; i++) {
+                result[i] /= 100.0;
+            }
+            Max max = new Max();
+            max.setData(result);
+            resA[j] = max.evaluate();
         }
-        for (int i = 0; i < 100; i++) {
-            result[i] /= 100.0;
-        }
-        System.out.println("distribution of eff = " + Arrays.toString(result));
+        System.out.println("distribution of eff = " + Arrays.toString(resA));
     }
 
     private SolverBuilder getSolverBuilder(int i) {

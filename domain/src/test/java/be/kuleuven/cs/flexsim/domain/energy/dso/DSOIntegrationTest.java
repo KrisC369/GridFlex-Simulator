@@ -154,6 +154,7 @@ public class DSOIntegrationTest {
         congestionSolver.afterTick(1);
         congestionSolver.afterTick(1);
         congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
         assertTrue(dsm2.getCurrentActivations() > 0);
         assertTrue(dsm1.getCurrentActivations() == 0);
     }
@@ -184,9 +185,56 @@ public class DSOIntegrationTest {
         congestionSolver.afterTick(1);
         congestionSolver.afterTick(1);
         congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
         assertTrue(dsm2.getCurrentActivations() == 0);
         assertTrue(dsm1.getCurrentActivations() > 0);
         assertTrue(dsm1.getCurtailment(10) == dsm2.getFlexPowerRate());
+        assertEquals(0.01, getEfficiency(), 0.1);
+    }
+
+    @Test
+    public void testCompScenario2() {
+        try {
+            congestionProfile = (CongestionProfile) CongestionProfile
+                    .createFromCSV("smalltest.csv", column);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+                8);
+        dsm1 = new DSMPartner(4, 10, 8, 8000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 15000, 1);
+        sim = Simulator.createSimulator(25);
+        register();
+        // sim.start();
+
+        congestionSolver.afterTick(1);
+        congestionSolver.afterTick(1);
+        congestionSolver.afterTick(1);
+        congestionSolver.afterTick(1);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() == 0);
+        assertTrue(dsm2.getCurtailment(10) == dsm1.getFlexPowerRate());
+        assertEquals(0.01, getEfficiency(), 0.01);
+    }
+
+    public double getEfficiency() {
+        return congestionSolver.getTotalRemediedCongestion()
+                / (getTotalPowerRates() * dsm1.getMaxActivations() * 2.0);
+    }
+
+    private double getTotalPowerRates() {
+        int sum = 0;
+        sum += dsm1.getFlexPowerRate();
+        sum += dsm2.getFlexPowerRate();
+        return sum;
     }
 
 }

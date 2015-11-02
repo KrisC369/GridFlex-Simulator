@@ -19,6 +19,7 @@ import be.kuleuven.cs.flexsim.domain.site.EquidistantSiteSimulationTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteSimulationTest;
 import be.kuleuven.cs.flexsim.domain.site.SiteTest;
 import be.kuleuven.cs.flexsim.domain.util.BufferTest;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtilsTest;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfileTest;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.TrapzPosTest;
@@ -36,6 +37,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         OutputGeneratorTest.class, SiteSimulationTest.class,
         BalancingAuctionTSOTest.class, BalancingTSOTest.class,
         EquidistantSiteSimulationTest.class, ListenerTest.class,
-        NominationTest.class, CongestionProfileTest.class, TrapzPosTest.class })
+        NominationTest.class, CongestionProfileTest.class, TrapzPosTest.class,
+        CollectionUtilsTest.class })
 public class DomainTests {
 }
