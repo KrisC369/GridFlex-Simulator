@@ -4,6 +4,7 @@
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
@@ -30,7 +31,7 @@ public class ExperimentRunnerSingle4 {
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 200;
-    private final List<Double> result1 = Lists.newArrayList();
+    private final double[] result2 = new double[NAGENTS];
     private boolean competitive = false;
     private boolean allowLessActivations = true;
 
@@ -61,11 +62,13 @@ public class ExperimentRunnerSingle4 {
         ExperimentRunner r = LocalRunners.createOSTunedMultiThreadedRunner();
 
         r.runExperiments(instances);
-        System.out.println("distribution of eff = " + result1);
+        System.out.println("distribution of eff = " + Arrays.toString(result2));
     }
 
-    private synchronized void addResult(int agents, double eff) {
-        result1.add(agents, eff);
+    private void addResult(int agents, double eff) {
+        synchronized (result2) {
+            result2[agents] = eff;
+        }
         System.out.println("Result added for " + agents + " " + eff);
     }
 
