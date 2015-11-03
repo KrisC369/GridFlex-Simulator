@@ -14,7 +14,8 @@ import javax.annotation.Nullable;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 
-import autovalue.shaded.com.google.common.common.collect.Lists;
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
