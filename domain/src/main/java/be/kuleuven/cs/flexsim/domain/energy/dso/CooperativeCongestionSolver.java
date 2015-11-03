@@ -46,6 +46,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
     // return (int) ((-sum / ((input.getTargetValue() / 4.0) * 8)) * 100);
     // }
     // };
+
     // private final IntNNFunction<DSMProposal> choiceFunction = new
     // IntNNFunction<DSMProposal>() {
     // @Override
@@ -144,8 +145,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             double cong = getCongestion().value(getTick());
             double sum = 0;
             Min m = new Min();
-            m.setData(new double[] { getTick() + 8,
-                    getCongestion().values().length });
+            m.setData(new double[] { getTick() + 8, getCongestion().length() });
             for (int i = getTick(); i < m.evaluate(); i++) {
                 sum += getCongestion().value(i);
             }

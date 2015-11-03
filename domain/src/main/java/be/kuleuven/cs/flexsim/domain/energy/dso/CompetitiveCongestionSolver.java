@@ -192,7 +192,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
             double cong = getCongestion().value(getTick());
             double sum = 0;
             Min m = new Min();
-            m.setData(new double[] { getTick() + 8, 35040 });
+            m.setData(new double[] { getTick() + 8, getCongestion().length() });
             for (int i = getTick(); i < m.evaluate(); i++) {
                 sum += getCongestion().value(i);
             }
