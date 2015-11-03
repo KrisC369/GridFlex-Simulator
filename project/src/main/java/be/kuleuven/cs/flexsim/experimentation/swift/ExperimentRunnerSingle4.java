@@ -25,7 +25,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
  */
 public class ExperimentRunnerSingle4 {
 
-    private static int N = 100;
+    private static int N = 500;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 200;
