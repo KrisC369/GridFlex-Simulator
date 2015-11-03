@@ -23,8 +23,6 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.runners.local.SingleThreadedExperimentRunner;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -34,7 +32,7 @@ public class ExperimentRunnerSingle3 {
     private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int NAGENTS = 10;
+    private static final int NAGENTS = 200;
     private static final int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newArrayList();
     private final List<Double> result2 = Lists.newArrayList();
@@ -55,8 +53,8 @@ public class ExperimentRunnerSingle3 {
      */
     protected void runSingle() {
         CongestionProfile profile;
-        double[] resA = new double[100];
-        for (int j = 1; j < 100; j++) {
+        double[] resA = new double[NAGENTS + 1];
+        for (int j = 1; j <= NAGENTS; j++) {
             System.out.println("run" + j);
             double[] result = new double[100];
             try {
@@ -112,28 +110,28 @@ public class ExperimentRunnerSingle3 {
         return "coop";
     }
 
-    public void runBatch() {
-        CongestionProfile profile;
-        List<ExperimentAtom> instances = Lists.newArrayList();
-        GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-                R3DP_GAMMA_SCALE);
-        try {
-            profile = (CongestionProfile) CongestionProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            for (int i = 0; i < N; i++) {
-                instances.add(new ExperimentAtomImplementation(gd.sample(10),
-                        profile));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // ExperimentRunner r = new MultiThreadedExperimentRunner(8);
-        ExperimentRunner r = new SingleThreadedExperimentRunner();
-
-        r.runExperiments(instances);
-        System.out.println(result1);
-    }
+    // public void runBatch(int agents) {
+    // CongestionProfile profile;
+    // List<ExperimentAtom> instances = Lists.newArrayList();
+    // GammaDistribution gd = new GammaDistribution(
+    // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+    // R3DP_GAMMA_SCALE);
+    // try {
+    // profile = (CongestionProfile) CongestionProfile
+    // .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+    // for (int i = 0; i < N; i++) {
+    // instances.add(new ExperimentAtomImplementation(
+    // gd.sample(agents), profile));
+    // }
+    // } catch (IOException e) {
+    // e.printStackTrace();
+    // }
+    // // ExperimentRunner r = new MultiThreadedExperimentRunner(8);
+    // ExperimentRunner r = new SingleThreadedExperimentRunner();
+    //
+    // r.runExperiments(instances);
+    // System.out.println(result1);
+    // }
 
     private synchronized void addResult(String lable, double eff) {
         if ("comp".equals(lable)) {
