@@ -65,6 +65,7 @@ public class ExperimentRunnerSingle4 {
 
     private synchronized void addResult(int agents, double eff) {
         result1.add(agents, eff);
+        System.out.println("Result added for " + agents + " " + eff);
     }
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
