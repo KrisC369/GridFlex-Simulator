@@ -73,15 +73,14 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
                     getModifiableProfileAfterDSM().length() - getTick()
                             - 1); i++) {
-                sum += FastMath.min(
-                        getModifiableProfileAfterDSM().value(getTick() + i),
+                sum += FastMath.min(getHorizon()[i],
                         (input.getTargetValue() / 4.0));
             }
             double theoreticalMax = DSM_ALLOCATION_DURATION
                     * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
-            return (int) ((relativeSucc * 1000 * 1000)
+            return (int) ((relativeSucc * 1000 * 100000)
                     + input.getTargetValue());
         }
     };

@@ -3,6 +3,8 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.math3.util.FastMath;
+
 import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
@@ -24,6 +26,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     private final int forecastHorizon;
     private BigDecimal remediedCongestionCount;
     private final CongestionProfile afterDSMprofile;
+    private double[] horizon;
 
     /**
      * Default constructor.
@@ -41,6 +44,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         this.forecastHorizon = forecastHorizon;
         this.remediedCongestionCount = new BigDecimal(0);
         this.afterDSMprofile = CongestionProfile.createFromTimeSeries(profile);
+        this.horizon = new double[DSM_ALLOCATION_DURATION];
     }
 
     /**
@@ -62,6 +66,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     public void afterTick(int t) {
         getWorkResults();
         incrementTick();
+        updateHorizon();
     }
 
     @Override
@@ -93,6 +98,53 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
             this.afterDSMprofile.changeValue(getTick(),
                     afterDSMprofile.value(getTick()) - dsmv);
         }
+    }
+
+    // private void getWorkResults2() {
+    // for (int i = 0; i < FastMath.min(getForecastHorizon(),
+    // afterDSMprofile.length() - getTick() - 1); i++) {
+    // double toCorrect = afterDSMprofile.value(getTick() + i);
+    // for (DSMPartner d : getDsms()) {
+    // double dsmv = d.getCurtailment(getTick() + i) / 4.0;
+    // if (dsmv < 0) {
+    // System.out.println("oops");
+    // }
+    // if (this.remediedCongestionCount.signum() < 0) {
+    // System.out.println("oops again");
+    // }
+    // if (toCorrect > 0) {
+    // if (dsmv >= toCorrect) {
+    // this.remediedCongestionCount = this.remediedCongestionCount
+    // .add(BigDecimal.valueOf(toCorrect));
+    // toCorrect = 0;
+    // } else {
+    // this.remediedCongestionCount = this.remediedCongestionCount
+    // .add(BigDecimal.valueOf(dsmv));
+    // toCorrect -= dsmv;
+    // }
+    // }
+    // this.afterDSMprofile.changeValue(getTick() + i,
+    // afterDSMprofile.value(getTick() + i) - dsmv);
+    // }
+    // }
+    // }
+
+    private void updateHorizon() {
+        this.horizon = new double[DSM_ALLOCATION_DURATION];
+        for (int i = 0; i < FastMath.min(getForecastHorizon(),
+                afterDSMprofile.length() - getTick() - 1); i++) {
+            double toCorrect = afterDSMprofile.value(getTick() + i);
+            double correction = 0;
+            for (DSMPartner d : getDsms()) {
+                correction += d.getCurtailment(getTick() + i) / 4.0;
+            }
+
+            horizon[i] = FastMath.max(0, toCorrect - correction);
+        }
+    }
+
+    double[] getHorizon() {
+        return this.horizon;
     }
 
     private void doTick() {
