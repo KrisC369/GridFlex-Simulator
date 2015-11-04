@@ -6,17 +6,25 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.commons.math3.distribution.GammaDistribution;
+import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DSOIntegrationTest {
+    private static final double R3DP_GAMMA_SCALE = 677.926;
+    private static final double R3DP_GAMMA_SHAPE = 1.37012;
+
     private static String column = "test";
     private static String file = "test.csv";
     private AbstractCongestionSolver congestionSolver;
@@ -225,9 +233,62 @@ public class DSOIntegrationTest {
         assertEquals(0.01, getEfficiency(), 0.01);
     }
 
+    @Test
+    public void testScenario3() {
+        try {
+            congestionProfile = (CongestionProfile) CongestionProfile
+                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+                8);
+        List<DSMPartner> partners = Lists.newArrayList();
+        GammaDistribution gd = new GammaDistribution(
+                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                R3DP_GAMMA_SCALE);
+        for (int i = 0; i < 185; i++) {
+            partners.add(new DSMPartner((int) gd.sample()));
+            congestionSolver.registerDSMPartner(partners.get(i));
+        }
+        sim = Simulator.createSimulator(35040);
+        sim.register(congestionSolver);
+        sim.start();
+        int totalActsComp = getTotalActs(partners);
+        System.out.println("Coop: " + getTotalActs(partners));
+
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+                8);
+        partners = Lists.newArrayList();
+        gd = new GammaDistribution(new MersenneTwister(1312421l),
+                R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
+        for (int i = 0; i < 185; i++) {
+            partners.add(new DSMPartner((int) gd.sample()));
+            congestionSolver.registerDSMPartner(partners.get(i));
+        }
+        sim = Simulator.createSimulator(35040);
+        sim.register(congestionSolver);
+        sim.start();
+        System.out.println("Comp: " + getTotalActs(partners));
+        assertEquals(getTotalActs(partners), totalActsComp);
+    }
+
     public double getEfficiency() {
         return congestionSolver.getTotalRemediedCongestion()
                 / (getTotalPowerRates() * dsm1.getMaxActivations() * 2.0);
+    }
+
+    public int getTotalActs(List<DSMPartner> partners) {
+        int sum = 0;
+        for (DSMPartner p : partners) {
+            sum += p.getCurrentActivations();
+        }
+        return sum;
     }
 
     private double getTotalPowerRates() {
