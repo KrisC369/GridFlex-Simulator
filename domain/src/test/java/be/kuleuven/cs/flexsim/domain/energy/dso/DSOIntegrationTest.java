@@ -201,6 +201,141 @@ public class DSOIntegrationTest {
     }
 
     @Test
+    public void testScenarioSquareProfileEqualReduction() {
+        try {
+            congestionProfile = (CongestionProfile) CongestionProfile
+                    .createFromCSV("smalltest.csv", column);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+                8);
+        dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
+        sim = Simulator.createSimulator(25);
+        register();
+        // sim.start();
+
+        for (int i = 0; i < 4; i++) {
+            congestionSolver.afterTick(1);
+        }
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() == 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurtailment(10) == dsm2.getFlexPowerRate());
+        for (int i = 0; i < 8; i++) {
+            congestionSolver.afterTick(1);
+        }
+        double eff1 = congestionSolver.getTotalRemediedCongestion();
+
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+                8);
+        dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
+        sim = Simulator.createSimulator(25);
+        register();
+        // sim.start();
+
+        for (int i = 0; i < 4; i++) {
+            congestionSolver.afterTick(1);
+        }
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() == 0);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurtailment(10) == dsm1.getFlexPowerRate());
+        for (int i = 0; i < 8; i++) {
+            congestionSolver.afterTick(1);
+        }
+        double eff2 = congestionSolver.getTotalRemediedCongestion();
+        assertEquals(eff1, eff2, 0.001);
+    }
+
+    @Test
+    public void testScenarioVaryingProfileUnequalReduction() {
+        try {
+            congestionProfile = (CongestionProfile) CongestionProfile
+                    .createFromCSV("smalltest.csv", column);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        congestionProfile.changeValue(6, 1500);
+        congestionProfile.changeValue(7, 1300);
+        congestionProfile.changeValue(8, 9000);
+        congestionProfile.changeValue(9, 12000);
+        congestionProfile.changeValue(9, 2300);
+        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+                8);
+        dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
+        sim = Simulator.createSimulator(25);
+        register();
+        // sim.start();
+
+        for (int i = 0; i < 4; i++) {
+            congestionSolver.afterTick(1);
+        }
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() == 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurtailment(10) == dsm2.getFlexPowerRate());
+        for (int i = 0; i < 8; i++) {
+            congestionSolver.afterTick(1);
+        }
+        double eff1 = congestionSolver.getTotalRemediedCongestion();
+
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+                8);
+        dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
+        sim = Simulator.createSimulator(25);
+        register();
+        // sim.start();
+
+        for (int i = 0; i < 4; i++) {
+            congestionSolver.afterTick(1);
+        }
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() == 0);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        assertTrue(dsm2.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
+        assertTrue(dsm1.getCurtailment(10) == dsm1.getFlexPowerRate());
+        for (int i = 0; i < 8; i++) {
+            congestionSolver.afterTick(1);
+        }
+        double eff2 = congestionSolver.getTotalRemediedCongestion();
+        assertTrue(eff1 < eff2);
+    }
+
+    @Test
     public void testCompScenario2() {
         try {
             congestionProfile = (CongestionProfile) CongestionProfile
@@ -213,6 +348,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
+
         congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 8000, 1);
@@ -234,10 +370,10 @@ public class DSOIntegrationTest {
     }
 
     @Test
-    public void testScenario3() {
+    public void testScenarioManyAgents() {
         try {
             congestionProfile = (CongestionProfile) CongestionProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+                    .createFromCSV("smalltest.csv", "test2");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
@@ -246,36 +382,65 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
+        // congestionProfile.changeValue(6, 1500);
+        // congestionProfile.changeValue(7, 1300);
+        // congestionProfile.changeValue(8, 9000);
+        // congestionProfile.changeValue(9, 12000);
+        // congestionProfile.changeValue(9, 2300);
         congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
                 8);
         List<DSMPartner> partners = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
                 new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
-        for (int i = 0; i < 185; i++) {
+        for (int i = 0; i < 200; i++) {
             partners.add(new DSMPartner((int) gd.sample()));
             congestionSolver.registerDSMPartner(partners.get(i));
         }
-        sim = Simulator.createSimulator(35040);
-        sim.register(congestionSolver);
-        sim.start();
+        // sim = Simulator.createSimulator(499);
+        // sim.register(congestionSolver);
+        // sim.start();
+        for (int i = 0; i < 3; i++) {
+            congestionSolver.afterTick(1);
+        }
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        for (int i = 0; i < 10; i++) {
+            congestionSolver.tick(1);
+            congestionSolver.afterTick(1);
+        }
         int totalActsComp = getTotalActs(partners);
-        System.out.println("Coop: " + getTotalActs(partners));
+        double eff1 = congestionSolver.getTotalRemediedCongestion();
 
         congestionSolver = new CooperativeCongestionSolver(congestionProfile,
                 8);
         partners = Lists.newArrayList();
         gd = new GammaDistribution(new MersenneTwister(1312421l),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
-        for (int i = 0; i < 185; i++) {
+        for (int i = 0; i < 200; i++) {
             partners.add(new DSMPartner((int) gd.sample()));
             congestionSolver.registerDSMPartner(partners.get(i));
         }
-        sim = Simulator.createSimulator(35040);
-        sim.register(congestionSolver);
-        sim.start();
-        System.out.println("Comp: " + getTotalActs(partners));
+        // sim = Simulator.createSimulator(35040);
+        // sim.register(congestionSolver);
+        // sim.start();
+        for (int i = 0; i < 3; i++) {
+            congestionSolver.afterTick(1);
+        }
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        congestionSolver.tick(1);
+        congestionSolver.afterTick(1);
+        for (int i = 0; i < 10; i++) {
+            congestionSolver.tick(1);
+            congestionSolver.afterTick(1);
+        }
+        double eff2 = congestionSolver.getTotalRemediedCongestion();
         assertEquals(getTotalActs(partners), totalActsComp);
+        System.out.println(eff1 + " " + eff2);
+        assertTrue(eff1 < eff2);
     }
 
     public double getEfficiency() {

@@ -81,7 +81,8 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                     * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
-            return (int) (relativeSucc * 1000);
+            return (int) ((relativeSucc * 1000 * 1000)
+                    + input.getTargetValue());
         }
     };
 
