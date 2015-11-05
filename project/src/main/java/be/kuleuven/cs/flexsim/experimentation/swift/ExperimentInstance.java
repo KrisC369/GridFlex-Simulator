@@ -87,7 +87,7 @@ public class ExperimentInstance {
         double eff2R = 0;
         for (DSMPartner d : partners) {
             double sum = 0;
-            for (int i = 0; i < checkNotNull(this.profile).length(); i++) {
+            for (int i = 0; i < SIMDURATION; i++) {
                 sum += d.getCurtailment(i) / 4;
             }
             if (sum != 0) {

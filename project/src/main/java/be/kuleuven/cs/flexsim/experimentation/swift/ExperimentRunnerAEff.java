@@ -68,7 +68,7 @@ public class ExperimentRunnerAEff {
         // }
 
         if (args.length == 0) {
-            new ExperimentRunnerAEff(10, 81, 33).execute();
+            new ExperimentRunnerAEff(10, 3, 33).execute();
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.valueOf(args[0]);
