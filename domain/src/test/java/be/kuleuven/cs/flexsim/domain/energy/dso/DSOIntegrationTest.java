@@ -413,7 +413,17 @@ public class DSOIntegrationTest {
         }
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
-
+        double eff1R = 0;
+        for (DSMPartner d : partners) {
+            double sum = 0;
+            for (int i = 0; i < 25; i++) {
+                sum += d.getCurtailment(i) / 4;
+            }
+            if (sum != 0) {
+                eff1R += (sum / (d.getCurrentActivations()
+                        * d.getFlexPowerRate() * 2));
+            }
+        }
         congestionSolver = new CooperativeCongestionSolver(congestionProfile,
                 8);
         partners = Lists.newArrayList();
@@ -438,9 +448,21 @@ public class DSOIntegrationTest {
             congestionSolver.afterTick(1);
         }
         double eff2 = congestionSolver.getTotalRemediedCongestion();
+        double eff2R = 0;
+        for (DSMPartner d : partners) {
+            double sum = 0;
+            for (int i = 0; i < 25; i++) {
+                sum += d.getCurtailment(i) / 4;
+            }
+            if (sum != 0) {
+                eff2R += (sum / (d.getCurrentActivations()
+                        * d.getFlexPowerRate() * 2));
+            }
+        }
         assertEquals(getTotalActs(partners), totalActsComp);
         System.out.println(eff1 + " " + eff2);
-        assertTrue(eff1 < eff2);
+        assertTrue(eff1R < eff2R);
+        // assertTrue(eff1 < eff2); //Allocation is lower but eff is higher.
     }
 
     @Test
@@ -558,6 +580,17 @@ public class DSOIntegrationTest {
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
 
+        double eff1R = 0;
+        for (DSMPartner d : partners) {
+            double sum = 0;
+            for (int i = 0; i < 25; i++) {
+                sum += d.getCurtailment(i) / 4;
+            }
+            if (sum != 0) {
+                eff1R += (sum / (d.getCurrentActivations()
+                        * d.getFlexPowerRate() * 2));
+            }
+        }
         congestionSolver = new CooperativeCongestionSolver(congestionProfile,
                 8);
         partners = Lists.newArrayList();
@@ -582,9 +615,22 @@ public class DSOIntegrationTest {
             congestionSolver.afterTick(1);
         }
         double eff2 = congestionSolver.getTotalRemediedCongestion();
+        double eff2R = 0;
+        for (DSMPartner d : partners) {
+            double sum = 0;
+            for (int i = 0; i < 25; i++) {
+                sum += d.getCurtailment(i) / 4;
+            }
+            if (sum != 0) {
+                eff2R += (sum / (d.getCurrentActivations()
+                        * d.getFlexPowerRate() * 2));
+            }
+        }
         assertEquals(getTotalActs(partners), totalActsComp);
         System.out.println(eff1 + " " + eff2);
-        assertTrue(eff1 < eff2);
+        System.out.println(eff1R + " " + eff2R);
+        assertTrue(eff1R < eff2R);
+        // assertTrue(eff1 < eff2); //allocation lower but eff higher.
     }
 
     public double getEfficiency() {

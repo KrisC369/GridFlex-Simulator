@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.apache.commons.math3.stat.descriptive.rank.Min;
-import org.apache.commons.math3.util.FastMath;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -49,17 +48,17 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
     private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
-            double sum = 0;
-            for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-                    getModifiableProfileAfterDSM().length() - getTick()
-                            - 1); i++) {
-                sum += FastMath.min(
-                        getModifiableProfileAfterDSM().value(getTick() + i),
-                        (input.getTargetValue() / 4.0));
-            }
+            // double sum = 0;
+            // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
+            // getModifiableProfileAfterDSM().length() - getTick()
+            // - 1); i++) {
+            // sum += FastMath.min(
+            // getModifiableProfileAfterDSM().value(getTick() + i),
+            // (input.getTargetValue() / 4.0));
+            // }
             double theoreticalMax = DSM_ALLOCATION_DURATION
                     * (input.getTargetValue() / 4.0);
-            double relativeSucc = sum / theoreticalMax;
+                    // double relativeSucc = sum / theoreticalMax;
 
             // return (int) (relativeSucc * input.getValuation() * 1000);
             return (int) (theoreticalMax * 1000); // higher
