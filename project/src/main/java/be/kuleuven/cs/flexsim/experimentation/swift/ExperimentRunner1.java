@@ -6,11 +6,13 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +55,9 @@ public class ExperimentRunner1 {
      * @param args
      */
     public static void main(String[] args) {
-        GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-                R3DP_GAMMA_SCALE);
+        // GammaDistribution gd = new GammaDistribution(
+        // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+        // R3DP_GAMMA_SCALE);
         // int n = 3;
         // for (int i = 0; i < 21; i++) {
         // int[] t = new int[n];
@@ -101,6 +103,13 @@ public class ExperimentRunner1 {
     }
 
     public void execute() {
+        NormalDistribution gd = new NormalDistribution(
+                new MersenneTwister(1312421l), 928.837, 933.529);
+        double[] sample = gd.sample(NAGENTS);
+        for (int i = 0; i < sample.length; i++) {
+            sample[i] = sample[i] < 0 ? 0 : sample[i];
+        }
+        System.out.println(Arrays.toString(sample));
         // GammaDistribution gd = new GammaDistribution(
         // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
         // R3DP_GAMMA_SCALE);
@@ -155,6 +164,7 @@ public class ExperimentRunner1 {
         GammaDistribution gd = new GammaDistribution(
                 new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
+        // NormalDistribution gd = new NormalDistribution(928.837, 933.529);
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");

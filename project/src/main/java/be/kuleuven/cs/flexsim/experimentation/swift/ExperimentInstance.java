@@ -83,6 +83,21 @@ public class ExperimentInstance {
         return sum;
     }
 
+    public double getSummedAgentEfficiency() {
+        double eff2R = 0;
+        for (DSMPartner d : partners) {
+            double sum = 0;
+            for (int i = 0; i < checkNotNull(this.profile).length(); i++) {
+                sum += d.getCurtailment(i) / 4;
+            }
+            if (sum != 0) {
+                eff2R += (sum / (d.getCurrentActivations()
+                        * d.getFlexPowerRate() * 2));
+            }
+        }
+        return eff2R;
+    }
+
     private void verify() {
         if (!allowLessActivations) {
             for (DSMPartner p : partners) {
