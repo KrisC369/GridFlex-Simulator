@@ -66,6 +66,25 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
     // return (int) (relativeSucc * input.getValuation() * 1000);
     // }
     // };
+    // private final IntNNFunction<DSMProposal> choiceFunction = new
+    // IntNNFunction<DSMProposal>() {
+    // @Override
+    // public int apply(DSMProposal input) {
+    // double sum = 0;
+    // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
+    // getModifiableProfileAfterDSM().length() - getTick()
+    // - 1); i++) {
+    // sum += FastMath.min(getHorizon()[i],
+    // (input.getTargetValue() / 4.0));
+    // }
+    // double theoreticalMax = DSM_ALLOCATION_DURATION
+    // * (input.getTargetValue() / 4.0);
+    // double relativeSucc = sum / theoreticalMax;
+    //
+    // return (int) ((relativeSucc * 1000 * 100000)
+    // + input.getTargetValue());
+    // }
+    // };
     private final IntNNFunction<DSMProposal> choiceFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
@@ -80,7 +99,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                     * (input.getTargetValue() / 4.0);
             double relativeSucc = sum / theoreticalMax;
 
-            return (int) ((relativeSucc * 1000 * 100000)
+            return (int) ((-relativeSucc * 1000 * 100000)
                     + input.getTargetValue());
         }
     };
@@ -145,9 +164,10 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             double cong = getCongestion().value(getTick());
             double sum = 0;
             Min m = new Min();
-            m.setData(new double[] { getTick() + 8, getCongestion().length() });
-            for (int i = getTick(); i < m.evaluate(); i++) {
-                sum += getCongestion().value(i);
+            m.setData(new double[] { 8,
+                    getCongestion().length() - getTick() - 1 });
+            for (int i = 0; i < m.evaluate(); i++) {
+                sum += getHorizon()[i];
             }
             if ((sum / (getCongestion().max() * 8.0)
                     * 100) < RELATIVE_MAX_VALUE_PERCENT) {

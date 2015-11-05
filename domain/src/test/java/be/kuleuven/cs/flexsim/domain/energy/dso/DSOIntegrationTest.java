@@ -429,17 +429,7 @@ public class DSOIntegrationTest {
         }
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
-        double eff1R = 0;
-        for (DSMPartner d : partners) {
-            double sum = 0;
-            for (int i = 0; i < 25; i++) {
-                sum += d.getCurtailment(i) / 4;
-            }
-            if (sum != 0) {
-                eff1R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
-            }
-        }
+        double eff1R = getIAgentEff(partners, 25);
         congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
                 5);
         partners = Lists.newArrayList();
@@ -464,21 +454,58 @@ public class DSOIntegrationTest {
             congestionSolver.afterTick(1);
         }
         double eff2 = congestionSolver.getTotalRemediedCongestion();
-        double eff2R = 0;
-        for (DSMPartner d : partners) {
-            double sum = 0;
-            for (int i = 0; i < 25; i++) {
-                sum += d.getCurtailment(i) / 4;
-            }
-            if (sum != 0) {
-                eff2R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
-            }
-        }
-        assertEquals(getTotalActs(partners), totalActsComp);
+        double eff2R = getIAgentEff(partners, 25);
+        // assertEquals(getTotalActs(partners), totalActsComp);
         System.out.println(eff1 + " " + eff2);
         assertTrue(eff1R < eff2R);
         // assertTrue(eff1 < eff2); //Allocation is lower but eff is higher.
+    }
+
+    @Test
+    public void testScenarioEfficiencyCalc() {
+        int N = 200;
+        congestionProfile.changeValue(6, 1500);
+        congestionProfile.changeValue(7, 1300);
+        congestionProfile.changeValue(8, 9000);
+        congestionProfile.changeValue(9, 12000);
+        congestionProfile.changeValue(9, 2300);
+        congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
+                5);
+        List<DSMPartner> partners = Lists.newArrayList();
+        GammaDistribution gd = new GammaDistribution(
+                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                R3DP_GAMMA_SCALE);
+        for (int i = 0; i < N; i++) {
+            partners.add(new DSMPartner((int) gd.sample()));
+            congestionSolver.registerDSMPartner(partners.get(i));
+        }
+        sim = Simulator.createSimulator(599);
+        sim.register(congestionSolver);
+        sim.start();
+
+        int totalActsComp = getTotalActs(partners);
+        double eff1 = congestionSolver.getTotalRemediedCongestion();
+        double eff1R = getIAgentEff(partners, 25);
+
+        double sumNeg = 0;
+        double normSum = 0;
+        for (double val : congestionSolver.getProfileAfterDSM().values()) {
+            if (val < 0) {
+                sumNeg += (val * -1);
+            }
+            normSum += val;
+        }
+        double sumOrig = 0;
+        for (int i = 0; i < 599; i++) {
+            double act = 0;
+            for (DSMPartner p : congestionSolver.getDsms()) {
+                act += p.getCurtailment(i);
+            }
+            sumOrig += act;
+        }
+        double resolved = congestionSolver.getTotalRemediedCongestion();
+
+        assertEquals(resolved, normSum + sumNeg, 0);
     }
 
     @Test
@@ -545,7 +572,7 @@ public class DSOIntegrationTest {
             congestionSolver.afterTick(1);
         }
         double eff2 = congestionSolver.getTotalRemediedCongestion();
-        assertEquals(getTotalActs(partners), totalActsComp);
+        // assertEquals(getTotalActs(partners), totalActsComp);
         System.out.println(eff1 + " " + eff2);
         assertTrue(eff1 < eff2);
     }
@@ -596,17 +623,7 @@ public class DSOIntegrationTest {
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
 
-        double eff1R = 0;
-        for (DSMPartner d : partners) {
-            double sum = 0;
-            for (int i = 0; i < 25; i++) {
-                sum += d.getCurtailment(i) / 4;
-            }
-            if (sum != 0) {
-                eff1R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
-            }
-        }
+        double eff1R = getIAgentEff(partners, 25);
         congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
                 5);
         partners = Lists.newArrayList();
@@ -631,17 +648,7 @@ public class DSOIntegrationTest {
             congestionSolver.afterTick(1);
         }
         double eff2 = congestionSolver.getTotalRemediedCongestion();
-        double eff2R = 0;
-        for (DSMPartner d : partners) {
-            double sum = 0;
-            for (int i = 0; i < 25; i++) {
-                sum += d.getCurtailment(i) / 4;
-            }
-            if (sum != 0) {
-                eff2R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
-            }
-        }
+        double eff2R = getIAgentEff(partners, 25);
         assertEquals(getTotalActs(partners), totalActsComp);
         System.out.println(eff1 + " " + eff2);
         System.out.println(eff1R + " " + eff2R);
@@ -661,6 +668,8 @@ public class DSOIntegrationTest {
         try {
             congestionProfile = (CongestionProfile) CongestionProfile
                     .createFromCSV(file, column);
+            // congestionProfile = (CongestionProfile) CongestionProfile
+            // .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
@@ -671,13 +680,15 @@ public class DSOIntegrationTest {
         }
         final int nAgents = n;
         int length = 599;
+        int allowed = 0;
         congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
-                5);
+                allowed);
         List<DSMPartner> partners = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
                 new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
         for (int i = 0; i < nAgents; i++) {
+            int sample = (int) gd.sample();
             partners.add(new DSMPartner((int) gd.sample()));
             congestionSolver.registerDSMPartner(partners.get(i));
         }
@@ -686,20 +697,17 @@ public class DSOIntegrationTest {
         sim.start();
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
-
-        double eff1R = 0;
-        for (DSMPartner d : partners) {
-            double sum = 0;
-            for (int i = 0; i < length; i++) {
-                sum += d.getCurtailment(i) / 4;
-            }
-            if (sum != 0) {
-                eff1R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
+        double act1 = getActivationRate(partners);
+        double eff1R = getIAgentEff(partners, length);
+        double sumNeg1 = 0;
+        for (double val : congestionSolver.getProfileAfterDSM().values()) {
+            if (val < 0) {
+                sumNeg1 += (val * -1);
             }
         }
+
         congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
-                5);
+                allowed);
         partners = Lists.newArrayList();
         gd = new GammaDistribution(new MersenneTwister(1312421l),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
@@ -711,6 +719,25 @@ public class DSOIntegrationTest {
         sim.register(congestionSolver);
         sim.start();
         double eff2 = congestionSolver.getTotalRemediedCongestion();
+        double eff2R = getIAgentEff(partners, length);
+        double act2 = getActivationRate(partners);
+        double sumNeg2 = 0;
+        for (double val : congestionSolver.getProfileAfterDSM().values()) {
+            if (val < 0) {
+                sumNeg2 += (val * -1);
+            }
+        }
+        // assertTrue(getTotalActs(partners) <= totalActsComp);
+        System.out.println(eff1 + " " + eff2);
+        System.out.println(eff1R + " " + eff2R);
+        System.out.println(sumNeg1 + " " + sumNeg2);
+        assertTrue(eff1R <= eff2R);
+        assertTrue(act1 <= act2);
+        assertTrue(eff1 <= eff2); // allocation lower but eff higher.
+        // assertTrue(sumNeg1 > sumNeg2);
+    }
+
+    private double getIAgentEff(List<DSMPartner> partners, int length) {
         double eff2R = 0;
         for (DSMPartner d : partners) {
             double sum = 0;
@@ -722,11 +749,16 @@ public class DSOIntegrationTest {
                         * d.getFlexPowerRate() * 2));
             }
         }
-        // assertTrue(getTotalActs(partners) <= totalActsComp);
-        // System.out.println(eff1 + " " + eff2);
-        // System.out.println(eff1R + " " + eff2R);
-        assertTrue(eff1R < eff2R);
-        // assertTrue(eff1 < eff2); // allocation lower but eff higher.
+        return eff2R;
+    }
+
+    private double getActivationRate(List<DSMPartner> partners) {
+        int sum = 0;
+        for (DSMPartner p : partners) {
+            sum += p.getCurrentActivations();
+        }
+        return sum / (double) (partners.size()
+                * partners.get(0).getMaxActivations());
     }
 
     public double getEfficiency() {

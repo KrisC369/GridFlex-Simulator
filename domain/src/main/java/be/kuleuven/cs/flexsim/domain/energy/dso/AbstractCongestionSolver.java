@@ -79,10 +79,12 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         for (DSMPartner d : getDsms()) {
             double dsmv = d.getCurtailment(getTick()) / 4.0;
             if (dsmv < 0) {
-                System.out.println("oops");
+                throw new IllegalStateException(
+                        "curtail power cannot be negative");
             }
             if (this.remediedCongestionCount.signum() < 0) {
-                System.out.println("oops again");
+                throw new IllegalStateException(
+                        "Remedied congestion value cannot become negative");
             }
             if (toCorrect > 0) {
                 if (dsmv >= toCorrect) {
