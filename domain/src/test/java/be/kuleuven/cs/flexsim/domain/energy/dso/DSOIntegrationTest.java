@@ -231,7 +231,7 @@ public class DSOIntegrationTest {
         congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
-        dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
         sim = Simulator.createSimulator(25);
         register();
         // sim.start();
@@ -256,7 +256,7 @@ public class DSOIntegrationTest {
         congestionSolver = new CooperativeCongestionSolver(congestionProfile,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
-        dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
         sim = Simulator.createSimulator(25);
         register();
         // sim.start();
@@ -336,8 +336,8 @@ public class DSOIntegrationTest {
         }
         congestionSolver.tick(1);
         congestionSolver.afterTick(1);
-        assertTrue(dsm2.getCurrentActivations() > 0);
-        assertTrue(dsm1.getCurrentActivations() == 0);
+        assertTrue(dsm2.getCurrentActivations() == 0);
+        assertTrue(dsm1.getCurrentActivations() > 0);
         congestionSolver.tick(1);
         congestionSolver.afterTick(1);
         assertTrue(dsm2.getCurrentActivations() > 0);
@@ -459,53 +459,6 @@ public class DSOIntegrationTest {
         System.out.println(eff1 + " " + eff2);
         assertTrue(eff1R < eff2R);
         // assertTrue(eff1 < eff2); //Allocation is lower but eff is higher.
-    }
-
-    @Test
-    public void testScenarioEfficiencyCalc() {
-        int N = 200;
-        congestionProfile.changeValue(6, 1500);
-        congestionProfile.changeValue(7, 1300);
-        congestionProfile.changeValue(8, 9000);
-        congestionProfile.changeValue(9, 12000);
-        congestionProfile.changeValue(9, 2300);
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
-                5);
-        List<DSMPartner> partners = Lists.newArrayList();
-        GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-                R3DP_GAMMA_SCALE);
-        for (int i = 0; i < N; i++) {
-            partners.add(new DSMPartner((int) gd.sample()));
-            congestionSolver.registerDSMPartner(partners.get(i));
-        }
-        sim = Simulator.createSimulator(599);
-        sim.register(congestionSolver);
-        sim.start();
-
-        int totalActsComp = getTotalActs(partners);
-        double eff1 = congestionSolver.getTotalRemediedCongestion();
-        double eff1R = getIAgentEff(partners, 25);
-
-        double sumNeg = 0;
-        double normSum = 0;
-        for (double val : congestionSolver.getProfileAfterDSM().values()) {
-            if (val < 0) {
-                sumNeg += (val * -1);
-            }
-            normSum += val;
-        }
-        double sumOrig = 0;
-        for (int i = 0; i < 599; i++) {
-            double act = 0;
-            for (DSMPartner p : congestionSolver.getDsms()) {
-                act += p.getCurtailment(i);
-            }
-            sumOrig += act;
-        }
-        double resolved = congestionSolver.getTotalRemediedCongestion();
-
-        assertEquals(resolved, normSum + sumNeg, 0);
     }
 
     @Test
@@ -658,7 +611,7 @@ public class DSOIntegrationTest {
 
     @Test
     public void testVarParamLargeScen() {
-        for (int i = 2; i < 200; i++) {
+        for (int i = 2; i <= 200; i++) {
             System.out.println("Scen with " + i + "agents.");
             testScenarioManyAgentsLargerScen(i);
         }
@@ -680,7 +633,7 @@ public class DSOIntegrationTest {
         }
         final int nAgents = n;
         int length = 599;
-        int allowed = 5;
+        int allowed = 2;
         congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
                 allowed);
         List<DSMPartner> partners = Lists.newArrayList();
@@ -741,7 +694,7 @@ public class DSOIntegrationTest {
         double eff2R = 0;
         for (DSMPartner d : partners) {
             double sum = 0;
-            for (int i = 0; i < length; i++) {
+            for (int i = 0; i <= length; i++) {
                 sum += d.getCurtailment(i) / 4;
             }
             if (sum != 0) {

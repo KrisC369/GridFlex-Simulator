@@ -3,8 +3,10 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.apache.commons.math3.util.FastMath;
 
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
@@ -20,6 +22,8 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  */
 public abstract class AbstractCongestionSolver implements SimulationComponent {
     protected final static int DSM_ALLOCATION_DURATION = 4 * 2;
+    private int RELATIVE_MAX_VALUE_PERCENT;
+
     private final CongestionProfile congestion;
     private final List<DSMPartner> dsms;
     private int tick;
@@ -37,7 +41,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      *            The forecast horizon.
      */
     public AbstractCongestionSolver(CongestionProfile profile,
-            int forecastHorizon) {
+            int forecastHorizon, int maxRelativeValue) {
         this.congestion = profile;
         this.dsms = Lists.newArrayList();
         this.tick = 0;
@@ -45,6 +49,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         this.remediedCongestionCount = new BigDecimal(0);
         this.afterDSMprofile = CongestionProfile.createFromTimeSeries(profile);
         this.horizon = new double[DSM_ALLOCATION_DURATION];
+        this.RELATIVE_MAX_VALUE_PERCENT = maxRelativeValue;
     }
 
     /**
@@ -218,4 +223,29 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         return this.afterDSMprofile;
     }
 
+    /**
+     * Get a description of the work that is required in the form of a DSM
+     * proposal. Can also provide an empty optional value if no work is
+     * required.
+     * 
+     * @return an Optional containing a dsm proposal for work in this time
+     *         period or an empty value.
+     */
+    protected Optional<DSMProposal> getWorkProposal() {
+        double cong = getCongestion().value(getTick());
+        double sum = 0;
+        Min m = new Min();
+        m.setData(new double[] { 8, getCongestion().length() - getTick() - 1 });
+        for (int i = 0; i < m.evaluate(); i++) {
+            sum += getHorizon()[i];
+        }
+        if ((sum / (getCongestion().max() * 8.0)
+                * 100) < RELATIVE_MAX_VALUE_PERCENT) {
+            return Optional.absent();
+        }
+
+        return Optional.fromNullable(DSMProposal.create(
+                "CNP for activation for tick: " + getTick(), cong, 0, getTick(),
+                getTick() + DSM_ALLOCATION_DURATION));
+    }
 }

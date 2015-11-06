@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.math3.stat.descriptive.rank.Min;
-
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 
@@ -22,7 +20,6 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  */
 public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
     private CNPInitiator<DSMProposal> solverInstance;
-    private int RELATIVE_MAX_VALUE_PERCENT;
     // private final IntNNFunction<DSMProposal> valueFunction = new
     // IntNNFunction<DSMProposal>() {
     // @Override
@@ -143,9 +140,8 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
      */
     public CompetitiveCongestionSolver(CongestionProfile profile,
             int forecastHorizon, int maxRelativeValue) {
-        super(profile, forecastHorizon);
+        super(profile, forecastHorizon, maxRelativeValue);
         this.solverInstance = new DSMCNPInitiator();
-        this.RELATIVE_MAX_VALUE_PERCENT = maxRelativeValue;
     }
 
     /**
@@ -190,21 +186,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
         @Override
         public Optional<DSMProposal> getWorkUnitDescription() {
-            double cong = getCongestion().value(getTick());
-            double sum = 0;
-            Min m = new Min();
-            m.setData(new double[] { getTick() + 8, getCongestion().length() });
-            for (int i = getTick(); i < m.evaluate(); i++) {
-                sum += getCongestion().value(i);
-            }
-            if ((sum / (getCongestion().max() * 8.0)
-                    * 100) < RELATIVE_MAX_VALUE_PERCENT) {
-                return Optional.absent();
-            }
-
-            return Optional.fromNullable(DSMProposal.create(
-                    "CNP for activation for tick: " + getTick(), cong, 0,
-                    getTick(), getTick() + DSM_ALLOCATION_DURATION));
+            return getWorkProposal();
         }
 
         @Override
