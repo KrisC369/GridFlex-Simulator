@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -95,6 +96,39 @@ public class DSOIntegrationTest {
         assertEquals(DSMPartner.R3DPMAX_ACTIVATIONS,
                 dsm2.getCurrentActivations(),
                 DSMPartner.R3DPMAX_ACTIVATIONS - 5);
+    }
+
+    @Test
+    public void testRemediedCongestion() {
+        try {
+            congestionProfile = (CongestionProfile) CongestionProfile
+                    .createFromCSV("smalltest.csv", column);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+                8);
+        dsm1 = new DSMPartner(4, 10, 8, 15000, 1);
+        dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
+        sim = Simulator.createSimulator(25);
+        register();
+        sim.start();
+        double sum = 0;
+        for (double d : congestionSolver.getProfileAfterDSM().values()) {
+            if (d > 0) {
+                sum += d;
+            }
+        }
+        double remedied = congestionSolver.getCongestion().sum() - sum;
+        assertEquals(remedied, congestionSolver.getTotalRemediedCongestion(),
+                0.1);
+        assertNotEquals(congestionSolver.getCongestion().sum(),
+                congestionSolver.getProfileAfterDSM().sum());
     }
 
     @Test

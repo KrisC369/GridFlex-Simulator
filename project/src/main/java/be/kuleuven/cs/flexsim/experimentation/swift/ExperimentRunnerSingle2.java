@@ -34,11 +34,11 @@ public class ExperimentRunnerSingle2 {
     private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int NAGENTS = 147;
+    private static final int NAGENTS = 200;
     private static final int ALLOWED_EXCESS = 33;
     private final List<Double> result1 = Lists.newArrayList();
     private final List<Double> result2 = Lists.newArrayList();
-    private boolean competitive = true;
+    private boolean competitive = false;
     private boolean allowLessActivations = true;
 
     /**

@@ -20,7 +20,7 @@ public class DSMPartnerTest {
 
     private static String column = "test";
     private static String file = "test.csv";
-    private static int testsize = 500 - 1;
+    private static int testsize = 600 - 1;
     private AbstractCongestionSolver congestionSolver;
 
     private CongestionProfile congestionProfile;
@@ -77,7 +77,7 @@ public class DSMPartnerTest {
 
     private void testProvider(DSMPartner dsm12) {
         int countAct = 0;
-        int countInter = 0;
+        int countInter = duration;
         for (int i = 0; i < testsize; i++) {
             if (dsm1.getCurtailment(i) > 0) {
                 countAct++;
@@ -85,6 +85,7 @@ public class DSMPartnerTest {
                     fail("Act duration longer than allowed");
                 }
                 if (0 < countInter && countInter < duration) {
+                    System.out.println(i + " " + countInter);
                     fail("InterAct too short");
                 }
                 countInter = 0;

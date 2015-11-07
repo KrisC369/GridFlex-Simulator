@@ -98,6 +98,14 @@ public class ExperimentInstance {
         return eff2R;
     }
 
+    public double getRemediedCongestion() {
+        return solver.getTotalRemediedCongestion();
+    }
+
+    public double getRemediedCongestionFraction() {
+        return getRemediedCongestion() / solver.getCongestion().sum();
+    }
+
     private void verify() {
         if (!allowLessActivations) {
             for (DSMPartner p : partners) {

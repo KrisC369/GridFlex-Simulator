@@ -17,6 +17,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 public class CongestionProfileTest {
 
     private CongestionProfile profile = mock(CongestionProfile.class);
+    private CongestionProfile profile2 = mock(CongestionProfile.class);
     private static String column = "test";
     private static String file = "test.csv";
 
@@ -34,27 +35,28 @@ public class CongestionProfileTest {
             e.printStackTrace();
             fail();
         }
+        profile2 = new CongestionProfile(new double[] { 0, 0, 0, 0 });
     }
 
     @Test
     public void testMean() {
-        assertEquals(0, profile.mean(), 0);
-        profile = new CongestionProfile(new double[] { 5, 6, 7, 8 });
-        assertEquals(6.5, profile.mean(), 0.01);
+        assertEquals(0, profile2.mean(), 0);
+        profile2 = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        assertEquals(6.5, profile2.mean(), 0.01);
     }
 
     @Test
     public void testMedian() {
-        assertEquals(0, profile.median(), 0);
-        profile = new CongestionProfile(new double[] { 5, 6, 7, 8 });
-        assertEquals(6.5, profile.median(), 0.05);
+        assertEquals(0, profile2.median(), 0);
+        profile2 = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        assertEquals(6.5, profile2.median(), 0.05);
     }
 
     @Test
     public void testStd() {
-        assertEquals(0, profile.std(), 0);
-        profile = new CongestionProfile(new double[] { 5, 6, 7, 8 });
-        assertEquals(1.29, profile.std(), 0.05);
+        assertEquals(0, profile2.std(), 0);
+        profile2 = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        assertEquals(1.29, profile2.std(), 0.05);
     }
 
     @Test

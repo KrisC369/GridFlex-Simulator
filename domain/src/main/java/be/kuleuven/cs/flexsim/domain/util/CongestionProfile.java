@@ -15,6 +15,7 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
+import org.apache.commons.math3.stat.descriptive.summary.Sum;
 
 import com.google.common.collect.Lists;
 import com.opencsv.CSVReader;
@@ -32,6 +33,7 @@ public class CongestionProfile implements TimeSeries {
     double[] dataValues;
 
     private @Nullable Double maxcache = null;
+    private @Nullable Double sumcache = null;
 
     CongestionProfile() {
         dataValues = new double[] {};
@@ -176,5 +178,16 @@ public class CongestionProfile implements TimeSeries {
         m.setData(values());
         maxcache = m.evaluate();
         return maxcache;
+    }
+
+    @Override
+    public double sum() {
+        if (this.sumcache != null) {
+            return sumcache;
+        }
+        Sum s = new Sum();
+        s.setData(dataValues);
+        sumcache = s.evaluate();
+        return sumcache;
     }
 }

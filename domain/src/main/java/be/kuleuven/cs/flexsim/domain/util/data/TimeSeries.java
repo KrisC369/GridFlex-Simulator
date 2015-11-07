@@ -64,7 +64,11 @@ public interface TimeSeries {
 
     /**
      * @return Returns the max value of this series.
-     * @return
      */
     double max();
+
+    /**
+     * Returns the sum of the values in this series.
+     */
+    double sum();
 }
