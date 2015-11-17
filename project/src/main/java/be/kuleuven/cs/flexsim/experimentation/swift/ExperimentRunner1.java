@@ -55,20 +55,20 @@ public class ExperimentRunner1 {
      * @param args
      */
     public static void main(String[] args) {
-        // GammaDistribution gd = new GammaDistribution(
-        // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-        // R3DP_GAMMA_SCALE);
-        // int n = 3;
-        // for (int i = 0; i < 21; i++) {
-        // int[] t = new int[n];
-        // for (int j = 0; j < n; j++) {
-        // t[j] = (int) gd.sample();
-        // }
-        // System.out.println(Arrays.toString(t));
-        // }
+        GammaDistribution gd = new GammaDistribution(
+                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                R3DP_GAMMA_SCALE);
+        int n = 3;
+        for (int i = 0; i < 21; i++) {
+            int[] t = new int[n];
+            for (int j = 0; j < n; j++) {
+                t[j] = (int) gd.sample();
+            }
+            System.out.println(Arrays.toString(t));
+        }
 
         if (args.length == 0) {
-            new ExperimentRunner1(10, 81, 33).execute();
+            new ExperimentRunner1(10, 3, 33).execute();
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.valueOf(args[0]);

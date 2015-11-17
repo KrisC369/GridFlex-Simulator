@@ -22,67 +22,6 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  */
 public class CooperativeCongestionSolver extends AbstractCongestionSolver {
     private CNPInitiator<DSMProposal> solverInstance;
-    // private final IntNNFunction<DSMProposal> filterFunction = new
-    // IntNNFunction<DSMProposal>() {
-    // @Override
-    // public int apply(DSMProposal input) {
-    // // TODO maximize efficiency also.
-    // // This maximizes to no-activation.
-    // // TODO take responder valuation in account
-    // double sum = 0;
-    // // double max = 0;
-    // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-    // getModifiableProfileAfterDSM().length() - getTick()
-    // - 1); i++) { // TODO
-    // // check
-    // // bounds.
-    // double res = getModifiableProfileAfterDSM().value(getTick() + i)
-    // - (input.getTargetValue() / 4.0);
-    // sum += res < 0 ? res : 0;
-    // // max = res < max ? res : max;
-    // }
-    // return (int) ((-sum / ((input.getTargetValue() / 4.0) * 8)) * 100);
-    // }
-    // };
-
-    // private final IntNNFunction<DSMProposal> choiceFunction = new
-    // IntNNFunction<DSMProposal>() {
-    // @Override
-    // public int apply(DSMProposal input) {
-    // double sum = 0;
-    // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-    // getModifiableProfileAfterDSM().length() - getTick()
-    // - 1); i++) {
-    // sum += FastMath.min(
-    // getModifiableProfileAfterDSM().value(getTick() + i),
-    // (input.getTargetValue() / 4.0));
-    // }
-    // double theoreticalMax = DSM_ALLOCATION_DURATION
-    // * (input.getTargetValue() / 4.0);
-    // double relativeSucc = sum / theoreticalMax;
-    //
-    // return (int) (relativeSucc * input.getValuation() * 1000);
-    // }
-    // };
-    // private final IntNNFunction<DSMProposal> choiceFunction = new
-    // IntNNFunction<DSMProposal>() {
-    // @Override
-    // public int apply(DSMProposal input) {
-    // double sum = 0;
-    // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-    // getModifiableProfileAfterDSM().length() - getTick()
-    // - 1); i++) {
-    // sum += FastMath.min(getHorizon()[i],
-    // (input.getTargetValue() / 4.0));
-    // }
-    // double theoreticalMax = DSM_ALLOCATION_DURATION
-    // * (input.getTargetValue() / 4.0);
-    // double relativeSucc = sum / theoreticalMax;
-    //
-    // return (int) ((relativeSucc * 1000 * 100000)
-    // + input.getTargetValue());
-    // }
-    // };
     private final IntNNFunction<DSMProposal> choiceFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
