@@ -21,8 +21,8 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
  */
 public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
-    private List<Responder<T>> responders;
-    private Map<T, AnswerAnticipator<T>> props = Maps.newLinkedHashMap();
+    private final List<Responder<T>> responders;
+    private Map<T, AnswerAnticipator<T>> props;
     private Optional<T> description;
     private int messageCount = 0;
 

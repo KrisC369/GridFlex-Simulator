@@ -85,7 +85,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
         @Nullable
-        private double[] real;
+        private final double[] real;
         @Nullable
         private ExperimentInstance p;
         @Nullable

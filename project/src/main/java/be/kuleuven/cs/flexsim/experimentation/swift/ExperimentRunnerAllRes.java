@@ -109,9 +109,8 @@ public class ExperimentRunnerAllRes {
 
     @SuppressWarnings("unused")
     private static void generateRates(int n) {
-        GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
-                R3DP_GAMMA_SCALE);
+        GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
+                R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         for (int i = 0; i < 21; i++) {
             int[] t = new int[n];
             for (int j = 0; j < n; j++) {
@@ -154,9 +153,8 @@ public class ExperimentRunnerAllRes {
     protected void runBatch() {
         CongestionProfile profile;
         List<ExperimentAtom> instances = Lists.newArrayList();
-        GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
-                R3DP_GAMMA_SCALE);
+        GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
+                R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
@@ -227,7 +225,7 @@ public class ExperimentRunnerAllRes {
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
         @Nullable
-        private double[] real;
+        private final double[] real;
         @Nullable
         private ExperimentInstance p;
         @Nullable

@@ -57,7 +57,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
                 ExperimentInstance p = (new ExperimentInstance(
-                        getSolverBuilder(COMPETITIVE, i / (N / 100)),
+                        getSolverBuilder(COMPETITIVE, (int) (i / (N / 100.0))),
                         gd.sample(NAGENTS), profile, ALLOW_LESS_ACTS));
                 p.startExperiment();
                 result[i / (N / 100)] += p.getEfficiency();
