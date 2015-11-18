@@ -20,15 +20,17 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ExperimentRunnerAllowedExcessSingleValue extends ExperimentRunner1 {
+public class ExperimentRunnerAllowedExcessSingleValue
+        extends ExperimentRunner1 {
 
+    private static final long SEED = 1312421l;
     private static int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 200;
     private static final int ALLOWED_EXCESS = 33;
-    private static boolean ALLOW_LESS_ACTS = true;
-    private static boolean COMPETITIVE = false;
+    private static final boolean ALLOW_LESS_ACTS = true;
+    private static final boolean COMPETITIVE = false;
 
     /**
      * @param args
@@ -51,10 +53,10 @@ public class ExperimentRunnerAllowedExcessSingleValue extends ExperimentRunner1 
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
             GammaDistribution gd = new GammaDistribution(
-                    new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                    new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
-                ExperimentInstance p = (new ExperimentInstance(NAGENTS,
+                ExperimentInstance p = (new ExperimentInstance(
                         getSolverBuilder(COMPETITIVE, i / (N / 100)),
                         gd.sample(NAGENTS), profile, ALLOW_LESS_ACTS));
                 p.startExperiment();
@@ -79,7 +81,7 @@ public class ExperimentRunnerAllowedExcessSingleValue extends ExperimentRunner1 
     class CompetitiveSolverBuilder implements SolverBuilder {
         int i;
 
-        public CompetitiveSolverBuilder(int i) {
+        CompetitiveSolverBuilder(int i) {
             this.i = i;
         }
 
@@ -93,7 +95,7 @@ public class ExperimentRunnerAllowedExcessSingleValue extends ExperimentRunner1 
     class CooperativeSolverBuilder implements SolverBuilder {
         int i;
 
-        public CooperativeSolverBuilder(int i) {
+        CooperativeSolverBuilder(int i) {
             this.i = i;
         }
 

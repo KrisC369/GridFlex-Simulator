@@ -36,7 +36,7 @@ public class DSMPartner implements SimulationComponent {
      */
     public static final int ACTIVATION_DURATION = 4 * 2;
     private static final int OPERATING_TIME_LIMIT = 4 * 24 * 365;
-    private static double CURRENT_ALLOWED_DEVIATION = 0.10;
+    private static final double CURRENT_ALLOWED_DEVIATION = 0.10;
 
     private final int maxActivations;
     private final int interactivationTime;
@@ -99,10 +99,6 @@ public class DSMPartner implements SimulationComponent {
         this.currentAllowedDeviation = deviation;
     }
 
-    private void moveHorizons(int t) {
-
-    }
-
     @Override
     public void initialize(SimulationContext context) {
     }
@@ -113,7 +109,6 @@ public class DSMPartner implements SimulationComponent {
 
     @Override
     public void tick(int t) {
-        moveHorizons(t);
     }
 
     @Override
@@ -234,7 +229,6 @@ public class DSMPartner implements SimulationComponent {
     }
 
     private double getValuation(int beginMark) {
-        // TODO test
         double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
         double goal = beginMark * factor;
         return ((currentActivations - goal) / maxActivations);
@@ -265,10 +259,6 @@ public class DSMPartner implements SimulationComponent {
             return succesfull;
         }
     }
-
-    // void setPowerRate(int powerRate) {
-    // this.flexPowerRate = powerRate;
-    // }
 
     /*
      * (non-Javadoc)

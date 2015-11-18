@@ -30,6 +30,7 @@ import be.kuleuven.cs.flexsim.experimentation.saso.RenumerationGameRunner;
  */
 public class ExperimentRunnerAllRes {
 
+    private static final long SEED = 1312421l;
     private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
@@ -47,10 +48,10 @@ public class ExperimentRunnerAllRes {
     private final List<Double> actEffRes1 = Lists.newCopyOnWriteArrayList();
     private final List<Double> actEffRes2 = Lists.newCopyOnWriteArrayList();
     private boolean competitive = true;
-    private boolean allowLessActivations = true;
+    private final boolean allowLessActivations = true;
 
-    protected ExperimentRunnerAllRes(int N, int nagents, int allowed) {
-        this.n = N;
+    protected ExperimentRunnerAllRes(int n, int nagents, int allowed) {
+        this.n = n;
         this.nagents = nagents;
         this.allowedExcess = allowed;
     }
@@ -109,7 +110,7 @@ public class ExperimentRunnerAllRes {
     @SuppressWarnings("unused")
     private static void generateRates(int n) {
         GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
         for (int i = 0; i < 21; i++) {
             int[] t = new int[n];
@@ -129,10 +130,10 @@ public class ExperimentRunnerAllRes {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
             GammaDistribution gd = new GammaDistribution(
-                    new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                    new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < n; i++) {
-                ExperimentInstance p = (new ExperimentInstance(nagents,
+                ExperimentInstance p = (new ExperimentInstance(
                         getSolverBuilder(), gd.sample(nagents), profile,
                         allowLessActivations));
                 p.startExperiment();
@@ -154,7 +155,7 @@ public class ExperimentRunnerAllRes {
         CongestionProfile profile;
         List<ExperimentAtom> instances = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
-                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
         try {
             profile = (CongestionProfile) CongestionProfile
@@ -225,9 +226,12 @@ public class ExperimentRunnerAllRes {
     }
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
-        private @Nullable double[] real;
-        private @Nullable ExperimentInstance p;
-        private @Nullable CongestionProfile profile;
+        @Nullable
+        private double[] real;
+        @Nullable
+        private ExperimentInstance p;
+        @Nullable
+        private final CongestionProfile profile;
 
         ExperimentAtomImplementation(double[] realisation,
                 CongestionProfile profile) {
@@ -256,7 +260,7 @@ public class ExperimentRunnerAllRes {
         }
 
         private void setup() {
-            this.p = (new ExperimentInstance(nagents, getSolverBuilder(),
+            this.p = (new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
                     allowLessActivations));
         }

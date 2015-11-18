@@ -20,16 +20,14 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 public class ExperimentInstance {
 
     private static final int SIMDURATION = 4 * 24 * 365;
-    private AbstractCongestionSolver solver;
-    private List<DSMPartner> partners;
-    private Simulator sim;
-    private boolean allowLessActivations;
+    private final AbstractCongestionSolver solver;
+    private final List<DSMPartner> partners;
+    private final Simulator sim;
+    private final boolean allowLessActivations;
 
     /**
      * Default Constructor
      * 
-     * @param nAgents
-     *            number of agents participating
      * @param b
      *            SolverBuilder instance
      * @param powerRealisation
@@ -40,9 +38,8 @@ public class ExperimentInstance {
      *            Allow less than the max amount of activations? otherwise fail
      *            experiment.
      */
-    public ExperimentInstance(int nAgents, SolverBuilder b,
-            double[] powerRealisation, CongestionProfile profile,
-            boolean allow) {
+    public ExperimentInstance(SolverBuilder b, double[] powerRealisation,
+            CongestionProfile profile, boolean allow) {
         checkNotNull(profile);
         this.solver = b.getSolver(profile, 8);
         this.partners = Lists.newArrayList();

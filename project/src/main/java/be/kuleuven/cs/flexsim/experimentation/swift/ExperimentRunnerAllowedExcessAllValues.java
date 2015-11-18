@@ -21,10 +21,13 @@ import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 
 /**
  * Runner for batch experiments on allowed activation rate values.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ExperimentRunnerAllowedExcessAllValues extends ExperimentRunnerAllowedExcessSingleValue {
+public class ExperimentRunnerAllowedExcessAllValues
+        extends ExperimentRunnerAllowedExcessSingleValue {
 
+    private static final long SEED = 1312421l;
     private static int N = 500;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
@@ -47,8 +50,6 @@ public class ExperimentRunnerAllowedExcessAllValues extends ExperimentRunnerAllo
         List<ExperimentAtom> instances = Lists.newArrayList();
         for (int j = 0; j < NAGENTS; j++) {
             ExperimentAtomImplementation i = new ExperimentAtomImplementation(
-                    new GammaDistribution(new MersenneTwister(1312421l),
-                            R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE),
                     j);
             instances.add(i);
         }
@@ -69,7 +70,7 @@ public class ExperimentRunnerAllowedExcessAllValues extends ExperimentRunnerAllo
         private final int agents;
         private volatile int result = -1;
 
-        ExperimentAtomImplementation(GammaDistribution gd, final int agents) {
+        ExperimentAtomImplementation(final int agents) {
             this.agents = agents;
             this.registerCallbackOnFinish(new ExperimentCallback() {
 
@@ -88,10 +89,10 @@ public class ExperimentRunnerAllowedExcessAllValues extends ExperimentRunnerAllo
                 profile = (CongestionProfile) CongestionProfile.createFromCSV(
                         "4kwartOpEnNeer.csv", "verlies aan energie");
                 GammaDistribution gd = new GammaDistribution(
-                        new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                        new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                         R3DP_GAMMA_SCALE);
                 for (int i = 0; i < N; i++) {
-                    ExperimentInstance p = (new ExperimentInstance(agents,
+                    ExperimentInstance p = (new ExperimentInstance(
                             getSolverBuilder(competitive, i / (N / 100)),
                             gd.sample(agents), profile, allowLessActivations));
                     p.startExperiment();

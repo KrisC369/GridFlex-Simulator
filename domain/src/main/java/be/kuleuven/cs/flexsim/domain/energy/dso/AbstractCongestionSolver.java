@@ -22,7 +22,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  */
 public abstract class AbstractCongestionSolver implements SimulationComponent {
     protected final static int DSM_ALLOCATION_DURATION = 4 * 2;
-    private int RELATIVE_MAX_VALUE_PERCENT;
+    private final int relativeMaxValuePercent;
 
     private final CongestionProfile congestion;
     private final List<DSMPartner> dsms;
@@ -51,10 +51,10 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         this.dsms = Lists.newArrayList();
         this.tick = 0;
         this.forecastHorizon = forecastHorizon;
-        this.remediedCongestionCount = new BigDecimal(0);
+        this.remediedCongestionCount = BigDecimal.ZERO;
         this.afterDSMprofile = CongestionProfile.createFromTimeSeries(profile);
         this.horizon = new double[DSM_ALLOCATION_DURATION];
-        this.RELATIVE_MAX_VALUE_PERCENT = maxRelativeValue;
+        this.relativeMaxValuePercent = maxRelativeValue;
     }
 
     /**
@@ -216,7 +216,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
             sum += getHorizon()[i];
         }
         if ((sum / (getCongestion().max() * 8.0)
-                * 100) < RELATIVE_MAX_VALUE_PERCENT) {
+                * 100) < relativeMaxValuePercent) {
             return Optional.absent();
         }
 

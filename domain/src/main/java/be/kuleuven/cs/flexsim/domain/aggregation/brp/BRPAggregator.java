@@ -7,6 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
@@ -16,10 +20,6 @@ import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
 
 /**
  * Represents an BRP-aggregator trying to balance a portfolio.
@@ -32,7 +32,7 @@ public class BRPAggregator extends IndependentAggregator {
     private final double activationPortion;
     private final double reservePortion;
     private final PriceSignal imbalancePricing;
-    private List<AncilServiceNominationManager> nominationManagers;
+    private final List<AncilServiceNominationManager> nominationManagers;
 
     /**
      * Default constructor.

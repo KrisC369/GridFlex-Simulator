@@ -24,7 +24,13 @@ public class SwiftPOCRunner {
     private static final int POWERRATE = 618;
     private static final int SIMDURATION = 4 * 24 * 365;
     private static final int TIMEHORIZON = 8;
-    private boolean comp = true;
+    private final boolean comp = true;
+
+    private @Nullable CongestionProfile profile;
+    private final AbstractCongestionSolver solver;
+    private final DSMPartner partner1;
+    private final DSMPartner partner2;
+    private final Simulator sim;
 
     /**
      * @param args
@@ -35,12 +41,6 @@ public class SwiftPOCRunner {
         r.startExperiment();
         r.displayEfficiency();
     }
-
-    private @Nullable CongestionProfile profile;
-    private AbstractCongestionSolver solver;
-    private DSMPartner partner1;
-    private DSMPartner partner2;
-    private Simulator sim;
 
     /**
      * Default constructor.

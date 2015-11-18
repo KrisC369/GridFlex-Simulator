@@ -144,8 +144,8 @@ public abstract class SiteBuilder {
      */
     public abstract Site create();
 
-    private static class ConcreteSiteBuilder extends SiteBuilder {
-        private List<FlexProcess> lines;
+    private static final class ConcreteSiteBuilder extends SiteBuilder {
+        private final List<FlexProcess> lines;
 
         private ConcreteSiteBuilder() {
             lines = Lists.newArrayList();
@@ -238,7 +238,8 @@ public abstract class SiteBuilder {
 
     }
 
-    private static class EquidistantSiteBuilder extends SiteSimulationBuilder {
+    private static final class EquidistantSiteBuilder
+            extends SiteSimulationBuilder {
         @Override
         public Site create() {
             return new EquidistantSiteSimulation(base, min, max, tuples,

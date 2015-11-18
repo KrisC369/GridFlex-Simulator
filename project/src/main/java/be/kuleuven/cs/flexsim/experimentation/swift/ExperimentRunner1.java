@@ -5,6 +5,8 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Arrays;
+
 import javax.annotation.Nullable;
 
 import org.slf4j.LoggerFactory;
@@ -21,14 +23,12 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
     private static final int N = 1000;
     private final int n;
-    private final int nagents;
 
-    private boolean allowLessActivations = true;
+    private final boolean allowLessActivations = true;
 
-    protected ExperimentRunner1(int N, int nagents, int allowed) {
-        super(N, nagents, allowed);
-        this.n = N;
-        this.nagents = nagents;
+    protected ExperimentRunner1(int n, int nagents, int allowed) {
+        super(n, nagents, allowed);
+        this.n = n;
     }
 
     /**
@@ -84,13 +84,16 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
     }
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
-        private @Nullable double[] real;
-        private @Nullable ExperimentInstance p;
-        private @Nullable CongestionProfile profile;
+        @Nullable
+        private double[] real;
+        @Nullable
+        private ExperimentInstance p;
+        @Nullable
+        private final CongestionProfile profile;
 
         ExperimentAtomImplementation(double[] realisation,
                 CongestionProfile profile) {
-            this.real = realisation;
+            this.real = Arrays.copyOf(realisation, realisation.length);
             this.profile = profile;
             this.registerCallbackOnFinish(new ExperimentCallback() {
 
@@ -108,7 +111,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         }
 
         private void setup() {
-            this.p = (new ExperimentInstance(nagents, getSolverBuilder(),
+            this.p = (new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
                     allowLessActivations));
         }

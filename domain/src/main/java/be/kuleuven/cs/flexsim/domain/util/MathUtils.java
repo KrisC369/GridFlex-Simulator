@@ -66,7 +66,7 @@ public final class MathUtils {
                     return case2(n1y, n2y, n2x);
                 }
             } else if (n1y < 0) {
-                return case5(n1y, n2y, n2x);
+                return caseZero();
             }
         } else if (n1y * n2y < 0) {
             if (n2y > n1y) {
@@ -76,22 +76,18 @@ public final class MathUtils {
         } else {
             if (n2y > n1y) {
                 if (n1y < 0) {
-                    return case9(n1y, n2y, n2x);
+                    return caseZero();
                 } else if (n1y == 0) {
-                    return case8(n1y, n2y, n2x);
+                    return case8(n2y, n2x);
                 }
             } else if (n2y < n1y) {
                 if (n1y > 0) {
                     return case6(n1y, n2y, n2x);
                 } else if (n1y == 0) {
-                    return case7(n1y, n2y, n2x);
+                    return caseZero();
                 }
             }
         }
-        return 0;
-    }
-
-    private static double case5(double n1y, double n2y, double n2x) {
         return 0;
     }
 
@@ -117,11 +113,7 @@ public final class MathUtils {
         return (-n1y * n2x) / (n2y - n1y);
     }
 
-    private static double case9(double n1y, double n2y, double n2x) {
-        return 0;
-    }
-
-    private static double case8(double n1y, double n2y, double n2x) {
+    private static double case8(double n2y, double n2x) {
         return (n2y * n2x) / 2d;
     }
 
@@ -129,7 +121,7 @@ public final class MathUtils {
         return (n1y * n2x) / 2d;
     }
 
-    private static double case7(double n1y, double n2y, double n2x) {
+    private static double caseZero() {
         return 0;
     }
 

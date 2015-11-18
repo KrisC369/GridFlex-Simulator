@@ -40,7 +40,7 @@ public class CongestionProfile implements TimeSeries {
     }
 
     CongestionProfile(double[] values) {
-        dataValues = values;
+        dataValues = Arrays.copyOf(values, values.length);
     }
 
     /*
@@ -82,8 +82,7 @@ public class CongestionProfile implements TimeSeries {
      * be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#load(java.io.File)
      */
     @Override
-    public void load(String filename, String column)
-            throws FileNotFoundException, IOException {
+    public void load(String filename, String column) throws IOException {
         List<Double> dataRead = Lists.newArrayList();
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(filename).getFile());
@@ -122,7 +121,7 @@ public class CongestionProfile implements TimeSeries {
      *             If the file with that name cannot be found.
      */
     public static TimeSeries createFromCSV(String filename, String column)
-            throws FileNotFoundException, IOException {
+            throws IOException {
         CongestionProfile cp = new CongestionProfile();
         cp.load(filename, column);
         return cp;
