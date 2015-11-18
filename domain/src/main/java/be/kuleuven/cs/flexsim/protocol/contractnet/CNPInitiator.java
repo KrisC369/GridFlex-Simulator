@@ -17,6 +17,7 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
+ *            The concrete type of the proposal for the responders.
  */
 public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
@@ -56,8 +57,6 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     private void startCNP(T p) {
         this.description = Optional.fromNullable(p);
-        // final Map<Proposal, AnswerAnticipator<T>> props = Maps
-        // .newLinkedHashMap();
         for (Responder<T> r : responders) {
             r.callForProposal(new AnswerAnticipator<T>() {
 

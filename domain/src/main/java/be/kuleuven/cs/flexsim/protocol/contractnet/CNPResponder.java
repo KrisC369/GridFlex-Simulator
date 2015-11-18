@@ -8,6 +8,7 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
+ *            The type of the proposal for the responders.
  */
 public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
 
@@ -59,7 +60,5 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
          * 
          */
         private static final long serialVersionUID = -7249264744599267326L;
-
     }
-
 }

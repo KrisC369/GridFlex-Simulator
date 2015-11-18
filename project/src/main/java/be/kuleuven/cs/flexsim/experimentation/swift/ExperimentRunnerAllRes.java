@@ -9,7 +9,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
-import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.LoggerFactory;
 
@@ -31,11 +30,14 @@ import be.kuleuven.cs.flexsim.experimentation.saso.RenumerationGameRunner;
  */
 public class ExperimentRunnerAllRes {
 
-    private int N = 1000;
+    private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private int NAGENTS;
-    private int ALLOWED_EXCESS = 33;
+    private static final int N = 1000;
+    private static final int ALLOWED_EXCESS = 33;
+    private final int n;
+    private final int nagents;
+    private final int allowedExcess;
     private final List<Double> mainRes1 = Lists.newCopyOnWriteArrayList();
     private final List<Double> mainRes2 = Lists.newCopyOnWriteArrayList();
     private final List<Double> actRes1 = Lists.newCopyOnWriteArrayList();
@@ -47,34 +49,23 @@ public class ExperimentRunnerAllRes {
     private boolean competitive = true;
     private boolean allowLessActivations = true;
 
-    private ExperimentRunnerAllRes(int N, int nagents, int allowed) {
-        this.N = N;
-        this.NAGENTS = nagents;
-        this.ALLOWED_EXCESS = allowed;
+    protected ExperimentRunnerAllRes(int N, int nagents, int allowed) {
+        this.n = N;
+        this.nagents = nagents;
+        this.allowedExcess = allowed;
     }
 
     /**
      * @param args
+     *            StdIn args.
      */
     public static void main(String[] args) {
-        // GammaDistribution gd = new GammaDistribution(
-        // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-        // R3DP_GAMMA_SCALE);
-        // int n = 3;
-        // for (int i = 0; i < 21; i++) {
-        // int[] t = new int[n];
-        // for (int j = 0; j < n; j++) {
-        // t[j] = (int) gd.sample();
-        // }
-        // System.out.println(Arrays.toString(t));
-        // }
-
         if (args.length == 0) {
-            new ExperimentRunnerAllRes(10, 81, 33).execute();
+            new ExperimentRunnerAllRes(10, 81, ALLOWED_EXCESS).execute();
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.valueOf(args[0]);
-                new ExperimentRunnerAllRes(1000, agents, 33).execute();
+                new ExperimentRunnerAllRes(N, agents, ALLOWED_EXCESS).execute();
             } catch (Exception e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)
                         .error("Unparseable cl parameters passed");
@@ -84,7 +75,8 @@ public class ExperimentRunnerAllRes {
             try {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
-                new ExperimentRunnerAllRes(reps, agents, 33).execute();
+                new ExperimentRunnerAllRes(reps, agents, ALLOWED_EXCESS)
+                        .execute();
             } catch (Exception e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)
                         .error("Unparseable cl parameters passed");
@@ -104,23 +96,28 @@ public class ExperimentRunnerAllRes {
         }
     }
 
+    /**
+     * Execute experiments
+     */
     public void execute() {
-        NormalDistribution gd = new NormalDistribution(
-                new MersenneTwister(1312421l), 928.837, 933.529);
-        double[] sample = gd.sample(NAGENTS);
-        for (int i = 0; i < sample.length; i++) {
-            sample[i] = sample[i] < 0 ? 0 : sample[i];
-        }
-        System.out.println(Arrays.toString(sample));
-        // GammaDistribution gd = new GammaDistribution(
-        // new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
-        // R3DP_GAMMA_SCALE);
-        // System.out.println(Arrays.toString(gd.sample(10000)));
         runBatch();
         competitive = false;
         runBatch();
         printResult();
-        // er.runSingle();
+    }
+
+    @SuppressWarnings("unused")
+    private static void generateRates(int n) {
+        GammaDistribution gd = new GammaDistribution(
+                new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
+                R3DP_GAMMA_SCALE);
+        for (int i = 0; i < 21; i++) {
+            int[] t = new int[n];
+            for (int j = 0; j < n; j++) {
+                t[j] = (int) gd.sample();
+            }
+            System.out.println(Arrays.toString(t));
+        }
     }
 
     /**
@@ -134,9 +131,9 @@ public class ExperimentRunnerAllRes {
             GammaDistribution gd = new GammaDistribution(
                     new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
-            for (int i = 0; i < N; i++) {
-                ExperimentInstance p = (new ExperimentInstance(NAGENTS,
-                        getSolverBuilder(), gd.sample(NAGENTS), profile,
+            for (int i = 0; i < n; i++) {
+                ExperimentInstance p = (new ExperimentInstance(nagents,
+                        getSolverBuilder(), gd.sample(nagents), profile,
                         allowLessActivations));
                 p.startExperiment();
                 System.out.println(p.getEfficiency());
@@ -146,43 +143,39 @@ public class ExperimentRunnerAllRes {
         }
     }
 
-    private SolverBuilder getSolverBuilder() {
-        if (competitive) {
-            return new CompetitiveSolverBuilder();
-        }
-        return new CooperativeSolverBuilder();
-    }
-
-    private String getLabel() {
+    protected String getLabel() {
         if (competitive) {
             return "comp";
         }
         return "coop";
     }
 
-    public void runBatch() {
+    protected void runBatch() {
         CongestionProfile profile;
         List<ExperimentAtom> instances = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
                 new MersenneTwister(1312421l), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
-        // NormalDistribution gd = new NormalDistribution(928.837, 933.529);
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            for (int i = 0; i < N; i++) {
+            for (int i = 0; i < n; i++) {
                 instances.add(new ExperimentAtomImplementation(
-                        gd.sample(NAGENTS), profile));
+                        gd.sample(nagents), profile));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ExperimentRunner r = LocalRunners.createOSTunedMultiThreadedRunner();
-        // ExperimentRunner r = new SingleThreadedExperimentRunner();
+        ExperimentRunner r;
+        if (RUN_MULTI_THREADED) {
+            r = LocalRunners.createOSTunedMultiThreadedRunner();
+        } else {
+            r = LocalRunners.createDefaultSingleThreadedRunner();
+        }
         r.runExperiments(instances);
     }
 
-    private void printResult() {
+    protected void printResult() {
         System.out.println("BEGINRESULT:");
         System.out.println("Res1=" + mainRes1);
         System.out.println("Res2=" + mainRes2);
@@ -193,13 +186,13 @@ public class ExperimentRunnerAllRes {
         System.out.println("SolvRes1=" + solvRes1);
         System.out.println("SolvRes2=" + solvRes2);
         System.out.println(
-                "Not meeting 40 acts: " + String.valueOf(N - mainRes1.size()));
+                "Not meeting 40 acts: " + String.valueOf(n - mainRes1.size()));
         System.out.println(
-                "Not meeting 40 acts: " + String.valueOf(N - mainRes2.size()));
+                "Not meeting 40 acts: " + String.valueOf(n - mainRes2.size()));
         System.out.println("ENDRESULT:");
     }
 
-    private synchronized void addMainResult(String label, double eff) {
+    protected synchronized void addMainResult(String label, double eff) {
         if ("comp".equals(label)) {
             mainRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -207,7 +200,7 @@ public class ExperimentRunnerAllRes {
         }
     }
 
-    private synchronized void addActResult(String label, double eff) {
+    protected synchronized void addActResult(String label, double eff) {
         if ("comp".equals(label)) {
             actRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -215,7 +208,7 @@ public class ExperimentRunnerAllRes {
         }
     }
 
-    private synchronized void addActEffResult(String label, double eff) {
+    protected synchronized void addActEffResult(String label, double eff) {
         if ("comp".equals(label)) {
             actEffRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -223,7 +216,7 @@ public class ExperimentRunnerAllRes {
         }
     }
 
-    private synchronized void addSolveResult(String label, double eff) {
+    protected synchronized void addSolveResult(String label, double eff) {
         if ("comp".equals(label)) {
             solvRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -263,7 +256,7 @@ public class ExperimentRunnerAllRes {
         }
 
         private void setup() {
-            this.p = (new ExperimentInstance(NAGENTS, getSolverBuilder(),
+            this.p = (new ExperimentInstance(nagents, getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
                     allowLessActivations));
         }
@@ -279,7 +272,7 @@ public class ExperimentRunnerAllRes {
         @Override
         public AbstractCongestionSolver getSolver(CongestionProfile profile,
                 int n) {
-            return new CompetitiveCongestionSolver(profile, 8, ALLOWED_EXCESS);
+            return new CompetitiveCongestionSolver(profile, 8, allowedExcess);
         }
     }
 
@@ -288,7 +281,70 @@ public class ExperimentRunnerAllRes {
         @Override
         public AbstractCongestionSolver getSolver(CongestionProfile profile,
                 int n) {
-            return new CooperativeCongestionSolver(profile, 8, ALLOWED_EXCESS);
+            return new CooperativeCongestionSolver(profile, 8, allowedExcess);
         }
+    }
+
+    protected SolverBuilder getSolverBuilder() {
+        if (competitive) {
+            return new CompetitiveSolverBuilder();
+        }
+        return new CooperativeSolverBuilder();
+    }
+
+    /**
+     * @return the mainRes1
+     */
+    protected final List<Double> getMainRes1() {
+        return Lists.newArrayList(mainRes1);
+    }
+
+    /**
+     * @return the mainRes2
+     */
+    protected final List<Double> getMainRes2() {
+        return Lists.newArrayList(mainRes2);
+    }
+
+    /**
+     * @return the actRes1
+     */
+    protected final List<Double> getActRes1() {
+        return Lists.newArrayList(actRes1);
+    }
+
+    /**
+     * @return the actRes2
+     */
+    protected final List<Double> getActRes2() {
+        return Lists.newArrayList(actRes2);
+    }
+
+    /**
+     * @return the solvRes1
+     */
+    protected final List<Double> getSolvRes1() {
+        return Lists.newArrayList(solvRes1);
+    }
+
+    /**
+     * @return the solvRes2
+     */
+    protected final List<Double> getSolvRes2() {
+        return Lists.newArrayList(solvRes2);
+    }
+
+    /**
+     * @return the actEffRes1
+     */
+    protected final List<Double> getActEffRes1() {
+        return Lists.newArrayList(actEffRes1);
+    }
+
+    /**
+     * @return the actEffRes2
+     */
+    protected final List<Double> getActEffRes2() {
+        return Lists.newArrayList(actEffRes2);
     }
 }

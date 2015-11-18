@@ -7,8 +7,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
@@ -21,15 +19,27 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
  */
 public class ExperimentInstance {
 
-    // private static final int POWERRATE = 618;
     private static final int SIMDURATION = 4 * 24 * 365;
-
-    private @Nullable CongestionProfile profile;
     private AbstractCongestionSolver solver;
     private List<DSMPartner> partners;
     private Simulator sim;
     private boolean allowLessActivations;
 
+    /**
+     * Default Constructor
+     * 
+     * @param nAgents
+     *            number of agents participating
+     * @param b
+     *            SolverBuilder instance
+     * @param powerRealisation
+     *            Power rates for the agents.
+     * @param profile
+     *            The congestion profile
+     * @param allow
+     *            Allow less than the max amount of activations? otherwise fail
+     *            experiment.
+     */
     public ExperimentInstance(int nAgents, SolverBuilder b,
             double[] powerRealisation, CongestionProfile profile,
             boolean allow) {
@@ -50,22 +60,25 @@ public class ExperimentInstance {
         }
     }
 
+    /**
+     * Start the experiment
+     */
     public void startExperiment() {
         this.sim.start();
         verify();
     }
 
-    private void displayEfficiency() {
-        double eff = solver.getTotalRemediedCongestion()
-                / (getTotalPowerRates() * 40.0 * 2.0);
-        System.out.println("Efficiency is " + eff);
-    }
-
+    /**
+     * @return The efficiency metric.
+     */
     public double getEfficiency() {
         return solver.getTotalRemediedCongestion()
                 / (getTotalPowerRates() * 40.0 * 2.0);
     }
 
+    /**
+     * @return the activation rate metric.
+     */
     public double getActivationRate() {
         int sum = 0;
         for (DSMPartner p : partners) {
@@ -83,6 +96,9 @@ public class ExperimentInstance {
         return sum;
     }
 
+    /**
+     * @return get the summed agent efficiency metric.
+     */
     public double getSummedAgentEfficiency() {
         double eff2R = 0;
         for (DSMPartner d : partners) {
@@ -98,10 +114,16 @@ public class ExperimentInstance {
         return eff2R;
     }
 
+    /**
+     * @return the remedied congestion value.
+     */
     public double getRemediedCongestion() {
         return solver.getTotalRemediedCongestion();
     }
 
+    /**
+     * @return the remedied congestion relative to the total congestion.
+     */
     public double getRemediedCongestionFraction() {
         return getRemediedCongestion() / solver.getCongestion().sum();
     }

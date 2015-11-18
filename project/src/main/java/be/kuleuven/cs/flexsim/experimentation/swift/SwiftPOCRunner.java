@@ -28,6 +28,7 @@ public class SwiftPOCRunner {
 
     /**
      * @param args
+     *            std in params.
      */
     public static void main(String[] args) {
         SwiftPOCRunner r = new SwiftPOCRunner();

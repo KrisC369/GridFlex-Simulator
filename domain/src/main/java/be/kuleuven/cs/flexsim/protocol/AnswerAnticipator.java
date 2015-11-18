@@ -24,11 +24,8 @@ public interface AnswerAnticipator<T> {
      */
     void reject();
 
-    public static AnswerAnticipator NOOP = new AnswerAnticipator() {
-        public void affirmative(Object prop, AnswerAnticipator ant) {
-        }
-
-        public void reject() {
-        }
-    };
+    /**
+     * 
+     */
+    public static AnswerAnticipator<?> NOOP = new NoOpAnswerAnticipator<>();
 }
