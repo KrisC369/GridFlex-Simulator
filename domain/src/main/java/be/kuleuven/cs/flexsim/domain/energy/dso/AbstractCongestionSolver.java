@@ -39,6 +39,11 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      *            The congestion profile to solve.
      * @param forecastHorizon
      *            The forecast horizon.
+     * @param maxRelativeValue
+     *            The maximum value between (1-100) as a percent of the maximum
+     *            reference energy amount that should be ignored by the
+     *            mechanism. The maximum reference energy amount is defined as
+     *            the peak power rate in the profile times the forecast horizon.
      */
     public AbstractCongestionSolver(CongestionProfile profile,
             int forecastHorizon, int maxRelativeValue) {
@@ -106,35 +111,6 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
                     afterDSMprofile.value(getTick()) - dsmv);
         }
     }
-
-    // private void getWorkResults2() {
-    // for (int i = 0; i < FastMath.min(getForecastHorizon(),
-    // afterDSMprofile.length() - getTick() - 1); i++) {
-    // double toCorrect = afterDSMprofile.value(getTick() + i);
-    // for (DSMPartner d : getDsms()) {
-    // double dsmv = d.getCurtailment(getTick() + i) / 4.0;
-    // if (dsmv < 0) {
-    // System.out.println("oops");
-    // }
-    // if (this.remediedCongestionCount.signum() < 0) {
-    // System.out.println("oops again");
-    // }
-    // if (toCorrect > 0) {
-    // if (dsmv >= toCorrect) {
-    // this.remediedCongestionCount = this.remediedCongestionCount
-    // .add(BigDecimal.valueOf(toCorrect));
-    // toCorrect = 0;
-    // } else {
-    // this.remediedCongestionCount = this.remediedCongestionCount
-    // .add(BigDecimal.valueOf(dsmv));
-    // toCorrect -= dsmv;
-    // }
-    // }
-    // this.afterDSMprofile.changeValue(getTick() + i,
-    // afterDSMprofile.value(getTick() + i) - dsmv);
-    // }
-    // }
-    // }
 
     private void updateHorizon() {
         this.horizon = new double[DSM_ALLOCATION_DURATION];

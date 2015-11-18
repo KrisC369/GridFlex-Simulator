@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.DSMPartner;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
@@ -18,16 +19,18 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class SwiftPOCRunnerComp {
+public class SwiftPOCRunner {
 
     private static final int POWERRATE = 618;
     private static final int SIMDURATION = 4 * 24 * 365;
+    private static final int TIMEHORIZON = 8;
+    private boolean comp = true;
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        SwiftPOCRunnerComp r = new SwiftPOCRunnerComp();
+        SwiftPOCRunner r = new SwiftPOCRunner();
         r.startExperiment();
         r.displayEfficiency();
     }
@@ -38,15 +41,23 @@ public class SwiftPOCRunnerComp {
     private DSMPartner partner2;
     private Simulator sim;
 
-    public SwiftPOCRunnerComp() {
+    /**
+     * Default constructor.
+     */
+    public SwiftPOCRunner() {
         try {
             this.profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        checkNotNull(profile);
-        this.solver = new CompetitiveCongestionSolver(profile, 8);
+        if (comp) {
+            this.solver = new CompetitiveCongestionSolver(checkNotNull(profile),
+                    TIMEHORIZON);
+        } else {
+            this.solver = new CooperativeCongestionSolver(checkNotNull(profile),
+                    TIMEHORIZON);
+        }
         this.partner1 = new DSMPartner(POWERRATE);
         this.partner2 = new DSMPartner(POWERRATE / 2);
         solver.registerDSMPartner(partner1);
@@ -55,6 +66,9 @@ public class SwiftPOCRunnerComp {
         sim.register(solver);
     }
 
+    /**
+     * Start this proof of concept experiment.
+     */
     public void startExperiment() {
         this.sim.start();
     }

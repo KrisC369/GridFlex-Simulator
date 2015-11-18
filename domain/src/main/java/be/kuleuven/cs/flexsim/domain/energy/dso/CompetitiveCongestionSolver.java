@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
@@ -23,25 +22,10 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
     private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
         @Override
         public int apply(DSMProposal input) {
-            // double sum = 0;
-            // for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-            // getModifiableProfileAfterDSM().length() - getTick()
-            // - 1); i++) {
-            // sum += FastMath.min(
-            // getModifiableProfileAfterDSM().value(getTick() + i),
-            // (input.getTargetValue() / 4.0));
-            // }
             double theoreticalMax = DSM_ALLOCATION_DURATION
                     * (input.getTargetValue() / 4.0);
-                    // double relativeSucc = sum / theoreticalMax;
-
-            // return (int) (relativeSucc * input.getValuation() * 1000);
-            return (int) (theoreticalMax * 1000); // higher
-                                                  // power
-                                                  // rate
-                                                  // is
-                                                  // higher
-                                                  // score.
+            // higher power rate is higher score
+            return (int) (theoreticalMax * 1000);
         }
     };
 
@@ -88,18 +72,13 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
         @Override
         protected void signalNoSolutionFound() {
-            // TODO Auto-generated method stub
+            // NOOP
         }
 
         @Override
         public @Nullable DSMProposal findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
-
-            // if (description.getBeginMark().get() == 2513) {
-            // System.out.println("test");
-            // }
             secondBest = Optional.absent();
-
             if (props.isEmpty()) {
                 return null;
             }
@@ -134,7 +113,6 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
             }
             if (secondBest.isPresent() && best.getTargetValue() > secondBest
                     .get().getTargetValue()) {
-                // System.out.println("SetLow");
                 return DSMProposal.create(best.getDescription(),
                         secondBest.get().getTargetValue(), best.getValuation(),
                         best.getBeginMark().get(), best.getEndMark().get());
@@ -142,16 +120,5 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
             return best;
         }
 
-    }
-
-    private abstract class MyPredicate<T> implements Predicate<T> {
-
-        @Override
-        public abstract boolean apply(@Nullable T input);
-
-        @Override
-        public boolean equals(@Nullable Object obj) {
-            return super.equals(obj);
-        }
     }
 }

@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import org.apache.commons.math3.util.FastMath;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
@@ -32,12 +31,8 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                 sum += FastMath.min(getHorizon()[i],
                         (input.getTargetValue() / 4.0));
             }
-            double theoreticalMax = DSM_ALLOCATION_DURATION
-                    * (input.getTargetValue() / 4.0);
-            double relativeSucc = sum / theoreticalMax;
-
-            // return (int) ((relativeSucc * 1000 * 100000)
-            // + input.getTargetValue());
+            // Closest match to congestion is chosen. ties in favor of smaller
+            // bids.
             return (int) ((sum * 100000) - input.getTargetValue());
         }
     };
@@ -83,7 +78,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
 
         @Override
         protected void signalNoSolutionFound() {
-            // TODO Auto-generated method stub
+            // NOOP
         }
 
         @Override
@@ -111,16 +106,5 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             return best;
         }
 
-    }
-
-    private abstract class MyPredicate<T> implements Predicate<T> {
-
-        @Override
-        public abstract boolean apply(@Nullable T input);
-
-        @Override
-        public boolean equals(@Nullable Object obj) {
-            return super.equals(obj);
-        }
     }
 }

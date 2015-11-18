@@ -11,6 +11,15 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
  */
 public interface SolverBuilder {
 
+    /**
+     * Abstract factory creator method for returning a specific solver.
+     * 
+     * @param profile
+     *            The congestion profile to be used.
+     * @param n
+     *            The forecast horizon.
+     * @return A congestion solver instance.
+     */
     public AbstractCongestionSolver getSolver(CongestionProfile profile, int n);
 
 }

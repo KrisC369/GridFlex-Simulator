@@ -68,7 +68,7 @@ public interface TimeSeries {
     double max();
 
     /**
-     * Returns the sum of the values in this series.
+     * @return Returns the sum of the values in this series.
      */
     double sum();
 }
