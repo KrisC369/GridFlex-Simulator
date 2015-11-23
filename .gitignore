@@ -8,3 +8,5 @@ hs_er*
 META-INF/
 build.properties
 .factorypath
+*.rb
+*.csv
