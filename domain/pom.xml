@@ -38,5 +38,10 @@
 			<artifactId>auto-value</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>it.unimi.dsi</groupId>
+			<artifactId>fastutil</artifactId>
+		 	<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

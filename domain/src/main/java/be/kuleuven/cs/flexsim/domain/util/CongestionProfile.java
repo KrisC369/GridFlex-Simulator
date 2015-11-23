@@ -6,11 +6,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatistic;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.rank.Max;
@@ -22,6 +22,9 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+import it.unimi.dsi.fastutil.doubles.DoubleLists;
 
 /**
  * A time series representation of a power congestion profile.
@@ -30,17 +33,23 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
  */
 public class CongestionProfile implements TimeSeries {
 
-    double[] dataValues;
+    DoubleList dValues;
 
-    private @Nullable Double maxcache = null;
-    private @Nullable Double sumcache = null;
+    @Nullable
+    private Double maxcache = null;
+    @Nullable
+    private Double sumcache = null;
 
     CongestionProfile() {
-        dataValues = new double[] {};
+        dValues = new DoubleArrayList();
+    }
+
+    CongestionProfile(DoubleList values) {
+        dValues = new DoubleArrayList(values);
     }
 
     CongestionProfile(double[] values) {
-        dataValues = Arrays.copyOf(values, values.length);
+        dValues = new DoubleArrayList(values);
     }
 
     /*
@@ -49,9 +58,7 @@ public class CongestionProfile implements TimeSeries {
      */
     @Override
     public double mean() {
-        Mean mean = new Mean();
-        mean.setData(values());
-        return mean.evaluate();
+        return applyStatistic(new Mean());
     }
 
     /*
@@ -60,9 +67,7 @@ public class CongestionProfile implements TimeSeries {
      */
     @Override
     public double median() {
-        Median med = new Median();
-        med.setData(values());
-        return med.evaluate();
+        return applyStatistic(new Median());
     }
 
     /*
@@ -71,17 +76,19 @@ public class CongestionProfile implements TimeSeries {
      */
     @Override
     public double std() {
-        StandardDeviation std = new StandardDeviation();
-        std.setData(values());
-        return std.evaluate();
+        return applyStatistic(new StandardDeviation());
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#load(java.io.File)
+    /**
+     * Load and parse time series from file.
+     * 
+     * @param filename
+     *            the name of the file to parse and load.
+     * @param column
+     *            the label of the column to parse and use as time series.
+     * @throws IOException
+     *             When loading is not possible for whatever reason.
      */
-    @Override
     public void load(String filename, String column) throws IOException {
         List<Double> dataRead = Lists.newArrayList();
         ClassLoader classLoader = getClass().getClassLoader();
@@ -99,12 +106,11 @@ public class CongestionProfile implements TimeSeries {
         while ((nextLine = reader.readNext()) != null) {
             dataRead.add(Double.parseDouble(nextLine[key]));
         }
-        dataValues = new double[dataRead.size()];
-        int i = 0;
+        dValues = new DoubleArrayList();
         for (double d : dataRead) {
-            dataValues[i++] = d;
+            dValues.add(d);
         }
-
+        resetCache();
     }
 
     /**
@@ -139,19 +145,21 @@ public class CongestionProfile implements TimeSeries {
     }
 
     @Override
-    public double[] values() {
-        return Arrays.copyOf(dataValues, dataValues.length);
+    public DoubleList values() {
+        // return Arrays.copyOf(dataValues, dataValues.length);
+        // return dValues.toDoubleArray();
+        return DoubleLists.unmodifiable(dValues);
     }
 
     @Override
     public double value(int index) {
-        checkArgument(index >= 0 && index < dataValues.length);
-        return dataValues[index];
+        checkArgument(index >= 0 && index < length());
+        return dValues.getDouble(index);
     }
 
     @Override
     public int length() {
-        return this.dataValues.length;
+        return this.dValues.size();
     }
 
     /**
@@ -165,7 +173,13 @@ public class CongestionProfile implements TimeSeries {
     public void changeValue(int index, double value) {
         checkArgument(index >= 0 && index < length(),
                 "Index(" + index + ") should be within range of time series.");
-        this.dataValues[index] = value;
+        this.dValues.set(index, value);
+        resetCache();
+    }
+
+    private void resetCache() {
+        this.sumcache = null;
+        this.maxcache = null;
     }
 
     @Override
@@ -173,9 +187,7 @@ public class CongestionProfile implements TimeSeries {
         if (this.maxcache != null) {
             return maxcache;
         }
-        Max m = new Max();
-        m.setData(values());
-        maxcache = m.evaluate();
+        maxcache = applyStatistic(new Max());
         return maxcache;
     }
 
@@ -184,9 +196,12 @@ public class CongestionProfile implements TimeSeries {
         if (this.sumcache != null) {
             return sumcache;
         }
-        Sum s = new Sum();
-        s.setData(dataValues);
-        sumcache = s.evaluate();
+        sumcache = applyStatistic(new Sum());
         return sumcache;
+    }
+
+    private double applyStatistic(AbstractUnivariateStatistic stat) {
+        stat.setData(dValues.toDoubleArray());
+        return stat.evaluate();
     }
 }

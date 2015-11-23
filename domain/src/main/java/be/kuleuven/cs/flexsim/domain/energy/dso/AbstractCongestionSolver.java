@@ -10,9 +10,12 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
@@ -24,13 +27,13 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     protected final static int DSM_ALLOCATION_DURATION = 4 * 2;
     private final int relativeMaxValuePercent;
 
-    private final CongestionProfile congestion;
+    private final TimeSeries congestion;
     private final List<DSMPartner> dsms;
     private int tick;
     private final int forecastHorizon;
     private BigDecimal remediedCongestionCount;
     private final CongestionProfile afterDSMprofile;
-    private double[] horizon;
+    private DoubleList horizon;
 
     /**
      * Default constructor.
@@ -53,7 +56,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         this.forecastHorizon = forecastHorizon;
         this.remediedCongestionCount = BigDecimal.ZERO;
         this.afterDSMprofile = CongestionProfile.createFromTimeSeries(profile);
-        this.horizon = new double[DSM_ALLOCATION_DURATION];
+        this.horizon = getNewEmptyDouble();
         this.relativeMaxValuePercent = maxRelativeValue;
     }
 
@@ -113,7 +116,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     }
 
     private void updateHorizon() {
-        this.horizon = new double[DSM_ALLOCATION_DURATION];
+        this.horizon = getNewEmptyDouble();
         for (int i = 0; i < FastMath.min(getForecastHorizon(),
                 afterDSMprofile.length() - getTick() - 1); i++) {
             double toCorrect = afterDSMprofile.value(getTick() + i);
@@ -121,13 +124,12 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
             for (DSMPartner d : getDsms()) {
                 correction += d.getCurtailment(getTick() + i) / 4.0;
             }
-
-            horizon[i] = FastMath.max(0, toCorrect - correction);
+            horizon.set(i, FastMath.max(0, toCorrect - correction));
         }
     }
 
-    double[] getHorizon() {
-        return this.horizon;
+    DoubleList getHorizon() {
+        return new DoubleArrayList(this.horizon);
     }
 
     private void doTick() {
@@ -152,7 +154,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     /**
      * @return the congestion
      */
-    public CongestionProfile getCongestion() {
+    public TimeSeries getCongestion() {
         return this.congestion;
     }
 
@@ -211,9 +213,10 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         double cong = getCongestion().value(getTick());
         double sum = 0;
         Min m = new Min();
-        m.setData(new double[] { 8, getCongestion().length() - getTick() - 1 });
+        m.setData(new double[] { DSM_ALLOCATION_DURATION,
+                getCongestion().length() - getTick() - 1 });
         for (int i = 0; i < m.evaluate(); i++) {
-            sum += getHorizon()[i];
+            sum += getHorizon().getDouble(i);
         }
         if ((sum / (getCongestion().max() * 8.0)
                 * 100) < relativeMaxValuePercent) {
@@ -223,5 +226,13 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         return Optional.fromNullable(DSMProposal.create(
                 "CNP for activation for tick: " + getTick(), cong, 0, getTick(),
                 getTick() + DSM_ALLOCATION_DURATION));
+    }
+
+    private DoubleList getNewEmptyDouble() {
+        DoubleList d = new DoubleArrayList(DSM_ALLOCATION_DURATION);
+        for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
+            d.add(0);
+        }
+        return d;
     }
 }

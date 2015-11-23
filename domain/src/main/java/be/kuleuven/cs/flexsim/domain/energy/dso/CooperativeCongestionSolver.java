@@ -28,7 +28,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
                     getModifiableProfileAfterDSM().length() - getTick()
                             - 1); i++) {
-                sum += FastMath.min(getHorizon()[i],
+                sum += FastMath.min(getHorizon().getDouble(i),
                         (input.getTargetValue() / 4.0));
             }
             // Closest match to congestion is chosen. ties in favor of smaller

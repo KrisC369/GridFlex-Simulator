@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -64,9 +65,34 @@ public class CongestionProfileTest {
         CongestionProfile profile2;
         profile2 = (CongestionProfile) CongestionProfile
                 .createFromTimeSeries(profile);
-        assertEquals(Arrays.toString(profile2.values()),
-                Arrays.toString(profile.values()));
+        assertEquals(Arrays.toString(profile2.values().toArray()),
+                Arrays.toString(profile.values().toArray()));
+    }
 
+    @Test
+    public void testChangeValue() {
+        // TODO
+        int index = 5;
+        double value = 90;
+        assertNotEquals(profile.value(index), value);
+        double sum = profile.sum();
+        profile.changeValue(index, value);
+        assertEquals(profile.value(index), value, 0);
+        assertNotEquals(sum, profile.sum());
+    }
+
+    @Test
+    public void testMax() {
+        double max = 7;
+        profile2 = new CongestionProfile(new double[] { 0, 0, max, 0 });
+        assertEquals(max, profile2.max(), 0);
+    }
+
+    @Test
+    public void testSum() {
+        double sum = 7;
+        profile2 = new CongestionProfile(new double[] { 0, 0, sum, 0 });
+        assertEquals(sum, profile2.sum(), 0);
     }
 
     @Test
@@ -74,7 +100,7 @@ public class CongestionProfileTest {
         TimeSeries profile;
         try {
             profile = CongestionProfile.createFromCSV(file, column);
-            assertTrue(profile.values().length > 0);
+            assertTrue(profile.values().size() > 0);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
