@@ -87,7 +87,7 @@ public class ExperimentRunnerAllowedExcessAllValues
 
         private void start() {
             CongestionProfile profile;
-            double[] result = new double[100];
+            double[] localResult = new double[100];
             try {
                 profile = (CongestionProfile) CongestionProfile.createFromCSV(
                         "4kwartOpEnNeer.csv", "verlies aan energie");
@@ -101,7 +101,7 @@ public class ExperimentRunnerAllowedExcessAllValues
                             new DoubleArrayList(gd.sample(agents)), profile,
                             allowLessActivations);
                     p.startExperiment();
-                    result[i / (N / 100)] += p.getEfficiency();
+                    localResult[i / (N / 100)] += p.getEfficiency();
                 }
             } catch (IOException e) {
                 LoggerFactory
@@ -109,17 +109,17 @@ public class ExperimentRunnerAllowedExcessAllValues
                         .error("IOException while opening profile.", e);
             }
             for (int i = 0; i < 100; i++) {
-                result[i] /= (N / 100.0);
+                localResult[i] /= (N / 100.0);
             }
             List<Double> reslist = Lists.newArrayList();
-            for (double d : result) {
+            for (double d : localResult) {
                 reslist.add(d);
             }
             double maxVal = Double.NEGATIVE_INFINITY;
             int maxK = -1;
             for (int k = 0; k < 100; k++) {
-                if (result[k] > maxVal) {
-                    maxVal = result[k];
+                if (localResult[k] > maxVal) {
+                    maxVal = localResult[k];
                     maxK = k;
                 }
             }
