@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
@@ -20,7 +19,6 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
     private static final int N = 1000;
     private static final int ALLOWED_EXCESS = 33;
-    private static final boolean ALLOW_LESS_ACTIVATIONS = true;
 
     private final int n;
 
@@ -61,43 +59,25 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         System.out.println("ENDRESULT:");
     }
 
-    class ExperimentAtomImplementation extends ExperimentAtomImpl {
-        @Nullable
-        private final DoubleList real;
+    class ExperimentAtomImplementationSingleEff extends ExperimentAtomImplementation {
         @Nullable
         private ExperimentInstance p;
-        @Nullable
-        private final CongestionProfile profile;
 
-        ExperimentAtomImplementation(DoubleList realisation,
+        ExperimentAtomImplementationSingleEff(DoubleList realisation,
                 CongestionProfile profile) {
-            this.real = realisation;
-            this.profile = profile;
-            this.registerCallbackOnFinish(new ExperimentCallback() {
+            super(realisation, profile);
 
+        }
+
+        @Override
+        protected void doRegistration() {
+            this.registerCallbackOnFinish(new ExperimentCallback() {
                 @Override
                 public void callback(ExperimentAtom instance) {
                     addMainResult(getLabel(), checkNotNull(p).getEfficiency());
                     p = null;
                 }
             });
-        }
-
-        private void start() {
-            checkNotNull(p);
-            p.startExperiment();
-        }
-
-        private void setup() {
-            this.p = new ExperimentInstance(getSolverBuilder(),
-                    checkNotNull(real), checkNotNull(profile),
-                    ALLOW_LESS_ACTIVATIONS);
-        }
-
-        @Override
-        protected void execute() {
-            setup();
-            start();
         }
     }
 }

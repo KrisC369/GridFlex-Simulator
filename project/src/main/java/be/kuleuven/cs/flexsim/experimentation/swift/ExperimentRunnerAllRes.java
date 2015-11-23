@@ -247,7 +247,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
-    class ExperimentAtomImplementation extends ExperimentAtomImpl {
+    protected class ExperimentAtomImplementation extends ExperimentAtomImpl {
         @Nullable
         private final DoubleList real;
         @Nullable
@@ -259,6 +259,10 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 CongestionProfile profile) {
             this.real = realisation;
             this.profile = profile;
+            doRegistration();
+        }
+
+        protected void doRegistration() {
             this.registerCallbackOnFinish(new ExperimentCallback() {
 
                 @Override
