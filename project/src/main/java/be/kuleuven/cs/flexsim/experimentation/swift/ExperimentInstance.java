@@ -13,6 +13,7 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.DSMPartner;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -38,7 +39,7 @@ public class ExperimentInstance {
      *            Allow less than the max amount of activations? otherwise fail
      *            experiment.
      */
-    public ExperimentInstance(SolverBuilder b, double[] powerRealisation,
+    public ExperimentInstance(SolverBuilder b, DoubleList powerRealisation,
             CongestionProfile profile, boolean allow) {
         checkNotNull(profile);
         this.solver = b.getSolver(profile, 8);
@@ -49,7 +50,7 @@ public class ExperimentInstance {
         this.allowLessActivations = allow;
     }
 
-    private void allocateAgents(double[] agents) {
+    private void allocateAgents(DoubleList agents) {
         for (double a : agents) {
             DSMPartner p = new DSMPartner((int) a);
             partners.add(p);

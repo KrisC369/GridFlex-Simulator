@@ -14,6 +14,7 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 
 /**
  * * Runner for single threaded experiments on allowed activation rate value for
@@ -59,7 +60,8 @@ public class ExperimentRunnerAllowedExcessSingleValue
             for (int i = 0; i < N; i++) {
                 ExperimentInstance p = new ExperimentInstance(
                         getSolverBuilder(COMPETITIVE, (int) (i / (N / 100.0))),
-                        gd.sample(NAGENTS), profile, ALLOW_LESS_ACTS);
+                        new DoubleArrayList(gd.sample(NAGENTS)), profile,
+                        ALLOW_LESS_ACTS);
                 p.startExperiment();
                 result[i / (N / 100)] += p.getEfficiency();
             }

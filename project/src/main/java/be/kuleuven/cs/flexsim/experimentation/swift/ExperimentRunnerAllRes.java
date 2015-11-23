@@ -23,6 +23,8 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
@@ -152,7 +154,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < n; i++) {
                 ExperimentInstance p = (new ExperimentInstance(
-                        getSolverBuilder(), gd.sample(nagents), profile,
+                        getSolverBuilder(),
+                        new DoubleArrayList(gd.sample(nagents)), profile,
                         ALLOW_LESS_ACTIVATIONS));
                 p.startExperiment();
                 System.out.println(p.getEfficiency());
@@ -180,7 +183,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
             for (int i = 0; i < n; i++) {
                 instances.add(new ExperimentAtomImplementation(
-                        gd.sample(nagents), profile));
+                        new DoubleArrayList(gd.sample(nagents)), profile));
             }
         } catch (IOException e) {
             LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -246,13 +249,13 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
         @Nullable
-        private final double[] real;
+        private final DoubleList real;
         @Nullable
         private ExperimentInstance p;
         @Nullable
         private final CongestionProfile profile;
 
-        ExperimentAtomImplementation(double[] realisation,
+        ExperimentAtomImplementation(DoubleList realisation,
                 CongestionProfile profile) {
             this.real = realisation;
             this.profile = profile;

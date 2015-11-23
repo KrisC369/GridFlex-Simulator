@@ -19,6 +19,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 
 /**
  * Runner for batch experiments on allowed activation rate values.
@@ -97,7 +98,8 @@ public class ExperimentRunnerAllowedExcessAllValues
                     ExperimentInstance p = new ExperimentInstance(
                             getSolverBuilder(COMPETITIVE,
                                     (int) (i / (N / 100.0))),
-                            gd.sample(agents), profile, allowLessActivations);
+                            new DoubleArrayList(gd.sample(agents)), profile,
+                            allowLessActivations);
                     p.startExperiment();
                     result[i / (N / 100)] += p.getEfficiency();
                 }

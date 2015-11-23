@@ -5,14 +5,13 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Arrays;
-
 import javax.annotation.Nullable;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -64,15 +63,15 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {
         @Nullable
-        private final double[] real;
+        private final DoubleList real;
         @Nullable
         private ExperimentInstance p;
         @Nullable
         private final CongestionProfile profile;
 
-        ExperimentAtomImplementation(double[] realisation,
+        ExperimentAtomImplementation(DoubleList realisation,
                 CongestionProfile profile) {
-            this.real = Arrays.copyOf(realisation, realisation.length);
+            this.real = realisation;
             this.profile = profile;
             this.registerCallbackOnFinish(new ExperimentCallback() {
 
@@ -90,9 +89,9 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         }
 
         private void setup() {
-            this.p = (new ExperimentInstance(getSolverBuilder(),
+            this.p = new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
-                    ALLOW_LESS_ACTIVATIONS));
+                    ALLOW_LESS_ACTIVATIONS);
         }
 
         @Override
