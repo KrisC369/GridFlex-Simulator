@@ -173,7 +173,7 @@ public abstract class SiteBuilder {
         protected int duration;
         protected int tuples;
 
-        private SiteSimulationBuilder() {
+        protected SiteSimulationBuilder() {
             min = 0;
             max = 0;
             base = 0;

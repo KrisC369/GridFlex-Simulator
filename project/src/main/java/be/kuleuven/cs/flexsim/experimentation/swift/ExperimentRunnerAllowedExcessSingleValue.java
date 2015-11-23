@@ -8,6 +8,7 @@ import java.util.Arrays;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
+import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
@@ -24,7 +25,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
         extends ExperimentRunner1 {
 
     private static final long SEED = 1312421l;
-    private static int N = 100;
+    private static final int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int NAGENTS = 200;
@@ -56,17 +57,19 @@ public class ExperimentRunnerAllowedExcessSingleValue
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
-                ExperimentInstance p = (new ExperimentInstance(
+                ExperimentInstance p = new ExperimentInstance(
                         getSolverBuilder(COMPETITIVE, (int) (i / (N / 100.0))),
-                        gd.sample(NAGENTS), profile, ALLOW_LESS_ACTS));
+                        gd.sample(NAGENTS), profile, ALLOW_LESS_ACTS);
                 p.startExperiment();
                 result[i / (N / 100)] += p.getEfficiency();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerFactory
+                    .getLogger(ExperimentRunnerAllowedExcessSingleValue.class)
+                    .error("IOException while opening profile.", e);
         }
         for (int i = 0; i < 100; i++) {
-            result[i] /= (N / 100);
+            result[i] /= (N / 100.0);
         }
         System.out.println("distribution of eff = " + Arrays.toString(result));
     }
@@ -78,7 +81,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
         return new CooperativeSolverBuilder(i);
     }
 
-    class CompetitiveSolverBuilder implements SolverBuilder {
+    static class CompetitiveSolverBuilder implements SolverBuilder {
         int i;
 
         CompetitiveSolverBuilder(int i) {
@@ -92,7 +95,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
         }
     }
 
-    class CooperativeSolverBuilder implements SolverBuilder {
+    static class CooperativeSolverBuilder implements SolverBuilder {
         int i;
 
         CooperativeSolverBuilder(int i) {

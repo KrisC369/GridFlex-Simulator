@@ -82,7 +82,7 @@ public final class MathUtils {
                 }
             } else if (n2y < n1y) {
                 if (n1y > 0) {
-                    return case6(n1y, n2y, n2x);
+                    return case6(n1y, n2x);
                 } else if (n1y == 0) {
                     return caseZero();
                 }
@@ -117,7 +117,7 @@ public final class MathUtils {
         return (n2y * n2x) / 2d;
     }
 
-    private static double case6(double n1y, double n2y, double n2x) {
+    private static double case6(double n1y, double n2x) {
         return (n1y * n2x) / 2d;
     }
 

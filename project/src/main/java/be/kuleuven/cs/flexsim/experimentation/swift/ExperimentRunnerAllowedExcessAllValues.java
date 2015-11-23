@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
@@ -28,13 +29,13 @@ public class ExperimentRunnerAllowedExcessAllValues
         extends ExperimentRunnerAllowedExcessSingleValue {
 
     private static final long SEED = 1312421l;
-    private static int N = 500;
+    private static final int N = 500;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
+    private static final boolean COMPETITIVE = false;
     private static final int NAGENTS = 200;
     private final double[] result2 = new double[NAGENTS];
 
-    private final boolean competitive = false;
     private final boolean allowLessActivations = true;
 
     /**
@@ -93,18 +94,20 @@ public class ExperimentRunnerAllowedExcessAllValues
                         new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                         R3DP_GAMMA_SCALE);
                 for (int i = 0; i < N; i++) {
-                    ExperimentInstance p = (new ExperimentInstance(
-                            getSolverBuilder(competitive,
+                    ExperimentInstance p = new ExperimentInstance(
+                            getSolverBuilder(COMPETITIVE,
                                     (int) (i / (N / 100.0))),
-                            gd.sample(agents), profile, allowLessActivations));
+                            gd.sample(agents), profile, allowLessActivations);
                     p.startExperiment();
                     result[i / (N / 100)] += p.getEfficiency();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LoggerFactory
+                        .getLogger(ExperimentRunnerAllowedExcessAllValues.class)
+                        .error("IOException while opening profile.", e);
             }
             for (int i = 0; i < 100; i++) {
-                result[i] /= (N / 100);
+                result[i] /= (N / 100.0);
             }
             List<Double> reslist = Lists.newArrayList();
             for (double d : result) {

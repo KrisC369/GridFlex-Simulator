@@ -9,8 +9,6 @@ import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
-import org.slf4j.LoggerFactory;
-
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
@@ -22,9 +20,10 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
     private static final int N = 1000;
-    private final int n;
+    private static final int ALLOWED_EXCESS = 33;
+    private static final boolean ALLOW_LESS_ACTIVATIONS = true;
 
-    private final boolean allowLessActivations = true;
+    private final int n;
 
     protected ExperimentRunner1(int n, int nagents, int allowed) {
         super(n, nagents, allowed);
@@ -36,39 +35,19 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
      *            Standard in args.
      */
     public static void main(String[] args) {
-        if (args.length == 0) {
-            new ExperimentRunner1(10, 3, 33).execute();
-        } else if (args.length == 1) {
-            try {
-                final int agents = Integer.valueOf(args[0]);
-                new ExperimentRunner1(N, agents, 33).execute();
-            } catch (Exception e) {
-                LoggerFactory.getLogger(ExperimentRunner1.class)
-                        .error("Unparseable cl parameters passed");
-                throw e;
+        ExpGenerator gen = new ExpGenerator() {
+
+            @Override
+            public ExecutableExperiment getExperiment(int reps, int agents,
+                    int allowed) {
+                return new ExperimentRunner1(reps, agents, allowed);
             }
-        } else if (args.length == 2) {
-            try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
-                new ExperimentRunner1(reps, agents, 33).execute();
-            } catch (Exception e) {
-                LoggerFactory.getLogger(ExperimentRunner1.class)
-                        .error("Unparseable cl parameters passed");
-                throw e;
-            }
-        } else if (args.length == 3) {
-            try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
-                final int allowed = Integer.valueOf(args[2]);
-                new ExperimentRunner1(reps, agents, allowed).execute();
-            } catch (Exception e) {
-                LoggerFactory.getLogger(ExperimentRunner1.class)
-                        .error("Unparseable cl parameters passed");
-                throw e;
-            }
-        }
+        };
+        parseInput(gen, args, N, ALLOWED_EXCESS);
+    }
+
+    protected static void startExperiment(int reps, int agents, int allowed) {
+        new ExperimentRunner1(reps, agents, allowed).execute();
     }
 
     @Override
@@ -113,7 +92,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         private void setup() {
             this.p = (new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
-                    allowLessActivations));
+                    ALLOW_LESS_ACTIVATIONS));
         }
 
         @Override

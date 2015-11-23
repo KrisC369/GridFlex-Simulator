@@ -29,7 +29,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                     getModifiableProfileAfterDSM().length() - getTick()
                             - 1); i++) {
                 sum += FastMath.min(getHorizon().getDouble(i),
-                        (input.getTargetValue() / 4.0));
+                        input.getTargetValue() / 4.0);
             }
             // Closest match to congestion is chosen. ties in favor of smaller
             // bids.

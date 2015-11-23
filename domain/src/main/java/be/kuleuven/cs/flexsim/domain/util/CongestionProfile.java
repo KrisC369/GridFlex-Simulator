@@ -146,8 +146,6 @@ public class CongestionProfile implements TimeSeries {
 
     @Override
     public DoubleList values() {
-        // return Arrays.copyOf(dataValues, dataValues.length);
-        // return dValues.toDoubleArray();
         return DoubleLists.unmodifiable(dValues);
     }
 

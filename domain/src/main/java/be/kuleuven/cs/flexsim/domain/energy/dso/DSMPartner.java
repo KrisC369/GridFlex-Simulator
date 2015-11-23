@@ -214,7 +214,7 @@ public class DSMPartner implements SimulationComponent {
                 return false;
             }
         }
-        for (int i = (begin + getActivationDuration()); i < FastMath.min(
+        for (int i = begin + getActivationDuration(); i < FastMath.min(
                 begin + getActivationDuration() + getInteractivationTime(),
                 OPERATING_TIME_LIMIT); i++) {
             if (activationMarker[i] > 0) {
@@ -231,7 +231,7 @@ public class DSMPartner implements SimulationComponent {
     private double getValuation(int beginMark) {
         double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
         double goal = beginMark * factor;
-        return ((currentActivations - goal) / maxActivations);
+        return (currentActivations - goal) / maxActivations;
     }
 
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {

@@ -23,12 +23,13 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
-import be.kuleuven.cs.flexsim.experimentation.saso.RenumerationGameRunner;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ExperimentRunnerAllRes {
+public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     private static final long SEED = 1312421l;
     private static final boolean RUN_MULTI_THREADED = true;
@@ -36,6 +37,7 @@ public class ExperimentRunnerAllRes {
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final int N = 1000;
     private static final int ALLOWED_EXCESS = 33;
+    private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private final int n;
     private final int nagents;
     private final int allowedExcess;
@@ -48,7 +50,6 @@ public class ExperimentRunnerAllRes {
     private final List<Double> actEffRes1 = Lists.newCopyOnWriteArrayList();
     private final List<Double> actEffRes2 = Lists.newCopyOnWriteArrayList();
     private boolean competitive = true;
-    private final boolean allowLessActivations = true;
 
     protected ExperimentRunnerAllRes(int n, int nagents, int allowed) {
         this.n = n;
@@ -61,14 +62,27 @@ public class ExperimentRunnerAllRes {
      *            StdIn args.
      */
     public static void main(String[] args) {
+        ExpGenerator gen = new ExpGenerator() {
+
+            @Override
+            public ExecutableExperiment getExperiment(int reps, int agents,
+                    int allowed) {
+                return new ExperimentRunnerAllRes(reps, agents, allowed);
+            }
+        };
+        parseInput(gen, args, N, ALLOWED_EXCESS);
+    }
+
+    protected static void parseInput(ExpGenerator gen, String[] args, int n,
+            int allowedEx) {
         if (args.length == 0) {
-            new ExperimentRunnerAllRes(10, 81, ALLOWED_EXCESS).execute();
+            startExperiment(gen, 10, 81, allowedEx);
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.valueOf(args[0]);
-                new ExperimentRunnerAllRes(N, agents, ALLOWED_EXCESS).execute();
+                startExperiment(gen, n, agents, allowedEx);
             } catch (Exception e) {
-                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error("Unparseable cl parameters passed");
                 throw e;
             }
@@ -76,10 +90,9 @@ public class ExperimentRunnerAllRes {
             try {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
-                new ExperimentRunnerAllRes(reps, agents, ALLOWED_EXCESS)
-                        .execute();
+                startExperiment(gen, reps, agents, allowedEx);
             } catch (Exception e) {
-                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error("Unparseable cl parameters passed");
                 throw e;
             }
@@ -88,13 +101,19 @@ public class ExperimentRunnerAllRes {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
                 final int allowed = Integer.valueOf(args[2]);
-                new ExperimentRunnerAllRes(reps, agents, allowed).execute();
+                startExperiment(gen, reps, agents, allowed);
             } catch (Exception e) {
-                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error("Unparseable cl parameters passed");
                 throw e;
             }
         }
+
+    }
+
+    static void startExperiment(ExpGenerator gen, int reps, int agents,
+            int allowed) {
+        gen.getExperiment(reps, agents, allowed).execute();
     }
 
     /**
@@ -112,11 +131,11 @@ public class ExperimentRunnerAllRes {
         GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         for (int i = 0; i < 21; i++) {
-            int[] t = new int[n];
+            IntList tt = new IntArrayList();
             for (int j = 0; j < n; j++) {
-                t[j] = (int) gd.sample();
+                tt.add((int) gd.sample());
             }
-            System.out.println(Arrays.toString(t));
+            System.out.println(Arrays.toString(tt.toIntArray()));
         }
     }
 
@@ -134,12 +153,13 @@ public class ExperimentRunnerAllRes {
             for (int i = 0; i < n; i++) {
                 ExperimentInstance p = (new ExperimentInstance(
                         getSolverBuilder(), gd.sample(nagents), profile,
-                        allowLessActivations));
+                        ALLOW_LESS_ACTIVATIONS));
                 p.startExperiment();
                 System.out.println(p.getEfficiency());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
+                    .error("IOException while opening profile.", e);
         }
     }
 
@@ -163,7 +183,8 @@ public class ExperimentRunnerAllRes {
                         gd.sample(nagents), profile));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
+                    .error("IOException while opening profile.", e);
         }
         ExperimentRunner r;
         if (RUN_MULTI_THREADED) {
@@ -258,9 +279,9 @@ public class ExperimentRunnerAllRes {
         }
 
         private void setup() {
-            this.p = (new ExperimentInstance(getSolverBuilder(),
+            this.p = new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
-                    allowLessActivations));
+                    ALLOW_LESS_ACTIVATIONS);
         }
 
         @Override

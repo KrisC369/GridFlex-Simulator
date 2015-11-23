@@ -9,6 +9,8 @@ import java.io.IOException;
 
 import javax.annotation.Nullable;
 
+import org.slf4j.LoggerFactory;
+
 import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
@@ -24,7 +26,7 @@ public class SwiftPOCRunner {
     private static final int POWERRATE = 618;
     private static final int SIMDURATION = 4 * 24 * 365;
     private static final int TIMEHORIZON = 8;
-    private final boolean comp = true;
+    private static final boolean COMPETITIVE = true;
 
     private @Nullable CongestionProfile profile;
     private final AbstractCongestionSolver solver;
@@ -50,9 +52,10 @@ public class SwiftPOCRunner {
             this.profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         } catch (IOException e) {
-            e.printStackTrace();
+            LoggerFactory.getLogger(SwiftPOCRunner.class)
+                    .error("IOException while opening profile.", e);
         }
-        if (comp) {
+        if (COMPETITIVE) {
             this.solver = new CompetitiveCongestionSolver(checkNotNull(profile),
                     TIMEHORIZON);
         } else {
