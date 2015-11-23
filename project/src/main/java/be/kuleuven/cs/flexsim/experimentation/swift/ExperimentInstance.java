@@ -25,6 +25,7 @@ public class ExperimentInstance {
     private final List<DSMPartner> partners;
     private final Simulator sim;
     private final boolean allowLessActivations;
+    private final double producedE;
 
     /**
      * Default Constructor
@@ -38,9 +39,11 @@ public class ExperimentInstance {
      * @param allow
      *            Allow less than the max amount of activations? otherwise fail
      *            experiment.
+     * @param producedE
+     *            The total energy produced on the feeder.
      */
     public ExperimentInstance(SolverBuilder b, DoubleList powerRealisation,
-            CongestionProfile profile, boolean allow) {
+            CongestionProfile profile, boolean allow, double producedE) {
         checkNotNull(profile);
         this.solver = b.getSolver(profile, 8);
         this.partners = Lists.newArrayList();
@@ -48,6 +51,7 @@ public class ExperimentInstance {
         sim = Simulator.createSimulator(SIMDURATION);
         sim.register(solver);
         this.allowLessActivations = allow;
+        this.producedE = producedE;
     }
 
     private void allocateAgents(DoubleList agents) {
@@ -126,6 +130,14 @@ public class ExperimentInstance {
         return getRemediedCongestion() / solver.getCongestion().sum();
     }
 
+    /**
+     * @return the amount of congestion solved as a fraction of the total
+     *         produced energy.
+     */
+    public double getRemediedCongestionRelatedToProducedEnergy() {
+        return getRemediedCongestion() / getProducedE();
+    }
+
     private void verify() {
         if (!allowLessActivations) {
             for (DSMPartner p : partners) {
@@ -141,4 +153,7 @@ public class ExperimentInstance {
         }
     }
 
+    private double getProducedE() {
+        return producedE;
+    }
 }

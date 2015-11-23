@@ -33,6 +33,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
     private static final int ALLOWED_EXCESS = 33;
     private static final boolean ALLOW_LESS_ACTS = true;
     private static final boolean COMPETITIVE = false;
+    private static final double TOTAL_PRODUCED_E = 36360.905;
 
     /**
      * @param args
@@ -61,7 +62,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
                 ExperimentInstance p = new ExperimentInstance(
                         getSolverBuilder(COMPETITIVE, (int) (i / (N / 100.0))),
                         new DoubleArrayList(gd.sample(NAGENTS)), profile,
-                        ALLOW_LESS_ACTS);
+                        ALLOW_LESS_ACTS, TOTAL_PRODUCED_E);
                 p.startExperiment();
                 result[i / (N / 100)] += p.getEfficiency();
             }

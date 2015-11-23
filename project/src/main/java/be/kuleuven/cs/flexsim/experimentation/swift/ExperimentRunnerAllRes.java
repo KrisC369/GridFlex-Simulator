@@ -40,6 +40,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final int N = 1000;
     private static final int ALLOWED_EXCESS = 33;
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
+    private static final double TOTAL_PRODUCED_E = 36360.905;
     private final int n;
     private final int nagents;
     private final int allowedExcess;
@@ -51,6 +52,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private final List<Double> solvRes2 = Lists.newCopyOnWriteArrayList();
     private final List<Double> actEffRes1 = Lists.newCopyOnWriteArrayList();
     private final List<Double> actEffRes2 = Lists.newCopyOnWriteArrayList();
+    private final List<Double> remediedCong1 = Lists.newCopyOnWriteArrayList();
+    private final List<Double> remediedCong2 = Lists.newCopyOnWriteArrayList();
     private boolean competitive = true;
 
     protected ExperimentRunnerAllRes(int n, int nagents, int allowed) {
@@ -153,10 +156,10 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < n; i++) {
-                ExperimentInstance p = (new ExperimentInstance(
+                ExperimentInstance p = new ExperimentInstance(
                         getSolverBuilder(),
                         new DoubleArrayList(gd.sample(nagents)), profile,
-                        ALLOW_LESS_ACTIVATIONS));
+                        ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
                 p.startExperiment();
                 System.out.println(p.getEfficiency());
             }
@@ -208,6 +211,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         System.out.println("ActEffRes2=" + actEffRes2);
         System.out.println("SolvRes1=" + solvRes1);
         System.out.println("SolvRes2=" + solvRes2);
+        System.out.println("RemediedRes1=" + remediedCong1);
+        System.out.println("RemediedRes2=" + remediedCong2);
         System.out.println(
                 "Not meeting 40 acts: " + String.valueOf(n - mainRes1.size()));
         System.out.println(
@@ -247,6 +252,15 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
+    protected synchronized void addRemediedCongResult(String label,
+            double eff) {
+        if ("comp".equals(label)) {
+            remediedCong1.add(eff);
+        } else if ("coop".equals(label)) {
+            remediedCong2.add(eff);
+        }
+    }
+
     protected class ExperimentAtomImplementation extends ExperimentAtomImpl {
         @Nullable
         private final DoubleList real;
@@ -274,7 +288,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                             checkNotNull(p).getSummedAgentEfficiency());
                     addSolveResult(getLabel(),
                             checkNotNull(p).getRemediedCongestionFraction());
-
+                    addRemediedCongResult(getLabel(), checkNotNull(p)
+                            .getRemediedCongestionRelatedToProducedEnergy());
                     p = null;
                 }
             });
@@ -288,7 +303,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         private void setup() {
             this.p = new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
-                    ALLOW_LESS_ACTIVATIONS);
+                    ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
         }
 
         @Override

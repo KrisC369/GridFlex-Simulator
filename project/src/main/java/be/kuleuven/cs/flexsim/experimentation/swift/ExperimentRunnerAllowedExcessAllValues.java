@@ -35,6 +35,7 @@ public class ExperimentRunnerAllowedExcessAllValues
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private static final boolean COMPETITIVE = false;
     private static final int NAGENTS = 200;
+    private static final double TOTAL_PRODUCED_E = 36360.905;
     private final double[] result2 = new double[NAGENTS];
 
     private final boolean allowLessActivations = true;
@@ -99,7 +100,7 @@ public class ExperimentRunnerAllowedExcessAllValues
                             getSolverBuilder(COMPETITIVE,
                                     (int) (i / (N / 100.0))),
                             new DoubleArrayList(gd.sample(agents)), profile,
-                            allowLessActivations);
+                            allowLessActivations, TOTAL_PRODUCED_E);
                     p.startExperiment();
                     localResult[i / (N / 100)] += p.getEfficiency();
                 }
