@@ -10,6 +10,11 @@ package be.kuleuven.cs.flexsim.protocol;
  */
 public interface AnswerAnticipator<T> {
     /**
+     * Standard NO operation answerAnticipator instance.
+     */
+    static AnswerAnticipator<?> NOOP = new NoOpAnswerAnticipator<>();
+
+    /**
      * Send an affirmative notification.
      * 
      * @param prop
@@ -27,5 +32,4 @@ public interface AnswerAnticipator<T> {
     /**
      * 
      */
-    public static AnswerAnticipator<?> NOOP = new NoOpAnswerAnticipator<>();
 }

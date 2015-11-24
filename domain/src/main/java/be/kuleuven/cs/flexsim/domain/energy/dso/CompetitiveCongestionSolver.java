@@ -76,7 +76,8 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
         }
 
         @Override
-        public @Nullable DSMProposal findBestProposal(List<DSMProposal> props,
+        @Nullable
+        public DSMProposal findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
             secondBest = Optional.absent();
             if (props.isEmpty()) {

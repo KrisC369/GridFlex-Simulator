@@ -3,9 +3,11 @@ package be.kuleuven.cs.flexsim.domain.util;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -93,7 +95,8 @@ public class CongestionProfile implements TimeSeries {
         List<Double> dataRead = Lists.newArrayList();
         ClassLoader classLoader = getClass().getClassLoader();
         File file = new File(classLoader.getResource(filename).getFile());
-        CSVReader reader = new CSVReaderBuilder(new FileReader(file)).build();
+        CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
+                new FileInputStream(file), Charset.defaultCharset())).build();
         String[] nextLine = reader.readNext();
         int key = -1;
         for (int i = 0; i < nextLine.length; i++) {

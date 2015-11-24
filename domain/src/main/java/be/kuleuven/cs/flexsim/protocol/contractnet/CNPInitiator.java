@@ -157,7 +157,8 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
      *            The original call.
      * @return the best fitting proposal.
      */
-    public abstract @Nullable T findBestProposal(List<T> props, T description);
+    @Nullable
+    public abstract T findBestProposal(List<T> props, T description);
 
     /**
      * This method is called immediately after a sollicitWork-call and should

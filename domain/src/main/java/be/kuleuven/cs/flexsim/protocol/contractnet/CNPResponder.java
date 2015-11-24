@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
+import org.slf4j.LoggerFactory;
+
 import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
 import be.kuleuven.cs.flexsim.protocol.NoOpAnswerAnticipator;
 import be.kuleuven.cs.flexsim.protocol.Proposal;
@@ -29,6 +31,8 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
                 }
             });
         } catch (CanNotFindProposalException e) {
+            LoggerFactory.getLogger(CNPResponder.class)
+                    .debug("No proposal found for a certain agent.", e);
             responder.reject();
         }
 

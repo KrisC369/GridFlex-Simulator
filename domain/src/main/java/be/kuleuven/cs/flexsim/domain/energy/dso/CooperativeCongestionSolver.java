@@ -82,7 +82,8 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
         }
 
         @Override
-        public @Nullable DSMProposal findBestProposal(List<DSMProposal> props,
+        @Nullable
+        public DSMProposal findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
 
             if (props.isEmpty()) {

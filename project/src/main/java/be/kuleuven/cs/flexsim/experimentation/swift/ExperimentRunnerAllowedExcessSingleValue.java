@@ -35,6 +35,10 @@ public class ExperimentRunnerAllowedExcessSingleValue
     private static final boolean COMPETITIVE = false;
     private static final double TOTAL_PRODUCED_E = 36360.905;
 
+    protected ExperimentRunnerAllowedExcessSingleValue() {
+        super(N, NAGENTS, ALLOWED_EXCESS);
+    }
+
     /**
      * @param args
      *            default stdin args
@@ -42,10 +46,6 @@ public class ExperimentRunnerAllowedExcessSingleValue
     public static void main(String[] args) {
         ExperimentRunnerAllowedExcessSingleValue er = new ExperimentRunnerAllowedExcessSingleValue();
         er.runSingle();
-    }
-
-    protected ExperimentRunnerAllowedExcessSingleValue() {
-        super(N, NAGENTS, ALLOWED_EXCESS);
     }
 
     @Override

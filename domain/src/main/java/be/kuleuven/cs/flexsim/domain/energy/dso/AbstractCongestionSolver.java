@@ -147,7 +147,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      * @param tick
      *            the tick to set
      */
-    private final void incrementTick() {
+    private void incrementTick() {
         this.tick = tick + 1;
     }
 

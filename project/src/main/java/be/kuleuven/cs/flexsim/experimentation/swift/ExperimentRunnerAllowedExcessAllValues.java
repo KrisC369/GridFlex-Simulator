@@ -36,9 +36,8 @@ public class ExperimentRunnerAllowedExcessAllValues
     private static final boolean COMPETITIVE = false;
     private static final int NAGENTS = 200;
     private static final double TOTAL_PRODUCED_E = 36360.905;
+    private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private final double[] result2 = new double[NAGENTS];
-
-    private final boolean allowLessActivations = true;
 
     /**
      * @param args
@@ -100,7 +99,7 @@ public class ExperimentRunnerAllowedExcessAllValues
                             getSolverBuilder(COMPETITIVE,
                                     (int) (i / (N / 100.0))),
                             new DoubleArrayList(gd.sample(agents)), profile,
-                            allowLessActivations, TOTAL_PRODUCED_E);
+                            ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
                     p.startExperiment();
                     localResult[i / (N / 100)] += p.getEfficiency();
                 }

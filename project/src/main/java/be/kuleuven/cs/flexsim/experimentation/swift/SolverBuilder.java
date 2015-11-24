@@ -20,6 +20,6 @@ public interface SolverBuilder {
      *            The forecast horizon.
      * @return A congestion solver instance.
      */
-    public AbstractCongestionSolver getSolver(CongestionProfile profile, int n);
+    AbstractCongestionSolver getSolver(CongestionProfile profile, int n);
 
 }

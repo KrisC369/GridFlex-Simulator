@@ -41,6 +41,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final int ALLOWED_EXCESS = 33;
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private static final double TOTAL_PRODUCED_E = 36360.905;
+    private static final String CL_ERROR = "Unparseable cl parameters passed";
     private final int n;
     private final int nagents;
     private final int allowedExcess;
@@ -80,6 +81,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     protected static void parseInput(ExpGenerator gen, String[] args, int n,
             int allowedEx) {
+
         if (args.length == 0) {
             startExperiment(gen, 10, 81, allowedEx);
         } else if (args.length == 1) {
@@ -88,7 +90,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 startExperiment(gen, n, agents, allowedEx);
             } catch (Exception e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
-                        .error("Unparseable cl parameters passed");
+                        .error(CL_ERROR);
                 throw e;
             }
         } else if (args.length == 2) {
@@ -98,7 +100,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 startExperiment(gen, reps, agents, allowedEx);
             } catch (Exception e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
-                        .error("Unparseable cl parameters passed");
+                        .error(CL_ERROR);
                 throw e;
             }
         } else if (args.length == 3) {
@@ -109,7 +111,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 startExperiment(gen, reps, agents, allowed);
             } catch (Exception e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
-                        .error("Unparseable cl parameters passed");
+                        .error(CL_ERROR);
                 throw e;
             }
         }

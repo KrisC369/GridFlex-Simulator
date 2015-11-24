@@ -35,16 +35,6 @@ public class SwiftPOCRunner {
     private final Simulator sim;
 
     /**
-     * @param args
-     *            std in params.
-     */
-    public static void main(String[] args) {
-        SwiftPOCRunner r = new SwiftPOCRunner();
-        r.startExperiment();
-        r.displayEfficiency();
-    }
-
-    /**
      * Default constructor.
      */
     public SwiftPOCRunner() {
@@ -68,6 +58,16 @@ public class SwiftPOCRunner {
         solver.registerDSMPartner(partner2);
         sim = Simulator.createSimulator(SIMDURATION);
         sim.register(solver);
+    }
+
+    /**
+     * @param args
+     *            std in params.
+     */
+    public static void main(String[] args) {
+        SwiftPOCRunner r = new SwiftPOCRunner();
+        r.startExperiment();
+        r.displayEfficiency();
     }
 
     /**
