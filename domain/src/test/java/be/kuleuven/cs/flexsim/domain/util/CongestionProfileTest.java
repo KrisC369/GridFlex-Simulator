@@ -71,7 +71,6 @@ public class CongestionProfileTest {
 
     @Test
     public void testChangeValue() {
-        // TODO
         int index = 5;
         double value = 90;
         assertNotEquals(profile.value(index), value);

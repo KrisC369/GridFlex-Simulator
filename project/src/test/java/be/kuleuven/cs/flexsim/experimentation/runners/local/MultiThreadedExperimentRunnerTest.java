@@ -9,13 +9,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
-import be.kuleuven.cs.flexsim.experimentation.runners.local.MultiThreadedExperimentRunner;
-
-import com.google.common.collect.Lists;
 
 public class MultiThreadedExperimentRunnerTest {
 
@@ -29,10 +27,10 @@ public class MultiThreadedExperimentRunnerTest {
 
     @Test
     public void testMultiThreadedExperimentRunnerRunnableExperimentInt() {
-        List<Double> list = Lists.newArrayList();
+        List<Double> list = Lists.newCopyOnWriteArrayList();
         runner = LocalRunners.createDefaultMultiThreadedRunner();
         // Damn float and double inaccuracies.
-        for (int i = 0; i <= 100; i += 5) {
+        for (int i = 0; i <= 20; i += 1) {
             ExpTester tester = new ExpTester(list);
             tester.doExperimentRun(i);
             experiments.add(tester);
@@ -40,12 +38,13 @@ public class MultiThreadedExperimentRunnerTest {
         runner.runExperiments(experiments);
         blockWait(runner);
         assertEquals(21, list.size());
-        for (int i = 0; i <= 100; i += 5) {
+        for (int i = 0; i <= 20; i += 1) {
             assertTrue(containsAprox(list, i, 0.01));
         }
     }
 
-    private boolean containsAprox(List<Double> list, double elem, double error) {
+    private boolean containsAprox(List<Double> list, double elem,
+            double error) {
         for (Double d : list) {
             if (Math.abs(d - elem) < error) {
                 return true;
@@ -56,7 +55,7 @@ public class MultiThreadedExperimentRunnerTest {
 
     @Test
     public void testSingleThreadedExperimentRunner() {
-        List<Double> list = Lists.newArrayList();
+        List<Double> list = Lists.newCopyOnWriteArrayList();
         runner = LocalRunners.createDefaultSingleThreadedRunner();
         for (double i = 0; i <= 1.0; i += 0.2) {
             ExpTester tester = new ExpTester(list);
@@ -74,7 +73,7 @@ public class MultiThreadedExperimentRunnerTest {
 
     @Test
     public void testSingleThreadedExperimentRunner2() {
-        List<Double> list = Lists.newArrayList();
+        List<Double> list = Lists.newCopyOnWriteArrayList();
         runner = LocalRunners.createCustomMultiThreadedRunner(2);
         for (double i = 0; i <= 1.0; i += 0.1) {
             ExpTester tester = new ExpTester(list);
