@@ -40,7 +40,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final int N = 1000;
     private static final int ALLOWED_EXCESS = 33;
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
-    private static final double TOTAL_PRODUCED_E = 36360.905;
+    private static final double TOTAL_PRODUCED_E = 36360905;
     private static final String CL_ERROR = "Unparseable cl parameters passed";
     private final int n;
     private final int nagents;
