@@ -42,6 +42,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private static final double TOTAL_PRODUCED_E = 36360905;
     private static final String CL_ERROR = "Unparseable cl parameters passed";
+    private static final String FILE = "2kwartOpEnNeer.csv";
+    private static final String COLUMN = "verlies aan energie";
     private final int n;
     private final int nagents;
     private final int allowedExcess;
@@ -152,8 +154,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     protected void runSingle() {
         CongestionProfile profile;
         try {
-            profile = (CongestionProfile) CongestionProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+            profile = (CongestionProfile) CongestionProfile.createFromCSV(FILE,
+                    COLUMN);
             GammaDistribution gd = new GammaDistribution(
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
@@ -184,8 +186,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         try {
-            profile = (CongestionProfile) CongestionProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+            profile = (CongestionProfile) CongestionProfile.createFromCSV(FILE,
+                    COLUMN);
             for (int i = 0; i < n; i++) {
                 instances.add(new ExperimentAtomImplementation(
                         new DoubleArrayList(gd.sample(nagents)), profile));
