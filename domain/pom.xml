@@ -8,9 +8,7 @@
 		<artifactId>flexsim-main</artifactId>
 		<version>0.0.7</version>
 	</parent>
-	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-domain</artifactId>
-	<version>0.0.7</version>
 	<name>FlexSimulator domain</name>
 	<description>Domain concepts for Flexsim.</description>
 	<url>http://maven.apache.org</url>
@@ -41,6 +39,10 @@
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
 			<artifactId>fastutil</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.annotation</artifactId>
 		</dependency>
 	</dependencies>
 </project>

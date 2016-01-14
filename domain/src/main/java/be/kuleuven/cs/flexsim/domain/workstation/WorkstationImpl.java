@@ -7,14 +7,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
-import com.google.common.annotations.VisibleForTesting;
 
 /**
  * Main workstation class representing machines that perform work and consume
@@ -24,19 +24,11 @@ import com.google.common.annotations.VisibleForTesting;
  */
 class WorkstationImpl implements ConfigurableWorkstation {
 
-    private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = new IntNNFunction<Resource>() {
-        @Override
-        public int apply(Resource input) {
-            return input.getCurrentNeededProcessTime();
-        }
-    };
+    private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = input -> input
+            .getCurrentNeededProcessTime();
 
-    private static final IntNNFunction<Resource> MAX_REMAINING_STEPS = new IntNNFunction<Resource>() {
-        @Override
-        public int apply(Resource input) {
-            return input.getMaxNeededProcessTime();
-        }
-    };
+    private static final IntNNFunction<Resource> MAX_REMAINING_STEPS = input -> input
+            .getMaxNeededProcessTime();
 
     private final Buffer<Resource> inputBuff;
     private final Buffer<Resource> outputBuff;

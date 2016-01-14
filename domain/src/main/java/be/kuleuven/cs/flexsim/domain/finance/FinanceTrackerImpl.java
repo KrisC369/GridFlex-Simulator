@@ -3,14 +3,14 @@ package be.kuleuven.cs.flexsim.domain.finance;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 import be.kuleuven.cs.flexsim.domain.process.ResourceConsumptionTrackableComponent;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
-import com.google.common.base.Optional;
 
 /**
  * Tracks and finalizes the finances of productionlines.

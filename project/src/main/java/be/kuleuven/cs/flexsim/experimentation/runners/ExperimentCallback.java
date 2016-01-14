@@ -4,7 +4,6 @@ package be.kuleuven.cs.flexsim.experimentation.runners;
  * Callback interface for signaling when an execution is finished.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface ExperimentCallback {
     /**

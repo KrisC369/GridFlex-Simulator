@@ -2,8 +2,6 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.math3.util.FastMath;
 
 import com.google.common.base.Optional;
@@ -82,14 +80,14 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
         }
 
         @Override
-        @Nullable
-        public DSMProposal findBestProposal(List<DSMProposal> props,
+        public Optional<DSMProposal> findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
 
             if (props.isEmpty()) {
-                return null;
+                return Optional.absent();
             }
-            return CollectionUtils.argMax(props, choiceFunction);
+            return Optional.fromNullable(
+                    CollectionUtils.argMax(props, choiceFunction));
         }
 
         @Override

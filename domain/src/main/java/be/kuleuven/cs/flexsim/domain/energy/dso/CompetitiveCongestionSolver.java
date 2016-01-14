@@ -2,8 +2,6 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Optional;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -76,12 +74,11 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
         }
 
         @Override
-        @Nullable
-        public DSMProposal findBestProposal(List<DSMProposal> props,
+        public Optional<DSMProposal> findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
             secondBest = Optional.absent();
             if (props.isEmpty()) {
-                return null;
+                return Optional.absent();
             }
             final DSMProposal max = CollectionUtils.argMax(props,
                     usefullnessFunction);
@@ -91,7 +88,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
                         CollectionUtils.argMax(props, usefullnessFunction));
 
             }
-            return max;
+            return Optional.fromNullable(max);
         }
 
         @Override

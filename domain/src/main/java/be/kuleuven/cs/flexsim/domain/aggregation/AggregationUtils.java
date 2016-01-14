@@ -10,14 +10,14 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+
+import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
 /**
  * Utility class provind some static utility functions to be used by aggregation

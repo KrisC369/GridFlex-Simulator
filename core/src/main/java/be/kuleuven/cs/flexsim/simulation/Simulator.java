@@ -11,14 +11,14 @@ import org.apache.commons.math3.random.RandomGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Sets;
+import com.google.common.eventbus.EventBus;
+
 import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.event.EventFactory;
 import be.kuleuven.cs.flexsim.event.EventFactoryImplementation;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
-
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.EventBus;
 
 /**
  * The Class Simulator. This Simulator drives the simulation by sending ticks to

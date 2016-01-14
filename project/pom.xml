@@ -10,10 +10,7 @@
 		<relativePath>..</relativePath>
 	</parent>
 
-
-	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-project</artifactId>
-	<version>0.0.7</version>
 	<packaging>jar</packaging>
 	<name>FlexSimulator projects</name>
 	<description>Projects using flexsim to produce results.</description>
@@ -53,6 +50,10 @@
 		<dependency>
 			<groupId>it.unimi.dsi</groupId>
 			<artifactId>fastutil</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>org.eclipse.jdt.annotation</artifactId>
 		</dependency>
 	</dependencies>
 	<properties>

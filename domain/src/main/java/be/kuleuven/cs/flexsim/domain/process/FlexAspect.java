@@ -2,11 +2,11 @@ package be.kuleuven.cs.flexsim.domain.process;
 
 import java.util.List;
 
+import com.google.common.collect.LinkedListMultimap;
+
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
-
-import com.google.common.collect.LinkedListMultimap;
 
 /**
  * An aspect of flexibility. A certain measure or category of flexibility is

@@ -8,13 +8,12 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
-
-import com.google.common.collect.Lists;
 
 public class ReactiveMechanismAggregatorTest {
     private BalancingTSO tso = mock(BalancingTSO.class);

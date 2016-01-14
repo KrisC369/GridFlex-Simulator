@@ -2,10 +2,10 @@ package be.kuleuven.cs.flexsim.simulation;
 
 import org.apache.commons.math3.random.RandomGenerator;
 
+import com.google.common.eventbus.EventBus;
+
 import be.kuleuven.cs.flexsim.event.EventFactory;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
-
-import com.google.common.eventbus.EventBus;
 
 /**
  * The interface for the simulation context. This is the central context in

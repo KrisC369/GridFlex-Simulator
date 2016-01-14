@@ -7,14 +7,14 @@ import java.util.Set;
 
 import org.apache.commons.math3.random.MersenneTwister;
 
-import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+
+import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
+import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
 /**
  * Some implementations of aggregation strategies.

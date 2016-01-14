@@ -3,9 +3,9 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
 import com.google.common.annotations.VisibleForTesting;
+
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 /**
  * A decorator for decorating workstation instances that steerable with a random

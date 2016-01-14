@@ -2,10 +2,10 @@ package be.kuleuven.cs.flexsim.domain.aggregation;
 
 import java.util.Set;
 
+import com.google.common.collect.Multimap;
+
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
-import com.google.common.collect.Multimap;
 
 /**
  * A context for the aggregation strategy. This represents an entity capable of

@@ -5,15 +5,15 @@ import java.util.Set;
 
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
-import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+
+import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
+import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 
 /**
  * An abstract aggregator instance with logic to perform aggregation functions.

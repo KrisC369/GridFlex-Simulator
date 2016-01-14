@@ -3,8 +3,6 @@ package be.kuleuven.cs.flexsim.protocol.contractnet;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -103,13 +101,13 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     private void cnpPhaseTwo(Map<T, AnswerAnticipator<T>> props,
             T description) {
-        T best = findBestProposal(Lists.newArrayList(props.keySet()),
+        Optional<T> best = findBestProposal(Lists.newArrayList(props.keySet()),
                 description);
         Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
-        rejects.remove(best);
+        rejects.remove(best.orNull());
         notifyRejects(rejects);
-        if (best != null) {
-            notifyAcceptPhase2(best, props);
+        if (best.isPresent()) {
+            notifyAcceptPhase2(best.get(), props);
         } else {
             signalNoSolutionFound();
         }
@@ -157,8 +155,8 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
      *            The original call.
      * @return the best fitting proposal.
      */
-    @Nullable
-    public abstract T findBestProposal(List<T> props, T description);
+
+    public abstract Optional<T> findBestProposal(List<T> props, T description);
 
     /**
      * This method is called immediately after a sollicitWork-call and should

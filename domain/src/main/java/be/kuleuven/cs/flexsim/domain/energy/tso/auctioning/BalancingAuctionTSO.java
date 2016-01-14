@@ -3,13 +3,13 @@ package be.kuleuven.cs.flexsim.domain.energy.tso.auctioning;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.FlexBid;
-
-import com.google.common.collect.Lists;
 
 /**
  * A TSO implementation that can accept bids for balancing actions and clears

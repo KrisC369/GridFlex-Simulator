@@ -2,10 +2,10 @@ package be.kuleuven.cs.flexsim.domain.finance;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
-import com.google.common.collect.Lists;
 
 /**
  * Adapter class for aggregating and summing multiple trackers.

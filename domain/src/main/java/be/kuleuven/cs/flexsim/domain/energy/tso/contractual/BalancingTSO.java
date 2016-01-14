@@ -3,6 +3,9 @@ package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
@@ -10,9 +13,6 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 /**
  * A TSO implementation that can accept bids for balancing actions and clears

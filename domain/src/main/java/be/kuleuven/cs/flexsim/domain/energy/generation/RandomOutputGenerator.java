@@ -8,10 +8,10 @@ import java.util.List;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
-import com.google.common.annotations.VisibleForTesting;
 
 /**
  * Represents a TSO implementation with random signal.

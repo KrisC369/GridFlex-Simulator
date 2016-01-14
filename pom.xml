@@ -71,12 +71,12 @@
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
-			<!-- <dependency> <groupId>be.kuleuven.cs.gridlock</groupId> <artifactId>gridlock-events</artifactId>
+			<!-- <dependency> <groupId>be.kuleuven.cs.gridlock</groupId> <artifactId>gridlock-events</artifactId> 
 				<version>0.0.1</version> </dependency> -->
-			<!-- <dependency> <groupId>org.jfree</groupId> <artifactId>jfreechart</artifactId>
+			<!-- <dependency> <groupId>org.jfree</groupId> <artifactId>jfreechart</artifactId> 
 				<version>1.0.17</version> </dependency> -->
-			<!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId>
-				<version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId>
+			<!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId> 
+				<version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId> 
 				<artifactId>jung-graph-impl</artifactId> <version>2.0.1</version> </dependency> -->
 
 			<dependency>
@@ -106,6 +106,11 @@
 				<artifactId>fastutil</artifactId>
 				<version>6.5.7</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jdt</groupId>
+				<artifactId>org.eclipse.jdt.annotation</artifactId>
+				<version>2.0.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -115,8 +120,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -194,20 +199,20 @@
 					</descriptorRefs>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>com.github.github</groupId> <artifactId>downloads-maven-plugin</artifactId>
-				<version>0.6</version> <configuration> <description>Official ${project.name}
-				build of the ${project.version} release</description> <override>true</override>
-				<includeAttached>true</includeAttached> <server>github</server> </configuration>
-				<executions> <execution> <goals> <goal>upload</goal> </goals> <phase>install</phase>
-				</execution> </executions> </plugin> <plugin> <groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId> <version>0.7</version> <configuration>
-				<message>Building site for ${project.version}</message> <server>github</server>
-				</configuration> <executions> <execution> <goals> <goal>site</goal> </goals>
+			<!-- <plugin> <groupId>com.github.github</groupId> <artifactId>downloads-maven-plugin</artifactId> 
+				<version>0.6</version> <configuration> <description>Official ${project.name} 
+				build of the ${project.version} release</description> <override>true</override> 
+				<includeAttached>true</includeAttached> <server>github</server> </configuration> 
+				<executions> <execution> <goals> <goal>upload</goal> </goals> <phase>install</phase> 
+				</execution> </executions> </plugin> <plugin> <groupId>com.github.github</groupId> 
+				<artifactId>site-maven-plugin</artifactId> <version>0.7</version> <configuration> 
+				<message>Building site for ${project.version}</message> <server>github</server> 
+				</configuration> <executions> <execution> <goals> <goal>site</goal> </goals> 
 				<phase>site</phase> </execution> </executions> </plugin> -->
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
@@ -301,6 +306,11 @@
 			<id>Sonatype-public</id>
 			<name>SnakeYAML repository</name>
 			<url>http://oss.sonatype.org/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>eclipse-staging</id>
+			<name>Eclipse.org Staging</name>
+			<url>https://repo.eclipse.org/content/repositories/eclipse-staging/</url>
 		</repository>
 	</repositories>
 </project>

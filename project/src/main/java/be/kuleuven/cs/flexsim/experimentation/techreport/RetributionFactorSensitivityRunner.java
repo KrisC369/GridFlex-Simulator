@@ -6,6 +6,8 @@ import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
@@ -16,8 +18,6 @@ import be.kuleuven.cs.gametheory.Game;
 import be.kuleuven.cs.gametheory.GameDirector;
 import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
-
-import com.google.common.collect.Lists;
 
 /**
  * An example class running some experiments.

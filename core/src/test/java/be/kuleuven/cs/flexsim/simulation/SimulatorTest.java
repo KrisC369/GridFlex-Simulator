@@ -19,11 +19,11 @@ import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.event.Event;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.common.eventbus.Subscribe;
+
+import be.kuleuven.cs.flexsim.event.Event;
 
 public class SimulatorTest {
     public static class ChangeEventComponent implements SimulationComponent {

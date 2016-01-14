@@ -15,6 +15,9 @@ import org.junit.runners.Suite.SuiteClasses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregator;
@@ -35,9 +38,6 @@ import be.kuleuven.cs.flexsim.domain.site.SiteImpl;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.gametheory.GameScenarioTest;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 @RunWith(Suite.class)
 @SuiteClasses({ GameScenarioTest.class })

@@ -4,10 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import be.kuleuven.cs.flexsim.io.Writable;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+
+import be.kuleuven.cs.flexsim.io.Writable;
 
 /**
  * This instance governes the sequantial rules and protocols involved when

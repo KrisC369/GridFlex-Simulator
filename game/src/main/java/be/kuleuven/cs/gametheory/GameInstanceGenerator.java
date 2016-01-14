@@ -8,7 +8,6 @@ package be.kuleuven.cs.gametheory;
  *            The agent type.
  * @param <S>
  *            The action type.
- *
  */
 public interface GameInstanceGenerator<N, S> {
     /**

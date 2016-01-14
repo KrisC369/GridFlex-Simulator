@@ -3,5 +3,7 @@
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-@javax.annotation.ParametersAreNonnullByDefault
+@NonNullByDefault
 package be.kuleuven.cs.flexsim.protocol;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;

@@ -2,6 +2,8 @@ package be.kuleuven.cs.flexsim.domain.energy.tso.simple;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
@@ -10,8 +12,6 @@ import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
 import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
-import com.google.common.collect.Lists;
 
 /**
  * A TSO that serves as a copper plate connection to all sites present.

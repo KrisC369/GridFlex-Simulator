@@ -10,10 +10,10 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-
-import com.google.common.collect.Lists;
 
 public class GameDirectorTest {
     private Game<Site, Aggregator> g = mock(Game.class);

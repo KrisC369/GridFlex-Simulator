@@ -1,9 +1,9 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
+import com.google.common.collect.Multimap;
+
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
-import com.google.common.collect.Multimap;
 
 /**
  * A strategy for performing aggregation duties.

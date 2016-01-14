@@ -11,14 +11,14 @@ import static org.mockito.Mockito.verify;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
-
-import com.google.common.collect.Lists;
 
 public class IndependentAggregatorTest {
     private BalancingSignal tso = mock(BalancingSignal.class);

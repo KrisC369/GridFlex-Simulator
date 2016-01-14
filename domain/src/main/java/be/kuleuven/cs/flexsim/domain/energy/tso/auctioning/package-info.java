@@ -3,5 +3,7 @@
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-@javax.annotation.ParametersAreNonnullByDefault
+@NonNullByDefault
 package be.kuleuven.cs.flexsim.domain.energy.tso.auctioning;
+
+import org.eclipse.jdt.annotation.NonNullByDefault;

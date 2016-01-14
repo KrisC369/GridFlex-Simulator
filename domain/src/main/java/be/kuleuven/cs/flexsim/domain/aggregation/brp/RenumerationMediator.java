@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 
 import static com.google.common.base.Preconditions.checkArgument;
+
 import be.kuleuven.cs.flexsim.domain.finance.DebtModel;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTrackerImpl;
 import be.kuleuven.cs.flexsim.domain.finance.RewardModel;

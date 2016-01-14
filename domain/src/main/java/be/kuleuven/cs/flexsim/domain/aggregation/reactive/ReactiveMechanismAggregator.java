@@ -3,6 +3,8 @@ package be.kuleuven.cs.flexsim.domain.aggregation.reactive;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.LinkedListMultimap;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationUtils;
@@ -14,8 +16,6 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-
-import com.google.common.collect.LinkedListMultimap;
 
 /**
  * Subclasses the aggregator abstract class to add the behavior of reacting to

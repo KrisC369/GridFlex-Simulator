@@ -17,6 +17,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.eventbus.Subscribe;
+
 import be.kuleuven.cs.flexsim.domain.process.ProductionLine.ProductionLineBuilder;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -26,8 +28,6 @@ import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
-
-import com.google.common.eventbus.Subscribe;
 
 public class ProductionLineTest {
 

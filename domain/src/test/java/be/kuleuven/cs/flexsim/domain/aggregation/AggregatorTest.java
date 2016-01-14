@@ -8,14 +8,14 @@ import static org.mockito.Mockito.mock;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Lists;
+
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
-
-import com.google.common.collect.LinkedListMultimap;
-import com.google.common.collect.Lists;
 
 public class AggregatorTest {
     private BalancingSignal tso = mock(BalancingSignal.class);
