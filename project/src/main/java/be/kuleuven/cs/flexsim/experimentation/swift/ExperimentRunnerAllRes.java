@@ -36,6 +36,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  */
 public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
+    private static final String RESULT_CONSOLE_LOGGER = "CONSOLERESULT";
     private static final long SEED = 1312421l;
     private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
@@ -149,7 +150,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             for (int j = 0; j < n; j++) {
                 tt.add((int) gd.sample());
             }
-            LoggerFactory.getLogger("CONSOLERESULT")
+            LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER)
                     .info(Arrays.toString(tt.toIntArray()));
         }
     }
@@ -171,7 +172,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                         new DoubleArrayList(gd.sample(nagents)), profile,
                         ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
                 p.startExperiment();
-                LoggerFactory.getLogger("CONSOLERESULT")
+                LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER)
                         .info(String.valueOf(p.getEfficiency()));
             }
         } catch (IOException e) {
@@ -230,7 +231,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         builder.append("Not meeting 40 acts: ")
                 .append(String.valueOf(n - mainRes2.size())).append("\n");
         builder.append("ENDRESULT:\n");
-        LoggerFactory.getLogger("CONSOLERESULT").info(builder.toString());
+        LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER).info(builder.toString());
     }
 
     protected synchronized void addMainResult(String label, double eff) {
