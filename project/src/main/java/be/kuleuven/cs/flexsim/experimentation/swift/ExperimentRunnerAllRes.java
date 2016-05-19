@@ -132,7 +132,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         runBatch();
         competitive = false;
         runBatch();
-        printResult();
+        logResults();
     }
 
     @SuppressWarnings("unused")
@@ -205,23 +205,25 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         r.runExperiments(instances);
     }
 
-    protected void printResult() {
-        System.out.println("BEGINRESULT:");
-        System.out.println("Res1=" + mainRes1);
-        System.out.println("Res2=" + mainRes2);
-        System.out.println("ActRes1=" + actRes1);
-        System.out.println("ActRes2=" + actRes2);
-        System.out.println("ActEffRes1=" + actEffRes1);
-        System.out.println("ActEffRes2=" + actEffRes2);
-        System.out.println("SolvRes1=" + solvRes1);
-        System.out.println("SolvRes2=" + solvRes2);
-        System.out.println("RemediedRes1=" + remediedCong1);
-        System.out.println("RemediedRes2=" + remediedCong2);
-        System.out.println(
-                "Not meeting 40 acts: " + String.valueOf(n - mainRes1.size()));
-        System.out.println(
-                "Not meeting 40 acts: " + String.valueOf(n - mainRes2.size()));
-        System.out.println("ENDRESULT:");
+    protected void logResults() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("BEGINRESULT:\n").append("Res1=").append(mainRes1)
+                .append("\n");
+        builder.append("Res2=").append(mainRes2).append("\n");
+        builder.append("ActRes1=").append(actRes1).append("\n");
+        builder.append("ActRes2=").append(actRes2).append("\n");
+        builder.append("ActEffRes1=").append(actEffRes1).append("\n");
+        builder.append("ActEffRes2=").append(actEffRes2).append("\n");
+        builder.append("SolvRes1=").append(solvRes1).append("\n");
+        builder.append("SolvRes2=").append(solvRes2).append("\n");
+        builder.append("RemediedRes1=").append(remediedCong1).append("\n");
+        builder.append("RemediedRes2=").append(remediedCong2).append("\n");
+        builder.append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - mainRes1.size())).append("\n");
+        builder.append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - mainRes2.size())).append("\n");
+        builder.append("ENDRESULT:\n");
+        LoggerFactory.getLogger("CONSOLERESULT").info(builder.toString());
     }
 
     protected synchronized void addMainResult(String label, double eff) {
