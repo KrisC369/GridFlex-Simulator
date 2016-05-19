@@ -131,11 +131,12 @@ public class ExperimentInstance {
     }
 
     /**
-     * @return the amount of congestion solved as a fraction of the total
+     * @return the amount of remaining congestion as a fraction of the total
      *         produced energy.
      */
     public double getRemediedCongestionRelatedToProducedEnergy() {
-        return getRemediedCongestion() / getProducedE();
+        return (solver.getCongestion().sum() - getRemediedCongestion())
+                / getProducedE();
     }
 
     private void verify() {

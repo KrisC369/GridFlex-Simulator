@@ -58,35 +58,48 @@ public final class MathUtils {
      */
     public static double trapzPos(double n1y, double n2y, double n2x) {
         if (n1y * n2y > 0) {
+            return trapzPosGtZero(n1y, n2y, n2x);
+        } else if (n1y * n2y < 0) {
+            return trapzPosLtZero(n1y, n2y, n2x);
+        } else {
+            return trapzPosEqZero(n1y, n2y, n2x);
+        }
+    }
+
+    private static double trapzPosEqZero(double n1y, double n2y, double n2x) {
+        if (n2y > n1y) {
+            if (n1y < 0) {
+                return caseZero();
+            } else if (n1y == 0) {
+                return case8(n2y, n2x);
+            }
+        } else if (n2y < n1y) {
             if (n1y > 0) {
-                if (n1y > 0) {
-                    if (n2y > n1y) {
-                        return case1(n1y, n2y, n2x);
-                    }
-                    return case2(n1y, n2y, n2x);
-                }
-            } else if (n1y < 0) {
+                return case6(n1y, n2x);
+            } else if (n1y == 0) {
                 return caseZero();
             }
-        } else if (n1y * n2y < 0) {
-            if (n2y > n1y) {
-                return case4(n1y, n2y, n2x);
-            }
-            return case3(n1y, n2y, n2x);
-        } else {
-            if (n2y > n1y) {
-                if (n1y < 0) {
-                    return caseZero();
-                } else if (n1y == 0) {
-                    return case8(n2y, n2x);
+        }
+        return 0;
+    }
+
+    private static double trapzPosLtZero(double n1y, double n2y, double n2x) {
+        if (n2y > n1y) {
+            return case4(n1y, n2y, n2x);
+        }
+        return case3(n1y, n2y, n2x);
+    }
+
+    private static double trapzPosGtZero(double n1y, double n2y, double n2x) {
+        if (n1y > 0) {
+            if (n1y > 0) {
+                if (n2y > n1y) {
+                    return case1(n1y, n2y, n2x);
                 }
-            } else if (n2y < n1y) {
-                if (n1y > 0) {
-                    return case6(n1y, n2x);
-                } else if (n1y == 0) {
-                    return caseZero();
-                }
+                return case2(n1y, n2y, n2x);
             }
+        } else if (n1y < 0) {
+            return caseZero();
         }
         return 0;
     }

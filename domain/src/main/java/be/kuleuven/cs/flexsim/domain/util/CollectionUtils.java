@@ -40,6 +40,11 @@ public final class CollectionUtils {
         return max;
     }
 
+    // public static <T> int max2(Iterable<T> list, IntNNFunction<T> f) {
+    // return StreamSupport.stream(list.spliterator(), false).map(f::apply)
+    // .collect(Collectors.maxBy((x, y) -> x - y)).get();
+    // }
+
     /**
      * This calculates and returns the element of the list for which the
      * application of f to that element reaches its maximum.
