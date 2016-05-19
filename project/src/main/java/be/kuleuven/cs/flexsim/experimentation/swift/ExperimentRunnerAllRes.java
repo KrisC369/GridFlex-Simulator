@@ -149,7 +149,6 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             for (int j = 0; j < n; j++) {
                 tt.add((int) gd.sample());
             }
-            System.out.println(Arrays.toString(tt.toIntArray()));
             LoggerFactory.getLogger("CONSOLERESULT")
                     .info(Arrays.toString(tt.toIntArray()));
         }
@@ -172,7 +171,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                         new DoubleArrayList(gd.sample(nagents)), profile,
                         ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
                 p.startExperiment();
-                System.out.println(p.getEfficiency());
+                LoggerFactory.getLogger("CONSOLERESULT")
+                        .info(String.valueOf(p.getEfficiency()));
             }
         } catch (IOException e) {
             LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
