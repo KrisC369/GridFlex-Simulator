@@ -74,7 +74,8 @@ public class ExperimentRunnerAllowedExcessSingleValue
         for (int i = 0; i < 100; i++) {
             result[i] /= (N / 100.0);
         }
-        System.out.println("distribution of eff = " + Arrays.toString(result));
+        LoggerFactory.getLogger("CONSOLERESULT")
+                .info("distribution of eff = " + Arrays.toString(result));
     }
 
     protected SolverBuilder getSolverBuilder(boolean comp, int i) {

@@ -24,9 +24,8 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public abstract class AbstractCongestionSolver implements SimulationComponent {
-    protected final static int DSM_ALLOCATION_DURATION = 4 * 2;
+    protected static final int DSM_ALLOCATION_DURATION = 4 * 2;
     private final int relativeMaxValuePercent;
-
     private final TimeSeries congestion;
     private final List<DSMPartner> dsms;
     private int tick;

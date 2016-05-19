@@ -12,7 +12,7 @@ public interface AnswerAnticipator<T> {
     /**
      * Standard NO operation answerAnticipator instance.
      */
-    static AnswerAnticipator<?> NOOP = new NoOpAnswerAnticipator<>();
+    AnswerAnticipator<?> NOOP = new NoOpAnswerAnticipator<>();
 
     /**
      * Send an affirmative notification.
@@ -25,11 +25,7 @@ public interface AnswerAnticipator<T> {
     void affirmative(T prop, AnswerAnticipator<T> ant);
 
     /**
-     * Reject
+     * Send a negative (rejection) notification.
      */
     void reject();
-
-    /**
-     * 
-     */
 }

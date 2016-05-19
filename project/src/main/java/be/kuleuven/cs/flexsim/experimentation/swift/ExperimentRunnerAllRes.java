@@ -29,6 +29,9 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
+ * Experiment runner that gathers and produces all result metrics that are of
+ * interest.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ExperimentRunnerAllRes implements ExecutableExperiment {
@@ -66,6 +69,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     /**
+     * main method used to run the application.
+     * 
      * @param args
      *            StdIn args.
      */
@@ -126,7 +131,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     /**
-     * Execute experiments
+     * Execute experiments.
      */
     public void execute() {
         runBatch();
@@ -145,6 +150,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 tt.add((int) gd.sample());
             }
             System.out.println(Arrays.toString(tt.toIntArray()));
+            LoggerFactory.getLogger("CONSOLERESULT")
+                    .info(Arrays.toString(tt.toIntArray()));
         }
     }
 

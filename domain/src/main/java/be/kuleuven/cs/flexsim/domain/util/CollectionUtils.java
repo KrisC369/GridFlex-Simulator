@@ -20,7 +20,7 @@ public final class CollectionUtils {
     /**
      * This calculates the max of a certain value in a list of objects having
      * comparable values.
-     *
+     * 
      * @param list
      *            the list of elements.
      * @param f
@@ -40,10 +40,12 @@ public final class CollectionUtils {
         return max;
     }
 
-    // public static <T> int max2(Iterable<T> list, IntNNFunction<T> f) {
-    // return StreamSupport.stream(list.spliterator(), false).map(f::apply)
-    // .collect(Collectors.maxBy((x, y) -> x - y)).get();
-    // }
+    /*
+     * Would be implementation for java8: public static <T> int max2(Iterable<T>
+     * list, IntNNFunction<T> f) { return
+     * StreamSupport.stream(list.spliterator(), false).map(f::apply)
+     * .collect(Collectors.maxBy((x, y) -> x - y)).get(); }
+     */
 
     /**
      * This calculates and returns the element of the list for which the

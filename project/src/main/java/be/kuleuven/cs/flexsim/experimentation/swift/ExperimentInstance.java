@@ -28,7 +28,7 @@ public class ExperimentInstance {
     private final double producedE;
 
     /**
-     * Default Constructor
+     * Default Constructor.
      * 
      * @param b
      *            SolverBuilder instance
@@ -63,7 +63,7 @@ public class ExperimentInstance {
     }
 
     /**
-     * Start the experiment
+     * Start the experiment.
      */
     public void startExperiment() {
         this.sim.start();

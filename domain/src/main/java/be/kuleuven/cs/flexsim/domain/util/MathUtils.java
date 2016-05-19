@@ -68,17 +68,28 @@ public final class MathUtils {
 
     private static double trapzPosEqZero(double n1y, double n2y, double n2x) {
         if (n2y > n1y) {
-            if (n1y < 0) {
-                return caseZero();
-            } else if (n1y == 0) {
-                return case8(n2y, n2x);
-            }
+            return trapzPosEqZeroFirstLarger(n1y, n2y, n2x);
         } else if (n2y < n1y) {
-            if (n1y > 0) {
-                return case6(n1y, n2x);
-            } else if (n1y == 0) {
-                return caseZero();
-            }
+            return trapzPosEqZeroFirstSmaller(n1y, n2x);
+        }
+        return 0;
+    }
+
+    private static double trapzPosEqZeroFirstSmaller(double n1y, double n2x) {
+        if (n1y > 0) {
+            return case6(n1y, n2x);
+        } else if (n1y == 0) {
+            return caseZero();
+        }
+        return 0;
+    }
+
+    private static double trapzPosEqZeroFirstLarger(double n1y, double n2y,
+            double n2x) {
+        if (n1y < 0) {
+            return caseZero();
+        } else if (n1y == 0) {
+            return case8(n2y, n2x);
         }
         return 0;
     }
