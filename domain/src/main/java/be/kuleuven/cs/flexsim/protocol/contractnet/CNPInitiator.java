@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +127,7 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     private void notifyAcceptPhase2(final T best,
             Map<T, AnswerAnticipator<T>> props) {
-        props.get(best).affirmative(updateWorkDescription(best),
+        checkNotNull(props.get(best)).affirmative(updateWorkDescription(best),
                 new AnswerAnticipator<T>() { // accept-proposal
                     // Completion or failure notification.
                     @Override

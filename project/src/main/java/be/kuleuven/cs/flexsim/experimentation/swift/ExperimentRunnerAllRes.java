@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
+import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;

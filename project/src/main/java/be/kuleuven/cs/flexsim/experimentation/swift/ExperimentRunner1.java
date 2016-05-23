@@ -5,7 +5,7 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import javax.annotation.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
@@ -59,7 +59,8 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         System.out.println("ENDRESULT:");
     }
 
-    class ExperimentAtomImplementationSingleEff extends ExperimentAtomImplementation {
+    class ExperimentAtomImplementationSingleEff
+            extends ExperimentAtomImplementation {
         @Nullable
         private ExperimentInstance p;
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -20,7 +21,6 @@ import be.kuleuven.cs.flexsim.domain.util.MathUtils;
  * agents over the action space.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  * @param <N>
  *            The type of agents.
  * @param <K>
@@ -53,7 +53,8 @@ public class Game<N, K> {
         this.agents = agents;
         this.actions = config.getActionSpaceSize();
         this.agentGen = config;
-        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents, this.actions);
+        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents,
+                this.actions);
         this.instanceGen = config;
         this.reps = reps;
         this.logger = LoggerFactory.getLogger(CONSOLE);
@@ -72,12 +73,16 @@ public class Game<N, K> {
             for (int i = 0; i < combinations; i++) {
                 progressCounter++;
                 printConfigProgress(progressCounter, reps * combinations);
-                GameInstance<N, K> instance = this.instanceGen.generateInstance();
+                GameInstance<N, K> instance = this.instanceGen
+                        .generateInstance();
                 List<K> actionSet = instance.getActionSet();
-                ICombinatoricsVector<K> initialVector = Factory.createVector(actionSet);
-                Generator<K> gen = Factory.createMultiCombinationGenerator(initialVector, agents);
+                ICombinatoricsVector<K> initialVector = Factory
+                        .createVector(actionSet);
+                Generator<K> gen = Factory
+                        .createMultiCombinationGenerator(initialVector, agents);
 
-                List<ICombinatoricsVector<K>> possCombinatoricsVectors = gen.generateAllObjects();
+                List<ICombinatoricsVector<K>> possCombinatoricsVectors = gen
+                        .generateAllObjects();
                 assert possCombinatoricsVectors.size() == combinations;
                 for (K k : possCombinatoricsVectors.get(i)) {
                     instance.fixActionToAgent(agentGen.getAgent(), k);
@@ -114,7 +119,8 @@ public class Game<N, K> {
             long[] values = new long[payoffResults.keySet().size()];
             int j = 0;
             for (Entry<N, Long> e : payoffResults.entrySet()) {
-                int whichAction = getIndexFor(actionSet, mapping.get(e.getKey()));
+                int whichAction = getIndexFor(actionSet,
+                        mapping.get(e.getKey()));
                 entry[whichAction] = entry[whichAction] + 1;
                 values[j] = e.getValue();
                 j++;
@@ -138,7 +144,7 @@ public class Game<N, K> {
         logger.info(b.toString());
     }
 
-    private int getIndexFor(List<K> set, K element) {
+    private int getIndexFor(List<@NonNull K> set, K element) {
         for (int i = 0; i < set.size(); i++) {
             if (set.get(i).equals(element)) {
                 return i;
@@ -149,7 +155,8 @@ public class Game<N, K> {
 
     void logResults() {
         StringBuilder b = new StringBuilder();
-        b.append(getResultString()).append("\n").append("Dynamics equation params:");
+        b.append(getResultString()).append("\n")
+                .append("Dynamics equation params:");
         for (Double d : payoffs.getDynamicEquationFactors()) {
             b.append(d).append("\n");
         }
@@ -182,8 +189,10 @@ public class Game<N, K> {
      *         for this game.
      */
     GameResult getResults() {
-        GameResult result = GameResult.create(payoffs.getDynamicEquationFactors())
-                .withDescription("Reps", String.valueOf(reps)).withDescription("agents", String.valueOf(agents))
+        GameResult result = GameResult
+                .create(payoffs.getDynamicEquationFactors())
+                .withDescription("Reps", String.valueOf(reps))
+                .withDescription("agents", String.valueOf(agents))
                 .withDescription("actions", String.valueOf(actions));
         return result;
     }
