@@ -97,9 +97,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      *            the list of items to buffer.
      */
     public void pushAll(List<T> reslist) {
-        for (T t : reslist) {
-            push(t);
-        }
+        reslist.forEach(this::push);
     }
 
     /*

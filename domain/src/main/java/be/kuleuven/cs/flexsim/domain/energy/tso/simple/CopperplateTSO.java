@@ -114,12 +114,8 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
         List<SimulationComponent> toret = Lists.newArrayList();
-        for (SimulationComponent c : consumers) {
-            toret.add(c);
-        }
-        for (SimulationComponent c : producers) {
-            toret.add(c);
-        }
+        toret.addAll(consumers);
+        toret.addAll(producers);
         return toret;
     }
 

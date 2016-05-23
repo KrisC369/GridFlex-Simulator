@@ -153,8 +153,8 @@ public final class ProductionLine implements FlexProcess {
             int... furtherStations) {
         ProductionLineBuilder b = new ProductionLineBuilder()
                 .addShifted(initialStations);
-        for (int i = 0; i < furtherStations.length; i++) {
-            b.addShifted(furtherStations[i]);
+        for (int furtherStation : furtherStations) {
+            b.addShifted(furtherStation);
         }
         return b.build();
     }

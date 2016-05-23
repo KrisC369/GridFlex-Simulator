@@ -54,9 +54,7 @@ public abstract class AggregationGame<S, A extends Aggregator> implements
 
     @Override
     public void init() {
-        for (A agg : this.aggs) {
-            sim.register(agg);
-        }
+        this.aggs.forEach(sim::register);
     }
 
     @Override

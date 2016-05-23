@@ -88,9 +88,7 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
                 baseConsumption * getNumberOfAgents());
         EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
                 -1500, 1500, 0.010);
-        for (Aggregator agg : this.getAggregators()) {
-            addSimComponent(agg);
-        }
+        this.getAggregators().forEach(this::addSimComponent);
         tso.registerProducer(p1);
         tso.registerProducer(p2);
         addSimComponent(tso);

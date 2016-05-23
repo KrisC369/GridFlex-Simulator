@@ -67,9 +67,7 @@ public class GameDirector {
      * @return the playable variations.
      */
     public List<Playable> getPlayableVersions() {
-        for (GameInstance<?, ?> i : game.getGameInstances()) {
-            this.playables.add(i);
-        }
+        this.playables.addAll(game.getGameInstances());
         return Collections.unmodifiableList(Lists.newArrayList(this.playables));
     }
 

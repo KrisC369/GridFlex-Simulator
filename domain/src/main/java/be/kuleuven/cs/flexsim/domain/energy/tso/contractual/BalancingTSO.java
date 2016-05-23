@@ -97,12 +97,7 @@ public class BalancingTSO extends CopperplateTSO
         if (getCurrentImbalance() > 0) {
             int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
-                    new IntNNFunction<PowerCapabilityBand>() {
-                        @Override
-                        public int apply(PowerCapabilityBand input) {
-                            return input.getUp();
-                        }
-                    });
+                    input -> input.getUp());
 
             if (sum <= Math.abs(getCurrentImbalance())) {
                 sendSignal(timestep, 1, true);
@@ -113,12 +108,7 @@ public class BalancingTSO extends CopperplateTSO
         } else if (getCurrentImbalance() < 0) {
             int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
-                    new IntNNFunction<PowerCapabilityBand>() {
-                        @Override
-                        public int apply(PowerCapabilityBand input) {
-                            return input.getDown();
-                        }
-                    });
+                    input -> input.getDown());
             if (sum <= Math.abs(getCurrentImbalance())) {
                 sendSignal(timestep, 1, false);
             } else {

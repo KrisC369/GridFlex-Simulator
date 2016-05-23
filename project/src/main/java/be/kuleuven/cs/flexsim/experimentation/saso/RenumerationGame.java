@@ -47,19 +47,8 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
                 FIXED_IMBAL_SIGNAL_WIDTH, new MersenneTwister(seed));
         this.addSimComponent(tso);
         this.runningRemainingImbalance = 0;
-        this.addAggregator(new BRPAggregator(tso, new PriceSignal() {
-            @Override
-            public int getCurrentPrice() {
-                return FIXED_PRICE_SIGNAL;
-            }
-        }, factor1, 1 - factor1));
-        this.addAggregator(new BRPAggregator(tso, new PriceSignal() {
-
-            @Override
-            public int getCurrentPrice() {
-                return FIXED_PRICE_SIGNAL;
-            }
-        }, factor2, 1 - factor2));
+        this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL, factor1, 1 - factor1));
+        this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL, factor2, 1 - factor2));
         for (BRPAggregator agg : getActionSet()) {
             agg.registerNominationManager(new EfficiencyTracker());
         }

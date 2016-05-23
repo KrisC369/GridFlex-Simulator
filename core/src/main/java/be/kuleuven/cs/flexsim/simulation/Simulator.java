@@ -260,9 +260,7 @@ public final class Simulator implements SimulationContext {
     @Override
     public void register(SimulationComponent comp) {
         registerComp(comp);
-        for (SimulationComponent sc : comp.getSimulationSubComponents()) {
-            register(sc);
-        }
+        comp.getSimulationSubComponents().forEach(this::register);
     }
 
     private void registerComp(SimulationComponent comp) {

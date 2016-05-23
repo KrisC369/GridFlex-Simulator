@@ -142,9 +142,8 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
     }
 
     private void notifyRejects(Map<T, AnswerAnticipator<T>> rejects) {
-        for (AnswerAnticipator<T> e : rejects.values()) {
-            e.reject(); // reject-proposal
-        }
+        // reject-proposal
+        rejects.values().forEach(AnswerAnticipator::reject);
     }
 
     /**

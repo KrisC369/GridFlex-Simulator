@@ -112,8 +112,8 @@ abstract class FlexAspectImpl implements FlexAspect {
             List<Workstation> firstPhase, List<Workstation> secondPhase,
             List<Workstation> stations) {
         Workstation mark;
-        for (int i = 0; i < stations.size(); i++) {
-            mark = stations.get(i);
+        for (Workstation station : stations) {
+            mark = station;
             if (presentInSamePhase(firstPhaseExample, mark)) {
                 firstPhase.add(mark);
             } else {

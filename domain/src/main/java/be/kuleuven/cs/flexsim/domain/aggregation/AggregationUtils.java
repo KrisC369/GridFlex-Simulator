@@ -129,14 +129,10 @@ public final class AggregationUtils {
                 .create();
         for (SiteFlexAPI api : flex.keySet()) {
             List<FlexTuple> sortPlaceholder = Lists.newArrayList(flex.get(api));
-            Collections.sort(sortPlaceholder, new Comparator<FlexTuple>() {
-                @Override
-                public int compare(@Nullable FlexTuple o1,
-                        @Nullable FlexTuple o2) {
-                    checkNotNull(o1);
-                    checkNotNull(o2);
-                    return o1.getDeltaP() - o2.getDeltaP();
-                }
+            Collections.sort(sortPlaceholder, (o1, o2) -> {
+                checkNotNull(o1);
+                checkNotNull(o2);
+                return o1.getDeltaP() - o2.getDeltaP();
             });
             sorted.putAll(api, sortPlaceholder);
         }

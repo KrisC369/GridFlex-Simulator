@@ -109,9 +109,7 @@ public class CongestionProfile implements TimeSeries {
             dataRead.add(Double.parseDouble(nextLine[key]));
         }
         dValues = new DoubleArrayList();
-        for (double d : dataRead) {
-            dValues.add(d);
-        }
+        dValues.addAll(dataRead);
         resetCache();
     }
 
