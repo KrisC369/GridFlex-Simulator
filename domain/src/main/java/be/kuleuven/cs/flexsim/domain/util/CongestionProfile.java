@@ -10,14 +10,13 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatistic;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
+import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.opencsv.CSVReader;

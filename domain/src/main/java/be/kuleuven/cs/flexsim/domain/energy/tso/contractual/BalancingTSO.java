@@ -1,7 +1,11 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -23,7 +27,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 public class BalancingTSO extends CopperplateTSO
         implements MechanismHost<ContractualMechanismParticipant> {
     private List<ContractualMechanismParticipant> participants;
-    private Map<ContractualMechanismParticipant, PowerCapabilityBand> powerLimits;
+    private Map<ContractualMechanismParticipant, @NonNull PowerCapabilityBand> powerLimits;
 
     /**
      * Constructor with consumption instances as parameter.
@@ -126,7 +130,9 @@ public class BalancingTSO extends CopperplateTSO
         }
     }
 
+    @SuppressWarnings("null")
     private void sendSignal(int t, double frac, boolean upflex) {
+
         for (java.util.Map.Entry<ContractualMechanismParticipant, PowerCapabilityBand> e : powerLimits
                 .entrySet()) {
             int value = 0;
@@ -165,7 +171,7 @@ public class BalancingTSO extends CopperplateTSO
     public PowerCapabilityBand getContractualLimit(
             ContractualMechanismParticipant agg) {
         testValidParticipant(agg);
-        return this.powerLimits.get(agg);
+        return checkNotNull(this.powerLimits.get(agg));
     }
 
     private void testValidParticipant(ContractualMechanismParticipant agg) {

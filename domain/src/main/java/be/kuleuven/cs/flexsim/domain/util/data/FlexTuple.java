@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.util.data;
 
-import javax.annotation.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Tuples representing a power flexibility profile. This tuple is a 6-element

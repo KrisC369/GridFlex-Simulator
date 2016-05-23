@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -35,7 +37,7 @@ public class NPermuteAndCombiner<T> {
             n = k;
         }
         List<List<T>> result = Lists.newArrayList();
-        List<T> subset = Lists.newArrayListWithCapacity(n);
+        List<@Nullable T> subset = Lists.newArrayListWithCapacity(n);
         for (int i = 0; i < n; i++) {
             subset.add(null);
         }
@@ -43,7 +45,8 @@ public class NPermuteAndCombiner<T> {
     }
 
     private List<List<T>> processLargerSubsets(List<List<T>> result,
-            List<T> set, List<T> subset, int subsetSize, int nextIndex) {
+            List<T> set, List<@Nullable T> subset, int subsetSize,
+            int nextIndex) {
         if (subsetSize == subset.size()) {
             result.add(ImmutableList.copyOf(subset));
         } else {
@@ -116,6 +119,7 @@ public class NPermuteAndCombiner<T> {
 
         // iterate from current collection and copy 'current' element N times,
         // one for each element
+        @SuppressWarnings("null")
         Collection<T> currentCollection = ori.get(d);
         for (T element : currentCollection) {
             List<T> copy = Lists.newLinkedList(current);
