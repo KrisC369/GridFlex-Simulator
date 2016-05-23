@@ -1,11 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Set;
 
@@ -56,10 +55,13 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      * 
      * @return the content up for grabs.
      */
+    @SuppressWarnings("unused")
     public T pull() {
         @Nullable
         T t = data.poll();
-        checkNotNull(t);
+        if (t == null) {
+            throw new NoSuchElementException();
+        }
         return t;
     }
 
