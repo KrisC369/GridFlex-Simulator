@@ -223,7 +223,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
             return Optional.absent();
         }
 
-        return Optional.fromNullable(DSMProposal.create(
+        return Optional.of(DSMProposal.create(
                 "CNP for activation for tick: " + getTick(), cong, 0, getTick(),
                 getTick() + DSM_ALLOCATION_DURATION));
     }

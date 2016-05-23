@@ -80,7 +80,7 @@ public class DSMPartner implements SimulationComponent {
      * @param maxActivations
      * @param interactivationTime
      * @param activationDuration
-     * @param powerRate
+     * @param flexPowerRate
      *            The amount of instantaneous power this partners is able to
      *            increase during activations.
      * @param deviation
