@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>be.kuleuven.cs</groupId>
 		<artifactId>flexsim-main</artifactId>
-		<version>0.0.7</version>
+		<version>0.1.0</version>
 	</parent>
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-example</artifactId>
@@ -21,17 +21,17 @@
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
 			<artifactId>flexsim-nucleus</artifactId>
-			<version>0.0.7</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
 			<artifactId>flexsim-domain</artifactId>
-			<version>0.0.7</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
 			<artifactId>flexsim-game</artifactId>
-			<version>0.0.7</version>
+			<version>0.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
