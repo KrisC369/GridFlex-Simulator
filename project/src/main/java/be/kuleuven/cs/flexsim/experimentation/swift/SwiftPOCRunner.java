@@ -27,8 +27,8 @@ public class SwiftPOCRunner {
     private static final int SIMDURATION = 4 * 24 * 365;
     private static final int TIMEHORIZON = 8;
     private static final boolean COMPETITIVE = true;
-
-    private @Nullable CongestionProfile profile;
+    @Nullable
+    private CongestionProfile profile;
     private final AbstractCongestionSolver solver;
     private final DSMPartner partner1;
     private final DSMPartner partner2;
@@ -80,6 +80,6 @@ public class SwiftPOCRunner {
     private void displayEfficiency() {
         double eff = solver.getTotalRemediedCongestion()
                 / ((40.0 * 2.0 * POWERRATE) + (40.0 * 2.0 * POWERRATE / 2));
-        System.out.println("Efficiency is " + eff);
+        LoggerFactory.getLogger("CONSOLERESULT").info("Efficiency is " + eff);
     }
 }

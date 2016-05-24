@@ -19,7 +19,6 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
@@ -28,10 +27,14 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 
 /**
+ * Experiment runner that gathers and produces all result metrics that are of
+ * interest.
+ * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
+    private static final String RESULT_CONSOLE_LOGGER = "CONSOLERESULT";
     private static final long SEED = 1312421L;
     private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
@@ -65,11 +68,14 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     /**
+     * main method used to run the application.
+     * 
      * @param args
      *            StdIn args.
      */
     public static void main(String[] args) {
-        ExpGenerator gen = (reps, agents, allowed) -> new ExperimentRunnerAllRes(reps, agents, allowed);
+        ExpGenerator gen = (reps, agents,
+                allowed) -> new ExperimentRunnerAllRes(reps, agents, allowed);
         parseInput(gen, args, N, ALLOWED_EXCESS);
     }
 
@@ -118,13 +124,13 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     /**
-     * Execute experiments
+     * Execute experiments.
      */
     public void execute() {
         runBatch();
         competitive = false;
         runBatch();
-        printResult();
+        logResults();
     }
 
     @SuppressWarnings("unused")
@@ -136,7 +142,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             for (int j = 0; j < n; j++) {
                 tt.add((int) gd.sample());
             }
-            System.out.println(Arrays.toString(tt.toIntArray()));
+            LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER)
+                    .info(Arrays.toString(tt.toIntArray()));
         }
     }
 
@@ -157,7 +164,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                         new DoubleArrayList(gd.sample(nagents)), profile,
                         ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
                 p.startExperiment();
-                System.out.println(p.getEfficiency());
+                LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER)
+                        .info(String.valueOf(p.getEfficiency()));
             }
         } catch (IOException e) {
             LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -197,23 +205,25 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         r.runExperiments(instances);
     }
 
-    protected void printResult() {
-        System.out.println("BEGINRESULT:");
-        System.out.println("Res1=" + mainRes1);
-        System.out.println("Res2=" + mainRes2);
-        System.out.println("ActRes1=" + actRes1);
-        System.out.println("ActRes2=" + actRes2);
-        System.out.println("ActEffRes1=" + actEffRes1);
-        System.out.println("ActEffRes2=" + actEffRes2);
-        System.out.println("SolvRes1=" + solvRes1);
-        System.out.println("SolvRes2=" + solvRes2);
-        System.out.println("RemediedRes1=" + remediedCong1);
-        System.out.println("RemediedRes2=" + remediedCong2);
-        System.out.println(
-                "Not meeting 40 acts: " + String.valueOf(n - mainRes1.size()));
-        System.out.println(
-                "Not meeting 40 acts: " + String.valueOf(n - mainRes2.size()));
-        System.out.println("ENDRESULT:");
+    protected void logResults() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("BEGINRESULT:\n").append("Res1=").append(mainRes1)
+                .append("\n");
+        builder.append("Res2=").append(mainRes2).append("\n");
+        builder.append("ActRes1=").append(actRes1).append("\n");
+        builder.append("ActRes2=").append(actRes2).append("\n");
+        builder.append("ActEffRes1=").append(actEffRes1).append("\n");
+        builder.append("ActEffRes2=").append(actEffRes2).append("\n");
+        builder.append("SolvRes1=").append(solvRes1).append("\n");
+        builder.append("SolvRes2=").append(solvRes2).append("\n");
+        builder.append("RemediedRes1=").append(remediedCong1).append("\n");
+        builder.append("RemediedRes2=").append(remediedCong2).append("\n");
+        builder.append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - mainRes1.size())).append("\n");
+        builder.append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - mainRes2.size())).append("\n");
+        builder.append("ENDRESULT:\n");
+        LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER).info(builder.toString());
     }
 
     protected synchronized void addMainResult(String label, double eff) {
@@ -275,8 +285,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         protected void doRegistration() {
             this.registerCallbackOnFinish(instance -> {
                 addMainResult(getLabel(), checkNotNull(p).getEfficiency());
-                addActResult(getLabel(),
-                        checkNotNull(p).getActivationRate());
+                addActResult(getLabel(), checkNotNull(p).getActivationRate());
                 addActEffResult(getLabel(),
                         checkNotNull(p).getSummedAgentEfficiency());
                 addSolveResult(getLabel(),

@@ -20,6 +20,7 @@ import it.unimi.dsi.fastutil.doubles.DoubleList;
  */
 public class ExperimentInstance {
 
+    private static final int FORECAST_HORIZON = 8;
     private static final int SIMDURATION = 4 * 24 * 365;
     private final AbstractCongestionSolver solver;
     private final List<DSMPartner> partners;
@@ -28,7 +29,7 @@ public class ExperimentInstance {
     private final double producedE;
 
     /**
-     * Default Constructor
+     * Default Constructor.
      * 
      * @param b
      *            SolverBuilder instance
@@ -45,7 +46,7 @@ public class ExperimentInstance {
     public ExperimentInstance(SolverBuilder b, DoubleList powerRealisation,
             CongestionProfile profile, boolean allow, double producedE) {
         checkNotNull(profile);
-        this.solver = b.getSolver(profile, 8);
+        this.solver = b.getSolver(profile, FORECAST_HORIZON);
         this.partners = Lists.newArrayList();
         allocateAgents(powerRealisation);
         sim = Simulator.createSimulator(SIMDURATION);
@@ -63,7 +64,7 @@ public class ExperimentInstance {
     }
 
     /**
-     * Start the experiment
+     * Start the experiment.
      */
     public void startExperiment() {
         this.sim.start();
@@ -75,7 +76,8 @@ public class ExperimentInstance {
      */
     public double getEfficiency() {
         return solver.getTotalRemediedCongestion()
-                / (getTotalPowerRates() * 40.0 * 2.0);
+                / (getTotalPowerRates() * DSMPartner.R3DPMAX_ACTIVATIONS
+                        * DSMPartner.ACTIVATION_DURATION);
     }
 
     /**
@@ -109,8 +111,9 @@ public class ExperimentInstance {
                 sum += d.getCurtailment(i) / 4;
             }
             if (sum != 0) {
-                eff2R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
+                eff2R += (sum
+                        / (d.getCurrentActivations() * d.getFlexPowerRate()
+                                * DSMPartner.ACTIVATION_DURATION));
             }
         }
         return eff2R;

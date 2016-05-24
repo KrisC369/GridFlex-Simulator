@@ -59,14 +59,16 @@ public class ExperimentRunnerAllowedExcessAllValues
         ExperimentRunner r = LocalRunners.createOSTunedMultiThreadedRunner();
 
         r.runExperiments(instances);
-        System.out.println("distribution of eff = " + Arrays.toString(result2));
+        LoggerFactory.getLogger(ExperimentRunnerAllowedExcessAllValues.class)
+                .info("distribution of eff = " + Arrays.toString(result2));
     }
 
     private void addResult(int agents, double eff) {
         synchronized (result2) {
             result2[agents] = eff;
         }
-        System.out.println("Result added for " + agents + " " + eff);
+        LoggerFactory.getLogger(ExperimentRunnerAllowedExcessAllValues.class)
+                .info("Result added for " + agents + " " + eff);
     }
 
     class ExperimentAtomImplementation extends ExperimentAtomImpl {

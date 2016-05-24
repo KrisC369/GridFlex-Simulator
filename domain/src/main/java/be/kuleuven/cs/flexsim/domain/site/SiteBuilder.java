@@ -126,7 +126,7 @@ public abstract class SiteBuilder {
     }
 
     /**
-     * Sets the number of flex tuples
+     * Sets the number of flex tuples.
      * 
      * @param tuples
      *            The number of tuples.

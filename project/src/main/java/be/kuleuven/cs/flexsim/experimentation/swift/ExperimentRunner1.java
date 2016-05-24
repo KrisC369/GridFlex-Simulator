@@ -1,11 +1,10 @@
-/**
- * 
- */
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
@@ -41,15 +40,17 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
     }
 
     @Override
-    protected void printResult() {
-        System.out.println("BEGINRESULT:");
-        System.out.println("Res1=" + getMainRes1());
-        System.out.println("Res2=" + getMainRes2());
-        System.out.println("Not meeting 40 acts: "
-                + String.valueOf(n - getMainRes1().size()));
-        System.out.println("Not meeting 40 acts: "
-                + String.valueOf(n - getMainRes2().size()));
-        System.out.println("ENDRESULT:");
+    protected void logResults() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("BEGINRESULT:\n").append("Res1=").append(getMainRes1())
+                .append("\n");
+        builder.append("Res2=").append(getMainRes2()).append("\n");
+        builder.append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - getMainRes1().size())).append("\n");
+        builder.append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - getMainRes2().size())).append("\n");
+        builder.append("ENDRESULT:\n");
+        LoggerFactory.getLogger("CONSOLERESULT").info(builder.toString());
     }
 
     class ExperimentAtomImplementationSingleEff
