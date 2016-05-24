@@ -1,17 +1,18 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
-import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
-import be.kuleuven.cs.flexsim.protocol.Initiator;
-import be.kuleuven.cs.flexsim.protocol.Proposal;
-import be.kuleuven.cs.flexsim.protocol.Responder;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
+import be.kuleuven.cs.flexsim.protocol.Initiator;
+import be.kuleuven.cs.flexsim.protocol.Proposal;
+import be.kuleuven.cs.flexsim.protocol.Responder;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -105,7 +106,7 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
         Optional<T> best = findBestProposal(Lists.newArrayList(props.keySet()),
                 description);
         Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
-        rejects.remove(best.orElse(null));
+        rejects.remove(best.get());
         notifyRejects(rejects);
         if (best.isPresent()) {
             notifyAcceptPhase2(best.get(), props);
