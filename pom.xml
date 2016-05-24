@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-main</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>FlexSimulator</name>
 	<description>A simple project for some flex-representation experiments.</description>
