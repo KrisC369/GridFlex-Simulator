@@ -130,7 +130,7 @@ public class BRPAggregator extends IndependentAggregator {
         Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
         for (SiteFlexAPI api : flex.keySet()) {
             int maxFlexInProfile = CollectionUtils.max(flex.get(api),
-                    input -> input.getDeltaP());
+                    FlexTuple::getDeltaP);
             sumFlex += maxFlexInProfile;
             portions.put(api, maxFlexInProfile);
         }

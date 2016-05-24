@@ -35,7 +35,12 @@ public class SiteSimulation implements Site {
     private final int duration;
     private int currentConsumption;
     private List<FlexTuple> flexData;
-    private UIDGenerator generator;
+    private UIDGenerator generator = new UIDGenerator() {
+        @Override
+        public long getNextUID() {
+            return 0;
+        }
+    };
     private int totalConsumption;
     private final int baseProduction;
     private Listener<? super FlexTuple> activationListener;
@@ -76,12 +81,6 @@ public class SiteSimulation implements Site {
         this.currentConsumption = base;
         this.flexData = Lists.newArrayList();
         this.baseProduction = DEFAULT_BASE_PRODUCTION;
-        this.generator = new UIDGenerator() {
-            @Override
-            public long getNextUID() {
-                return 0;
-            }
-        };
         this.noFlexTimer = 0;
         this.flexTimer = 0;
         this.baseConsumption = base;

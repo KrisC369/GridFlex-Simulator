@@ -41,7 +41,7 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
     private void doWorkFor(T prop, AnswerAnticipator<T> ant) {
         boolean succeeded = performWorkUnitFor(prop);
         if (succeeded) {
-            ant.affirmative(prop, new NoOpAnswerAnticipator<T>());
+            ant.affirmative(prop, new NoOpAnswerAnticipator<>());
         } else {
             ant.reject();
         }

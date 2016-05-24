@@ -12,7 +12,6 @@ import com.google.common.annotations.VisibleForTesting;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -24,15 +23,8 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  */
 class WorkstationImpl implements ConfigurableWorkstation {
 
-    private static final IntNNFunction<Resource> CURRENT_REMAINING_STEPS = input -> input
-            .getCurrentNeededProcessTime();
-
-    private static final IntNNFunction<Resource> MAX_REMAINING_STEPS = input -> input
-            .getMaxNeededProcessTime();
-
     private final Buffer<Resource> inputBuff;
     private final Buffer<Resource> outputBuff;
-
     private final StationState resourceMovingState;
     private final StationState processingState;
     private StationState currentState;
@@ -55,7 +47,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
      *            The In buffer.
      * @param bufferOut
      *            The Out buffer.
-     * @param linear
      */
     @VisibleForTesting
     WorkstationImpl(Buffer<Resource> bufferIn, Buffer<Resource> bufferOut,
@@ -167,11 +158,13 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     private int getRemainingStepsOfResource() {
-        return CollectionUtils.max(currentResource, CURRENT_REMAINING_STEPS);
+        return CollectionUtils.max(currentResource,
+                Resource::getCurrentNeededProcessTime);
     }
 
     private int getMaxRemainingStepsOfResource() {
-        return CollectionUtils.max(currentResource, MAX_REMAINING_STEPS);
+        return CollectionUtils.max(currentResource,
+                Resource::getMaxNeededProcessTime);
     }
 
     private StationState getCurrentState() {

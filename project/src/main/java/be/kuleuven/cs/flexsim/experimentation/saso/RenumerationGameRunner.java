@@ -129,7 +129,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
             new RenumerationGameRunner(1, 8).execute();
         } else if (args.length == 1) {
             try {
-                final int agents = Integer.valueOf(args[0]);
+                final int agents = Integer.parseInt(args[0]);
                 new RenumerationGameRunner(200, agents).execute();
             } catch (Exception e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class).error("Unparseable cl parameters passed");

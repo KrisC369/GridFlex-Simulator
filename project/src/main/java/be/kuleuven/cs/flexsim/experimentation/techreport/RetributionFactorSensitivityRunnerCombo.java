@@ -18,33 +18,21 @@ public final class RetributionFactorSensitivityRunnerCombo {
      *            the args.
      */
     public static void main(String[] args) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new RetributionFactorSensitivityRunner2A().execute();
+        new Thread(() -> {
+            new RetributionFactorSensitivityRunner2A().execute();
 
-            }
         }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new RetributionFactorSensitivityRunner3A().execute();
+        new Thread(() -> {
+            new RetributionFactorSensitivityRunner3A().execute();
 
-            }
         }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new RetributionFactorSensitivityRunner4A().execute();
+        new Thread(() -> {
+            new RetributionFactorSensitivityRunner4A().execute();
 
-            }
         }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                new RetributionFactorSensitivityRunner5A().execute();
+        new Thread(() -> {
+            new RetributionFactorSensitivityRunner5A().execute();
 
-            }
         }).start();
     }
 }

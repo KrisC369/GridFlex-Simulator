@@ -52,8 +52,8 @@ public abstract class DSMProposal implements Proposal {
      *
      * @param target
      *            the target imbalance volume that needs to be corrected.
-     * @param result
-     *            the target imbalance volume that was effectively remedied.
+     * @param valuation
+     *            the valuation value associated with this proposal.
      * @return a nomination value object. //
      */
     static DSMProposal create(String description, double target,

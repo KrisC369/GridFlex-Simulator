@@ -32,14 +32,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
      *            Standard in args.
      */
     public static void main(String[] args) {
-        ExpGenerator gen = new ExpGenerator() {
-
-            @Override
-            public ExecutableExperiment getExperiment(int reps, int agents,
-                    int allowed) {
-                return new ExperimentRunner1(reps, agents, allowed);
-            }
-        };
+        ExpGenerator gen = (reps, agents, allowed) -> new ExperimentRunner1(reps, agents, allowed);
         parseInput(gen, args, N, ALLOWED_EXCESS);
     }
 
@@ -72,12 +65,9 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
         @Override
         protected void doRegistration() {
-            this.registerCallbackOnFinish(new ExperimentCallback() {
-                @Override
-                public void callback(ExperimentAtom instance) {
-                    addMainResult(getLabel(), checkNotNull(p).getEfficiency());
-                    p = null;
-                }
+            this.registerCallbackOnFinish(instance -> {
+                addMainResult(getLabel(), checkNotNull(p).getEfficiency());
+                p = null;
             });
         }
     }

@@ -1,15 +1,12 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.List;
-
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import com.google.common.collect.Lists;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+import it.unimi.dsi.fastutil.doubles.DoubleLists;
 import org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatistic;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
@@ -18,18 +15,15 @@ import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.google.common.collect.Lists;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
-import it.unimi.dsi.fastutil.doubles.DoubleList;
-import it.unimi.dsi.fastutil.doubles.DoubleLists;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * A time series representation of a power congestion profile.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class CongestionProfile implements TimeSeries {
@@ -82,13 +76,11 @@ public class CongestionProfile implements TimeSeries {
 
     /**
      * Load and parse time series from file.
-     * 
-     * @param filename
-     *            the name of the file to parse and load.
-     * @param column
-     *            the label of the column to parse and use as time series.
-     * @throws IOException
-     *             When loading is not possible for whatever reason.
+     *
+     * @param filename the name of the file to parse and load.
+     * @param column   the label of the column to parse and use as time series.
+     * @throws IOException          When loading is not possible for whatever reason.
+     * @throws NullPointerException when the input file cannot be found.
      */
     public void load(String filename, String column) throws IOException {
         List<Double> dataRead = Lists.newArrayList();
@@ -115,16 +107,12 @@ public class CongestionProfile implements TimeSeries {
 
     /**
      * Factory method for building a time series from a csv file.
-     * 
-     * @param filename
-     *            The filename.
-     * @param column
-     *            The column label to use as data.
+     *
+     * @param filename The filename.
+     * @param column   The column label to use as data.
      * @return the time series.
-     * @throws IOException
-     *             If reading from the file is not possible.
-     * @throws FileNotFoundException
-     *             If the file with that name cannot be found.
+     * @throws IOException           If reading from the file is not possible.
+     * @throws FileNotFoundException If the file with that name cannot be found.
      */
     public static TimeSeries createFromCSV(String filename, String column)
             throws IOException {
@@ -135,9 +123,8 @@ public class CongestionProfile implements TimeSeries {
 
     /**
      * Factory method for building time series from other time series.
-     * 
-     * @param series
-     *            The series to copy from.
+     *
+     * @param series The series to copy from.
      * @return the time series.
      */
     public static CongestionProfile createFromTimeSeries(TimeSeries series) {
@@ -162,11 +149,9 @@ public class CongestionProfile implements TimeSeries {
 
     /**
      * Change the value of a certain element in the time series.
-     * 
-     * @param index
-     *            the index of the value to change.
-     * @param value
-     *            the new value.
+     *
+     * @param index the index of the value to change.
+     * @param value the new value.
      */
     public void changeValue(int index, double value) {
         checkArgument(index >= 0 && index < length(),

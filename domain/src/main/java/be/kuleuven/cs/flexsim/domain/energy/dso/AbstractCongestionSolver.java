@@ -1,21 +1,19 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-import org.apache.commons.math3.stat.descriptive.rank.Min;
-import org.apache.commons.math3.util.FastMath;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+import org.apache.commons.math3.stat.descriptive.rank.Min;
+import org.apache.commons.math3.util.FastMath;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
@@ -143,10 +141,6 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         return tick;
     }
 
-    /**
-     * @param tick
-     *            the tick to set
-     */
     private void incrementTick() {
         this.tick = tick + 1;
     }
@@ -220,7 +214,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         }
         if ((sum / (getCongestion().max() * 8.0)
                 * 100) < relativeMaxValuePercent) {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         return Optional.of(DSMProposal.create(

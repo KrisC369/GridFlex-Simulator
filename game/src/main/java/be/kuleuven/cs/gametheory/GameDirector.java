@@ -77,12 +77,7 @@ public class GameDirector {
      * @return the results in string format.
      */
     public Writable getFormattedResults() {
-        return new Writable() {
-            @Override
-            public String getFormattedResultString() {
-                return game.getResultString();
-            }
-        };
+        return () -> game.getResultString();
     }
 
     /**

@@ -1,13 +1,12 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
-import java.util.List;
-
-import com.google.common.base.Optional;
-
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
@@ -17,14 +16,11 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  */
 public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
     private CNPInitiator<DSMProposal> solverInstance;
-    private final IntNNFunction<DSMProposal> usefullnessFunction = new IntNNFunction<DSMProposal>() {
-        @Override
-        public int apply(DSMProposal input) {
-            double theoreticalMax = DSM_ALLOCATION_DURATION
-                    * (input.getTargetValue() / 4.0);
-            // higher power rate is higher score
-            return (int) (theoreticalMax * 1000);
-        }
+    private final IntNNFunction<DSMProposal> usefullnessFunction = input -> {
+        double theoreticalMax = DSM_ALLOCATION_DURATION
+                * (input.getTargetValue() / 4.0);
+        // higher power rate is higher score
+        return (int) (theoreticalMax * 1000);
     };
 
     /**
@@ -66,7 +62,8 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
     private class DSMCNPInitiator extends CNPInitiator<DSMProposal> {
 
-        private Optional<DSMProposal> secondBest = Optional.absent();
+        private Optional<DSMProposal> secondBest = java.util.Optional
+                .empty();
 
         @Override
         protected void signalNoSolutionFound() {
@@ -76,23 +73,23 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
         @Override
         public Optional<DSMProposal> findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
-            secondBest = Optional.absent();
+            secondBest = java.util.Optional.empty();
             if (props.isEmpty()) {
-                return Optional.absent();
+                return Optional.empty();
             }
             final DSMProposal max = CollectionUtils.argMax(props,
                     usefullnessFunction);
             props.remove(max);
             if (!props.isEmpty()) {
-                secondBest = Optional.fromNullable(
+                secondBest = java.util.Optional.ofNullable(
                         CollectionUtils.argMax(props, usefullnessFunction));
 
             }
-            return Optional.fromNullable(max);
+            return Optional.of(max);
         }
 
         @Override
-        public Optional<DSMProposal> getWorkUnitDescription() {
+        public java.util.Optional<DSMProposal> getWorkUnitDescription() {
             return getWorkProposal();
         }
 

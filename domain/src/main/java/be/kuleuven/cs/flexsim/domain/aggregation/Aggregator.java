@@ -130,12 +130,7 @@ public abstract class Aggregator implements SimulationComponent {
                             } else {
                                 logCurtail(tt);
                             }
-                            s.activateFlex(new ActivateFlexCommand() {
-                                @Override
-                                public long getReferenceID() {
-                                    return tt.getId();
-                                }
-                            });
+                            s.activateFlex(() -> tt.getId());
                         }
                     }
                 }

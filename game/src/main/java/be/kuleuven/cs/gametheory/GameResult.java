@@ -38,7 +38,7 @@ public abstract class GameResult {
      */
     public static GameResult create(List<Double> results) {
         return new AutoValue_GameResult(
-                ImmutableMap.copyOf(new LinkedHashMap<String, String>()),
+                ImmutableMap.copyOf(new LinkedHashMap<>()),
                 ImmutableList.copyOf(results));
     }
 

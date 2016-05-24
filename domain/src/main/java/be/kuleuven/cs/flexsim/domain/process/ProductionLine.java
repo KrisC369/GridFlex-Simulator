@@ -96,7 +96,7 @@ public final class ProductionLine implements FlexProcess {
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        return new ArrayList<SimulationComponent>(this.workstations);
+        return new ArrayList<>(this.workstations);
     }
 
     @Override
@@ -278,7 +278,7 @@ public final class ProductionLine implements FlexProcess {
          */
         public ProductionLineBuilder() {
             prodline = new ProductionLine();
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             workingConsumption = WORKING_CONSUMPTION;
             idleConsumption = IDLE_CONSUMPTION;
             multicapWorkingConsumption = MULTICAP_WORKING_CONSUMPTION;
@@ -304,7 +304,7 @@ public final class ProductionLine implements FlexProcess {
          * @return the current builder instance
          */
         public ProductionLineBuilder addShifted(int n) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createShiftableWorkstation(prodline.buffers
@@ -324,7 +324,7 @@ public final class ProductionLine implements FlexProcess {
          * @return the current builder instance
          */
         public ProductionLineBuilder addCurtailableShifted(int n) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
                 WorkstationFactory
@@ -345,7 +345,7 @@ public final class ProductionLine implements FlexProcess {
          * @return the current builder instance
          */
         public ProductionLineBuilder addDefault(int n) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createDefault(prodline.buffers
@@ -364,7 +364,7 @@ public final class ProductionLine implements FlexProcess {
          * @return the current builder instance
          */
         public ProductionLineBuilder addConsuming(int n) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createConsuming(prodline.buffers
@@ -388,7 +388,7 @@ public final class ProductionLine implements FlexProcess {
          */
         public ProductionLineBuilder addMultiCapConstantConsuming(int n,
                 int cap) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createMultiCapConsuming(prodline.buffers
@@ -412,7 +412,7 @@ public final class ProductionLine implements FlexProcess {
          */
         public ProductionLineBuilder addMultiCapLinearConsuming(int n,
                 int cap) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createMultiCapLinearConsuming(prodline.buffers
@@ -437,7 +437,7 @@ public final class ProductionLine implements FlexProcess {
          */
         public ProductionLineBuilder addMultiCapExponentialConsuming(int n,
                 int cap) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createMultiCapExponentialConsuming(prodline.buffers
@@ -459,7 +459,7 @@ public final class ProductionLine implements FlexProcess {
          * @return the current builder instance.
          */
         public ProductionLineBuilder addRFSteerableStation(int n, int cap) {
-            prodline.addBuffer(new Buffer<Resource>());
+            prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
                 WorkstationFactory
                         .createRFDualModeStation(prodline.buffers

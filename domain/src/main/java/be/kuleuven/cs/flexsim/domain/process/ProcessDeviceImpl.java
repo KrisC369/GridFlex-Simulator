@@ -35,14 +35,12 @@ class ProcessDeviceImpl implements ProcessDevice {
     /**
      * Default constructor
      * 
-     * @param subject
-     *            the subject PLine.
      */
     ProcessDeviceImpl() {
         this.flexibility = Lists.newArrayList();
         this.profileMap = LinkedListMultimap.create();
         this.aspects = Sets.newLinkedHashSet();
-        this.logger = LoggerFactory.getLogger(ProductionLine.class);
+        this.logger = LoggerFactory.getLogger(ProcessDevice.class);
         this.upFlexVisitor = new UpFlexVisitor();
         this.downFlexVisitor = new DownFlexVisitor();
     }

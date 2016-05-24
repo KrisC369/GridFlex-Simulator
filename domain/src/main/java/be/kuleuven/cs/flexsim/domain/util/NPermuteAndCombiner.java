@@ -103,7 +103,7 @@ public class NPermuteAndCombiner<T> {
             return Collections.emptyList();
         }
         Collection<List<T>> res = Lists.newLinkedList();
-        permutationsImpl(collections, res, 0, new LinkedList<T>());
+        permutationsImpl(collections, res, 0, new LinkedList<>());
         return res;
     }
 

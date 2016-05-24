@@ -32,7 +32,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
  */
 public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
-    private static final long SEED = 1312421l;
+    private static final long SEED = 1312421L;
     private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
@@ -69,14 +69,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
      *            StdIn args.
      */
     public static void main(String[] args) {
-        ExpGenerator gen = new ExpGenerator() {
-
-            @Override
-            public ExecutableExperiment getExperiment(int reps, int agents,
-                    int allowed) {
-                return new ExperimentRunnerAllRes(reps, agents, allowed);
-            }
-        };
+        ExpGenerator gen = (reps, agents, allowed) -> new ExperimentRunnerAllRes(reps, agents, allowed);
         parseInput(gen, args, N, ALLOWED_EXCESS);
     }
 
@@ -87,7 +80,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             startExperiment(gen, 10, 81, allowedEx);
         } else if (args.length == 1) {
             try {
-                final int agents = Integer.valueOf(args[0]);
+                final int agents = Integer.parseInt(args[0]);
                 startExperiment(gen, n, agents, allowedEx);
             } catch (Exception e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -280,21 +273,17 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
 
         protected void doRegistration() {
-            this.registerCallbackOnFinish(new ExperimentCallback() {
-
-                @Override
-                public void callback(ExperimentAtom instance) {
-                    addMainResult(getLabel(), checkNotNull(p).getEfficiency());
-                    addActResult(getLabel(),
-                            checkNotNull(p).getActivationRate());
-                    addActEffResult(getLabel(),
-                            checkNotNull(p).getSummedAgentEfficiency());
-                    addSolveResult(getLabel(),
-                            checkNotNull(p).getRemediedCongestionFraction());
-                    addRemediedCongResult(getLabel(), checkNotNull(p)
-                            .getRemediedCongestionRelatedToProducedEnergy());
-                    p = null;
-                }
+            this.registerCallbackOnFinish(instance -> {
+                addMainResult(getLabel(), checkNotNull(p).getEfficiency());
+                addActResult(getLabel(),
+                        checkNotNull(p).getActivationRate());
+                addActEffResult(getLabel(),
+                        checkNotNull(p).getSummedAgentEfficiency());
+                addSolveResult(getLabel(),
+                        checkNotNull(p).getRemediedCongestionFraction());
+                addRemediedCongResult(getLabel(), checkNotNull(p)
+                        .getRemediedCongestionRelatedToProducedEnergy());
+                p = null;
             });
         }
 

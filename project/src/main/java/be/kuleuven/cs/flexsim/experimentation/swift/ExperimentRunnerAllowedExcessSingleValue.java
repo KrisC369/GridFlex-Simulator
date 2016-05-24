@@ -25,7 +25,7 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 public class ExperimentRunnerAllowedExcessSingleValue
         extends ExperimentRunner1 {
 
-    private static final long SEED = 1312421l;
+    private static final long SEED = 1312421L;
     private static final int N = 100;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
@@ -64,7 +64,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
                         new DoubleArrayList(gd.sample(NAGENTS)), profile,
                         ALLOW_LESS_ACTS, TOTAL_PRODUCED_E);
                 p.startExperiment();
-                result[i / (N / 100)] += p.getEfficiency();
+                result[(int) (i / (double)(N / 100))] += p.getEfficiency();
             }
         } catch (IOException e) {
             LoggerFactory

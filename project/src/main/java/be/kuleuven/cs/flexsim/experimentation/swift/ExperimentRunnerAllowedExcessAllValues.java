@@ -29,7 +29,7 @@ import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 public class ExperimentRunnerAllowedExcessAllValues
         extends ExperimentRunnerAllowedExcessSingleValue {
 
-    private static final long SEED = 1312421l;
+    private static final long SEED = 1312421L;
     private static final int N = 500;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
@@ -75,13 +75,9 @@ public class ExperimentRunnerAllowedExcessAllValues
 
         ExperimentAtomImplementation(final int agents) {
             this.agents = agents;
-            this.registerCallbackOnFinish(new ExperimentCallback() {
-
-                @Override
-                public void callback(ExperimentAtom instance) {
-                    final int res = result;
-                    addResult(agents, res);
-                }
+            this.registerCallbackOnFinish(instance -> {
+                final int res = result;
+                addResult(agents, res);
             });
         }
 

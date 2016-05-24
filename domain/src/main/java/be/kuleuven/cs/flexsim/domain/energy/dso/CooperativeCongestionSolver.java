@@ -1,15 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
-import java.util.List;
-
-import org.apache.commons.math3.util.FastMath;
-
-import com.google.common.base.Optional;
-
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
+import org.apache.commons.math3.util.FastMath;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
@@ -19,20 +17,17 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  */
 public class CooperativeCongestionSolver extends AbstractCongestionSolver {
     private CNPInitiator<DSMProposal> solverInstance;
-    private final IntNNFunction<DSMProposal> choiceFunction = new IntNNFunction<DSMProposal>() {
-        @Override
-        public int apply(DSMProposal input) {
-            double sum = 0;
-            for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-                    getModifiableProfileAfterDSM().length() - getTick()
-                            - 1); i++) {
-                sum += FastMath.min(getHorizon().getDouble(i),
-                        input.getTargetValue() / 4.0);
-            }
-            // Closest match to congestion is chosen. ties in favor of smaller
-            // bids.
-            return (int) ((sum * 100000) - input.getTargetValue());
+    private final IntNNFunction<DSMProposal> choiceFunction = input -> {
+        double sum = 0;
+        for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
+                getModifiableProfileAfterDSM().length() - getTick()
+                        - 1); i++) {
+            sum += FastMath.min(getHorizon().getDouble(i),
+                    input.getTargetValue() / 4.0);
         }
+        // Closest match to congestion is chosen. ties in favor of smaller
+        // bids.
+        return (int) ((sum * 100000) - input.getTargetValue());
     };
 
     /**
@@ -84,14 +79,14 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
                 DSMProposal description) {
 
             if (props.isEmpty()) {
-                return Optional.absent();
+                return Optional.empty();
             }
-            return Optional.fromNullable(
+            return Optional.of(
                     CollectionUtils.argMax(props, choiceFunction));
         }
 
         @Override
-        public Optional<DSMProposal> getWorkUnitDescription() {
+        public java.util.Optional<DSMProposal> getWorkUnitDescription() {
             return getWorkProposal();
         }
 
