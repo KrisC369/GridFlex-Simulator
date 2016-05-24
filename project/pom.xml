@@ -13,7 +13,7 @@
 
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-project</artifactId>
-	<version>0.0.7</version>
+	<version>0.1.0</version>
 	<packaging>jar</packaging>
 	<name>FlexSimulator projects</name>
 	<description>Projects using flexsim to produce results.</description>

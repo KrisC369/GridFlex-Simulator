@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>be.kuleuven.cs</groupId>
 	<artifactId>flexsim-domain</artifactId>
-	<version>0.0.7</version>
+	<version>0.1.0</version>
 	<name>FlexSimulator domain</name>
 	<description>Domain concepts for Flexsim.</description>
 	<url>http://maven.apache.org</url>
