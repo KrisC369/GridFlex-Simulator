@@ -94,7 +94,13 @@ public class DSMPartnerTest {
                 countAct = 0;
             }
         }
-
     }
 
+    @Test
+    public void testToString() {
+        assertTrue(dsm1.toString()
+                .contains(String.valueOf(dsm1.getCurrentActivations())));
+        assertTrue(dsm1.toString()
+                .contains(String.valueOf(dsm1.getFlexPowerRate())));
+    }
 }

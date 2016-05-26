@@ -1,9 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.base.Optional;
 
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 
@@ -44,7 +45,7 @@ public abstract class DSMProposal implements Proposal {
      * @return true if the optionals for the time constraints are not absent.
      */
     public boolean hasTimeConstraints() {
-        return getBeginMark().isPresent() && getEndMark().isPresent();
+        return getBeginMark().isPresent() || getEndMark().isPresent();
     }
 
     /**
@@ -59,7 +60,7 @@ public abstract class DSMProposal implements Proposal {
     static DSMProposal create(String description, double target,
             double valuation, @Nullable Integer begin, @Nullable Integer end) {
         return new AutoValue_DSMProposal(description, target,
-                Optional.fromNullable(begin), Optional.fromNullable(end),
+                Optional.ofNullable(begin), Optional.ofNullable(end),
                 valuation);
     }
 }

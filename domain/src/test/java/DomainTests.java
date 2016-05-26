@@ -7,6 +7,9 @@ import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.NominationTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregatorTest;
+import be.kuleuven.cs.flexsim.domain.energy.dso.DSMPartnerTest;
+import be.kuleuven.cs.flexsim.domain.energy.dso.DSMProposalTest;
+import be.kuleuven.cs.flexsim.domain.energy.dso.DSOIntegrationTest;
 import be.kuleuven.cs.flexsim.domain.energy.generation.OutputGeneratorTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingAuctionTSOTest;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingTSOTest;
@@ -38,6 +41,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
         BalancingAuctionTSOTest.class, BalancingTSOTest.class,
         EquidistantSiteSimulationTest.class, ListenerTest.class,
         NominationTest.class, CongestionProfileTest.class, TrapzPosTest.class,
-        CollectionUtilsTest.class })
+        CollectionUtilsTest.class, DSMProposalTest.class, DSMPartnerTest.class,
+        DSOIntegrationTest.class })
 public class DomainTests {
 }

@@ -106,9 +106,9 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
         Optional<T> best = findBestProposal(Lists.newArrayList(props.keySet()),
                 description);
         Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
-        rejects.remove(best.get());
-        notifyRejects(rejects);
         if (best.isPresent()) {
+            rejects.remove(best.get());
+            notifyRejects(rejects);
             notifyAcceptPhase2(best.get(), props);
         } else {
             signalNoSolutionFound();

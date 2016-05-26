@@ -103,12 +103,10 @@ public final class MathUtils {
 
     private static double trapzPosGtZero(double n1y, double n2y, double n2x) {
         if (n1y > 0) {
-            if (n1y > 0) {
-                if (n2y > n1y) {
-                    return case1(n1y, n2y, n2x);
-                }
-                return case2(n1y, n2y, n2x);
+            if (n2y > n1y) {
+                return case1(n1y, n2y, n2x);
             }
+            return case2(n1y, n2y, n2x);
         } else if (n1y < 0) {
             return caseZero();
         }

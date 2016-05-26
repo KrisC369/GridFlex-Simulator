@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -62,7 +63,6 @@ public class CNPInitiatorTest {
 
     @Test
     public void testChooseProposal() {
-        boolean flag = false;
         subj.sollicitWork();
         AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
         verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(),
@@ -81,7 +81,6 @@ public class CNPInitiatorTest {
 
     @Test
     public void testEndWithReject() {
-        boolean flag = false;
         subj.sollicitWork();
         AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
         verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(),
@@ -96,5 +95,27 @@ public class CNPInitiatorTest {
         verify(reply1, times(1)).affirmative(any(Proposal.class),
                 any(AnswerAnticipator.class));
         // verify(reply, times(1)).reject();
+    }
+
+    @Test
+    public void testNoSolution() {
+        subj = new TestConcreteCNPInitiatorNoResult();
+        subj.registerResponder(mockResp1);
+        subj.registerResponder(mockResp2);
+        subj.sollicitWork();
+        AnswerAnticipator<Proposal> reply1 = mock(AnswerAnticipator.class);
+        verify(mockResp1, times(1)).callForProposal(answerCaptor1.capture(),
+                proposalCaptor.capture());
+        answerCaptor1.getValue().affirmative(mock(Proposal.class), reply1);
+
+        verify(mockResp2, times(1)).callForProposal(answerCaptor2.capture(),
+                proposalCaptor.capture());
+        AnswerAnticipator<Proposal> reply = mock(AnswerAnticipator.class);
+        answerCaptor2.getValue().reject();
+
+        verify(reply1, times(0)).affirmative(any(Proposal.class),
+                any(AnswerAnticipator.class));
+        assertTrue(((TestConcreteCNPInitiatorNoResult) subj)
+                .isNoSolutionFoundTriggered());
     }
 }
