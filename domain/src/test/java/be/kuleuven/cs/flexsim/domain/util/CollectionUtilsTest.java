@@ -1,15 +1,15 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import static org.junit.Assert.assertEquals;
 
 public class CollectionUtilsTest {
 
@@ -26,35 +26,28 @@ public class CollectionUtilsTest {
     @Test
     public void testMax() {
         assertEquals(bids.get(2).getValuation(),
-                CollectionUtils.max(bids, new IntNNFunction<FlexBid>() {
-                    @Override
-                    public int apply(FlexBid input) {
-                        return input.getValuation();
-                    }
-                }));
+                CollectionUtils.max(bids, input -> input.getValuation()));
+    }
+
+    @Test(expected = NoSuchElementException.class)
+    public void testMaxEmpty() {
+        assertEquals(bids.get(2).getValuation(),
+                CollectionUtils.max(new ArrayList<FlexBid>(),
+                        input -> input.getValuation()
+                ));
     }
 
     @Test
     public void testArgMax() {
         bids.add(new FlexBid(FlexTuple.NONE, 7));
         assertEquals(bids.get(4),
-                CollectionUtils.argMax(bids, new IntNNFunction<FlexBid>() {
-                    @Override
-                    public int apply(FlexBid input) {
-                        return input.getValuation();
-                    }
-                }));
+                CollectionUtils.argMax(bids, input -> input.getValuation()));
     }
 
     @Test
     public void testSum() {
         assertEquals(10,
-                CollectionUtils.sum(bids, new IntNNFunction<FlexBid>() {
-                    @Override
-                    public int apply(FlexBid input) {
-                        return input.getValuation();
-                    }
-                }));
+                CollectionUtils.sum(bids, input -> input.getValuation()));
     }
 
     @Test
@@ -67,27 +60,12 @@ public class CollectionUtilsTest {
         bids.add(new FlexBid(FlexTuple.NONE, 7));
 
         assertEquals(bids.get(0).getValuation(),
-                CollectionUtils.max(bids, new IntNNFunction<FlexBid>() {
-                    @Override
-                    public int apply(FlexBid input) {
-                        return input.getValuation();
-                    }
-                }));
+                CollectionUtils.max(bids, input -> input.getValuation()));
 
         assertEquals(bids.get(0),
-                CollectionUtils.argMax(bids, new IntNNFunction<FlexBid>() {
-                    @Override
-                    public int apply(FlexBid input) {
-                        return input.getValuation();
-                    }
-                }));
+                CollectionUtils.argMax(bids, input -> input.getValuation()));
 
         assertEquals(26,
-                CollectionUtils.sum(bids, new IntNNFunction<FlexBid>() {
-                    @Override
-                    public int apply(FlexBid input) {
-                        return input.getValuation();
-                    }
-                }));
+                CollectionUtils.sum(bids, input -> input.getValuation()));
     }
 }
