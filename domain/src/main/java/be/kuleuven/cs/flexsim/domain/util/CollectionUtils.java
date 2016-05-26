@@ -6,7 +6,6 @@ package be.kuleuven.cs.flexsim.domain.util;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.stream.StreamSupport;
 
 /**
@@ -30,14 +29,11 @@ public final class CollectionUtils {
      *            compare with the maximum.
      * @param <T>
      *            the type representing the elements to apply function f to.
-     * @return the maximum.
+     * @return the maximum or 0 if the list is empty.
      */
     public static <T> int max(Iterable<T> elements, IntNNFunction<T> f) {
-        if (!elements.iterator().hasNext()) {
-            throw new NoSuchElementException("The supplied iterable is empty");
-        }
         return StreamSupport.stream(elements.spliterator(), false)
-                .mapToInt(f::apply).max().getAsInt();
+                .mapToInt(f::apply).max().orElseGet(() -> 0);
     }
 
     /**
