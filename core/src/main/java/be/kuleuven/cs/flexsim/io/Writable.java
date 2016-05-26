@@ -5,7 +5,6 @@ package be.kuleuven.cs.flexsim.io;
  * written to an output channel.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface Writable {
     /**

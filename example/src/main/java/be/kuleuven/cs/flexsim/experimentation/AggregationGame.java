@@ -17,14 +17,13 @@ import be.kuleuven.cs.gametheory.GameInstance;
  * Representation of a concrete game played by Agents and aggregators.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  * @param <S>
  *            The type of agent that plays in this game.
  * @param <A>
  *            The concrete aggregator type in this game.
  */
-public abstract class AggregationGame<S, A extends Aggregator> implements
-        GameInstance<S, A> {
+public abstract class AggregationGame<S, A extends Aggregator>
+        implements GameInstance<S, A> {
 
     private static final int SIM_LENGTH = 500;
     private final Simulator sim;

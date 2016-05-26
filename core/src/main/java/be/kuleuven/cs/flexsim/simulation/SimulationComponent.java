@@ -8,7 +8,6 @@ import java.util.List;
  * interface which allows dependency injection.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public interface SimulationComponent extends InstrumentationComponent {
     /**

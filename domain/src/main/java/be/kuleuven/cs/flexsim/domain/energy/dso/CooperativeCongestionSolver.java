@@ -1,13 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.math3.util.FastMath;
+
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
-import org.apache.commons.math3.util.FastMath;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
@@ -20,8 +21,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
     private final IntNNFunction<DSMProposal> choiceFunction = input -> {
         double sum = 0;
         for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
-                getModifiableProfileAfterDSM().length() - getTick()
-                        - 1); i++) {
+                getModifiableProfileAfterDSM().length() - getTick() - 1); i++) {
             sum += FastMath.min(getHorizon().getDouble(i),
                     input.getTargetValue() / 4.0);
         }
@@ -81,8 +81,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
             if (props.isEmpty()) {
                 return Optional.empty();
             }
-            return Optional.of(
-                    CollectionUtils.argMax(props, choiceFunction));
+            return Optional.of(CollectionUtils.argMax(props, choiceFunction));
         }
 
         @Override

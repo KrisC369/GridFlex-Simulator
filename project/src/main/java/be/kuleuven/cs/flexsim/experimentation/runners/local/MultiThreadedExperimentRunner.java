@@ -16,7 +16,6 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
  * An example class running some experiments.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class MultiThreadedExperimentRunner implements ExperimentRunner {
 
@@ -44,7 +43,8 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
      *            The experiment collection to take tasks from.
      */
     @Override
-    public void runExperiments(Collection<? extends ExperimentAtom> experiments) {
+    public void runExperiments(
+            Collection<? extends ExperimentAtom> experiments) {
         List<Callable<Object>> todo = new ArrayList<>(experiments.size());
         for (ExperimentAtom e : experiments) {
             todo.add(Executors.callable(e));
@@ -52,8 +52,8 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
         try {
             executor.invokeAll(todo);
         } catch (final Exception e1) {
-            LoggerFactory.getLogger(MultiThreadedExperimentRunner.class).warn(
-                    "Interrupt called during invocation", e1);
+            LoggerFactory.getLogger(MultiThreadedExperimentRunner.class)
+                    .warn("Interrupt called during invocation", e1);
         }
         executor.shutdown();
     }

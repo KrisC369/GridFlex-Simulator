@@ -60,7 +60,8 @@ public class EventTest {
                 assertTrue(e.hasAttribute(j.toString()));
                 assertTrue(e.hasAttribute(j.toString(), Integer.class));
                 try {
-                    assertEquals(j, e.getAttribute(j.toString(), Integer.class));
+                    assertEquals(j,
+                            e.getAttribute(j.toString(), Integer.class));
                 } catch (NoSuchAttributeException e1) {
                     fail();
                 }
@@ -117,10 +118,8 @@ public class EventTest {
     }
 
     /**
-     * Test of setAttribute method, of class Event.
-     *
-     * Setting and resetting is already covered by
-     * {@link EventTest#testGetAndSetAttribute()}
+     * Test of setAttribute method, of class Event. Setting and resetting is
+     * already covered by {@link EventTest#testGetAndSetAttribute()}
      */
     @Test
     public void testSetAttribute() {

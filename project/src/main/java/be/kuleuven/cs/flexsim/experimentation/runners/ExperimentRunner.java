@@ -6,7 +6,6 @@ import java.util.Collection;
  * This component is able to execute a series of task experiments.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface ExperimentRunner {
     /**

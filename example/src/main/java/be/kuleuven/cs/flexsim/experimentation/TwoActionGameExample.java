@@ -14,7 +14,6 @@ import be.kuleuven.cs.flexsim.domain.site.Site;
  * Represents a game with two possible actions to choose between.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
 
@@ -36,7 +35,8 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
      * @param factor
      *            The retribution factor.
      */
-    public TwoActionGameExample(int seed, int baselineConsumption, double factor) {
+    public TwoActionGameExample(int seed, int baselineConsumption,
+            double factor) {
         super(seed);
         this.tso = new BalancingTSO();
         this.count = 0;

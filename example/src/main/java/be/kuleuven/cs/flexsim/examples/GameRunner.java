@@ -9,7 +9,6 @@ import be.kuleuven.cs.gametheory.GameResultWriter;
  * An example class running some experiments.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public final class GameRunner {
     private static final int AGENTS = 3;

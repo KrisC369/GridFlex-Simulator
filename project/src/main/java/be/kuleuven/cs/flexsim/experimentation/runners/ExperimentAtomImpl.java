@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
  * Concrete implementation for the experiment task with a callback mechanism.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public abstract class ExperimentAtomImpl implements ExperimentAtom {
 

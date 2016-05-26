@@ -3,12 +3,9 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import org.eclipse.jdt.annotation.Nullable;
-
 import org.slf4j.LoggerFactory;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentCallback;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 /**
@@ -31,7 +28,8 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
      *            Standard in args.
      */
     public static void main(String[] args) {
-        ExpGenerator gen = (reps, agents, allowed) -> new ExperimentRunner1(reps, agents, allowed);
+        ExpGenerator gen = (reps, agents,
+                allowed) -> new ExperimentRunner1(reps, agents, allowed);
         parseInput(gen, args, N, ALLOWED_EXCESS);
     }
 

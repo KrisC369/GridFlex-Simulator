@@ -7,7 +7,6 @@ package be.kuleuven.cs.gametheory;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The type of the generated element.
- *
  */
 public interface AgentGenerator<T> {
     /**

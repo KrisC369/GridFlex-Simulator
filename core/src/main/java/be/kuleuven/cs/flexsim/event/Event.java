@@ -7,9 +7,8 @@ import java.util.Map;
 import javax.naming.directory.NoSuchAttributeException;
 
 /**
- * The basic event class.
- * 
- * Ported, inspired from, and distilled from the Gridlock project.
+ * The basic event class. Ported, inspired from, and distilled from the Gridlock
+ * project.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @author Rutger Claes (rutger.claes AT cs.kuleuven.be)
@@ -56,7 +55,6 @@ public class Event {
      *            key of the attribute.
      * @param type
      *            class the attribute should be cast to.
-     *
      * @return the attribute registered under key cast as type.
      * @throws NoSuchAttributeException
      *             when this event does not have the specified attribute.
@@ -73,9 +71,8 @@ public class Event {
     }
 
     /**
-     * Returns all attributes on this event in a map.
-     *
-     * The map will include the type pseudo attribute.
+     * Returns all attributes on this event in a map. The map will include the
+     * type pseudo attribute.
      *
      * @return all attributes including the event type.
      */
@@ -111,10 +108,8 @@ public class Event {
     }
 
     /**
-     * Sets the arguments for this event.
-     *
-     * <strong>Warning: <em>all</em> previous arguments will be
-     * cleared!</strong>.
+     * Sets the arguments for this event. <strong>Warning: <em>all</em> previous
+     * arguments will be cleared!</strong>.
      *
      * @param args
      *            The arguments to set
@@ -159,9 +154,8 @@ public class Event {
      */
     public boolean hasAttribute(String key, Class<?> type) {
         synchronized (this.attributes) {
-            return this.attributes.containsKey(key)
-                    && type.isAssignableFrom(this.attributes.get(key)
-                            .getClass());
+            return this.attributes.containsKey(key) && type
+                    .isAssignableFrom(this.attributes.get(key).getClass());
         }
     }
 }

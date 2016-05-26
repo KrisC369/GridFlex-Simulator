@@ -32,9 +32,11 @@ import edu.uci.ics.jung.graph.util.EdgeType;
  */
 public final class ProductionLine implements FlexProcess {
 
-    private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = input -> (int) input.getLastStepConsumption();
+    private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = input -> (int) input
+            .getLastStepConsumption();
 
-    private static final IntNNFunction<Workstation> TOTAL_CONSUMPTION = input -> (int) input.getTotalConsumption();
+    private static final IntNNFunction<Workstation> TOTAL_CONSUMPTION = input -> (int) input
+            .getTotalConsumption();
 
     private final List<Buffer<Resource>> buffers;
     private final List<Workstation> workstations;
@@ -306,9 +308,8 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addShifted(int n) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createShiftableWorkstation(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createShiftableWorkstation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption, i % 2)
                         .acceptVisitor(prodline.registry);
@@ -327,9 +328,8 @@ public final class ProductionLine implements FlexProcess {
             prodline.addBuffer(new Buffer<>());
             for (int j = 0; j < n; j++) {
                 int shift = j % 2;
-                WorkstationFactory
-                        .createCurtailableStation(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createCurtailableStation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption, shift)
                         .acceptVisitor(prodline.registry);
@@ -347,9 +347,8 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addDefault(int n) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createDefault(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createDefault(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1))
                         .acceptVisitor(prodline.registry);
             }
@@ -366,9 +365,8 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addConsuming(int n) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createConsuming(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, workingConsumption)
                         .acceptVisitor(prodline.registry);
@@ -390,9 +388,8 @@ public final class ProductionLine implements FlexProcess {
                 int cap) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createMultiCapConsuming(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createMultiCapConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
                         .acceptVisitor(prodline.registry);
@@ -414,9 +411,8 @@ public final class ProductionLine implements FlexProcess {
                 int cap) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createMultiCapLinearConsuming(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createMultiCapLinearConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
                         .acceptVisitor(prodline.registry);
@@ -439,9 +435,8 @@ public final class ProductionLine implements FlexProcess {
                 int cap) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createMultiCapExponentialConsuming(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createMultiCapExponentialConsuming(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         idleConsumption, multicapWorkingConsumption, cap)
                         .acceptVisitor(prodline.registry);
@@ -461,9 +456,8 @@ public final class ProductionLine implements FlexProcess {
         public ProductionLineBuilder addRFSteerableStation(int n, int cap) {
             prodline.addBuffer(new Buffer<>());
             for (int i = 0; i < n; i++) {
-                WorkstationFactory
-                        .createRFDualModeStation(prodline.buffers
-                                .get(prodline.buffers.size() - 2),
+                WorkstationFactory.createRFDualModeStation(
+                        prodline.buffers.get(prodline.buffers.size() - 2),
                         prodline.buffers.get(prodline.buffers.size() - 1),
                         rfLowConsumption, rfHighConsumption, rfWidth, cap)
                         .acceptVisitor(prodline.registry);

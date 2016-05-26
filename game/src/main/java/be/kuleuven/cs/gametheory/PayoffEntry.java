@@ -7,7 +7,6 @@ import com.google.auto.value.AutoValue;
  * values.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 @AutoValue
 abstract class PayoffEntry {

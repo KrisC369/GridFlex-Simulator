@@ -34,7 +34,6 @@ class ProcessDeviceImpl implements ProcessDevice {
 
     /**
      * Default constructor
-     * 
      */
     ProcessDeviceImpl() {
         this.flexibility = Lists.newArrayList();

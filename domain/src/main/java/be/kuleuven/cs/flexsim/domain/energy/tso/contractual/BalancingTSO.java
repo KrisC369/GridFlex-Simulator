@@ -1,19 +1,21 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import java.util.List;
+import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.eclipse.jdt.annotation.NonNull;
-
-import java.util.List;
-import java.util.Map;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A TSO implementation that can accept bids for balancing actions and clears
@@ -29,7 +31,8 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Constructor with consumption instances as parameter.
      *
-     * @param sites The consumption sites connected to this TSO
+     * @param sites
+     *            The consumption sites connected to this TSO
      */
     public BalancingTSO(EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
@@ -38,7 +41,8 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Constructor with production instances as parameter.
      *
-     * @param sites The production sites connected to this TSO
+     * @param sites
+     *            The production sites connected to this TSO
      */
     public BalancingTSO(EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
@@ -55,8 +59,10 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Actual initializing constructor.
      *
-     * @param prod the producers.
-     * @param cons the consumers.
+     * @param prod
+     *            the producers.
+     * @param cons
+     *            the consumers.
      */
     private BalancingTSO(EnergyProductionTrackable[] prod,
             EnergyConsumptionTrackable[] cons) {
@@ -147,7 +153,8 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Returns the contractual limits registered to a participant.
      *
-     * @param agg The client to check.
+     * @param agg
+     *            The client to check.
      * @return The limits.
      */
     public PowerCapabilityBand getContractualLimit(
@@ -170,8 +177,10 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Signal that this participant has a new margin of power capabilities.
      *
-     * @param agg The client
-     * @param cap The new capabilities.
+     * @param agg
+     *            The client
+     * @param cap
+     *            The new capabilities.
      */
     public void signalNewLimits(ContractualMechanismParticipant agg,
             PowerCapabilityBand cap) {

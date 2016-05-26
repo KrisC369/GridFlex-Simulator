@@ -5,7 +5,6 @@ package be.kuleuven.cs.gametheory;
  * specific variation of a specific game.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface Playable {
     /**

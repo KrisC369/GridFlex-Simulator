@@ -12,7 +12,6 @@ import com.google.common.collect.Maps;
  * Writes the results from experimentation to certain outputs (eg. a logger).
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class ResultWriter {
     private final Logger logger;

@@ -64,7 +64,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
                         new DoubleArrayList(gd.sample(NAGENTS)), profile,
                         ALLOW_LESS_ACTS, TOTAL_PRODUCED_E);
                 p.startExperiment();
-                result[(int) (i / (double)(N / 100))] += p.getEfficiency();
+                result[(int) (i / (double) (N / 100))] += p.getEfficiency();
             }
         } catch (IOException e) {
             LoggerFactory

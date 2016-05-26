@@ -13,7 +13,6 @@ import com.google.common.collect.Maps;
  * Value class for game results.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 @AutoValue
 public abstract class GameResult {

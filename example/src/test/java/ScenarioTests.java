@@ -62,8 +62,8 @@ public class ScenarioTests {
 
     @Test
     public void testSimulationRun() {
-        p.deliverResources(ResourceFactory.createBulkMPResource(500000, 0, 2,
-                2, 2, 2000));
+        p.deliverResources(
+                ResourceFactory.createBulkMPResource(500000, 0, 2, 2, 2, 2000));
         s.start();
         assertNotEquals(ft.getTotalReward(), 0);
         assertNotEquals(ft.getTotalProfit(), 0);
@@ -101,14 +101,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -139,30 +139,26 @@ public class ScenarioTests {
 
         // After: Curtailment
         line1 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(20).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(20).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line2 = new ProductionLineBuilder().setWorkingConsumption(400)
-                .setIdleConsumption(60).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(3)
-                .addConsuming(3).build();
+                .setIdleConsumption(60).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(3).addConsuming(3).build();
         line3 = new ProductionLineBuilder().setWorkingConsumption(600)
-                .setIdleConsumption(10).addConsuming(3)
-                .addCurtailableShifted(4).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(10).addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line4 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(15).addConsuming(4)
-                .addCurtailableShifted(4).addCurtailableShifted(5)
-                .addConsuming(3).build();
+                .setIdleConsumption(15).addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         t1 = FinanceTrackerImpl.createDefault(line1);
         t2 = FinanceTrackerImpl.createDefault(line2);
@@ -218,14 +214,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -278,14 +274,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -346,14 +342,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -389,30 +385,26 @@ public class ScenarioTests {
 
         // After: Curtailment
         line1 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(20).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(20).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line2 = new ProductionLineBuilder().setWorkingConsumption(400)
-                .setIdleConsumption(60).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(3)
-                .addConsuming(3).build();
+                .setIdleConsumption(60).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(3).addConsuming(3).build();
         line3 = new ProductionLineBuilder().setWorkingConsumption(600)
-                .setIdleConsumption(10).addConsuming(3)
-                .addCurtailableShifted(4).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(10).addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line4 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(15).addConsuming(4)
-                .addCurtailableShifted(4).addCurtailableShifted(5)
-                .addConsuming(3).build();
+                .setIdleConsumption(15).addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         t1 = FinanceTrackerImpl.createDefault(line1);
         t2 = FinanceTrackerImpl.createDefault(line2);
@@ -555,14 +547,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(4).addConsuming(4).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -595,30 +587,26 @@ public class ScenarioTests {
 
         // After: Curtailment
         line1 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(20).addConsuming(3)
-                .addCurtailableShifted(3).addCurtailableShifted(3)
-                .addConsuming(3).build();
+                .setIdleConsumption(20).addConsuming(3).addCurtailableShifted(3)
+                .addCurtailableShifted(3).addConsuming(3).build();
         line2 = new ProductionLineBuilder().setWorkingConsumption(400)
-                .setIdleConsumption(60).addConsuming(6)
-                .addCurtailableShifted(6).addCurtailableShifted(6)
-                .addConsuming(6).build();
+                .setIdleConsumption(60).addConsuming(6).addCurtailableShifted(6)
+                .addCurtailableShifted(6).addConsuming(6).build();
         line3 = new ProductionLineBuilder().setWorkingConsumption(600)
-                .setIdleConsumption(10).addConsuming(3)
-                .addCurtailableShifted(3).addCurtailableShifted(3)
-                .addConsuming(3).build();
+                .setIdleConsumption(10).addConsuming(3).addCurtailableShifted(3)
+                .addCurtailableShifted(3).addConsuming(3).build();
         line4 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(15).addConsuming(4)
-                .addCurtailableShifted(4).addCurtailableShifted(4)
-                .addConsuming(4).build();
+                .setIdleConsumption(15).addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(4).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         t1 = FinanceTrackerImpl.createDefault(line1);
         t2 = FinanceTrackerImpl.createDefault(line2);
@@ -681,14 +669,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3, 30));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3, 30));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -726,26 +714,23 @@ public class ScenarioTests {
                 .addCurtailableShifted(6).addCurtailableShifted(4)
                 .addConsuming(3).addRFSteerableStation(1, 10).build();
         line2 = new ProductionLineBuilder().setWorkingConsumption(400)
-                .setIdleConsumption(60).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(3)
-                .addConsuming(3).build();
+                .setIdleConsumption(60).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(3).addConsuming(3).build();
         line3 = new ProductionLineBuilder().setWorkingConsumption(600)
-                .setIdleConsumption(10).addConsuming(3)
-                .addCurtailableShifted(4).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(10).addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line4 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(15).addConsuming(4)
-                .addCurtailableShifted(4).addCurtailableShifted(5)
-                .addConsuming(3).build();
+                .setIdleConsumption(15).addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3, 30));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3, 30));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         t1 = FinanceTrackerImpl.createDefault(line1);
         t2 = FinanceTrackerImpl.createDefault(line2);
@@ -806,14 +791,14 @@ public class ScenarioTests {
                 .addConsuming(4).addCurtailableShifted(4)
                 .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         FinanceTrackerImpl t1 = FinanceTrackerImpl.createDefault(line1);
         FinanceTrackerImpl t2 = FinanceTrackerImpl.createDefault(line2);
@@ -849,30 +834,26 @@ public class ScenarioTests {
 
         // After: CopperplateTSO
         line1 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(20).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(20).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line2 = new ProductionLineBuilder().setWorkingConsumption(400)
-                .setIdleConsumption(60).addConsuming(3)
-                .addCurtailableShifted(6).addCurtailableShifted(3)
-                .addConsuming(3).build();
+                .setIdleConsumption(60).addConsuming(3).addCurtailableShifted(6)
+                .addCurtailableShifted(3).addConsuming(3).build();
         line3 = new ProductionLineBuilder().setWorkingConsumption(600)
-                .setIdleConsumption(10).addConsuming(3)
-                .addCurtailableShifted(4).addCurtailableShifted(4)
-                .addConsuming(3).build();
+                .setIdleConsumption(10).addConsuming(3).addCurtailableShifted(4)
+                .addCurtailableShifted(4).addConsuming(3).build();
         line4 = new ProductionLineBuilder().setWorkingConsumption(500)
-                .setIdleConsumption(15).addConsuming(4)
-                .addCurtailableShifted(4).addCurtailableShifted(5)
-                .addConsuming(3).build();
+                .setIdleConsumption(15).addConsuming(4).addCurtailableShifted(4)
+                .addCurtailableShifted(5).addConsuming(3).build();
 
-        line1.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line2.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line3.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
-        line4.deliverResources(ResourceFactory.createBulkMPResource(3000, 3, 3,
-                3, 3));
+        line1.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line2.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line3.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
+        line4.deliverResources(
+                ResourceFactory.createBulkMPResource(3000, 3, 3, 3, 3));
 
         t1 = FinanceTrackerImpl.createDefault(line1);
         t2 = FinanceTrackerImpl.createDefault(line2);

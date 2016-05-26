@@ -23,7 +23,6 @@ import be.kuleuven.cs.gametheory.Playable;
  * An example class running some experiments.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class RetributionFactorSensitivityRunner {
 
@@ -70,13 +69,13 @@ public class RetributionFactorSensitivityRunner {
      * Main start hook for these experimentations.
      */
     public void execute() {
-        for (int retributionFactor = 0; retributionFactor <= 1 * factor; retributionFactor += stepSize
-                * factor) {
+        for (int retributionFactor = 0; retributionFactor <= 1
+                * factor; retributionFactor += stepSize * factor) {
             double retrb = retributionFactor / factor;
             DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb,
                     twister);
-            GameDirector director = new GameDirector(new Game<>(nAgents, ex,
-                    repititions));
+            GameDirector director = new GameDirector(
+                    new Game<>(nAgents, ex, repititions));
 
             final List<ExperimentAtom> experiments = adapt(director);
 

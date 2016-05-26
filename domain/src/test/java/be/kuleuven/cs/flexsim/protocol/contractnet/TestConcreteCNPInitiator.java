@@ -1,9 +1,9 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
-import be.kuleuven.cs.flexsim.protocol.Proposal;
-
 import java.util.List;
 import java.util.Optional;
+
+import be.kuleuven.cs.flexsim.protocol.Proposal;
 
 public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
     public TestConcreteCNPInitiator() {

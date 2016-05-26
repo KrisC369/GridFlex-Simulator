@@ -4,7 +4,6 @@ package be.kuleuven.cs.flexsim.event;
  * Default implementation for the factory interface.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class EventFactoryImplementation implements EventFactory {
     /**

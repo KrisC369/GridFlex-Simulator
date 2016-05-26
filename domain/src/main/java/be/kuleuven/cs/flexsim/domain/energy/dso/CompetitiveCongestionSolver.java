@@ -1,12 +1,12 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
+import java.util.List;
+import java.util.Optional;
+
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
@@ -62,8 +62,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
     private class DSMCNPInitiator extends CNPInitiator<DSMProposal> {
 
-        private Optional<DSMProposal> secondBest = java.util.Optional
-                .empty();
+        private Optional<DSMProposal> secondBest = java.util.Optional.empty();
 
         @Override
         protected void signalNoSolutionFound() {

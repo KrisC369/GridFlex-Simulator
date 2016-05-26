@@ -1,13 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
+import java.util.Collections;
+import java.util.List;
+
+import org.apache.commons.math3.util.FastMath;
+
 import be.kuleuven.cs.flexsim.protocol.Responder;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPResponder;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import org.apache.commons.math3.util.FastMath;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * DSMPartners represent industrial companies offering power consumption
@@ -49,8 +50,9 @@ public class DSMPartner implements SimulationComponent {
     /**
      * Default constructor according to r3dp specs.
      *
-     * @param powerRate The amount of instantaneous power this partners is able to
-     *                  increase during activations.
+     * @param powerRate
+     *            The amount of instantaneous power this partners is able to
+     *            increase during activations.
      */
     public DSMPartner(int powerRate) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
@@ -60,10 +62,12 @@ public class DSMPartner implements SimulationComponent {
     /**
      * Default constructor according to r3dp specs.
      *
-     * @param powerRate The amount of instantaneous power this partners is able to
-     *                  increase during activations.
-     * @param deviation The allowed relative deviation to the mean goal number of
-     *                  activations so far.
+     * @param powerRate
+     *            The amount of instantaneous power this partners is able to
+     *            increase during activations.
+     * @param deviation
+     *            The allowed relative deviation to the mean goal number of
+     *            activations so far.
      */
     public DSMPartner(int powerRate, double deviation) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
@@ -76,10 +80,12 @@ public class DSMPartner implements SimulationComponent {
      * @param maxActivations
      * @param interactivationTime
      * @param activationDuration
-     * @param flexPowerRate       The amount of instantaneous power this partners is able to
-     *                            increase during activations.
-     * @param deviation           The allowed relative deviation to the mean goal number of
-     *                            activations so far.
+     * @param flexPowerRate
+     *            The amount of instantaneous power this partners is able to
+     *            increase during activations.
+     * @param deviation
+     *            The allowed relative deviation to the mean goal number of
+     *            activations so far.
      */
     DSMPartner(int maxActivations, int interactivationTime,
             int activationDuration, int flexPowerRate, double deviation) {
@@ -140,7 +146,7 @@ public class DSMPartner implements SimulationComponent {
 
     /**
      * @return Returns the dsm communication api for the role of responder in
-     * this dsm partner.
+     *         this dsm partner.
      */
     public Responder<DSMProposal> getDSMAPI() {
         return this.dsmAPI;
@@ -150,7 +156,8 @@ public class DSMPartner implements SimulationComponent {
      * Returns the amount of power consumption increased at the specified time
      * step.
      *
-     * @param timeMark The mark to check.
+     * @param timeMark
+     *            The mark to check.
      * @return the power increase amount.
      */
     public double getCurtailment(int timeMark) {
@@ -167,8 +174,10 @@ public class DSMPartner implements SimulationComponent {
     /**
      * Mark activation
      *
-     * @param begin BeginMark
-     * @param end   EndMark
+     * @param begin
+     *            BeginMark
+     * @param end
+     *            EndMark
      */
     private void markActivation(Integer begin, Integer end,
             double targetPowerRate) {

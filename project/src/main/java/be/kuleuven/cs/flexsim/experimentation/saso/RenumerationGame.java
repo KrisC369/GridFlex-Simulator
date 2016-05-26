@@ -9,7 +9,6 @@ import com.google.common.collect.Lists;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.AncilServiceNominationManager;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.Nomination;
-import be.kuleuven.cs.flexsim.domain.aggregation.brp.PriceSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
@@ -20,7 +19,6 @@ import be.kuleuven.cs.flexsim.experimentation.AggregationGame;
  * Represents a game with two possible actions to choose between.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
 
@@ -47,8 +45,10 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
                 FIXED_IMBAL_SIGNAL_WIDTH, new MersenneTwister(seed));
         this.addSimComponent(tso);
         this.runningRemainingImbalance = 0;
-        this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL, factor1, 1 - factor1));
-        this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL, factor2, 1 - factor2));
+        this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL,
+                factor1, 1 - factor1));
+        this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL,
+                factor2, 1 - factor2));
         for (BRPAggregator agg : getActionSet()) {
             agg.registerNominationManager(new EfficiencyTracker());
         }

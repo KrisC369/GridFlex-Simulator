@@ -13,7 +13,8 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 public class HeuristicSymmetricPayoffMatrixTest {
-    private HeuristicSymmetricPayoffMatrix table = mock(HeuristicSymmetricPayoffMatrix.class);
+    private HeuristicSymmetricPayoffMatrix table = mock(
+            HeuristicSymmetricPayoffMatrix.class);
     private int agents = 3;
     private int actions = 2;
 

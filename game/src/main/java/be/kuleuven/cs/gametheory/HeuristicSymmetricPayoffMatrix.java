@@ -1,25 +1,26 @@
 package be.kuleuven.cs.gametheory;
 
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 
 /**
  * This class represents heuristic payoff tables or matrices. The heuristic part
  * stems from the experimentally gathered values in this table. This table is
  * meant to be filled in with experimentation results. A table consists out of
- * entries for every combination of agents over the action space.
- * Adding entries with already-present keys will sum the values. Retrieving a
- * value pertaining to a certain key will divide it by the amount of entries,
- * therefore effectively returning an average of the values entered with the
- * corresponding key.
+ * entries for every combination of agents over the action space. Adding entries
+ * with already-present keys will sum the values. Retrieving a value pertaining
+ * to a certain key will divide it by the amount of entries, therefore
+ * effectively returning an average of the values entered with the corresponding
+ * key.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
@@ -34,16 +35,18 @@ public class HeuristicSymmetricPayoffMatrix {
      * Default constructor using the dimensions of the table. and having only
      * all multicombinations as entries.
      *
-     * @param agents  the amount of agents.
-     * @param actions the amount of actions.
+     * @param agents
+     *            the amount of agents.
+     * @param actions
+     *            the amount of actions.
      */
     public HeuristicSymmetricPayoffMatrix(int agents, int actions) {
         this.agents = agents;
         this.actions = actions;
         this.table = Maps.newLinkedHashMap();
         this.tableCount = Maps.newLinkedHashMap();
-        this.numberOfCombinations = MathUtils
-                .multiCombinationSize(actions, agents);
+        this.numberOfCombinations = MathUtils.multiCombinationSize(actions,
+                agents);
     }
 
     /**
@@ -66,8 +69,10 @@ public class HeuristicSymmetricPayoffMatrix {
     /**
      * Adds a new entry to this payoff matrix.
      *
-     * @param value [] The payoff values.
-     * @param key   The population shares as indices for the value
+     * @param value
+     *            [] The payoff values.
+     * @param key
+     *            The population shares as indices for the value
      */
     public void addEntry(long[] value, int... key) {
         checkArgument(testKey(key));
@@ -133,7 +138,8 @@ public class HeuristicSymmetricPayoffMatrix {
     /**
      * Returns an entry in the payoff matrix.
      *
-     * @param key the index keys.
+     * @param key
+     *            the index keys.
      * @return the value recorded in the matrix.
      */
     public double[] getEntry(int... key) {

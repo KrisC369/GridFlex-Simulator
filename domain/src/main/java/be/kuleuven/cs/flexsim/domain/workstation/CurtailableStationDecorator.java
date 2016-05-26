@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-class CurtailableStationDecorator<T extends Workstation>
-        extends ForwardingStationDecorator<T>implements CurtailableWorkstation {
+class CurtailableStationDecorator<T extends Workstation> extends
+        ForwardingStationDecorator<T> implements CurtailableWorkstation {
 
     private boolean curtailed;
 

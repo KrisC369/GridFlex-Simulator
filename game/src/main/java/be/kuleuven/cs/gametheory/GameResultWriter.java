@@ -6,8 +6,6 @@ import be.kuleuven.cs.flexsim.io.ResultWriter;
  * Writes game results to this writer.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
- *
  */
 public class GameResultWriter extends ResultWriter {
     private final GameDirector g;
@@ -38,7 +36,8 @@ public class GameResultWriter extends ResultWriter {
 
     @Override
     public void write() {
-        addResultComponent("Game dynamics results", g.getDynamicEquationArguments());
+        addResultComponent("Game dynamics results",
+                g.getDynamicEquationArguments());
         super.write();
     }
 }

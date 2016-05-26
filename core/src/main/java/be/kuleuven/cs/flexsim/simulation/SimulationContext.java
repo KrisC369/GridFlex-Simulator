@@ -14,7 +14,6 @@ import be.kuleuven.cs.flexsim.time.VirtualClock;
  * the bus. Also a unique ID generator is offered by this context.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * 
  */
 public interface SimulationContext {
 
@@ -42,11 +41,10 @@ public interface SimulationContext {
     /**
      * This method registers a simulation component to the simulation context in
      * order to receive ticks in every simulated time step. After registration,
-     * a callback is initiated for dependency injection of this context.
-     * 
-     * Besides dependency injection, simulation components receive ticks from
-     * the simulator at each time step. Registration also incorporates
-     * registering the component to the <code>EventBus</code>
+     * a callback is initiated for dependency injection of this context. Besides
+     * dependency injection, simulation components receive ticks from the
+     * simulator at each time step. Registration also incorporates registering
+     * the component to the <code>EventBus</code>
      * 
      * @param comp
      *            the component to register.

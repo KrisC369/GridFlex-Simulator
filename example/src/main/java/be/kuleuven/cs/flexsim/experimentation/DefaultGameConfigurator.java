@@ -12,10 +12,9 @@ import be.kuleuven.cs.gametheory.GameInstance;
  * elements according to the implemented generator interfaces.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public class DefaultGameConfigurator implements
-        GameConfigurator<Site, Aggregator> {
+public class DefaultGameConfigurator
+        implements GameConfigurator<Site, Aggregator> {
     private static final int CURRENT = 800;
     private static final int MIN = 500;
     private static final int MAX = 1000;

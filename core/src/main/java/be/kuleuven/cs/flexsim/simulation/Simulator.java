@@ -149,7 +149,6 @@ public final class Simulator implements SimulationContext {
 
     /**
      * Starts this simulation by running the simulation loop.
-     *
      */
     public void start() {
         notifyStart();
@@ -205,7 +204,8 @@ public final class Simulator implements SimulationContext {
     }
 
     private void showProgressBar() {
-        if (getClock().getTimeCount() * PROGRESS_SCALE_FACTOR % (getDuration()) == 0) {
+        if (getClock().getTimeCount() * PROGRESS_SCALE_FACTOR
+                % (getDuration()) == 0) {
             int perc = getClock().getTimeCount() * PROGRESS_SCALE_FACTOR
                     * PROGRESS_SCALE_FACTOR / (getDuration());
             printProgBar(perc);
@@ -253,7 +253,6 @@ public final class Simulator implements SimulationContext {
 
     /*
      * (non-Javadoc)
-     * 
      * @see
      * simulation.ISimulationContext#register(simulation.ISimulationComponent)
      */

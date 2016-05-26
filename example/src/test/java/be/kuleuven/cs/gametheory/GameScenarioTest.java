@@ -25,12 +25,10 @@ public class GameScenarioTest {
         g.playAutonomously();
         new GameResultWriter(g, "CONSOLE").write();
         System.out.println(game.getResultString());
+        assertTrue(game.getResultString()
+                .contains("C:PayoffEntry{entries=[0, 3]}->20"));
         assertTrue(game.getResultString().contains(
-                "C:PayoffEntry{entries=[0, 3]}->20"));
-        assertTrue(game
-                .getResultString()
-                .contains(
-                        "V:PayoffEntry{entries=[0, 3]}->[628830.0, 633277.5, 581825.0]"));
+                "V:PayoffEntry{entries=[0, 3]}->[628830.0, 633277.5, 581825.0]"));
         assertFalse(game.getDynamicsParametersString().isEmpty());
     }
 

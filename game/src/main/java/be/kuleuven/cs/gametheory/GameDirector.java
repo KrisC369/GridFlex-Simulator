@@ -14,7 +14,6 @@ import be.kuleuven.cs.flexsim.io.Writable;
  * setting up and playing games.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class GameDirector {
 

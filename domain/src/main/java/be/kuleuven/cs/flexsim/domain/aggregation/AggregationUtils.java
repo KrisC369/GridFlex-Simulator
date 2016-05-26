@@ -3,12 +3,9 @@ package be.kuleuven.cs.flexsim.domain.aggregation;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;

@@ -4,10 +4,9 @@ package be.kuleuven.cs.flexsim.experimentation.techreport;
  * An example class running some experiments.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
-public final class RetributionFactorSensitivityRunner2A extends
-        RetributionFactorSensitivityRunner {
+public final class RetributionFactorSensitivityRunner2A
+        extends RetributionFactorSensitivityRunner {
 
     private static final int NAGENTS = 2;
     private static final int REPITITIONS = 200;

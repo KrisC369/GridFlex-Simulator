@@ -12,7 +12,6 @@ import java.util.Map;
  *            The type of agents.
  * @param <K>
  *            The type of actions.
- *
  */
 public interface GameInstance<N, K> extends Playable {
     /**
@@ -26,7 +25,6 @@ public interface GameInstance<N, K> extends Playable {
      * Fix a certain agent to a action. Call for every agent before calling
      *
      * @see{GameInstance.init or @see{GameInstance.play}.
-     *
      * @param agent
      *            The agent.
      * @param action

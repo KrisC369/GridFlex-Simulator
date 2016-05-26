@@ -3,14 +3,12 @@ package be.kuleuven.cs.flexsim.experimentation.saso;
 import org.apache.commons.math3.random.MersenneTwister;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
-import be.kuleuven.cs.flexsim.domain.aggregation.brp.PriceSignal;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 
 /**
  * Represents a game with two possible actions to choose between.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public class RenumerationGame2ImbSig extends RenumerationGame {
 
@@ -36,8 +34,10 @@ public class RenumerationGame2ImbSig extends RenumerationGame {
                 FIXED_IMBAL_SIGNAL_WIDTH / 2, new MersenneTwister(seed));
         addSimComponent(tso1);
         addSimComponent(tso2);
-        this.addAggregator(new BRPAggregator(tso1, () -> FIXED_PRICE_SIGNAL, factor1, 1 - factor1));
-        this.addAggregator(new BRPAggregator(tso2, () -> FIXED_PRICE_SIGNAL, factor2, 1 - factor2));
+        this.addAggregator(new BRPAggregator(tso1, () -> FIXED_PRICE_SIGNAL,
+                factor1, 1 - factor1));
+        this.addAggregator(new BRPAggregator(tso2, () -> FIXED_PRICE_SIGNAL,
+                factor2, 1 - factor2));
         for (BRPAggregator agg : getActionSet()) {
             agg.registerNominationManager(new EfficiencyTracker());
         }

@@ -29,7 +29,8 @@ public class GameTest {
     public void setUp() throws Exception {
         players = Lists.newArrayList();
         for (int i = 0; i < agents; i++) {
-            players.add(SiteBuilder.newEquidistantSiteSimulation().withBaseConsumption(200).withMinConsumption(50)
+            players.add(SiteBuilder.newEquidistantSiteSimulation()
+                    .withBaseConsumption(200).withMinConsumption(50)
                     .withMaxConsumption(400).withTuples(6).create());
         }
         config = new GameConfigurator<Site, Aggregator>() {
@@ -87,7 +88,8 @@ public class GameTest {
                     }
 
                     @Override
-                    public void fixActionToAgent(Site agent, Aggregator action) {
+                    public void fixActionToAgent(Site agent,
+                            Aggregator action) {
 
                     }
 
@@ -114,7 +116,9 @@ public class GameTest {
         // System.out.println(g.getDynamicsParametersString());
         assertTrue(g.getDynamicsParametersString().contains("34.0"));
         assertTrue(g.getResultString().contains("[34.0, 34.0, 34.0]"));
-        assertTrue(director.getResults().getDescription().get("Reps").contains(String.valueOf(20)));
-        assertTrue(director.getResults().getResults().contains(Double.valueOf(34.0)));
+        assertTrue(director.getResults().getDescription().get("Reps")
+                .contains(String.valueOf(20)));
+        assertTrue(director.getResults().getResults()
+                .contains(Double.valueOf(34.0)));
     }
 }

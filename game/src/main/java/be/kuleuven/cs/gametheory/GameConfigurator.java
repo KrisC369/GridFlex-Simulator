@@ -9,9 +9,8 @@ package be.kuleuven.cs.gametheory;
  *            The type of agent for the agent generator.
  * @param <A>
  *            The type of action for the gameinstance generator.
- *
  */
-public interface GameConfigurator<S, A> extends AgentGenerator<S>,
-        GameInstanceGenerator<S, A> {
+public interface GameConfigurator<S, A>
+        extends AgentGenerator<S>, GameInstanceGenerator<S, A> {
 
 }

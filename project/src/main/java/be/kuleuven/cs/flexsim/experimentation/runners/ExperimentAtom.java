@@ -5,7 +5,6 @@ package be.kuleuven.cs.flexsim.experimentation.runners;
  * representation of an atomic task to be exucted.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- *
  */
 public interface ExperimentAtom extends Runnable {
 
