@@ -267,70 +267,6 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
-    protected class ExperimentAtomImplementation extends ExperimentAtomImpl {
-        @Nullable
-        private final DoubleList real;
-        @Nullable
-        private ExperimentInstance p;
-        @Nullable
-        private final CongestionProfile profile;
-
-        ExperimentAtomImplementation(DoubleList realisation,
-                CongestionProfile profile) {
-            this.real = realisation;
-            this.profile = profile;
-            doRegistration();
-        }
-
-        protected void doRegistration() {
-            this.registerCallbackOnFinish(instance -> {
-                addMainResult(getLabel(), checkNotNull(p).getEfficiency());
-                addActResult(getLabel(), checkNotNull(p).getActivationRate());
-                addActEffResult(getLabel(),
-                        checkNotNull(p).getSummedAgentEfficiency());
-                addSolveResult(getLabel(),
-                        checkNotNull(p).getRemediedCongestionFraction());
-                addRemediedCongResult(getLabel(), checkNotNull(p)
-                        .getRemediedCongestionRelatedToProducedEnergy());
-                p = null;
-            });
-        }
-
-        private void start() {
-            checkNotNull(p);
-            p.startExperiment();
-        }
-
-        private void setup() {
-            this.p = new ExperimentInstance(getSolverBuilder(),
-                    checkNotNull(real), checkNotNull(profile),
-                    ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
-        }
-
-        @Override
-        protected void execute() {
-            setup();
-            start();
-        }
-    }
-
-    class CompetitiveSolverBuilder implements SolverBuilder {
-        @Override
-        public AbstractCongestionSolver getSolver(CongestionProfile profile,
-                int n) {
-            return new CompetitiveCongestionSolver(profile, 8, allowedExcess);
-        }
-    }
-
-    class CooperativeSolverBuilder implements SolverBuilder {
-
-        @Override
-        public AbstractCongestionSolver getSolver(CongestionProfile profile,
-                int n) {
-            return new CooperativeCongestionSolver(profile, 8, allowedExcess);
-        }
-    }
-
     protected SolverBuilder getSolverBuilder() {
         if (competitive) {
             return new CompetitiveSolverBuilder();
@@ -392,5 +328,69 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
      */
     protected final List<Double> getActEffRes2() {
         return Lists.newArrayList(actEffRes2);
+    }
+
+    protected class ExperimentAtomImplementation extends ExperimentAtomImpl {
+        @Nullable
+        private final DoubleList real;
+        @Nullable
+        private ExperimentInstance p;
+        @Nullable
+        private final CongestionProfile profile;
+    
+        ExperimentAtomImplementation(DoubleList realisation,
+                CongestionProfile profile) {
+            this.real = realisation;
+            this.profile = profile;
+            doRegistration();
+        }
+    
+        protected void doRegistration() {
+            this.registerCallbackOnFinish(instance -> {
+                addMainResult(getLabel(), checkNotNull(p).getEfficiency());
+                addActResult(getLabel(), checkNotNull(p).getActivationRate());
+                addActEffResult(getLabel(),
+                        checkNotNull(p).getSummedAgentEfficiency());
+                addSolveResult(getLabel(),
+                        checkNotNull(p).getRemediedCongestionFraction());
+                addRemediedCongResult(getLabel(), checkNotNull(p)
+                        .getRemediedCongestionRelatedToProducedEnergy());
+                p = null;
+            });
+        }
+    
+        private void start() {
+            checkNotNull(p);
+            p.startExperiment();
+        }
+    
+        private void setup() {
+            this.p = new ExperimentInstance(getSolverBuilder(),
+                    checkNotNull(real), checkNotNull(profile),
+                    ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
+        }
+    
+        @Override
+        protected void execute() {
+            setup();
+            start();
+        }
+    }
+
+    class CompetitiveSolverBuilder implements SolverBuilder {
+        @Override
+        public AbstractCongestionSolver getSolver(CongestionProfile profile,
+                int n) {
+            return new CompetitiveCongestionSolver(profile, 8, allowedExcess);
+        }
+    }
+
+    class CooperativeSolverBuilder implements SolverBuilder {
+    
+        @Override
+        public AbstractCongestionSolver getSolver(CongestionProfile profile,
+                int n) {
+            return new CooperativeCongestionSolver(profile, 8, allowedExcess);
+        }
     }
 }
