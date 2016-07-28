@@ -1,16 +1,15 @@
 package be.kuleuven.cs.gametheory;
 
+import be.kuleuven.cs.flexsim.io.Writable;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
-import be.kuleuven.cs.flexsim.io.Writable;
-
 /**
- * This instance governes the sequantial rules and protocols involved when
+ * This instance governs the sequential rules and protocols involved when
  * setting up and playing games.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -23,8 +22,7 @@ public class GameDirector {
     /**
      * Default constructor.
      *
-     * @param game
-     *            The game to direct.
+     * @param game The game to direct.
      */
     public GameDirector(Game<?, ?> game) {
         this.game = game;
@@ -36,19 +34,22 @@ public class GameDirector {
      * Call this method when an instance of the game has been played. This
      * method will perform post game-play clean-ups and hooks.
      *
-     * @param finished
-     *            The finished game variation.
+     * @param finished The finished game variation.
      */
     public void notifyVersionHasBeenPlayed(Playable finished) {
-        boolean succesfull = playables.remove(finished);
-        if (!succesfull) {
+        boolean successful = playables.remove(finished);
+        if (!successful) {
             throw new IllegalArgumentException(
                     "The played instance does not occur in the current game.");
         }
         if (playables.isEmpty()) {
-            game.gatherResults();
-            game.logResults();
+            runPostGame();
         }
+    }
+
+    private void runPostGame() {
+        game.gatherResults();
+        game.logResults();
     }
 
     /**
@@ -56,8 +57,7 @@ public class GameDirector {
      */
     public void playAutonomously() {
         game.runExperiments();
-        game.gatherResults();
-        game.logResults();
+        runPostGame();
     }
 
     /**
@@ -92,7 +92,7 @@ public class GameDirector {
      * Constructs the results from the current game.
      *
      * @return A gameresult object based on the currently available result date
-     *         for this game.
+     * for this game.
      */
     public GameResult getResults() {
         return game.getResults();
