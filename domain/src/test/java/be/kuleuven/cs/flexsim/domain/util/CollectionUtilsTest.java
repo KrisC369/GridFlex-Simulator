@@ -1,15 +1,16 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import com.google.common.collect.Lists;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
+
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 
 public class CollectionUtilsTest {
 
@@ -29,12 +30,10 @@ public class CollectionUtilsTest {
                 CollectionUtils.max(bids, input -> input.getValuation()));
     }
 
-    @Test(expected = NoSuchElementException.class)
+    @Test
     public void testMaxEmpty() {
-        assertEquals(bids.get(2).getValuation(),
-                CollectionUtils.max(new ArrayList<FlexBid>(),
-                        input -> input.getValuation()
-                ));
+        assertEquals(0, CollectionUtils.max(new ArrayList<FlexBid>(),
+                input -> input.getValuation()), 0);
     }
 
     @Test
