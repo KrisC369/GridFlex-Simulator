@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class SiteImpl implements Site {
      * @return the processes
      */
     final List<FlexProcess> getProcesses() {
-        return processes;
+        return Collections.unmodifiableList(processes);
     }
 
     @Override

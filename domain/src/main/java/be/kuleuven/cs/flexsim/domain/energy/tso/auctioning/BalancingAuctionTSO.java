@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.auctioning;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -84,7 +85,7 @@ public class BalancingAuctionTSO extends CopperplateTSO
      * @return the participants
      */
     public List<MechanismParticipant> getParticipants() {
-        return participants;
+        return Collections.unmodifiableList(participants);
     }
 
     @Override

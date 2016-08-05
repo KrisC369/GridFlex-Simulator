@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class BalancingTSO extends CopperplateTSO
      * @return the participants
      */
     public List<ContractualMechanismParticipant> getParticipants() {
-        return participants;
+        return Collections.unmodifiableList(participants);
     }
 
     @Override
