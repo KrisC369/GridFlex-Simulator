@@ -1,18 +1,16 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
-import java.util.Collections;
-import java.util.Set;
-
-import org.slf4j.LoggerFactory;
-
+import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
+import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * An abstract aggregator instance with logic to perform aggregation functions.
@@ -29,8 +27,7 @@ public abstract class Aggregator implements SimulationComponent {
     /**
      * Constructor with custom aggregation strategy.
      *
-     * @param strategy
-     *            The aggregation strategy to use.
+     * @param strategy The aggregation strategy to use.
      */
     public Aggregator(AggregationStrategy strategy) {
         this.clients = Sets.newLinkedHashSet();
@@ -58,8 +55,7 @@ public abstract class Aggregator implements SimulationComponent {
     /**
      * Register a client to this aggregator.
      *
-     * @param client
-     *            the client should expose the siteflex api service.
+     * @param client the client should expose the siteflex api service.
      */
     public void registerClient(SiteFlexAPI client) {
         clients.add(client);
@@ -98,23 +94,23 @@ public abstract class Aggregator implements SimulationComponent {
         return strategy;
     }
 
-    private void logStep(int t, int target) {
+    private static void logStep(int t, int target) {
         LoggerFactory.getLogger(Aggregator.class).debug(
                 "Performing aggregation step at time step {} with flextarget {}",
                 t, target);
     }
 
-    private void logCurtail(FlexTuple tt) {
-        LoggerFactory.getLogger(Aggregator.class)
-                .debug("Sending curtail request based on profile {}", tt);
-    }
-
-    private void logRestore(FlexTuple tt) {
-        LoggerFactory.getLogger(Aggregator.class)
-                .debug("Sending restore request based on profile {}", tt);
-    }
-
     private class AggregationDispatch implements AggregationContext {
+
+        private void logCurtail(FlexTuple tt) {
+            LoggerFactory.getLogger(Aggregator.class)
+                    .debug("Sending curtail request based on profile {}", tt);
+        }
+
+        private void logRestore(FlexTuple tt) {
+            LoggerFactory.getLogger(Aggregator.class)
+                    .debug("Sending restore request based on profile {}", tt);
+        }
 
         @Override
         public void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
