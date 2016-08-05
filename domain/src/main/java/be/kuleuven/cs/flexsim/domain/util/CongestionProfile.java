@@ -94,7 +94,7 @@ public class CongestionProfile implements TimeSeries {
      */
     public void load(String filename, String column) throws IOException {
         List<Double> dataRead = Lists.newArrayList();
-        ClassLoader classLoader = getClass().getClassLoader();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         File file = new File(classLoader.getResource(filename).getFile());
         CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
                 new FileInputStream(file), Charset.defaultCharset())).build();

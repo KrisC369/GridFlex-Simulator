@@ -50,10 +50,10 @@ public class ResultWriter {
     }
 
     private String buildMessage() {
-        StringBuilder b = new StringBuilder();
-        b.append("Writing results:\n");
-        b.append(target.getFormattedResultString());
-        b.append("----------------\n");
+        StringBuilder b = new StringBuilder()
+        .append("Writing results:\n")
+        .append(target.getFormattedResultString())
+        .append("----------------\n");
         if (!this.resultComponents.isEmpty()) {
             b.append("Other result components:\n");
             for (Entry<String, String> entry : resultComponents.entrySet()) {

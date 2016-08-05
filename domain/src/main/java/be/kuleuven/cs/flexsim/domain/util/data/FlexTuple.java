@@ -9,7 +9,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * the lead time needed to activate and the time needed to recover afterwards.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ *///TODO Use autovalue...
 public class FlexTuple {
 
     /**
