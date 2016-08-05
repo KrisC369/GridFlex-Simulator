@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ */@FunctionalInterface
 public interface SolverBuilder {
 
     /**

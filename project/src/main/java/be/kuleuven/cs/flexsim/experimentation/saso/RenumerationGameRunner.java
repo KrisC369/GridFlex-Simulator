@@ -27,7 +27,7 @@ import be.kuleuven.cs.gametheory.Playable;
  */
 public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
 
-    private List<GameResult> results;
+    private final List<GameResult> results;
 
     protected RenumerationGameRunner(int repititions, int nAgents) {
         this(repititions, nAgents, DEF_STEPSIZE);

@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.domain.util.visitor;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The type of subject to register with.
- */
+ */@FunctionalInterface
 public interface Visitable<T> {
     /**
      * Register this entity with a registerable instance.

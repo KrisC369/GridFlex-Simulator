@@ -13,7 +13,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
  * represented by this instance. Allows for the calculation of this aspect.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ */@FunctionalInterface
 interface FlexAspect {
     /**
      * Return the flexibility of this aspect.

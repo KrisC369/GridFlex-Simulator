@@ -12,7 +12,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
  * dispatching the final activation requests.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ */@FunctionalInterface
 public interface AggregationContext {
 
     /**

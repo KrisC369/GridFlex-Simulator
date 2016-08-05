@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.domain.energy.tso;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <T>
  *            The type of participant
- */
+ */@FunctionalInterface
 public interface MechanismHost<T> {
     /**
      * Register a mechanism client/participant to this mechanism.

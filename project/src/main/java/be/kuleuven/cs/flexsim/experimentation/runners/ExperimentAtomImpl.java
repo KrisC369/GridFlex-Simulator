@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
  */
 public abstract class ExperimentAtomImpl implements ExperimentAtom {
 
-    List<ExperimentCallback> callbacks = Lists.newArrayList();
+    final List<ExperimentCallback> callbacks = Lists.newArrayList();
 
     @Override
     public void run() {

@@ -11,7 +11,7 @@ package be.kuleuven.cs.flexsim.domain.util;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @param <F>
  *            Input type.
- */
+ */@FunctionalInterface @Deprecated
 public interface IntNNFunction<F> {
     /**
      * Returns the result of applying this function to {@code input}. This

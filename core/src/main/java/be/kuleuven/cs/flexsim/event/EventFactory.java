@@ -4,7 +4,7 @@ package be.kuleuven.cs.flexsim.event;
  * EventFactory for simplified events.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ */@FunctionalInterface
 public interface EventFactory {
 
     /**

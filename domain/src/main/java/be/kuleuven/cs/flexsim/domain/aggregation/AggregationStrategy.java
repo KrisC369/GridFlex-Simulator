@@ -9,7 +9,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
  * A strategy for performing aggregation duties.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ */@FunctionalInterface
 public interface AggregationStrategy {
 
     /**

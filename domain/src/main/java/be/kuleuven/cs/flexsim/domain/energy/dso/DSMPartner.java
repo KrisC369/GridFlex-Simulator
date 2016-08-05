@@ -249,7 +249,7 @@ public class DSMPartner  {
         StringBuilder builder = new StringBuilder();
         builder.append("DSMPartner [flexPowerRate=").append(flexPowerRate)
                 .append(", currentActivations=").append(currentActivations)
-                .append("]");
+                .append(']');
         return builder.toString();
     }
 

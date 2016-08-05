@@ -86,7 +86,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
     }
 
     static class CompetitiveSolverBuilder implements SolverBuilder {
-        int i;
+        final int i;
 
         CompetitiveSolverBuilder(int i) {
             this.i = i;
@@ -100,7 +100,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
     }
 
     static class CooperativeSolverBuilder implements SolverBuilder {
-        int i;
+        final int i;
 
         CooperativeSolverBuilder(int i) {
             this.i = i;

@@ -4,7 +4,7 @@ package be.kuleuven.cs.flexsim.experimentation.swift;
  * Generator for experiment instances. A builder interface.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
+ */@FunctionalInterface
 public interface ExpGenerator {
 
     /**

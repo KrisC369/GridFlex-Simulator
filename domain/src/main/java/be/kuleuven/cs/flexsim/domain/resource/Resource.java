@@ -9,7 +9,7 @@ import be.kuleuven.cs.flexsim.domain.util.Bufferable;
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public interface Resource extends Bufferable, Serializable {
+public interface Resource extends Bufferable {
 
     /**
      * Return the needed process time for this resource at this moment.
