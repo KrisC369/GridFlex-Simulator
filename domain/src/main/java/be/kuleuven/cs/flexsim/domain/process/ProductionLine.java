@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.function.ToIntFunction;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -32,10 +33,10 @@ import edu.uci.ics.jung.graph.util.EdgeType;
  */
 public final class ProductionLine implements FlexProcess {
 
-    private static final IntNNFunction<Workstation> LASTSTEP_CONSUMPTION = input -> (int) input
+    private static final ToIntFunction<Workstation> LASTSTEP_CONSUMPTION = input -> (int) input
             .getLastStepConsumption();
 
-    private static final IntNNFunction<Workstation> TOTAL_CONSUMPTION = input -> (int) input
+    private static final ToIntFunction<Workstation> TOTAL_CONSUMPTION = input -> (int) input
             .getTotalConsumption();
 
     private final List<Buffer<Resource>> buffers;

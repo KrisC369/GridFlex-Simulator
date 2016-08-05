@@ -2,6 +2,9 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.IntConsumer;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
@@ -16,7 +19,7 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  */
 public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
     private final CNPInitiator<DSMProposal> solverInstance;
-    private final IntNNFunction<DSMProposal> usefullnessFunction = input -> {
+    private final ToIntFunction<DSMProposal> usefullnessFunction = input -> {
         double theoreticalMax = DSM_ALLOCATION_DURATION
                 * (input.getTargetValue() / 4.0);
         // higher power rate is higher score

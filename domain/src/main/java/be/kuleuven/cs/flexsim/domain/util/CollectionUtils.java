@@ -6,6 +6,8 @@ package be.kuleuven.cs.flexsim.domain.util;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.util.Iterator;
+import java.util.function.ToIntBiFunction;
+import java.util.function.ToIntFunction;
 import java.util.stream.StreamSupport;
 
 /**
@@ -49,16 +51,16 @@ public final class CollectionUtils {
      *            the type representing the elements to apply function f to.
      * @return the argument attaining the maximum in f.
      */
-    public static <T> T argMax(Iterable<T> elements, IntNNFunction<T> f) {
+    public static <T> T argMax(Iterable<T> elements, ToIntFunction<T> f) {
         checkArgument(elements.iterator().hasNext(),
                 "Can't provide empty elements to this function");
         Iterator<T> it = elements.iterator();
         T currentMax = it.next();
-        int max = f.apply(currentMax);
+        int max = f.applyAsInt(currentMax);
         while (it.hasNext()) {
             T current = it.next();
-            if (f.apply(current) > max) {
-                max = f.apply(current);
+            if (f.applyAsInt(current) > max) {
+                max = f.applyAsInt(current);
                 currentMax = current;
             }
         }
@@ -78,8 +80,8 @@ public final class CollectionUtils {
      *            over.
      * @return the sum over all elements.
      */
-    public static <T> int sum(Iterable<T> elements, IntNNFunction<T> f) {
+    public static <T> int sum(Iterable<T> elements, ToIntFunction<T> f) {
         return StreamSupport.stream(elements.spliterator(), false)
-                .mapToInt(f::apply).sum();
+                .mapToInt(f::applyAsInt).sum();
     }
 }

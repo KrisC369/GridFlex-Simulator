@@ -1,24 +1,23 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.commons.math3.util.FastMath;
-
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
+import org.apache.commons.math3.util.FastMath;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.ToIntFunction;
 
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
  * partners and other solutions.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class CooperativeCongestionSolver extends AbstractCongestionSolver {
     private final CNPInitiator<DSMProposal> solverInstance;
-    private final IntNNFunction<DSMProposal> choiceFunction = input -> {
+    private final ToIntFunction<DSMProposal> choiceFunction = input -> {
         double sum = 0;
         for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
                 getModifiableProfileAfterDSM().length() - getTick() - 1); i++) {
@@ -32,11 +31,9 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
 
     /**
      * Default constructor.
-     * 
-     * @param profile
-     *            The congestion profile to solve.
-     * @param forecastHorizon
-     *            The forecast horizon.
+     *
+     * @param profile         The congestion profile to solve.
+     * @param forecastHorizon The forecast horizon.
      */
     public CooperativeCongestionSolver(CongestionProfile profile,
             int forecastHorizon) {
@@ -45,13 +42,10 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
 
     /**
      * Default constructor.
-     * 
-     * @param profile
-     *            The congestion profile to solve.
-     * @param forecastHorizon
-     *            The forecast horizon.
-     * @param maxRelativeValue
-     *            The maximum relative congestion resolve value.
+     *
+     * @param profile          The congestion profile to solve.
+     * @param forecastHorizon  The forecast horizon.
+     * @param maxRelativeValue The maximum relative congestion resolve value.
      */
     public CooperativeCongestionSolver(CongestionProfile profile,
             int forecastHorizon, int maxRelativeValue) {
