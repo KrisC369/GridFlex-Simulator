@@ -1,14 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.math3.util.FastMath;
-
 import be.kuleuven.cs.flexsim.protocol.Responder;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPResponder;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import org.apache.commons.math3.util.FastMath;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * DSMPartners represent industrial companies offering power consumption
@@ -21,7 +20,7 @@ import be.kuleuven.cs.flexsim.simulation.SimulationContext;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class DSMPartner implements SimulationComponent {
+public class DSMPartner  {
     /**
      * The maximum amount of activations according to R3DP specs is 40/year.
      */
@@ -45,7 +44,7 @@ public class DSMPartner implements SimulationComponent {
     private final CNPResponder<DSMProposal> dsmAPI;
     private final double[] activationMarker;
     private int currentActivations;
-    private double currentAllowedDeviation;
+    private final double currentAllowedDeviation;
 
     /**
      * Default constructor according to r3dp specs.
@@ -97,23 +96,6 @@ public class DSMPartner implements SimulationComponent {
         this.activationMarker = new double[OPERATING_TIME_LIMIT];
         this.currentActivations = 0;
         this.currentAllowedDeviation = deviation;
-    }
-
-    @Override
-    public void initialize(SimulationContext context) {
-    }
-
-    @Override
-    public void afterTick(int t) {
-    }
-
-    @Override
-    public void tick(int t) {
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     /**

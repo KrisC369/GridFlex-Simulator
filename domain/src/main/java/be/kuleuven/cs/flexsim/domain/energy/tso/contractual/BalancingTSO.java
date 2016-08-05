@@ -25,8 +25,8 @@ import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
  */
 public class BalancingTSO extends CopperplateTSO
         implements MechanismHost<ContractualMechanismParticipant> {
-    private List<ContractualMechanismParticipant> participants;
-    private Map<ContractualMechanismParticipant, @NonNull PowerCapabilityBand> powerLimits;
+    private final List<ContractualMechanismParticipant> participants;
+    private final Map<ContractualMechanismParticipant, @NonNull PowerCapabilityBand> powerLimits;
 
     /**
      * Constructor with consumption instances as parameter.

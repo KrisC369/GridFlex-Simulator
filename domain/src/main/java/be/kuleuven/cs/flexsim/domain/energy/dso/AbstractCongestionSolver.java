@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -155,7 +156,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
 
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return getDsms();
+        return Collections.emptyList();
     }
 
     /**

@@ -1,16 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
@@ -19,6 +8,16 @@ import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Represents an BRP-aggregator trying to balance a portfolio.
@@ -36,17 +35,13 @@ public class BRPAggregator extends IndependentAggregator {
     /**
      * Default constructor.
      *
-     * @param tso
-     *            The balancing signal to follow.
-     * @param pricing
-     *            The pricing signal for the imbalance prices.
-     * @param reservation
-     *            The reservation payment portion marker.
-     * @param activation
-     *            The activation payment portion marker.
+     * @param tso         The balancing signal to follow.
+     * @param pricing     The pricing signal for the imbalance prices.
+     * @param reservation The reservation payment portion marker.
+     * @param activation  The activation payment portion marker.
      */
-    public BRPAggregator(BalancingSignal tso, PriceSignal pricing,
-            double reservation, double activation) {
+    public BRPAggregator(BalancingSignal tso, PriceSignal pricing, double reservation,
+            double activation) {
         super(tso, 1);
         checkArgument(
                 reservation + activation >= 0 && reservation + activation <= 1,
@@ -62,8 +57,7 @@ public class BRPAggregator extends IndependentAggregator {
      * Register a Site to this aggregator. Dispatches to superclass
      * registerClient(SiteFlexAPI client)-method.
      *
-     * @param client
-     *            The site to register.
+     * @param client The site to register.
      */
     public void registerClient(Site client) {
         super.registerClient(client);
@@ -77,8 +71,7 @@ public class BRPAggregator extends IndependentAggregator {
     /**
      * Get the financetracker for the SiteFlexAPI in question.
      *
-     * @param s
-     *            the API reference.
+     * @param s the API reference.
      * @return The registered FinanceTracker.
      */
     public FinanceTracker getFinanceTrackerFor(SiteFlexAPI s) {
@@ -167,8 +160,7 @@ public class BRPAggregator extends IndependentAggregator {
     /**
      * Register a nomination manager to this Aggregator.
      *
-     * @param manager
-     *            The manager to register.
+     * @param manager The manager to register.
      */
     public void registerNominationManager(
             AncilServiceNominationManager manager) {
@@ -181,8 +173,7 @@ public class BRPAggregator extends IndependentAggregator {
         /**
          * Default constructor for this delegating dispatch
          *
-         * @param delegate
-         *            the target to delegate to.
+         * @param delegate the target to delegate to.
          */
         public AggregationDispatch(AggregationContext delegate) {
             this.delegate = delegate;

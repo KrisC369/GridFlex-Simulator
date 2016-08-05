@@ -1,42 +1,24 @@
 package be.kuleuven.cs.flexsim.domain.util.data;
 
+import com.google.auto.value.AutoValue;
+
 /**
  * Data class signifying a band of operation concerning the power for an entity.
  * Has an upper limit in up and down area.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */
-public final class PowerCapabilityBand {
-    private final int downMax;
-    private final int upMax;
-
-    /**
-     * Default constructor.
-     *
-     * @param downMax
-     *            The maximum for the negative part.
-     * @param upMax
-     *            The maximum for the positive part.
-     */
-    private PowerCapabilityBand(int downMax, int upMax) {
-        this.downMax = downMax;
-        this.upMax = upMax;
-    }
+ */@AutoValue
+public abstract class PowerCapabilityBand {
 
     /**
      * @return the downMax
      */
-    public int getDown() {
-        return downMax;
-    }
+    public abstract int getDown();
 
     /**
      * @return the upMax
      */
-    public int getUp() {
-        return upMax;
-    }
-
+    public abstract int getUp();
     /**
      * @return Whether this data value has zero for all params.
      */
@@ -50,7 +32,7 @@ public final class PowerCapabilityBand {
      * @return a new PowerCapabilityBand object.
      */
     public static PowerCapabilityBand createZero() {
-        return new PowerCapabilityBand(0, 0);
+        return new AutoValue_PowerCapabilityBand(0, 0);
     }
 
     /**
@@ -63,19 +45,6 @@ public final class PowerCapabilityBand {
      * @return a new PowerCapabilityBand object.
      */
     public static PowerCapabilityBand create(int downMax, int upMax) {
-        return new PowerCapabilityBand(downMax, upMax);
+        return new AutoValue_PowerCapabilityBand(downMax, upMax);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("PowerCapBand [downMax=").append(downMax)
-                .append(", upMax=").append(upMax).append("]");
-        return builder.toString();
-    }
-
 }

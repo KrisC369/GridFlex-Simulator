@@ -9,7 +9,7 @@ public class MultiProcessResource extends SimpleResource {
 
     private static final long serialVersionUID = -6904517818044421084L;
 
-    private int[] neededProcessing;
+    private final int[] neededProcessing;
 
     /**
      * Constructor instantiating a multiprocess resource instance.

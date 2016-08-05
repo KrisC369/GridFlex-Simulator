@@ -13,7 +13,7 @@ import org.apache.commons.math3.random.RandomGenerator;
  */
 public class WeighedNormalRandomOutputGenerator
         extends NormalRandomOutputGenerator {
-    private double weightOfNewVal;
+    private final double weightOfNewVal;
 
     /**
      * Default constructor with a weight of 100% of the new value. Exactly

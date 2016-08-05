@@ -15,7 +15,7 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
-    private CNPInitiator<DSMProposal> solverInstance;
+    private final CNPInitiator<DSMProposal> solverInstance;
     private final IntNNFunction<DSMProposal> usefullnessFunction = input -> {
         double theoreticalMax = DSM_ALLOCATION_DURATION
                 * (input.getTargetValue() / 4.0);

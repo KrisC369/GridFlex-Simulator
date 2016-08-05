@@ -19,7 +19,7 @@ import be.kuleuven.cs.flexsim.domain.util.FlexBid;
  */
 public class BalancingAuctionTSO extends CopperplateTSO
         implements AbstractAuctionHost<FlexBid> {
-    private List<MechanismParticipant> participants;
+    private final List<MechanismParticipant> participants;
     private List<FlexBid> currentBids;
 
     /**

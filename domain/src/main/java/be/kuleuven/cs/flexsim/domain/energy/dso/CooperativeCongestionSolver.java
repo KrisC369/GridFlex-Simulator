@@ -17,7 +17,7 @@ import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class CooperativeCongestionSolver extends AbstractCongestionSolver {
-    private CNPInitiator<DSMProposal> solverInstance;
+    private final CNPInitiator<DSMProposal> solverInstance;
     private final IntNNFunction<DSMProposal> choiceFunction = input -> {
         double sum = 0;
         for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
