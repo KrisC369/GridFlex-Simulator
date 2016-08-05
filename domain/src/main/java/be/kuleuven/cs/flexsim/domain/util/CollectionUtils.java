@@ -33,9 +33,9 @@ public final class CollectionUtils {
      *            the type representing the elements to apply function f to.
      * @return the maximum or 0 if the list is empty.
      */
-    public static <T> int max(Iterable<T> elements, IntNNFunction<T> f) {
+    public static <T> int max(Iterable<T> elements, ToIntFunction<T> f) {
         return StreamSupport.stream(elements.spliterator(), false)
-                .mapToInt(f::apply).max().orElseGet(() -> 0);
+                .mapToInt(f::applyAsInt).max().orElseGet(() -> 0);
     }
 
     /**

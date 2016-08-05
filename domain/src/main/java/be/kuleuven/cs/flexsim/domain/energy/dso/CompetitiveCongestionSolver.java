@@ -2,13 +2,10 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.IntConsumer;
-import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.domain.util.IntNNFunction;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
 
 /**
