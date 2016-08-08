@@ -2,12 +2,7 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import be.kuleuven.cs.flexsim.protocol.Responder;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPResponder;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import org.apache.commons.math3.util.FastMath;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * DSMPartners represent industrial companies offering power consumption
@@ -20,7 +15,7 @@ import java.util.List;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class DSMPartner  {
+public class DSMPartner {
     /**
      * The maximum amount of activations according to R3DP specs is 40/year.
      */
@@ -49,9 +44,8 @@ public class DSMPartner  {
     /**
      * Default constructor according to r3dp specs.
      *
-     * @param powerRate
-     *            The amount of instantaneous power this partners is able to
-     *            increase during activations.
+     * @param powerRate The amount of instantaneous power this partners is able to
+     *                  increase during activations.
      */
     public DSMPartner(int powerRate) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
@@ -61,12 +55,10 @@ public class DSMPartner  {
     /**
      * Default constructor according to r3dp specs.
      *
-     * @param powerRate
-     *            The amount of instantaneous power this partners is able to
-     *            increase during activations.
-     * @param deviation
-     *            The allowed relative deviation to the mean goal number of
-     *            activations so far.
+     * @param powerRate The amount of instantaneous power this partners is able to
+     *                  increase during activations.
+     * @param deviation The allowed relative deviation to the mean goal number of
+     *                  activations so far.
      */
     public DSMPartner(int powerRate, double deviation) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
@@ -76,15 +68,13 @@ public class DSMPartner  {
     /**
      * Full argument constructor.
      *
-     * @param maxActivations
-     * @param interactivationTime
-     * @param activationDuration
-     * @param flexPowerRate
-     *            The amount of instantaneous power this partners is able to
-     *            increase during activations.
-     * @param deviation
-     *            The allowed relative deviation to the mean goal number of
-     *            activations so far.
+     * @param maxActivations      The maximum number of allowed activations per year.
+     * @param interactivationTime The mandatory wait time between two consecutive activations.
+     * @param activationDuration  The maximum duration of the activation.
+     * @param flexPowerRate       The amount of instantaneous power this partners is able to
+     *                            increase during activations.
+     * @param deviation           The allowed relative deviation to the mean goal number of
+     *                            activations so far.
      */
     DSMPartner(int maxActivations, int interactivationTime,
             int activationDuration, int flexPowerRate, double deviation) {
@@ -128,7 +118,7 @@ public class DSMPartner  {
 
     /**
      * @return Returns the dsm communication api for the role of responder in
-     *         this dsm partner.
+     * this dsm partner.
      */
     public Responder<DSMProposal> getDSMAPI() {
         return this.dsmAPI;
@@ -138,8 +128,7 @@ public class DSMPartner  {
      * Returns the amount of power consumption increased at the specified time
      * step.
      *
-     * @param timeMark
-     *            The mark to check.
+     * @param timeMark The mark to check.
      * @return the power increase amount.
      */
     public double getCurtailment(int timeMark) {
@@ -156,10 +145,8 @@ public class DSMPartner  {
     /**
      * Mark activation
      *
-     * @param begin
-     *            BeginMark
-     * @param end
-     *            EndMark
+     * @param begin BeginMark
+     * @param end   EndMark
      */
     private void markActivation(Integer begin, Integer end,
             double targetPowerRate) {
@@ -246,7 +233,7 @@ public class DSMPartner  {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder(48);
         builder.append("DSMPartner [flexPowerRate=").append(flexPowerRate)
                 .append(", currentActivations=").append(currentActivations)
                 .append(']');

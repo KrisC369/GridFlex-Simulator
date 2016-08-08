@@ -139,7 +139,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         return result;
     }
 
-    private boolean canCurtail(double totalCurrentPhaseRate,
+    private static boolean canCurtail(double totalCurrentPhaseRate,
             double previousPhaseRate, double currentCurtEst) {
         return totalCurrentPhaseRate - currentCurtEst >= previousPhaseRate;
     }
@@ -439,7 +439,7 @@ abstract class FlexAspectImpl implements FlexAspect {
             return filterByMode(dualModeWorkstations, true);
         }
 
-        private List<DualModeWorkstation> filterByMode(
+        private static  List<DualModeWorkstation> filterByMode(
                 List<DualModeWorkstation> stations, boolean isHigh) {
             List<DualModeWorkstation> toRet = Lists.newArrayList();
             for (DualModeWorkstation s : stations) {
