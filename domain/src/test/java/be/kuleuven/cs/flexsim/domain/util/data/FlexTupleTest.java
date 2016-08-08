@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.util.data;
 
+import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.UP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.mock;
@@ -14,7 +15,7 @@ public class FlexTupleTest {
     private FlexTuple tuple = FlexTuple.createNONE();
     private int id = 1;
     private int deltaP = 2;
-    private boolean dir = true;
+    private FlexTuple.Direction dir = UP;
     private int t = 3;
     private int tc = 4;
     private int tr = 5;
@@ -42,7 +43,7 @@ public class FlexTupleTest {
         FlexTuple tuple3 = FlexTuple.create(id, deltaP, dir, t, tr + 5, tc);
         FlexTuple tuple4 = FlexTuple.create(id + 1, deltaP, dir, t, tr, tc);
         FlexTuple tuple5 = FlexTuple.create(id, deltaP + 2, dir, t, tr, tc);
-        FlexTuple tuple6 = FlexTuple.create(id, deltaP, false, t, tr, tc);
+        FlexTuple tuple6 = FlexTuple.create(id, deltaP, FlexTuple.Direction.DOWN, t, tr, tc);
         FlexTuple tuple7 = FlexTuple.create(id, deltaP, dir, t, tr, tc - 2);
         Object tuple8 = mock(FlexTuple.class);
         FlexTuple tuple9 = FlexTuple.create(id, deltaP, dir, t + 3, tr, tc);
@@ -71,10 +72,10 @@ public class FlexTupleTest {
         FlexTuple tuple4 = FlexTuple.create(id + 1, deltaP, dir, t, tr, tc);
         StringBuilder b = new StringBuilder();
         b.append(
-                "FlexTuple [id=%s, deltaP=%s, direction=%s, t=%s, tR=%s, tC=%s]");
+                "FlexTuple{id=%s, deltaP=%s, direction=%s, t=%s, TR=%s, TC=%s}");
         Formatter formatter = new Formatter();
         formatter.format(b.toString(), id, deltaP, dir, t, tr, tc);
-        assertEquals(tuple.toString(), formatter.toString());
+        assertEquals( formatter.toString(),tuple.toString());
         formatter.close();
     }
 

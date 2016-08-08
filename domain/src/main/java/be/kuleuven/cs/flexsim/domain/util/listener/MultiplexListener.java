@@ -11,13 +11,13 @@ public final class MultiplexListener<A> implements Listener<A> {
     final Listener<? super A> l1;
     final Listener<? super A> l2;
 
-    private MultiplexListener(Listener<? super A> l1, Listener<? super A> l2) {
+    private MultiplexListener(final Listener<? super A> l1, final Listener<? super A> l2) {
         this.l1 = l1;
         this.l2 = l2;
     }
 
     @Override
-    public void eventOccurred(A arg) {
+    public void eventOccurred(final A arg) {
         l1.eventOccurred(arg);
         l2.eventOccurred(arg);
     }
@@ -31,8 +31,8 @@ public final class MultiplexListener<A> implements Listener<A> {
      *            The listener to add.
      * @return The new multiplexListener.
      */
-    public static <A> Listener<? super A> plus(Listener<? super A> l1,
-            Listener<? super A> l2) {
+    public static <A> Listener<? super A> plus(final Listener<? super A> l1,
+            final Listener<? super A> l2) {
         if (l1 == NoopListener.INSTANCE) {
             return l2;
         }

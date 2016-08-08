@@ -20,7 +20,7 @@ public final class MathUtils {
      * @param n the n-param.
      * @return the amount of combinations.
      */
-    public static long multiCombinationSize(int k, int n) {
+    public static long multiCombinationSize(final int k, final int n) {
         long result = 1;
         if (n > (k - 1)) {
             for (int i = n + k - 1; i > n; i--) {
@@ -53,7 +53,7 @@ public final class MathUtils {
      * @param n2x The x coordinate of the second number.
      * @return the positive surface area.
      */
-    public static double trapzPos(double n1y, double n2y, double n2x) {
+    public static double trapzPos(final double n1y, final double n2y, final double n2x) {
         if (n1y * n2y > 0) {
             return trapzPosGtZero(n1y, n2y, n2x);
         } else if (n1y * n2y < 0) {
@@ -63,7 +63,7 @@ public final class MathUtils {
         }
     }
 
-    private static double trapzPosEqZero(double n1y, double n2y, double n2x) {
+    private static double trapzPosEqZero(final double n1y, final double n2y, final double n2x) {
         if (n2y > n1y) {
             return trapzPosEqZeroFirstLarger(n1y, n2y, n2x);
         } else if (n2y < n1y) {
@@ -72,7 +72,7 @@ public final class MathUtils {
         return 0;
     }
 
-    private static double trapzPosEqZeroFirstSmaller(double n1y, double n2x) {
+    private static double trapzPosEqZeroFirstSmaller(final double n1y, final double n2x) {
         if (n1y > 0) {
             return case6(n1y, n2x);
         } else if (n1y < EPSILON) {
@@ -81,8 +81,8 @@ public final class MathUtils {
         return 0;
     }
 
-    private static double trapzPosEqZeroFirstLarger(double n1y, double n2y,
-            double n2x) {
+    private static double trapzPosEqZeroFirstLarger(final double n1y, final double n2y,
+            final double n2x) {
         if (n1y < 0) {
             return ZERO;
         } else if (n1y < EPSILON) {
@@ -91,14 +91,14 @@ public final class MathUtils {
         return 0;
     }
 
-    private static double trapzPosLtZero(double n1y, double n2y, double n2x) {
+    private static double trapzPosLtZero(final double n1y, final double n2y, final double n2x) {
         if (n2y > n1y) {
             return case4(n1y, n2y, n2x);
         }
         return case3(n1y, n2y, n2x);
     }
 
-    private static double trapzPosGtZero(double n1y, double n2y, double n2x) {
+    private static double trapzPosGtZero(final double n1y, final double n2y, final double n2x) {
         if (n1y > 0) {
             if (n2y > n1y) {
                 return case1(n1y, n2y, n2x);
@@ -110,33 +110,33 @@ public final class MathUtils {
         return 0;
     }
 
-    private static double case1(double n1y, double n2y, double n2x) {
+    private static double case1(final double n1y, final double n2y, final double n2x) {
         return n2x * (n1y + (n2y - n1y) / 2d);
     }
 
-    private static double case2(double n1y, double n2y, double n2x) {
+    private static double case2(final double n1y, final double n2y, final double n2x) {
         return n2x * (n2y + (n1y - n2y) / 2d);
     }
 
-    private static double case4(double n1y, double n2y, double n2x) {
-        double a = getA(n1y, n2y, n2x);
+    private static double case4(final double n1y, final double n2y, final double n2x) {
+        final double a = getA(n1y, n2y, n2x);
         return ((n2x - a) * n2y) / 2d;
     }
 
-    private static double case3(double n1y, double n2y, double n2x) {
-        double a = getA(n1y, n2y, n2x);
+    private static double case3(final double n1y, final double n2y, final double n2x) {
+        final double a = getA(n1y, n2y, n2x);
         return (a * n1y) / 2d;
     }
 
-    private static double getA(double n1y, double n2y, double n2x) {
+    private static double getA(final double n1y, final double n2y, final double n2x) {
         return (-n1y * n2x) / (n2y - n1y);
     }
 
-    private static double case8(double n2y, double n2x) {
+    private static double case8(final double n2y, final double n2x) {
         return (n2y * n2x) / 2d;
     }
 
-    private static double case6(double n1y, double n2x) {
+    private static double case6(final double n1y, final double n2x) {
         return (n1y * n2x) / 2d;
     }
 

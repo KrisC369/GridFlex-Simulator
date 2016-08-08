@@ -23,9 +23,9 @@ public final class GameRunner {
      * @param args
      *            commandline args.
      */
-    public static void main(String[] args) {
-        DefaultGameConfigurator ex = new DefaultGameConfigurator(1);
-        GameDirector g = new GameDirector(new Game<>(AGENTS, ex, REPITITIONS));
+    public static void main(final String[] args) {
+        final DefaultGameConfigurator ex = new DefaultGameConfigurator(1);
+        final GameDirector g = new GameDirector(new Game<>(AGENTS, ex, REPITITIONS));
         g.playAutonomously();
         new GameResultWriter(g).write();
     }

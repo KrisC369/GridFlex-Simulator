@@ -19,19 +19,19 @@ public class MultiProcessResource extends SimpleResource {
      * @param following
      *            the needed processing steps in following runs.
      */
-    protected MultiProcessResource(int needed, int... following) {
+    protected MultiProcessResource(final int needed, final int... following) {
         super(needed);
         neededProcessing = new int[following.length + 1];
         neededProcessing[0] = 0;
         int count = 1;
-        for (int i : following) {
+        for (final int i : following) {
             neededProcessing[count++] = i;
         }
     }
 
     @Override
     public void notifyOfHasBeenBuffered() {
-        int firstNonZeroIdx = findNonZeroIdx();
+        final int firstNonZeroIdx = findNonZeroIdx();
         if (firstNonZeroIdx > 0) {
             setNeededTime(neededProcessing[firstNonZeroIdx]);
             neededProcessing[firstNonZeroIdx] = 0;

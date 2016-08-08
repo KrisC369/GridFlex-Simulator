@@ -21,7 +21,7 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
     private final double reservationPortion;
     private final double activationPortion;
 
-    private RenumerationMediator(Site client, double reservePortion) {
+    private RenumerationMediator(final Site client, final double reservePortion) {
         super(client, RewardModel.NONE, DebtModel.NONE);
         this.target = client;
         this.currentReservationBudget = 0;
@@ -48,8 +48,8 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
      *            The portion of the budget to use for reservation payments.
      * @return The newly created RenumerationMediator object.
      */
-    public static RenumerationMediator create(Site client,
-            double reservePortion) {
+    public static RenumerationMediator create(final Site client,
+            final double reservePortion) {
         return new RenumerationMediator(client, reservePortion);
     }
 
@@ -59,7 +59,7 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
      * @param budget
      *            The new budget. Should not be negative.
      */
-    public void setBudget(long budget) {
+    public void setBudget(final long budget) {
         checkArgument(budget >= 0, "Budget should not be negative.");
         this.currentActivationBudget = (long) (budget * getActivationPortion());
         this.currentReservationBudget = (long) (budget
@@ -95,7 +95,7 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
      *            The proportion ( a double between 0 and 1 inclusive) of the
      *            budget to award.
      */
-    public void registerReservation(double proportion) {
+    public void registerReservation(final double proportion) {
         checkArgument(proportion >= 0 && proportion <= 1,
                 "Proportions should be between 0 and 1");
 
@@ -110,7 +110,7 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
      *            The proportion ( a double between 0 and 1 inclusive) of the
      *            budget to award.
      */
-    public void registerActivation(double proportion) {
+    public void registerActivation(final double proportion) {
         checkArgument(proportion >= 0 && proportion <= 1,
                 "Proportions should be between 0 and 1");
         increaseTotalReward((int) (getActivationBudget() * proportion));

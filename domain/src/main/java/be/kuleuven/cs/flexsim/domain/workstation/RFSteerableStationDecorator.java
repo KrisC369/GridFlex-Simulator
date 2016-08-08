@@ -32,8 +32,8 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     private boolean isHigh;
     private int offset;
 
-    RFSteerableStationDecorator(ConfigurableWorkstation ws, int high, int low,
-            int width) {
+    RFSteerableStationDecorator(final ConfigurableWorkstation ws, final int high, final int low,
+            final int width) {
         super(ws);
         this.high = high;
         this.low = low;
@@ -69,19 +69,19 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     }
 
     @Override
-    public void favorSpeedOverFixedEConsumption(int consumptionShift,
-            int speedShift) {
+    public void favorSpeedOverFixedEConsumption(final int consumptionShift,
+            final int speedShift) {
         setProcessingSpeed(getProcessingSpeed() + speedShift);
     }
 
     @Override
-    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
-            int speedShift) {
+    public void favorFixedEConsumptionOverSpeed(final int consumptionShift,
+            final int speedShift) {
         setProcessingSpeed(getProcessingSpeed() - speedShift);
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         triggerChange(g.nextInt(n));
         super.tick(t);
     }
@@ -106,7 +106,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     }
 
     @Override
-    public void acceptVisitor(WorkstationVisitor subject) {
+    public void acceptVisitor(final WorkstationVisitor subject) {
         subject.register((DualModeWorkstation) this);
         super.acceptVisitor(subject);
     }
@@ -122,7 +122,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
      * @param offset
      *            the offset to set
      */
-    private void setOffset(int offset) {
+    private void setOffset(final int offset) {
         this.offset = offset;
     }
 
@@ -140,7 +140,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("RFSteerableStation [high=").append(high)
                 .append(", low=").append(low).append(", isHigh=").append(isHigh)
                 .append(", hc=").append(this.hashCode()).append("]");
@@ -148,7 +148,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
         this.g = context.getRandom();
         super.initialize(context);
     }

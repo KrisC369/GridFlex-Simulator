@@ -47,7 +47,7 @@ public class DSMPartner {
      * @param powerRate The amount of instantaneous power this partners is able to
      *                  increase during activations.
      */
-    public DSMPartner(int powerRate) {
+    public DSMPartner(final int powerRate) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
                 powerRate, CURRENT_ALLOWED_DEVIATION);
     }
@@ -60,7 +60,7 @@ public class DSMPartner {
      * @param deviation The allowed relative deviation to the mean goal number of
      *                  activations so far.
      */
-    public DSMPartner(int powerRate, double deviation) {
+    public DSMPartner(final int powerRate, final double deviation) {
         this(R3DPMAX_ACTIVATIONS, INTERACTIVATION_TIME, ACTIVATION_DURATION,
                 powerRate, deviation);
     }
@@ -76,8 +76,8 @@ public class DSMPartner {
      * @param deviation           The allowed relative deviation to the mean goal number of
      *                            activations so far.
      */
-    DSMPartner(int maxActivations, int interactivationTime,
-            int activationDuration, int flexPowerRate, double deviation) {
+    DSMPartner(final int maxActivations, final int interactivationTime,
+            final int activationDuration, final int flexPowerRate, final double deviation) {
         this.maxActivations = maxActivations;
         this.interactivationTime = interactivationTime;
         this.activationDuration = activationDuration;
@@ -131,7 +131,7 @@ public class DSMPartner {
      * @param timeMark The mark to check.
      * @return the power increase amount.
      */
-    public double getCurtailment(int timeMark) {
+    public double getCurtailment(final int timeMark) {
         return activationMarker[timeMark];
     }
 
@@ -148,8 +148,8 @@ public class DSMPartner {
      * @param begin BeginMark
      * @param end   EndMark
      */
-    private void markActivation(Integer begin, Integer end,
-            double targetPowerRate) {
+    private void markActivation(final Integer begin, final Integer end,
+            final double targetPowerRate) {
         for (int i = 0; i < end - begin; i++) {
             activationMarker[begin + i] = targetPowerRate;
         }
@@ -160,7 +160,7 @@ public class DSMPartner {
         this.currentActivations += 1;
     }
 
-    private boolean canActivateDuring(Integer begin, Integer end) {
+    private boolean canActivateDuring(final Integer begin, final Integer end) {
         if (getValuation(begin) >= currentAllowedDeviation) {
             return false;
         }
@@ -193,23 +193,23 @@ public class DSMPartner {
         return true;
     }
 
-    private double getValuation(DSMProposal prop) {
+    private double getValuation(final DSMProposal prop) {
         return getValuation(prop.getBeginMark().get());
     }
 
-    private double getValuation(int beginMark) {
-        double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
-        double goal = beginMark * factor;
+    private double getValuation(final int beginMark) {
+        final double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
+        final double goal = beginMark * factor;
         return (currentActivations - goal) / maxActivations;
     }
 
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {
         @Override
-        protected DSMProposal makeProposalForCNP(DSMProposal arg)
+        protected DSMProposal makeProposalForCNP(final DSMProposal arg)
                 throws CanNotFindProposalException {
             if (canActivateDuring(arg.getBeginMark().get(),
                     arg.getEndMark().get())) {
-                StringBuilder b = new StringBuilder("Proposal from ")
+                final StringBuilder b = new StringBuilder("Proposal from ")
                         .append(this.toString()).append(" with ")
                         .append(getFlexPowerRate()).append("kW");
                 return DSMProposal.create(b.toString(), getFlexPowerRate(),
@@ -220,7 +220,7 @@ public class DSMPartner {
         }
 
         @Override
-        protected boolean performWorkUnitFor(DSMProposal arg) {
+        protected boolean performWorkUnitFor(final DSMProposal arg) {
             markActivation(arg.getBeginMark().get(), arg.getEndMark().get(),
                     arg.getTargetValue());
             return true;
@@ -233,7 +233,7 @@ public class DSMPartner {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder(48);
+        final StringBuilder builder = new StringBuilder(48);
         builder.append("DSMPartner [flexPowerRate=").append(flexPowerRate)
                 .append(", currentActivations=").append(currentActivations)
                 .append(']');

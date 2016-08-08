@@ -1,24 +1,20 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.independent;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
+import com.google.common.collect.Lists;
+import org.junit.Before;
+import org.junit.Test;
+
+import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.fromRepresentation;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 public class IndependentAggregatorTest {
     private BalancingSignal tso = mock(BalancingSignal.class);
@@ -33,14 +29,14 @@ public class IndependentAggregatorTest {
         doReturn(0).when(tso).getCurrentImbalance();
         this.agg = new IndependentAggregator(tso, freq);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
-                FlexTuple.create(3, 10, true, 10, 0, 0))).when(clientDown)
-                        .getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(3, 10, fromRepresentation(true), 10, 0, 0))).when(clientDown)
+                .getFlexTuples();
 
         this.clientUp = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, true, 10, 0, 0),
-                FlexTuple.create(4, 10, false, 10, 0, 0))).when(clientUp)
-                        .getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, fromRepresentation(true), 10, 0, 0),
+                FlexTuple.create(4, 10, fromRepresentation(false), 10, 0, 0))).when(clientUp)
+                .getFlexTuples();
 
         doRegister();
     }
@@ -131,10 +127,10 @@ public class IndependentAggregatorTest {
     public void testUseOnlyOneProfile() {
         tso = mock(BalancingSignal.class);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, false, 10, 0, 0),
-                FlexTuple.create(7, 5, false, 10, 0, 0),
-                FlexTuple.create(3, 10, true, 10, 0, 0))).when(clientDown)
-                        .getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(7, 5, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(3, 10, fromRepresentation(true), 10, 0, 0))).when(clientDown)
+                .getFlexTuples();
         doReturn(5000).when(tso).getCurrentImbalance();
         agg = new IndependentAggregator(tso, freq);
         doRegister();
@@ -150,16 +146,16 @@ public class IndependentAggregatorTest {
         doReturn(-140).when(this.tso).getCurrentImbalance();
         this.agg = new IndependentAggregator(this.tso, freq,
                 AggregationStrategyImpl.MOVINGHORIZON);
-        doReturn(Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),
-                FlexTuple.create(7, 50, false, 10, 0, 0),
-                FlexTuple.create(9, 500, false, 10, 0, 0),
-                FlexTuple.create(3, -10, true, 10, 0, 0))).when(clientDown)
-                        .getFlexTuples();
-        doReturn(Lists.newArrayList(FlexTuple.create(1, 50, false, 10, 0, 0),
-                FlexTuple.create(7, 100, false, 10, 0, 0),
-                FlexTuple.create(12, 500, false, 10, 0, 0),
-                FlexTuple.create(3, -300, true, 10, 0, 0))).when(clientUp)
-                        .getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 50, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(7, 50, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(9, 500, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(3, -10, fromRepresentation(true), 10, 0, 0))).when(clientDown)
+                .getFlexTuples();
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 50, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(7, 100, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(12, 500, fromRepresentation(false), 10, 0, 0),
+                FlexTuple.create(3, -300, fromRepresentation(true), 10, 0, 0))).when(clientUp)
+                .getFlexTuples();
         doRegister();
         sim.start();
         verify(clientUp, times(1)).activateFlex(any(ActivateFlexCommand.class));

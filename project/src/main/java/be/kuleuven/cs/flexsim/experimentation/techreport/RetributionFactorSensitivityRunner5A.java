@@ -22,7 +22,7 @@ public final class RetributionFactorSensitivityRunner5A
      * @param args
      *            commandline args.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new RetributionFactorSensitivityRunner5A().execute();
     }
 }

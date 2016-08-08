@@ -29,7 +29,7 @@ public abstract class Aggregator implements SimulationComponent {
      *
      * @param strategy The aggregation strategy to use.
      */
-    public Aggregator(AggregationStrategy strategy) {
+    public Aggregator(final AggregationStrategy strategy) {
         this.clients = Sets.newLinkedHashSet();
         this.strategy = strategy;
         this.dispatcher = new AggregationDispatch();
@@ -57,12 +57,12 @@ public abstract class Aggregator implements SimulationComponent {
      *
      * @param client the client should expose the siteflex api service.
      */
-    public void registerClient(SiteFlexAPI client) {
+    public void registerClient(final SiteFlexAPI client) {
         clients.add(client);
     }
 
-    protected final int doAggregationStep(int t, final int target,
-            Multimap<SiteFlexAPI, FlexTuple> flex) {
+    protected final int doAggregationStep(final int t, final int target,
+            final Multimap<SiteFlexAPI, FlexTuple> flex) {
         logStep(t, target);
         return this.strategy.performAggregationStep(getAggregationContext(), t,
                 flex, target);
@@ -79,9 +79,9 @@ public abstract class Aggregator implements SimulationComponent {
     }
 
     protected final LinkedListMultimap<SiteFlexAPI, FlexTuple> gatherFlexInfo() {
-        LinkedListMultimap<SiteFlexAPI, FlexTuple> res = LinkedListMultimap
+        final LinkedListMultimap<SiteFlexAPI, FlexTuple> res = LinkedListMultimap
                 .create();
-        for (SiteFlexAPI s : this.clients) {
+        for (final SiteFlexAPI s : this.clients) {
             res.putAll(s, s.getFlexTuples());
         }
         return res;
@@ -94,7 +94,7 @@ public abstract class Aggregator implements SimulationComponent {
         return strategy;
     }
 
-    private static void logStep(int t, int target) {
+    private static void logStep(final int t, final int target) {
         LoggerFactory.getLogger(Aggregator.class).debug(
                 "Performing aggregation step at time step {} with flextarget {}",
                 t, target);
@@ -102,25 +102,25 @@ public abstract class Aggregator implements SimulationComponent {
 
     private class AggregationDispatch implements AggregationContext {
 
-        private void logCurtail(FlexTuple tt) {
+        private void logCurtail(final FlexTuple tt) {
             LoggerFactory.getLogger(Aggregator.class)
                     .debug("Sending curtail request based on profile {}", tt);
         }
 
-        private void logRestore(FlexTuple tt) {
+        private void logRestore(final FlexTuple tt) {
             LoggerFactory.getLogger(Aggregator.class)
                     .debug("Sending restore request based on profile {}", tt);
         }
 
         @Override
-        public void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
-                Set<Long> ids) {
-            for (SiteFlexAPI s : flex.keySet()) {
-                for (long i : ids) {
-                    for (FlexTuple t : flex.get(s)) {
+        public void dispatchActivation(final Multimap<SiteFlexAPI, FlexTuple> flex,
+                final Set<Long> ids) {
+            for (final SiteFlexAPI s : flex.keySet()) {
+                for (final long i : ids) {
+                    for (final FlexTuple t : flex.get(s)) {
                         if (t.getId() == i) {
                             final FlexTuple tt = t;
-                            if (tt.getDirection()) {
+                            if (tt.getDirection().booleanRepresentation()) {
                                 logRestore(tt);
                             } else {
                                 logCurtail(tt);

@@ -16,6 +16,6 @@ public final class NoopListener implements Listener<Object> {
     }
 
     @Override
-    public void eventOccurred(Object arg) {
+    public void eventOccurred(final Object arg) {
     }
 }

@@ -35,7 +35,7 @@ public abstract class GameResult {
      * @return A GameResult object with no description and with the specified
      *         results.
      */
-    public static GameResult create(List<Double> results) {
+    public static GameResult create(final List<Double> results) {
         return new AutoValue_GameResult(
                 ImmutableMap.copyOf(new LinkedHashMap<>()),
                 ImmutableList.copyOf(results));
@@ -51,15 +51,15 @@ public abstract class GameResult {
      *            the description value.
      * @return a new game result.
      */
-    public GameResult withDescription(String key, String val) {
-        Map<String, String> newMap = Maps.newLinkedHashMap();
+    public GameResult withDescription(final String key, final String val) {
+        final Map<String, String> newMap = Maps.newLinkedHashMap();
         newMap.putAll(getDescription());
         newMap.put(key, val);
         return create(newMap, getResults());
     }
 
-    private static GameResult create(Map<String, String> description,
-            List<Double> results) {
+    private static GameResult create(final Map<String, String> description,
+            final List<Double> results) {
         return new AutoValue_GameResult(ImmutableMap.copyOf(description),
                 ImmutableList.copyOf(results));
     }

@@ -25,7 +25,7 @@ public class Event {
      * @param type
      *            the event type
      */
-    protected Event(String type) {
+    protected Event(final String type) {
         this.type = type;
         this.attributes = new HashMap<>();
     }
@@ -59,7 +59,7 @@ public class Event {
      * @throws NoSuchAttributeException
      *             when this event does not have the specified attribute.
      */
-    public <T> T getAttribute(String key, Class<T> type)
+    public <T> T getAttribute(final String key, final Class<T> type)
             throws NoSuchAttributeException {
         synchronized (this.attributes) {
             if (!this.hasAttribute(key, type)) {
@@ -77,7 +77,7 @@ public class Event {
      * @return all attributes including the event type.
      */
     public Map<String, Object> getAttributes() {
-        Map<String, Object> copy;
+        final Map<String, Object> copy;
 
         synchronized (this.attributes) {
             copy = new HashMap<>(this.attributes);
@@ -95,7 +95,7 @@ public class Event {
      * @param value
      *            the attribute value.
      */
-    public void setAttribute(String key, Object value) {
+    public void setAttribute(final String key, final Object value) {
 
         if ("type".equals(key)) {
             throw new IllegalArgumentException(
@@ -114,9 +114,9 @@ public class Event {
      * @param args
      *            The arguments to set
      */
-    public void setAttributes(Map<String, Object> args) {
+    public void setAttributes(final Map<String, Object> args) {
 
-        for (String key : args.keySet()) {
+        for (final String key : args.keySet()) {
             if (!this.canAcceptKey(key)) {
                 throw new IllegalArgumentException("Illegal key in map");
             }
@@ -125,7 +125,7 @@ public class Event {
         this.attributes.putAll(args);
     }
 
-    private boolean canAcceptKey(String key) {
+    private boolean canAcceptKey(final String key) {
         return key != null && !"type".equals(key);
     }
 
@@ -136,7 +136,7 @@ public class Event {
      *            the key to check for.
      * @return true if there is an attribute for the key.
      */
-    public boolean hasAttribute(String key) {
+    public boolean hasAttribute(final String key) {
         synchronized (this.attributes) {
             return this.attributes.containsKey(key);
         }
@@ -152,7 +152,7 @@ public class Event {
      *            the type to check for.
      * @return true if there is an attribute for key of class type.
      */
-    public boolean hasAttribute(String key, Class<?> type) {
+    public boolean hasAttribute(final String key, final Class<?> type) {
         synchronized (this.attributes) {
             return this.attributes.containsKey(key) && type
                     .isAssignableFrom(this.attributes.get(key).getClass());

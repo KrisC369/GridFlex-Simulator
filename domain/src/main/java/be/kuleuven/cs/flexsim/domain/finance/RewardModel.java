@@ -14,7 +14,7 @@ public enum RewardModel {
     CONSTANT {
 
         @Override
-        public int calculateReward(int timestep, Resource r) {
+        public int calculateReward(final int timestep, final Resource r) {
             return REWARD_RATE;
         }
 
@@ -25,7 +25,7 @@ public enum RewardModel {
     NONE {
 
         @Override
-        public int calculateReward(int timestep, Resource r) {
+        public int calculateReward(final int timestep, final Resource r) {
             return 0;
         }
 

@@ -45,11 +45,11 @@ public class CongestionProfile implements TimeSeries {
         dValues = new DoubleArrayList();
     }
 
-    CongestionProfile(DoubleList values) {
+    CongestionProfile(final DoubleList values) {
         dValues = new DoubleArrayList(values);
     }
 
-    CongestionProfile(double[] values) {
+    CongestionProfile(final double[] values) {
         dValues = new DoubleArrayList(values);
     }
 
@@ -92,11 +92,11 @@ public class CongestionProfile implements TimeSeries {
      * @throws NullPointerException
      *             when the input file cannot be found.
      */
-    public void load(String filename, String column) throws IOException {
-        List<Double> dataRead = Lists.newArrayList();
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        File file = new File(classLoader.getResource(filename).getFile());
-        CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
+    public void load(final String filename, final String column) throws IOException {
+        final List<Double> dataRead = Lists.newArrayList();
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        final File file = new File(classLoader.getResource(filename).getFile());
+        final CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
                 new FileInputStream(file), Charset.defaultCharset())).build();
         String[] nextLine = reader.readNext();
         int key = -1;
@@ -128,9 +128,9 @@ public class CongestionProfile implements TimeSeries {
      * @throws FileNotFoundException
      *             If the file with that name cannot be found.
      */
-    public static TimeSeries createFromCSV(String filename, String column)
+    public static TimeSeries createFromCSV(final String filename, final String column)
             throws IOException {
-        CongestionProfile cp = new CongestionProfile();
+        final CongestionProfile cp = new CongestionProfile();
         cp.load(filename, column);
         return cp;
     }
@@ -142,7 +142,7 @@ public class CongestionProfile implements TimeSeries {
      *            The series to copy from.
      * @return the time series.
      */
-    public static CongestionProfile createFromTimeSeries(TimeSeries series) {
+    public static CongestionProfile createFromTimeSeries(final TimeSeries series) {
         return new CongestionProfile(series.values());
     }
 
@@ -152,7 +152,7 @@ public class CongestionProfile implements TimeSeries {
     }
 
     @Override
-    public double value(int index) {
+    public double value(final int index) {
         checkArgument(index >= 0 && index < length());
         return dValues.getDouble(index);
     }
@@ -170,7 +170,7 @@ public class CongestionProfile implements TimeSeries {
      * @param value
      *            the new value.
      */
-    public void changeValue(int index, double value) {
+    public void changeValue(final int index, final double value) {
         checkArgument(index >= 0 && index < length(),
                 "Index(" + index + ") should be within range of time series.");
         this.dValues.set(index, value);
@@ -200,7 +200,7 @@ public class CongestionProfile implements TimeSeries {
         return sumcache;
     }
 
-    private double applyStatistic(AbstractUnivariateStatistic stat) {
+    private double applyStatistic(final AbstractUnivariateStatistic stat) {
         stat.setData(dValues.toDoubleArray());
         return stat.evaluate();
     }

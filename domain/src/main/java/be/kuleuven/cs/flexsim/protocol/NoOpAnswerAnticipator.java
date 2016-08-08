@@ -20,6 +20,6 @@ public final class NoOpAnswerAnticipator<T> implements AnswerAnticipator<T> {
     }
 
     @Override
-    public void affirmative(T prop, AnswerAnticipator<T> ant) {
+    public void affirmative(final T prop, final AnswerAnticipator<T> ant) {
     }
 }

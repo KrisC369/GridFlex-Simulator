@@ -31,20 +31,20 @@ public class EquidistantSiteSimulation extends SiteSimulation {
      * @param cease
      *            the cease time for activation.
      */
-    EquidistantSiteSimulation(int base, int min, int max, int maxTuples,
-            int duration, int ramp, int cease) {
+    EquidistantSiteSimulation(final int base, final int min, final int max, final int maxTuples,
+            final int duration, final int ramp, final int cease) {
         super(base, min, max, maxTuples, duration, ramp, cease);
     }
 
     @Override
     protected void calculateCurrentFlex() {
-        List<FlexTuple> upFlex = Lists.newArrayList();
-        List<FlexTuple> downFlex = Lists.newArrayList();
-        int bandwidth = (getMaxLimitConsumption() - getMinLimitConsumption())
+        final List<FlexTuple> upFlex = Lists.newArrayList();
+        final List<FlexTuple> downFlex = Lists.newArrayList();
+        final int bandwidth = (getMaxLimitConsumption() - getMinLimitConsumption())
                 / getMaxTuples();
         for (int i = 1; i <= getMaxTuples(); i++) {
-            int setpoint = getMinLimitConsumption() + i * bandwidth;
-            int target = setpoint - getCurrentConsumption();
+            final int setpoint = getMinLimitConsumption() + i * bandwidth;
+            final int target = setpoint - getCurrentConsumption();
             upFlex.add(makeTuple(Math.abs(target), target > 0 ? true : false));
         }
         resetFlex(upFlex, downFlex);

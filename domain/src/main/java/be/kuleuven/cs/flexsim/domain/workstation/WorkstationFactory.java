@@ -26,8 +26,8 @@ public final class WorkstationFactory {
      *            The energy consumption in working state.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createConsuming(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working) {
+    public static Workstation createConsuming(final Buffer<Resource> in,
+            final Buffer<Resource> out, final int idle, final int working) {
         return new WorkstationImpl(in, out, idle, working, 1,
                 ConsumptionModel.CONSTANT);
     }
@@ -41,8 +41,8 @@ public final class WorkstationFactory {
      *            The outputbuffer instance.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createDefault(Buffer<Resource> bufferIn,
-            Buffer<Resource> bufferOut) {
+    public static Workstation createDefault(final Buffer<Resource> bufferIn,
+            final Buffer<Resource> bufferOut) {
         return new WorkstationImpl(bufferIn, bufferOut, 0, 0, 1,
                 ConsumptionModel.CONSTANT);
     }
@@ -63,8 +63,8 @@ public final class WorkstationFactory {
      *            The amount of timesteps to delay the start of execution.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createShiftableWorkstation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int shift) {
+    public static Workstation createShiftableWorkstation(final Buffer<Resource> in,
+            final Buffer<Resource> out, final int idle, final int working, final int shift) {
         return new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
                 out, idle, working, 1, ConsumptionModel.CONSTANT));
     }
@@ -85,8 +85,8 @@ public final class WorkstationFactory {
      *            The amount of timesteps to delay the start of execution.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createCurtailableStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int shift) {
+    public static Workstation createCurtailableStation(final Buffer<Resource> in,
+            final Buffer<Resource> out, final int idle, final int working, final int shift) {
         return new CurtailableStationDecorator<Workstation>(
                 new DelayedStartStationDecorator(shift, new WorkstationImpl(in,
                         out, idle, working, 1, ConsumptionModel.CONSTANT)));
@@ -108,8 +108,8 @@ public final class WorkstationFactory {
      *            The capacity of this workstation in terms of resources.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createMultiCapConsuming(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int capacity) {
+    public static Workstation createMultiCapConsuming(final Buffer<Resource> in,
+            final Buffer<Resource> out, final int idle, final int working, final int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.CONSTANT));
 
@@ -131,8 +131,8 @@ public final class WorkstationFactory {
      *            The capacity of this workstation in terms of resources.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createMultiCapLinearConsuming(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int capacity) {
+    public static Workstation createMultiCapLinearConsuming(final Buffer<Resource> in,
+            final Buffer<Resource> out, final int idle, final int working, final int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.LINEAR));
 
@@ -156,8 +156,8 @@ public final class WorkstationFactory {
      */
 
     public static Workstation createMultiCapExponentialConsuming(
-            Buffer<Resource> in, Buffer<Resource> out, int idle, int working,
-            int capacity) {
+            final Buffer<Resource> in, final Buffer<Resource> out, final int idle, final int working,
+            final int capacity) {
         return new SteerableCurtailableStationDecorator(new WorkstationImpl(in,
                 out, idle, working, capacity, ConsumptionModel.EXPONENTIAL));
     }
@@ -180,9 +180,9 @@ public final class WorkstationFactory {
      *            The width of the noise band.
      * @return A Ready to use Workstation object.
      */
-    public static Workstation createRFDualModeStation(Buffer<Resource> in,
-            Buffer<Resource> out, int idle, int working, int width,
-            int capacity) {
+    public static Workstation createRFDualModeStation(final Buffer<Resource> in,
+            final Buffer<Resource> out, final int idle, final int working, final int width,
+            final int capacity) {
         return new RFSteerableStationDecorator(new WorkstationImpl(in, out, 0,
                 idle, capacity, ConsumptionModel.CONSTANT), working, idle,
                 width);

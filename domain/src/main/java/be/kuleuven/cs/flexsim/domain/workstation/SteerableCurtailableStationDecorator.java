@@ -11,7 +11,7 @@ public class SteerableCurtailableStationDecorator
 
     private final CurtailableWorkstation cs;
 
-    SteerableCurtailableStationDecorator(ConfigurableWorkstation ws) {
+    SteerableCurtailableStationDecorator(final ConfigurableWorkstation ws) {
         super(ws);
         this.cs = new CurtailableStationDecorator<Workstation>(ws);
     }
@@ -34,12 +34,12 @@ public class SteerableCurtailableStationDecorator
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         getCurtDelegate().tick(t);
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         getCurtDelegate().afterTick(t);
     }
 
@@ -51,7 +51,7 @@ public class SteerableCurtailableStationDecorator
     }
 
     @Override
-    public void acceptVisitor(WorkstationVisitor subject) {
+    public void acceptVisitor(final WorkstationVisitor subject) {
         subject.register((CurtailableWorkstation) this);
         super.acceptVisitor(subject);
     }
@@ -62,7 +62,7 @@ public class SteerableCurtailableStationDecorator
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("SteerableCurtailableWorkstation [").append(", hc=")
                 .append(this.hashCode()).append("]");
         return builder.toString();

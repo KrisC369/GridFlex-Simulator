@@ -58,6 +58,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
     @SuppressWarnings("unused")
     public T pull() {
         @Nullable
+        final
         T t = data.poll();
         if (t == null) {
             throw new NoSuchElementException();
@@ -71,7 +72,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      * @return all the present items.
      */
     public Collection<T> pullAll() {
-        Set<T> returnset = Sets.newLinkedHashSet();
+        final Set<T> returnset = Sets.newLinkedHashSet();
         while (!isEmpty()) {
             returnset.add(pull());
         }
@@ -85,7 +86,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      * @param res
      *            the content item to push.
      */
-    public void push(T res) {
+    public void push(final T res) {
         data.add(res);
         res.notifyOfHasBeenBuffered();
     }
@@ -96,7 +97,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      * @param reslist
      *            the list of items to buffer.
      */
-    public void pushAll(List<T> reslist) {
+    public void pushAll(final List<T> reslist) {
         reslist.forEach(this::push);
     }
 
@@ -106,7 +107,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("Buffer [OccupancyLevel()=")
                 .append(getCurrentOccupancyLevel()).append(", hc=")
                 .append(this.hashCode()).append("]");

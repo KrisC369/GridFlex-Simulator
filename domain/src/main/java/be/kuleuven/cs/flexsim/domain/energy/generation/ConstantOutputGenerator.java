@@ -22,7 +22,7 @@ public class ConstantOutputGenerator implements EnergyProductionTrackable {
      * @param base
      *            The base output level for this generator.
      */
-    public ConstantOutputGenerator(int base) {
+    public ConstantOutputGenerator(final int base) {
         this.output = base;
         this.total = 0;
     }
@@ -47,12 +47,12 @@ public class ConstantOutputGenerator implements EnergyProductionTrackable {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         this.total += this.output;
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ConstantOutputGenerator implements EnergyProductionTrackable {
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
 }

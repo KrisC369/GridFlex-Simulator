@@ -29,7 +29,7 @@ public class BalancingAuctionTSO extends CopperplateTSO
      * @param sites
      *            The consumption sites connected to this TSO
      */
-    public BalancingAuctionTSO(EnergyConsumptionTrackable... sites) {
+    public BalancingAuctionTSO(final EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
     }
 
@@ -39,7 +39,7 @@ public class BalancingAuctionTSO extends CopperplateTSO
      * @param sites
      *            The production sites connected to this TSO
      */
-    public BalancingAuctionTSO(EnergyProductionTrackable... sites) {
+    public BalancingAuctionTSO(final EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
     }
 
@@ -59,15 +59,15 @@ public class BalancingAuctionTSO extends CopperplateTSO
      * @param cons
      *            the consumers.
      */
-    private BalancingAuctionTSO(EnergyProductionTrackable[] prod,
-            EnergyConsumptionTrackable[] cons) {
+    private BalancingAuctionTSO(final EnergyProductionTrackable[] prod,
+            final EnergyConsumptionTrackable[] cons) {
         super(prod, cons);
         this.participants = Lists.newArrayList();
         this.currentBids = Lists.newArrayList();
     }
 
     @Override
-    public void placeBid(FlexBid bid) {
+    public void placeBid(final FlexBid bid) {
         this.currentBids.add(bid);
     }
 
@@ -77,7 +77,7 @@ public class BalancingAuctionTSO extends CopperplateTSO
     }
 
     @Override
-    public void registerParticipant(MechanismParticipant participant) {
+    public void registerParticipant(final MechanismParticipant participant) {
         this.participants.add(participant);
     }
 
@@ -89,7 +89,7 @@ public class BalancingAuctionTSO extends CopperplateTSO
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         super.afterTick(t);
         clearMarket();
         resetBids();

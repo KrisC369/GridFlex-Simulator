@@ -43,8 +43,8 @@ public class ExperimentInstance {
      * @param producedE
      *            The total energy produced on the feeder.
      */
-    public ExperimentInstance(SolverBuilder b, DoubleList powerRealisation,
-            CongestionProfile profile, boolean allow, double producedE) {
+    public ExperimentInstance(final SolverBuilder b, final DoubleList powerRealisation,
+            final CongestionProfile profile, final boolean allow, final double producedE) {
         checkNotNull(profile);
         this.solver = b.getSolver(profile, FORECAST_HORIZON);
         this.partners = Lists.newArrayList();
@@ -55,9 +55,9 @@ public class ExperimentInstance {
         this.producedE = producedE;
     }
 
-    private void allocateAgents(DoubleList agents) {
-        for (double a : agents) {
-            DSMPartner p = new DSMPartner((int) a);
+    private void allocateAgents(final DoubleList agents) {
+        for (final double a : agents) {
+            final DSMPartner p = new DSMPartner((int) a);
             partners.add(p);
             solver.registerDSMPartner(p);
         }
@@ -85,7 +85,7 @@ public class ExperimentInstance {
      */
     public double getActivationRate() {
         int sum = 0;
-        for (DSMPartner p : partners) {
+        for (final DSMPartner p : partners) {
             sum += p.getCurrentActivations();
         }
         return sum / (double) (partners.size()
@@ -94,7 +94,7 @@ public class ExperimentInstance {
 
     private double getTotalPowerRates() {
         int sum = 0;
-        for (DSMPartner p : partners) {
+        for (final DSMPartner p : partners) {
             sum += p.getFlexPowerRate();
         }
         return sum;
@@ -105,7 +105,7 @@ public class ExperimentInstance {
      */
     public double getSummedAgentEfficiency() {
         double eff2R = 0;
-        for (DSMPartner d : partners) {
+        for (final DSMPartner d : partners) {
             double sum = 0;
             for (int i = 0; i < SIMDURATION; i++) {
                 sum += d.getCurtailment(i) / 4;
@@ -144,7 +144,7 @@ public class ExperimentInstance {
 
     private void verify() {
         if (!allowLessActivations) {
-            for (DSMPartner p : partners) {
+            for (final DSMPartner p : partners) {
                 if (p.getCurrentActivations() < DSMPartner.R3DPMAX_ACTIVATIONS) {
                     throw new IllegalStateException(
                             "not enough activations. only "

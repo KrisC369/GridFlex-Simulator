@@ -16,7 +16,7 @@ public final class RetributionFactorSensitivityRunnerCombo {
      * @param args
      *            the args.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         new Thread(() -> {
             new RetributionFactorSensitivityRunner2A().execute();
 

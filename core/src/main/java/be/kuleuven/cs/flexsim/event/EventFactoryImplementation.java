@@ -13,7 +13,7 @@ public class EventFactoryImplementation implements EventFactory {
     }
 
     @Override
-    public Event build(String eventType) {
+    public Event build(final String eventType) {
         return new Event(eventType);
     }
 }

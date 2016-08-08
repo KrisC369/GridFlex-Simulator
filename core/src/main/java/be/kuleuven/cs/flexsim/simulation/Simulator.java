@@ -66,7 +66,7 @@ public final class Simulator implements SimulationContext {
      * @param seed
      *            The seed.
      */
-    private Simulator(int duration, int seed) {
+    private Simulator(final int duration, final int seed) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
         this.duration = duration;
         this.clock = new SimulationClock();
@@ -92,7 +92,7 @@ public final class Simulator implements SimulationContext {
      * @param duration
      *            the duration
      */
-    private Simulator(int duration2) {
+    private Simulator(final int duration2) {
         this(duration2, duration2);
     }
 
@@ -157,27 +157,27 @@ public final class Simulator implements SimulationContext {
     }
 
     private void notifyStart() {
-        Event ev = eventFac.build(SIMSTART_LITERAL);
+        final Event ev = eventFac.build(SIMSTART_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
         logger.info("Simulation started");
     }
 
     private void notifyStop() {
-        Event ev = eventFac.build(SIMSTOP_LITERAL);
+        final Event ev = eventFac.build(SIMSTOP_LITERAL);
         ev.setAttribute(TIMECOUNT_LITERAL, getClock().getTimeCount());
         this.eventbus.post(ev);
         logger.info("Simulation stopped");
     }
 
     private synchronized void tickComponents() {
-        for (SimulationComponent c : components) {
+        for (final SimulationComponent c : components) {
             c.tick(getSimulationTime());
         }
     }
 
     private synchronized void afterTickComponents() {
-        for (SimulationComponent c : components) {
+        for (final SimulationComponent c : components) {
             c.afterTick(getSimulationTime());
         }
     }
@@ -206,14 +206,14 @@ public final class Simulator implements SimulationContext {
     private void showProgressBar() {
         if (getClock().getTimeCount() * PROGRESS_SCALE_FACTOR
                 % (getDuration()) == 0) {
-            int perc = getClock().getTimeCount() * PROGRESS_SCALE_FACTOR
+            final int perc = getClock().getTimeCount() * PROGRESS_SCALE_FACTOR
                     * PROGRESS_SCALE_FACTOR / (getDuration());
             printProgBar(perc);
         }
     }
 
-    private void printProgBar(int percent) {
-        StringBuilder bar = new StringBuilder("[");
+    private void printProgBar(final int percent) {
+        final StringBuilder bar = new StringBuilder("[");
         for (int i = 0; i < PROGRESSBAR_LENGTH; i++) {
             if (i < (percent / 2)) {
                 bar.append("=");
@@ -234,7 +234,7 @@ public final class Simulator implements SimulationContext {
      *            the duration the simulator should run for.
      * @return A new simulator object.
      */
-    public static Simulator createSimulator(int duration) {
+    public static Simulator createSimulator(final int duration) {
         return new Simulator(duration);
     }
 
@@ -247,7 +247,7 @@ public final class Simulator implements SimulationContext {
      *            The seed.
      * @return A new simulator object.
      */
-    public static Simulator createSimulator(int duration, int seed) {
+    public static Simulator createSimulator(final int duration, final int seed) {
         return new Simulator(duration, seed);
     }
 
@@ -257,35 +257,35 @@ public final class Simulator implements SimulationContext {
      * simulation.ISimulationContext#register(simulation.ISimulationComponent)
      */
     @Override
-    public void register(SimulationComponent comp) {
+    public void register(final SimulationComponent comp) {
         registerComp(comp);
         comp.getSimulationSubComponents().forEach(this::register);
     }
 
-    private void registerComp(SimulationComponent comp) {
+    private void registerComp(final SimulationComponent comp) {
         this.components.add(comp);
         logRegisterSC(comp);
         registerInstru(comp);
     }
 
-    private void logRegisterSC(SimulationComponent comp) {
+    private void logRegisterSC(final SimulationComponent comp) {
         logger.debug("Simulation component registered: {}", comp);
 
     }
 
     @Override
-    public void register(InstrumentationComponent comp) {
+    public void register(final InstrumentationComponent comp) {
         registerInstru(comp);
     }
 
-    private void registerInstru(InstrumentationComponent comp) {
+    private void registerInstru(final InstrumentationComponent comp) {
         this.instruComps.add(comp);
         this.eventbus.register(comp);
         comp.initialize(this);
         logRegisterIC(comp);
     }
 
-    private void logRegisterIC(InstrumentationComponent comp) {
+    private void logRegisterIC(final InstrumentationComponent comp) {
         logger.debug("Instrumentation component registered: {}", comp);
     }
 

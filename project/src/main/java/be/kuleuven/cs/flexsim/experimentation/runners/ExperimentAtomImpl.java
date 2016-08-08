@@ -20,7 +20,7 @@ public abstract class ExperimentAtomImpl implements ExperimentAtom {
 
     protected final void doRun() {
         execute();
-        for (ExperimentCallback c : callbacks) {
+        for (final ExperimentCallback c : callbacks) {
             c.callback(this);
         }
     }
@@ -31,7 +31,7 @@ public abstract class ExperimentAtomImpl implements ExperimentAtom {
     protected abstract void execute();
 
     @Override
-    public void registerCallbackOnFinish(ExperimentCallback c) {
+    public void registerCallbackOnFinish(final ExperimentCallback c) {
         this.callbacks.add(c);
     }
 }

@@ -30,19 +30,19 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     CARTESIANPRODUCT() {
 
         @Override
-        public int performAggregationStep(AggregationContext context, int t,
-                Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
+        public int performAggregationStep(final AggregationContext context, final int t,
+                final Multimap<SiteFlexAPI, FlexTuple> flex, final int target) {
             AggregationUtils.filterEmpty(flex);
-            Map<Long, Integer> flexFiltered = AggregationUtils
+            final Map<Long, Integer> flexFiltered = AggregationUtils
                     .filterAndTransform(flex);
 
-            NPermuteAndCombiner<Long> g = new NPermuteAndCombiner<>();
-            List<Set<Long>> splitted = AggregationUtils.split(flex);
+            final NPermuteAndCombiner<Long> g = new NPermuteAndCombiner<>();
+            final List<Set<Long>> splitted = AggregationUtils.split(flex);
             // Very costly operation if 'splitted' list is big.
-            List<List<Long>> possibleSolutions = Lists
+            final List<List<Long>> possibleSolutions = Lists
                     .newArrayList(Sets.cartesianProduct(splitted));
             // Add possibility for only 1 site participating.
-            for (Collection<Long> key : splitted) {
+            for (final Collection<Long> key : splitted) {
                 possibleSolutions
                         .addAll(g.processSubsets(Lists.newArrayList(key), 1));
             }
@@ -51,9 +51,9 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
             List<Collection<Long>> bestAlt = Lists.newArrayList();
             int score = 0;
             int with = 0;
-            for (Collection<Long> poss : possibleSolutions) {
+            for (final Collection<Long> poss : possibleSolutions) {
                 int flexSum = 0;
-                for (long l : poss) {
+                for (final long l : poss) {
                     flexSum += flexFiltered.get(l);
                 }
                 if (diff(flexSum, target) < diff(score, target)) {
@@ -72,7 +72,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                 }
             }
             if (!bestAlt.isEmpty()) {
-                MersenneTwister r = new MersenneTwister(RANDOM_SEED);
+                final MersenneTwister r = new MersenneTwister(RANDOM_SEED);
                 best = bestAlt.get(r.nextInt(bestAlt.size()));
             }
             if (!best.isEmpty()) {
@@ -93,31 +93,31 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     MOVINGHORIZON() {
 
         @Override
-        public int performAggregationStep(AggregationContext context, int t,
-                Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
+        public int performAggregationStep(final AggregationContext context, final int t,
+                final Multimap<SiteFlexAPI, FlexTuple> flex, final int target) {
 
             // filter maps for pos or neg.
             if (target > 0) {
-                AggregationUtils.filter(flex, true);
+                AggregationUtils.filter(flex, FlexTuple.Direction.UP);
             } else {
-                AggregationUtils.filter(flex, false);
+                AggregationUtils.filter(flex, FlexTuple.Direction.DOWN);
             }
             AggregationUtils.filterEmpty(flex);
             // Sort the maps
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = AggregationUtils
+            final LinkedListMultimap<SiteFlexAPI, FlexTuple> sorted = AggregationUtils
                     .sort(flex);
 
             // Find the state space front that surpasses the target and filter
             // out everything above it.
-            List<SiteFlexAPI> sites = Lists.newArrayList(sorted.keySet());
-            int[] indexlistUpper = new int[sites.size()];
+            final List<SiteFlexAPI> sites = Lists.newArrayList(sorted.keySet());
+            final int[] indexlistUpper = new int[sites.size()];
             for (int i = 0; i < indexlistUpper.length; i++) {
                 indexlistUpper[i] = 0;
             }
 
             int sum = 0;
             boolean hasChanged = true;
-            int absTarget = Math.abs(target);
+            final int absTarget = Math.abs(target);
             while (sum < absTarget && hasChanged) {
                 hasChanged = false;
                 sum = 0;
@@ -132,7 +132,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
                 }
             }
             // The filtering step.
-            LinkedListMultimap<SiteFlexAPI, FlexTuple> capped = LinkedListMultimap
+            final LinkedListMultimap<SiteFlexAPI, FlexTuple> capped = LinkedListMultimap
                     .create();
             for (int i = 0; i < indexlistUpper.length; i++) {
                 capped.putAll(sites.get(i), sorted.get(sites.get(i)).subList(0,
@@ -149,7 +149,7 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     public abstract int performAggregationStep(AggregationContext context,
             int t, Multimap<SiteFlexAPI, FlexTuple> flex, int target);
 
-    private static int diff(int i, int target) {
+    private static int diff(final int i, final int target) {
         return Math.abs(target - i);
     }
 }

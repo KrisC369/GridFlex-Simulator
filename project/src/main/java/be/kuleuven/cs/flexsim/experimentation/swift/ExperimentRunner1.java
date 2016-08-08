@@ -18,7 +18,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
 
     private final int n;
 
-    protected ExperimentRunner1(int n, int nagents, int allowed) {
+    protected ExperimentRunner1(final int n, final int nagents, final int allowed) {
         super(n, nagents, allowed);
         this.n = n;
     }
@@ -27,19 +27,19 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
      * @param args
      *            Standard in args.
      */
-    public static void main(String[] args) {
-        ExpGenerator gen = (reps, agents,
+    public static void main(final String[] args) {
+        final ExpGenerator gen = (reps, agents,
                 allowed) -> new ExperimentRunner1(reps, agents, allowed);
         parseInput(gen, args, N, ALLOWED_EXCESS);
     }
 
-    protected static void startExperiment(int reps, int agents, int allowed) {
+    protected static void startExperiment(final int reps, final int agents, final int allowed) {
         new ExperimentRunner1(reps, agents, allowed).execute();
     }
 
     @Override
     protected void logResults() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("BEGINRESULT:\n").append("Res1=").append(getMainRes1())
                 .append("\n");
         builder.append("Res2=").append(getMainRes2()).append("\n");
@@ -56,8 +56,8 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         @Nullable
         private ExperimentInstance p;
 
-        ExperimentAtomImplementationSingleEff(DoubleList realisation,
-                CongestionProfile profile) {
+        ExperimentAtomImplementationSingleEff(final DoubleList realisation,
+                final CongestionProfile profile) {
             super(realisation, profile);
 
         }

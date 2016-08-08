@@ -35,7 +35,7 @@ public class BalancingTSO extends CopperplateTSO
      * @param sites
      *            The consumption sites connected to this TSO
      */
-    public BalancingTSO(EnergyConsumptionTrackable... sites) {
+    public BalancingTSO(final EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
     }
 
@@ -45,7 +45,7 @@ public class BalancingTSO extends CopperplateTSO
      * @param sites
      *            The production sites connected to this TSO
      */
-    public BalancingTSO(EnergyProductionTrackable... sites) {
+    public BalancingTSO(final EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
     }
 
@@ -65,8 +65,8 @@ public class BalancingTSO extends CopperplateTSO
      * @param cons
      *            the consumers.
      */
-    private BalancingTSO(EnergyProductionTrackable[] prod,
-            EnergyConsumptionTrackable[] cons) {
+    private BalancingTSO(final EnergyProductionTrackable[] prod,
+            final EnergyConsumptionTrackable[] cons) {
         super(prod, cons);
         this.participants = Lists.newArrayList();
         this.powerLimits = Maps.newLinkedHashMap();
@@ -80,22 +80,22 @@ public class BalancingTSO extends CopperplateTSO
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         super.afterTick(t);
         pollCapacities();
         calculateAndSignal(t);
     }
 
     private void pollCapacities() {
-        for (ContractualMechanismParticipant p : participants) {
+        for (final ContractualMechanismParticipant p : participants) {
             testValidParticipant(p);
             this.powerLimits.put(p, p.getPowerCapacity());
         }
     }
 
-    private void calculateAndSignal(int timestep) {
+    private void calculateAndSignal(final int timestep) {
         if (getCurrentImbalance() > 0) {
-            int sum = CollectionUtils.sum(
+            final int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
                     PowerCapabilityBand::getUp);
 
@@ -106,7 +106,7 @@ public class BalancingTSO extends CopperplateTSO
                         true);
             }
         } else if (getCurrentImbalance() < 0) {
-            int sum = CollectionUtils.sum(
+            final int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
                     PowerCapabilityBand::getDown);
             if (sum <= Math.abs(getCurrentImbalance())) {
@@ -121,9 +121,9 @@ public class BalancingTSO extends CopperplateTSO
     }
 
     @SuppressWarnings("null")
-    private void sendSignal(int t, double frac, boolean upflex) {
+    private void sendSignal(final int t, final double frac, final boolean upflex) {
 
-        for (java.util.Map.Entry<ContractualMechanismParticipant, PowerCapabilityBand> e : powerLimits
+        for (final java.util.Map.Entry<ContractualMechanismParticipant, PowerCapabilityBand> e : powerLimits
                 .entrySet()) {
             int value = 0;
             if (upflex) {
@@ -136,7 +136,7 @@ public class BalancingTSO extends CopperplateTSO
 
     }
 
-    private double getFactor(double sum, double currentImbalance) {
+    private double getFactor(final double sum, final double currentImbalance) {
         if (sum == 0 || currentImbalance == 0) {
             return 0;
         }
@@ -145,7 +145,7 @@ public class BalancingTSO extends CopperplateTSO
 
     @Override
     public void registerParticipant(
-            ContractualMechanismParticipant participant) {
+            final ContractualMechanismParticipant participant) {
         this.participants.add(participant);
         this.powerLimits.put(participant, PowerCapabilityBand.createZero());
 
@@ -159,19 +159,19 @@ public class BalancingTSO extends CopperplateTSO
      * @return The limits.
      */
     public PowerCapabilityBand getContractualLimit(
-            ContractualMechanismParticipant agg) {
+            final ContractualMechanismParticipant agg) {
         testValidParticipant(agg);
         return checkNotNull(this.powerLimits.get(agg));
     }
 
-    private void testValidParticipant(ContractualMechanismParticipant agg) {
+    private void testValidParticipant(final ContractualMechanismParticipant agg) {
         if (!hasParticipant(agg)) {
             throw new IllegalStateException(
                     "Should have this aggregator registered before calling this method.");
         }
     }
 
-    private boolean hasParticipant(ContractualMechanismParticipant agg) {
+    private boolean hasParticipant(final ContractualMechanismParticipant agg) {
         return this.participants.contains(agg);
     }
 
@@ -183,8 +183,8 @@ public class BalancingTSO extends CopperplateTSO
      * @param cap
      *            The new capabilities.
      */
-    public void signalNewLimits(ContractualMechanismParticipant agg,
-            PowerCapabilityBand cap) {
+    public void signalNewLimits(final ContractualMechanismParticipant agg,
+            final PowerCapabilityBand cap) {
         testValidParticipant(agg);
         this.powerLimits.put(agg, cap);
     }

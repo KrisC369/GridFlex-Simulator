@@ -39,24 +39,24 @@ public class RetributionFactorSensitivityRunner {
     private int counter;
     protected final int totalCombinations;
 
-    protected RetributionFactorSensitivityRunner(int repititions, int nAgents) {
+    protected RetributionFactorSensitivityRunner(final int repititions, final int nAgents) {
         this(repititions, nAgents, "", DEF_STEPSIZE);
     }
 
-    protected RetributionFactorSensitivityRunner(int repititions, int nAgents,
-            String loggerTag) {
+    protected RetributionFactorSensitivityRunner(final int repititions, final int nAgents,
+            final String loggerTag) {
         this(repititions, nAgents, loggerTag, DEF_STEPSIZE);
     }
 
-    protected RetributionFactorSensitivityRunner(int repititions, int nAgents,
-            String loggerTag, double stepsize) {
+    protected RetributionFactorSensitivityRunner(final int repititions, final int nAgents,
+            final String loggerTag, final double stepsize) {
         this.twister = new MersenneTwister(SEED);
         this.nAgents = nAgents;
         this.repititions = repititions;
         this.loggerTag = loggerTag;
         this.stepSize = stepsize;
         this.factor = 1.0 / stepsize;
-        int rt = Runtime.getRuntime().availableProcessors() - 1;
+        final int rt = Runtime.getRuntime().availableProcessors() - 1;
         this.availableProcs = rt > 0 ? rt : 1;
         this.logger = LoggerFactory
                 .getLogger(RetributionFactorSensitivityRunner.class);
@@ -71,10 +71,10 @@ public class RetributionFactorSensitivityRunner {
     public void execute() {
         for (int retributionFactor = 0; retributionFactor <= 1
                 * factor; retributionFactor += stepSize * factor) {
-            double retrb = retributionFactor / factor;
-            DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb,
+            final double retrb = retributionFactor / factor;
+            final DefaultGameConfigurator ex = new DefaultGameConfigurator(retrb,
                     twister);
-            GameDirector director = new GameDirector(
+            final GameDirector director = new GameDirector(
                     new Game<>(nAgents, ex, repititions));
 
             final List<ExperimentAtom> experiments = adapt(director);
@@ -97,7 +97,7 @@ public class RetributionFactorSensitivityRunner {
     }
 
     private List<ExperimentAtom> adapt(final GameDirector dir) {
-        List<ExperimentAtom> experiments = Lists.newArrayList();
+        final List<ExperimentAtom> experiments = Lists.newArrayList();
         for (final Playable p : dir.getPlayableVersions()) {
             this.counter++;
             final int current = counter;
@@ -117,8 +117,8 @@ public class RetributionFactorSensitivityRunner {
         this.twister = new MersenneTwister(SEED);
     }
 
-    private void printProgress(int progressCounter) {
-        StringBuilder b = new StringBuilder();
+    private void printProgress(final int progressCounter) {
+        final StringBuilder b = new StringBuilder();
         b.append("Simulating instance: ").append(progressCounter).append("/")
                 .append(factor * repititions * totalCombinations);
         logger.warn(b.toString());

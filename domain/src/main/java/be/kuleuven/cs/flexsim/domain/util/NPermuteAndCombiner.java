@@ -29,24 +29,24 @@ public class NPermuteAndCombiner<T> {
      *            the size of the combinations
      * @return A list of combinations of k.
      */
-    public List<List<T>> processSubsets(List<T> set, int k) {
-        int n;
+    public List<List<T>> processSubsets(final List<T> set, final int k) {
+        final int n;
         if (k > set.size()) {
             n = set.size();
         } else {
             n = k;
         }
-        List<List<T>> result = Lists.newArrayList();
-        List<@Nullable T> subset = Lists.newArrayListWithCapacity(n);
+        final List<List<T>> result = Lists.newArrayList();
+        final List<@Nullable T> subset = Lists.newArrayListWithCapacity(n);
         for (int i = 0; i < n; i++) {
             subset.add(null);
         }
         return processLargerSubsets(result, set, subset, 0, 0);
     }
 
-    private List<List<T>> processLargerSubsets(List<List<T>> result,
-            List<T> set, List<@Nullable T> subset, int subsetSize,
-            int nextIndex) {
+    private List<List<T>> processLargerSubsets(final List<List<T>> result,
+            final List<T> set, final List<@Nullable T> subset, final int subsetSize,
+            final int nextIndex) {
         if (subsetSize == subset.size()) {
             result.add(ImmutableList.copyOf(subset));
         } else {
@@ -68,8 +68,8 @@ public class NPermuteAndCombiner<T> {
      *            the size of the permutations
      * @return a collection of permutations.
      */
-    public Collection<List<T>> permutations(List<T> list, int n) {
-        Collection<List<T>> all = Lists.newArrayList();
+    public Collection<List<T>> permutations(final List<T> list, final int n) {
+        final Collection<List<T>> all = Lists.newArrayList();
         int size = n;
         if (list.size() < size) {
             size = list.size();
@@ -77,7 +77,7 @@ public class NPermuteAndCombiner<T> {
         if (list.size() == size) {
             all.addAll(Collections2.permutations(list));
         } else {
-            for (List<T> p : processSubsets(list, size)) {
+            for (final List<T> p : processSubsets(list, size)) {
                 all.addAll(Collections2.permutations(p));
             }
         }
@@ -98,18 +98,18 @@ public class NPermuteAndCombiner<T> {
      *         list.
      * @deprecated Use Guava's Sets.carthesianProduct instead
      */
-    public Collection<List<T>> permutations(List<Collection<T>> collections) {
+    public Collection<List<T>> permutations(final List<Collection<T>> collections) {
         if (collections.isEmpty()) {
             return Collections.emptyList();
         }
-        Collection<List<T>> res = Lists.newLinkedList();
+        final Collection<List<T>> res = Lists.newLinkedList();
         permutationsImpl(collections, res, 0, new LinkedList<>());
         return res;
     }
 
     /** Recursive implementation for {@link #permutations(List, Collection)} */
-    private void permutationsImpl(List<Collection<T>> ori,
-            Collection<List<T>> res, int d, List<T> current) {
+    private void permutationsImpl(final List<Collection<T>> ori,
+            final Collection<List<T>> res, final int d, final List<T> current) {
         // if depth equals number of original collections, final reached, add
         // and return
         if (d == ori.size()) {
@@ -120,9 +120,10 @@ public class NPermuteAndCombiner<T> {
         // iterate from current collection and copy 'current' element N times,
         // one for each element
         @SuppressWarnings("null")
+        final
         Collection<T> currentCollection = ori.get(d);
-        for (T element : currentCollection) {
-            List<T> copy = Lists.newLinkedList(current);
+        for (final T element : currentCollection) {
+            final List<T> copy = Lists.newLinkedList(current);
             copy.add(element);
             permutationsImpl(ori, res, d + 1, copy);
         }

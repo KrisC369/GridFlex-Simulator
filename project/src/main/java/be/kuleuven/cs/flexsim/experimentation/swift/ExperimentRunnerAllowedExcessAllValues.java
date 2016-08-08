@@ -42,27 +42,27 @@ public class ExperimentRunnerAllowedExcessAllValues
      * @param args
      *            stdin args.
      */
-    public static void main(String[] args) {
-        ExperimentRunnerAllowedExcessAllValues er = new ExperimentRunnerAllowedExcessAllValues();
+    public static void main(final String[] args) {
+        final ExperimentRunnerAllowedExcessAllValues er = new ExperimentRunnerAllowedExcessAllValues();
         er.runBatch();
     }
 
     @Override
     public void runBatch() {
-        List<ExperimentAtom> instances = Lists.newArrayList();
+        final List<ExperimentAtom> instances = Lists.newArrayList();
         for (int j = 0; j < NAGENTS; j++) {
-            ExperimentAtomImplementation i = new ExperimentAtomImplementation(
+            final ExperimentAtomImplementation i = new ExperimentAtomImplementation(
                     j);
             instances.add(i);
         }
-        ExperimentRunner r = LocalRunners.createOSTunedMultiThreadedRunner();
+        final ExperimentRunner r = LocalRunners.createOSTunedMultiThreadedRunner();
 
         r.runExperiments(instances);
         LoggerFactory.getLogger(ExperimentRunnerAllowedExcessAllValues.class)
                 .info("distribution of eff = " + Arrays.toString(result2));
     }
 
-    private void addResult(int agents, double eff) {
+    private void addResult(final int agents, final double eff) {
         synchronized (result2) {
             result2[agents] = eff;
         }
@@ -83,16 +83,16 @@ public class ExperimentRunnerAllowedExcessAllValues
         }
 
         private void start() {
-            CongestionProfile profile;
-            double[] localResult = new double[100];
+            final CongestionProfile profile;
+            final double[] localResult = new double[100];
             try {
                 profile = (CongestionProfile) CongestionProfile.createFromCSV(
                         "4kwartOpEnNeer.csv", "verlies aan energie");
-                GammaDistribution gd = new GammaDistribution(
+                final GammaDistribution gd = new GammaDistribution(
                         new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                         R3DP_GAMMA_SCALE);
                 for (int i = 0; i < N; i++) {
-                    ExperimentInstance p = new ExperimentInstance(
+                    final ExperimentInstance p = new ExperimentInstance(
                             getSolverBuilder(COMPETITIVE,
                                     (int) (i / (N / 100.0))),
                             new DoubleArrayList(gd.sample(agents)), profile,
@@ -100,7 +100,7 @@ public class ExperimentRunnerAllowedExcessAllValues
                     p.startExperiment();
                     localResult[i / (N / 100)] += p.getEfficiency();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 LoggerFactory
                         .getLogger(ExperimentRunnerAllowedExcessAllValues.class)
                         .error("IOException while opening profile.", e);
@@ -108,8 +108,8 @@ public class ExperimentRunnerAllowedExcessAllValues
             for (int i = 0; i < 100; i++) {
                 localResult[i] /= (N / 100.0);
             }
-            List<Double> reslist = Lists.newArrayList();
-            for (double d : localResult) {
+            final List<Double> reslist = Lists.newArrayList();
+            for (final double d : localResult) {
                 reslist.add(d);
             }
             double maxVal = Double.NEGATIVE_INFINITY;

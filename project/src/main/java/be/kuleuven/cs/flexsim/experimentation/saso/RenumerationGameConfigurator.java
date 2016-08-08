@@ -34,7 +34,7 @@ public class RenumerationGameConfigurator
      * @param factor2
      *            The budget division factor for agg2.
      */
-    public RenumerationGameConfigurator(double factor1, double factor2) {
+    public RenumerationGameConfigurator(final double factor1, final double factor2) {
         this(factor1, factor2, new MersenneTwister(SEED));
     }
 
@@ -48,8 +48,8 @@ public class RenumerationGameConfigurator
      * @param twister
      *            The random generator to use.
      */
-    public RenumerationGameConfigurator(double factor1, double factor2,
-            MersenneTwister twister) {
+    public RenumerationGameConfigurator(final double factor1, final double factor2,
+            final MersenneTwister twister) {
         this.retributionFactor1 = factor1;
         this.retributionFactor2 = factor2;
         this.twister = twister;

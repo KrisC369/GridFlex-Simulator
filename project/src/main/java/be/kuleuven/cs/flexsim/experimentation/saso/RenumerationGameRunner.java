@@ -29,12 +29,12 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
 
     private final List<GameResult> results;
 
-    protected RenumerationGameRunner(int repititions, int nAgents) {
+    protected RenumerationGameRunner(final int repititions, final int nAgents) {
         this(repititions, nAgents, DEF_STEPSIZE);
     }
 
-    protected RenumerationGameRunner(int repititions, int nAgents,
-            double stepsize) {
+    protected RenumerationGameRunner(final int repititions, final int nAgents,
+            final double stepsize) {
         super(repititions, nAgents, "RESULT" + nAgents + "A", stepsize);
         this.results = Lists.newArrayList();
     }
@@ -48,11 +48,11 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
                 * factor; retributionFactor1 += stepSize * factor) {
             for (int retributionFactor2 = 0; retributionFactor2 <= 1
                     * factor; retributionFactor2 += stepSize * factor) {
-                double retrb1 = retributionFactor1 / factor;
-                double retrb2 = retributionFactor2 / factor;
-                RenumerationGameConfigurator config = new RenumerationGameConfigurator(
+                final double retrb1 = retributionFactor1 / factor;
+                final double retrb2 = retributionFactor2 / factor;
+                final RenumerationGameConfigurator config = new RenumerationGameConfigurator(
                         retrb1, retrb2, getTwister());
-                GameDirector director = new GameDirector(
+                final GameDirector director = new GameDirector(
                         new Game<>(nAgents, config, repititions));
 
                 final List<ExperimentAtom> experiments = adapt(director);
@@ -77,7 +77,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
                 resetTwister();
 
                 // create and store yaml.
-                GameResult result = director.getResults()
+                final GameResult result = director.getResults()
                         .withDescription("RetributionFactor1",
                                 String.valueOf(retrb1))
                         .withDescription("RetributionFactor2",
@@ -90,17 +90,17 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
     }
 
     private void dumpYamlResults() {
-        DumperOptions options = new DumperOptions();
+        final DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
         options.setAllowReadOnlyProperties(true);
-        Yaml yaml = new Yaml(options);
-        StringWriter writer = new StringWriter();
+        final Yaml yaml = new Yaml(options);
+        final StringWriter writer = new StringWriter();
         yaml.dumpAll(results.iterator(), writer);
         LoggerFactory.getLogger("YAML").info(writer.toString());
     }
 
     private List<ExperimentAtom> adapt(final GameDirector dir) {
-        List<ExperimentAtom> experiments = Lists.newArrayList();
+        final List<ExperimentAtom> experiments = Lists.newArrayList();
         for (final Playable p : dir.getPlayableVersions()) {
             this.incrementCounter();
             final int current = getCounter();
@@ -123,8 +123,8 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
         return experiments;
     }
 
-    private void printProgress(int progressCounter) {
-        StringBuilder b = new StringBuilder();
+    private void printProgress(final int progressCounter) {
+        final StringBuilder b = new StringBuilder();
         b.append("Simulating instance: ").append(progressCounter).append("/")
                 .append(factor * factor * repititions * totalCombinations);
         logger.warn(b.toString());
@@ -136,14 +136,14 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
      * @param args
      *            commandline args.
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         if (args.length == 0) {
             new RenumerationGameRunner(1, 8).execute();
         } else if (args.length == 1) {
             try {
                 final int agents = Integer.parseInt(args[0]);
                 new RenumerationGameRunner(200, agents).execute();
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)
                         .error("Unparseable cl parameters passed");
                 throw e;
@@ -153,7 +153,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
                 new RenumerationGameRunner(reps, agents).execute();
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)
                         .error("Unparseable cl parameters passed");
                 throw e;

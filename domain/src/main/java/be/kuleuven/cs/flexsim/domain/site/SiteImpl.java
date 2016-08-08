@@ -35,7 +35,7 @@ public class SiteImpl implements Site {
      * @param lines
      *            The lines present in this site.
      */
-    public SiteImpl(FlexProcess... lines) {
+    public SiteImpl(final FlexProcess... lines) {
         this.processes = Lists.newArrayList(lines);
         this.flex = LinkedListMultimap.create();
         this.activationListener = NoopListener.INSTANCE;
@@ -48,11 +48,11 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public void activateFlex(ActivateFlexCommand schedule) {
-        for (FlexProcess p : flex.keySet()) {
-            for (FlexTuple t : flex.get(p)) {
+    public void activateFlex(final ActivateFlexCommand schedule) {
+        for (final FlexProcess p : flex.keySet()) {
+            for (final FlexTuple t : flex.get(p)) {
                 if (t.getId() == schedule.getReferenceID()) {
-                    if (!t.getDirection()) {
+                    if (!t.getDirection().booleanRepresentation()) {
                         p.executeDownFlexProfile(t.getId());
                     } else {
                         p.executeUpFlexProfile(t.getId());
@@ -64,7 +64,7 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public boolean containsLine(FlexProcess process) {
+    public boolean containsLine(final FlexProcess process) {
         return getProcesses().contains(process);
     }
 
@@ -76,29 +76,29 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
 
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         gatherFlex();
     }
 
     private void gatherFlex() {
         this.flex = LinkedListMultimap.create();
-        for (FlexProcess proc : processes) {
+        for (final FlexProcess proc : processes) {
             flex.putAll(proc, Lists.newArrayList(proc.getCurrentFlexbility()));
         }
     }
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        List<SimulationComponent> toret = Lists.newArrayList();
+        final List<SimulationComponent> toret = Lists.newArrayList();
         toret.addAll(processes);
         return toret;
     }
@@ -106,7 +106,7 @@ public class SiteImpl implements Site {
     @Override
     public double getTotalConsumption() {
         double sum = 0;
-        for (FlexProcess fp : processes) {
+        for (final FlexProcess fp : processes) {
             sum += fp.getTotalConsumption();
         }
         return sum;
@@ -115,7 +115,7 @@ public class SiteImpl implements Site {
     @Override
     public double getLastStepConsumption() {
         double sum = 0;
-        for (FlexProcess fp : processes) {
+        for (final FlexProcess fp : processes) {
             sum += fp.getLastStepConsumption();
         }
         return sum;
@@ -123,13 +123,13 @@ public class SiteImpl implements Site {
 
     @Override
     public List<Integer> getBufferOccupancyLevels() {
-        List<List<Integer>> occupancies = Lists.newArrayList();
-        List<Integer> toret = Lists.newArrayList();
-        for (FlexProcess fp : processes) {
+        final List<List<Integer>> occupancies = Lists.newArrayList();
+        final List<Integer> toret = Lists.newArrayList();
+        for (final FlexProcess fp : processes) {
             occupancies.add(fp.getBufferOccupancyLevels());
         }
         int max = 0;
-        for (List<Integer> p : occupancies) {
+        for (final List<Integer> p : occupancies) {
             if (p.size() > max) {
                 max = p.size();
             }
@@ -137,7 +137,7 @@ public class SiteImpl implements Site {
         for (int i = 0; i < max; i++) {
             int sum = 0;
             int count = 0;
-            for (List<Integer> p : occupancies) {
+            for (final List<Integer> p : occupancies) {
                 if (i <= p.size() - 1) {
                     sum += p.get(i);
                     count++;
@@ -150,16 +150,16 @@ public class SiteImpl implements Site {
 
     @Override
     public Collection<Resource> takeResources() {
-        List<Resource> toret = Lists.newArrayList();
-        for (FlexProcess fp : processes) {
+        final List<Resource> toret = Lists.newArrayList();
+        for (final FlexProcess fp : processes) {
             toret.addAll(fp.takeResources());
         }
         return toret;
     }
 
     @Override
-    public void deliverResources(List<Resource> res) {
-        Deque<Resource> q = Lists.newLinkedList(res);
+    public void deliverResources(final List<Resource> res) {
+        final Deque<Resource> q = Lists.newLinkedList(res);
         for (int i = 0; i < res.size(); i++) {
             processes.get(i % processes.size())
                     .deliverResources(Lists.newArrayList(q.pop()));
@@ -172,7 +172,7 @@ public class SiteImpl implements Site {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("Site [hC=").append(hashCode()).append("]");
         return builder.toString();
     }
@@ -183,7 +183,7 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public void addActivationListener(Listener<? super FlexTuple> listener) {
+    public void addActivationListener(final Listener<? super FlexTuple> listener) {
         this.activationListener = MultiplexListener
                 .plus(this.activationListener, listener);
     }

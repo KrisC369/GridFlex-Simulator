@@ -31,7 +31,7 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      * @param sites
      *            The consumption sites connected to this TSO
      */
-    public CopperplateTSO(EnergyConsumptionTrackable... sites) {
+    public CopperplateTSO(final EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
     }
 
@@ -41,7 +41,7 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      * @param sites
      *            The production sites connected to this TSO
      */
-    public CopperplateTSO(EnergyProductionTrackable... sites) {
+    public CopperplateTSO(final EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
     }
 
@@ -61,8 +61,8 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      * @param cons
      *            the consumers.
      */
-    protected CopperplateTSO(EnergyProductionTrackable[] prod,
-            EnergyConsumptionTrackable[] cons) {
+    protected CopperplateTSO(final EnergyProductionTrackable[] prod,
+            final EnergyConsumptionTrackable[] cons) {
         this.consumers = Lists.newArrayList(cons);
         this.producers = Lists.newArrayList(prod);
         this.currentImbalance = 0;
@@ -75,7 +75,7 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      * @param producer
      *            the producer to add.
      */
-    public void registerProducer(EnergyProductionTrackable producer) {
+    public void registerProducer(final EnergyProductionTrackable producer) {
         this.producers.add(producer);
     }
 
@@ -85,22 +85,22 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
      * @param consumer
      *            the consumer to add.
      */
-    public void registerConsumer(EnergyConsumptionTrackable consumer) {
+    public void registerConsumer(final EnergyConsumptionTrackable consumer) {
         this.consumers.add(consumer);
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         int cons = 0;
-        for (EnergyConsumptionTrackable s : consumers) {
+        for (final EnergyConsumptionTrackable s : consumers) {
             cons += s.getLastStepConsumption();
         }
         int prod = 0;
-        for (EnergyProductionTrackable s : producers) {
+        for (final EnergyProductionTrackable s : producers) {
             prod += s.getLastStepProduction();
         }
         currentImbalance = prod - cons;
@@ -108,12 +108,12 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
     }
 
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
-        List<SimulationComponent> toret = Lists.newArrayList();
+        final List<SimulationComponent> toret = Lists.newArrayList();
         toret.addAll(consumers);
         toret.addAll(producers);
         return toret;
@@ -125,7 +125,7 @@ public class CopperplateTSO implements SimulationComponent, BalancingSignal {
     }
 
     @Override
-    public void addNewBalanceValueListener(Listener<? super Integer> listener) {
+    public void addNewBalanceValueListener(final Listener<? super Integer> listener) {
         this.newBalanceValueListener = MultiplexListener
                 .plus(this.newBalanceValueListener, listener);
     }

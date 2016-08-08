@@ -16,14 +16,14 @@ class FinanceAggregatingDecorator implements FinanceTracker {
 
     private final List<FinanceTracker> targets;
 
-    FinanceAggregatingDecorator(FinanceTracker... tt) {
+    FinanceAggregatingDecorator(final FinanceTracker... tt) {
         this.targets = Lists.newArrayList(tt);
     }
 
     @Override
     public double getTotalReward() {
         int sum = 0;
-        for (FinanceTracker t : targets) {
+        for (final FinanceTracker t : targets) {
             sum += t.getTotalReward();
         }
         return sum;
@@ -32,7 +32,7 @@ class FinanceAggregatingDecorator implements FinanceTracker {
     @Override
     public double getTotalCost() {
         int sum = 0;
-        for (FinanceTracker t : targets) {
+        for (final FinanceTracker t : targets) {
             sum += t.getTotalCost();
         }
         return sum;
@@ -41,39 +41,39 @@ class FinanceAggregatingDecorator implements FinanceTracker {
     @Override
     public double getTotalProfit() {
         int sum = 0;
-        for (FinanceTracker t : targets) {
+        for (final FinanceTracker t : targets) {
             sum += t.getTotalProfit();
         }
         return sum;
     }
 
     @Override
-    public void afterTick(int t) {
-        for (FinanceTracker tr : targets) {
+    public void afterTick(final int t) {
+        for (final FinanceTracker tr : targets) {
             tr.afterTick(t);
         }
 
     }
 
     @Override
-    public void tick(int t) {
-        for (FinanceTracker tr : targets) {
+    public void tick(final int t) {
+        for (final FinanceTracker tr : targets) {
             tr.tick(t);
         }
     }
 
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
-        List<SimulationComponent> subcomp = Lists.newArrayList();
-        for (FinanceTracker tr : targets) {
+        final List<SimulationComponent> subcomp = Lists.newArrayList();
+        for (final FinanceTracker tr : targets) {
             subcomp.addAll(tr.getSimulationSubComponents());
         }
         return subcomp;
     }
 
     @Override
-    public void initialize(SimulationContext context) {
-        for (FinanceTracker tr : targets) {
+    public void initialize(final SimulationContext context) {
+        for (final FinanceTracker tr : targets) {
             tr.initialize(context);
         }
     }

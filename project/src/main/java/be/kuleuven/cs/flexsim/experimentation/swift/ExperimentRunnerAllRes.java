@@ -61,7 +61,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private final List<Double> remediedCong2 = Lists.newCopyOnWriteArrayList();
     private boolean competitive = true;
 
-    protected ExperimentRunnerAllRes(int n, int nagents, int allowed) {
+    protected ExperimentRunnerAllRes(final int n, final int nagents, final int allowed) {
         this.n = n;
         this.nagents = nagents;
         this.allowedExcess = allowed;
@@ -73,14 +73,14 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
      * @param args
      *            StdIn args.
      */
-    public static void main(String[] args) {
-        ExpGenerator gen = (reps, agents,
+    public static void main(final String[] args) {
+        final ExpGenerator gen = (reps, agents,
                 allowed) -> new ExperimentRunnerAllRes(reps, agents, allowed);
         parseInput(gen, args, N, ALLOWED_EXCESS);
     }
 
-    protected static void parseInput(ExpGenerator gen, String[] args, int n,
-            int allowedEx) {
+    protected static void parseInput(final ExpGenerator gen, final String[] args, final int n,
+            final int allowedEx) {
 
         if (args.length == 0) {
             startExperiment(gen, 10, 81, allowedEx);
@@ -88,7 +88,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             try {
                 final int agents = Integer.parseInt(args[0]);
                 startExperiment(gen, n, agents, allowedEx);
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error(CL_ERROR);
                 throw e;
@@ -98,7 +98,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
                 startExperiment(gen, reps, agents, allowedEx);
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error(CL_ERROR);
                 throw e;
@@ -109,7 +109,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 final int reps = Integer.valueOf(args[0]);
                 final int allowed = Integer.valueOf(args[2]);
                 startExperiment(gen, reps, agents, allowed);
-            } catch (RuntimeException e) {
+            } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error(CL_ERROR);
                 throw e;
@@ -118,8 +118,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     }
 
-    static void startExperiment(ExpGenerator gen, int reps, int agents,
-            int allowed) {
+    static void startExperiment(final ExpGenerator gen, final int reps, final int agents,
+            final int allowed) {
         gen.getExperiment(reps, agents, allowed).execute();
     }
 
@@ -134,11 +134,11 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     @SuppressWarnings("unused")
-    private static void generateRates(int n) {
-        GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
+    private static void generateRates(final int n) {
+        final GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         for (int i = 0; i < 21; i++) {
-            IntList tt = new IntArrayList();
+            final IntList tt = new IntArrayList();
             for (int j = 0; j < n; j++) {
                 tt.add((int) gd.sample());
             }
@@ -151,15 +151,15 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
      * 
      */
     protected void runSingle() {
-        CongestionProfile profile;
+        final CongestionProfile profile;
         try {
             profile = (CongestionProfile) CongestionProfile.createFromCSV(FILE,
                     COLUMN);
-            GammaDistribution gd = new GammaDistribution(
+            final GammaDistribution gd = new GammaDistribution(
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < n; i++) {
-                ExperimentInstance p = new ExperimentInstance(
+                final ExperimentInstance p = new ExperimentInstance(
                         getSolverBuilder(),
                         new DoubleArrayList(gd.sample(nagents)), profile,
                         ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
@@ -167,7 +167,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER)
                         .info(String.valueOf(p.getEfficiency()));
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                     .error("IOException while opening profile.", e);
         }
@@ -181,9 +181,9 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     protected void runBatch() {
-        CongestionProfile profile;
-        List<ExperimentAtom> instances = Lists.newArrayList();
-        GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
+        final CongestionProfile profile;
+        final List<ExperimentAtom> instances = Lists.newArrayList();
+        final GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         try {
             profile = (CongestionProfile) CongestionProfile.createFromCSV(FILE,
@@ -192,11 +192,11 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 instances.add(new ExperimentAtomImplementation(
                         new DoubleArrayList(gd.sample(nagents)), profile));
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                     .error("IOException while opening profile.", e);
         }
-        ExperimentRunner r;
+        final ExperimentRunner r;
         if (RUN_MULTI_THREADED) {
             r = LocalRunners.createOSTunedMultiThreadedRunner();
         } else {
@@ -206,7 +206,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     protected void logResults() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("BEGINRESULT:\n").append("Res1=").append(mainRes1)
                 .append("\n");
         builder.append("Res2=").append(mainRes2).append("\n");
@@ -226,7 +226,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER).info(builder.toString());
     }
 
-    protected synchronized void addMainResult(String label, double eff) {
+    protected synchronized void addMainResult(final String label, final double eff) {
         if ("comp".equals(label)) {
             mainRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -234,7 +234,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
-    protected synchronized void addActResult(String label, double eff) {
+    protected synchronized void addActResult(final String label, final double eff) {
         if ("comp".equals(label)) {
             actRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -242,7 +242,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
-    protected synchronized void addActEffResult(String label, double eff) {
+    protected synchronized void addActEffResult(final String label, final double eff) {
         if ("comp".equals(label)) {
             actEffRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -250,7 +250,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
-    protected synchronized void addSolveResult(String label, double eff) {
+    protected synchronized void addSolveResult(final String label, final double eff) {
         if ("comp".equals(label)) {
             solvRes1.add(eff);
         } else if ("coop".equals(label)) {
@@ -258,8 +258,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         }
     }
 
-    protected synchronized void addRemediedCongResult(String label,
-            double eff) {
+    protected synchronized void addRemediedCongResult(final String label,
+            final double eff) {
         if ("comp".equals(label)) {
             remediedCong1.add(eff);
         } else if ("coop".equals(label)) {
@@ -338,8 +338,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         @Nullable
         private final CongestionProfile profile;
     
-        ExperimentAtomImplementation(DoubleList realisation,
-                CongestionProfile profile) {
+        ExperimentAtomImplementation(final DoubleList realisation,
+                final CongestionProfile profile) {
             this.real = new DoubleArrayList(realisation);
             this.profile = profile;
             doRegistration();
@@ -379,8 +379,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     class CompetitiveSolverBuilder implements SolverBuilder {
         @Override
-        public AbstractCongestionSolver getSolver(CongestionProfile profile,
-                int n) {
+        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+                final int n) {
             return new CompetitiveCongestionSolver(profile, 8, allowedExcess);
         }
     }
@@ -388,8 +388,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     class CooperativeSolverBuilder implements SolverBuilder {
     
         @Override
-        public AbstractCongestionSolver getSolver(CongestionProfile profile,
-                int n) {
+        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+                final int n) {
             return new CooperativeCongestionSolver(profile, 8, allowedExcess);
         }
     }

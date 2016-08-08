@@ -23,7 +23,7 @@ public final class SimulationClock implements VirtualClock {
      * @param step
      *            the amount of time steps to add.
      */
-    public void addTimeStep(int step) {
+    public void addTimeStep(final int step) {
         this.timecount += step;
     }
 

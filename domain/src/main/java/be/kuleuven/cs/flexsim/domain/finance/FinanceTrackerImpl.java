@@ -38,8 +38,8 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      * @param dm
      *            The debtModel to use.
      */
-    protected FinanceTrackerImpl(ResourceConsumptionTrackableComponent target,
-            RewardModel rm, DebtModel dm) {
+    protected FinanceTrackerImpl(final ResourceConsumptionTrackableComponent target,
+            final RewardModel rm, final DebtModel dm) {
         this.target = target;
         this.context = Optional.absent();
         this.rewardMod = rm;
@@ -48,7 +48,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
         this.context = Optional.of(context);
         this.uid = context.getUIDGenerator().getNextUID();
     }
@@ -59,20 +59,20 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      * {@inheritDoc}
      */
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         calculateCost(t);
         calculateReward(t);
         report();
     }
 
-    private void calculateCost(int t) {
+    private void calculateCost(final int t) {
         incrementTotalCost(
                 debtMod.calculateDebt(t, getTarget().getLastStepConsumption()));
     }
 
-    private void calculateReward(int t) {
+    private void calculateReward(final int t) {
         int rewardIncrement = 0;
-        for (Resource r : getTarget().takeResources()) {
+        for (final Resource r : getTarget().takeResources()) {
             rewardIncrement += rewardMod.calculateReward(t, r);
             incrementItemCount();
         }
@@ -93,13 +93,13 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
                 getTarget().getBufferOccupancyLevels(), getTotalProfit());
     }
 
-    private void publishReport(double totalLaststep, double totalTotal,
-            List<Integer> buffSizes, double profit) {
+    private void publishReport(final double totalLaststep, final double totalTotal,
+            final List<Integer> buffSizes, final double profit) {
         if (!this.context.isPresent()) {
             throw new IllegalStateException(
                     "This component has not been correctly configured with a context.");
         }
-        Event e = getContext().getEventFactory().build("report");
+        final Event e = getContext().getEventFactory().build("report");
         e.setAttribute("pLinehash", this.hashCode());
         e.setAttribute("time",
                 getContext().getSimulationClock().getTimeCount());
@@ -107,7 +107,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
         e.setAttribute(uid + "totalTotalE", totalTotal);
         e.setAttribute(uid + "totalProfitM", profit);
         int idx = 0;
-        for (long i : buffSizes) {
+        for (final long i : buffSizes) {
             e.setAttribute(uid + "_buffer_" + idx++, i);
         }
         e.setAttribute(uid + "buffer_Fin", getItemCount());
@@ -116,12 +116,12 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
     }
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        List<SimulationComponent> toret = new ArrayList<>();
+        final List<SimulationComponent> toret = new ArrayList<>();
         toret.add(getTarget());
         return toret;
     }
@@ -150,7 +150,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
         return this.totalReward;
     }
 
-    protected final void increaseTotalReward(int increment) {
+    protected final void increaseTotalReward(final int increment) {
         this.totalReward = this.totalReward + increment;
     }
 
@@ -163,7 +163,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
         return totalCost;
     }
 
-    protected final void incrementTotalCost(double incr) {
+    protected final void incrementTotalCost(final double incr) {
         this.totalCost = this.totalCost + incr;
     }
 
@@ -186,7 +186,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      * @return A fully instantiated FinanceTracker object.
      */
     public static FinanceTrackerImpl createDefault(
-            ResourceConsumptionTrackableComponent target) {
+            final ResourceConsumptionTrackableComponent target) {
         return new FinanceTrackerImpl(target, RewardModel.CONSTANT,
                 DebtModel.CONSTANT);
 
@@ -205,8 +205,8 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      * @return A fully instantiated FinanceTracker object.
      */
     public static FinanceTrackerImpl createCustom(
-            ResourceConsumptionTrackableComponent target, RewardModel rm,
-            DebtModel dm) {
+            final ResourceConsumptionTrackableComponent target, final RewardModel rm,
+            final DebtModel dm) {
         return new FinanceTrackerImpl(target, rm, dm);
     }
 
@@ -217,7 +217,7 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      *            the targets.
      * @return a FinanceTracker instance.
      */
-    public static FinanceTracker createAggregate(FinanceTracker... tt) {
+    public static FinanceTracker createAggregate(final FinanceTracker... tt) {
         return new FinanceAggregatingDecorator(tt);
     }
 
@@ -230,8 +230,8 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      *            the reward for an activation.
      * @return a FinanceTracker instance.
      */
-    public static FinanceTracker createBalancingFeeTracker(Site target,
-            int reward) {
+    public static FinanceTracker createBalancingFeeTracker(final Site target,
+            final int reward) {
         return new BalancingFeeTracker(target, reward);
     }
 
@@ -246,8 +246,8 @@ public class FinanceTrackerImpl implements SimulationComponent, FinanceTracker {
      *            The retribution factor.
      * @return a FinanceTracker instance.
      */
-    public static FinanceTracker createCustomBalancingFeeTracker(Site target,
-            int reward, double factor) {
+    public static FinanceTracker createCustomBalancingFeeTracker(final Site target,
+            final int reward, final double factor) {
         return new BalancingFeeTracker(target, reward, factor);
     }
 }

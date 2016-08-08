@@ -36,7 +36,7 @@ public class RandomOutputGenerator implements EnergyProductionTrackable {
      *            The random generator to use.
      */
     @VisibleForTesting
-    RandomOutputGenerator(int min, int max, RandomGenerator g) {
+    RandomOutputGenerator(final int min, final int max, final RandomGenerator g) {
         checkArgument(min <= 0, "Minimum value should be less or equal than 0");
         checkArgument(max >= 0, "Minimum value should be greater than 0");
         this.min = min;
@@ -53,7 +53,7 @@ public class RandomOutputGenerator implements EnergyProductionTrackable {
      * @param max
      *            the maximum value for the random generator.
      */
-    public RandomOutputGenerator(int min, int max) {
+    public RandomOutputGenerator(final int min, final int max) {
         this(min, max, new MersenneTwister());
     }
 
@@ -89,7 +89,7 @@ public class RandomOutputGenerator implements EnergyProductionTrackable {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         updateCurrentValue();
     }
 
@@ -109,7 +109,7 @@ public class RandomOutputGenerator implements EnergyProductionTrackable {
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
     }
 
     @Override
@@ -118,7 +118,7 @@ public class RandomOutputGenerator implements EnergyProductionTrackable {
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
         this.g = context.getRandom();
     }
 }

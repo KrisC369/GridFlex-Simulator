@@ -32,8 +32,8 @@ public final class DefaultSiteAgentGenerator {
      *            max.
      * @return A sitesimulation agent.
      */
-    public static Site getAgent(MersenneTwister twister, int max, int min,
-            int starting, int meanSteps) {
+    public static Site getAgent(final MersenneTwister twister, final int max, final int min,
+            final int starting, final int meanSteps) {
         int current = (int) (twister.nextGaussian()
                 * ((max - min) / (double) 4)) + starting;
         int steps = (int) Math.round(twister.nextGaussian() * 2 + meanSteps);

@@ -40,8 +40,8 @@ public class BRPAggregator extends IndependentAggregator {
      * @param reservation The reservation payment portion marker.
      * @param activation  The activation payment portion marker.
      */
-    public BRPAggregator(BalancingSignal tso, PriceSignal pricing, double reservation,
-            double activation) {
+    public BRPAggregator(final BalancingSignal tso, final PriceSignal pricing, final double reservation,
+            final double activation) {
         super(tso, 1);
         checkArgument(
                 reservation + activation >= 0 && reservation + activation <= 1,
@@ -59,12 +59,12 @@ public class BRPAggregator extends IndependentAggregator {
      *
      * @param client The site to register.
      */
-    public void registerClient(Site client) {
+    public void registerClient(final Site client) {
         super.registerClient(client);
         this.paymentMapper.put(client, createMediator(client));
     }
 
-    private RenumerationMediator createMediator(Site client) {
+    private RenumerationMediator createMediator(final Site client) {
         return RenumerationMediator.create(client, reservePortion);
     }
 
@@ -74,71 +74,71 @@ public class BRPAggregator extends IndependentAggregator {
      * @param s the API reference.
      * @return The registered FinanceTracker.
      */
-    public FinanceTracker getFinanceTrackerFor(SiteFlexAPI s) {
+    public FinanceTracker getFinanceTrackerFor(final SiteFlexAPI s) {
         return getActualPaymentMediatorFor(s);
     }
 
-    RenumerationMediator getActualPaymentMediatorFor(SiteFlexAPI s) {
+    RenumerationMediator getActualPaymentMediatorFor(final SiteFlexAPI s) {
         checkArgument(paymentMapper.containsKey(s),
                 "Invalid argument: Site not registered as client.");
         return this.paymentMapper.get(s);
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         // Get target and budget and set budgets.
-        int currentImbalVol = getTargetFlex();
+        final int currentImbalVol = getTargetFlex();
         // Make reservation payments
-        Multimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
-        int remediedImbalance = doAggregationStep(t, currentImbalVol, flex);
+        final Multimap<SiteFlexAPI, FlexTuple> flex = gatherFlexInfo();
+        final int remediedImbalance = doAggregationStep(t, currentImbalVol, flex);
         calculateAndDivideBudgets(remediedImbalance);
         payReservationFees(flex);
         nominateAncillaryServiceActivation(currentImbalVol, remediedImbalance);
     }
 
-    private void nominateAncillaryServiceActivation(int currentImbalVol,
-            int remediedImbalance) {
-        Nomination n = Nomination.create(currentImbalVol, remediedImbalance);
-        for (AncilServiceNominationManager asnm : nominationManagers) {
+    private void nominateAncillaryServiceActivation(final int currentImbalVol,
+            final int remediedImbalance) {
+        final Nomination n = Nomination.create(currentImbalVol, remediedImbalance);
+        for (final AncilServiceNominationManager asnm : nominationManagers) {
             asnm.registerNomination(n);
         }
     }
 
-    private void calculateAndDivideBudgets(int targetFlex) {
-        int currentImbalancePrice = imbalancePricing.getCurrentPrice();
-        int budget = Math.abs(targetFlex) * currentImbalancePrice;
-        int incentives = (int) (budget * (activationPortion + reservePortion));
+    private void calculateAndDivideBudgets(final int targetFlex) {
+        final int currentImbalancePrice = imbalancePricing.getCurrentPrice();
+        final int budget = Math.abs(targetFlex) * currentImbalancePrice;
+        final int incentives = (int) (budget * (activationPortion + reservePortion));
         dispatchBudgets(incentives);
     }
 
-    private void dispatchBudgets(int incentives) {
-        for (RenumerationMediator m : paymentMapper.values()) {
+    private void dispatchBudgets(final int incentives) {
+        for (final RenumerationMediator m : paymentMapper.values()) {
             m.setBudget(incentives);
         }
     }
 
-    private void payReservationFees(Multimap<SiteFlexAPI, FlexTuple> flex) {
+    private void payReservationFees(final Multimap<SiteFlexAPI, FlexTuple> flex) {
         int sumFlex = 0;
-        Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
-        for (SiteFlexAPI api : flex.keySet()) {
-            int maxFlexInProfile = CollectionUtils.max(flex.get(api),
+        final Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
+        for (final SiteFlexAPI api : flex.keySet()) {
+            final int maxFlexInProfile = CollectionUtils.max(flex.get(api),
                     FlexTuple::getDeltaP);
             sumFlex += maxFlexInProfile;
             portions.put(api, maxFlexInProfile);
         }
-        for (Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
+        for (final Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
             getActualPaymentMediatorFor(entry.getKey())
                     .registerReservation(entry.getValue() / (double) sumFlex);
         }
     }
 
-    private void payActivationFees(Multimap<SiteFlexAPI, FlexTuple> flex,
-            Set<Long> ids) {
+    private void payActivationFees(final Multimap<SiteFlexAPI, FlexTuple> flex,
+            final Set<Long> ids) {
         int sumFlex = 0;
-        Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
-        for (SiteFlexAPI api : flex.keySet()) {
-            for (long i : ids) {
-                for (FlexTuple t : flex.get(api)) {
+        final Map<SiteFlexAPI, Integer> portions = Maps.newLinkedHashMap();
+        for (final SiteFlexAPI api : flex.keySet()) {
+            for (final long i : ids) {
+                for (final FlexTuple t : flex.get(api)) {
                     if (t.getId() == i) {
                         sumFlex += t.getDeltaP();
                         portions.put(api, t.getDeltaP());
@@ -146,7 +146,7 @@ public class BRPAggregator extends IndependentAggregator {
                 }
             }
         }
-        for (Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
+        for (final Entry<SiteFlexAPI, Integer> entry : portions.entrySet()) {
             getActualPaymentMediatorFor(entry.getKey())
                     .registerActivation(entry.getValue() / (double) sumFlex);
         }
@@ -163,7 +163,7 @@ public class BRPAggregator extends IndependentAggregator {
      * @param manager The manager to register.
      */
     public void registerNominationManager(
-            AncilServiceNominationManager manager) {
+            final AncilServiceNominationManager manager) {
         this.nominationManagers.add(manager);
     }
 
@@ -175,13 +175,13 @@ public class BRPAggregator extends IndependentAggregator {
          *
          * @param delegate the target to delegate to.
          */
-        public AggregationDispatch(AggregationContext delegate) {
+        public AggregationDispatch(final AggregationContext delegate) {
             this.delegate = delegate;
         }
 
         @Override
-        public void dispatchActivation(Multimap<SiteFlexAPI, FlexTuple> flex,
-                Set<Long> ids) {
+        public void dispatchActivation(final Multimap<SiteFlexAPI, FlexTuple> flex,
+                final Set<Long> ids) {
             delegate.dispatchActivation(flex, ids);
             payActivationFees(flex, ids);
         }

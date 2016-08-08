@@ -34,7 +34,7 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
     }
 
     @Override
-    public void registerResponder(Responder<T> r) {
+    public void registerResponder(final Responder<T> r) {
         this.responders.add(r);
     }
 
@@ -43,7 +43,7 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
      * immediately calls {@code ContractNetInitiator.getWorkUnitDescription()}.
      */
     public void sollicitWork() {
-        Optional<T> p = getWorkUnitDescription();
+        final Optional<T> p = getWorkUnitDescription();
         resetCommunication();
         if (p.isPresent()) {
             startCNP(p.get());
@@ -55,9 +55,9 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
         props = Maps.newLinkedHashMap();
     }
 
-    private void startCNP(T p) {
+    private void startCNP(final T p) {
         this.description = java.util.Optional.ofNullable(p);
-        for (Responder<T> r : responders) {
+        for (final Responder<T> r : responders) {
             r.callForProposal(new AnswerAnticipator<T>() {
 
                 @Override
@@ -66,7 +66,7 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
                 }
 
                 @Override
-                public void affirmative(T prop, AnswerAnticipator<T> ant) {
+                public void affirmative(final T prop, final AnswerAnticipator<T> ant) {
                     phase1Accept(prop, ant); // propose
                 }
 
@@ -79,7 +79,7 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
         moveToPhase2();
     }
 
-    private void phase1Accept(T prop, AnswerAnticipator<T> ant) {
+    private void phase1Accept(final T prop, final AnswerAnticipator<T> ant) {
         this.messageCount++;
         props.put(prop, ant);
         moveToPhase2();
@@ -101,11 +101,11 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
 
     protected abstract void signalNoSolutionFound();
 
-    private void cnpPhaseTwo(Map<T, AnswerAnticipator<T>> props,
-            T description) {
-        Optional<T> best = findBestProposal(Lists.newArrayList(props.keySet()),
+    private void cnpPhaseTwo(final Map<T, AnswerAnticipator<T>> props,
+            final T description) {
+        final Optional<T> best = findBestProposal(Lists.newArrayList(props.keySet()),
                 description);
-        Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
+        final Map<T, AnswerAnticipator<T>> rejects = Maps.newLinkedHashMap(props);
         if (best.isPresent()) {
             rejects.remove(best.get());
             notifyRejects(rejects);
@@ -126,12 +126,12 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
     public abstract T updateWorkDescription(T best);
 
     private void notifyAcceptPhase2(final T best,
-            Map<T, AnswerAnticipator<T>> props) {
+            final Map<T, AnswerAnticipator<T>> props) {
         checkNotNull(props.get(best)).affirmative(updateWorkDescription(best),
                 new AnswerAnticipator<T>() { // accept-proposal
                     // Completion or failure notification.
                     @Override
-                    public void affirmative(T prop, AnswerAnticipator<T> ant) { // inform-done
+                    public void affirmative(final T prop, final AnswerAnticipator<T> ant) { // inform-done
                         notifyWorkDone(prop);
                     }
 
@@ -141,7 +141,7 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
                 });
     }
 
-    private void notifyRejects(Map<T, AnswerAnticipator<T>> rejects) {
+    private void notifyRejects(final Map<T, AnswerAnticipator<T>> rejects) {
         // reject-proposal
         rejects.values().forEach(AnswerAnticipator::reject);
     }

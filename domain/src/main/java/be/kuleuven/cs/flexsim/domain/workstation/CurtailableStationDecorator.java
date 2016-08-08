@@ -17,7 +17,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
      * 
      * @param delegate
      */
-    CurtailableStationDecorator(T delegate) {
+    CurtailableStationDecorator(final T delegate) {
         super(delegate);
         this.curtailed = false;
     }
@@ -49,7 +49,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
      * Only defers ticks when not in curtailment mode. {@inheritDoc}
      */
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         if (!isCurtailed()) {
             super.afterTick(t);
         }
@@ -59,7 +59,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
      * Only defers ticks when not in curtailment mode. {@inheritDoc}
      */
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         if (!isCurtailed()) {
             super.tick(t);
         }
@@ -74,7 +74,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
     }
 
     @Override
-    public void acceptVisitor(WorkstationVisitor subject) {
+    public void acceptVisitor(final WorkstationVisitor subject) {
         subject.register(this);
         super.acceptVisitor(subject);
     }
@@ -85,7 +85,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("CurtailableWorkstation [curtailed=").append(curtailed)
                 .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();

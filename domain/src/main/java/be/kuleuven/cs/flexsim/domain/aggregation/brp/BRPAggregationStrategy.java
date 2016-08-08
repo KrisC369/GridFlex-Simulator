@@ -26,8 +26,8 @@ public class BRPAggregationStrategy implements AggregationStrategy {
      * com.google.common.collect.LinkedListMultimap, int)
      */
     @Override
-    public int performAggregationStep(AggregationContext context, int t,
-            Multimap<SiteFlexAPI, FlexTuple> flex, int target) {
+    public int performAggregationStep(final AggregationContext context, final int t,
+            final Multimap<SiteFlexAPI, FlexTuple> flex, final int target) {
         return 0;
     }
 }

@@ -40,7 +40,7 @@ public class HeuristicSymmetricPayoffMatrix {
      * @param actions
      *            the amount of actions.
      */
-    public HeuristicSymmetricPayoffMatrix(int agents, int actions) {
+    public HeuristicSymmetricPayoffMatrix(final int agents, final int actions) {
         this.agents = agents;
         this.actions = actions;
         this.table = Maps.newLinkedHashMap();
@@ -55,7 +55,7 @@ public class HeuristicSymmetricPayoffMatrix {
      * @return true if every entry has a value.
      */
     public boolean isComplete() {
-        long possibilities = getNumberOfPossibilities();
+        final long possibilities = getNumberOfPossibilities();
         if (this.table.size() != possibilities) {
             return false;
         }
@@ -74,10 +74,10 @@ public class HeuristicSymmetricPayoffMatrix {
      * @param key
      *            The population shares as indices for the value
      */
-    public void addEntry(long[] value, int... key) {
+    public void addEntry(final long[] value, final int... key) {
         checkArgument(testKey(key));
         checkArgument(testValues(value));
-        PayoffEntry entry = PayoffEntry.from(key);
+        final PayoffEntry entry = PayoffEntry.from(key);
         if (getEntryCount(entry) == 0) {
             newEntry(entry, value);
         } else {
@@ -85,12 +85,12 @@ public class HeuristicSymmetricPayoffMatrix {
         }
     }
 
-    private boolean testKey(int[] key) {
+    private boolean testKey(final int[] key) {
         if (key.length != actions) {
             return false;
         }
         int count = 0;
-        for (int i : key) {
+        for (final int i : key) {
             count += i;
         }
         if (count != agents) {
@@ -99,28 +99,28 @@ public class HeuristicSymmetricPayoffMatrix {
         return true;
     }
 
-    private boolean testValues(long[] value) {
+    private boolean testValues(final long[] value) {
         if (value.length != agents) {
             return false;
         }
         return true;
     }
 
-    private void plusEntry(PayoffEntry entry, long[] value) {
+    private void plusEntry(final PayoffEntry entry, final long[] value) {
         this.table.put(entry, arrayAdd(table.get(entry), value));
         this.tableCount.put(entry, tableCount.get(entry) + 1);
     }
 
-    private Long[] arrayAdd(Long[] first, long[] second) {
-        Long[] toret = new Long[first.length];
+    private Long[] arrayAdd(final Long[] first, final long[] second) {
+        final Long[] toret = new Long[first.length];
         for (int i = 0; i < first.length; i++) {
             toret[i] = first[i] + second[i];
         }
         return toret;
     }
 
-    private void newEntry(PayoffEntry entry, long[] value) {
-        Long[] toret = new Long[value.length];
+    private void newEntry(final PayoffEntry entry, final long[] value) {
+        final Long[] toret = new Long[value.length];
         for (int i = 0; i < value.length; i++) {
             toret[i] = value[i];
         }
@@ -128,7 +128,7 @@ public class HeuristicSymmetricPayoffMatrix {
         this.tableCount.put(entry, 1);
     }
 
-    private int getEntryCount(PayoffEntry entry) {
+    private int getEntryCount(final PayoffEntry entry) {
         if (this.tableCount.containsKey(entry)) {
             return this.tableCount.get(entry);
         }
@@ -142,12 +142,12 @@ public class HeuristicSymmetricPayoffMatrix {
      *            the index keys.
      * @return the value recorded in the matrix.
      */
-    public double[] getEntry(int... key) {
+    public double[] getEntry(final int... key) {
         checkArgument(testKey(key));
-        PayoffEntry entry = PayoffEntry.from(key);
+        final PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        Long[] sums = table.get(entry);
-        double[] toret = new double[sums.length];
+        final Long[] sums = table.get(entry);
+        final double[] toret = new double[sums.length];
         for (int i = 0; i < sums.length; i++) {
             toret[i] = sums[i] / (double) tableCount.get(entry);
         }
@@ -156,8 +156,8 @@ public class HeuristicSymmetricPayoffMatrix {
 
     @Override
     public String toString() {
-        StringBuilder b = new StringBuilder();
-        for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+        final StringBuilder b = new StringBuilder();
+        for (final Entry<PayoffEntry, Long[]> e : table.entrySet()) {
             b.append("V:").append(e.getKey()).append("->")
                     .append(Arrays
                             .toString(this.getEntry(e.getKey().getEntries())))
@@ -177,19 +177,19 @@ public class HeuristicSymmetricPayoffMatrix {
     // TODO Refactor out this analysis specific data computation + calculate
     // other specs in the refactored out module.
     public List<Double> getDynamicEquationFactors() {
-        List<Double> toReturn = Lists.newArrayList();
-        for (Entry<PayoffEntry, Long[]> e : table.entrySet()) {
-            PayoffEntry entry = e.getKey();
-            double[] values = getEntry(e.getKey().getEntries());
+        final List<Double> toReturn = Lists.newArrayList();
+        for (final Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+            final PayoffEntry entry = e.getKey();
+            final double[] values = getEntry(e.getKey().getEntries());
             int coeffDone = 0;
             for (int i = 0; i < entry.getEntries().length; i++) {
-                int currCoeff = entry.getEntries()[i];
+                final int currCoeff = entry.getEntries()[i];
                 long sum = 0;
                 for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
                     sum += values[j];
                 }
                 if (currCoeff > 0) {
-                    double avg = sum / (double) currCoeff;
+                    final double avg = sum / (double) currCoeff;
                     toReturn.add(avg);
                 }
                 coeffDone += currCoeff;

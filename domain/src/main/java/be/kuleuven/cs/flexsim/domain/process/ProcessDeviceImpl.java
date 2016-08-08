@@ -46,9 +46,9 @@ class ProcessDeviceImpl implements ProcessDevice {
 
     @Override
     public List<FlexTuple> getCurrentFlexbility(
-            List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
-            List<DualModeWorkstation> dualModeWorkstations) {
+            final List<CurtailableWorkstation> curtailableWorkstations,
+            final List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            final List<DualModeWorkstation> dualModeWorkstations) {
 
         if (!fresh) {
             this.flexibility = recalculateFlex(curtailableWorkstations,
@@ -59,28 +59,28 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     private List<FlexTuple> recalculateFlex(
-            List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
-            List<DualModeWorkstation> dualModeWorkstations) {
+            final List<CurtailableWorkstation> curtailableWorkstations,
+            final List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            final List<DualModeWorkstation> dualModeWorkstations) {
         this.profileMap = LinkedListMultimap.create();
         return calcInstantaneousFlex(curtailableWorkstations,
                 tradeofSteerableWorkstations, dualModeWorkstations);
     }
 
     private List<FlexTuple> calcInstantaneousFlex(
-            List<CurtailableWorkstation> curtailableWorkstations,
-            List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
-            List<DualModeWorkstation> dualModeWorkstations) {
+            final List<CurtailableWorkstation> curtailableWorkstations,
+            final List<TradeofSteerableWorkstation> tradeofSteerableWorkstations,
+            final List<DualModeWorkstation> dualModeWorkstations) {
         if (curtailableWorkstations.isEmpty()
                 && tradeofSteerableWorkstations.isEmpty()) {
             return Lists.newArrayList(FlexTuple.createNONE());
         }
         List<FlexTuple> flexRet = Lists.newArrayList();
-        List<CurtailableWorkstation> effectivelyCurtailableStations = getEffectivelyCurtailableStations(
+        final List<CurtailableWorkstation> effectivelyCurtailableStations = getEffectivelyCurtailableStations(
                 curtailableWorkstations);
-        List<CurtailableWorkstation> curtailedStations = getCurtailedStations(
+        final List<CurtailableWorkstation> curtailedStations = getCurtailedStations(
                 curtailableWorkstations);
-        for (FlexAspect aspect : aspects) {
+        for (final FlexAspect aspect : aspects) {
             flexRet.addAll(aspect.getFlexibility(effectivelyCurtailableStations,
                     curtailedStations, dualModeWorkstations, profileMap));
         }
@@ -89,13 +89,13 @@ class ProcessDeviceImpl implements ProcessDevice {
         return flexRet;
     }
 
-    private List<FlexTuple> filterOutDuplicates(List<FlexTuple> flex) {
+    private List<FlexTuple> filterOutDuplicates(final List<FlexTuple> flex) {
         return Lists.newArrayList(Sets.newLinkedHashSet(flex));
     }
 
-    private List<FlexTuple> someOrNone(List<FlexTuple> flex) {
-        List<FlexTuple> fr = Lists.newArrayList();
-        for (FlexTuple f : flex) {
+    private List<FlexTuple> someOrNone(final List<FlexTuple> flex) {
+        final List<FlexTuple> fr = Lists.newArrayList();
+        for (final FlexTuple f : flex) {
             if (!f.equals(FlexTuple.NONE)) {
                 fr.add(f);
             }
@@ -107,20 +107,20 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     private List<CurtailableWorkstation> getEffectivelyCurtailableStations(
-            List<CurtailableWorkstation> curtailableWorkstations) {
+            final List<CurtailableWorkstation> curtailableWorkstations) {
         return testAndFilterCurtailedStation(curtailableWorkstations, false);
     }
 
     private List<CurtailableWorkstation> getCurtailedStations(
-            List<CurtailableWorkstation> curtailableWorkstations) {
+            final List<CurtailableWorkstation> curtailableWorkstations) {
         return testAndFilterCurtailedStation(curtailableWorkstations, true);
     }
 
     private List<CurtailableWorkstation> testAndFilterCurtailedStation(
-            List<CurtailableWorkstation> curtailableWorkstations,
-            boolean isCurt) {
-        List<CurtailableWorkstation> toret = Lists.newArrayList();
-        for (CurtailableWorkstation w : curtailableWorkstations) {
+            final List<CurtailableWorkstation> curtailableWorkstations,
+            final boolean isCurt) {
+        final List<CurtailableWorkstation> toret = Lists.newArrayList();
+        for (final CurtailableWorkstation w : curtailableWorkstations) {
             if (w.isCurtailed() == isCurt) {
                 toret.add(w);
             }
@@ -134,40 +134,40 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     @Override
-    public void executeDownFlexProfile(long id) {
-        List<Workstation> stations = profileMap.get(id);
-        for (Workstation t : stations) {
+    public void executeDownFlexProfile(final long id) {
+        final List<Workstation> stations = profileMap.get(id);
+        for (final Workstation t : stations) {
             t.acceptVisitor(downFlexVisitor);
         }
     }
 
     @Override
-    public void executeUpFlexProfile(long id) {
-        List<Workstation> stations = profileMap.get(id);
-        for (Workstation t : stations) {
+    public void executeUpFlexProfile(final long id) {
+        final List<Workstation> stations = profileMap.get(id);
+        for (final Workstation t : stations) {
             t.acceptVisitor(upFlexVisitor);
         }
 
     }
 
-    private void logDualModeHigh(DualModeWorkstation ws) {
+    private void logDualModeHigh(final DualModeWorkstation ws) {
         logger.debug("Executing singal High on {}", ws);
     }
 
-    private void logDualModeLow(DualModeWorkstation ws) {
+    private void logDualModeLow(final DualModeWorkstation ws) {
         logger.debug("Executing singal Low on {}", ws);
     }
 
-    private void logFullCurtailment(Workstation c) {
+    private void logFullCurtailment(final Workstation c) {
         logger.debug("Executing curtailment on {}", c);
     }
 
-    private void logCancelCurtailment(Workstation c) {
+    private void logCancelCurtailment(final Workstation c) {
         logger.debug("Restoring curtailment on {}", c);
     }
 
     @Override
-    public ProcessDevice addFlexAspect(FlexAspect aspect) {
+    public ProcessDevice addFlexAspect(final FlexAspect aspect) {
         this.aspects.add(aspect);
         return this;
     }
@@ -175,46 +175,46 @@ class ProcessDeviceImpl implements ProcessDevice {
     private final class UpFlexVisitor implements WorkstationVisitor {
 
         @Override
-        public void register(DualModeWorkstation ws) {
+        public void register(final DualModeWorkstation ws) {
             ws.signalHighConsumption();
             logDualModeHigh(ws);
         }
 
         @Override
-        public void register(TradeofSteerableWorkstation ws) {
+        public void register(final TradeofSteerableWorkstation ws) {
         }
 
         @Override
-        public void register(CurtailableWorkstation c) {
+        public void register(final CurtailableWorkstation c) {
             c.restore();
             logCancelCurtailment(c);
         }
 
         @Override
-        public void register(Workstation workstation) {
+        public void register(final Workstation workstation) {
         }
     }
 
     private final class DownFlexVisitor implements WorkstationVisitor {
 
         @Override
-        public void register(DualModeWorkstation ws) {
+        public void register(final DualModeWorkstation ws) {
             ws.signalLowConsumption();
             logDualModeLow(ws);
         }
 
         @Override
-        public void register(TradeofSteerableWorkstation ws) {
+        public void register(final TradeofSteerableWorkstation ws) {
         }
 
         @Override
-        public void register(CurtailableWorkstation c) {
+        public void register(final CurtailableWorkstation c) {
             c.doFullCurtailment();
             logFullCurtailment(c);
         }
 
         @Override
-        public void register(Workstation workstation) {
+        public void register(final Workstation workstation) {
         }
     }
 }

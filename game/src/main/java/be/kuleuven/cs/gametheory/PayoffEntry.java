@@ -13,7 +13,7 @@ abstract class PayoffEntry {
 
     abstract int[] getEntries();
 
-    static PayoffEntry from(int... key) {
+    static PayoffEntry from(final int... key) {
         return new AutoValue_PayoffEntry(key);
     }
 }

@@ -25,12 +25,12 @@ public class RenumerationGame2ImbSig extends RenumerationGame {
      * @param factor2
      *            The retribution factor for agent 2
      */
-    public RenumerationGame2ImbSig(int seed, double factor1, double factor2) {
+    public RenumerationGame2ImbSig(final int seed, final double factor1, final double factor2) {
         super(seed);
 
-        RandomTSO tso1 = new RandomTSO(-FIXED_IMBAL_SIGNAL_WIDTH,
+        final RandomTSO tso1 = new RandomTSO(-FIXED_IMBAL_SIGNAL_WIDTH,
                 FIXED_IMBAL_SIGNAL_WIDTH, new MersenneTwister(seed));
-        RandomTSO tso2 = new RandomTSO(-FIXED_IMBAL_SIGNAL_WIDTH / 2,
+        final RandomTSO tso2 = new RandomTSO(-FIXED_IMBAL_SIGNAL_WIDTH / 2,
                 FIXED_IMBAL_SIGNAL_WIDTH / 2, new MersenneTwister(seed));
         addSimComponent(tso1);
         addSimComponent(tso2);
@@ -38,7 +38,7 @@ public class RenumerationGame2ImbSig extends RenumerationGame {
                 factor1, 1 - factor1));
         this.addAggregator(new BRPAggregator(tso2, () -> FIXED_PRICE_SIGNAL,
                 factor2, 1 - factor2));
-        for (BRPAggregator agg : getActionSet()) {
+        for (final BRPAggregator agg : getActionSet()) {
             agg.registerNominationManager(new EfficiencyTracker());
         }
     }
@@ -49,7 +49,7 @@ public class RenumerationGame2ImbSig extends RenumerationGame {
      * @param seed
      *            The seed for this experiment.
      */
-    public RenumerationGame2ImbSig(int seed) {
+    public RenumerationGame2ImbSig(final int seed) {
         this(seed, 1, 1);
 
     }

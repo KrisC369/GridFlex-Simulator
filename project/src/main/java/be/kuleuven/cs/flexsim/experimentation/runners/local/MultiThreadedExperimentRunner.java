@@ -27,11 +27,11 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
      * @param threads
      *            The number of threads.
      */
-    public MultiThreadedExperimentRunner(int threads) {
+    public MultiThreadedExperimentRunner(final int threads) {
         this(Executors.newFixedThreadPool(threads));
     }
 
-    protected MultiThreadedExperimentRunner(ExecutorService exec) {
+    protected MultiThreadedExperimentRunner(final ExecutorService exec) {
         this.executor = exec;
     }
 
@@ -44,9 +44,9 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
      */
     @Override
     public void runExperiments(
-            Collection<? extends ExperimentAtom> experiments) {
-        List<Callable<Object>> todo = new ArrayList<>(experiments.size());
-        for (ExperimentAtom e : experiments) {
+            final Collection<? extends ExperimentAtom> experiments) {
+        final List<Callable<Object>> todo = new ArrayList<>(experiments.size());
+        for (final ExperimentAtom e : experiments) {
             todo.add(Executors.callable(e));
         }
         try {

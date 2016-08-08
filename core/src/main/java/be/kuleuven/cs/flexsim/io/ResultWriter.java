@@ -24,7 +24,7 @@ public class ResultWriter {
      * @param target
      *            The target to take results from.
      */
-    public ResultWriter(Writable target) {
+    public ResultWriter(final Writable target) {
         this(target, "RESULTS");
     }
 
@@ -36,7 +36,7 @@ public class ResultWriter {
      * @param filename
      *            The filename for the logger.
      */
-    public ResultWriter(Writable target, String filename) {
+    public ResultWriter(final Writable target, final String filename) {
         logger = LoggerFactory.getLogger(filename);
         this.target = target;
         this.resultComponents = Maps.newLinkedHashMap();
@@ -50,13 +50,13 @@ public class ResultWriter {
     }
 
     private String buildMessage() {
-        StringBuilder b = new StringBuilder()
+        final StringBuilder b = new StringBuilder()
         .append("Writing results:\n")
         .append(target.getFormattedResultString())
         .append("----------------\n");
         if (!this.resultComponents.isEmpty()) {
             b.append("Other result components:\n");
-            for (Entry<String, String> entry : resultComponents.entrySet()) {
+            for (final Entry<String, String> entry : resultComponents.entrySet()) {
                 b.append(entry.getKey()).append(":").append(entry.getValue())
                         .append("\n");
             }
@@ -65,7 +65,7 @@ public class ResultWriter {
         return b.toString();
     }
 
-    private void writeToLogger(String message) {
+    private void writeToLogger(final String message) {
         logger.info(message);
     }
 
@@ -77,7 +77,7 @@ public class ResultWriter {
      * @param value
      *            the value for the representing key.
      */
-    public void addResultComponent(String key, String value) {
+    public void addResultComponent(final String key, final String value) {
         this.resultComponents.put(key, value);
     }
 

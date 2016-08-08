@@ -49,7 +49,7 @@ public class SiteSimulation implements Site {
     private int noFlexTimer;
     private int flexTimer;
 
-    SiteSimulation(int base, int min, int max, int maxTuples) {
+    SiteSimulation(final int base, final int min, final int max, final int maxTuples) {
         this(base, min, max, maxTuples, 1, 0, 0);
     }
 
@@ -71,8 +71,8 @@ public class SiteSimulation implements Site {
      * @param cease
      *            the cease time for activation.
      */
-    SiteSimulation(int base, int min, int max, int maxTuples, int duration,
-            int ramp, int cease) {
+    SiteSimulation(final int base, final int min, final int max, final int maxTuples, final int duration,
+            final int ramp, final int cease) {
         checkArgument(min <= base && base <= max);
         this.activationListener = NoopListener.INSTANCE;
         this.maxLimitConsumption = max;
@@ -99,10 +99,10 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void activateFlex(ActivateFlexCommand schedule) {
-        for (FlexTuple f : flexData) {
+    public void activateFlex(final ActivateFlexCommand schedule) {
+        for (final FlexTuple f : flexData) {
             if (f.getId() == schedule.getReferenceID()) {
-                if (!f.getDirection()) {
+                if (!f.getDirection().booleanRepresentation()) {
                     currentConsumption -= f.getDeltaP();
                 } else {
                     currentConsumption += f.getDeltaP();
@@ -113,7 +113,7 @@ public class SiteSimulation implements Site {
         }
     }
 
-    private void startTheClock(int steps, int cease) {
+    private void startTheClock(final int steps, final int cease) {
         this.noFlexTimer = steps + cease;
         this.flexTimer = steps;
     }
@@ -125,8 +125,8 @@ public class SiteSimulation implements Site {
 
     @Override
     public Collection<Resource> takeResources() {
-        List<Resource> res = Lists.newArrayList();
-        double factor = (double) (getCurrentConsumption()
+        final List<Resource> res = Lists.newArrayList();
+        final double factor = (double) (getCurrentConsumption()
                 - getMinLimitConsumption())
                 / (double) (getMaxLimitConsumption()
                         - getMinLimitConsumption());
@@ -138,7 +138,7 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void deliverResources(List<Resource> res) {
+    public void deliverResources(final List<Resource> res) {
         throw new UnsupportedOperationException(
                 "This implementation does not support resource handling stuff.");
     }
@@ -159,7 +159,7 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         updateConsumption();
     }
 
@@ -168,15 +168,15 @@ public class SiteSimulation implements Site {
     }
 
     protected void calculateCurrentFlex() {
-        List<FlexTuple> upFlex = Lists.newArrayList();
-        List<FlexTuple> downFlex = Lists.newArrayList();
+        final List<FlexTuple> upFlex = Lists.newArrayList();
+        final List<FlexTuple> downFlex = Lists.newArrayList();
         // upFlex:
-        int upDiff = getMaxLimitConsumption() - getCurrentConsumption();
+        final int upDiff = getMaxLimitConsumption() - getCurrentConsumption();
         int diffStep = upDiff / getMaxTuples();
         for (int i = 1; i <= getMaxTuples(); i++) {
             upFlex.add(makeTuple(i * diffStep, true));
         }
-        int downDiff = getCurrentConsumption() - getMinLimitConsumption();
+        final int downDiff = getCurrentConsumption() - getMinLimitConsumption();
         diffStep = downDiff / getMaxTuples();
         for (int i = 1; i <= getMaxTuples(); i++) {
             downFlex.add(makeTuple(i * diffStep, false));
@@ -184,8 +184,8 @@ public class SiteSimulation implements Site {
         resetFlex(upFlex, downFlex);
     }
 
-    protected final FlexTuple makeTuple(int power, boolean isUpflex) {
-        return FlexTuple.create(newId(), power, isUpflex, duration, ramp,
+    protected final FlexTuple makeTuple(final int power, final boolean isUpflex) {
+        return FlexTuple.create(newId(), power, FlexTuple.Direction.fromRepresentation(isUpflex), duration, ramp,
                 cease);
     }
 
@@ -193,13 +193,13 @@ public class SiteSimulation implements Site {
         return generator.getNextUID();
     }
 
-    protected void resetFlex(List<FlexTuple> upFlex, List<FlexTuple> downFlex) {
+    protected void resetFlex(final List<FlexTuple> upFlex, final List<FlexTuple> downFlex) {
         this.flexData = Lists.newArrayList(upFlex);
         this.flexData.addAll(downFlex);
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         if (flexTimer == 0) {
             resetConsumption();
         }
@@ -221,12 +221,12 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
         this.generator = context.getUIDGenerator();
     }
 
     @Override
-    public boolean containsLine(FlexProcess process) {
+    public boolean containsLine(final FlexProcess process) {
         return false;
     }
 
@@ -264,7 +264,7 @@ public class SiteSimulation implements Site {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=")
                 .append(hashCode()).append(", cCons=")
                 .append(currentConsumption).append("]");
@@ -272,7 +272,7 @@ public class SiteSimulation implements Site {
     }
 
     @Override
-    public void addActivationListener(Listener<? super FlexTuple> listener) {
+    public void addActivationListener(final Listener<? super FlexTuple> listener) {
         this.activationListener = MultiplexListener
                 .plus(this.activationListener, listener);
 

@@ -39,7 +39,7 @@ public final class LocalRunners {
      * @return The specified ExperimentRunner.
      */
     public static ExperimentRunner createCustomMultiThreadedRunner(
-            int availableProcs) {
+            final int availableProcs) {
         return new MultiThreadedExperimentRunner(availableProcs);
     }
 

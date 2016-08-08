@@ -16,7 +16,7 @@ public class GameResultWriter extends ResultWriter {
      * @param target
      *            the game target.
      */
-    public GameResultWriter(GameDirector target) {
+    public GameResultWriter(final GameDirector target) {
         super(target.getFormattedResults());
         this.g = target;
     }
@@ -29,7 +29,7 @@ public class GameResultWriter extends ResultWriter {
      * @param loggerTag
      *            The result writer tag.
      */
-    public GameResultWriter(GameDirector target, String loggerTag) {
+    public GameResultWriter(final GameDirector target, final String loggerTag) {
         super(target.getFormattedResults(), loggerTag);
         this.g = target;
     }

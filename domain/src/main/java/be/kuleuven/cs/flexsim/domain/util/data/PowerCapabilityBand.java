@@ -44,7 +44,7 @@ public abstract class PowerCapabilityBand {
      *            The maximum for the positive part.
      * @return a new PowerCapabilityBand object.
      */
-    public static PowerCapabilityBand create(int downMax, int upMax) {
+    public static PowerCapabilityBand create(final int downMax, final int upMax) {
         return new AutoValue_PowerCapabilityBand(downMax, upMax);
     }
 }

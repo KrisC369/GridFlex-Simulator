@@ -28,7 +28,7 @@ public class DefaultGameConfigurator
      * @param factor
      *            the retribution factor.
      */
-    public DefaultGameConfigurator(double factor) {
+    public DefaultGameConfigurator(final double factor) {
         this(factor, new MersenneTwister(2412));
     }
 
@@ -40,7 +40,7 @@ public class DefaultGameConfigurator
      * @param twister
      *            The random generator to use.
      */
-    public DefaultGameConfigurator(double factor, MersenneTwister twister) {
+    public DefaultGameConfigurator(final double factor, final MersenneTwister twister) {
         this.retributionFactor = factor;
         this.twister = twister;
     }

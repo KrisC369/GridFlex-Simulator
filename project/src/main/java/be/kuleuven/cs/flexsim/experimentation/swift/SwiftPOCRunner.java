@@ -41,7 +41,7 @@ public class SwiftPOCRunner {
         try {
             this.profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LoggerFactory.getLogger(SwiftPOCRunner.class)
                     .error("IOException while opening profile.", e);
         }
@@ -64,8 +64,8 @@ public class SwiftPOCRunner {
      * @param args
      *            std in params.
      */
-    public static void main(String[] args) {
-        SwiftPOCRunner r = new SwiftPOCRunner();
+    public static void main(final String[] args) {
+        final SwiftPOCRunner r = new SwiftPOCRunner();
         r.startExperiment();
         r.displayEfficiency();
     }
@@ -78,7 +78,7 @@ public class SwiftPOCRunner {
     }
 
     private void displayEfficiency() {
-        double eff = solver.getTotalRemediedCongestion()
+        final double eff = solver.getTotalRemediedCongestion()
                 / ((40.0 * 2.0 * POWERRATE) + (40.0 * 2.0 * POWERRATE / 2));
         LoggerFactory.getLogger("CONSOLERESULT").info("Efficiency is " + eff);
     }

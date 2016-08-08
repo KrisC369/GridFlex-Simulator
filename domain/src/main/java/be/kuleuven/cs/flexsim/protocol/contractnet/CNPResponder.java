@@ -15,13 +15,13 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
 public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
 
     @Override
-    public void callForProposal(AnswerAnticipator<T> responder, T arg) {
+    public void callForProposal(final AnswerAnticipator<T> responder, final T arg) {
         try {
-            T ownProp = makeProposalForCNP(arg);
+            final T ownProp = makeProposalForCNP(arg);
             responder.affirmative(ownProp, new AnswerAnticipator<T>() {
 
                 @Override
-                public void affirmative(T prop, AnswerAnticipator<T> ant) { // accept-proposal
+                public void affirmative(final T prop, final AnswerAnticipator<T> ant) { // accept-proposal
                     doWorkFor(prop, ant);
                 }
 
@@ -30,7 +30,7 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
                     // do nothing... out of luck...
                 }
             });
-        } catch (CanNotFindProposalException e) {
+        } catch (final CanNotFindProposalException e) {
             LoggerFactory.getLogger(CNPResponder.class)
                     .debug("No proposal found for a certain agent.", e);
             responder.reject();
@@ -38,8 +38,8 @@ public abstract class CNPResponder<T extends Proposal> implements Responder<T> {
 
     }
 
-    private void doWorkFor(T prop, AnswerAnticipator<T> ant) {
-        boolean succeeded = performWorkUnitFor(prop);
+    private void doWorkFor(final T prop, final AnswerAnticipator<T> ant) {
+        final boolean succeeded = performWorkUnitFor(prop);
         if (succeeded) {
             ant.affirmative(prop, new NoOpAnswerAnticipator<>());
         } else {

@@ -19,7 +19,7 @@ public class SimpleResource implements Resource {
      * @param needed
      *            the time needed to proces this resource.
      */
-    protected SimpleResource(int needed) {
+    protected SimpleResource(final int needed) {
         this.neededTime = needed;
         this.maxTime = needed;
     }
@@ -47,7 +47,7 @@ public class SimpleResource implements Resource {
      * @see domain.IResource#process(int)
      */
     @Override
-    public final void process(int time) {
+    public final void process(final int time) {
         this.neededTime -= time;
     }
 
@@ -57,7 +57,7 @@ public class SimpleResource implements Resource {
      * @param newTime
      *            The new value for the neededprocessingTime.
      */
-    protected final void setNeededTime(int newTime) {
+    protected final void setNeededTime(final int newTime) {
         this.neededTime = newTime;
         this.maxTime = newTime;
     }

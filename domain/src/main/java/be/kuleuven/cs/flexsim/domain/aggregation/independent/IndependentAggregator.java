@@ -28,8 +28,8 @@ public class IndependentAggregator extends Aggregator {
      * @param frequency the frequency with which to perform aggregation functions.
      * @param strategy  The aggregation strategy to use.
      */
-    public IndependentAggregator(BalancingSignal tso, int frequency,
-            AggregationStrategy strategy) {
+    public IndependentAggregator(final BalancingSignal tso, final int frequency,
+            final AggregationStrategy strategy) {
         super(strategy);
         this.tso = tso;
         this.tickcount = 1;
@@ -42,7 +42,7 @@ public class IndependentAggregator extends Aggregator {
      * @param tso       the tso to take steering signals from.
      * @param frequency the frequency with which to perform aggregation functions.
      */
-    public IndependentAggregator(BalancingSignal tso, int frequency) {
+    public IndependentAggregator(final BalancingSignal tso, final int frequency) {
         this(tso, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);
     }
 
@@ -51,15 +51,15 @@ public class IndependentAggregator extends Aggregator {
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         if (tickcount++ % aggFreq == 0) {
             doAggregationStep(t, getTargetFlex(), gatherFlexInfo());
         }

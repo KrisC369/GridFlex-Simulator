@@ -24,7 +24,7 @@ public class GameDirector {
      *
      * @param game The game to direct.
      */
-    public GameDirector(Game<?, ?> game) {
+    public GameDirector(final Game<?, ?> game) {
         this.game = game;
         game.configureInstances();
         this.playables = Sets.newConcurrentHashSet();
@@ -36,8 +36,8 @@ public class GameDirector {
      *
      * @param finished The finished game variation.
      */
-    public void notifyVersionHasBeenPlayed(Playable finished) {
-        boolean successful = playables.remove(finished);
+    public void notifyVersionHasBeenPlayed(final Playable finished) {
+        final boolean successful = playables.remove(finished);
         if (!successful) {
             throw new IllegalArgumentException(
                     "The played instance does not occur in the current game.");

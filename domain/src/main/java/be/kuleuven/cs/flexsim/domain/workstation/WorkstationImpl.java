@@ -49,8 +49,8 @@ class WorkstationImpl implements ConfigurableWorkstation {
      *            The Out buffer.
      */
     @VisibleForTesting
-    WorkstationImpl(Buffer<Resource> bufferIn, Buffer<Resource> bufferOut,
-            int idle, int working, int capacity, ConsumptionModel model) {
+    WorkstationImpl(final Buffer<Resource> bufferIn, final Buffer<Resource> bufferOut,
+            final int idle, final int working, final int capacity, final ConsumptionModel model) {
         this.inputBuff = bufferIn;
         this.outputBuff = bufferOut;
         this.fixedECons = idle;
@@ -67,7 +67,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
     }
 
     @Override
@@ -95,7 +95,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
      * simulation.ISimulationComponent#initialize(simulation.ISimulationContext)
      */
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
     /*
@@ -122,11 +122,11 @@ class WorkstationImpl implements ConfigurableWorkstation {
         }
     }
 
-    private void addAllResources(Collection<Resource> res) {
+    private void addAllResources(final Collection<Resource> res) {
         this.currentResource.addAll(res);
     }
 
-    private void addResource(Resource res) {
+    private void addResource(final Resource res) {
         this.currentResource.add(res);
     }
 
@@ -134,7 +134,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
      *
      */
     private void pushOut() {
-        int size = getCurrentResources().size();
+        final int size = getCurrentResources().size();
         getOutputBuffer().pushAll(getCurrentResources());
         resetCurrentResource();
         incrementProcessedCount(size);
@@ -145,7 +145,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
      * @see simulation.ISimulationComponent#tick()
      */
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         calculateLastConsumption();
         increaseTotalConsumption(getLastStepConsumption());
         currentState.handleTick(stateContext);
@@ -179,11 +179,11 @@ class WorkstationImpl implements ConfigurableWorkstation {
         return outputBuff;
     }
 
-    private void increaseTotalConsumption(double consumptionRate) {
+    private void increaseTotalConsumption(final double consumptionRate) {
         this.totalConsumption = this.totalConsumption + consumptionRate;
     }
 
-    private void incrementProcessedCount(int size) {
+    private void incrementProcessedCount(final int size) {
         this.processedCount = this.processedCount + size;
 
     }
@@ -192,7 +192,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
         this.currentResource = new ArrayList<>();
     }
 
-    private void setLastConsumption(double rate) {
+    private void setLastConsumption(final double rate) {
         this.lastConsumption = rate;
     }
 
@@ -211,7 +211,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
         return Collections.emptyList();
     }
 
-    private void setFixedECons(int fixedECons) {
+    private void setFixedECons(final int fixedECons) {
         this.fixedECons = fixedECons;
     }
 
@@ -224,37 +224,37 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     @Override
-    public final void increaseRatedMaxVarECons(int shift) {
+    public final void increaseRatedMaxVarECons(final int shift) {
         this.setRatedMaxVarECons(this.getMaxVarECons() + shift);
     }
 
     @Override
-    public void decreaseRatedMaxVarECons(int shift) {
+    public void decreaseRatedMaxVarECons(final int shift) {
         checkArgument(shift < getMaxVarECons(),
                 "cant shift more towards speed than available.");
         this.setRatedMaxVarECons(this.getMaxVarECons() - shift);
     }
 
     @Override
-    public void increaseFixedECons(int shift) {
+    public void increaseFixedECons(final int shift) {
         this.setFixedECons(this.getFixedConsumptionRate() + shift);
     }
 
     @Override
-    public void decreaseFixedECons(int shift) {
+    public void decreaseFixedECons(final int shift) {
         checkArgument(shift < getFixedConsumptionRate(),
                 "cant shift more towards low consumption than available.");
         this.setFixedECons(this.getFixedConsumptionRate() - shift);
     }
 
     @Override
-    public void acceptVisitor(WorkstationVisitor subject) {
+    public void acceptVisitor(final WorkstationVisitor subject) {
         subject.register(this);
 
     }
 
     @Override
-    public void setProcessor(Processor proc) {
+    public void setProcessor(final Processor proc) {
         this.proc = proc;
     }
 
@@ -262,7 +262,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
      * @param ratedMaxVarECons
      *            the ratedMaxVarECons to set
      */
-    private void setRatedMaxVarECons(int ratedMaxVarECons) {
+    private void setRatedMaxVarECons(final int ratedMaxVarECons) {
         this.ratedMaxVarECons = ratedMaxVarECons;
     }
 
@@ -272,7 +272,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("Workstation [fixedECons=").append(fixedECons)
                 .append(", ratedMaxVarECons=").append(ratedMaxVarECons)
                 .append(", capacity=").append(capacity).append(", hc=")
@@ -301,15 +301,15 @@ class WorkstationImpl implements ConfigurableWorkstation {
                 / (double) (getMaxRemainingStepsOfResource() + 1);
     }
 
-    private void setLastProcessingRate(double value) {
+    private void setLastProcessingRate(final double value) {
         this.lastProcessingRate = value;
     }
 
     private final class StateContext implements WorkstationContext {
 
         @Override
-        public void processResources(int steps) {
-            for (Resource r : currentResource) {
+        public void processResources(final int steps) {
+            for (final Resource r : currentResource) {
                 proc.doProcessingStep(r, steps);
             }
         }
@@ -339,7 +339,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
         @Override
         public boolean hasUnfinishedResources() {
-            for (Resource r : currentResource) {
+            for (final Resource r : currentResource) {
                 if (r.needsMoreProcessing()) {
                     return true;
                 }
@@ -355,7 +355,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
 
     private static final class ProcessorImpl implements Processor {
         @Override
-        public void doProcessingStep(Resource r, int baseSteps) {
+        public void doProcessingStep(final Resource r, final int baseSteps) {
             r.process(baseSteps);
         }
     }

@@ -27,7 +27,7 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
      * @param reward
      *            The reward for an activation.
      */
-    BalancingFeeTracker(Site s, int reward) {
+    BalancingFeeTracker(final Site s, final int reward) {
         this(s, reward, 0);
     }
 
@@ -41,14 +41,14 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
      * @param factor
      *            The retribution factor.
      */
-    BalancingFeeTracker(Site s, int reward, double factor) {
+    BalancingFeeTracker(final Site s, final int reward, final double factor) {
         super(s, RewardModel.NONE, DebtModel.NONE);
         this.retributionFactor = 1 - factor;
         this.fixedActivationFee = reward;
         this.activationCount = 0;
         this.target = s;
         s.addActivationListener(arg -> {
-            double t = arg.getT();
+            final double t = arg.getT();
             increaseTotalReward((int) (fixedActivationFee * retributionFactor
                     * arg.getDeltaP() * (t > 0 ? t : 1.0)));
             incrementCount();

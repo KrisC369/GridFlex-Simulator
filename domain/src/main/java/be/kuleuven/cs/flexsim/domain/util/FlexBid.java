@@ -19,7 +19,7 @@ public class FlexBid implements AbstractBid {
      * @param valuation
      *            the compensation requested
      */
-    public FlexBid(FlexTuple flex, int valuation) {
+    public FlexBid(final FlexTuple flex, final int valuation) {
         this.flex = flex;
         this.valuation = valuation;
 

@@ -19,7 +19,7 @@ public class NormalRandomOutputGenerator extends RandomOutputGenerator {
      * @param g
      *            The random generator to use.
      */
-    NormalRandomOutputGenerator(int min, int max, RandomGenerator g) {
+    NormalRandomOutputGenerator(final int min, final int max, final RandomGenerator g) {
         super(min, max, g);
     }
 
@@ -31,14 +31,14 @@ public class NormalRandomOutputGenerator extends RandomOutputGenerator {
      * @param max
      *            the maximum value for the random generator.
      */
-    public NormalRandomOutputGenerator(int min, int max) {
+    public NormalRandomOutputGenerator(final int min, final int max) {
         super(min, max);
     }
 
     @Override
     protected int calculateNewValue() {
-        double first = getGenerator().nextDouble();
-        double second = getGenerator().nextDouble() * -1;
+        final double first = getGenerator().nextDouble();
+        final double second = getGenerator().nextDouble() * -1;
         double value = getGenerator().nextDouble();
         value = value * (first - second) - first;
         if (value < 0) {

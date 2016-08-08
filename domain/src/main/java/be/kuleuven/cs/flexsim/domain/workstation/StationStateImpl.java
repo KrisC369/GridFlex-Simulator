@@ -8,7 +8,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 abstract class StationStateImpl implements StationState {
     private final ConsumptionModel model;
 
-    StationStateImpl(ConsumptionModel model) {
+    StationStateImpl(final ConsumptionModel model) {
         this.model = model;
     }
 
@@ -22,7 +22,7 @@ abstract class StationStateImpl implements StationState {
      */
     static final class Processing extends StationStateImpl {
 
-        Processing(ConsumptionModel model) {
+        Processing(final ConsumptionModel model) {
             super(model);
         }
 
@@ -31,7 +31,7 @@ abstract class StationStateImpl implements StationState {
          * @see domain.IStationState#handleTick(domain.IStationContext)
          */
         @Override
-        public void handleTick(WorkstationContext context) {
+        public void handleTick(final WorkstationContext context) {
             context.processResources(1);
             if (!context.hasUnfinishedResources()) {
                 changestate(context);
@@ -47,13 +47,13 @@ abstract class StationStateImpl implements StationState {
             return true;
         }
 
-        private void changestate(WorkstationContext context) {
+        private void changestate(final WorkstationContext context) {
             context.setResourceMovingState();
         }
 
         @Override
-        public double getVarConsumptionRate(int remainingSteps, int totalSteps,
-                WorkstationContext context) {
+        public double getVarConsumptionRate(final int remainingSteps, final int totalSteps,
+                final WorkstationContext context) {
             return getModel().getVarConsumptionRate(remainingSteps, totalSteps,
                     context.getRatedVariableConsumption());
         }
@@ -62,7 +62,7 @@ abstract class StationStateImpl implements StationState {
 
     static final class ResourceMoving extends StationStateImpl {
 
-        ResourceMoving(ConsumptionModel model) {
+        ResourceMoving(final ConsumptionModel model) {
             super(model);
         }
 
@@ -71,8 +71,8 @@ abstract class StationStateImpl implements StationState {
          * @see domain.IStationState#handleTick(domain.IStationContext)
          */
         @Override
-        public void handleTick(WorkstationContext context) {
-            boolean succesfull = context.pushConveyer();
+        public void handleTick(final WorkstationContext context) {
+            final boolean succesfull = context.pushConveyer();
             if (succesfull) {
                 changeState(context);
             }
@@ -87,13 +87,13 @@ abstract class StationStateImpl implements StationState {
             return false;
         }
 
-        private void changeState(WorkstationContext context) {
+        private void changeState(final WorkstationContext context) {
             context.setProcessingState();
         }
 
         @Override
-        public double getVarConsumptionRate(int remainingSteps, int totalSteps,
-                WorkstationContext context) {
+        public double getVarConsumptionRate(final int remainingSteps, final int totalSteps,
+                final WorkstationContext context) {
             return getModel().getVarConsumptionRate(remainingSteps, totalSteps,
                     0);
         }

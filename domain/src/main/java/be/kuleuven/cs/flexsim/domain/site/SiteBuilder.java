@@ -47,7 +47,7 @@ public abstract class SiteBuilder {
      *            the line to add.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder addLine(FlexProcess line) {
+    public SiteBuilder addLine(final FlexProcess line) {
         throw new UnsupportedOperationException(
                 "You cannot add lines to this site.");
     }
@@ -59,7 +59,7 @@ public abstract class SiteBuilder {
      *            The cease time.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withCeaseTime(int ceaseTime) {
+    public SiteBuilder withCeaseTime(final int ceaseTime) {
         throw new UnsupportedOperationException(
                 "You cannot set a cease time for this site.");
     }
@@ -71,7 +71,7 @@ public abstract class SiteBuilder {
      *            the ramp up time
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withReactionTime(int rampTime) {
+    public SiteBuilder withReactionTime(final int rampTime) {
         throw new UnsupportedOperationException(
                 "You cannot set a reaction time for this site.");
     }
@@ -83,7 +83,7 @@ public abstract class SiteBuilder {
      *            The flex duration
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withFlexDuration(int duration) {
+    public SiteBuilder withFlexDuration(final int duration) {
         throw new UnsupportedOperationException(
                 "You cannot set a flex duration for this site.");
     }
@@ -96,7 +96,7 @@ public abstract class SiteBuilder {
      * @return a sitebuilder (Fluent API).
      */
 
-    public SiteBuilder withMinConsumption(int min) {
+    public SiteBuilder withMinConsumption(final int min) {
         throw new UnsupportedOperationException(
                 "You cannot set a min consumption time for this site.");
     }
@@ -108,7 +108,7 @@ public abstract class SiteBuilder {
      *            The maximum consumption level.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withMaxConsumption(int max) {
+    public SiteBuilder withMaxConsumption(final int max) {
         throw new UnsupportedOperationException(
                 "You cannot set a max consumption time for this site.");
     }
@@ -120,7 +120,7 @@ public abstract class SiteBuilder {
      *            The base consumption level.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withBaseConsumption(int base) {
+    public SiteBuilder withBaseConsumption(final int base) {
         throw new UnsupportedOperationException(
                 "You cannot set a base consumption time for this site.");
     }
@@ -132,7 +132,7 @@ public abstract class SiteBuilder {
      *            The number of tuples.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withTuples(int tuples) {
+    public SiteBuilder withTuples(final int tuples) {
         throw new UnsupportedOperationException(
                 "You cannot set a a number of tuples for this site.");
     }
@@ -152,7 +152,7 @@ public abstract class SiteBuilder {
         }
 
         @Override
-        public SiteBuilder addLine(FlexProcess line) {
+        public SiteBuilder addLine(final FlexProcess line) {
             throw new UnsupportedOperationException(
                     "You cannot add lines to this site.");
         }
@@ -184,48 +184,48 @@ public abstract class SiteBuilder {
         }
 
         @Override
-        public SiteBuilder withCeaseTime(int ceaseTime) {
+        public SiteBuilder withCeaseTime(final int ceaseTime) {
             this.cease = ceaseTime;
             return this;
 
         }
 
         @Override
-        public SiteBuilder withReactionTime(int reaction) {
+        public SiteBuilder withReactionTime(final int reaction) {
             this.ramp = reaction;
             return this;
 
         }
 
         @Override
-        public SiteBuilder withFlexDuration(int duration) {
+        public SiteBuilder withFlexDuration(final int duration) {
             this.duration = duration;
             return this;
 
         }
 
         @Override
-        public SiteBuilder withMinConsumption(int min) {
+        public SiteBuilder withMinConsumption(final int min) {
             this.min = min;
             return this;
 
         }
 
         @Override
-        public SiteBuilder withMaxConsumption(int max) {
+        public SiteBuilder withMaxConsumption(final int max) {
             this.max = max;
             return this;
 
         }
 
         @Override
-        public SiteBuilder withBaseConsumption(int base) {
+        public SiteBuilder withBaseConsumption(final int base) {
             this.base = base;
             return this;
         }
 
         @Override
-        public SiteBuilder withTuples(int tuples) {
+        public SiteBuilder withTuples(final int tuples) {
             this.tuples = tuples;
             return this;
         }

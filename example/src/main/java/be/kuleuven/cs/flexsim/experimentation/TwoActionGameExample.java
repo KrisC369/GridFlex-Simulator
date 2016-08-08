@@ -35,8 +35,8 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
      * @param factor
      *            The retribution factor.
      */
-    public TwoActionGameExample(int seed, int baselineConsumption,
-            double factor) {
+    public TwoActionGameExample(final int seed, final int baselineConsumption,
+            final double factor) {
         super(seed);
         this.tso = new BalancingTSO();
         this.count = 0;
@@ -57,17 +57,17 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
      *            The baseline for the sites consumption. This is used to base
      *            production params on.
      */
-    public TwoActionGameExample(int seed, int baselineConsumption) {
+    public TwoActionGameExample(final int seed, final int baselineConsumption) {
         this(seed, baselineConsumption, 1);
 
     }
 
     @Override
-    public void fixActionToAgent(Site agent, Aggregator action) {
+    public void fixActionToAgent(final Site agent, final Aggregator action) {
         addSite(agent);
         tso.registerConsumer(agent);
         addChoice(agent, action);
-        FinanceTrackerImpl fti;
+        final FinanceTrackerImpl fti;
         if (getAggregators().get(0).equals(action)) {
             fti = (FinanceTrackerImpl) FinanceTrackerImpl
                     .createCustomBalancingFeeTracker(agent, ACTPAYMENT,
@@ -84,9 +84,9 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
     @Override
     public void init() {
         // Add finance trackers keeping track of profit and consumptions.
-        EnergyProductionTrackable p1 = new ConstantOutputGenerator(
+        final EnergyProductionTrackable p1 = new ConstantOutputGenerator(
                 baseConsumption * getNumberOfAgents());
-        EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
+        final EnergyProductionTrackable p2 = new WeighedNormalRandomOutputGenerator(
                 -1500, 1500, 0.010);
         this.getAggregators().forEach(this::addSimComponent);
         tso.registerProducer(p1);

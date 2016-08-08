@@ -29,7 +29,7 @@ public abstract class Nomination {
      *            the target imbalance volume that was effectively remedied.
      * @return a nomination value object.
      */
-    static Nomination create(long target, long result) {
+    static Nomination create(final long target, final long result) {
         return new AutoValue_Nomination(target, result);
     }
 }

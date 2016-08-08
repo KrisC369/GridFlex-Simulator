@@ -38,7 +38,7 @@ public abstract class AggregationGame<S, A extends Aggregator>
      * @param seed
      *            The seed to use for the simulator in this game.
      */
-    protected AggregationGame(int seed) {
+    protected AggregationGame(final int seed) {
         this.sim = Simulator.createSimulator(SIM_LENGTH, seed);
         this.aggs = Lists.newArrayList();
         this.sites = Lists.newArrayList();
@@ -63,7 +63,7 @@ public abstract class AggregationGame<S, A extends Aggregator>
 
     @Override
     public Map<S, Long> getPayOffs() {
-        Map<S, Long> r = Maps.newLinkedHashMap();
+        final Map<S, Long> r = Maps.newLinkedHashMap();
         for (int ag = 0; ag < getSites().size(); ag++) {
             r.put(sites.get(ag), (long) ft.get(ag).getTotalProfit());
         }
@@ -75,27 +75,27 @@ public abstract class AggregationGame<S, A extends Aggregator>
         return Maps.newLinkedHashMap(choiceMap);
     }
 
-    protected final void addAggregator(A agg) {
+    protected final void addAggregator(final A agg) {
         this.aggs.add(agg);
     }
 
-    protected final void addSimComponent(InstrumentationComponent comp) {
+    protected final void addSimComponent(final InstrumentationComponent comp) {
         this.sim.register(comp);
     }
 
-    protected final void addSimComponent(SimulationComponent comp) {
+    protected final void addSimComponent(final SimulationComponent comp) {
         this.sim.register(comp);
     }
 
-    protected final void addSite(S s) {
+    protected final void addSite(final S s) {
         this.sites.add(s);
     }
 
-    protected final void addChoice(S s, A a) {
+    protected final void addChoice(final S s, final A a) {
         this.choiceMap.put(s, a);
     }
 
-    protected void addFinanceTracker(FinanceTracker ft) {
+    protected void addFinanceTracker(final FinanceTracker ft) {
         this.ft.add(ft);
         this.addSimComponent(ft);
     }

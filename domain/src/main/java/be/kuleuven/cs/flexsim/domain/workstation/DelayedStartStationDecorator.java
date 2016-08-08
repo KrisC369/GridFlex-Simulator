@@ -20,7 +20,7 @@ class DelayedStartStationDecorator
      * @param workstationImpl
      *            The time steps to delay execution.
      */
-    DelayedStartStationDecorator(int shift, Workstation workstationImpl) {
+    DelayedStartStationDecorator(final int shift, final Workstation workstationImpl) {
         super(workstationImpl);
         this.shiftTime = shift;
         this.shiftTimeAfter = shift;
@@ -30,7 +30,7 @@ class DelayedStartStationDecorator
      * {@inheritDoc} This tick method is called after a number of initial ticks.
      */
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         if (shiftTimeAfter > 0) {
             shiftTimeAfter--;
         } else {
@@ -42,7 +42,7 @@ class DelayedStartStationDecorator
      * {@inheritDoc} This tick method is called after a number of initial ticks.
      */
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         if (shiftTime > 0) {
             shiftTime--;
         } else {
@@ -56,7 +56,7 @@ class DelayedStartStationDecorator
      */
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         builder.append("DelayedStartStation [shiftTime=").append(shiftTime)
                 .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();

@@ -33,7 +33,7 @@ public final class CollectionUtils {
      *            the type representing the elements to apply function f to.
      * @return the maximum or 0 if the list is empty.
      */
-    public static <T> int max(Iterable<T> elements, ToIntFunction<T> f) {
+    public static <T> int max(final Iterable<T> elements, final ToIntFunction<T> f) {
         return StreamSupport.stream(elements.spliterator(), false)
                 .mapToInt(f::applyAsInt).max().orElseGet(() -> 0);
     }
@@ -51,14 +51,14 @@ public final class CollectionUtils {
      *            the type representing the elements to apply function f to.
      * @return the argument attaining the maximum in f.
      */
-    public static <T> T argMax(Iterable<T> elements, ToIntFunction<T> f) {
+    public static <T> T argMax(final Iterable<T> elements, final ToIntFunction<T> f) {
         checkArgument(elements.iterator().hasNext(),
                 "Can't provide empty elements to this function");
-        Iterator<T> it = elements.iterator();
+        final Iterator<T> it = elements.iterator();
         T currentMax = it.next();
         int max = f.applyAsInt(currentMax);
         while (it.hasNext()) {
-            T current = it.next();
+            final T current = it.next();
             if (f.applyAsInt(current) > max) {
                 max = f.applyAsInt(current);
                 currentMax = current;
@@ -80,7 +80,7 @@ public final class CollectionUtils {
      *            over.
      * @return the sum over all elements.
      */
-    public static <T> int sum(Iterable<T> elements, ToIntFunction<T> f) {
+    public static <T> int sum(final Iterable<T> elements, final ToIntFunction<T> f) {
         return StreamSupport.stream(elements.spliterator(), false)
                 .mapToInt(f::applyAsInt).sum();
     }

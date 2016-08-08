@@ -13,34 +13,34 @@ public class SteerableStationDecorator
 
     private int speedfactor;
 
-    SteerableStationDecorator(ConfigurableWorkstation ws) {
+    SteerableStationDecorator(final ConfigurableWorkstation ws) {
         super(ws);
         getDelegate().setProcessor(new SteerableProcessor());
     }
 
     @Override
-    public void favorSpeedOverFixedEConsumption(int consumptionShift,
-            int speedShift) {
+    public void favorSpeedOverFixedEConsumption(final int consumptionShift,
+            final int speedShift) {
         getDelegate().increaseFixedECons(consumptionShift);
         getDelegate().decreaseRatedMaxVarECons(consumptionShift);
         setProcessingSpeed(getProcessingSpeed() + speedShift);
     }
 
     @Override
-    public void favorFixedEConsumptionOverSpeed(int consumptionShift,
-            int speedShift) {
+    public void favorFixedEConsumptionOverSpeed(final int consumptionShift,
+            final int speedShift) {
         getDelegate().decreaseFixedECons(consumptionShift);
         getDelegate().increaseRatedMaxVarECons(consumptionShift);
         setProcessingSpeed(getProcessingSpeed() - speedShift);
     }
 
     @Override
-    public void acceptVisitor(WorkstationVisitor subject) {
+    public void acceptVisitor(final WorkstationVisitor subject) {
         subject.register(this);
         super.acceptVisitor(subject);
     }
 
-    void setProcessingSpeed(int i) {
+    void setProcessingSpeed(final int i) {
         this.speedfactor = i;
     }
 
@@ -50,7 +50,7 @@ public class SteerableStationDecorator
 
     private final class SteerableProcessor implements Processor {
         @Override
-        public void doProcessingStep(Resource r, int baseSteps) {
+        public void doProcessingStep(final Resource r, final int baseSteps) {
             r.process(baseSteps + getProcessingSpeed());
         }
     }

@@ -34,7 +34,7 @@ public class RandomTSO implements BalancingSignal, SimulationComponent {
      * @param g
      *            The random generator to use.
      */
-    public RandomTSO(int min, int max, RandomGenerator g) {
+    public RandomTSO(final int min, final int max, final RandomGenerator g) {
         this.min = min;
         this.max = max;
         this.g = g;
@@ -69,23 +69,23 @@ public class RandomTSO implements BalancingSignal, SimulationComponent {
     }
 
     @Override
-    public void addNewBalanceValueListener(Listener<? super Integer> listener) {
+    public void addNewBalanceValueListener(final Listener<? super Integer> listener) {
         this.newBalanceValueListener = MultiplexListener
                 .plus(this.newBalanceValueListener, listener);
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         this.currentValue = getGenerator()
                 .nextInt(Math.abs(getMax() - getMin())) + getMin();
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         newBalanceValueListener.eventOccurred(currentValue);
     }
 

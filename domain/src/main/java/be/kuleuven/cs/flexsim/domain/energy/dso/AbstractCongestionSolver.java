@@ -43,8 +43,8 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      *                         mechanism. The maximum reference energy amount is defined as
      *                         the peak power rate in the profile times the forecast horizon.
      */
-    public AbstractCongestionSolver(CongestionProfile profile,
-            int forecastHorizon, int maxRelativeValue) {
+    public AbstractCongestionSolver(final CongestionProfile profile,
+            final int forecastHorizon, final int maxRelativeValue) {
         this.congestion = profile;
         this.dsms = Lists.newArrayList();
         this.tick = 0;
@@ -60,31 +60,31 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      *
      * @param dsm the partner to add.
      */
-    public void registerDSMPartner(DSMPartner dsm) {
+    public void registerDSMPartner(final DSMPartner dsm) {
         dsms.add(dsm);
         getSolverInstance().registerResponder(dsm.getDSMAPI());
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         getWorkResults();
         incrementTick();
         updateHorizon();
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         doTick();
     }
 
     private void getWorkResults() {
         double toCorrect = afterDSMprofile.value(getTick());
-        for (DSMPartner d : getDsms()) {
-            double dsmv = d.getCurtailment(getTick()) / 4.0;
+        for (final DSMPartner d : getDsms()) {
+            final double dsmv = d.getCurtailment(getTick()) / 4.0;
             if (dsmv < 0) {
                 throw new IllegalStateException(
                         "curtail power cannot be negative");
@@ -113,9 +113,9 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         this.horizon = getNewEmptyDouble();
         for (int i = 0; i < FastMath.min(getForecastHorizon(),
                 afterDSMprofile.length() - getTick() - 1); i++) {
-            double toCorrect = afterDSMprofile.value(getTick() + i);
+            final double toCorrect = afterDSMprofile.value(getTick() + i);
             double correction = 0;
-            for (DSMPartner d : getDsms()) {
+            for (final DSMPartner d : getDsms()) {
                 correction += d.getCurtailment(getTick() + i) / 4.0;
             }
             horizon.set(i, FastMath.max(0, toCorrect - correction));
@@ -201,7 +201,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      */
     protected Optional<DSMProposal> getWorkProposal() {
         double sum = 0;
-        Min m = new Min();
+        final Min m = new Min();
         m.setData(new double[] { DSM_ALLOCATION_DURATION,
                 getCongestion().length() - getTick() - 1 });
         for (int i = 0; i < m.evaluate(); i++) {
@@ -218,7 +218,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     }
 
     private DoubleList getNewEmptyDouble() {
-        DoubleList d = new DoubleArrayList(DSM_ALLOCATION_DURATION);
+        final DoubleList d = new DoubleArrayList(DSM_ALLOCATION_DURATION);
         for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
             d.add(0);
         }

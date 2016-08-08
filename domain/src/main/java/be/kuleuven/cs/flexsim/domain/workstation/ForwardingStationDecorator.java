@@ -27,12 +27,12 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
      * @param ws
      *            the delegate workstation of this decorator
      */
-    ForwardingStationDecorator(T ws) {
+    ForwardingStationDecorator(final T ws) {
         this.w = ws;
     }
 
     @Override
-    public void initialize(SimulationContext context) {
+    public void initialize(final SimulationContext context) {
         getDelegate().initialize(context);
     }
 
@@ -57,12 +57,12 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
     }
 
     @Override
-    public void afterTick(int t) {
+    public void afterTick(final int t) {
         getDelegate().afterTick(t);
     }
 
     @Override
-    public void tick(int t) {
+    public void tick(final int t) {
         getDelegate().tick(t);
     }
 
@@ -77,13 +77,13 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        List<SimulationComponent> toret = new ArrayList<>();
+        final List<SimulationComponent> toret = new ArrayList<>();
         toret.addAll(getDelegate().getSimulationSubComponents());
         return toret;
     }
 
     @Override
-    public void acceptVisitor(WorkstationVisitor subject) {
+    public void acceptVisitor(final WorkstationVisitor subject) {
         subject.register(this);
     }
 

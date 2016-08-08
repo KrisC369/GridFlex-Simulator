@@ -26,7 +26,7 @@ public class WeighedNormalRandomOutputGenerator
      * @param g
      *            The random generator to use.
      */
-    WeighedNormalRandomOutputGenerator(int min, int max, RandomGenerator g) {
+    WeighedNormalRandomOutputGenerator(final int min, final int max, final RandomGenerator g) {
         this(min, max, g, 1);
     }
 
@@ -39,7 +39,7 @@ public class WeighedNormalRandomOutputGenerator
      * @param max
      *            the maximum value for the random generator.
      */
-    public WeighedNormalRandomOutputGenerator(int min, int max) {
+    public WeighedNormalRandomOutputGenerator(final int min, final int max) {
         this(min, max, 1);
     }
 
@@ -56,8 +56,8 @@ public class WeighedNormalRandomOutputGenerator
      *            The weight to give to the new value. Must be between 0.0 and
      *            1.0
      */
-    WeighedNormalRandomOutputGenerator(int min, int max, RandomGenerator g,
-            double weight) {
+    WeighedNormalRandomOutputGenerator(final int min, final int max, final RandomGenerator g,
+            final double weight) {
         super(min, max, g);
         checkArgument(weight <= 1 && weight >= 0,
                 "Weight must be between 0 and 1");
@@ -75,14 +75,14 @@ public class WeighedNormalRandomOutputGenerator
      *            The weight to give to the new value. Must be between 0.0 and
      *            1.0
      */
-    public WeighedNormalRandomOutputGenerator(int min, int max, double weight) {
+    public WeighedNormalRandomOutputGenerator(final int min, final int max, final double weight) {
         this(min, max, new MersenneTwister(), weight);
     }
 
     @Override
     protected int calculateNewValue() {
-        double oldVal = getLastStepProduction();
-        int newVal = super.calculateNewValue();
+        final double oldVal = getLastStepProduction();
+        final int newVal = super.calculateNewValue();
         return (int) Math.round(
                 (newVal * weightOfNewVal) + (oldVal * (1 - weightOfNewVal)));
     }

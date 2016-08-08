@@ -57,8 +57,8 @@ public abstract class DSMProposal implements Proposal {
      *            the valuation value associated with this proposal.
      * @return a nomination value object. //
      */
-    static DSMProposal create(String description, double target,
-            double valuation, @Nullable Integer begin, @Nullable Integer end) {
+    static DSMProposal create(final String description, final double target,
+            final double valuation, @Nullable final Integer begin, @Nullable final Integer end) {
         return new AutoValue_DSMProposal(description, target,
                 Optional.ofNullable(begin), Optional.ofNullable(end),
                 valuation);

@@ -295,7 +295,7 @@ public class ProductionLineTest {
         assertEquals(1, flex.size(), 0);
         // System.out.println(flex);
         assertFalse(flex.contains(FlexTuple.NONE));
-        assertTrue(flex.get(0).getDirection());// one up flex
+        assertTrue(flex.get(0).getDirection().booleanRepresentation());// one up flex
     }
 
     @Test
@@ -376,7 +376,7 @@ public class ProductionLineTest {
         flex = l.getCurrentFlexbility();
         boolean hasPositiveFlex = false;
         for (FlexTuple f : flex) {
-            if (f.getDirection())
+            if (f.getDirection().booleanRepresentation())
                 hasPositiveFlex = true;
         }
         assertTrue(flex.size() > 0);
@@ -385,7 +385,7 @@ public class ProductionLineTest {
 
     private boolean hasPositiveFlex(List<FlexTuple> flex) {
         for (FlexTuple f : flex) {
-            if (f.getDirection())
+            if (f.getDirection().booleanRepresentation())
                 return true;
         }
         return false;
@@ -410,7 +410,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
         assertFalse(flex.get(0).equals(FlexTuple.NONE));
-        assertTrue(flex.get(0).getDirection());
+        assertTrue(flex.get(0).getDirection().booleanRepresentation());
         assertEquals(high - low, flex.get(0).getDeltaP(), 0);
         assertEquals(dT, flex.get(0).getT(), dur);
     }
@@ -433,7 +433,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(3, flex.size(), 0);
         assertFalse(flex.get(0).equals(FlexTuple.NONE));
-        assertTrue(flex.get(0).getDirection());
+        assertTrue(flex.get(0).getDirection().booleanRepresentation());
         assertEquals(high - low, flex.get(0).getDeltaP(), 0);
         assertEquals(25, flex.get(0).getT(), dur);
     }
@@ -458,7 +458,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(1, flex.size(), 0);
         assertFalse(flex.get(0).equals(FlexTuple.NONE));
-        assertFalse(flex.get(0).getDirection());
+        assertFalse(flex.get(0).getDirection().booleanRepresentation());
         assertEquals(high - low, flex.get(0).getDeltaP(), 0);
         assertEquals(dT, flex.get(0).getT(), dur);
     }
@@ -484,7 +484,7 @@ public class ProductionLineTest {
         List<FlexTuple> flex = l.getCurrentFlexbility();
         assertEquals(3, flex.size(), 0);
         assertFalse(flex.get(0).equals(FlexTuple.NONE));
-        assertFalse(flex.get(0).getDirection());
+        assertFalse(flex.get(0).getDirection().booleanRepresentation());
         assertEquals(high - low, flex.get(0).getDeltaP(), 0);
         assertEquals(dT, flex.get(0).getT(), dur);
     }

@@ -39,7 +39,7 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
      * @param factor2
      *            The retribution factor for agent 2
      */
-    public RenumerationGame(int seed, double factor1, double factor2) {
+    public RenumerationGame(final int seed, final double factor1, final double factor2) {
         super(seed);
         this.tso = new RandomTSO(-FIXED_IMBAL_SIGNAL_WIDTH,
                 FIXED_IMBAL_SIGNAL_WIDTH, new MersenneTwister(seed));
@@ -49,7 +49,7 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
                 factor1, 1 - factor1));
         this.addAggregator(new BRPAggregator(tso, () -> FIXED_PRICE_SIGNAL,
                 factor2, 1 - factor2));
-        for (BRPAggregator agg : getActionSet()) {
+        for (final BRPAggregator agg : getActionSet()) {
             agg.registerNominationManager(new EfficiencyTracker());
         }
     }
@@ -60,16 +60,16 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
      * @param seed
      *            The seed for this experiment.
      */
-    public RenumerationGame(int seed) {
+    public RenumerationGame(final int seed) {
         this(seed, 1, 1);
 
     }
 
     @Override
-    public void fixActionToAgent(Site agent, BRPAggregator action) {
+    public void fixActionToAgent(final Site agent, final BRPAggregator action) {
         this.addSite(agent);
         addChoice(agent, action);
-        FinanceTracker fti;
+        final FinanceTracker fti;
         action.registerClient(agent);
         fti = action.getFinanceTrackerFor(agent);
         addFinanceTracker(fti);
@@ -94,8 +94,8 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
     protected class EfficiencyTracker implements AncilServiceNominationManager {
 
         @Override
-        public void registerNomination(Nomination target) {
-            long remainingImb = target.getTargetImbalanceVolume()
+        public void registerNomination(final Nomination target) {
+            final long remainingImb = target.getTargetImbalanceVolume()
                     - target.getRemediedImbalanceVolume();
             runningRemainingImbalance += remainingImb;
         }

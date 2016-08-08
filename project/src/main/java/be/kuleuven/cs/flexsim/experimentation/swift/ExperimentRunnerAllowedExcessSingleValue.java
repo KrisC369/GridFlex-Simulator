@@ -43,30 +43,30 @@ public class ExperimentRunnerAllowedExcessSingleValue
      * @param args
      *            default stdin args
      */
-    public static void main(String[] args) {
-        ExperimentRunnerAllowedExcessSingleValue er = new ExperimentRunnerAllowedExcessSingleValue();
+    public static void main(final String[] args) {
+        final ExperimentRunnerAllowedExcessSingleValue er = new ExperimentRunnerAllowedExcessSingleValue();
         er.runSingle();
     }
 
     @Override
     protected void runSingle() {
-        CongestionProfile profile;
-        double[] result = new double[100];
+        final CongestionProfile profile;
+        final double[] result = new double[100];
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            GammaDistribution gd = new GammaDistribution(
+            final GammaDistribution gd = new GammaDistribution(
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                     R3DP_GAMMA_SCALE);
             for (int i = 0; i < N; i++) {
-                ExperimentInstance p = new ExperimentInstance(
+                final ExperimentInstance p = new ExperimentInstance(
                         getSolverBuilder(COMPETITIVE, (int) (i / (N / 100.0))),
                         new DoubleArrayList(gd.sample(NAGENTS)), profile,
                         ALLOW_LESS_ACTS, TOTAL_PRODUCED_E);
                 p.startExperiment();
                 result[(int) (i / (double) (N / 100))] += p.getEfficiency();
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LoggerFactory
                     .getLogger(ExperimentRunnerAllowedExcessSingleValue.class)
                     .error("IOException while opening profile.", e);
@@ -78,7 +78,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
                 .info("distribution of eff = " + Arrays.toString(result));
     }
 
-    protected SolverBuilder getSolverBuilder(boolean comp, int i) {
+    protected SolverBuilder getSolverBuilder(final boolean comp, final int i) {
         if (comp) {
             return new CompetitiveSolverBuilder(i);
         }
@@ -88,13 +88,13 @@ public class ExperimentRunnerAllowedExcessSingleValue
     static class CompetitiveSolverBuilder implements SolverBuilder {
         final int i;
 
-        CompetitiveSolverBuilder(int i) {
+        CompetitiveSolverBuilder(final int i) {
             this.i = i;
         }
 
         @Override
-        public AbstractCongestionSolver getSolver(CongestionProfile profile,
-                int n) {
+        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+                final int n) {
             return new CompetitiveCongestionSolver(profile, 8, i);
         }
     }
@@ -102,13 +102,13 @@ public class ExperimentRunnerAllowedExcessSingleValue
     static class CooperativeSolverBuilder implements SolverBuilder {
         final int i;
 
-        CooperativeSolverBuilder(int i) {
+        CooperativeSolverBuilder(final int i) {
             this.i = i;
         }
 
         @Override
-        public AbstractCongestionSolver getSolver(CongestionProfile profile,
-                int n) {
+        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+                final int n) {
             return new CooperativeCongestionSolver(profile, 8, i);
         }
     }
