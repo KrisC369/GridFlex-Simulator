@@ -12,7 +12,7 @@ public enum ConsumptionModel {
     LINEAR {
 
         @Override
-        public double getVarConsumptionRate(int remainingSteps, int maxSteps,
+        public double getVarConsumptionRate(int remainingSteps, double maxSteps,
                 double maxRate) {
             if (maxSteps <= 0) {
                 return 0;
@@ -29,7 +29,7 @@ public enum ConsumptionModel {
     EXPONENTIAL {
 
         @Override
-        public double getVarConsumptionRate(int remainingSteps, int maxSteps,
+        public double getVarConsumptionRate(int remainingSteps, double maxSteps,
                 double maxRate) {
             return Math.pow(Math.pow(maxRate, 1 / (double) maxSteps),
                     maxSteps - remainingSteps + 1);
@@ -43,7 +43,7 @@ public enum ConsumptionModel {
     CONSTANT {
 
         @Override
-        public double getVarConsumptionRate(int remainingSteps, int maxSteps,
+        public double getVarConsumptionRate(int remainingSteps, double maxSteps,
                 double maxRate) {
             return maxRate;
         }
@@ -63,5 +63,5 @@ public enum ConsumptionModel {
      * @return a double indicating a consumptionrate factor.
      */
     public abstract double getVarConsumptionRate(int remainingSteps,
-            int maxSteps, double maxRate);
+            double maxSteps, double maxRate);
 }

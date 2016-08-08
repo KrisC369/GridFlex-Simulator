@@ -19,13 +19,13 @@ import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CNPInitiatorTest {
+public class ContractNetInitiatorTest {
 
     @Mock
     private CNPResponder mockResp1;
     @Mock
     private CNPResponder mockResp2;
-    private CNPInitiator subj;
+    private ContractNetInitiator subj;
     @Mock
     private Proposal mockProposal;
     @Captor
@@ -37,14 +37,14 @@ public class CNPInitiatorTest {
 
     @Before
     public void SetUp() throws Exception {
-        subj = new TestConcreteCNPInitiator();
+        subj = new TestConcreteContractNetInitiator();
         subj.registerResponder(mockResp1);
         subj.registerResponder(mockResp2);
     }
 
     @Test
     public void testRegister() {
-        subj = new TestConcreteCNPInitiator();
+        subj = new TestConcreteContractNetInitiator();
         subj.registerResponder(mockResp1);
         assertEquals(1, subj.getResponders().size());
         mockResp1 = mock(CNPResponder.class);
@@ -99,7 +99,7 @@ public class CNPInitiatorTest {
 
     @Test
     public void testNoSolution() {
-        subj = new TestConcreteCNPInitiatorNoResult();
+        subj = new TestConcreteContractNetInitiatorNoResult();
         subj.registerResponder(mockResp1);
         subj.registerResponder(mockResp2);
         subj.sollicitWork();
@@ -115,7 +115,7 @@ public class CNPInitiatorTest {
 
         verify(reply1, times(0)).affirmative(any(Proposal.class),
                 any(AnswerAnticipator.class));
-        assertTrue(((TestConcreteCNPInitiatorNoResult) subj)
+        assertTrue(((TestConcreteContractNetInitiatorNoResult) subj)
                 .isNoSolutionFoundTriggered());
     }
 }

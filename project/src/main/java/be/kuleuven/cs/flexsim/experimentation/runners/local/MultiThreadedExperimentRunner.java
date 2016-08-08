@@ -51,7 +51,7 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
         }
         try {
             executor.invokeAll(todo);
-        } catch (final Exception e1) {
+        } catch (final InterruptedException e1) {
             LoggerFactory.getLogger(MultiThreadedExperimentRunner.class)
                     .warn("Interrupt called during invocation", e1);
         }

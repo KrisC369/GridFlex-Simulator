@@ -2,10 +2,12 @@ package be.kuleuven.cs.flexsim.domain.util;
 
 /**
  * Class for math-based utility functions.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public final class MathUtils {
+    private static final double EPSILON = 0.00001d;
+    private static final double ZERO = 0d;
 
     private MathUtils() {
     }
@@ -13,11 +15,9 @@ public final class MathUtils {
     /**
      * Calculates the number of multicombinations of n elements in sets of
      * k-sized bags. Formula: (n+k-1)! / n! * (k-1)!
-     * 
-     * @param k
-     *            the k-param.
-     * @param n
-     *            the n-param.
+     *
+     * @param k the k-param.
+     * @param n the n-param.
      * @return the amount of combinations.
      */
     public static long multiCombinationSize(int k, int n) {
@@ -47,13 +47,10 @@ public final class MathUtils {
     /**
      * Calculates the positive surface under the trapezoid formed by the
      * arguments.
-     * 
-     * @param n1y
-     *            The y coordinate of the first number. (The x coord is 0.)
-     * @param n2y
-     *            the y coordinate of the second number.
-     * @param n2x
-     *            The x coordinate of the second number.
+     *
+     * @param n1y The y coordinate of the first number. (The x coord is 0.)
+     * @param n2y the y coordinate of the second number.
+     * @param n2x The x coordinate of the second number.
      * @return the positive surface area.
      */
     public static double trapzPos(double n1y, double n2y, double n2x) {
@@ -78,8 +75,8 @@ public final class MathUtils {
     private static double trapzPosEqZeroFirstSmaller(double n1y, double n2x) {
         if (n1y > 0) {
             return case6(n1y, n2x);
-        } else if (n1y == 0) {
-            return caseZero();
+        } else if (n1y < EPSILON) {
+            return ZERO;
         }
         return 0;
     }
@@ -87,8 +84,8 @@ public final class MathUtils {
     private static double trapzPosEqZeroFirstLarger(double n1y, double n2y,
             double n2x) {
         if (n1y < 0) {
-            return caseZero();
-        } else if (n1y == 0) {
+            return ZERO;
+        } else if (n1y < EPSILON) {
             return case8(n2y, n2x);
         }
         return 0;
@@ -108,7 +105,7 @@ public final class MathUtils {
             }
             return case2(n1y, n2y, n2x);
         } else if (n1y < 0) {
-            return caseZero();
+            return ZERO;
         }
         return 0;
     }
@@ -141,10 +138,6 @@ public final class MathUtils {
 
     private static double case6(double n1y, double n2x) {
         return (n1y * n2x) / 2d;
-    }
-
-    private static double caseZero() {
-        return 0;
     }
 
 }

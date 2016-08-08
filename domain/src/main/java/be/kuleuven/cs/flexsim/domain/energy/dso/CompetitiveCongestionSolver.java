@@ -1,21 +1,21 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.protocol.contractnet.ContractNetInitiator;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.function.ToIntFunction;
 
-import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
-
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
  * partners and other solutions.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
-    private final CNPInitiator<DSMProposal> solverInstance;
+    private ContractNetInitiator<DSMProposal> solverInstance;
     private final ToIntFunction<DSMProposal> usefullnessFunction = input -> {
         double theoreticalMax = DSM_ALLOCATION_DURATION
                 * (input.getTargetValue() / 4.0);
@@ -25,11 +25,9 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
     /**
      * Default constructor.
-     * 
-     * @param profile
-     *            The congestion profile to solve.
-     * @param forecastHorizon
-     *            The forecast horizon.
+     *
+     * @param profile         The congestion profile to solve.
+     * @param forecastHorizon The forecast horizon.
      */
     public CompetitiveCongestionSolver(CongestionProfile profile,
             int forecastHorizon) {
@@ -38,31 +36,28 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
 
     /**
      * Default constructor.
-     * 
-     * @param profile
-     *            The congestion profile to solve.
-     * @param forecastHorizon
-     *            The forecast horizon.
-     * @param maxRelativeValue
-     *            The maximum relative congestion resolve value.
+     *
+     * @param profile          The congestion profile to solve.
+     * @param forecastHorizon  The forecast horizon.
+     * @param maxRelativeValue The maximum relative congestion resolve value.
      */
     public CompetitiveCongestionSolver(CongestionProfile profile,
             int forecastHorizon, int maxRelativeValue) {
         super(profile, forecastHorizon, maxRelativeValue);
-        this.solverInstance = new DSMCNPInitiator();
+        this.solverInstance = new DSMContractNetInitiator();
     }
 
     /**
      * @return the solverInstance
      */
     @Override
-    protected CNPInitiator<DSMProposal> getSolverInstance() {
+    protected ContractNetInitiator<DSMProposal> getSolverInstance() {
         return this.solverInstance;
     }
 
-    private class DSMCNPInitiator extends CNPInitiator<DSMProposal> {
+    private class DSMContractNetInitiator extends ContractNetInitiator<DSMProposal> {
 
-        private Optional<DSMProposal> secondBest = java.util.Optional.empty();
+        private Optional<DSMProposal> secondBest = Optional.empty();
 
         @Override
         protected void signalNoSolutionFound() {
@@ -72,7 +67,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
         @Override
         public Optional<DSMProposal> findBestProposal(List<DSMProposal> props,
                 DSMProposal description) {
-            secondBest = java.util.Optional.empty();
+            secondBest = Optional.empty();
             if (props.isEmpty()) {
                 return Optional.empty();
             }
@@ -80,7 +75,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
                     usefullnessFunction);
             props.remove(max);
             if (!props.isEmpty()) {
-                secondBest = java.util.Optional.ofNullable(
+                secondBest = Optional.ofNullable(
                         CollectionUtils.argMax(props, usefullnessFunction));
 
             }

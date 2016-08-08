@@ -21,7 +21,7 @@ import be.kuleuven.cs.flexsim.protocol.Proposal;
 public class CNPResponderTest {
     private CNPResponder subjPos;
     private CNPResponder subjNeg;
-    private CNPInitiator realInit;
+    private ContractNetInitiator realInit;
     @Mock
     private Proposal mockProposal;
     @Captor
@@ -33,7 +33,7 @@ public class CNPResponderTest {
     public void SetUp() throws Exception {
         subjPos = new ConcretePositiveCNPResponder();
         subjNeg = new ConcreteNegativeCNPResponder();
-        realInit = new TestConcreteCNPInitiator();
+        realInit = new TestConcreteContractNetInitiator();
         realInit.registerResponder(subjPos);
     }
 

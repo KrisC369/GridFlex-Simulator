@@ -46,7 +46,7 @@ public class BRPAggregatorTest {
         RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
         assertNotNull(t);
         assertTrue(agg.getClients().contains(site1));
-        assertTrue(t.getTarget().equals(site1));
+        assertTrue(t.getTargetAPI().equals(site1));
     }
 
     @Test

@@ -19,14 +19,14 @@ import be.kuleuven.cs.flexsim.protocol.Responder;
  * @param <T>
  *            The concrete type of the proposal for the responders.
  */
-public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
+public abstract class ContractNetInitiator<T extends Proposal> implements Initiator<T> {
 
     private final List<Responder<T>> responders;
     private Map<T, AnswerAnticipator<T>> props;
     private Optional<T> description;
     private int messageCount = 0;
 
-    protected CNPInitiator() {
+    protected ContractNetInitiator() {
         responders = Lists.newArrayList();
         this.messageCount = 0;
         this.props = Maps.newLinkedHashMap();
@@ -40,7 +40,7 @@ public abstract class CNPInitiator<T extends Proposal> implements Initiator<T> {
 
     /**
      * Signals this initiator that works need to be done. This method
-     * immediately calls {@code CNPInitiator.getWorkUnitDescription()}.
+     * immediately calls {@code ContractNetInitiator.getWorkUnitDescription()}.
      */
     public void sollicitWork() {
         Optional<T> p = getWorkUnitDescription();

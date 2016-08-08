@@ -32,7 +32,7 @@ abstract class FlexAspectImpl implements FlexAspect {
     private static final String INITIALISE_ERR = "Initialise this aspect first. No layout present.";
     private final UIDGenerator generator;
     private final Graph<Buffer<Resource>, Workstation> layout;
-
+    private static final double EPSILON = 0.0001d;
     /**
      * Constructor
      * 
@@ -145,11 +145,11 @@ abstract class FlexAspectImpl implements FlexAspect {
     }
 
     private boolean presentInSamePhase(Workstation a, Workstation... b) {
-        checkNotNull(this.layout, INITIALISE_ERR);
-        Graph<Buffer<Resource>, Workstation> layout2 = layout;
         if (b.length == 0) {
             return true;
         }
+        checkNotNull(this.layout, INITIALISE_ERR);
+        Graph<Buffer<Resource>, Workstation> layout2 = layout;
         if (b.length == 1) {
             return layout2.getSource(a).equals(layout2.getSource(b[0]))
                     && layout2.getDest(a).equals(layout2.getDest(b[0]));
@@ -419,7 +419,7 @@ abstract class FlexAspectImpl implements FlexAspect {
             double maxT = 0;
             for (DualModeWorkstation w : options) {
                 sumP += w.getHighConsumptionRate() - w.getLowConsumptionRate();
-                double currentT = w.getProcessingRate() != 0
+                double currentT = w.getProcessingRate() < EPSILON
                         ? w.getRatedCapacity() / w.getProcessingRate() : 1;
                 if (currentT > maxT) {
                     maxT = currentT;

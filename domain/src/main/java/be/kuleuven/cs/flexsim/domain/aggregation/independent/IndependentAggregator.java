@@ -1,14 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.independent;
 
-import java.util.Collections;
-import java.util.List;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents an energy aggregator implementation.
@@ -24,12 +24,9 @@ public class IndependentAggregator extends Aggregator {
     /**
      * Constructor with custom aggregation strategy.
      *
-     * @param tso
-     *            the tso to take steering signals from.
-     * @param frequency
-     *            the frequency with which to perform aggregation functions.
-     * @param strategy
-     *            The aggregation strategy to use.
+     * @param tso       the tso to take steering signals from.
+     * @param frequency the frequency with which to perform aggregation functions.
+     * @param strategy  The aggregation strategy to use.
      */
     public IndependentAggregator(BalancingSignal tso, int frequency,
             AggregationStrategy strategy) {
@@ -42,10 +39,8 @@ public class IndependentAggregator extends Aggregator {
     /**
      * Default constructor with default aggregation strategy: Cartesianproduct.
      *
-     * @param tso
-     *            the tso to take steering signals from.
-     * @param frequency
-     *            the frequency with which to perform aggregation functions.
+     * @param tso       the tso to take steering signals from.
+     * @param frequency the frequency with which to perform aggregation functions.
      */
     public IndependentAggregator(BalancingSignal tso, int frequency) {
         this(tso, frequency, AggregationStrategyImpl.CARTESIANPRODUCT);

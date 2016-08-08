@@ -5,10 +5,10 @@ import java.util.Optional;
 
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 
-public class TestConcreteCNPInitiatorNoResult extends TestConcreteCNPInitiator {
+public class TestConcreteContractNetInitiatorNoResult extends TestConcreteContractNetInitiator {
     private boolean noSolutionFoundTriggered = false;
 
-    public TestConcreteCNPInitiatorNoResult() {
+    public TestConcreteContractNetInitiatorNoResult() {
         super();
     }
 

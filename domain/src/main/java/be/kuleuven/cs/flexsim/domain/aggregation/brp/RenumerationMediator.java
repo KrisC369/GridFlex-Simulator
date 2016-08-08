@@ -35,7 +35,7 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
      *
      * @return the api target.
      */
-    public SiteFlexAPI getTarget() {
+    public SiteFlexAPI getTargetAPI() {
         return this.target;
     }
 

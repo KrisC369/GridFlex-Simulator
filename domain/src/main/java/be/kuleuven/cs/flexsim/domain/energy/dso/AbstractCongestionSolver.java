@@ -1,27 +1,25 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso;
 
+import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import be.kuleuven.cs.flexsim.protocol.contractnet.ContractNetInitiator;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
+import org.apache.commons.math3.stat.descriptive.rank.Min;
+import org.apache.commons.math3.util.FastMath;
+
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.math3.stat.descriptive.rank.Min;
-import org.apache.commons.math3.util.FastMath;
-
-import com.google.common.collect.Lists;
-
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
-import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
-import it.unimi.dsi.fastutil.doubles.DoubleList;
-
 /**
  * Entity that solves congestion on local distribution grids by contracting DSM
  * partners and other solutions.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public abstract class AbstractCongestionSolver implements SimulationComponent {
@@ -37,16 +35,13 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
 
     /**
      * Default constructor.
-     * 
-     * @param profile
-     *            The congestion profile to solve.
-     * @param forecastHorizon
-     *            The forecast horizon.
-     * @param maxRelativeValue
-     *            The maximum value between (1-100) as a percent of the maximum
-     *            reference energy amount that should be ignored by the
-     *            mechanism. The maximum reference energy amount is defined as
-     *            the peak power rate in the profile times the forecast horizon.
+     *
+     * @param profile          The congestion profile to solve.
+     * @param forecastHorizon  The forecast horizon.
+     * @param maxRelativeValue The maximum value between (1-100) as a percent of the maximum
+     *                         reference energy amount that should be ignored by the
+     *                         mechanism. The maximum reference energy amount is defined as
+     *                         the peak power rate in the profile times the forecast horizon.
      */
     public AbstractCongestionSolver(CongestionProfile profile,
             int forecastHorizon, int maxRelativeValue) {
@@ -62,9 +57,8 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
 
     /**
      * Register this dsm partner to this solver instance.
-     * 
-     * @param dsm
-     *            the partner to add.
+     *
+     * @param dsm the partner to add.
      */
     public void registerDSMPartner(DSMPartner dsm) {
         dsms.add(dsm);
@@ -169,7 +163,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     /**
      * @return the solverInstance
      */
-    protected abstract CNPInitiator<DSMProposal> getSolverInstance();
+    protected abstract ContractNetInitiator<DSMProposal> getSolverInstance();
 
     /**
      * @return the forecastHorizon
@@ -187,7 +181,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
 
     /**
      * @return Returns the remaining congestion profile after application of
-     *         dsm.
+     * dsm.
      */
     public CongestionProfile getProfileAfterDSM() {
         return CongestionProfile.createFromTimeSeries(afterDSMprofile);
@@ -201,12 +195,11 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      * Get a description of the work that is required in the form of a DSM
      * proposal. Can also provide an empty optional value if no work is
      * required.
-     * 
+     *
      * @return an Optional containing a dsm proposal for work in this time
-     *         period or an empty value.
+     * period or an empty value.
      */
     protected Optional<DSMProposal> getWorkProposal() {
-        double cong = getCongestion().value(getTick());
         double sum = 0;
         Min m = new Min();
         m.setData(new double[] { DSM_ALLOCATION_DURATION,
@@ -220,8 +213,8 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         }
 
         return Optional.of(DSMProposal.create(
-                "CNP for activation for tick: " + getTick(), cong, 0, getTick(),
-                getTick() + DSM_ALLOCATION_DURATION));
+                "CNP for activation for tick: " + getTick(), getCongestion().value(getTick()), 0,
+                getTick(), getTick() + DSM_ALLOCATION_DURATION));
     }
 
     private DoubleList getNewEmptyDouble() {

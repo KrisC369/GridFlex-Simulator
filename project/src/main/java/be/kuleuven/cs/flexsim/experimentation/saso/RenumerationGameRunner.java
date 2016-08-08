@@ -109,7 +109,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
                 protected void execute() {
                     try {
                         p.play();
-                    } catch (final Exception e) {
+                    } catch (final RuntimeException e) {
                         logger.warn(
                                 "Runtime exception caught while executing atom.",
                                 e);
@@ -143,7 +143,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
             try {
                 final int agents = Integer.parseInt(args[0]);
                 new RenumerationGameRunner(200, agents).execute();
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)
                         .error("Unparseable cl parameters passed");
                 throw e;
@@ -153,7 +153,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
                 new RenumerationGameRunner(reps, agents).execute();
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)
                         .error("Unparseable cl parameters passed");
                 throw e;

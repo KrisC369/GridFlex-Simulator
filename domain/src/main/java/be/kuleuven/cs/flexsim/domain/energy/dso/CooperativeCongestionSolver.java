@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.domain.energy.dso;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.protocol.contractnet.CNPInitiator;
+import be.kuleuven.cs.flexsim.protocol.contractnet.ContractNetInitiator;
 import org.apache.commons.math3.util.FastMath;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.function.ToIntFunction;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class CooperativeCongestionSolver extends AbstractCongestionSolver {
-    private final CNPInitiator<DSMProposal> solverInstance;
+    private ContractNetInitiator<DSMProposal> solverInstance;
     private final ToIntFunction<DSMProposal> choiceFunction = input -> {
         double sum = 0;
         for (int i = 0; i < FastMath.min(DSM_ALLOCATION_DURATION,
@@ -57,11 +57,11 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
      * @return the solverInstance
      */
     @Override
-    protected CNPInitiator<DSMProposal> getSolverInstance() {
+    protected ContractNetInitiator<DSMProposal> getSolverInstance() {
         return this.solverInstance;
     }
 
-    private class DSMCNPInitiator extends CNPInitiator<DSMProposal> {
+    private class DSMCNPInitiator extends ContractNetInitiator<DSMProposal> {
 
         @Override
         protected void signalNoSolutionFound() {

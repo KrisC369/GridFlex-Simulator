@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 
-public class TestConcreteCNPInitiator extends CNPInitiator<Proposal> {
-    public TestConcreteCNPInitiator() {
+public class TestConcreteContractNetInitiator extends ContractNetInitiator<Proposal> {
+    public TestConcreteContractNetInitiator() {
         super();
     }
 

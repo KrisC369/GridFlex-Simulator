@@ -88,7 +88,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             try {
                 final int agents = Integer.parseInt(args[0]);
                 startExperiment(gen, n, agents, allowedEx);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error(CL_ERROR);
                 throw e;
@@ -98,7 +98,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 final int agents = Integer.valueOf(args[1]);
                 final int reps = Integer.valueOf(args[0]);
                 startExperiment(gen, reps, agents, allowedEx);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error(CL_ERROR);
                 throw e;
@@ -109,7 +109,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 final int reps = Integer.valueOf(args[0]);
                 final int allowed = Integer.valueOf(args[2]);
                 startExperiment(gen, reps, agents, allowed);
-            } catch (Exception e) {
+            } catch (RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
                         .error(CL_ERROR);
                 throw e;
@@ -340,7 +340,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     
         ExperimentAtomImplementation(DoubleList realisation,
                 CongestionProfile profile) {
-            this.real = realisation;
+            this.real = new DoubleArrayList(realisation);
             this.profile = profile;
             doRegistration();
         }
