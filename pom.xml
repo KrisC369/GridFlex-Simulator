@@ -72,6 +72,11 @@
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>org.eclipse.jdt.annotation</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>net.sf.jmpi</groupId>
+			<artifactId>jmpi-solver-cplex</artifactId>
+			<version>0.6</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
