@@ -74,7 +74,7 @@ public final class AggregationUtils {
                 .create(flex);
         for (final SiteFlexAPI api : copy.keySet()) {
             for (final FlexTuple t : copy.get(api)) {
-                if (!t.getDirection().equals(direction)) {
+                if (t.getDirection() != direction) {
                     flex.remove(api, t);
                 }
             }

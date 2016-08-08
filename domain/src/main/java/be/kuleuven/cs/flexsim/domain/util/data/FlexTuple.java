@@ -1,7 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.util.data;
 
 import com.google.auto.value.AutoValue;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Tuples representing a power flexibility profile. This tuple is a 6-element
@@ -63,7 +62,7 @@ public abstract class FlexTuple {
      * @return the direction of flexibility. True for upflex (consume more) and
      * False for downflex (curtailment).
      */
-    public abstract Direction getDirection() ;
+    public abstract Direction getDirection();
 
     /**
      * @return the duration for which the deltaP power amount can be made
@@ -82,16 +81,16 @@ public abstract class FlexTuple {
      */
     public abstract int getTC();
 
-    public enum Direction{
-        UP(true),DOWN(false);
+    public enum Direction {
+        UP(true), DOWN(false);
 
         private final boolean representation;
 
-        Direction(Boolean v){
+        Direction(boolean v) {
             this.representation = v;
         }
 
-        public boolean booleanRepresentation(){
+        public boolean booleanRepresentation() {
             return representation;
         }
 
@@ -99,8 +98,8 @@ public abstract class FlexTuple {
          * @param rep The boolean representation of the desired direction.
          * @return the direction based on its boolean representation.
          */
-        public static Direction fromRepresentation(boolean rep){
-            return rep? UP:DOWN;
+        public static Direction fromRepresentation(boolean rep) {
+            return rep ? UP : DOWN;
         }
     }
 
