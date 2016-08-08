@@ -9,12 +9,6 @@ package be.kuleuven.cs.flexsim.protocol;
  */
 public final class NoOpAnswerAnticipator<T> implements AnswerAnticipator<T> {
 
-    /**
-     * 
-     */
-    public NoOpAnswerAnticipator() {
-    }
-
     @Override
     public void reject() {
     }

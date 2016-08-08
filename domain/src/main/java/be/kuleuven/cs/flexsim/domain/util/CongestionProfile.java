@@ -34,7 +34,7 @@ import it.unimi.dsi.fastutil.doubles.DoubleLists;
  */
 public class CongestionProfile implements TimeSeries {
 
-    DoubleList dValues;
+    private DoubleList dValues;
 
     @Nullable
     private Double maxcache = null;

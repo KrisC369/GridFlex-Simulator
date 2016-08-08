@@ -6,6 +6,7 @@ package be.kuleuven.cs.flexsim.simulation;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
+@FunctionalInterface
 public interface InstrumentationComponent {
 
     /**
@@ -13,8 +14,7 @@ public interface InstrumentationComponent {
      * method is called as a callback after registering with the simulation
      * context.
      *
-     * @param context
-     *            The context to inject.
+     * @param context The context to inject.
      */
     void initialize(SimulationContext context);
 }

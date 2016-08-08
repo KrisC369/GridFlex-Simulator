@@ -1,24 +1,22 @@
 package be.kuleuven.cs.flexsim.simulation;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import org.apache.commons.math3.random.MersenneTwister;
-import org.apache.commons.math3.random.RandomGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.EventBus;
-
 import be.kuleuven.cs.flexsim.event.Event;
 import be.kuleuven.cs.flexsim.event.EventFactory;
 import be.kuleuven.cs.flexsim.event.EventFactoryImplementation;
 import be.kuleuven.cs.flexsim.time.SimulationClock;
 import be.kuleuven.cs.flexsim.time.VirtualClock;
+import com.google.common.collect.Sets;
+import com.google.common.eventbus.EventBus;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * The Class Simulator. This Simulator drives the simulation by sending ticks to
@@ -37,13 +35,19 @@ public final class Simulator implements SimulationContext {
 
     private static final String TIMECOUNT_LITERAL = "clocktime";
 
-    /** The scheduled duration of this simulator's run. */
+    /**
+     * The scheduled duration of this simulator's run.
+     */
     private final int duration;
 
-    /** The internal clock reference. */
+    /**
+     * The internal clock reference.
+     */
     private final SimulationClock clock;
 
-    /** The collection of simulation components. */
+    /**
+     * The collection of simulation components.
+     */
     private final Set<SimulationComponent> components;
 
     private final EventBus eventbus;
@@ -56,15 +60,13 @@ public final class Simulator implements SimulationContext {
 
     private final UIDGenerator uidgen;
 
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(Simulator.class);
 
     /**
      * Instantiates a new simulator.
      *
-     * @param duration
-     *            the duration
-     * @param seed
-     *            The seed.
+     * @param duration the duration
+     * @param seed     The seed.
      */
     private Simulator(final int duration, final int seed) {
         checkArgument(duration > 0, "Duration should be strictly positive.");
@@ -72,16 +74,17 @@ public final class Simulator implements SimulationContext {
         this.clock = new SimulationClock();
         this.components = Sets.newLinkedHashSet();
         this.instruComps = Sets.newLinkedHashSet();
-        this.logger = LoggerFactory.getLogger(Simulator.class);
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new EventFactoryImplementation();
         this.random = new MersenneTwister(seed);
         this.uidgen = new UIDGenerator() {
-            private long count = 0;
+            private long count;
 
             @Override
-            public synchronized long getNextUID() {
-                return count++;
+            public long getNextUID() {
+                synchronized (this) {
+                    return count++;
+                }
             }
         };
     }
@@ -89,8 +92,7 @@ public final class Simulator implements SimulationContext {
     /**
      * Instantiates a new simulator.
      *
-     * @param duration
-     *            the duration
+     * @param duration the duration
      */
     private Simulator(final int duration2) {
         this(duration2, duration2);
@@ -170,15 +172,19 @@ public final class Simulator implements SimulationContext {
         logger.info("Simulation stopped");
     }
 
-    private synchronized void tickComponents() {
-        for (final SimulationComponent c : components) {
-            c.tick(getSimulationTime());
+    private void tickComponents() {
+        synchronized (this) {
+            for (final SimulationComponent c : components) {
+                c.tick(getSimulationTime());
+            }
         }
     }
 
-    private synchronized void afterTickComponents() {
-        for (final SimulationComponent c : components) {
-            c.afterTick(getSimulationTime());
+    private void afterTickComponents() {
+        synchronized (this) {
+            for (final SimulationComponent c : components) {
+                c.afterTick(getSimulationTime());
+            }
         }
     }
 
@@ -213,25 +219,26 @@ public final class Simulator implements SimulationContext {
     }
 
     private void printProgBar(final int percent) {
-        final StringBuilder bar = new StringBuilder("[");
-        for (int i = 0; i < PROGRESSBAR_LENGTH; i++) {
-            if (i < (percent / 2)) {
-                bar.append("=");
-            } else if (i == (percent / 2)) {
-                bar.append(">");
-            } else {
-                bar.append(" ");
+        if (logger.isInfoEnabled()) {
+            final StringBuilder bar = new StringBuilder("[");
+            for (int i = 0; i < PROGRESSBAR_LENGTH; i++) {
+                if (i < (percent / 2)) {
+                    bar.append("=");
+                } else if (i == (percent / 2)) {
+                    bar.append(">");
+                } else {
+                    bar.append(" ");
+                }
             }
+            bar.append("]   " + percent + "%     ");
+            logger.info("\r" + bar.toString());
         }
-        bar.append("]   " + percent + "%     ");
-        logger.info("\r" + bar.toString());
     }
 
     /**
      * Creates and instantiates a new simulator.
      *
-     * @param duration
-     *            the duration the simulator should run for.
+     * @param duration the duration the simulator should run for.
      * @return A new simulator object.
      */
     public static Simulator createSimulator(final int duration) {
@@ -241,10 +248,8 @@ public final class Simulator implements SimulationContext {
     /**
      * Creates and instantiates a new simulator with a given seed for the PRNG.
      *
-     * @param duration
-     *            the duration the simulator should run for.
-     * @param seed
-     *            The seed.
+     * @param duration the duration the simulator should run for.
+     * @param seed     The seed.
      * @return A new simulator object.
      */
     public static Simulator createSimulator(final int duration, final int seed) {
@@ -262,6 +267,11 @@ public final class Simulator implements SimulationContext {
         comp.getSimulationSubComponents().forEach(this::register);
     }
 
+    @Override
+    public void register(final InstrumentationComponent comp) {
+        registerInstru(comp);
+    }
+
     private void registerComp(final SimulationComponent comp) {
         this.components.add(comp);
         logRegisterSC(comp);
@@ -269,13 +279,9 @@ public final class Simulator implements SimulationContext {
     }
 
     private void logRegisterSC(final SimulationComponent comp) {
-        logger.debug("Simulation component registered: {}", comp);
-
-    }
-
-    @Override
-    public void register(final InstrumentationComponent comp) {
-        registerInstru(comp);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Simulation component registered: {}", comp);
+        }
     }
 
     private void registerInstru(final InstrumentationComponent comp) {
@@ -286,7 +292,9 @@ public final class Simulator implements SimulationContext {
     }
 
     private void logRegisterIC(final InstrumentationComponent comp) {
-        logger.debug("Instrumentation component registered: {}", comp);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Instrumentation component registered: {}", comp);
+        }
     }
 
     @Override

@@ -1,12 +1,11 @@
 package be.kuleuven.cs.flexsim.io;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Writes the results from experimentation to certain outputs (eg. a logger).
@@ -21,8 +20,7 @@ public class ResultWriter {
     /**
      * Default constructor.
      *
-     * @param target
-     *            The target to take results from.
+     * @param target The target to take results from.
      */
     public ResultWriter(final Writable target) {
         this(target, "RESULTS");
@@ -31,10 +29,8 @@ public class ResultWriter {
     /**
      * Constructor creating new logger programmatically.
      *
-     * @param target
-     *            The target to take results from.
-     * @param filename
-     *            The filename for the logger.
+     * @param target   The target to take results from.
+     * @param filename The filename for the logger.
      */
     public ResultWriter(final Writable target, final String filename) {
         logger = LoggerFactory.getLogger(filename);
@@ -51,9 +47,9 @@ public class ResultWriter {
 
     private String buildMessage() {
         final StringBuilder b = new StringBuilder()
-        .append("Writing results:\n")
-        .append(target.getFormattedResultString())
-        .append("----------------\n");
+                .append("Writing results:\n")
+                .append(target.getFormattedResultString())
+                .append("----------------\n");
         if (!this.resultComponents.isEmpty()) {
             b.append("Other result components:\n");
             for (final Entry<String, String> entry : resultComponents.entrySet()) {
@@ -72,10 +68,8 @@ public class ResultWriter {
     /**
      * Add a key/value string component to this result writer.
      *
-     * @param key
-     *            the string indicating the key.
-     * @param value
-     *            the value for the representing key.
+     * @param key   the string indicating the key.
+     * @param value the value for the representing key.
      */
     public void addResultComponent(final String key, final String value) {
         this.resultComponents.put(key, value);
