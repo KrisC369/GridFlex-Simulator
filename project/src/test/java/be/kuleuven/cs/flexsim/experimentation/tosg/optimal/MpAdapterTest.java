@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
+import autovalue.shaded.com.google.common.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpVariable;
 import org.junit.Before;
@@ -25,7 +26,7 @@ public class MpAdapterTest {
     @Before
     public void setUp() throws Exception {
         this.target = FlexConstraints.create(interAct, actDuration, maxAct);
-        this.adapt = new MpAdapter(target, 500);
+        this.adapt = new MpAdapter(target, 500, Lists.newArrayList());
     }
 
     @Test

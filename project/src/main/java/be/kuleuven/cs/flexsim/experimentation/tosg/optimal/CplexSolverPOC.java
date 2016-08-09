@@ -17,7 +17,7 @@ import static net.sf.jmpi.main.expression.MpExpr.sum;
 public class CplexSolverPOC {
 
     public static void main(String[] args) {
-
+        poc();
     }
 
     public static void scratchPad(){
@@ -55,5 +55,6 @@ public class CplexSolverPOC {
         result = solver.solve();
         System.out.println(result);
         System.out.println(prob);
+
     }
 }
