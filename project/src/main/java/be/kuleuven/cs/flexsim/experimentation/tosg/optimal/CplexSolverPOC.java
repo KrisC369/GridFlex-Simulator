@@ -17,6 +17,13 @@ import static net.sf.jmpi.main.expression.MpExpr.sum;
 public class CplexSolverPOC {
 
     public static void main(String[] args) {
+
+    }
+
+    public static void scratchPad(){
+
+    }
+    public static void poc(){
         MpSolver solver = new SolverCPLEX();
         MpProblem prob = new MpProblem();
         prob.addVar("x", Integer.class);

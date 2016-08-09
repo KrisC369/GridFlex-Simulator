@@ -8,17 +8,19 @@ import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public abstract class OptimalSolver implements SimulationComponent{
+public abstract class OptimalSolver implements SimulationComponent {
     private final List<FlexProvider> providers;
 
-    public OptimalSolver(){
+    public OptimalSolver() {
         providers = Lists.newArrayList();
     }
+
     public void registerFlexProvider(FlexProvider p) {
         providers.add(p);
     }
@@ -51,4 +53,7 @@ public abstract class OptimalSolver implements SimulationComponent{
 
     public abstract MpProblem getProblem();
 
+    List<FlexProvider> getProviders() {
+        return Collections.unmodifiableList(providers);
+    }
 }
