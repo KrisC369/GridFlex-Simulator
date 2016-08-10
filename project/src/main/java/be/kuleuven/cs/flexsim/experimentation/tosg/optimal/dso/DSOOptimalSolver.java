@@ -16,11 +16,13 @@ import net.sf.jmpi.main.MpOperator;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.expression.MpExpr;
+import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static net.sf.jmpi.main.expression.MpExpr.prod;
 
 /**
@@ -41,7 +43,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private final List<String> solvedID;
     private final Map<FlexProvider, String> flexID;
     private final ListMultimap<FlexProvider, String> allocDvarID;
-    private AllocResults results;
+    private @Nullable AllocResults results;
 
     public DSOOptimalSolver(final CongestionProfile c, final Solver s) {
         profile = c;
@@ -182,6 +184,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
      */
     @Override
     public AllocResults getResults() {
+        checkNotNull(results, "Results has not been set yet.");
         return this.results;
     }
 

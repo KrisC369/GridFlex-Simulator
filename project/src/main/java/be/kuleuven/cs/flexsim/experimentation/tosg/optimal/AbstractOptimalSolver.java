@@ -9,6 +9,7 @@ import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
 import net.sf.jmpi.solver.cplex.SolverCPLEX;
 import net.sf.jmpi.solver.gurobi.SolverGurobi;
+import org.eclipse.jdt.annotation.NonNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -74,7 +75,7 @@ public abstract class AbstractOptimalSolver implements SimulationComponent {
      * @param result Optional results. Optional is empty if solution is infeasible for the given
      *               problem.
      */
-    protected abstract void processResults(Optional<MpResult> result);
+    protected abstract void processResults(@NonNull Optional<MpResult> result);
 
     @Override
     public List<? extends SimulationComponent> getSimulationSubComponents() {
