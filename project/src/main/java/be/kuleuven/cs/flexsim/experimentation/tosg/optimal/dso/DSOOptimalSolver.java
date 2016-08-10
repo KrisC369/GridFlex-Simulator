@@ -24,6 +24,10 @@ import java.util.Optional;
 import static net.sf.jmpi.main.expression.MpExpr.prod;
 
 /**
+ * Solver for using flexibility to avoid wind curtailment.
+ * This class generates MIP problem formulation to solve for optimal allocation.
+ * Where optimality is defined as the maximum recution of congestion.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class DSOOptimalSolver extends AbstractOptimalSolver {
