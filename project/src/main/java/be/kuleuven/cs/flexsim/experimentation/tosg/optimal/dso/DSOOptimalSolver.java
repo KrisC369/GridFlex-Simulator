@@ -45,6 +45,12 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private final ListMultimap<FlexProvider, String> allocDvarID;
     private @Nullable AllocResults results;
 
+    /**
+     * Public constructor
+     *
+     * @param c The congestion profile to use.
+     * @param s The solver to use.
+     */
     public DSOOptimalSolver(final CongestionProfile c, final Solver s) {
         profile = c;
         solver = s;
