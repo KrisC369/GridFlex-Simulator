@@ -3,14 +3,23 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 import com.google.auto.value.AutoValue;
 
 /**
+ * Representation of the constraint concerning flexibility activation.
+ * This is similar to a contract between provider and SO stating the allowed boundaries of
+ * operation when dealing with energy flexibility.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @AutoValue
 public abstract class FlexConstraints {
-
+    /**
+     * No flex available.
+     */
     public static final FlexConstraints NOFLEX = builder().interActivationTime(0)
             .activationDuration(0)
             .maximumActivations(0).build();
+    /**
+     * Flex constraints according to Elia's R3DP product.
+     */
     public static final FlexConstraints R3DP = builder().build();
 
     /**
