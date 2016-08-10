@@ -8,6 +8,8 @@ import org.junit.Test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import static be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver.STEPS_PER_HOUR;
+import static be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver.Solver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -19,6 +21,7 @@ public class DSOOptimalSolverTest {
     private DSOOptimalSolver solver;
     private FlexProvider provider1;
     private FlexProvider provider2;
+    private FlexConstraints constraints;
     private static String column = "test";
     private static String file = "test.csv";
 
@@ -34,9 +37,11 @@ public class DSOOptimalSolverTest {
             e.printStackTrace();
             fail();
         }
-        solver = new DSOOptimalSolver(profile, 8);
-        provider1 = new FlexProvider(200);
-        provider2 = new FlexProvider(500);
+        constraints = FlexConstraints.builder().interActivationTime(5).interActivationTime(4)
+                .maximumActivations(20).build();
+        solver = new DSOOptimalSolver(profile, Solver.CPLEX);
+        provider1 = new FlexProvider(200, constraints);
+        provider2 = new FlexProvider(500, constraints);
     }
 
     @Test
@@ -53,30 +58,74 @@ public class DSOOptimalSolverTest {
     @Test
     public void testSolve() {
         initialize();
-        System.out.println(solver.getProblem());
         solver.tick(1);
         AllocResults res = solver.getResults();
+        testConstraints(res);
+    }
+
+    @Test
+    public void testReal() {
+        try {
+            profile = (CongestionProfile) CongestionProfile
+                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+            solver = new DSOOptimalSolver(profile, Solver.CPLEX);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            fail();
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail();
+        }
+        initialize();
+        solver.tick(1);
+        AllocResults res = solver.getResults();
+        testConstraints(res);
+    }
+
+    private void testConstraints(AllocResults res) {
+        testActivationDuration(res);
+        testInterActivationTime(res);
+    }
+
+    private void testInterActivationTime(AllocResults res) {
         for (FlexProvider p : solver.getProviders()) {
-            int countActivation = 0;
+            FlexConstraints adapted = new ConstraintStepMultiplierDecorator(
+                    p.getActivationConstraints(),
+                    STEPS_PER_HOUR);
             int countInter = 0;
+            boolean wasActive = false;
+            for (Boolean b : res.getAllocationResults().get(p)) {
+                if (b) {
+                    if (wasActive && countInter > 0 && countInter < adapted
+                            .getInterActivationTime()) {
+                        fail("not respecting IA." + countInter);
+                    }
+                    wasActive = true;
+                    countInter = 0;
+                } else {
+                    countInter++;
+                }
+            }
+        }
+    }
+
+    private void testActivationDuration(AllocResults res) {
+        for (FlexProvider p : solver.getProviders()) {
+            FlexConstraints adapted = new ConstraintStepMultiplierDecorator(
+                    p.getActivationConstraints(),
+                    STEPS_PER_HOUR);
+            int countActivation = 0;
             for (Boolean b : res.getAllocationResults().get(p)) {
                 if (b) {
                     countActivation++;
-                    if (countInter < p.getActivationConstraints().getInterActivationTime()) {
-                        fail("not respecting IA." + countActivation + " " + countInter);
-                    }
-                    countInter = 0;
                 } else {
                     countActivation = 0;
-                    countInter++;
                 }
-                if (countActivation > p.getActivationConstraints().getActivationDuration()) {
-                    fail("not accounting AD." + countActivation + " " + countInter);
+                if (countActivation > adapted.getActivationDuration()) {
+                    fail("not accounting AD." + countActivation + " ");
                 }
-
             }
         }
-        System.out.println(res);
     }
 
 }

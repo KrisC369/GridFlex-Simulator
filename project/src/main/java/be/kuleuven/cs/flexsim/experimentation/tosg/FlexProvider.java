@@ -10,19 +10,13 @@ public class FlexProvider {
     private double powerRate;
 
     public FlexProvider(final double powerRate) {
-        this.constraints = FlexConstraints.NOFLEX;
-        this.powerRate = powerRate;
+        this(powerRate, FlexConstraints.R3DP);
     }
 
-    //    @Override
-    //    public void signalTarget(final int timestep, final int target) {
-    //
-    //    }
-    //
-    //    @Override
-    //    public PowerCapabilityBand getPowerCapacity() {
-    //        return null;
-    //    }
+    public FlexProvider(final double powerRate, final FlexConstraints contract) {
+        this.constraints = contract;
+        this.powerRate = powerRate;
+    }
 
     public FlexConstraints getActivationConstraints() {
         return constraints;

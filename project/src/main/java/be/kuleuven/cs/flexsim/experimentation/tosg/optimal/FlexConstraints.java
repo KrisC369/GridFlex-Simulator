@@ -1,32 +1,46 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
-import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 import com.google.auto.value.AutoValue;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- */@AutoValue
+ */
+@AutoValue
 public abstract class FlexConstraints {
 
-    public static final FlexConstraints NOFLEX = create(0,0,0);
+    public static final FlexConstraints NOFLEX = builder().interActivationTime(0)
+            .activationDuration(0)
+            .maximumActivations(0).build();
+    public static final FlexConstraints R3DP = builder().build();
 
     /**
      * @return The number of time steps allowed between activations.
-      */
-    public abstract int getInterActivationTime();
+     */
+    public abstract double getInterActivationTime();
 
     /**
      * @return The maximum number of consecutive time steps activation is allowed.
      */
-    public abstract int getActivationDuration();
+    public abstract double getActivationDuration();
 
     /**
      * @return The maximum amount of allowed activations
      */
-    public abstract int getMaximumActivations();
+    public abstract double getMaximumActivations();
 
-    public static FlexConstraints create(int interAct, int activationDuration, int maximumActivations){
-        return new AutoValue_FlexConstraints(interAct,activationDuration,maximumActivations);
+    @AutoValue.Builder
+    abstract static class Builder {
+        abstract Builder interActivationTime(double value);
+
+        abstract Builder activationDuration(double value);
+
+        abstract Builder maximumActivations(double value);
+
+        abstract FlexConstraints build();
     }
 
+    public static Builder builder() {
+        return new AutoValue_FlexConstraints.Builder().interActivationTime(12).activationDuration(2)
+                .maximumActivations(40);
+    }
 }

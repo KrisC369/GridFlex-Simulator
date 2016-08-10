@@ -1,8 +1,8 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.DSOOptimalSolver;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.OptimalSolver;
 import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.TSOOptimalSolver;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
@@ -15,7 +15,7 @@ public class PoCRunner {
     private static final String COLUMN = "verlies aan energie";
     private static final int NAGENTS = 2;
     private final TSOOptimalSolver tso;
-    private final OptimalSolver dso;
+    private final AbstractOptimalSolver dso;
     private FlexProvider p1;
     private FlexProvider p2;
     private final Simulator s;
@@ -23,9 +23,9 @@ public class PoCRunner {
 
     public PoCRunner() {
         s = Simulator.createSimulator(1000);
-        tso = new TSOOptimalSolver(c, 8);
-        dso = new DSOOptimalSolver(c, 8);
-        tso.registerFlexrovider(p1);
+        tso = new TSOOptimalSolver(c, AbstractOptimalSolver.Solver.CPLEX);
+        dso = new DSOOptimalSolver(c, AbstractOptimalSolver.Solver.CPLEX);
+        tso.registerFlexProvider(p1);
         dso.registerFlexProvider(p2);
 
         s.register(tso);

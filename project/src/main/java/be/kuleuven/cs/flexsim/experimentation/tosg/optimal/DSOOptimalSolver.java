@@ -1,164 +1,178 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
-import autovalue.shaded.com.google.common.common.collect.Lists;
-import autovalue.shaded.com.google.common.common.collect.Maps;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpDirection;
 import net.sf.jmpi.main.MpOperator;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
-import net.sf.jmpi.main.MpSolver;
-import net.sf.jmpi.main.MpVariable;
 import net.sf.jmpi.main.expression.MpExpr;
-import net.sf.jmpi.solver.cplex.SolverCPLEX;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static net.sf.jmpi.main.expression.MpExpr.prod;
-import static net.sf.jmpi.main.expression.MpExpr.sum;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class DSOOptimalSolver extends OptimalSolver {
-    private CongestionProfile profile;
-    private MpSolver solverInstance;
+public class DSOOptimalSolver extends AbstractOptimalSolver {
+    private static final String CONG = "Cong:";
+    private static final String SOLVED = "Solved";
+    private static final String ALLOC = "alloc:";
+    private static final String FLEX = "Flex";
+    private final CongestionProfile profile;
+    private final Solver solver;
     private final List<String> congID;
+    private final List<String> solvedID;
     private final Map<FlexProvider, String> flexID;
-    private ListMultimap<FlexProvider, String> allocDvarID;
+    private final ListMultimap<FlexProvider, String> allocDvarID;
     private AllocResults results;
 
-    public DSOOptimalSolver(CongestionProfile c, int hor) {
+    public DSOOptimalSolver(final CongestionProfile c, final Solver s) {
         profile = c;
-        solverInstance = new SolverCPLEX();
+        solver = s;
         congID = Lists.newArrayList();
+        solvedID = Lists.newArrayList();
         flexID = Maps.newLinkedHashMap();
         allocDvarID = ArrayListMultimap.create();
         for (int i = 0; i < profile.length(); i++) {
-            congID.add("Cong:" + i);
+            congID.add(CONG + i);
+        }
+        for (int i = 0; i < profile.length(); i++) {
+            solvedID.add(SOLVED + ":" + i);
         }
     }
 
     @Override
-    protected void processResults(MpResult result) {
-        System.out.println(result);
-        List<Boolean> t = Lists.newArrayList();
-        ListMultimap<FlexProvider, Boolean> allocResults = ArrayListMultimap.create();
+    protected void processResults(final Optional<MpResult> result) {
+        if (result.isPresent()) {
+            final MpResult concreteResult = result.get();
+            System.out.println(result);
+            final List<Boolean> t = Lists.newArrayList();
+            final ListMultimap<FlexProvider, Boolean> allocResults = ArrayListMultimap.create();
 
-        for (FlexProvider p : getProviders()) {
-            for (String s : allocDvarID.get(p)) {
-                t.add(result.getBoolean(s));
-                allocResults.put(p, result.getBoolean(s));
+            for (final FlexProvider p : getProviders()) {
+                for (final String s : allocDvarID.get(p)) {
+                    t.add(concreteResult.getBoolean(s));
+                    allocResults.put(p, concreteResult.getBoolean(s));
+                }
             }
+            this.results = AllocResults
+                    .create(allocResults, concreteResult.getObjective().doubleValue());
+        } else {
+            this.results = AllocResults.INFEASIBLE;
         }
-        this.results = AllocResults.create(allocResults, result.getObjective().doubleValue());
     }
 
     @Override
-    public MpSolver getSolver() {
-        return this.solverInstance;
+    public Solver getSolver() {
+        return this.solver;
     }
 
     @Override
     public MpProblem getProblem() {
-        MpProblem prob = new MpProblem();
+        final MpProblem prob = new MpProblem();
         addDataToProblem(prob);
 
-        int i = 0;
-        for (FlexProvider f : getProviders()) {
-            prob.add(getDVarsFor(f, i++));
+        for (final FlexProvider f : getProviders()) {
+            addDVarsForAllocationToProb(prob, f);
         }
 
+        addSolvedClauseToProb(prob);
         addGoalToProb(prob);
-        for (FlexProvider f : getProviders()) {
+
+        for (final FlexProvider f : getProviders()) {
             addConstraintsForFlexToProb(prob, f);
         }
-
         return prob;
     }
 
-    private void addDataToProblem(MpProblem prob) {
+    private void addSolvedClauseToProb(final MpProblem prob) {
+        //solvedID
+        for (final String s : solvedID) {
+            prob.addVar(s, Double.class);
+        }
+        //solvedIDConstraints1
+        for (int i = 0; i < profile.length(); i++) {
+            final MpExpr lhs = new MpExpr().add(solvedID.get(i));
+            final MpExpr rhs = new MpExpr().add(profile.value(i));
+            prob.addConstraint(new MpConstraint(lhs, MpOperator.LE, rhs));
+        }
+        //solvedIDConstraints2 = isMin0andActive
+        for (int i = 0; i < profile.length(); i++) {
+            final MpExpr lhs = new MpExpr().add(solvedID.get(i));
+            final MpExpr rhs = new MpExpr();
+            for (final FlexProvider p : getProviders()) {
+                rhs.add(prod(prod(allocDvarID.get(p).get(i), p.getPowerRate()),
+                        1 / STEPS_PER_HOUR));
+            }
+            prob.addConstraint(new MpConstraint(lhs, MpOperator.LE, rhs));
+        }
+    }
+
+    private void addDataToProblem(final MpProblem prob) {
         //cong
-        for (String s : congID) {
+        for (final String s : congID) {
             prob.addVar(s, Double.class);
         }
         //congConstraints
         for (int i = 0; i < profile.length(); i++) {
-            MpExpr lhs = new MpExpr().add(congID.get(i));
-            MpExpr rhs = new MpExpr().add(profile.value(i));
-            prob.add(new MpConstraint(lhs, MpOperator.EQ, rhs));
-
+            final MpExpr lhs = new MpExpr().add(congID.get(i));
+            final MpExpr rhs = new MpExpr().add(profile.value(i));
+            prob.addConstraint(new MpConstraint(lhs, MpOperator.EQ, rhs));
         }
-
-        for (FlexProvider f : getProviders()) {
-            String flexVar = getFlexID(f);
+        //flexRateConstraints
+        for (final FlexProvider f : getProviders()) {
+            final String flexVar = getFlexID(f);
             flexID.put(f, flexVar);
-            prob.addVar(flexVar, Integer.class);
-            MpExpr lhs = new MpExpr().add(flexVar);
-            MpExpr rhs = new MpExpr().add(f.getPowerRate());
-            prob.add(new MpConstraint(lhs, MpOperator.EQ, rhs));
+            prob.addVar(flexVar, Double.class);
+            final MpExpr lhs = new MpExpr().add(flexVar);
+            final MpExpr rhs = new MpExpr().add(f.getPowerRate());
+            prob.addConstraint(new MpConstraint(lhs, MpOperator.EQ, rhs));
         }
     }
 
-    private void addGoalToProb(MpProblem tempProb) {
-        //        obj = sum(prod(143, "x"), prod(60, "y"));
-        //        prob.setObjective(obj, MpDirection.MAX);
-        MpExpr goalExpr = new MpExpr();
-
+    private void addGoalToProb(final MpProblem tempProb) {
+        final MpExpr goalExpr = new MpExpr();
         for (int i = 0; i < profile.length(); i++) {
-            for (FlexProvider j : getProviders()) {
-                String flexJ = flexID.get(j);
-                MpVariable flex = tempProb.getVariable(flexJ);
-                MpVariable cong = tempProb.getVariable(congID.get(i));
-                MpVariable alloc = tempProb.getVariable(allocDvarID.get(j).get(i));
-                //                goalExpr.add(sum(cong, prod(-1, prod(alloc, flex))));
-                goalExpr.add(sum(congID.get(i), prod(-1, prod(allocDvarID.get(j).get(i), flexJ))));
-
-            }
+            goalExpr.add(solvedID.get(i));
         }
-        tempProb.setObjective(goalExpr, MpDirection.MIN);
+        tempProb.setObjective(goalExpr, MpDirection.MAX);
     }
 
-    private MpProblem getDVarsFor(FlexProvider pv, int i) {
-        MpProblem p = new MpProblem();
-        //cong
+    private void addDVarsForAllocationToProb(final MpProblem p, final FlexProvider pv) {
         for (int c = 0; c < profile.length(); c++) {
-            String alloc = "alloc:" + pv.hashCode() + ":" + i;
+            final String alloc = ALLOC + pv.hashCode() + ":" + c;
             allocDvarID.put(pv, alloc);
             p.addVar(alloc, Boolean.class);
         }
-
-        //        MpAdapter adapt = new MpAdapter(pv.getActivationConstraints(), profile.length());
-        //        for (MpVariable v : adapt.getDVars()) {
-        //            p.add(v);
-        //        }
-        return p;
     }
 
-    @NotNull
-    private String getFlexID(FlexProvider pv) {
-        return "Flex:" + pv.hashCode();
+    private String getFlexID(final FlexProvider pv) {
+        return FLEX + ":" + pv.hashCode();
     }
 
-    private void addConstraintsForFlexToProb(MpProblem p, FlexProvider pv) {
-        //        MpProblem p = new MpProblem();
-
+    private void addConstraintsForFlexToProb(final MpProblem p, final FlexProvider pv) {
         //flexConstraints
-
-        MpAdapter adapt = new MpAdapter(pv.getActivationConstraints(), profile.length(),
-                allocDvarID.get(pv));
-        for (MpConstraint v : adapt.getConstraints()) {
-            p.add(v);
-        }
+        final FlexConstraints adapted = new ConstraintStepMultiplierDecorator(
+                pv.getActivationConstraints(),
+                STEPS_PER_HOUR);
+        final MpDsoAdapter adapt = new MpDsoAdapter(adapted, allocDvarID.get(pv));
+        adapt.getConstraints().forEach(p::addConstraint);
 
     }
 
+    /**
+     * @return The results.
+     */
+    @Override
     public AllocResults getResults() {
         return this.results;
     }
