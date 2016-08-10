@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso.MpDsoAdapter;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpVariable;

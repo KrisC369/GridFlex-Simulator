@@ -1,7 +1,11 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.ConstraintStepMultiplierDecorator;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.FlexConstraints;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;

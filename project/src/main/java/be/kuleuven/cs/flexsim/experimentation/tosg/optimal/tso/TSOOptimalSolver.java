@@ -1,6 +1,8 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.experimentation.tosg.optimal.tso;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AllocResults;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 

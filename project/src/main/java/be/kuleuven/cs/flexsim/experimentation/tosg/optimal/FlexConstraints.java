@@ -38,14 +38,14 @@ public abstract class FlexConstraints {
     public abstract double getMaximumActivations();
 
     @AutoValue.Builder
-    abstract static class Builder {
-        abstract Builder interActivationTime(double value);
+    public abstract static class Builder {
+        public abstract Builder interActivationTime(double value);
 
-        abstract Builder activationDuration(double value);
+        public abstract Builder activationDuration(double value);
 
-        abstract Builder maximumActivations(double value);
+        public abstract Builder maximumActivations(double value);
 
-        abstract FlexConstraints build();
+        public abstract FlexConstraints build();
     }
 
     public static Builder builder() {

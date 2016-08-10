@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-interface MpAdapter {
+public interface MpAdapter {
     /**
      * Returns decision variables generated for this provider.
      *
