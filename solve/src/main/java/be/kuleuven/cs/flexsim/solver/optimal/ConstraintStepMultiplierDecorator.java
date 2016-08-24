@@ -41,7 +41,7 @@ public final class ConstraintStepMultiplierDecorator extends FlexConstraints {
 
     @Override
     public boolean equals(Object o) {
-        target.equals(o);
+        return target.equals(o);
     }
 
     @Override
