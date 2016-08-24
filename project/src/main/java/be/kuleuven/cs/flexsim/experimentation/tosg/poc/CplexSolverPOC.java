@@ -4,8 +4,9 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
 import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AllocResults;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso.DSOOptimalSolver;
 import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.FlexConstraints;
+import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso.DSOOptimalSolver;
+import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpDirection;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
@@ -16,6 +17,7 @@ import net.sf.jmpi.solver.gurobi.SolverGurobi;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import static net.sf.jmpi.main.expression.MpExpr.prod;
 import static net.sf.jmpi.main.expression.MpExpr.sum;
@@ -27,15 +29,21 @@ public class CplexSolverPOC {
 
     private CongestionProfile profile;
     private DSOOptimalSolver solver;
-    private FlexProvider provider1;
-    private FlexProvider provider2;
     private FlexConstraints constraints;
     private static final String column = "test";
     private static final String file = "test.csv";
+    private final List<FlexProvider> providers;
+    private final int nAgents = 5;
 
     CplexSolverPOC() {
-        provider1 = new FlexProvider(200, FlexConstraints.R3DP);
-        provider2 = new FlexProvider(500, FlexConstraints.R3DP);
+        providers = Lists.newArrayList();
+        constraints = FlexConstraints.builder().interActivationTime(6)
+                .interActivationTime(4)
+                .maximumActivations(20).build();
+        //        constraints = FlexConstraints.R3DP;
+        for (int i = 0; i < nAgents; i++) {
+            providers.add(new FlexProvider(300, constraints));
+        }
     }
 
     void configModel(final DSOOptimalSolver.Solver s) {
@@ -49,18 +57,11 @@ public class CplexSolverPOC {
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        constraints = FlexConstraints.builder().interActivationTime(6).interActivationTime(4)
-                .maximumActivations(20).build();
-
-        solver = new DSOOptimalSolver(profile, AbstractOptimalSolver.Solver.CPLEX);
-        provider1 = new FlexProvider(200, constraints);
-        provider2 = new FlexProvider(500, constraints);
-
+        solver = new DSOOptimalSolver(profile, s);
+        providers.forEach(solver::registerFlexProvider);
     }
 
     void runModel() {
-        solver.registerFlexProvider(provider1);
-        solver.registerFlexProvider(provider2);
         solver.tick(1);
         final AllocResults res = solver.getResults();
     }
@@ -71,7 +72,7 @@ public class CplexSolverPOC {
     }
 
     public static void scratchPad() {
-        final int times = 5;
+        final int times = 3;
         long total = 0;
         for (int i = 0; i < times; i++) {
             final CplexSolverPOC s = new CplexSolverPOC();
@@ -95,8 +96,8 @@ public class CplexSolverPOC {
             final long after = System.currentTimeMillis();
             total += (after - before);
         }
-
         final long gurobi = (long) ((total / (double) times) / (double) 1000);
+
         System.out.println("Cplex took me: " + cplex + " seconds.");
         System.out.println("Gurobi took me: " + gurobi + " seconds.");
     }

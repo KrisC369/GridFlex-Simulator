@@ -1,15 +1,8 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso;
+package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
+import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
+import com.google.common.collect.Lists;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
@@ -17,10 +10,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.Lists;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DSOIntegrationTest {
@@ -247,6 +245,18 @@ public class DSOIntegrationTest {
         assertTrue(dsm1.getCurrentActivations() > 0);
         assertTrue(dsm1.getCurtailment(10) == dsm2.getFlexPowerRate());
         assertEquals(0.01, getEfficiency(), 0.1);
+    }
+
+    public double getEfficiency() {
+        return congestionSolver.getTotalRemediedCongestion()
+                / (getTotalPowerRates() * dsm1.getMaxActivations() * 2.0);
+    }
+
+    private double getTotalPowerRates() {
+        int sum = 0;
+        sum += dsm1.getFlexPowerRate();
+        sum += dsm2.getFlexPowerRate();
+        return sum;
     }
 
     @Test
@@ -495,6 +505,29 @@ public class DSOIntegrationTest {
         // assertTrue(eff1 < eff2); //Allocation is lower but eff is higher.
     }
 
+    public int getTotalActs(List<DSMPartner> partners) {
+        int sum = 0;
+        for (DSMPartner p : partners) {
+            sum += p.getCurrentActivations();
+        }
+        return sum;
+    }
+
+    private double getIAgentEff(List<DSMPartner> partners, int length) {
+        double eff2R = 0;
+        for (DSMPartner d : partners) {
+            double sum = 0;
+            for (int i = 0; i <= length; i++) {
+                sum += d.getCurtailment(i) / 4;
+            }
+            if (sum != 0) {
+                eff2R += (sum / (d.getCurrentActivations()
+                        * d.getFlexPowerRate() * 2));
+            }
+        }
+        return eff2R;
+    }
+
     @Test
     public void testScenarioManyAgents2() {
         try {
@@ -724,21 +757,6 @@ public class DSOIntegrationTest {
         // assertTrue(sumNeg1 > sumNeg2);
     }
 
-    private double getIAgentEff(List<DSMPartner> partners, int length) {
-        double eff2R = 0;
-        for (DSMPartner d : partners) {
-            double sum = 0;
-            for (int i = 0; i <= length; i++) {
-                sum += d.getCurtailment(i) / 4;
-            }
-            if (sum != 0) {
-                eff2R += (sum / (d.getCurrentActivations()
-                        * d.getFlexPowerRate() * 2));
-            }
-        }
-        return eff2R;
-    }
-
     private double getActivationRate(List<DSMPartner> partners) {
         int sum = 0;
         for (DSMPartner p : partners) {
@@ -746,26 +764,6 @@ public class DSOIntegrationTest {
         }
         return sum / (double) (partners.size()
                 * partners.get(0).getMaxActivations());
-    }
-
-    public double getEfficiency() {
-        return congestionSolver.getTotalRemediedCongestion()
-                / (getTotalPowerRates() * dsm1.getMaxActivations() * 2.0);
-    }
-
-    public int getTotalActs(List<DSMPartner> partners) {
-        int sum = 0;
-        for (DSMPartner p : partners) {
-            sum += p.getCurrentActivations();
-        }
-        return sum;
-    }
-
-    private double getTotalPowerRates() {
-        int sum = 0;
-        sum += dsm1.getFlexPowerRate();
-        sum += dsm2.getFlexPowerRate();
-        return sum;
     }
 
 }

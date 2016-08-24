@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso;
+package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
 
 import org.junit.Before;
 import org.junit.Test;

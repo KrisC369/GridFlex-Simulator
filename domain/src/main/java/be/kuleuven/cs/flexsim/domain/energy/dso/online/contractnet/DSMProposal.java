@@ -1,16 +1,14 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso;
+package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
+
+import be.kuleuven.cs.flexsim.protocol.Proposal;
+import com.google.auto.value.AutoValue;
+import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Optional;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.google.auto.value.AutoValue;
-
-import be.kuleuven.cs.flexsim.protocol.Proposal;
-
 /**
  * Represents a proposal for DSM allocations.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @AutoValue
@@ -51,10 +49,8 @@ public abstract class DSMProposal implements Proposal {
     /**
      * Factory method
      *
-     * @param target
-     *            the target imbalance volume that needs to be corrected.
-     * @param valuation
-     *            the valuation value associated with this proposal.
+     * @param target    the target imbalance volume that needs to be corrected.
+     * @param valuation the valuation value associated with this proposal.
      * @return a nomination value object. //
      */
     static DSMProposal create(final String description, final double target,

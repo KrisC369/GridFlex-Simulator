@@ -9,8 +9,8 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.DSMPartner;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.DSMPartner;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import it.unimi.dsi.fastutil.doubles.DoubleList;

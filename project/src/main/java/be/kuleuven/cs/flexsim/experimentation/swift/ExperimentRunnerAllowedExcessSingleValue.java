@@ -10,9 +10,9 @@ import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 

@@ -1,5 +1,5 @@
 /**
- * All swift related experiment files.
+ * All contractnet related experiment files.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */

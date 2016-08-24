@@ -1,14 +1,15 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso;
+package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import org.junit.Before;
-import org.junit.Test;
-
 public class DSMProposalTest {
-    private DSMProposal subjectWithConstraints = mock(DSMProposal.class);;
+    private DSMProposal subjectWithConstraints = mock(DSMProposal.class);
+    ;
     private DSMProposal subjectWithoutConstraints = mock(DSMProposal.class);
     private DSMProposal subjectWithOneConstraint = mock(DSMProposal.class);
 

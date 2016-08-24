@@ -1,19 +1,18 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso;
+package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
+import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DSMPartnerTest {
@@ -21,19 +20,16 @@ public class DSMPartnerTest {
     private static String column = "test";
     private static String file = "test.csv";
     private static int testsize = 600 - 1;
-    private AbstractCongestionSolver congestionSolver;
-
-    private CongestionProfile congestionProfile;
-
-    private DSMPartner dsm1;
-    private DSMPartner dsm2;
-
-    private Simulator sim;
     private final int duration = 8;
     private final int interAct = 20;
     private final int allowedAct = 10;
     @Mock
     CongestionProfile profile;
+    private AbstractCongestionSolver congestionSolver;
+    private CongestionProfile congestionProfile;
+    private DSMPartner dsm1;
+    private DSMPartner dsm2;
+    private Simulator sim;
 
     @Before
     public void setUp() throws Exception {
