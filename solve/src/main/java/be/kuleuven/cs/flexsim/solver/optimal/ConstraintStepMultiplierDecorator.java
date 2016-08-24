@@ -38,4 +38,14 @@ public final class ConstraintStepMultiplierDecorator extends FlexConstraints {
     public double getMaximumActivations() {
         return target.getMaximumActivations();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        target.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return target.hashCode();
+    }
 }

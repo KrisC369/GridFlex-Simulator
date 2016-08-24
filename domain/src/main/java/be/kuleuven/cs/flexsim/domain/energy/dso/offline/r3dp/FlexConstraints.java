@@ -17,9 +17,6 @@ public abstract class FlexConstraints {
     private static final int R3DP_INTERACTIVATION_TIME = 12;
     private static final int R3DP_ACTIVATION_DURATION = 2;
 
-    FlexConstraints() {
-    }
-
     /**
      * No flex available.
      */
