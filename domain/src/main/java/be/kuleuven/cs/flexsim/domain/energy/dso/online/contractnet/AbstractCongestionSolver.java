@@ -217,7 +217,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
                 getTick(), getTick() + DSM_ALLOCATION_DURATION));
     }
 
-    private DoubleList getNewEmptyDouble() {
+    private static DoubleList getNewEmptyDouble() {
         final DoubleList d = new DoubleArrayList(DSM_ALLOCATION_DURATION);
         for (int i = 0; i < DSM_ALLOCATION_DURATION; i++) {
             d.add(0);
