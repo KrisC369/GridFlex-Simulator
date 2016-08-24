@@ -1,11 +1,11 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
 
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AllocResults;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.FlexConstraints;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso.DSOOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpDirection;
 import net.sf.jmpi.main.MpProblem;
@@ -33,7 +33,7 @@ public class CplexSolverPOC {
     private static final String column = "test";
     private static final String file = "test.csv";
     private final List<FlexProvider> providers;
-    private final int nAgents = 5;
+    private final int nAgents = 3;
 
     CplexSolverPOC() {
         providers = Lists.newArrayList();

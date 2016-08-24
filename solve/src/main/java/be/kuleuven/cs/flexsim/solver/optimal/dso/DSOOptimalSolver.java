@@ -1,11 +1,11 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso;
+package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AllocResults;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.ConstraintStepMultiplierDecorator;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.FlexConstraints;
+import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solver.optimal.ConstraintStepMultiplierDecorator;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
@@ -38,7 +38,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private static final String ALLOC = "alloc:";
     private static final String FLEX = "Flex";
     private final CongestionProfile profile;
-    private final Solver solver;
+    private final AbstractOptimalSolver.Solver solver;
     private final List<String> congID;
     private final List<String> solvedID;
     private final Map<FlexProvider, String> flexID;

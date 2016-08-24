@@ -1,16 +1,19 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso.DSOOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solver.optimal.ConstraintStepMultiplierDecorator;
+import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver.STEPS_PER_HOUR;
-import static be.kuleuven.cs.flexsim.experimentation.tosg.optimal.AbstractOptimalSolver.Solver;
+import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.STEPS_PER_HOUR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -40,7 +43,7 @@ public class DSOOptimalSolverTest {
         }
         constraints = FlexConstraints.builder().interActivationTime(5).interActivationTime(4)
                 .maximumActivations(20).build();
-        solver = new DSOOptimalSolver(profile, Solver.CPLEX);
+        solver = new DSOOptimalSolver(profile, AbstractOptimalSolver.Solver.CPLEX);
         provider1 = new FlexProvider(200, constraints);
         provider2 = new FlexProvider(500, constraints);
     }
@@ -69,7 +72,7 @@ public class DSOOptimalSolverTest {
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            solver = new DSOOptimalSolver(profile, Solver.CPLEX);
+            solver = new DSOOptimalSolver(profile, AbstractOptimalSolver.Solver.CPLEX);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();

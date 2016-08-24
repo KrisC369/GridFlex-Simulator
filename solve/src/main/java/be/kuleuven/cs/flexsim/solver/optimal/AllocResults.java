@@ -1,6 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.solver.optimal;
 
-import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;

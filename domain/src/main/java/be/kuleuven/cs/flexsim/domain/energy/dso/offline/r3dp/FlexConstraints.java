@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp;
 
 import com.google.auto.value.AutoValue;
 

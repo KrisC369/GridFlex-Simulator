@@ -1,7 +1,7 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal.dso;
+package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.FlexConstraints;
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.MpAdapter;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.solver.optimal.MpAdapter;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpOperator;

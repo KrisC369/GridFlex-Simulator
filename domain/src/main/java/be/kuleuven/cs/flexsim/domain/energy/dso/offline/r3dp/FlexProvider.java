@@ -1,6 +1,5 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp;
 
-import be.kuleuven.cs.flexsim.experimentation.tosg.optimal.FlexConstraints;
 
 /**
  * A provider of flexibility with activation constraints.

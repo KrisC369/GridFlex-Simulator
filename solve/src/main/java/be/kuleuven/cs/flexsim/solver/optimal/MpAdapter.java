@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.solver.optimal;
 
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpVariable;

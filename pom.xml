@@ -13,6 +13,7 @@
         <module>project</module>
         <module>core</module>
         <module>game</module>
+        <module>solve</module>
         <module>example</module>
         <module>domain</module>
     </modules>
@@ -305,7 +306,7 @@
     </issueManagement>
     <ciManagement>
         <system>jenkins</system>
-        <url>http://feynman.cs.kuleuven.be:8080/job/Flexsim</url>
+        <url>http://kraken.cs.kuleuven.be:18080/job/Flexsim</url>
         <notifiers>
             <notifier>
                 <type>mail</type>

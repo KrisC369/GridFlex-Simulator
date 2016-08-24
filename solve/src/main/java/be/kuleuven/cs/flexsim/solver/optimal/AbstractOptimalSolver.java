@@ -1,6 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.solver.optimal;
 
-import be.kuleuven.cs.flexsim.experimentation.tosg.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import com.google.common.collect.Lists;
@@ -66,7 +66,7 @@ public abstract class AbstractOptimalSolver implements SimulationComponent {
         s.add(getProblem());
         s.setVerbose(this.verbose ? 1 : 0);
         final MpResult result = s.solve();
-        processResults(java.util.Optional.of(result));
+        processResults(Optional.of(result));
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractOptimalSolver implements SimulationComponent {
     /**
      * @return the registered flex providers.
      */
-    protected final List<FlexProvider> getProviders() {
+    public final List<FlexProvider> getProviders() {
         return Collections.unmodifiableList(providers);
     }
 

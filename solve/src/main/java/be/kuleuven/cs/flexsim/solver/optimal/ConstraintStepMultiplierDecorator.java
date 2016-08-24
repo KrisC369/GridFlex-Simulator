@@ -1,4 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
+package be.kuleuven.cs.flexsim.solver.optimal;
+
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
 
 /**
  * A forwarder that multiplies the constraints in flex constrains with a given factor for e.g.
