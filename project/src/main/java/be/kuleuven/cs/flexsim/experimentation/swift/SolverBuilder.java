@@ -3,7 +3,7 @@
  */
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 
 /**

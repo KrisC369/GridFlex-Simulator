@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso;
+package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
 
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;

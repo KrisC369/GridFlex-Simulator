@@ -11,10 +11,10 @@ import javax.annotation.Nullable;
 
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.DSMPartner;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.DSMPartner;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 

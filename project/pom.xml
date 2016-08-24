@@ -55,6 +55,11 @@
 			<groupId>org.eclipse.jdt</groupId>
 			<artifactId>org.eclipse.jdt.annotation</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>be.kuleuven.cs</groupId>
+			<artifactId>flexsim-solve</artifactId>
+			<version>0.1.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

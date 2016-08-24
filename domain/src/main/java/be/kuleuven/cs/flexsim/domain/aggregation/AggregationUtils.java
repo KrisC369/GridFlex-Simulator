@@ -2,7 +2,11 @@ package be.kuleuven.cs.flexsim.domain.aggregation;
 
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import com.google.common.collect.*;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Sets;
 
 import java.util.Collections;
 import java.util.List;

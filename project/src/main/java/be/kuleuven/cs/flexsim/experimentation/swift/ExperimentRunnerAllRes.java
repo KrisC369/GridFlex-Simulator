@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
