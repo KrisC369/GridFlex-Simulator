@@ -15,7 +15,7 @@ public abstract class HourlyFlexConstraints implements FlexConstraints {
     private static final int R3DP_INTERACTIVATION_TIME = 12;
     private static final int R3DP_ACTIVATION_DURATION = 2;
 
-    private HourlyFlexConstraints() {
+    HourlyFlexConstraints() {
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class HourlyFlexConstraints implements FlexConstraints {
      * @return A new constraint builder.
      */
     public static Builder builder() {
-        return new AutoValue_Hourly_FlexConstraints.Builder().interActivationTime(
+        return new AutoValue_HourlyFlexConstraints.Builder().interActivationTime(
                 R3DP_INTERACTIVATION_TIME).activationDuration(R3DP_ACTIVATION_DURATION)
                 .maximumActivations(R3DP_MAX_ACTIVATIONS);
     }
