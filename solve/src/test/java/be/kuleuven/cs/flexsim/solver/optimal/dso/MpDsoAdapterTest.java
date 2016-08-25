@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
+import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpVariable;
@@ -16,8 +17,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class MpDsoAdapterTest {
 
-    private static int interAct = 20;
-    private static int actDuration = 8;
+    private static int interAct = 5;
+    private static int actDuration = 2;
     private static int maxAct = 4;
     private static int profileSize = 500;
 
@@ -33,7 +34,7 @@ public class MpDsoAdapterTest {
         for (int i = 0; i < profileSize; i++) {
             id.add(String.valueOf(i));
         }
-        this.adapt = new MpDsoAdapter(target, id);
+        this.adapt = new MpDsoAdapter(ConstraintConversion.fromHourlyToQuarterHourly(target), id);
     }
 
     @Test
@@ -46,7 +47,7 @@ public class MpDsoAdapterTest {
     public void getConstraintsTest() {
         List<MpConstraint> ctrs = adapt.getConstraints();
         int diffNbConstraints = 500;
-        assertEquals(diffNbConstraints * (maxAct - 1), ctrs.size(), 20);
+        assertEquals(diffNbConstraints * (maxAct - 1), ctrs.size(), 30);
     }
 
 }
