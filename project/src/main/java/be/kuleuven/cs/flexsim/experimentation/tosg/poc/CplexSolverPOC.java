@@ -40,7 +40,7 @@ public class CplexSolverPOC {
         constraints = HourlyFlexConstraints.builder().interActivationTime(6)
                 .interActivationTime(4)
                 .maximumActivations(20).build();
-        //        constraints = FlexConstraints.R3DP;
+        //        constraints = FlexConstraints.r3dp;
         for (int i = 0; i < nAgents; i++) {
             providers.add(new FlexProvider(300, constraints));
         }

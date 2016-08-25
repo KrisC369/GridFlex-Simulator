@@ -8,8 +8,8 @@ import org.apache.commons.math3.util.FastMath;
  * DSMPartners represent industrial companies offering power consumption
  * flexibility. The flexibility wanted is mainly the increase in power
  * consumption to decrease congestion on distribution networks caused by RES.
- * The specs for this DSM participant are similar to the specs of the R3DP
- * product by Elia. R3DP specifies curtailment in stead of increased power
+ * The specs for this DSM participant are similar to the specs of the r3dp
+ * product by Elia. r3dp specifies curtailment in stead of increased power
  * consumption, though. The time scale discretization for this DSM partner is
  * set at 15 minutes.
  *
@@ -17,16 +17,16 @@ import org.apache.commons.math3.util.FastMath;
  */
 public class DSMPartner {
     /**
-     * The maximum amount of activations according to R3DP specs is 40/year.
+     * The maximum amount of activations according to r3dp specs is 40/year.
      */
     public static final int R3DPMAX_ACTIVATIONS = 40;
     /**
-     * The time between two consecutive activations according to R3DP specs is
+     * The time between two consecutive activations according to r3dp specs is
      * 12 hours.
      */
     public static final int INTERACTIVATION_TIME = 4 * 12;
     /**
-     * The activation duration according to R3DP specs is (max) 2 hours.
+     * The activation duration according to r3dp specs is (max) 2 hours.
      */
     public static final int ACTIVATION_DURATION = 4 * 2;
     private static final int OPERATING_TIME_LIMIT = 4 * 24 * 365;
