@@ -1,14 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp;
 
-
 /**
  * A provider of flexibility with activation constraints.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class FlexProvider {
-    private FlexConstraints constraints;
-    private double powerRate;
+    private final HourlyFlexConstraints constraints;
+    private final double powerRate;
 
     /**
      * Constructor
@@ -16,7 +15,7 @@ public class FlexProvider {
      * @param powerRate The powerrate this provider can offer.
      */
     public FlexProvider(final double powerRate) {
-        this(powerRate, FlexConstraints.R3DP);
+        this(powerRate, HourlyFlexConstraints.R3DP);
     }
 
     /**
@@ -25,7 +24,7 @@ public class FlexProvider {
      * @param powerRate The powerrate this provider can offer.
      * @param contract  The contract containing the flexibility constraints agreed upon.
      */
-    public FlexProvider(final double powerRate, final FlexConstraints contract) {
+    public FlexProvider(final double powerRate, final HourlyFlexConstraints contract) {
         this.constraints = contract;
         this.powerRate = powerRate;
     }
@@ -33,7 +32,7 @@ public class FlexProvider {
     /**
      * @return The activation constraints.
      */
-    public FlexConstraints getActivationConstraints() {
+    public HourlyFlexConstraints getActivationConstraints() {
         return constraints;
     }
 

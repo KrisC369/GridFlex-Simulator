@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpVariable;
@@ -21,12 +21,12 @@ public class MpDsoAdapterTest {
     private static int maxAct = 4;
     private static int profileSize = 500;
 
-    private FlexConstraints target;
+    private HourlyFlexConstraints target;
     private MpDsoAdapter adapt;
 
     @Before
     public void setUp() throws Exception {
-        this.target = FlexConstraints.builder().interActivationTime(interAct)
+        this.target = HourlyFlexConstraints.builder().interActivationTime(interAct)
                 .interActivationTime(actDuration)
                 .maximumActivations(maxAct).build();
         List<String> id = Lists.newArrayList();

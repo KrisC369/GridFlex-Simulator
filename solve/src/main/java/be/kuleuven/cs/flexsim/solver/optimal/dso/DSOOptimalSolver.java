@@ -1,11 +1,10 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
-import be.kuleuven.cs.flexsim.solver.optimal.ConstraintStepMultiplierDecorator;
+import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
@@ -177,9 +176,8 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
 
     private void addConstraintsForFlexToProb(final MpProblem p, final FlexProvider pv) {
         //flexConstraints
-        final FlexConstraints adapted = new ConstraintStepMultiplierDecorator(
-                pv.getActivationConstraints(),
-                STEPS_PER_HOUR);
+        final QuarterHourlyFlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
+                pv.getActivationConstraints());
         final MpDsoAdapter adapt = new MpDsoAdapter(adapted, allocDvarID.get(pv));
         adapt.getConstraints().forEach(p::addConstraint);
 

@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.solver.optimal.MpAdapter;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
@@ -31,7 +32,7 @@ public class MpDsoAdapter implements MpAdapter {
      * @param activationConstraints The activation constraints from the Flex provider.
      * @param allocationIDs         the named list of dvar ID's to use to build the constraints.
      */
-    public MpDsoAdapter(final FlexConstraints activationConstraints,
+    public MpDsoAdapter(final QuarterHourlyFlexConstraints activationConstraints,
             final List<String> allocationIDs) {
         this.target = activationConstraints;
         this.dvars = Lists.newArrayList(allocationIDs);
