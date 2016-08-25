@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 
-import autovalue.shaded.com.google.common.common.collect.Sets;
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
@@ -9,6 +8,7 @@ import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import org.eclipse.jdt.annotation.NonNull;
 
 import java.util.Collections;
