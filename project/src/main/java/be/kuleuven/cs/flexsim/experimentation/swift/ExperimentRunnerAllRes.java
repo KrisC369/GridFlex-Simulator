@@ -135,7 +135,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static void generateRates(final int n) {
         final GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
-        IntList tt = new IntArrayList();
+        IntList tt;
         for (int i = 0; i < 21; i++) {
             tt = new IntArrayList();
             for (int j = 0; j < n; j++) {
@@ -205,7 +205,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     protected void logResults() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(200);
         builder.append("BEGINRESULT:\n").append("Res1=").append(mainRes1)
                 .append("\n")
                 .append("Res2=").append(mainRes2).append("\n")

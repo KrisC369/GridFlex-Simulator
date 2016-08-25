@@ -11,6 +11,9 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 abstract class PayoffEntry {
 
+    PayoffEntry() {
+    }
+
     abstract int[] getEntries();
 
     static PayoffEntry from(final int... key) {

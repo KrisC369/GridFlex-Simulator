@@ -1,10 +1,7 @@
 package be.kuleuven.cs.gametheory;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import com.google.common.collect.Lists;
 import org.eclipse.jdt.annotation.NonNull;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
@@ -12,19 +9,18 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Lists;
-
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A representation of a full game specification for all configurations of
  * agents over the action space.
  *
+ * @param <N> The type of agents.
+ * @param <K> The type of actions.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <N>
- *            The type of agents.
- * @param <K>
- *            The type of actions.
  */
 public class Game<N, K> {
     private static final String CONSOLE = "CONSOLE";
@@ -42,12 +38,9 @@ public class Game<N, K> {
     /**
      * Default constructor.
      *
-     * @param agents
-     *            The number of agents.
-     * @param config
-     *            The configurator instance.
-     * @param reps
-     *            The number of repetitions.
+     * @param agents The number of agents.
+     * @param config The configurator instance.
+     * @param reps   The number of repetitions.
      */
     public Game(final int agents, final GameConfigurator<N, K> config, final int reps) {
         this.agents = agents;
@@ -173,7 +166,7 @@ public class Game<N, K> {
      * @return the params in a MATLAB style formatted string.
      */
     String getDynamicsParametersString() {
-        final StringBuilder b = new StringBuilder();
+        final StringBuilder b = new StringBuilder(30);
         char character = 'a';
         b.append("\n");
         for (final Double d : payoffs.getDynamicEquationFactors()) {
@@ -186,7 +179,7 @@ public class Game<N, K> {
      * Constructs the results from the current game.
      *
      * @return A gameresult object based on the currently available result date
-     *         for this game.
+     * for this game.
      */
     GameResult getResults() {
         final GameResult result = GameResult

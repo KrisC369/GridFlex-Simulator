@@ -1,13 +1,13 @@
 package be.kuleuven.cs.gametheory;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Value class for game results.
@@ -16,6 +16,9 @@ import com.google.common.collect.Maps;
  */
 @AutoValue
 public abstract class GameResult {
+
+    GameResult() {
+    }
 
     /**
      * @return the description of theses result in String key-value pairs.
@@ -28,27 +31,11 @@ public abstract class GameResult {
     public abstract ImmutableList<Double> getResults();
 
     /**
-     * Static factory method.
-     *
-     * @param results
-     *            The result value to construct this result object from.
-     * @return A GameResult object with no description and with the specified
-     *         results.
-     */
-    public static GameResult create(final List<Double> results) {
-        return new AutoValue_GameResult(
-                ImmutableMap.copyOf(new LinkedHashMap<>()),
-                ImmutableList.copyOf(results));
-    }
-
-    /**
      * Creates a new result object from a specific result object but with the
      * addition of a new description key-pair.
      *
-     * @param key
-     *            The description key.
-     * @param val
-     *            the description value.
+     * @param key The description key.
+     * @param val the description value.
      * @return a new game result.
      */
     public GameResult withDescription(final String key, final String val) {
@@ -56,6 +43,19 @@ public abstract class GameResult {
         newMap.putAll(getDescription());
         newMap.put(key, val);
         return create(newMap, getResults());
+    }
+
+    /**
+     * Static factory method.
+     *
+     * @param results The result value to construct this result object from.
+     * @return A GameResult object with no description and with the specified
+     * results.
+     */
+    public static GameResult create(final List<Double> results) {
+        return new AutoValue_GameResult(
+                ImmutableMap.copyOf(new LinkedHashMap<>()),
+                ImmutableList.copyOf(results));
     }
 
     private static GameResult create(final Map<String, String> description,
