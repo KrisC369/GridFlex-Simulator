@@ -11,13 +11,6 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class HourlyFlexConstraints implements FlexConstraints {
 
-    private static final int R3DP_MAX_ACTIVATIONS = 40;
-    private static final int R3DP_INTERACTIVATION_TIME = 12;
-    private static final int R3DP_ACTIVATION_DURATION = 2;
-
-    HourlyFlexConstraints() {
-    }
-
     /**
      * No flex available.
      */
@@ -29,7 +22,16 @@ public abstract class HourlyFlexConstraints implements FlexConstraints {
      * time of 12 hours and a maximum duration of 2 hours.
      */
     public static final HourlyFlexConstraints R3DP = builder().build();
+    private static final int R3DP_MAX_ACTIVATIONS = 40;
+    private static final int R3DP_INTERACTIVATION_TIME = 12;
+    private static final int R3DP_ACTIVATION_DURATION = 2;
 
+    HourlyFlexConstraints() {
+    }
+
+    /**
+     * Autovalue builder for hourly flex constraints.
+     */
     @AutoValue.Builder
     public abstract static class Builder {
         /**

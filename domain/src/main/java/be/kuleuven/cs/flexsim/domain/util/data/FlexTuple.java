@@ -81,6 +81,9 @@ public abstract class FlexTuple {
      */
     public abstract int getTC();
 
+    /**
+     * Flexbility direction in terms of injection(false) or offtake(up)
+     */
     public enum Direction {
         UP(true), DOWN(false);
 
