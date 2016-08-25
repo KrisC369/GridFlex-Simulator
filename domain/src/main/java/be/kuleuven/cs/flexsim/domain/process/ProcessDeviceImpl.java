@@ -103,12 +103,12 @@ class ProcessDeviceImpl implements ProcessDevice {
         return Lists.newArrayList(FlexTuple.NONE);
     }
 
-    private List<CurtailableWorkstation> getEffectivelyCurtailableStations(
+    private static List<CurtailableWorkstation> getEffectivelyCurtailableStations(
             final List<CurtailableWorkstation> curtailableWorkstations) {
         return testAndFilterCurtailedStation(curtailableWorkstations, false);
     }
 
-    private List<CurtailableWorkstation> getCurtailedStations(
+    private static List<CurtailableWorkstation> getCurtailedStations(
             final List<CurtailableWorkstation> curtailableWorkstations) {
         return testAndFilterCurtailedStation(curtailableWorkstations, true);
     }

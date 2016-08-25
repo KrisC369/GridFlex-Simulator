@@ -1,5 +1,8 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
+import com.google.common.collect.Sets;
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -8,21 +11,18 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.google.common.collect.Sets;
-
 /**
  * The Class Buffer represents a simple FIFO queue buffer implementation.
- * 
- * @param <T>
- *            the generic type of contents in this buffer.
+ *
+ * @param <T> the generic type of contents in this buffer.
  */
 public final class Buffer<T extends Bufferable> implements Serializable {
 
     private static final long serialVersionUID = 9044791947885042068L;
 
-    /** The internal queue representation. */
+    /**
+     * The internal queue representation.
+     */
     private final Queue<T> data;
 
     /**
@@ -34,7 +34,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
 
     /**
      * Gets the current capacity.
-     * 
+     *
      * @return the current capacity
      */
     public int getCurrentOccupancyLevel() {
@@ -43,7 +43,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
 
     /**
      * Checks if this buffer is empty.
-     * 
+     *
      * @return true, if is empty
      */
     public boolean isEmpty() {
@@ -52,7 +52,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
 
     /**
      * Pull a content item out of this buffer or NPE if no element present.
-     * 
+     *
      * @return the content up for grabs.
      */
     @SuppressWarnings("unused")
@@ -68,7 +68,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
 
     /**
      * Pull all items from this buffer.
-     * 
+     *
      * @return all the present items.
      */
     public Collection<T> pullAll() {
@@ -82,9 +82,8 @@ public final class Buffer<T extends Bufferable> implements Serializable {
     /**
      * Push a resource into this buffer. Notifies IBufferable resource it has
      * been buffered.
-     * 
-     * @param res
-     *            the content item to push.
+     *
+     * @param res the content item to push.
      */
     public void push(final T res) {
         data.add(res);
@@ -93,9 +92,8 @@ public final class Buffer<T extends Bufferable> implements Serializable {
 
     /**
      * Push a Ordered list into this buffer.
-     * 
-     * @param reslist
-     *            the list of items to buffer.
+     *
+     * @param reslist the list of items to buffer.
      */
     public void pushAll(final List<T> reslist) {
         reslist.forEach(this::push);
@@ -107,7 +105,7 @@ public final class Buffer<T extends Bufferable> implements Serializable {
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(35);
         builder.append("Buffer [OccupancyLevel()=")
                 .append(getCurrentOccupancyLevel()).append(", hc=")
                 .append(this.hashCode()).append("]");

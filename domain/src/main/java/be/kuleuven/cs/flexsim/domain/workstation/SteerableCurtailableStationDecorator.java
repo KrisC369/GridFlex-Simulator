@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 /**
  * A decorator for decorating workstation instances that are both Steerable and
  * curtailable.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class SteerableCurtailableStationDecorator
@@ -62,7 +62,7 @@ public class SteerableCurtailableStationDecorator
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(40);
         builder.append("SteerableCurtailableWorkstation [").append(", hc=")
                 .append(this.hashCode()).append("]");
         return builder.toString();

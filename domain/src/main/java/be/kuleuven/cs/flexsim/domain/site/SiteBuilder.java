@@ -1,150 +1,141 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import java.util.List;
-
+import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import com.google.common.collect.Lists;
 
-import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
+import java.util.List;
 
 /**
  * Builder class for building Site implementations.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public abstract class SiteBuilder {
+public interface SiteBuilder {
 
     /**
      * Create a new concrete site with flexible production lines.
-     * 
+     *
      * @return a sitebuilder (Fluent API).
      */
-    public static SiteBuilder newConcreteSite() {
+    static SiteBuilder newConcreteSite() {
         return new ConcreteSiteBuilder();
     }
 
     /**
      * Create a new site simulation object.
-     * 
+     *
      * @return a sitebuilder (Fluent API).
      */
-    public static SiteBuilder newSiteSimulation() {
+    static SiteBuilder newSiteSimulation() {
         return new SiteSimulationBuilder();
     }
 
     /**
      * Create a new site simulation object with equidistant flex.
-     * 
+     *
      * @return a sitebuilder (Fluent API).
      */
-    public static SiteBuilder newEquidistantSiteSimulation() {
+    static SiteBuilder newEquidistantSiteSimulation() {
         return new EquidistantSiteBuilder();
     }
 
     /**
      * Add a production line to this site. Only for concrete sites.
-     * 
-     * @param line
-     *            the line to add.
+     *
+     * @param line the line to add.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder addLine(final FlexProcess line) {
+    default SiteBuilder addLine(final FlexProcess line) {
         throw new UnsupportedOperationException(
                 "You cannot add lines to this site.");
     }
 
     /**
      * Sets the cease time.
-     * 
-     * @param ceaseTime
-     *            The cease time.
+     *
+     * @param ceaseTime The cease time.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withCeaseTime(final int ceaseTime) {
+    default SiteBuilder withCeaseTime(final int ceaseTime) {
         throw new UnsupportedOperationException(
                 "You cannot set a cease time for this site.");
     }
 
     /**
      * Sets the cease reaction or ramp up time.
-     * 
-     * @param rampTime
-     *            the ramp up time
+     *
+     * @param rampTime the ramp up time
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withReactionTime(final int rampTime) {
+    default SiteBuilder withReactionTime(final int rampTime) {
         throw new UnsupportedOperationException(
                 "You cannot set a reaction time for this site.");
     }
 
     /**
      * Sets the duration of the flex profiles.
-     * 
-     * @param duration
-     *            The flex duration
+     *
+     * @param duration The flex duration
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withFlexDuration(final int duration) {
+    default SiteBuilder withFlexDuration(final int duration) {
         throw new UnsupportedOperationException(
                 "You cannot set a flex duration for this site.");
     }
 
     /**
      * Sets the minimum consumption.
-     * 
-     * @param min
-     *            the minimum consumption level.
+     *
+     * @param min the minimum consumption level.
      * @return a sitebuilder (Fluent API).
      */
 
-    public SiteBuilder withMinConsumption(final int min) {
+    default SiteBuilder withMinConsumption(final int min) {
         throw new UnsupportedOperationException(
                 "You cannot set a min consumption time for this site.");
     }
 
     /**
      * Sets the maximum consumption.
-     * 
-     * @param max
-     *            The maximum consumption level.
+     *
+     * @param max The maximum consumption level.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withMaxConsumption(final int max) {
+    default SiteBuilder withMaxConsumption(final int max) {
         throw new UnsupportedOperationException(
                 "You cannot set a max consumption time for this site.");
     }
 
     /**
      * Sets the base consumption.
-     * 
-     * @param base
-     *            The base consumption level.
+     *
+     * @param base The base consumption level.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withBaseConsumption(final int base) {
+    default SiteBuilder withBaseConsumption(final int base) {
         throw new UnsupportedOperationException(
                 "You cannot set a base consumption time for this site.");
     }
 
     /**
      * Sets the number of flex tuples.
-     * 
-     * @param tuples
-     *            The number of tuples.
+     *
+     * @param tuples The number of tuples.
      * @return a sitebuilder (Fluent API).
      */
-    public SiteBuilder withTuples(final int tuples) {
+    default SiteBuilder withTuples(final int tuples) {
         throw new UnsupportedOperationException(
                 "You cannot set a a number of tuples for this site.");
     }
 
     /**
      * Creates a Site instance.
-     * 
+     *
      * @return a sitebuilder (Fluent API).
      */
     public abstract Site create();
 
-    private static final class ConcreteSiteBuilder extends SiteBuilder {
+    static final class ConcreteSiteBuilder implements SiteBuilder {
         private final List<FlexProcess> lines;
 
         private ConcreteSiteBuilder() {
@@ -164,7 +155,7 @@ public abstract class SiteBuilder {
 
     }
 
-    private static class SiteSimulationBuilder extends SiteBuilder {
+    static class SiteSimulationBuilder implements SiteBuilder {
         protected int min;
         protected int max;
         protected int base;
@@ -174,12 +165,7 @@ public abstract class SiteBuilder {
         protected int tuples;
 
         protected SiteSimulationBuilder() {
-            min = 0;
-            max = 0;
-            base = 0;
             duration = 1;
-            cease = 0;
-            ramp = 0;
             tuples = 6;
         }
 
@@ -238,7 +224,7 @@ public abstract class SiteBuilder {
 
     }
 
-    private static final class EquidistantSiteBuilder
+    static final class EquidistantSiteBuilder
             extends SiteSimulationBuilder {
         @Override
         public Site create() {

@@ -1,19 +1,18 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import be.kuleuven.cs.flexsim.domain.resource.Resource;
+import be.kuleuven.cs.flexsim.domain.util.Buffer;
+import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.annotations.VisibleForTesting;
-
-import be.kuleuven.cs.flexsim.domain.resource.Resource;
-import be.kuleuven.cs.flexsim.domain.util.Buffer;
-import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Main workstation class representing machines that perform work and consume
@@ -43,10 +42,8 @@ class WorkstationImpl implements ConfigurableWorkstation {
      * Constructor that creates a workstation instance from an in and an out
      * buffer.
      *
-     * @param bufferIn
-     *            The In buffer.
-     * @param bufferOut
-     *            The Out buffer.
+     * @param bufferIn  The In buffer.
+     * @param bufferOut The Out buffer.
      */
     @VisibleForTesting
     WorkstationImpl(final Buffer<Resource> bufferIn, final Buffer<Resource> bufferOut,
@@ -259,8 +256,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
     }
 
     /**
-     * @param ratedMaxVarECons
-     *            the ratedMaxVarECons to set
+     * @param ratedMaxVarECons the ratedMaxVarECons to set
      */
     private void setRatedMaxVarECons(final int ratedMaxVarECons) {
         this.ratedMaxVarECons = ratedMaxVarECons;
@@ -272,7 +268,7 @@ class WorkstationImpl implements ConfigurableWorkstation {
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(65);
         builder.append("Workstation [fixedECons=").append(fixedECons)
                 .append(", ratedMaxVarECons=").append(ratedMaxVarECons)
                 .append(", capacity=").append(capacity).append(", hc=")

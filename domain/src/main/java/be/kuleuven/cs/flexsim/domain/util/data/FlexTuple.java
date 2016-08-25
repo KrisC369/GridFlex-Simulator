@@ -93,6 +93,10 @@ public abstract class FlexTuple {
             this.representation = v;
         }
 
+        /**
+         * @return the boolean representation of this direction
+         */
+        @Deprecated
         public boolean booleanRepresentation() {
             return representation;
         }
@@ -101,6 +105,7 @@ public abstract class FlexTuple {
          * @param rep The boolean representation of the desired direction.
          * @return the direction based on its boolean representation.
          */
+        @Deprecated
         public static Direction fromRepresentation(boolean rep) {
             return rep ? up() : down();
         }

@@ -37,7 +37,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int N = 1000;
+    private static final int DEFAULT_N_REPITITIONS = 1000;
     private static final int ALLOWED_EXCESS = 33;
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private static final double TOTAL_PRODUCED_E = 36360905;
@@ -73,7 +73,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     public static void main(final String[] args) {
         final ExpGenerator gen = (reps, agents,
                 allowed) -> new ExperimentRunnerAllRes(reps, agents, allowed);
-        parseInput(gen, args, N, ALLOWED_EXCESS);
+        parseInput(gen, args, DEFAULT_N_REPITITIONS, ALLOWED_EXCESS);
     }
 
     protected static void parseInput(final ExpGenerator gen, final String[] args, final int n,
@@ -92,8 +92,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             }
         } else if (args.length == 2) {
             try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
+                final int agents = Integer.parseInt(args[1]);
+                final int reps = Integer.parseInt(args[0]);
                 startExperiment(gen, reps, agents, allowedEx);
             } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -102,9 +102,9 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             }
         } else if (args.length == 3) {
             try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
-                final int allowed = Integer.valueOf(args[2]);
+                final int agents = Integer.parseInt(args[1]);
+                final int reps = Integer.parseInt(args[0]);
+                final int allowed = Integer.parseInt(args[2]);
                 startExperiment(gen, reps, agents, allowed);
             } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -123,6 +123,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     /**
      * Execute experiments.
      */
+    @Override
     public void execute() {
         runBatch();
         competitive = false;
@@ -134,8 +135,9 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static void generateRates(final int n) {
         final GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
+        IntList tt = new IntArrayList();
         for (int i = 0; i < 21; i++) {
-            final IntList tt = new IntArrayList();
+            tt = new IntArrayList();
             for (int j = 0; j < n; j++) {
                 tt.add((int) gd.sample());
             }
@@ -342,7 +344,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             doRegistration();
         }
 
-        protected void doRegistration() {
+        protected final void doRegistration() {
             this.registerCallbackOnFinish(instance -> {
                 addMainResult(getLabel(), checkNotNull(p).getEfficiency());
                 addActResult(getLabel(), checkNotNull(p).getActivationRate());

@@ -30,10 +30,23 @@ public abstract class HourlyFlexConstraints implements FlexConstraints {
     }
 
     /**
+     * @return A new constraint builder.
+     */
+    public static Builder builder() {
+        return new AutoValue_HourlyFlexConstraints.Builder().interActivationTime(
+                R3DP_INTERACTIVATION_TIME).activationDuration(R3DP_ACTIVATION_DURATION)
+                .maximumActivations(R3DP_MAX_ACTIVATIONS);
+    }
+
+    /**
      * Autovalue builder for hourly flex constraints.
      */
     @AutoValue.Builder
     public abstract static class Builder {
+
+        Builder() {
+        }
+
         /**
          * @param value The min time betweeen two consecutive activations.
          * @return this builder
@@ -56,14 +69,5 @@ public abstract class HourlyFlexConstraints implements FlexConstraints {
          * @return the value object with the constraints.
          */
         public abstract HourlyFlexConstraints build();
-    }
-
-    /**
-     * @return A new constraint builder.
-     */
-    public static Builder builder() {
-        return new AutoValue_HourlyFlexConstraints.Builder().interActivationTime(
-                R3DP_INTERACTIVATION_TIME).activationDuration(R3DP_ACTIVATION_DURATION)
-                .maximumActivations(R3DP_MAX_ACTIVATIONS);
     }
 }

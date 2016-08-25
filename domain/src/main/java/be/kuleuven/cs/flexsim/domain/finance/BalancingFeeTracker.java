@@ -3,9 +3,8 @@
  */
 package be.kuleuven.cs.flexsim.domain.finance;
 
-import org.slf4j.LoggerFactory;
-
 import be.kuleuven.cs.flexsim.domain.site.Site;
+import org.slf4j.LoggerFactory;
 
 /**
  * A tracker that can observe flex activations and value them economically.
@@ -22,10 +21,8 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
     /**
      * Default constructor.
      *
-     * @param s
-     *            The site to attach to.
-     * @param reward
-     *            The reward for an activation.
+     * @param s      The site to attach to.
+     * @param reward The reward for an activation.
      */
     BalancingFeeTracker(final Site s, final int reward) {
         this(s, reward, 0);
@@ -34,12 +31,9 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
     /**
      * Constructor with specifiable retribution factor.
      *
-     * @param s
-     *            The site to attach to.
-     * @param reward
-     *            The reward for an activation.
-     * @param factor
-     *            The retribution factor.
+     * @param s      The site to attach to.
+     * @param reward The reward for an activation.
+     * @param factor The retribution factor.
      */
     BalancingFeeTracker(final Site s, final int reward, final double factor) {
         super(s, RewardModel.NONE, DebtModel.NONE);
@@ -57,7 +51,7 @@ class BalancingFeeTracker extends FinanceTrackerImpl {
     }
 
     private void logCount() {
-        LoggerFactory.getLogger(FinanceTracker.class).debug(
+        LoggerFactory.getLogger(BalancingFeeTracker.class).debug(
                 "So far, {} activations have been logged for target: {}",
                 activationCount, target);
     }
