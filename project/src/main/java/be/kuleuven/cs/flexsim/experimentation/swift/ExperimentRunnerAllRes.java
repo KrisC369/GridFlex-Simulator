@@ -1,18 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import org.apache.commons.math3.distribution.GammaDistribution;
-import org.apache.commons.math3.random.MersenneTwister;
-import org.eclipse.jdt.annotation.Nullable;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
@@ -21,15 +8,26 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
+import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+import org.apache.commons.math3.distribution.GammaDistribution;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.eclipse.jdt.annotation.Nullable;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Experiment runner that gathers and produces all result metrics that are of
  * interest.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ExperimentRunnerAllRes implements ExecutableExperiment {
@@ -39,7 +37,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final boolean RUN_MULTI_THREADED = true;
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
-    private static final int N = 1000;
+    private static final int DEFAULT_N_REPITITIONS = 1000;
     private static final int ALLOWED_EXCESS = 33;
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private static final double TOTAL_PRODUCED_E = 36360905;
@@ -69,14 +67,13 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     /**
      * main method used to run the application.
-     * 
-     * @param args
-     *            StdIn args.
+     *
+     * @param args StdIn args.
      */
     public static void main(final String[] args) {
         final ExpGenerator gen = (reps, agents,
                 allowed) -> new ExperimentRunnerAllRes(reps, agents, allowed);
-        parseInput(gen, args, N, ALLOWED_EXCESS);
+        parseInput(gen, args, DEFAULT_N_REPITITIONS, ALLOWED_EXCESS);
     }
 
     protected static void parseInput(final ExpGenerator gen, final String[] args, final int n,
@@ -95,8 +92,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             }
         } else if (args.length == 2) {
             try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
+                final int agents = Integer.parseInt(args[1]);
+                final int reps = Integer.parseInt(args[0]);
                 startExperiment(gen, reps, agents, allowedEx);
             } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -105,9 +102,9 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             }
         } else if (args.length == 3) {
             try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
-                final int allowed = Integer.valueOf(args[2]);
+                final int agents = Integer.parseInt(args[1]);
+                final int reps = Integer.parseInt(args[0]);
+                final int allowed = Integer.parseInt(args[2]);
                 startExperiment(gen, reps, agents, allowed);
             } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(ExperimentRunnerAllRes.class)
@@ -126,6 +123,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     /**
      * Execute experiments.
      */
+    @Override
     public void execute() {
         runBatch();
         competitive = false;
@@ -137,8 +135,9 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static void generateRates(final int n) {
         final GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
+        IntList tt;
         for (int i = 0; i < 21; i++) {
-            final IntList tt = new IntArrayList();
+            tt = new IntArrayList();
             for (int j = 0; j < n; j++) {
                 tt.add((int) gd.sample());
             }
@@ -148,7 +147,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     /**
-     * 
+     *
      */
     protected void runSingle() {
         final CongestionProfile profile;
@@ -206,23 +205,23 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     protected void logResults() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(200);
         builder.append("BEGINRESULT:\n").append("Res1=").append(mainRes1)
-                .append("\n");
-        builder.append("Res2=").append(mainRes2).append("\n");
-        builder.append("ActRes1=").append(actRes1).append("\n");
-        builder.append("ActRes2=").append(actRes2).append("\n");
-        builder.append("ActEffRes1=").append(actEffRes1).append("\n");
-        builder.append("ActEffRes2=").append(actEffRes2).append("\n");
-        builder.append("SolvRes1=").append(solvRes1).append("\n");
-        builder.append("SolvRes2=").append(solvRes2).append("\n");
-        builder.append("RemediedRes1=").append(remediedCong1).append("\n");
-        builder.append("RemediedRes2=").append(remediedCong2).append("\n");
-        builder.append("Not meeting 40 acts: ")
-                .append(String.valueOf(n - mainRes1.size())).append("\n");
-        builder.append("Not meeting 40 acts: ")
-                .append(String.valueOf(n - mainRes2.size())).append("\n");
-        builder.append("ENDRESULT:\n");
+                .append("\n")
+                .append("Res2=").append(mainRes2).append("\n")
+                .append("ActRes1=").append(actRes1).append("\n")
+                .append("ActRes2=").append(actRes2).append("\n")
+                .append("ActEffRes1=").append(actEffRes1).append("\n")
+                .append("ActEffRes2=").append(actEffRes2).append("\n")
+                .append("SolvRes1=").append(solvRes1).append("\n")
+                .append("SolvRes2=").append(solvRes2).append("\n")
+                .append("RemediedRes1=").append(remediedCong1).append("\n")
+                .append("RemediedRes2=").append(remediedCong2).append("\n")
+                .append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - mainRes1.size())).append("\n")
+                .append("Not meeting 40 acts: ")
+                .append(String.valueOf(n - mainRes2.size())).append("\n")
+                .append("ENDRESULT:\n");
         LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER).info(builder.toString());
     }
 
@@ -337,14 +336,18 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         private ExperimentInstance p;
         @Nullable
         private final CongestionProfile profile;
-    
+
         ExperimentAtomImplementation(final DoubleList realisation,
                 final CongestionProfile profile) {
             this.real = new DoubleArrayList(realisation);
             this.profile = profile;
             doRegistration();
         }
-    
+
+        /**
+         * This method will be called to finalize construction. Take considerable care when
+         * overriding.
+         */
         protected void doRegistration() {
             this.registerCallbackOnFinish(instance -> {
                 addMainResult(getLabel(), checkNotNull(p).getEfficiency());
@@ -358,18 +361,18 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
                 p = null;
             });
         }
-    
+
         private void start() {
             checkNotNull(p);
             p.startExperiment();
         }
-    
+
         private void setup() {
             this.p = new ExperimentInstance(getSolverBuilder(),
                     checkNotNull(real), checkNotNull(profile),
                     ALLOW_LESS_ACTIVATIONS, TOTAL_PRODUCED_E);
         }
-    
+
         @Override
         protected void execute() {
             setup();
@@ -386,7 +389,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     class CooperativeSolverBuilder implements SolverBuilder {
-    
+
         @Override
         public AbstractCongestionSolver getSolver(final CongestionProfile profile,
                 final int n) {

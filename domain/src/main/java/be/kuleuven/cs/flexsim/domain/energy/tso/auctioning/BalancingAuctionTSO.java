@@ -1,21 +1,20 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.auctioning;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.FlexBid;
+import com.google.common.collect.Lists;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A TSO implementation that can accept bids for balancing actions and clears
  * the bids, optimally selecting the best choices.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class BalancingAuctionTSO extends CopperplateTSO
@@ -25,9 +24,8 @@ public class BalancingAuctionTSO extends CopperplateTSO
 
     /**
      * Constructor with consumption instances as parameter.
-     * 
-     * @param sites
-     *            The consumption sites connected to this TSO
+     *
+     * @param sites The consumption sites connected to this TSO
      */
     public BalancingAuctionTSO(final EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
@@ -35,9 +33,8 @@ public class BalancingAuctionTSO extends CopperplateTSO
 
     /**
      * Constructor with production instances as parameter.
-     * 
-     * @param sites
-     *            The production sites connected to this TSO
+     *
+     * @param sites The production sites connected to this TSO
      */
     public BalancingAuctionTSO(final EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
@@ -53,11 +50,9 @@ public class BalancingAuctionTSO extends CopperplateTSO
 
     /**
      * Actual initializing constructor.
-     * 
-     * @param prod
-     *            the producers.
-     * @param cons
-     *            the consumers.
+     *
+     * @param prod the producers.
+     * @param cons the consumers.
      */
     private BalancingAuctionTSO(final EnergyProductionTrackable[] prod,
             final EnergyConsumptionTrackable[] cons) {

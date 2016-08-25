@@ -1,22 +1,23 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.contractual;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.jdt.annotation.NonNull;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
 import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import org.eclipse.jdt.annotation.NonNull;
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A TSO implementation that can accept bids for balancing actions and clears
@@ -26,14 +27,13 @@ import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
  */
 public class BalancingTSO extends CopperplateTSO
         implements MechanismHost<ContractualMechanismParticipant> {
-    private final List<ContractualMechanismParticipant> participants;
+    private final LinkedHashSet<ContractualMechanismParticipant> participants;
     private final Map<ContractualMechanismParticipant, @NonNull PowerCapabilityBand> powerLimits;
 
     /**
      * Constructor with consumption instances as parameter.
      *
-     * @param sites
-     *            The consumption sites connected to this TSO
+     * @param sites The consumption sites connected to this TSO
      */
     public BalancingTSO(final EnergyConsumptionTrackable... sites) {
         this(new EnergyProductionTrackable[0], sites);
@@ -42,8 +42,7 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Constructor with production instances as parameter.
      *
-     * @param sites
-     *            The production sites connected to this TSO
+     * @param sites The production sites connected to this TSO
      */
     public BalancingTSO(final EnergyProductionTrackable... sites) {
         this(sites, new EnergyConsumptionTrackable[0]);
@@ -60,15 +59,13 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Actual initializing constructor.
      *
-     * @param prod
-     *            the producers.
-     * @param cons
-     *            the consumers.
+     * @param prod the producers.
+     * @param cons the consumers.
      */
     private BalancingTSO(final EnergyProductionTrackable[] prod,
             final EnergyConsumptionTrackable[] cons) {
         super(prod, cons);
-        this.participants = Lists.newArrayList();
+        this.participants = Sets.newLinkedHashSet();
         this.powerLimits = Maps.newLinkedHashMap();
     }
 
@@ -76,7 +73,7 @@ public class BalancingTSO extends CopperplateTSO
      * @return the participants
      */
     public List<ContractualMechanismParticipant> getParticipants() {
-        return Collections.unmodifiableList(participants);
+        return Collections.unmodifiableList(Lists.newArrayList(participants));
     }
 
     @Override
@@ -123,9 +120,10 @@ public class BalancingTSO extends CopperplateTSO
     @SuppressWarnings("null")
     private void sendSignal(final int t, final double frac, final boolean upflex) {
 
-        for (final java.util.Map.Entry<ContractualMechanismParticipant, PowerCapabilityBand> e : powerLimits
-                .entrySet()) {
-            int value = 0;
+        for (final Entry<ContractualMechanismParticipant, PowerCapabilityBand> e :
+                powerLimits
+                        .entrySet()) {
+            int value;
             if (upflex) {
                 value = e.getValue().getUp();
             } else {
@@ -136,7 +134,7 @@ public class BalancingTSO extends CopperplateTSO
 
     }
 
-    private double getFactor(final double sum, final double currentImbalance) {
+    private static double getFactor(final double sum, final double currentImbalance) {
         if (sum == 0 || currentImbalance == 0) {
             return 0;
         }
@@ -154,8 +152,7 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Returns the contractual limits registered to a participant.
      *
-     * @param agg
-     *            The client to check.
+     * @param agg The client to check.
      * @return The limits.
      */
     public PowerCapabilityBand getContractualLimit(
@@ -178,10 +175,8 @@ public class BalancingTSO extends CopperplateTSO
     /**
      * Signal that this participant has a new margin of power capabilities.
      *
-     * @param agg
-     *            The client
-     * @param cap
-     *            The new capabilities.
+     * @param agg The client
+     * @param cap The new capabilities.
      */
     public void signalNewLimits(final ContractualMechanismParticipant agg,
             final PowerCapabilityBand cap) {

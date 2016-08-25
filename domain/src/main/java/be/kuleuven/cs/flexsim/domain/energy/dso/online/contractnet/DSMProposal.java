@@ -14,6 +14,9 @@ import java.util.Optional;
 @AutoValue
 public abstract class DSMProposal implements Proposal {
 
+    DSMProposal() {
+    }
+
     /**
      * @return A description of this proposal.
      */

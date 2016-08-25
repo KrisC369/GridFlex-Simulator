@@ -1,14 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.process;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.function.ToIntFunction;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
@@ -21,9 +12,17 @@ import be.kuleuven.cs.flexsim.domain.workstation.WorkstationFactory;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationVisitor;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.function.ToIntFunction;
 
 /**
  * A production line representing buffers and workstations.
@@ -48,7 +47,7 @@ public final class ProductionLine implements FlexProcess {
     private final Graph<Buffer<Resource>, Workstation> layout;
     private final ProcessDevice flexProcessor;
 
-    private ProductionLine() {
+    ProductionLine() {
         this.buffers = Lists.newArrayList();
         this.workstations = Lists.newArrayList();
         this.curtailables = Sets.newLinkedHashSet();
@@ -113,8 +112,7 @@ public final class ProductionLine implements FlexProcess {
     /**
      * Deliver all the resources and use it as input for the line.
      *
-     * @param res
-     *            the resources to use.
+     * @param res the resources to use.
      */
     @Override
     public void deliverResources(final List<Resource> res) {
@@ -144,12 +142,10 @@ public final class ProductionLine implements FlexProcess {
      * Creates a production line with a custom layout specified by the
      * arguments.
      *
-     * @param initialStations
-     *            the mandatory first line workstation amount.
-     * @param furtherStations
-     *            further levels of parallel workstations.
+     * @param initialStations the mandatory first line workstation amount.
+     * @param furtherStations further levels of parallel workstations.
      * @return an instantiated production line object adhering to the specified
-     *         layout.
+     * layout.
      */
     public static ProductionLine createCustomLayout(final int initialStations,
             final int... furtherStations) {
@@ -229,7 +225,7 @@ public final class ProductionLine implements FlexProcess {
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(25);
         builder.append("ProductionLine [layout=").append(layout).append("]");
         return builder.toString();
     }
@@ -265,7 +261,7 @@ public final class ProductionLine implements FlexProcess {
         private static final int MULTICAP_WORKING_CONSUMPTION = 2000;
         private static final int IDLE_CONSUMPTION = 100;
         private static final int WORKING_CONSUMPTION = 200;
-        private static final int RFWIDTH = 300;
+        private static final int RFWIDTH_DEFAULT = 300;
         private int rfWidth;
         private int workingConsumption;
         private int idleConsumption;
@@ -284,7 +280,7 @@ public final class ProductionLine implements FlexProcess {
             workingConsumption = WORKING_CONSUMPTION;
             idleConsumption = IDLE_CONSUMPTION;
             multicapWorkingConsumption = MULTICAP_WORKING_CONSUMPTION;
-            rfWidth = RFWIDTH;
+            rfWidth = RFWIDTH_DEFAULT;
             rfLowConsumption = RF_LOW;
             rfHighConsumption = RF_HIGH;
         }
@@ -301,8 +297,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of parallel one-step-shifted workstations to the line.
          *
-         * @param n
-         *            the number of parallel stations
+         * @param n the number of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addShifted(final int n) {
@@ -320,8 +315,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of parallel curtailable workstations to the line.
          *
-         * @param n
-         *            the number of parallel stations
+         * @param n the number of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addCurtailableShifted(final int n) {
@@ -340,8 +334,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * * Adds a number of parallel default workstations to the line.
          *
-         * @param n
-         *            the number of parallel stations
+         * @param n the number of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addDefault(final int n) {
@@ -358,8 +351,7 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of parallel EnergyConsuming workstations to the line.
          *
-         * @param n
-         *            the number of parallel stations
+         * @param n the number of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addConsuming(final int n) {
@@ -378,10 +370,8 @@ public final class ProductionLine implements FlexProcess {
          * Adds a number of parallel constant energy consuming workstations that
          * can handle multiple items at once, to the line.
          *
-         * @param n
-         *            the number of parallel stations
-         * @param cap
-         *            the capapcity of parallel stations
+         * @param n   the number of parallel stations
+         * @param cap the capapcity of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addMultiCapConstantConsuming(final int n,
@@ -401,10 +391,8 @@ public final class ProductionLine implements FlexProcess {
          * Adds a number of parallel linear energy consuming workstations that
          * can handle multiple items at once, to the line.
          *
-         * @param n
-         *            the number of parallel stations
-         * @param cap
-         *            the capapcity of parallel stations
+         * @param n   the number of parallel stations
+         * @param cap the capapcity of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addMultiCapLinearConsuming(final int n,
@@ -425,10 +413,8 @@ public final class ProductionLine implements FlexProcess {
          * Adds a number of parallel exponential energy consuming workstations
          * that can handle multiple items at once, to the line.
          *
-         * @param n
-         *            the number of parallel stations
-         * @param cap
-         *            the capapcity of parallel stations
+         * @param n   the number of parallel stations
+         * @param cap the capapcity of parallel stations
          * @return the current builder instance
          */
         public ProductionLineBuilder addMultiCapExponentialConsuming(final int n,
@@ -447,10 +433,8 @@ public final class ProductionLine implements FlexProcess {
         /**
          * Adds a number of RFSteerable stations to the line.
          *
-         * @param n
-         *            the amount of instances
-         * @param cap
-         *            the capacity of this station.
+         * @param n   the amount of instances
+         * @param cap the capacity of this station.
          * @return the current builder instance.
          */
         public ProductionLineBuilder addRFSteerableStation(final int n, final int cap) {
@@ -466,8 +450,7 @@ public final class ProductionLine implements FlexProcess {
         }
 
         /**
-         * @param rfWidth
-         *            the rfWidth to set
+         * @param rfWidth the rfWidth to set
          * @return this builder instance.
          */
         public final ProductionLineBuilder setRfWidth(final int rfWidth) {
@@ -476,8 +459,7 @@ public final class ProductionLine implements FlexProcess {
         }
 
         /**
-         * @param workingConsumption
-         *            the workingConsumption to set
+         * @param workingConsumption the workingConsumption to set
          * @return this builder instance.
          */
         public final ProductionLineBuilder setWorkingConsumption(
@@ -487,8 +469,7 @@ public final class ProductionLine implements FlexProcess {
         }
 
         /**
-         * @param idleConsumption
-         *            the idleConsumption to set
+         * @param idleConsumption the idleConsumption to set
          * @return this builder instance.
          */
         public final ProductionLineBuilder setIdleConsumption(
@@ -498,8 +479,7 @@ public final class ProductionLine implements FlexProcess {
         }
 
         /**
-         * @param multicapWorkingConsumption
-         *            the multicapWorkingConsumption to set
+         * @param multicapWorkingConsumption the multicapWorkingConsumption to set
          * @return this builder instance.
          */
         public final ProductionLineBuilder setMulticapWorkingConsumption(
@@ -509,8 +489,7 @@ public final class ProductionLine implements FlexProcess {
         }
 
         /**
-         * @param rfLowConsumption
-         *            the rfLowConsumption to set
+         * @param rfLowConsumption the rfLowConsumption to set
          * @return this builder instance.
          */
         public final ProductionLineBuilder setRfLowConsumption(
@@ -520,8 +499,7 @@ public final class ProductionLine implements FlexProcess {
         }
 
         /**
-         * @param rfHighConsumption
-         *            the rfHighConsumption to set
+         * @param rfHighConsumption the rfHighConsumption to set
          * @return this builder instance.
          */
         public final ProductionLineBuilder setRfHighConsumption(

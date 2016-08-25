@@ -1,15 +1,14 @@
 package be.kuleuven.cs.flexsim.event;
 
+import javax.naming.directory.NoSuchAttributeException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.naming.directory.NoSuchAttributeException;
-
 /**
  * The basic event class. Ported, inspired from, and distilled from the Gridlock
  * project.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  * @author Rutger Claes (rutger.claes AT cs.kuleuven.be)
  */
@@ -21,9 +20,8 @@ public class Event {
 
     /**
      * Create a new event.
-     * 
-     * @param type
-     *            the event type
+     *
+     * @param type the event type
      */
     protected Event(final String type) {
         this.type = type;
@@ -49,15 +47,11 @@ public class Event {
     /**
      * Get an event attribute.
      *
-     * @param <T>
-     *            expected type of the attribute.
-     * @param key
-     *            key of the attribute.
-     * @param type
-     *            class the attribute should be cast to.
+     * @param <T>  expected type of the attribute.
+     * @param key  key of the attribute.
+     * @param type class the attribute should be cast to.
      * @return the attribute registered under key cast as type.
-     * @throws NoSuchAttributeException
-     *             when this event does not have the specified attribute.
+     * @throws NoSuchAttributeException when this event does not have the specified attribute.
      */
     public <T> T getAttribute(final String key, final Class<T> type)
             throws NoSuchAttributeException {
@@ -90,10 +84,8 @@ public class Event {
     /**
      * Add an attribute to this event.
      *
-     * @param key
-     *            the attribute key.
-     * @param value
-     *            the attribute value.
+     * @param key   the attribute key.
+     * @param value the attribute value.
      */
     public void setAttribute(final String key, final Object value) {
 
@@ -111,8 +103,7 @@ public class Event {
      * Sets the arguments for this event. <strong>Warning: <em>all</em> previous
      * arguments will be cleared!</strong>.
      *
-     * @param args
-     *            The arguments to set
+     * @param args The arguments to set
      */
     public void setAttributes(final Map<String, Object> args) {
 
@@ -132,8 +123,7 @@ public class Event {
     /**
      * Check whether there is an attribute associated with the key.
      *
-     * @param key
-     *            the key to check for.
+     * @param key the key to check for.
      * @return true if there is an attribute for the key.
      */
     public boolean hasAttribute(final String key) {
@@ -146,10 +136,8 @@ public class Event {
      * Check whether there is an attribute associated with the key and that that
      * attribute is assignable to type.
      *
-     * @param key
-     *            the key to check for.
-     * @param type
-     *            the type to check for.
+     * @param key  the key to check for.
+     * @param type the type to check for.
      * @return true if there is an attribute for key of class type.
      */
     public boolean hasAttribute(final String key, final Class<?> type) {

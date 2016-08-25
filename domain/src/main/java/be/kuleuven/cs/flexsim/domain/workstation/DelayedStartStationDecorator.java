@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.workstation;
 /**
  * This decorator adds the functionality of delaying the start of operation
  * (recieving ticks) by a couple of timesteps.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 class DelayedStartStationDecorator
@@ -14,11 +14,9 @@ class DelayedStartStationDecorator
 
     /**
      * Default constructor for creating this decorator.
-     * 
-     * @param shift
-     *            The amount of time steps to wait.
-     * @param workstationImpl
-     *            The time steps to delay execution.
+     *
+     * @param shift           The amount of time steps to wait.
+     * @param workstationImpl The time steps to delay execution.
      */
     DelayedStartStationDecorator(final int shift, final Workstation workstationImpl) {
         super(workstationImpl);
@@ -56,7 +54,7 @@ class DelayedStartStationDecorator
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(40);
         builder.append("DelayedStartStation [shiftTime=").append(shiftTime)
                 .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();

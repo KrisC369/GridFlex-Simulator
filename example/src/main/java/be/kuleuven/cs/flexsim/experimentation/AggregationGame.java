@@ -1,26 +1,23 @@
 package be.kuleuven.cs.flexsim.experimentation;
 
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.simulation.InstrumentationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.gametheory.GameInstance;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Representation of a concrete game played by Agents and aggregators.
  *
+ * @param <S> The type of agent that plays in this game.
+ * @param <A> The concrete aggregator type in this game.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <S>
- *            The type of agent that plays in this game.
- * @param <A>
- *            The concrete aggregator type in this game.
  */
 public abstract class AggregationGame<S, A extends Aggregator>
         implements GameInstance<S, A> {
@@ -35,8 +32,7 @@ public abstract class AggregationGame<S, A extends Aggregator>
     /**
      * Default constructor.
      *
-     * @param seed
-     *            The seed to use for the simulator in this game.
+     * @param seed The seed to use for the simulator in this game.
      */
     protected AggregationGame(final int seed) {
         this.sim = Simulator.createSimulator(SIM_LENGTH, seed);
@@ -57,7 +53,7 @@ public abstract class AggregationGame<S, A extends Aggregator>
     }
 
     @Override
-    public List<A> getActionSet() {
+    public final List<A> getActionSet() {
         return Lists.newArrayList(aggs);
     }
 

@@ -29,5 +29,4 @@ public interface FinanceTracker extends SimulationComponent {
      * @return the total reward minus the total cost.
      */
     double getTotalProfit();
-
 }

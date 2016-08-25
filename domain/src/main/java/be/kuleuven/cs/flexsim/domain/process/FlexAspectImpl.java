@@ -13,6 +13,7 @@ import be.kuleuven.cs.flexsim.domain.workstation.Workstation;
 import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import edu.uci.ics.jung.graph.Graph;
 
@@ -128,7 +129,7 @@ abstract class FlexAspectImpl implements FlexAspect {
         return aggregateProcessingRate(list);
     }
 
-    private double aggregateProcessingRate(
+    private static double aggregateProcessingRate(
             final Iterable<? extends Workstation> stations) {
         double result = 0;
         for (final Workstation c : stations) {
@@ -201,12 +202,12 @@ abstract class FlexAspectImpl implements FlexAspect {
                 "Initialize this aspect first. No generator present.");
         final UIDGenerator gen = generator;
         final long id = gen.getNextUID();
-        final List<Workstation> set = Lists.newArrayList(cs);
-        return makeTuple(profileMap, id, dP, (int) Math.ceil(dT), set, upflex);
+        final List<Workstation> newlist = Lists.newArrayList(cs);
+        return makeTuple(profileMap, id, dP, (int) Math.ceil(dT), newlist, upflex);
     }
 
-    private FlexTuple makeTuple(
-            final LinkedListMultimap<Long, Workstation> profileMap, final long id,
+    private static FlexTuple makeTuple(
+            final Multimap<Long, Workstation> profileMap, final long id,
             final int deltaP, final int deltaT, final Iterable<Workstation> target,
             final boolean upflex) {
         profileMap.putAll(id, target);
@@ -354,9 +355,8 @@ abstract class FlexAspectImpl implements FlexAspect {
                 final List<? extends Workstation> curtailedStations,
                 final List<DualModeWorkstation> dualModeWorkstations,
                 final LinkedListMultimap<Long, Workstation> profileMap) {
-            final List<FlexTuple> flexRet = Lists.newArrayList();
             // TODO Implement!
-            return flexRet;
+            return Lists.newArrayList();
         }
     }
 
@@ -419,7 +419,7 @@ abstract class FlexAspectImpl implements FlexAspect {
             for (final DualModeWorkstation w : options) {
                 sumP += w.getHighConsumptionRate() - w.getLowConsumptionRate();
                 final double currentT = w.getProcessingRate() < EPSILON
-                        ? w.getRatedCapacity() / w.getProcessingRate() : 1;
+                        ? (w.getRatedCapacity() / w.getProcessingRate()) : 1;
                 if (currentT > maxT) {
                     maxT = currentT;
                 }
@@ -428,12 +428,12 @@ abstract class FlexAspectImpl implements FlexAspect {
                     options);
         }
 
-        private List<DualModeWorkstation> getOnlyLows(
+        private static List<DualModeWorkstation> getOnlyLows(
                 final List<DualModeWorkstation> dualModeWorkstations) {
             return filterByMode(dualModeWorkstations, false);
         }
 
-        private List<DualModeWorkstation> getOnlyHighs(
+        private static List<DualModeWorkstation> getOnlyHighs(
                 final List<DualModeWorkstation> dualModeWorkstations) {
             return filterByMode(dualModeWorkstations, true);
         }

@@ -10,7 +10,6 @@ import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
-import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.fromRepresentation;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
@@ -29,13 +28,13 @@ public class AggregatorTest {
         doReturn(0).when(tso).getCurrentImbalance();
         this.agg = new IndependentAggregator(tso, freq);
         this.clientDown = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, fromRepresentation(false), 10, 0, 0),
-                FlexTuple.create(3, 10, fromRepresentation(true), 10, 0, 0))).when(clientDown)
+        doReturn(Lists.newArrayList(FlexTuple.create(1, 5, FlexTuple.Direction.DOWN, 10, 0, 0),
+                FlexTuple.create(3, 10, FlexTuple.Direction.UP, 10, 0, 0))).when(clientDown)
                 .getFlexTuples();
 
         this.clientUp = mock(SiteFlexAPI.class);
-        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, fromRepresentation(true), 10, 0, 0),
-                FlexTuple.create(4, 10, fromRepresentation(false), 10, 0, 0))).when(clientUp)
+        doReturn(Lists.newArrayList(FlexTuple.create(2, 5, FlexTuple.Direction.UP, 10, 0, 0),
+                FlexTuple.create(4, 10, FlexTuple.Direction.DOWN, 10, 0, 0))).when(clientUp)
                 .getFlexTuples();
 
         doRegister();

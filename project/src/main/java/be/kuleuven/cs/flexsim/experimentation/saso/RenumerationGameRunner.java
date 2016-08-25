@@ -1,14 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
-import java.io.StringWriter;
-import java.util.List;
-
-import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
@@ -19,6 +10,13 @@ import be.kuleuven.cs.gametheory.GameDirector;
 import be.kuleuven.cs.gametheory.GameResult;
 import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
+import com.google.common.collect.Lists;
+import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+
+import java.io.StringWriter;
+import java.util.List;
 
 /**
  * An example class running some experiments.
@@ -124,7 +122,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
     }
 
     private void printProgress(final int progressCounter) {
-        final StringBuilder b = new StringBuilder();
+        final StringBuilder b = new StringBuilder(25);
         b.append("Simulating instance: ").append(progressCounter).append("/")
                 .append(factor * factor * repititions * totalCombinations);
         logger.warn(b.toString());
@@ -133,8 +131,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
     /**
      * Runs some experiments as a PoC.
      *
-     * @param args
-     *            commandline args.
+     * @param args commandline args.
      */
     public static void main(final String[] args) {
         if (args.length == 0) {
@@ -150,8 +147,8 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
             }
         } else if (args.length == 2) {
             try {
-                final int agents = Integer.valueOf(args[1]);
-                final int reps = Integer.valueOf(args[0]);
+                final int agents = Integer.parseInt(args[1]);
+                final int reps = Integer.parseInt(args[0]);
                 new RenumerationGameRunner(reps, agents).execute();
             } catch (final RuntimeException e) {
                 LoggerFactory.getLogger(RenumerationGameRunner.class)

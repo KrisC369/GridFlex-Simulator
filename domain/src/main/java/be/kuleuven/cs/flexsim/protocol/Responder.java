@@ -1,10 +1,10 @@
 package be.kuleuven.cs.flexsim.protocol;
 
 /**
+ * @param <T> The type of the responder object.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <T>
- *            The type of the responder object.
  */
+@FunctionalInterface
 public interface Responder<T> {
     /**
      * @param responder

@@ -10,6 +10,10 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class Nomination {
+
+    Nomination() {
+    }
+
     /**
      * @return the target imbalance volume that needs to be corrected.
      */
@@ -23,10 +27,8 @@ public abstract class Nomination {
     /**
      * Factory method
      *
-     * @param target
-     *            the target imbalance volume that needs to be corrected.
-     * @param result
-     *            the target imbalance volume that was effectively remedied.
+     * @param target the target imbalance volume that needs to be corrected.
+     * @param result the target imbalance volume that was effectively remedied.
      * @return a nomination value object.
      */
     static Nomination create(final long target, final long result) {

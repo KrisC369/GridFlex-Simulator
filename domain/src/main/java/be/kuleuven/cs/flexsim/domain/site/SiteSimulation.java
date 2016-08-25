@@ -1,13 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
@@ -18,6 +10,13 @@ import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 import be.kuleuven.cs.flexsim.simulation.UIDGenerator;
+import com.google.common.collect.Lists;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Class representing a site module that makes abstraction of the underlying
@@ -35,12 +34,7 @@ public class SiteSimulation implements Site {
     private final int duration;
     private int currentConsumption;
     private List<FlexTuple> flexData;
-    private UIDGenerator generator = new UIDGenerator() {
-        @Override
-        public long getNextUID() {
-            return 0;
-        }
-    };
+    private UIDGenerator generator = () -> 0;
     private int totalConsumption;
     private final int baseProduction;
     private Listener<? super FlexTuple> activationListener;
@@ -56,22 +50,16 @@ public class SiteSimulation implements Site {
     /**
      * Default constructor for this mock simulating site.
      *
-     * @param base
-     *            The base consumption to start from.
-     * @param min
-     *            The minimum limit for consumption.
-     * @param max
-     *            The maximum limit for consumption.
-     * @param maxTuples
-     *            The maximum tuples to generate per section of flex.
-     * @param duration
-     *            the duration of flex profiles.
-     * @param ramp
-     *            the ramp up time for activation.
-     * @param cease
-     *            the cease time for activation.
+     * @param base      The base consumption to start from.
+     * @param min       The minimum limit for consumption.
+     * @param max       The maximum limit for consumption.
+     * @param maxTuples The maximum tuples to generate per section of flex.
+     * @param duration  the duration of flex profiles.
+     * @param ramp      the ramp up time for activation.
+     * @param cease     the cease time for activation.
      */
-    SiteSimulation(final int base, final int min, final int max, final int maxTuples, final int duration,
+    SiteSimulation(final int base, final int min, final int max, final int maxTuples,
+            final int duration,
             final int ramp, final int cease) {
         checkArgument(min <= base && base <= max);
         this.activationListener = NoopListener.INSTANCE;
@@ -129,7 +117,7 @@ public class SiteSimulation implements Site {
         final double factor = (double) (getCurrentConsumption()
                 - getMinLimitConsumption())
                 / (double) (getMaxLimitConsumption()
-                        - getMinLimitConsumption());
+                - getMinLimitConsumption());
 
         for (int i = 0; i < Math.ceil(factor * baseProduction); i++) {
             res.add(ResourceFactory.createResource(0));
@@ -185,8 +173,10 @@ public class SiteSimulation implements Site {
     }
 
     protected final FlexTuple makeTuple(final int power, final boolean isUpflex) {
-        return FlexTuple.create(newId(), power, FlexTuple.Direction.fromRepresentation(isUpflex), duration, ramp,
-                cease);
+        return FlexTuple
+                .create(newId(), power, FlexTuple.Direction.fromRepresentation(isUpflex), duration,
+                        ramp,
+                        cease);
     }
 
     private long newId() {
@@ -264,7 +254,7 @@ public class SiteSimulation implements Site {
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(35);
         builder.append("SiteSimulation [#T=").append(maxTuples).append(", hc=")
                 .append(hashCode()).append(", cCons=")
                 .append(currentConsumption).append("]");

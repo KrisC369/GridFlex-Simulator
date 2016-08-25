@@ -1,11 +1,9 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
-
-import com.google.common.annotations.VisibleForTesting;
-
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
 /**
  * A decorator for decorating workstation instances that steerable with a random
@@ -119,16 +117,14 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
     }
 
     /**
-     * @param offset
-     *            the offset to set
+     * @param offset the offset to set
      */
     private void setOffset(final int offset) {
         this.offset = offset;
     }
 
     /**
-     * @param offset
-     *            the offset to set
+     * @param offset the offset to set
      */
     private void resetOffset() {
         this.offset = 0;
@@ -140,7 +136,7 @@ public class RFSteerableStationDecorator extends SteerableStationDecorator
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(50);
         builder.append("RFSteerableStation [high=").append(high)
                 .append(", low=").append(low).append(", isHigh=").append(isHigh)
                 .append(", hc=").append(this.hashCode()).append("]");

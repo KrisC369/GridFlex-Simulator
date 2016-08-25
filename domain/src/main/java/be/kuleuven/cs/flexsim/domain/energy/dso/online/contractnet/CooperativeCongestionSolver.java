@@ -79,7 +79,7 @@ public class CooperativeCongestionSolver extends AbstractCongestionSolver {
         }
 
         @Override
-        public java.util.Optional<DSMProposal> getWorkUnitDescription() {
+        public Optional<DSMProposal> getWorkUnitDescription() {
             return getWorkProposal();
         }
 

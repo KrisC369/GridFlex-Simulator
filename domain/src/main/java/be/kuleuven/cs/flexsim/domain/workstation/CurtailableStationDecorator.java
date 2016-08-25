@@ -4,17 +4,18 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This station decorator allows for curtailment functionality for workstations.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 class CurtailableStationDecorator<T extends Workstation> extends
-        ForwardingStationDecorator<T> implements CurtailableWorkstation {
+                                                         ForwardingStationDecorator<T>
+        implements CurtailableWorkstation {
 
     private boolean curtailed;
 
     /**
      * Default constructor for creating this decorator.
-     * 
+     *
      * @param delegate
      */
     CurtailableStationDecorator(final T delegate) {
@@ -85,7 +86,7 @@ class CurtailableStationDecorator<T extends Workstation> extends
      */
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder(45);
         builder.append("CurtailableWorkstation [curtailed=").append(curtailed)
                 .append(", hc=").append(this.hashCode()).append("]");
         return builder.toString();

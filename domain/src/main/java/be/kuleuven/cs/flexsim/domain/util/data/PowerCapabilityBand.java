@@ -7,8 +7,12 @@ import com.google.auto.value.AutoValue;
  * Has an upper limit in up and down area.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- */@AutoValue
+ */
+@AutoValue
 public abstract class PowerCapabilityBand {
+
+    PowerCapabilityBand() {
+    }
 
     /**
      * @return the downMax
@@ -19,6 +23,7 @@ public abstract class PowerCapabilityBand {
      * @return the upMax
      */
     public abstract int getUp();
+
     /**
      * @return Whether this data value has zero for all params.
      */
@@ -38,10 +43,8 @@ public abstract class PowerCapabilityBand {
     /**
      * Default factory method.
      *
-     * @param downMax
-     *            The maximum for the negative part.
-     * @param upMax
-     *            The maximum for the positive part.
+     * @param downMax The maximum for the negative part.
+     * @param upMax   The maximum for the positive part.
      * @return a new PowerCapabilityBand object.
      */
     public static PowerCapabilityBand create(final int downMax, final int upMax) {

@@ -81,6 +81,9 @@ public abstract class FlexTuple {
      */
     public abstract int getTC();
 
+    /**
+     * Flexbility direction in terms of injection(false) or offtake(up)
+     */
     public enum Direction {
         UP(true), DOWN(false);
 
@@ -90,6 +93,10 @@ public abstract class FlexTuple {
             this.representation = v;
         }
 
+        /**
+         * @return the boolean representation of this direction
+         */
+        @Deprecated
         public boolean booleanRepresentation() {
             return representation;
         }
@@ -98,9 +105,25 @@ public abstract class FlexTuple {
          * @param rep The boolean representation of the desired direction.
          * @return the direction based on its boolean representation.
          */
+        @Deprecated
         public static Direction fromRepresentation(boolean rep) {
-            return rep ? UP : DOWN;
+            return rep ? up() : down();
         }
+
+        /**
+         * @return Direction.UP
+         */
+        public static Direction up() {
+            return UP;
+        }
+
+        /**
+         * @return Direction.DOWN
+         */
+        public static Direction down() {
+            return DOWN;
+        }
+
     }
 
 }

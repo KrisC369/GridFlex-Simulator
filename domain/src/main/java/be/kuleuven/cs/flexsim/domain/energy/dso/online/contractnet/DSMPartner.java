@@ -160,50 +160,64 @@ public class DSMPartner {
         this.currentActivations += 1;
     }
 
-    private boolean canActivateDuring(final Integer begin, final Integer end) {
-        if (getValuation(begin) >= currentAllowedDeviation) {
-            return false;
-        }
-        if (begin < 0
-                || end + getActivationDuration() >= OPERATING_TIME_LIMIT) {
-            return false;
-        }
-
-        if (getCurrentActivations() >= getMaxActivations()) {
-            return false;
-        }
-        for (int i = begin; i < end; i++) {
-            if (activationMarker[i] > 0) {
-                return false;
-            }
-        }
-        for (int i = FastMath.max(0,
-                begin - getInteractivationTime()); i < begin; i++) {
-            if (activationMarker[i] > 0) {
-                return false;
-            }
-        }
-        for (int i = begin + getActivationDuration(); i < FastMath.min(
-                begin + getActivationDuration() + getInteractivationTime(),
-                OPERATING_TIME_LIMIT); i++) {
-            if (activationMarker[i] > 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private double getValuation(final DSMProposal prop) {
-        return getValuation(prop.getBeginMark().get());
-    }
-
-    private double getValuation(final int beginMark) {
-        final double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
-        final double goal = beginMark * factor;
-        return (currentActivations - goal) / maxActivations;
+    /*
+        * (non-Javadoc)
+        * @see java.lang.Object#toString()
+        */
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder(48);
+        builder.append("DSMPartner [flexPowerRate=").append(flexPowerRate)
+                .append(", currentActivations=").append(currentActivations)
+                .append(']');
+        return builder.toString();
     }
 
     private class DSMCNPResponder extends CNPResponder<DSMProposal> {
+
+        private double getValuation(final DSMProposal prop) {
+            return getValuation(prop.getBeginMark().get());
+        }
+
+        private double getValuation(final int beginMark) {
+            final double factor = maxActivations / (double) OPERATING_TIME_LIMIT;
+            final double goal = beginMark * factor;
+            return (currentActivations - goal) / maxActivations;
+        }
+
+        private boolean canActivateDuring(final Integer begin, final Integer end) {
+            if (getValuation(begin) >= currentAllowedDeviation) {
+                return false;
+            }
+            if (begin < 0
+                    || end + getActivationDuration() >= OPERATING_TIME_LIMIT) {
+                return false;
+            }
+
+            if (getCurrentActivations() >= getMaxActivations()) {
+                return false;
+            }
+            for (int i = begin; i < end; i++) {
+                if (activationMarker[i] > 0) {
+                    return false;
+                }
+            }
+            for (int i = FastMath.max(0,
+                    begin - getInteractivationTime()); i < begin; i++) {
+                if (activationMarker[i] > 0) {
+                    return false;
+                }
+            }
+            for (int i = begin + getActivationDuration(); i < FastMath.min(
+                    begin + getActivationDuration() + getInteractivationTime(),
+                    OPERATING_TIME_LIMIT); i++) {
+                if (activationMarker[i] > 0) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         @Override
         protected DSMProposal makeProposalForCNP(final DSMProposal arg)
                 throws CanNotFindProposalException {
@@ -226,18 +240,4 @@ public class DSMPartner {
             return true;
         }
     }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        final StringBuilder builder = new StringBuilder(48);
-        builder.append("DSMPartner [flexPowerRate=").append(flexPowerRate)
-                .append(", currentActivations=").append(currentActivations)
-                .append(']');
-        return builder.toString();
-    }
-
 }
