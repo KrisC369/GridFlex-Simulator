@@ -147,7 +147,7 @@ public class Game<N, K> {
     }
 
     void logResults() {
-        final StringBuilder b = new StringBuilder();
+        final StringBuilder b = new StringBuilder(30);
         b.append(getResultString()).append("\n")
                 .append("Dynamics equation params:");
         for (final Double d : payoffs.getDynamicEquationFactors()) {

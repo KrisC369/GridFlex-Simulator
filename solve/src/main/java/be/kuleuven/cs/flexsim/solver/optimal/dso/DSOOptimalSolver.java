@@ -5,6 +5,7 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
+import be.kuleuven.cs.flexsim.solver.optimal.QuarterHourlyFlexConstraints;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
@@ -16,6 +17,8 @@ import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.expression.MpExpr;
 import org.eclipse.jdt.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -36,13 +39,15 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private static final String SOLVED = "Solved";
     private static final String ALLOC = "alloc:";
     private static final String FLEX = "Flex";
+    private static final Logger logger = LoggerFactory.getLogger(DSOOptimalSolver.class);
     private final CongestionProfile profile;
     private final AbstractOptimalSolver.Solver solver;
     private final List<String> congID;
     private final List<String> solvedID;
     private final Map<FlexProvider, String> flexID;
     private final ListMultimap<FlexProvider, String> allocDvarID;
-    private @Nullable AllocResults results;
+    @Nullable
+    private AllocResults results;
 
     /**
      * Public constructor
@@ -69,7 +74,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     protected void processResults(final Optional<MpResult> result) {
         if (result.isPresent()) {
             final MpResult concreteResult = result.get();
-            System.out.println(result);
+            logger.info(concreteResult.toString());
             final List<Boolean> t = Lists.newArrayList();
             final ListMultimap<FlexProvider, Boolean> allocResults = ArrayListMultimap.create();
 

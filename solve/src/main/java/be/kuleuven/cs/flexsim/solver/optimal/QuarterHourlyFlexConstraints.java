@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.solver.optimal.dso;
+package be.kuleuven.cs.flexsim.solver.optimal;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
 

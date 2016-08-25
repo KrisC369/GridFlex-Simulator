@@ -2,7 +2,6 @@ package be.kuleuven.cs.flexsim.solver.optimal;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
-import be.kuleuven.cs.flexsim.solver.optimal.dso.QuarterHourlyFlexConstraints;
 
 /**
  * Utility class for converting flex constraints from and to different time horizons.
@@ -11,10 +10,10 @@ import be.kuleuven.cs.flexsim.solver.optimal.dso.QuarterHourlyFlexConstraints;
  */
 public final class ConstraintConversion {
 
+    private static final int HOUR_TO_QUARTER_HOUR = 4;
+
     private ConstraintConversion() {
     }
-
-    private static final int HOUR_TO_QUARTER_HOUR = 4;
 
     /**
      * Convert from hourly flex constraints to quarter hourly constraints.
