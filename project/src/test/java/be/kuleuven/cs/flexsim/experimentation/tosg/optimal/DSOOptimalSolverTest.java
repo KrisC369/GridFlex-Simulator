@@ -1,8 +1,8 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;

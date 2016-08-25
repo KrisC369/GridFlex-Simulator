@@ -10,6 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,7 +23,6 @@ import org.junit.runner.RunWith;
 import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.ContractualMechanismParticipant;
-import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 @RunWith(Theories.class)
@@ -65,7 +65,7 @@ public class BalancingTSOTest {
                 ContractualMechanismParticipant.class);
         tso.registerParticipant(agg);
         when(agg.getPowerCapacity())
-                .thenReturn(PowerCapabilityBand.createZero());
+                .thenReturn(IntPowerCapabilityBand.createZero());
         assertTrue(tso.getParticipants().contains(agg));
         assertTrue(tso.getContractualLimit(agg).isZero());
         ContractualMechanismParticipant agg2 = new ContractualMechanismParticipant() {
@@ -74,8 +74,8 @@ public class BalancingTSOTest {
             }
 
             @Override
-            public PowerCapabilityBand getPowerCapacity() {
-                return PowerCapabilityBand.create(20, 20);
+            public IntPowerCapabilityBand getPowerCapacity() {
+                return IntPowerCapabilityBand.create(20, 20);
             }
         };
         tso.registerParticipant(agg2);
@@ -88,8 +88,8 @@ public class BalancingTSOTest {
             }
 
             @Override
-            public PowerCapabilityBand getPowerCapacity() {
-                return PowerCapabilityBand.create(0, 20);
+            public IntPowerCapabilityBand getPowerCapacity() {
+                return IntPowerCapabilityBand.create(0, 20);
             }
         };
         tso.registerParticipant(agg3);
@@ -102,8 +102,8 @@ public class BalancingTSOTest {
             }
 
             @Override
-            public PowerCapabilityBand getPowerCapacity() {
-                return PowerCapabilityBand.create(20, 0);
+            public IntPowerCapabilityBand getPowerCapacity() {
+                return IntPowerCapabilityBand.create(20, 0);
             }
         };
         tso.registerParticipant(agg4);
@@ -126,7 +126,7 @@ public class BalancingTSOTest {
         ContractualMechanismParticipant agg = mock(
                 ContractualMechanismParticipant.class);
         tso.registerParticipant(agg);
-        PowerCapabilityBand cap = PowerCapabilityBand.create(50, 100);
+        IntPowerCapabilityBand cap = IntPowerCapabilityBand.create(50, 100);
         tso.signalNewLimits(agg, cap);
         assertEquals(cap, tso.getContractualLimit(agg));
     }
@@ -141,8 +141,8 @@ public class BalancingTSOTest {
         ContractualMechanismParticipant agg2 = mock(
                 ContractualMechanismParticipant.class);
         tso.registerParticipant(agg2);
-        PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
-        PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
+        IntPowerCapabilityBand cap1 = IntPowerCapabilityBand.create(capS1, capS1 * 2);
+        IntPowerCapabilityBand cap2 = IntPowerCapabilityBand.create(capS2, capS2 * 2);
         when(agg1.getPowerCapacity()).thenReturn(cap1);
         when(agg2.getPowerCapacity()).thenReturn(cap2);
         tso.signalNewLimits(agg1, cap1);
@@ -163,8 +163,8 @@ public class BalancingTSOTest {
         ContractualMechanismParticipant agg2 = mock(
                 ContractualMechanismParticipant.class);
         tso.registerParticipant(agg2);
-        PowerCapabilityBand cap1 = PowerCapabilityBand.create(capS1, capS1 * 2);
-        PowerCapabilityBand cap2 = PowerCapabilityBand.create(capS2, capS2 * 2);
+        IntPowerCapabilityBand cap1 = IntPowerCapabilityBand.create(capS1, capS1 * 2);
+        IntPowerCapabilityBand cap2 = IntPowerCapabilityBand.create(capS2, capS2 * 2);
         when(agg1.getPowerCapacity()).thenReturn(cap1);
         when(agg2.getPowerCapacity()).thenReturn(cap2);
         tso.signalNewLimits(agg1, cap1);

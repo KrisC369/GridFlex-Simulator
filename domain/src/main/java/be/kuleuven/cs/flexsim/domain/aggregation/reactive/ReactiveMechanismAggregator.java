@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation.reactive;
 import java.util.Collections;
 import java.util.List;
 
+import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
 import com.google.common.collect.LinkedListMultimap;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
@@ -13,7 +14,6 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.ContractualMechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
 
@@ -124,11 +124,11 @@ public class ReactiveMechanismAggregator extends Aggregator
     }
 
     @Override
-    public PowerCapabilityBand getPowerCapacity() {
+    public IntPowerCapabilityBand getPowerCapacity() {
         currentFlex = gatherFlexInfo();
         // only call this once.
         final int up = findMaxUpInPortfolio();
         final int down = findMaxDownInPortfolio();
-        return PowerCapabilityBand.create(down, up);
+        return IntPowerCapabilityBand.create(down, up);
     }
 }

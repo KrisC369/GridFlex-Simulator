@@ -9,9 +9,9 @@ import com.google.auto.value.AutoValue;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @AutoValue
-public abstract class PowerCapabilityBand {
+public abstract class IntPowerCapabilityBand {
 
-    PowerCapabilityBand() {
+    IntPowerCapabilityBand() {
     }
 
     /**
@@ -34,10 +34,10 @@ public abstract class PowerCapabilityBand {
     /**
      * Factory method for empty band.
      *
-     * @return a new PowerCapabilityBand object.
+     * @return a new IntPowerCapabilityBand object.
      */
-    public static PowerCapabilityBand createZero() {
-        return new AutoValue_PowerCapabilityBand(0, 0);
+    public static IntPowerCapabilityBand createZero() {
+        return new AutoValue_IntPowerCapabilityBand(0, 0);
     }
 
     /**
@@ -45,9 +45,9 @@ public abstract class PowerCapabilityBand {
      *
      * @param downMax The maximum for the negative part.
      * @param upMax   The maximum for the positive part.
-     * @return a new PowerCapabilityBand object.
+     * @return a new IntPowerCapabilityBand object.
      */
-    public static PowerCapabilityBand create(final int downMax, final int upMax) {
-        return new AutoValue_PowerCapabilityBand(downMax, upMax);
+    public static IntPowerCapabilityBand create(final int downMax, final int upMax) {
+        return new AutoValue_IntPowerCapabilityBand(downMax, upMax);
     }
 }

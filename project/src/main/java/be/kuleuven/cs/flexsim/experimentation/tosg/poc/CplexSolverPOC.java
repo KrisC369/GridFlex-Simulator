@@ -1,7 +1,9 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
@@ -50,19 +52,29 @@ public class CplexSolverPOC {
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            solver = new DSOOptimalSolver(profile, s);
+            solver = new DSOOptimalSolver(new FlexAllocProblemContext() {
+                @Override
+                public Iterable<FlexibilityProvider> getProviders() {
+                    return Lists.newArrayList(providers);
+                }
+
+                @Override
+                public CongestionProfile getEnergyProfileToMinimizeWithFlex() {
+                    return profile;
+                }
+            }, s);
 
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
         } catch (final IOException e) {
             e.printStackTrace();
         }
-        solver = new DSOOptimalSolver(profile, s);
-        providers.forEach(solver::registerFlexProvider);
+        //        solver = new DSOOptimalSolver(profile, s);
+        //        providers.forEach(solver::registerFlexProvider);
     }
 
     void runModel() {
-        solver.tick(1);
+        solver.solve();
         final AllocResults res = solver.getResults();
     }
 

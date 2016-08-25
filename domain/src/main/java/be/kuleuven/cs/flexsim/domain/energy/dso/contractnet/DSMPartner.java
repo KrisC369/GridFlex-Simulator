@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
+package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
 import be.kuleuven.cs.flexsim.protocol.Responder;
 import be.kuleuven.cs.flexsim.protocol.contractnet.CNPResponder;

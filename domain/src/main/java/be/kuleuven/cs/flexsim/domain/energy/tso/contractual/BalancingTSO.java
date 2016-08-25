@@ -5,7 +5,7 @@ import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
 import be.kuleuven.cs.flexsim.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
+import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class BalancingTSO extends CopperplateTSO
         implements MechanismHost<ContractualMechanismParticipant> {
     private final LinkedHashSet<ContractualMechanismParticipant> participants;
-    private final Map<ContractualMechanismParticipant, @NonNull PowerCapabilityBand> powerLimits;
+    private final Map<ContractualMechanismParticipant, @NonNull IntPowerCapabilityBand> powerLimits;
 
     /**
      * Constructor with consumption instances as parameter.
@@ -94,7 +94,7 @@ public class BalancingTSO extends CopperplateTSO
         if (getCurrentImbalance() > 0) {
             final int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
-                    PowerCapabilityBand::getUp);
+                    IntPowerCapabilityBand::getUp);
 
             if (sum <= Math.abs(getCurrentImbalance())) {
                 sendSignal(timestep, 1, true);
@@ -105,7 +105,7 @@ public class BalancingTSO extends CopperplateTSO
         } else if (getCurrentImbalance() < 0) {
             final int sum = CollectionUtils.sum(
                     Lists.newArrayList(powerLimits.values()),
-                    PowerCapabilityBand::getDown);
+                    IntPowerCapabilityBand::getDown);
             if (sum <= Math.abs(getCurrentImbalance())) {
                 sendSignal(timestep, 1, false);
             } else {
@@ -120,7 +120,7 @@ public class BalancingTSO extends CopperplateTSO
     @SuppressWarnings("null")
     private void sendSignal(final int t, final double frac, final boolean upflex) {
 
-        for (final Entry<ContractualMechanismParticipant, PowerCapabilityBand> e :
+        for (final Entry<ContractualMechanismParticipant, IntPowerCapabilityBand> e :
                 powerLimits
                         .entrySet()) {
             int value;
@@ -145,7 +145,7 @@ public class BalancingTSO extends CopperplateTSO
     public void registerParticipant(
             final ContractualMechanismParticipant participant) {
         this.participants.add(participant);
-        this.powerLimits.put(participant, PowerCapabilityBand.createZero());
+        this.powerLimits.put(participant, IntPowerCapabilityBand.createZero());
 
     }
 
@@ -155,7 +155,7 @@ public class BalancingTSO extends CopperplateTSO
      * @param agg The client to check.
      * @return The limits.
      */
-    public PowerCapabilityBand getContractualLimit(
+    public IntPowerCapabilityBand getContractualLimit(
             final ContractualMechanismParticipant agg) {
         testValidParticipant(agg);
         return checkNotNull(this.powerLimits.get(agg));
@@ -179,7 +179,7 @@ public class BalancingTSO extends CopperplateTSO
      * @param cap The new capabilities.
      */
     public void signalNewLimits(final ContractualMechanismParticipant agg,
-            final PowerCapabilityBand cap) {
+            final IntPowerCapabilityBand cap) {
         testValidParticipant(agg);
         this.powerLimits.put(agg, cap);
     }

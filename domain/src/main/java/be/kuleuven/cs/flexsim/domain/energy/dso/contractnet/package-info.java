@@ -5,6 +5,6 @@
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @NonNullByDefault
-package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
+package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;

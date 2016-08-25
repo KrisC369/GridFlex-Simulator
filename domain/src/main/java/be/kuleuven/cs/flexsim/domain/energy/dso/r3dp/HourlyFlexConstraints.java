@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp;
+package be.kuleuven.cs.flexsim.domain.energy.dso.r3dp;
 
 import com.google.auto.value.AutoValue;
 

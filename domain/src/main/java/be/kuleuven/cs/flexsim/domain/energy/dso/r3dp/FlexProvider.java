@@ -1,11 +1,13 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp;
+package be.kuleuven.cs.flexsim.domain.energy.dso.r3dp;
+
+import be.kuleuven.cs.flexsim.domain.util.data.DoublePowerCapabilityBand;
 
 /**
  * A provider of flexibility with activation constraints.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class FlexProvider {
+public class FlexProvider implements FlexibilityProvider {
     private final HourlyFlexConstraints constraints;
     private final double powerRate;
 
@@ -29,17 +31,13 @@ public class FlexProvider {
         this.powerRate = powerRate;
     }
 
-    /**
-     * @return The activation constraints.
-     */
-    public HourlyFlexConstraints getActivationConstraints() {
-        return constraints;
+    @Override
+    public DoublePowerCapabilityBand getFlexibilityActivationRate() {
+        return DoublePowerCapabilityBand.create(0, powerRate);
     }
 
-    /**
-     * @return The flexible power rate.
-     */
-    public double getPowerRate() {
-        return powerRate;
+    @Override
+    public HourlyFlexConstraints getFlexibilityActivationConstraints() {
+        return constraints;
     }
 }

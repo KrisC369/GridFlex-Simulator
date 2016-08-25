@@ -1,8 +1,8 @@
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;

@@ -1,9 +1,8 @@
 package be.kuleuven.cs.flexsim.solver.optimal;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
-import com.google.common.collect.Lists;
+import autovalue.shaded.com.google.common.common.collect.Lists;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
@@ -11,7 +10,6 @@ import net.sf.jmpi.solver.cplex.SolverCPLEX;
 import net.sf.jmpi.solver.gurobi.SolverGurobi;
 import org.eclipse.jdt.annotation.NonNull;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,29 +19,22 @@ import java.util.Optional;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public abstract class AbstractOptimalSolver implements SimulationComponent {
+public abstract class AbstractOptimalSolver {
     /**
      * The number of discrete units per hour. For this solver the discretization step is in 15
      * min blocks.
      */
     public static final int STEPS_PER_HOUR = 4;
-    private final List<FlexProvider> providers;
     private boolean verbose = false;
+    private final FlexAllocProblemContext context;
+    private final Solver solver;
 
     /**
      * Default constructor
      */
-    protected AbstractOptimalSolver() {
-        providers = Lists.newArrayList();
-    }
-
-    /**
-     * Register a flex provider to participate in the flex allocation process.
-     *
-     * @param p The provider to register
-     */
-    public void registerFlexProvider(final FlexProvider p) {
-        providers.add(p);
+    protected AbstractOptimalSolver(FlexAllocProblemContext context, Solver s) {
+        this.context = context;
+        this.solver = s;
     }
 
     /**
@@ -55,13 +46,7 @@ public abstract class AbstractOptimalSolver implements SimulationComponent {
         this.verbose = b;
     }
 
-    @Override
-    public void afterTick(final int t) {
-        //Nothing to do
-    }
-
-    @Override
-    public void tick(final int t) {
+    public void solve() {
         final MpSolver s = getSolver().getInstance();
         s.add(getProblem());
         s.setVerbose(this.verbose ? 1 : 0);
@@ -77,20 +62,12 @@ public abstract class AbstractOptimalSolver implements SimulationComponent {
      */
     protected abstract void processResults(@NonNull Optional<MpResult> result);
 
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public void initialize(final SimulationContext context) {
-        //Nothing to do
-    }
-
     /**
      * @return An solver instance.
      */
-    protected abstract Solver getSolver();
+    private Solver getSolver() {
+        return solver;
+    }
 
     /**
      * @return The MP Problem instance, fully configured.
@@ -105,8 +82,8 @@ public abstract class AbstractOptimalSolver implements SimulationComponent {
     /**
      * @return the registered flex providers.
      */
-    public final List<FlexProvider> getProviders() {
-        return Collections.unmodifiableList(providers);
+    protected final List<FlexibilityProvider> getProviders() {
+        return Lists.newArrayList(context.getProviders());
     }
 
     /**

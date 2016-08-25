@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet;
+package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 import com.google.auto.value.AutoValue;

@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.solver.optimal;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -19,7 +19,7 @@ public abstract class AllocResults {
      * @return The allocation results as a map of provider to list of booleans indicating
      * activation moments.
      */
-    public abstract ListMultimap<FlexProvider, Boolean> getAllocationResults();
+    public abstract ListMultimap<FlexibilityProvider, Boolean> getAllocationResults();
 
     /**
      * @return The objective function result value.
@@ -33,7 +33,7 @@ public abstract class AllocResults {
      * @param objective The objective function value.
      * @return A value object containing the results.
      */
-    public static AllocResults create(final ListMultimap<FlexProvider, Boolean> allocs,
+    public static AllocResults create(final ListMultimap<FlexibilityProvider, Boolean> allocs,
             final double objective) {
         return new AutoValue_AllocResults(allocs, objective);
     }

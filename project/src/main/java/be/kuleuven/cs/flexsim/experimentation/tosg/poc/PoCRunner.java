@@ -3,9 +3,12 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
@@ -26,6 +29,15 @@ public class PoCRunner {
     private CongestionProfile c;
 
     public PoCRunner() {
+        try {
+            c = (CongestionProfile) CongestionProfile
+                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+
+        } catch (final FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
         s = Simulator.createSimulator(1000);
         tso = new PortfolioBalanceSolver(c);
         dso = new DistributionGridCongestionSolver(c);
