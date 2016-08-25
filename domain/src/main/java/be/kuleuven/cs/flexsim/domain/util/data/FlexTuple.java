@@ -99,8 +99,23 @@ public abstract class FlexTuple {
          * @return the direction based on its boolean representation.
          */
         public static Direction fromRepresentation(boolean rep) {
-            return rep ? UP : DOWN;
+            return rep ? up() : down();
         }
+
+        /**
+         * @return Direction.UP
+         */
+        public static Direction up() {
+            return UP;
+        }
+
+        /**
+         * @return Direction.DOWN
+         */
+        public static Direction down() {
+            return DOWN;
+        }
+
     }
 
 }

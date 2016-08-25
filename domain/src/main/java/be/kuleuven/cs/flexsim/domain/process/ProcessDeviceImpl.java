@@ -113,7 +113,7 @@ class ProcessDeviceImpl implements ProcessDevice {
         return testAndFilterCurtailedStation(curtailableWorkstations, true);
     }
 
-    private List<CurtailableWorkstation> testAndFilterCurtailedStation(
+    private static List<CurtailableWorkstation> testAndFilterCurtailedStation(
             final List<CurtailableWorkstation> curtailableWorkstations,
             final boolean isCurt) {
         final List<CurtailableWorkstation> toret = Lists.newArrayList();
@@ -147,30 +147,6 @@ class ProcessDeviceImpl implements ProcessDevice {
 
     }
 
-    private void logDualModeHigh(final DualModeWorkstation ws) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executing singal High on {}", ws);
-        }
-    }
-
-    private void logDualModeLow(final DualModeWorkstation ws) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executing singal Low on {}", ws);
-        }
-    }
-
-    private void logFullCurtailment(final Workstation c) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Executing curtailment on {}", c);
-        }
-    }
-
-    private void logCancelCurtailment(final Workstation c) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Restoring curtailment on {}", c);
-        }
-    }
-
     @Override
     public ProcessDevice addFlexAspect(final FlexAspect aspect) {
         this.aspects.add(aspect);
@@ -178,6 +154,18 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     private final class UpFlexVisitor implements WorkstationVisitor {
+
+        private void logDualModeHigh(final DualModeWorkstation ws) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing singal High on {}", ws);
+            }
+        }
+
+        private void logCancelCurtailment(final Workstation c) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Restoring curtailment on {}", c);
+            }
+        }
 
         @Override
         public void register(final DualModeWorkstation ws) {
@@ -201,6 +189,18 @@ class ProcessDeviceImpl implements ProcessDevice {
     }
 
     private final class DownFlexVisitor implements WorkstationVisitor {
+
+        private void logDualModeLow(final DualModeWorkstation ws) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing singal Low on {}", ws);
+            }
+        }
+
+        private void logFullCurtailment(final Workstation c) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Executing curtailment on {}", c);
+            }
+        }
 
         @Override
         public void register(final DualModeWorkstation ws) {
