@@ -2,10 +2,11 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
-import be.kuleuven.cs.flexsim.solver.optimal.ConstraintStepMultiplierDecorator;
+import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +14,6 @@ import org.junit.Test;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.STEPS_PER_HOUR;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -25,7 +25,7 @@ public class DSOOptimalSolverTest {
     private DSOOptimalSolver solver;
     private FlexProvider provider1;
     private FlexProvider provider2;
-    private FlexConstraints constraints;
+    private HourlyFlexConstraints constraints;
     private static String column = "test";
     private static String file = "test.csv";
 
@@ -41,7 +41,7 @@ public class DSOOptimalSolverTest {
             e.printStackTrace();
             fail();
         }
-        constraints = FlexConstraints.builder().interActivationTime(5).interActivationTime(4)
+        constraints = HourlyFlexConstraints.builder().interActivationTime(5).interActivationTime(4)
                 .maximumActivations(20).build();
         solver = new DSOOptimalSolver(profile, AbstractOptimalSolver.Solver.CPLEX);
         provider1 = new FlexProvider(200, constraints);
@@ -93,9 +93,8 @@ public class DSOOptimalSolverTest {
 
     private void testInterActivationTime(AllocResults res) {
         for (FlexProvider p : solver.getProviders()) {
-            FlexConstraints adapted = new ConstraintStepMultiplierDecorator(
-                    p.getActivationConstraints(),
-                    STEPS_PER_HOUR);
+            FlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
+                    p.getActivationConstraints());
             int countInter = 0;
             boolean wasActive = false;
             for (Boolean b : res.getAllocationResults().get(p)) {
@@ -115,9 +114,8 @@ public class DSOOptimalSolverTest {
 
     private void testActivationDuration(AllocResults res) {
         for (FlexProvider p : solver.getProviders()) {
-            FlexConstraints adapted = new ConstraintStepMultiplierDecorator(
-                    p.getActivationConstraints(),
-                    STEPS_PER_HOUR);
+            FlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
+                    p.getActivationConstraints());
             int countActivation = 0;
             for (Boolean b : res.getAllocationResults().get(p)) {
                 if (b) {

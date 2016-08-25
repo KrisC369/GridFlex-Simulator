@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
@@ -29,7 +29,7 @@ public class CplexSolverPOC {
 
     private CongestionProfile profile;
     private DSOOptimalSolver solver;
-    private FlexConstraints constraints;
+    private HourlyFlexConstraints constraints;
     private static final String column = "test";
     private static final String file = "test.csv";
     private final List<FlexProvider> providers;
@@ -37,7 +37,7 @@ public class CplexSolverPOC {
 
     CplexSolverPOC() {
         providers = Lists.newArrayList();
-        constraints = FlexConstraints.builder().interActivationTime(6)
+        constraints = HourlyFlexConstraints.builder().interActivationTime(6)
                 .interActivationTime(4)
                 .maximumActivations(20).build();
         //        constraints = FlexConstraints.R3DP;
