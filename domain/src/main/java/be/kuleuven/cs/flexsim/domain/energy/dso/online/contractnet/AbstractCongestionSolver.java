@@ -24,6 +24,9 @@ import java.util.Optional;
  */
 public abstract class AbstractCongestionSolver implements SimulationComponent {
     protected static final int DSM_ALLOCATION_DURATION = 4 * 2;
+    public static final double QUARTERS_PER_HOUR = 4.0;
+    public static final double TWO_HOURS_OF_QUARTER_HOURS = 8.0;
+    public static final int MAX_PERCENTAGE = 100;
     private final int relativeMaxValuePercent;
     private final TimeSeries congestion;
     private final List<DSMPartner> dsms;
@@ -116,7 +119,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
             final double toCorrect = afterDSMprofile.value(getTick() + i);
             double correction = 0;
             for (final DSMPartner d : getDsms()) {
-                correction += d.getCurtailment(getTick() + i) / 4.0;
+                correction += d.getCurtailment(getTick() + i) / QUARTERS_PER_HOUR;
             }
             horizon.set(i, FastMath.max(0, toCorrect - correction));
         }
@@ -207,8 +210,8 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
         for (int i = 0; i < m.evaluate(); i++) {
             sum += getHorizon().getDouble(i);
         }
-        if ((sum / (getCongestion().max() * 8.0)
-                * 100) < relativeMaxValuePercent) {
+        if ((sum / (getCongestion().max() * TWO_HOURS_OF_QUARTER_HOURS)
+                * MAX_PERCENTAGE) < relativeMaxValuePercent) {
             return Optional.empty();
         }
 
