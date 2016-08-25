@@ -344,7 +344,11 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
             doRegistration();
         }
 
-        protected final void doRegistration() {
+        /**
+         * This method will be called to finalize construction. Take considerable care when
+         * overriding.
+         */
+        protected void doRegistration() {
             this.registerCallbackOnFinish(instance -> {
                 addMainResult(getLabel(), checkNotNull(p).getEfficiency());
                 addActResult(getLabel(), checkNotNull(p).getActivationRate());
