@@ -1,36 +1,36 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
+import be.kuleuven.cs.flexsim.protocol.Initiator;
+import be.kuleuven.cs.flexsim.protocol.Proposal;
+import be.kuleuven.cs.flexsim.protocol.Responder;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
-import be.kuleuven.cs.flexsim.protocol.Initiator;
-import be.kuleuven.cs.flexsim.protocol.Proposal;
-import be.kuleuven.cs.flexsim.protocol.Responder;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 /**
+ * @param <T> The concrete type of the proposal for the responders.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <T>
- *            The concrete type of the proposal for the responders.
  */
 public abstract class ContractNetInitiator<T extends Proposal> implements Initiator<T> {
 
     private final List<Responder<T>> responders;
     private Map<T, AnswerAnticipator<T>> props;
     private Optional<T> description;
-    private int messageCount = 0;
+    private int messageCount;
 
     protected ContractNetInitiator() {
         responders = Lists.newArrayList();
         this.messageCount = 0;
         this.props = Maps.newLinkedHashMap();
-        this.description = java.util.Optional.empty();
+        this.description = empty();
     }
 
     @Override
@@ -56,7 +56,7 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
     }
 
     private void startCNP(final T p) {
-        this.description = java.util.Optional.ofNullable(p);
+        this.description = ofNullable(p);
         for (final Responder<T> r : responders) {
             r.callForProposal(new AnswerAnticipator<T>() {
 
@@ -118,9 +118,8 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
     /**
      * Optional step to update the work description before being sent out to the
      * responders.
-     * 
-     * @param best
-     *            The winner of the auction.
+     *
+     * @param best The winner of the auction.
      * @return An updated proposal.
      */
     public abstract T updateWorkDescription(T best);
@@ -131,7 +130,8 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
                 new AnswerAnticipator<T>() { // accept-proposal
                     // Completion or failure notification.
                     @Override
-                    public void affirmative(final T prop, final AnswerAnticipator<T> ant) { // inform-done
+                    public void affirmative(final T prop,
+                            final AnswerAnticipator<T> ant) { // inform-done
                         notifyWorkDone(prop);
                     }
 
@@ -149,11 +149,9 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
     /**
      * Find the best propsal in a list of proposals that fits the description of
      * a work unit given.
-     * 
-     * @param props
-     *            The proposals
-     * @param description
-     *            The original call.
+     *
+     * @param props       The proposals
+     * @param description The original call.
      * @return the best fitting proposal.
      */
 
@@ -164,9 +162,9 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
      * return a description of the work that needs to be done, including
      * relevant data, or it should return an empty optional if there is no work
      * to be done.
-     * 
+     *
      * @return an optional proposal to be used as a Call for Proposals or
-     *         nothing if no work is to be done.
+     * nothing if no work is to be done.
      */
     public abstract Optional<T> getWorkUnitDescription();
 
@@ -179,9 +177,8 @@ public abstract class ContractNetInitiator<T extends Proposal> implements Initia
 
     /**
      * Notifies that a work package has been completed.
-     * 
-     * @param prop
-     *            the work package description of the completed work.
+     *
+     * @param prop the work package description of the completed work.
      */
     public abstract void notifyWorkDone(T prop);
 
