@@ -3,9 +3,15 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
+import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,8 +45,22 @@ public class PoCRunner {
             e.printStackTrace();
         }
         s = Simulator.createSimulator(1000);
-        tso = new PortfolioBalanceSolver(c);
-        dso = new DistributionGridCongestionSolver(c);
+        AbstractSolverFactory<SolutionResults> fact = new AbstractSolverFactory<SolutionResults>
+                () {
+            @Override
+            public Solver<SolutionResults> createSolver(FlexAllocProblemContext context) {
+                return new SolverAdapter<AllocResults, SolutionResults>(
+                        new DSOOptimalSolver(context, AbstractOptimalSolver.Solver.CPLEX)) {
+
+                    @Override
+                    public SolutionResults adaptResult(AllocResults solution) {
+                        return null;
+                    }
+                };
+            }
+        };
+        tso = new PortfolioBalanceSolver(fact, c);
+        dso = new DistributionGridCongestionSolver(fact, c);
         tso.registerFlexProvider(p1);
         dso.registerFlexProvider(p2);
         dso.solve();

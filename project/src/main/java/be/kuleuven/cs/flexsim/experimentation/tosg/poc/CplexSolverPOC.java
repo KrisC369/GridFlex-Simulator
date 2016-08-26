@@ -75,7 +75,7 @@ public class CplexSolverPOC {
 
     void runModel() {
         solver.solve();
-        final AllocResults res = solver.getResults();
+        final AllocResults res = solver.getSolution();
     }
 
     public static void main(final String[] args) {

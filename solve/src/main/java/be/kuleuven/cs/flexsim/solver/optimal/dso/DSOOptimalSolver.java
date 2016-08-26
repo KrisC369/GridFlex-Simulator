@@ -187,7 +187,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
      * @return The results.
      */
     @Override
-    public AllocResults getResults() {
+    public AllocResults getSolution() {
         checkNotNull(results, "Results has not been set yet.");
         return this.results;
     }

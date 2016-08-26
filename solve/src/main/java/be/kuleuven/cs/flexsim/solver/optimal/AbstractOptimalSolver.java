@@ -1,8 +1,9 @@
 package be.kuleuven.cs.flexsim.solver.optimal;
 
-import autovalue.shaded.com.google.common.common.collect.Lists;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
+import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
@@ -10,6 +11,7 @@ import net.sf.jmpi.solver.cplex.SolverCPLEX;
 import net.sf.jmpi.solver.gurobi.SolverGurobi;
 import org.eclipse.jdt.annotation.NonNull;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ import java.util.Optional;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public abstract class AbstractOptimalSolver {
+public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
     /**
      * The number of discrete units per hour. For this solver the discretization step is in 15
      * min blocks.
@@ -77,13 +79,13 @@ public abstract class AbstractOptimalSolver {
     /**
      * @return The results.
      */
-    public abstract AllocResults getResults();
+    public abstract AllocResults getSolution();
 
     /**
      * @return the registered flex providers.
      */
-    protected final List<FlexibilityProvider> getProviders() {
-        return Lists.newArrayList(context.getProviders());
+    public final List<FlexibilityProvider> getProviders() {
+        return Collections.unmodifiableList(Lists.newArrayList(context.getProviders()));
     }
 
     /**

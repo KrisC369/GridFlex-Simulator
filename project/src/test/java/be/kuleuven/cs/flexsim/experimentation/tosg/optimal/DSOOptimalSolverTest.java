@@ -1,13 +1,16 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.optimal;
 
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -43,9 +46,19 @@ public class DSOOptimalSolverTest {
         }
         constraints = HourlyFlexConstraints.builder().interActivationTime(5).interActivationTime(4)
                 .maximumActivations(20).build();
-        solver = new DSOOptimalSolver(profile, AbstractOptimalSolver.Solver.CPLEX);
         provider1 = new FlexProvider(200, constraints);
         provider2 = new FlexProvider(500, constraints);
+        solver = new DSOOptimalSolver(new FlexAllocProblemContext() {
+            @Override
+            public Iterable<FlexibilityProvider> getProviders() {
+                return Lists.newArrayList(provider1, provider2);
+            }
+
+            @Override
+            public CongestionProfile getEnergyProfileToMinimizeWithFlex() {
+                return profile;
+            }
+        }, AbstractOptimalSolver.Solver.CPLEX);
     }
 
     @Test
@@ -54,16 +67,14 @@ public class DSOOptimalSolverTest {
     }
 
     private void initialize() {
-        solver.registerFlexProvider(provider1);
-        solver.registerFlexProvider(provider2);
         assertEquals(2, solver.getProviders().size(), 2);
     }
 
     @Test
     public void testSolve() {
         initialize();
-        solver.tick(1);
-        AllocResults res = solver.getResults();
+        solver.solve();
+        AllocResults res = solver.getSolution();
         testConstraints(res);
     }
 
@@ -72,7 +83,17 @@ public class DSOOptimalSolverTest {
         try {
             profile = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            solver = new DSOOptimalSolver(profile, AbstractOptimalSolver.Solver.CPLEX);
+            solver = new DSOOptimalSolver(new FlexAllocProblemContext() {
+                @Override
+                public Iterable<FlexibilityProvider> getProviders() {
+                    return Lists.newArrayList(provider1, provider2);
+                }
+
+                @Override
+                public CongestionProfile getEnergyProfileToMinimizeWithFlex() {
+                    return profile;
+                }
+            }, AbstractOptimalSolver.Solver.CPLEX);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
@@ -81,8 +102,8 @@ public class DSOOptimalSolverTest {
             fail();
         }
         initialize();
-        solver.tick(1);
-        AllocResults res = solver.getResults();
+        solver.solve();
+        AllocResults res = solver.getSolution();
         testConstraints(res);
     }
 
@@ -92,9 +113,9 @@ public class DSOOptimalSolverTest {
     }
 
     private void testInterActivationTime(AllocResults res) {
-        for (FlexProvider p : solver.getProviders()) {
+        for (FlexibilityProvider p : solver.getProviders()) {
             FlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
-                    p.getActivationConstraints());
+                    p.getFlexibilityActivationConstraints());
             int countInter = 0;
             boolean wasActive = false;
             for (Boolean b : res.getAllocationResults().get(p)) {
@@ -113,9 +134,9 @@ public class DSOOptimalSolverTest {
     }
 
     private void testActivationDuration(AllocResults res) {
-        for (FlexProvider p : solver.getProviders()) {
+        for (FlexibilityProvider p : solver.getProviders()) {
             FlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
-                    p.getActivationConstraints());
+                    p.getFlexibilityActivationConstraints());
             int countActivation = 0;
             for (Boolean b : res.getAllocationResults().get(p)) {
                 if (b) {
