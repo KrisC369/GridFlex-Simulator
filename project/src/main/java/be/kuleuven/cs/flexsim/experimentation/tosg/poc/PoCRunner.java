@@ -155,8 +155,7 @@ public class PoCRunner {
 
                         @Override
                         public SolutionResults adaptResult(AllocResults solution) {
-                            return SolutionResults.EMPTY;
-                            //TODO implement
+                            return new SolutionResultAdapter(solution).getResults();
                         }
                     };
                 }
