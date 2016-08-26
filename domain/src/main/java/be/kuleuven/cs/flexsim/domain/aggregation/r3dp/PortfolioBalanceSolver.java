@@ -7,7 +7,7 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class PortfolioBalanceSolver extends AbstractFlexibilityUtiliser<SolutionResults> {
+public class PortfolioBalanceSolver extends FlexibilityUtiliser<SolutionResults> {
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CongestionProfile c) {
         super(fac);
@@ -19,7 +19,7 @@ public class PortfolioBalanceSolver extends AbstractFlexibilityUtiliser<Solution
     }
 
     @Override
-    protected void performSolveStep() {
+    protected void performSolveStep(Solver<SolutionResults> s) {
 
     }
 

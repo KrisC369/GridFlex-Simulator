@@ -43,6 +43,9 @@ public abstract class FlexTuple {
         return new AutoValue_FlexTuple(0, 0, Direction.DOWN, 0, 0, 0);
     }
 
+    FlexTuple() {
+    }
+
     /**
      * @return the id
      */

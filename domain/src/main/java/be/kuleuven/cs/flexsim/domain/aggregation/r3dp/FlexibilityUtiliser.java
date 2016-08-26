@@ -1,10 +1,9 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
-import autovalue.shaded.com.google.common.common.collect.Sets;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
+import com.google.common.collect.Sets;
 
 import java.util.Collections;
 import java.util.Set;
@@ -13,24 +12,24 @@ import java.util.Set;
  * @param R the result type.
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public abstract class AbstractFlexibilityUtiliser<R extends SolutionResults> {
-    private final Set<FlexProvider> providers;
+public abstract class FlexibilityUtiliser<R extends SolutionResults> {
+    private final Set<FlexibilityProvider> providers;
     private boolean solutionReady;
     private AbstractSolverFactory<R> solverFactory;
 
-    AbstractFlexibilityUtiliser(AbstractSolverFactory<R> solver) {
+    FlexibilityUtiliser(AbstractSolverFactory<R> solver) {
         providers = Sets.newLinkedHashSet();
         solutionReady = false;
         solverFactory = solver;
     }
 
-    public final void registerFlexProvider(FlexProvider p1) {
+    public final void registerFlexProvider(FlexibilityProvider p1) {
         providers.add(p1);
     }
 
     public void solve() {
         Solver<R> s = configureSolver();
-        performSolveStep();
+        performSolveStep(s);
         markSolved();
     }
 
@@ -40,7 +39,7 @@ public abstract class AbstractFlexibilityUtiliser<R extends SolutionResults> {
         solutionReady = true;
     }
 
-    protected abstract void performSolveStep();
+    protected abstract void performSolveStep(Solver<R> s);
 
     public R getSolution() {
         checkSolutionReady();
