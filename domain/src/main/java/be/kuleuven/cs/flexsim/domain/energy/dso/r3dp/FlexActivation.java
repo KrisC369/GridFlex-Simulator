@@ -12,11 +12,11 @@ public abstract class FlexActivation {
 
     public abstract double getStart();
 
-    public abstract double getEnd();
+    public abstract double getDuration();
 
     public abstract double getEnergyVolume();
 
-    public static FlexActivation create(double start, double end, double volume) {
-        return new AutoValue_FlexActivation(start, end, volume);
+    public static FlexActivation create(double start, double duration, double volume) {
+        return new AutoValue_FlexActivation(start, duration, volume);
     }
 }

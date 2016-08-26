@@ -38,7 +38,7 @@ public class PoCRunner {
 
     public static void main(String[] args) {
         PoCConfigurator poCConfigurator = new PoCConfigurator();
-        Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(2, poCConfigurator, 2);
+        Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(2, poCConfigurator, 1);
         GameDirector director = new GameDirector(game);
         director.playAutonomously();
         System.out.println(director.getFormattedResults().getFormattedResultString());

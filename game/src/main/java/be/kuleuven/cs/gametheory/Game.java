@@ -46,8 +46,7 @@ public class Game<N, K> {
         this.agents = agents;
         this.actions = config.getActionSpaceSize();
         this.agentGen = config;
-        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents,
-                this.actions);
+        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents, this.actions);
         this.instanceGen = config;
         this.reps = reps;
         this.logger = LoggerFactory.getLogger(CONSOLE);
