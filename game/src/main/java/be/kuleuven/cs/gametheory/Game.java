@@ -58,7 +58,7 @@ public class Game<N, K> {
      * Configure and set-up the game specifics for different iterations of games
      * over the strategy space.
      */
-    void configureInstances() {
+    void configureInstances() { //TODO Refactor method to not use actionSize before loop
         this.instanceList = Lists.newArrayList();
         int progressCounter = 0;
         for (int iteration = 0; iteration < reps; iteration++) {

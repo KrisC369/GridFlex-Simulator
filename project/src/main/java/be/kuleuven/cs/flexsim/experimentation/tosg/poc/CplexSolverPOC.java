@@ -44,7 +44,7 @@ public class CplexSolverPOC {
                 .maximumActivations(20).build();
         //        constraints = FlexConstraints.r3dp;
         for (int i = 0; i < nAgents; i++) {
-            providers.add(i);
+            providers.add(new FlexProvider(300, constraints));
         }
     }
 

@@ -14,10 +14,15 @@ import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
+import be.kuleuven.cs.gametheory.Game;
+import be.kuleuven.cs.gametheory.GameConfigurator;
+import be.kuleuven.cs.gametheory.GameDirector;
 import be.kuleuven.cs.gametheory.GameInstance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.commons.math3.distribution.GammaDistribution;
+import org.apache.commons.math3.random.MersenneTwister;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,20 +36,24 @@ import java.util.Set;
  */
 public class PoCRunner {
 
+    public static void main(String[] args) {
+        PoCConfigurator poCConfigurator = new PoCConfigurator();
+        Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(2, poCConfigurator, 2);
+        GameDirector director = new GameDirector(game);
+        director.playAutonomously();
+        System.out.println(director.getFormattedResults().getFormattedResultString());
+    }
+
     private static final String FILE = "2kwartOpEnNeer.csv";
     private static final String COLUMN = "verlies aan energie";
     private static final int NAGENTS = 2;
-    //    private final TSOOptimalSolver tso;
-    //    private final AbstractOptimalSolver dso;
-    private FlexProvider p1;
-    private FlexProvider p2;
-    private final DistributionGridCongestionSolver dso;
-    private final PortfolioBalanceSolver tso;
-
-    private final Simulator s;
-    private CongestionProfile c;
 
     public PoCRunner() {
+    }
+
+    private void pocInstantiation() {
+        CongestionProfile c = CongestionProfile.empty();
+        Simulator s;
         try {
             c = (CongestionProfile) CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
@@ -69,10 +78,10 @@ public class PoCRunner {
                 };
             }
         };
-        p1 = new FlexProvider(300);
-        p2 = new FlexProvider(300);
-        tso = new PortfolioBalanceSolver(fact, c);
-        dso = new DistributionGridCongestionSolver(fact, c);
+        FlexProvider p1 = new FlexProvider(300);
+        FlexProvider p2 = new FlexProvider(300);
+        PortfolioBalanceSolver tso = new PortfolioBalanceSolver(fact, c);
+        DistributionGridCongestionSolver dso = new DistributionGridCongestionSolver(fact, c);
         tso.registerFlexProvider(p1);
         dso.registerFlexProvider(p2);
         dso.solve();
@@ -81,11 +90,44 @@ public class PoCRunner {
         SolutionResults r2 = tso.getSolution();
         System.out.println(r1);
         System.out.println(r2);
-
     }
 
-    public static void main(String[] args) {
-        new PoCRunner();
+    public static class PoCConfigurator
+            implements GameConfigurator<FlexibilityProvider, FlexibilityUtiliser> {
+        private static final double R3DP_GAMMA_SCALE = 677.926;
+        private static final double R3DP_GAMMA_SHAPE = 1.37012;
+        private static final long SEED = 1312421L;
+        private CongestionProfile c;
+        final GammaDistribution gd;
+
+        public PoCConfigurator() {
+            gd = new GammaDistribution(new MersenneTwister(SEED),
+                    R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
+            try {
+                c = (CongestionProfile) CongestionProfile
+                        .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+
+            } catch (final FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public FlexibilityProvider getAgent() {
+            return new FlexProvider(gd.sample());
+        }
+
+        @Override
+        public GameInstance<FlexibilityProvider, FlexibilityUtiliser> generateInstance() {
+            return new PoCGame(c);
+        }
+
+        @Override
+        public int getActionSpaceSize() {
+            return 2;
+        }
     }
 
     public static class PoCGame implements
@@ -98,20 +140,12 @@ public class PoCRunner {
         private final Map<FlexibilityProvider, FlexibilityUtiliser> agentActionMap;
         private CongestionProfile c;
 
-        public PoCGame() {
+        public PoCGame(CongestionProfile c) {
             agents = Sets.newLinkedHashSet();
             actions = Lists.newArrayList();
             //            this.nAgents = nAgents;
             agentActionMap = Maps.newLinkedHashMap();
-            try {
-                c = (CongestionProfile) CongestionProfile
-                        .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-
-            } catch (final FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (final IOException e) {
-                e.printStackTrace();
-            }
+            this.c = c;
             AbstractSolverFactory<SolutionResults> fact = new AbstractSolverFactory<SolutionResults>
                     () {
                 @Override

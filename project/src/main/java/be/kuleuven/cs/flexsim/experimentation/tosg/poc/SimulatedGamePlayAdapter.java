@@ -28,6 +28,7 @@ public class SimulatedGamePlayAdapter {
 
     public void play() {
         actions.forEach(agent -> s.register(new SimAdapter(() -> agent.solve())));
+        s.start();
     }
 
     private class SimAdapter implements SimulationComponent {

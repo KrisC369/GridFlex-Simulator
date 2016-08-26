@@ -109,32 +109,6 @@ public class CongestionProfile implements TimeSeries {
         resetCache();
     }
 
-    /**
-     * Factory method for building a time series from a csv file.
-     *
-     * @param filename The filename.
-     * @param column   The column label to use as data.
-     * @return the time series.
-     * @throws IOException           If reading from the file is not possible.
-     * @throws FileNotFoundException If the file with that name cannot be found.
-     */
-    public static TimeSeries createFromCSV(final String filename, final String column)
-            throws IOException {
-        final CongestionProfile cp = new CongestionProfile();
-        cp.load(filename, column);
-        return cp;
-    }
-
-    /**
-     * Factory method for building time series from other time series.
-     *
-     * @param series The series to copy from.
-     * @return the time series.
-     */
-    public static CongestionProfile createFromTimeSeries(final TimeSeries series) {
-        return new CongestionProfile(series.values());
-    }
-
     @Override
     public DoubleList values() {
         return DoubleLists.unmodifiable(dValues);
@@ -190,5 +164,40 @@ public class CongestionProfile implements TimeSeries {
     private double applyStatistic(final AbstractUnivariateStatistic stat) {
         stat.setData(dValues.toDoubleArray());
         return stat.evaluate();
+    }
+
+    /**
+     * Factory method for building a time series from a csv file.
+     *
+     * @param filename The filename.
+     * @param column   The column label to use as data.
+     * @return the time series.
+     * @throws IOException           If reading from the file is not possible.
+     * @throws FileNotFoundException If the file with that name cannot be found.
+     */
+    public static TimeSeries createFromCSV(final String filename, final String column)
+            throws IOException {
+        final CongestionProfile cp = new CongestionProfile();
+        cp.load(filename, column);
+        return cp;
+    }
+
+    /**
+     * Factory method for building time series from other time series.
+     *
+     * @param series The series to copy from.
+     * @return the time series.
+     */
+    public static CongestionProfile createFromTimeSeries(final TimeSeries series) {
+        return new CongestionProfile(series.values());
+    }
+
+    /**
+     * Create a new empty congestion profile.
+     *
+     * @return
+     */
+    public static CongestionProfile empty() {
+        return new CongestionProfile();
     }
 }
