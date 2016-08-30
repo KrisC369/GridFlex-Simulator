@@ -10,11 +10,14 @@ import com.google.common.collect.ListMultimap;
  */
 @AutoValue
 public abstract class SolutionResults {
-    public static final SolutionResults EMPTY = create(ArrayListMultimap.create());
+    public static final SolutionResults EMPTY = create(ArrayListMultimap.create(), 4);
 
     public abstract ListMultimap<FlexibilityProvider, Boolean> getAllocationMaps();
 
-    public static SolutionResults create(ListMultimap<FlexibilityProvider, Boolean> allocs) {
-        return new AutoValue_SolutionResults(allocs);
+    public abstract int getDiscretisationInNbSlotsPerHour();
+
+    public static SolutionResults create(ListMultimap<FlexibilityProvider, Boolean> allocs,
+            int slotsPerHour) {
+        return new AutoValue_SolutionResults(allocs, slotsPerHour);
     }
 }

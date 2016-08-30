@@ -5,6 +5,8 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * A provider of flexibility with activation constraints.
  *
@@ -69,9 +71,29 @@ public class FlexProvider implements FlexibilityProvider {
     }
 
     private void checkActivation(FlexActivation activation) {
+        checkArgument(activation.getDuration() == constraints.getActivationDuration(),
+                "Activation duration does not match constraints. Got: " + activation.getDuration());
+        if (hasActivations()) {
+            double timeBetweenLast =
+                    (activation.getStart() - (getLastActivation().getStart() + getLastActivation()
+                            .getDuration())) / 4d;
+            checkArgument(
+                    timeBetweenLast >= constraints.getInterActivationTime(),
+                    "Time between activations should be at least " + constraints
+                            .getInterActivationTime() + " hours, but was: " + timeBetweenLast);
+        }
+        checkArgument(
+                activation.getEnergyVolume() <= powerRate * constraints.getActivationDuration());
         //TODO check duration,
         //TODO check interarrival before and after,
         //TODO check rate or volume.
     }
 
+    private boolean hasActivations() {
+        return activations.size() > 0;
+    }
+
+    FlexActivation getLastActivation() {
+        return activations.get(activations.size() - 1);
+    }
 }

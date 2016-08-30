@@ -21,6 +21,6 @@ public class SolutionResultAdapter {
     }
 
     public SolutionResults getResults() {
-        return SolutionResults.create(getAllocationMaps());
+        return SolutionResults.create(getAllocationMaps(), 4);
     }
 }

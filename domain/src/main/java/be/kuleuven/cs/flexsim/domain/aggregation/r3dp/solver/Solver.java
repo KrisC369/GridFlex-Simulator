@@ -18,4 +18,6 @@ public interface Solver<T> {
      * @return the solution
      */
     T getSolution();
+
+
 }

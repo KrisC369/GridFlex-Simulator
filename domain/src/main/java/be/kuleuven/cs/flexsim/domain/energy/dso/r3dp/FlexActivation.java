@@ -7,6 +7,9 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class FlexActivation {
+
+    public static final FlexActivation EMPTY = create(0, 0, 0);
+
     FlexActivation() {
     }
 

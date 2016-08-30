@@ -11,9 +11,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-import static be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver
-        .QUARTERS_PER_HOUR;
-
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
@@ -53,23 +50,28 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
 
     private void processActivations(@Nullable SolutionResults results) {
         for (FlexibilityProvider p : getFlexibilityProviders()) {
-            processActivationsFor(p, results.getAllocationMaps().get(p));
+            processActivationsFor(p, results.getAllocationMaps().get(p),
+                    results.getDiscretisationInNbSlotsPerHour());
         }
     }
 
-    private void processActivationsFor(FlexibilityProvider p, List<Boolean> booleen) {
+    private void processActivationsFor(FlexibilityProvider p, List<Boolean> booleen,
+            int discretisationInNbSlotsPerHour) {
         int ind = 0;
         while (ind < booleen.size()) {
             if (booleen.get(ind)) {
                 //start activation;
                 int start = ind;
-                int count = 1;
+                int count = 0;
                 while (ind < booleen.size() && booleen.get(ind)) {
                     count++;
                     ind++;
                 }
-                p.registerActivation(FlexActivation.create(start, count,
-                        count * p.getFlexibilityActivationRate().getUp() / QUARTERS_PER_HOUR));
+                p.registerActivation(FlexActivation
+                        .create(start / (double) discretisationInNbSlotsPerHour,
+                                count / (double) discretisationInNbSlotsPerHour,
+                                count * p.getFlexibilityActivationRate().getUp()
+                                        / (double) discretisationInNbSlotsPerHour));
             }
             ind++;
         }
