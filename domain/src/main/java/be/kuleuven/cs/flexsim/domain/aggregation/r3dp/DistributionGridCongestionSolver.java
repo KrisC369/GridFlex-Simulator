@@ -6,6 +6,7 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Collections;
@@ -23,6 +24,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     public DistributionGridCongestionSolver(AbstractSolverFactory<SolutionResults> fac,
             CongestionProfile c) {
         super(fac);
+
         congestion = c;
     }
 

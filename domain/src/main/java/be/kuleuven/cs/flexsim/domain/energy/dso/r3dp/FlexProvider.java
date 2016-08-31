@@ -57,7 +57,7 @@ public class FlexProvider implements FlexibilityProvider {
 
     @Override
     public void registerActivation(FlexActivation activation) {
-        checkActivation(activation);
+        checkForActivationConstraintViolation(activation);
         addActivation(activation);
         registerCompensation(activation);
     }
@@ -70,13 +70,13 @@ public class FlexProvider implements FlexibilityProvider {
         runningCompensationValue += activation.getEnergyVolume() * FIXED_PRICE;
     }
 
-    private void checkActivation(FlexActivation activation) {
+    private void checkForActivationConstraintViolation(FlexActivation activation) {
         checkArgument(activation.getDuration() == constraints.getActivationDuration(),
                 "Activation duration does not match constraints. Got: " + activation.getDuration());
         if (hasActivations()) {
             double timeBetweenLast =
                     (activation.getStart() - (getLastActivation().getStart() + getLastActivation()
-                            .getDuration())) / 4d;
+                            .getDuration()));
             checkArgument(
                     timeBetweenLast >= constraints.getInterActivationTime(),
                     "Time between activations should be at least " + constraints
@@ -84,9 +84,6 @@ public class FlexProvider implements FlexibilityProvider {
         }
         checkArgument(
                 activation.getEnergyVolume() <= powerRate * constraints.getActivationDuration());
-        //TODO check duration,
-        //TODO check interarrival before and after,
-        //TODO check rate or volume.
     }
 
     private boolean hasActivations() {

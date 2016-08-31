@@ -1,30 +1,63 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class PortfolioBalanceSolver extends FlexibilityUtiliser<SolutionResults> {
+public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
+
+    private final CongestionProfile congestion;
+
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CongestionProfile c) {
-        super(fac);
+        super(fac, c);
+        congestion = calculateImbalanceFromActual(
+                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c))), c);
     }
 
-    @Override
-    protected Solver configureSolver() {
-        return null;
+    /**
+     * Calculate imbalance profile from current and error sampled energy volumes.
+     *
+     * @param tSPredicted  the Predicted output volumes.
+     * @param tSCongestion the actual output volumes.
+     * @return
+     */
+    private static CongestionProfile calculateImbalanceFromActual(TimeSeries tSPredicted,
+            CongestionProfile tSCongestion) {
+        return CongestionProfile.createFromTimeSeries(tSPredicted);
     }
 
-    @Override
-    protected void performSolveStep(Solver<SolutionResults> s) {
-
+    /**
+     * Convert wind speeds to energy volume profile using nominal wind production power values.
+     *
+     * @param timeSeries the input wind speeds.
+     * @return profile with wind energy volumes.
+     */
+    private TimeSeries toEnergyVolumes(TimeSeries timeSeries) {
+        return timeSeries;
     }
 
-    @Override
-    protected SolutionResults getResult() {
-        return null;
+    /**
+     * Apply prediction erros taking into account different time horizons and
+     *
+     * @param timeSeries The input wind speeds
+     * @return wind speeds with sample errors added to them
+     */
+    private TimeSeries applyPredictionErrors(TimeSeries timeSeries) {
+        return timeSeries;
+    }
+
+    /**
+     * Transforms the given profile of energy volumes to estimated wind speeds needed to cause
+     * these errors.
+     *
+     * @param c the energy volume profile
+     * @return the wind speeds profile
+     */
+    private static TimeSeries toWindSpeed(CongestionProfile c) {
+        return c;
     }
 }
