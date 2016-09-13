@@ -101,7 +101,7 @@ public class Game<N, K> {
     void gatherResults() {
         for (final GameInstance<N, K> instance : instanceList) {
             final List<K> actionSet = instance.getActionSet();
-            assert (actionSet.size() == this.agents);
+            assert (actionSet.size() == this.actions);
             final Map<N, Long> payoffResults = instance.getPayOffs();
             final Map<N, K> mapping = instance.getAgentToActionMapping();
             final List<K> actualActions = Lists.newArrayList();

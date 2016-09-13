@@ -1,19 +1,17 @@
 package be.kuleuven.cs.gametheory;
 
+import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
+import be.kuleuven.cs.flexsim.domain.site.Site;
+import com.google.common.collect.Lists;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-
-import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
-import be.kuleuven.cs.flexsim.domain.site.Site;
 
 public class GameDirectorTest {
     private Game<Site, Aggregator> g = mock(Game.class);
@@ -22,11 +20,11 @@ public class GameDirectorTest {
 
     @Before
     public void setUp() throws Exception {
-        director = new GameDirector(g);
         GameInstance<Site, Aggregator> inst2 = mock(GameInstance.class);
         List<GameInstance<Site, Aggregator>> list = Lists.newArrayList(inst,
                 inst2);
         when(g.getGameInstances()).thenReturn(list);
+        director = new GameDirector(g);
     }
 
     @Test
@@ -41,7 +39,8 @@ public class GameDirectorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testNotifyFail() {
-        director.notifyVersionHasBeenPlayed(inst);
+        GameInstance<Site, Aggregator> inst3 = mock(GameInstance.class);
+        director.notifyVersionHasBeenPlayed(inst3);
     }
 
 }

@@ -5,12 +5,21 @@ import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 
 /**
+ * Represents a portfolio balancing entity that solves intraday imbalances because of prediction
+ * error in portfolios.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
     private final CongestionProfile congestion;
 
+    /**
+     * Default constructor
+     *
+     * @param fac The solver factory to draw solver from.
+     * @param c   The initial congestion profile to transform to imbalances.
+     */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CongestionProfile c) {
         super(fac, c);
@@ -36,7 +45,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param timeSeries the input wind speeds.
      * @return profile with wind energy volumes.
      */
-    private TimeSeries toEnergyVolumes(TimeSeries timeSeries) {
+    private static TimeSeries toEnergyVolumes(TimeSeries timeSeries) {
         return timeSeries;
     }
 
@@ -46,7 +55,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param timeSeries The input wind speeds
      * @return wind speeds with sample errors added to them
      */
-    private TimeSeries applyPredictionErrors(TimeSeries timeSeries) {
+    private static TimeSeries applyPredictionErrors(TimeSeries timeSeries) {
         return timeSeries;
     }
 
