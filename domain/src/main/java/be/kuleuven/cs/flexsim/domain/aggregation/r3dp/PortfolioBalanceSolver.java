@@ -67,6 +67,18 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @return the wind speeds profile
      */
     private static TimeSeries toWindSpeed(CongestionProfile c) {
+
+        double cP = 0;
+        double rho = 0;
+        double r = 0;//bladelength
+        double A = Math.PI * Math.pow(r, 2);
+
+        for (double p : c.values()) {
+            double arg = 2 * p / (A * rho * cP);
+            double speed = StrictMath.cbrt(arg);
+        }
+
         return c;
     }
+
 }
