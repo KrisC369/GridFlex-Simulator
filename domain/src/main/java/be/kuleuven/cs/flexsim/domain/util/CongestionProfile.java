@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
+import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import com.google.common.collect.Lists;
 import com.opencsv.CSVReader;
@@ -7,12 +8,9 @@ import com.opencsv.CSVReaderBuilder;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.doubles.DoubleLists;
-import org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatistic;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math3.stat.descriptive.rank.Max;
 import org.apache.commons.math3.stat.descriptive.rank.Median;
-import org.apache.commons.math3.stat.descriptive.summary.Sum;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.io.File;
@@ -22,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.stream.DoubleStream;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -148,7 +147,7 @@ public class CongestionProfile implements TimeSeries {
         if (this.maxcache != null) {
             return maxcache;
         }
-        maxcache = applyStatistic(new Max());
+        maxcache = TimeSeries.super.max();
         return maxcache;
     }
 
@@ -157,13 +156,19 @@ public class CongestionProfile implements TimeSeries {
         if (this.sumcache != null) {
             return sumcache;
         }
-        sumcache = applyStatistic(new Sum());
+        sumcache = TimeSeries.super.sum();
         return sumcache;
     }
 
-    private double applyStatistic(final AbstractUnivariateStatistic stat) {
-        stat.setData(dValues.toDoubleArray());
-        return stat.evaluate();
+    /**
+     * Apply a double to double function to the elements in this profile and return a new profile.
+     *
+     * @param function The function transformation to apply.
+     * @return A new Congestion profile instance.
+     */
+    CongestionProfile transform(DoubleToDoubleFunction function) {
+        return new CongestionProfile(
+                DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
     }
 
     /**
@@ -175,7 +180,7 @@ public class CongestionProfile implements TimeSeries {
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
-    public static TimeSeries createFromCSV(final String filename, final String column)
+    public static CongestionProfile createFromCSV(final String filename, final String column)
             throws IOException {
         final CongestionProfile cp = new CongestionProfile();
         cp.load(filename, column);

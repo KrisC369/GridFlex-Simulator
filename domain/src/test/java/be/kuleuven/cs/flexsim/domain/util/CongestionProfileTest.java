@@ -1,19 +1,18 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 public class CongestionProfileTest {
 
@@ -110,4 +109,11 @@ public class CongestionProfileTest {
         }
     }
 
+    @Test
+    public void testTransform() {
+        profile2 = new CongestionProfile(new double[] { 5, 6, 7, 8 });
+        CongestionProfile profile3 = profile2.transform((r) -> r * 2);
+        assertEquals(13, profile3.median(), 0.05);
+
+    }
 }
