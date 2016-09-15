@@ -9,6 +9,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
+import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
@@ -45,7 +46,8 @@ public class PoCRunner {
         System.out.println(director.getFormattedResults().getFormattedResultString());
     }
 
-    private static final String FILE = "2kwartOpEnNeer.csv";
+    private static final String DATAFILE = "2kwartOpEnNeer.csv";
+    private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String COLUMN = "verlies aan energie";
     private static final int NAGENTS = 2;
 
@@ -54,14 +56,15 @@ public class PoCRunner {
 
     @Deprecated
     private void pocInstantiation() {
+        TurbineSpecification specs = TurbineSpecification.empty();
         CongestionProfile c1 = CongestionProfile.empty();
         CableCurrentProfile c2 = CableCurrentProfile.empty();
         Simulator s;
         try {
-            c1 = CongestionProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-            c2 = CableCurrentProfile
-                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");//TODO CHANGE COLUMN
+            specs = TurbineSpecification.loadFromResource(SPECFILE);
+            WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
+            c1 = dataIn.getCongestionProfile();
+            c2 = dataIn.getCableCurrentProfile();
 
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
@@ -85,7 +88,7 @@ public class PoCRunner {
         };
         FlexProvider p1 = new FlexProvider(300);
         FlexProvider p2 = new FlexProvider(300);
-        PortfolioBalanceSolver tso = new PortfolioBalanceSolver(fact, c2);
+        PortfolioBalanceSolver tso = new PortfolioBalanceSolver(fact, c2, specs);
         DistributionGridCongestionSolver dso = new DistributionGridCongestionSolver(fact, c1);
         tso.registerFlexProvider(p1);
         dso.registerFlexProvider(p2);
@@ -104,18 +107,18 @@ public class PoCRunner {
         private static final long SEED = 1312421L;
         private CongestionProfile c1;
         private CableCurrentProfile c2;
+        private TurbineSpecification specs;
+
         final GammaDistribution gd;
 
         public PoCConfigurator() {
             gd = new GammaDistribution(new MersenneTwister(SEED),
                     R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
             try {
-                c1 = CongestionProfile
-                        .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-                c2 = CableCurrentProfile
-                        .createFromCSV("4kwartOpEnNeer.csv",
-                                "verlies aan energie");//TODO change column
-
+                WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
+                specs = TurbineSpecification.loadFromResource(SPECFILE);
+                c1 = dataIn.getCongestionProfile();
+                c2 = dataIn.getCableCurrentProfile();
             } catch (final FileNotFoundException e) {
                 e.printStackTrace();
             } catch (final IOException e) {
@@ -130,7 +133,7 @@ public class PoCRunner {
 
         @Override
         public GameInstance<FlexibilityProvider, FlexibilityUtiliser> generateInstance() {
-            return new PoCGame(c1, c2);
+            return new PoCGame(c1, c2, specs);
         }
 
         @Override
@@ -149,14 +152,16 @@ public class PoCRunner {
         private final Map<FlexibilityProvider, FlexibilityUtiliser> agentActionMap;
         private CongestionProfile c1;
         private CableCurrentProfile c2;
+        private TurbineSpecification specs;
 
-        public PoCGame(CongestionProfile c1, CableCurrentProfile c2) {
+        public PoCGame(CongestionProfile c1, CableCurrentProfile c2, TurbineSpecification specs) {
             agents = Sets.newLinkedHashSet();
             actions = Lists.newArrayList();
             //            this.nAgents = nAgents;
             agentActionMap = Maps.newLinkedHashMap();
             this.c1 = c1;
             this.c2 = c2;
+            this.specs = specs;
             AbstractSolverFactory<SolutionResults> fact = new AbstractSolverFactory<SolutionResults>
                     () {
                 @Override
@@ -171,7 +176,7 @@ public class PoCRunner {
                     };
                 }
             };
-            actions.add(new PortfolioBalanceSolver(fact, this.c2));
+            actions.add(new PortfolioBalanceSolver(fact, this.c2, specs));
             actions.add(new DistributionGridCongestionSolver(fact, this.c1));
         }
 

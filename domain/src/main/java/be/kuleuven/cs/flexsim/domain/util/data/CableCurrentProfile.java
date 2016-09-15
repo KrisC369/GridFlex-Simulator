@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.stream.DoubleStream;
 
 /**
+ * Data time series to represent current values in cable infrastructure in Amps.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableCurrentProfile> {
@@ -29,7 +31,7 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
-    CableCurrentProfile transform(DoubleToDoubleFunction function) {
+    public CableCurrentProfile transform(DoubleToDoubleFunction function) {
         return new CableCurrentProfile(
                 DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
     }

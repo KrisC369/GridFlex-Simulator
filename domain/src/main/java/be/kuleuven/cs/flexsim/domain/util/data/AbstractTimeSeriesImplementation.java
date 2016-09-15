@@ -18,7 +18,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
- * A time series representation of a power congestion profile.
+ * A time series representation of values in energy domain contexts.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */

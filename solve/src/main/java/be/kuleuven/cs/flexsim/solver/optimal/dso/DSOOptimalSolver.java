@@ -1,8 +1,8 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
@@ -41,7 +41,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private static final String ALLOC = "alloc:";
     private static final String FLEX = "Flex";
     private static final Logger logger = LoggerFactory.getLogger(DSOOptimalSolver.class);
-    private final AbstractTimeSeriesImplementation profile;
+    private final TimeSeries profile;
     private final List<String> congID;
     private final List<String> solvedID;
     private final Map<FlexibilityProvider, String> flexID;
@@ -76,7 +76,8 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
             final MpResult concreteResult = result.get();
             logger.info(concreteResult.toString());
             final List<Boolean> t = Lists.newArrayList();
-            final ListMultimap<FlexibilityProvider, Boolean> allocResults = ArrayListMultimap.create();
+            final ListMultimap<FlexibilityProvider, Boolean> allocResults = ArrayListMultimap
+                    .create();
 
             for (final FlexibilityProvider p : getProviders()) {
                 for (final String s : allocDvarID.get(p)) {
@@ -125,7 +126,8 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
             final MpExpr lhs = new MpExpr().add(solvedID.get(i));
             final MpExpr rhs = new MpExpr();
             for (final FlexibilityProvider p : getProviders()) {
-                rhs.add(prod(prod(allocDvarID.get(p).get(i), p.getFlexibilityActivationRate().getUp()),
+                rhs.add(prod(
+                        prod(allocDvarID.get(p).get(i), p.getFlexibilityActivationRate().getUp()),
                         1 / STEPS_PER_HOUR));
             }
             prob.addConstraint(new MpConstraint(lhs, MpOperator.LE, rhs));

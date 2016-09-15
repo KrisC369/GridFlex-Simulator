@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
+import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 
@@ -13,6 +14,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
     private final CableCurrentProfile imbalance;
+    private final TurbineSpecification turbineSpec;
 
     /**
      * Default constructor
@@ -21,10 +23,11 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param c   The initial imbalance profile to transform to imbalances.
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
-            CableCurrentProfile c) {
+            CableCurrentProfile c, TurbineSpecification specs) {
         super(fac, c);
+        this.turbineSpec = specs;
         imbalance = calculateImbalanceFromActual(
-                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c))), c);
+                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c, turbineSpec))), c);
     }
 
     /**
@@ -66,19 +69,34 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param c the energy volume profile
      * @return the wind speeds profile
      */
-    private static TimeSeries toWindSpeed(CableCurrentProfile c) {
+    private static TimeSeries toWindSpeed(CableCurrentProfile c, TurbineSpecification specs) {
+        final double conversion = 1.5d;
+        final double toPower = 1.73 * 15.6;
 
-        double cP = 0;
-        double rho = 0;
-        double r = 0;//bladelength
-        double A = Math.PI * Math.pow(r, 2);
+        //        double cP = 0;
+        //        double rho = 0;
+        //        double r = 0;//bladelength
+        //        double A = Math.PI * Math.pow(r, 2);
 
-        for (double p : c.values()) {
-            double arg = 2 * p / (A * rho * cP);
-            double speed = StrictMath.cbrt(arg);
-        }
+        c.transform(p -> (p / conversion) * toPower);
+        CableCurrentProfile aggregatedPower = CableCurrentProfile
+                .createFromTimeSeries(c.transform(p -> (p / conversion) * toPower));
+        double maxPFound = aggregatedPower.max();
+        double nbTurbines = Math.floor(maxPFound / specs.getRatedPower());
+        double maxPSingle = maxPFound / nbTurbines;
 
-        return c;
+        double upperMarker = maxPSingle;
+        double lowerMarker = specs.getRatedPower();
+
+        CableCurrentProfile singlePower = CableCurrentProfile
+                .createFromTimeSeries(aggregatedPower.transform(p -> p / nbTurbines));
+        return CableCurrentProfile.createFromTimeSeries(singlePower
+                .transform(p -> convertSinglePowerToWind(p, lowerMarker, upperMarker, specs)));
+    }
+
+    private static double convertSinglePowerToWind(double p, double lowerMarker, double upperMarker,
+            TurbineSpecification specs) {
+        return p;
     }
 
 }

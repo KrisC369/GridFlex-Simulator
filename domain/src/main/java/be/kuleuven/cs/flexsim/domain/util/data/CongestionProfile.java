@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.stream.DoubleStream;
 
 /**
+ * Data time series to represent grid congestion in energy volumes of kWh.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class CongestionProfile extends AbstractTimeSeriesImplementation<CongestionProfile> {
@@ -29,7 +31,7 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
-    CongestionProfile transform(DoubleToDoubleFunction function) {
+    public CongestionProfile transform(DoubleToDoubleFunction function) {
         return new CongestionProfile(
                 DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
     }
