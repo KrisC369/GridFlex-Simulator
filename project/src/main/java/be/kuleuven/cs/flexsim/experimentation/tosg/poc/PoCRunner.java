@@ -9,7 +9,8 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
@@ -51,12 +52,16 @@ public class PoCRunner {
     public PoCRunner() {
     }
 
+    @Deprecated
     private void pocInstantiation() {
-        CongestionProfile c = CongestionProfile.empty();
+        CongestionProfile c1 = CongestionProfile.empty();
+        CableCurrentProfile c2 = CableCurrentProfile.empty();
         Simulator s;
         try {
-            c = (CongestionProfile) CongestionProfile
+            c1 = CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+            c2 = CableCurrentProfile
+                    .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");//TODO CHANGE COLUMN
 
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
@@ -80,8 +85,8 @@ public class PoCRunner {
         };
         FlexProvider p1 = new FlexProvider(300);
         FlexProvider p2 = new FlexProvider(300);
-        PortfolioBalanceSolver tso = new PortfolioBalanceSolver(fact, c);
-        DistributionGridCongestionSolver dso = new DistributionGridCongestionSolver(fact, c);
+        PortfolioBalanceSolver tso = new PortfolioBalanceSolver(fact, c2);
+        DistributionGridCongestionSolver dso = new DistributionGridCongestionSolver(fact, c1);
         tso.registerFlexProvider(p1);
         dso.registerFlexProvider(p2);
         dso.solve();
@@ -97,15 +102,19 @@ public class PoCRunner {
         private static final double R3DP_GAMMA_SCALE = 677.926;
         private static final double R3DP_GAMMA_SHAPE = 1.37012;
         private static final long SEED = 1312421L;
-        private CongestionProfile c;
+        private CongestionProfile c1;
+        private CableCurrentProfile c2;
         final GammaDistribution gd;
 
         public PoCConfigurator() {
             gd = new GammaDistribution(new MersenneTwister(SEED),
                     R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
             try {
-                c = (CongestionProfile) CongestionProfile
+                c1 = CongestionProfile
                         .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+                c2 = CableCurrentProfile
+                        .createFromCSV("4kwartOpEnNeer.csv",
+                                "verlies aan energie");//TODO change column
 
             } catch (final FileNotFoundException e) {
                 e.printStackTrace();
@@ -121,7 +130,7 @@ public class PoCRunner {
 
         @Override
         public GameInstance<FlexibilityProvider, FlexibilityUtiliser> generateInstance() {
-            return new PoCGame(c);
+            return new PoCGame(c1, c2);
         }
 
         @Override
@@ -138,14 +147,16 @@ public class PoCRunner {
         private final List<FlexibilityUtiliser> actions;
 
         private final Map<FlexibilityProvider, FlexibilityUtiliser> agentActionMap;
-        private CongestionProfile c;
+        private CongestionProfile c1;
+        private CableCurrentProfile c2;
 
-        public PoCGame(CongestionProfile c) {
+        public PoCGame(CongestionProfile c1, CableCurrentProfile c2) {
             agents = Sets.newLinkedHashSet();
             actions = Lists.newArrayList();
             //            this.nAgents = nAgents;
             agentActionMap = Maps.newLinkedHashMap();
-            this.c = c;
+            this.c1 = c1;
+            this.c2 = c2;
             AbstractSolverFactory<SolutionResults> fact = new AbstractSolverFactory<SolutionResults>
                     () {
                 @Override
@@ -160,8 +171,8 @@ public class PoCRunner {
                     };
                 }
             };
-            actions.add(new PortfolioBalanceSolver(fact, c));
-            actions.add(new DistributionGridCongestionSolver(fact, c));
+            actions.add(new PortfolioBalanceSolver(fact, this.c2));
+            actions.add(new DistributionGridCongestionSolver(fact, this.c1));
         }
 
         @Override

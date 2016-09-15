@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
 /**
  * Data class representing a bid for flexibility.
  * 

@@ -10,8 +10,6 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-
 public class CollectionUtilsTest {
 
     List<FlexBid> bids = Lists.newArrayList();

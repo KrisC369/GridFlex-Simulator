@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.distribution.GammaDistribution;
@@ -29,7 +29,7 @@ public class DSOIntegrationTest {
     private static String file = "test.csv";
     private AbstractCongestionSolver congestionSolver;
 
-    private CongestionProfile congestionProfile;
+    private CongestionProfile abstractTimeSeriesImplementation;
 
     private DSMPartner dsm1;
     private DSMPartner dsm2;
@@ -39,7 +39,7 @@ public class DSOIntegrationTest {
     @Before
     public void setUp() throws Exception {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV(file, column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -49,12 +49,12 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         dsm1 = new DSMPartner(0, 48, 8, 100, 1);
         dsm2 = new DSMPartner(0, 48, 8, 50, 1);
-        // when(congestionProfile.value(anyInt())).thenReturn(175.0);
-        // when(congestionProfile.values()).thenReturn(new double[4 * 24 *
+        // when(abstractTimeSeriesImplementation.value(anyInt())).thenReturn(175.0);
+        // when(abstractTimeSeriesImplementation.values()).thenReturn(new double[4 * 24 *
         // 365]);
 
         sim = Simulator.createSimulator(600 - 1);
@@ -63,7 +63,7 @@ public class DSOIntegrationTest {
 
     @Test
     public void testNoActivation() {
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 100);
         dsm1 = new DSMPartner(0, 48, 8, 100, 1);
         dsm2 = new DSMPartner(0, 48, 8, 50, 1);
@@ -81,7 +81,7 @@ public class DSOIntegrationTest {
 
     @Test
     public void testPosActivation() {
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         dsm1 = new DSMPartner(40, 48, 8, 100, 1);
         dsm2 = new DSMPartner(40, 48, 8, 50, 1);
@@ -99,7 +99,7 @@ public class DSOIntegrationTest {
     @Test
     public void testRemediedCongestion() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -109,7 +109,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 15000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
@@ -146,7 +146,7 @@ public class DSOIntegrationTest {
     @Test
     public void testPosActivationNumberActivations() {
         int power = 100;
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         dsm1 = new DSMPartner(40, 48, 8, power, 1);
         register();
@@ -162,7 +162,7 @@ public class DSOIntegrationTest {
     @Test
     public void testCoopScenario1() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -172,7 +172,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 2000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 500, 1);
@@ -186,7 +186,7 @@ public class DSOIntegrationTest {
     @Test
     public void testCoopScenario2() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -196,7 +196,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 15000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
@@ -217,7 +217,7 @@ public class DSOIntegrationTest {
     @Test
     public void testCompScenario1() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -227,7 +227,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 15000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
@@ -262,7 +262,7 @@ public class DSOIntegrationTest {
     @Test
     public void testScenarioSquareProfileEqualReduction() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -272,7 +272,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
@@ -297,7 +297,7 @@ public class DSOIntegrationTest {
         }
         double eff1 = congestionSolver.getTotalRemediedCongestion();
 
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 8000, 1);
@@ -327,7 +327,7 @@ public class DSOIntegrationTest {
     @Test
     public void testScenarioVaryingProfileUnequalReduction() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -337,12 +337,12 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionProfile.changeValue(6, 1500);
-        congestionProfile.changeValue(7, 1300);
-        congestionProfile.changeValue(8, 9000);
-        congestionProfile.changeValue(9, 12000);
-        congestionProfile.changeValue(9, 2300);
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+        abstractTimeSeriesImplementation.changeValue(6, 1500);
+        abstractTimeSeriesImplementation.changeValue(7, 1300);
+        abstractTimeSeriesImplementation.changeValue(8, 9000);
+        abstractTimeSeriesImplementation.changeValue(9, 12000);
+        abstractTimeSeriesImplementation.changeValue(9, 2300);
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
@@ -367,7 +367,7 @@ public class DSOIntegrationTest {
         }
         double eff1 = congestionSolver.getTotalRemediedCongestion();
 
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 16000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 4000, 1);
@@ -397,7 +397,7 @@ public class DSOIntegrationTest {
     @Test
     public void testCompScenario2() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -408,7 +408,7 @@ public class DSOIntegrationTest {
             fail();
         }
 
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile,
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(4, 10, 8, 8000, 1);
         dsm2 = new DSMPartner(4, 10, 8, 15000, 1);
@@ -431,7 +431,7 @@ public class DSOIntegrationTest {
     @Test
     public void testScenarioManyAgents() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", "test2");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -442,12 +442,12 @@ public class DSOIntegrationTest {
             fail();
         }
         int N = 200;
-        congestionProfile.changeValue(6, 1500);
-        congestionProfile.changeValue(7, 1300);
-        congestionProfile.changeValue(8, 9000);
-        congestionProfile.changeValue(9, 12000);
-        congestionProfile.changeValue(9, 2300);
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
+        abstractTimeSeriesImplementation.changeValue(6, 1500);
+        abstractTimeSeriesImplementation.changeValue(7, 1300);
+        abstractTimeSeriesImplementation.changeValue(8, 9000);
+        abstractTimeSeriesImplementation.changeValue(9, 12000);
+        abstractTimeSeriesImplementation.changeValue(9, 2300);
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         List<DSMPartner> partners = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
@@ -474,7 +474,7 @@ public class DSOIntegrationTest {
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
         double eff1R = getIAgentEff(partners, 25);
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         partners = Lists.newArrayList();
         gd = new GammaDistribution(new MersenneTwister(1312421l),
@@ -531,7 +531,7 @@ public class DSOIntegrationTest {
     @Test
     public void testScenarioManyAgents2() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", "test2");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -541,7 +541,7 @@ public class DSOIntegrationTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         List<DSMPartner> partners = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
@@ -568,7 +568,7 @@ public class DSOIntegrationTest {
         int totalActsComp = getTotalActs(partners);
         double eff1 = congestionSolver.getTotalRemediedCongestion();
 
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         partners = Lists.newArrayList();
         gd = new GammaDistribution(new MersenneTwister(1312421l),
@@ -600,7 +600,7 @@ public class DSOIntegrationTest {
     @Test
     public void testScenarioManyAgents3() {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV("smalltest.csv", "test2");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -611,12 +611,12 @@ public class DSOIntegrationTest {
             fail();
         }
         int N = 4;
-        congestionProfile.changeValue(6, 500);
-        congestionProfile.changeValue(7, 300);
-        congestionProfile.changeValue(8, 900);
-        congestionProfile.changeValue(9, 1200);
-        congestionProfile.changeValue(9, 300);
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
+        abstractTimeSeriesImplementation.changeValue(6, 500);
+        abstractTimeSeriesImplementation.changeValue(7, 300);
+        abstractTimeSeriesImplementation.changeValue(8, 900);
+        abstractTimeSeriesImplementation.changeValue(9, 1200);
+        abstractTimeSeriesImplementation.changeValue(9, 300);
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         List<DSMPartner> partners = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
@@ -644,7 +644,7 @@ public class DSOIntegrationTest {
         double eff1 = congestionSolver.getTotalRemediedCongestion();
 
         double eff1R = getIAgentEff(partners, 25);
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 5);
         partners = Lists.newArrayList();
         gd = new GammaDistribution(new MersenneTwister(1312421l),
@@ -686,9 +686,10 @@ public class DSOIntegrationTest {
 
     public void testScenarioManyAgentsLargerScen(int n) {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV(file, column);
-            // congestionProfile = (CongestionProfile) CongestionProfile
+            // abstractTimeSeriesImplementation = (AbstractTimeSeriesImplementation)
+            // AbstractTimeSeriesImplementation
             // .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -701,7 +702,7 @@ public class DSOIntegrationTest {
         final int nAgents = n;
         int length = 599;
         int allowed = 2;
-        congestionSolver = new CompetitiveCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CompetitiveCongestionSolver(abstractTimeSeriesImplementation, 8,
                 allowed);
         List<DSMPartner> partners = Lists.newArrayList();
         GammaDistribution gd = new GammaDistribution(
@@ -726,7 +727,7 @@ public class DSOIntegrationTest {
             }
         }
 
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile, 8,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation, 8,
                 allowed);
         partners = Lists.newArrayList();
         gd = new GammaDistribution(new MersenneTwister(1312421l),

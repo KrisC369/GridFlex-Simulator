@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 
 /**
@@ -12,18 +12,18 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
-    private final CongestionProfile congestion;
+    private final CableCurrentProfile imbalance;
 
     /**
      * Default constructor
      *
      * @param fac The solver factory to draw solver from.
-     * @param c   The initial congestion profile to transform to imbalances.
+     * @param c   The initial imbalance profile to transform to imbalances.
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
-            CongestionProfile c) {
+            CableCurrentProfile c) {
         super(fac, c);
-        congestion = calculateImbalanceFromActual(
+        imbalance = calculateImbalanceFromActual(
                 toEnergyVolumes(applyPredictionErrors(toWindSpeed(c))), c);
     }
 
@@ -34,9 +34,9 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param tSCongestion the actual output volumes.
      * @return
      */
-    private static CongestionProfile calculateImbalanceFromActual(TimeSeries tSPredicted,
-            CongestionProfile tSCongestion) {
-        return CongestionProfile.createFromTimeSeries(tSPredicted);
+    private static CableCurrentProfile calculateImbalanceFromActual(TimeSeries tSPredicted,
+            CableCurrentProfile tSCongestion) {
+        return CableCurrentProfile.createFromTimeSeries(tSPredicted);
     }
 
     /**
@@ -66,7 +66,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param c the energy volume profile
      * @return the wind speeds profile
      */
-    private static TimeSeries toWindSpeed(CongestionProfile c) {
+    private static TimeSeries toWindSpeed(CableCurrentProfile c) {
 
         double cP = 0;
         double rho = 0;

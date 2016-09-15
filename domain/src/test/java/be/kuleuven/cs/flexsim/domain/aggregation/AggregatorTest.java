@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;

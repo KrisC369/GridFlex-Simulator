@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.protocol.contractnet.ContractNetInitiator;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -46,7 +47,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      *                         mechanism. The maximum reference energy amount is defined as
      *                         the peak power rate in the profile times the forecast horizon.
      */
-    public AbstractCongestionSolver(final CongestionProfile profile,
+    public AbstractCongestionSolver(final AbstractTimeSeriesImplementation profile,
             final int forecastHorizon, final int maxRelativeValue) {
         this.congestion = profile;
         this.dsms = Lists.newArrayList();

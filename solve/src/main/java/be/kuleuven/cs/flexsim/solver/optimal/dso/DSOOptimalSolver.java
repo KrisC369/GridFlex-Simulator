@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
@@ -41,7 +41,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private static final String ALLOC = "alloc:";
     private static final String FLEX = "Flex";
     private static final Logger logger = LoggerFactory.getLogger(DSOOptimalSolver.class);
-    private final CongestionProfile profile;
+    private final AbstractTimeSeriesImplementation profile;
     private final List<String> congID;
     private final List<String> solvedID;
     private final Map<FlexibilityProvider, String> flexID;

@@ -1,28 +1,26 @@
 /**
- * 
+ *
  */
 package be.kuleuven.cs.flexsim.experimentation.swift;
+
+import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
+import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
+import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
+import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
+import com.google.common.collect.Lists;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import org.apache.commons.math3.distribution.GammaDistribution;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.math3.distribution.GammaDistribution;
-import org.apache.commons.math3.random.MersenneTwister;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
-
 /**
  * Runner for batch experiments on allowed activation rate values.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ExperimentRunnerAllowedExcessAllValues
@@ -39,11 +37,11 @@ public class ExperimentRunnerAllowedExcessAllValues
     private final double[] result2 = new double[NAGENTS];
 
     /**
-     * @param args
-     *            stdin args.
+     * @param args stdin args.
      */
     public static void main(final String[] args) {
-        final ExperimentRunnerAllowedExcessAllValues er = new ExperimentRunnerAllowedExcessAllValues();
+        final ExperimentRunnerAllowedExcessAllValues er = new
+                ExperimentRunnerAllowedExcessAllValues();
         er.runBatch();
     }
 
@@ -86,7 +84,7 @@ public class ExperimentRunnerAllowedExcessAllValues
             final CongestionProfile profile;
             final double[] localResult = new double[100];
             try {
-                profile = (CongestionProfile) CongestionProfile.createFromCSV(
+                profile = CongestionProfile.createFromCSV(
                         "4kwartOpEnNeer.csv", "verlies aan energie");
                 final GammaDistribution gd = new GammaDistribution(
                         new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,

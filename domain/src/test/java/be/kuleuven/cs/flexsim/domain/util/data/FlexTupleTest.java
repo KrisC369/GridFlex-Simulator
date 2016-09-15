@@ -1,12 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.util.data;
 
-import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.UP;
+import static be.kuleuven.cs.flexsim.domain.util.FlexTuple.Direction.UP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.mock;
 
 import java.util.Formatter;
 
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import org.junit.Before;
 import org.junit.Test;
 

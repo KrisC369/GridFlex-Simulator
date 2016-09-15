@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.LoggerFactory;
@@ -55,7 +55,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
         private ExperimentInstance p;
 
         ExperimentAtomImplementationSingleEff(final DoubleList realisation,
-                final CongestionProfile profile) {
+                final AbstractTimeSeriesImplementation profile) {
             super(realisation, profile);
 
         }

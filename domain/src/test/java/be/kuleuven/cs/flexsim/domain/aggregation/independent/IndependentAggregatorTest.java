@@ -4,14 +4,14 @@ import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.site.ActivateFlexCommand;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
-import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.DOWN;
-import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.UP;
+import static be.kuleuven.cs.flexsim.domain.util.FlexTuple.Direction.DOWN;
+import static be.kuleuven.cs.flexsim.domain.util.FlexTuple.Direction.UP;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;

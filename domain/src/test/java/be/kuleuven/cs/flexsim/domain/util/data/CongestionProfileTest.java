@@ -1,6 +1,5 @@
-package be.kuleuven.cs.flexsim.domain.util;
+package be.kuleuven.cs.flexsim.domain.util.data;
 
-import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +16,8 @@ import static org.mockito.Mockito.mock;
 public class CongestionProfileTest {
 
     private CongestionProfile profile = mock(CongestionProfile.class);
-    private CongestionProfile profile2 = mock(CongestionProfile.class);
+    private CongestionProfile profile2 = mock(
+            CongestionProfile.class);
     private static String column = "test";
     private static String file = "test.csv";
 
@@ -25,8 +25,9 @@ public class CongestionProfileTest {
     public void setUp() throws Exception {
         profile = new CongestionProfile();
         try {
-            profile = (CongestionProfile) CongestionProfile.createFromCSV(file,
-                    column);
+            profile = CongestionProfile
+                    .createFromCSV(file,
+                            column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();
@@ -61,8 +62,8 @@ public class CongestionProfileTest {
 
     @Test
     public void testCopyConstructor() {
-        CongestionProfile profile2;
-        profile2 = (CongestionProfile) CongestionProfile
+        AbstractTimeSeriesImplementation profile2;
+        profile2 = CongestionProfile
                 .createFromTimeSeries(profile);
         assertEquals(Arrays.toString(profile2.values().toArray()),
                 Arrays.toString(profile.values().toArray()));
@@ -112,7 +113,7 @@ public class CongestionProfileTest {
     @Test
     public void testTransform() {
         profile2 = new CongestionProfile(new double[] { 5, 6, 7, 8 });
-        CongestionProfile profile3 = profile2.transform((r) -> r * 2);
+        AbstractTimeSeriesImplementation profile3 = profile2.transform((r) -> r * 2);
         assertEquals(13, profile3.median(), 0.05);
 
     }

@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.protocol.contractnet.ContractNetInitiator;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
      * @param profile         The congestion profile to solve.
      * @param forecastHorizon The forecast horizon.
      */
-    public CompetitiveCongestionSolver(final CongestionProfile profile,
+    public CompetitiveCongestionSolver(final AbstractTimeSeriesImplementation profile,
             final int forecastHorizon) {
         this(profile, forecastHorizon, 0);
     }
@@ -41,7 +41,7 @@ public class CompetitiveCongestionSolver extends AbstractCongestionSolver {
      * @param forecastHorizon  The forecast horizon.
      * @param maxRelativeValue The maximum relative congestion resolve value.
      */
-    public CompetitiveCongestionSolver(final CongestionProfile profile,
+    public CompetitiveCongestionSolver(final AbstractTimeSeriesImplementation profile,
             final int forecastHorizon, final int maxRelativeValue) {
         super(profile, forecastHorizon, maxRelativeValue);
         this.solverInstance = new DSMContractNetInitiator();

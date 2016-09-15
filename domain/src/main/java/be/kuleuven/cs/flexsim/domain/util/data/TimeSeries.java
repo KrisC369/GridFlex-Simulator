@@ -2,7 +2,10 @@ package be.kuleuven.cs.flexsim.domain.util.data;
 
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.apache.commons.math3.stat.descriptive.AbstractUnivariateStatistic;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.rank.Max;
+import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.apache.commons.math3.stat.descriptive.summary.Sum;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -20,21 +23,27 @@ public interface TimeSeries {
      *
      * @return the mean.
      */
-    double mean();
+    default double mean() {
+        return applyStatistic(new Mean());
+    }
 
     /**
      * Find the median of the values in these series.
      *
      * @return the median.
      */
-    double median();
+    default double median() {
+        return applyStatistic(new Median());
+    }
 
     /**
      * Find the standard deviation of the values in these series.
      *
      * @return the standard deviation.
      */
-    double std();
+    default double std() {
+        return applyStatistic(new StandardDeviation());
+    }
 
     /**
      * Returns the values of these time series as an array.

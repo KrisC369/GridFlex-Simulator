@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,9 +25,9 @@ public class DSMPartnerTest {
     private final int interAct = 20;
     private final int allowedAct = 10;
     @Mock
-    CongestionProfile profile;
+    AbstractTimeSeriesImplementation profile;
     private AbstractCongestionSolver congestionSolver;
-    private CongestionProfile congestionProfile;
+    private CongestionProfile abstractTimeSeriesImplementation;
     private DSMPartner dsm1;
     private DSMPartner dsm2;
     private Simulator sim;
@@ -34,7 +35,7 @@ public class DSMPartnerTest {
     @Before
     public void setUp() throws Exception {
         try {
-            congestionProfile = (CongestionProfile) CongestionProfile
+            abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV(file, column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -44,12 +45,12 @@ public class DSMPartnerTest {
             e.printStackTrace();
             fail();
         }
-        congestionSolver = new CooperativeCongestionSolver(congestionProfile,
+        congestionSolver = new CooperativeCongestionSolver(abstractTimeSeriesImplementation,
                 8);
         dsm1 = new DSMPartner(allowedAct, interAct, duration, 1000, 1);
         dsm2 = new DSMPartner(allowedAct, interAct, duration, 500, 1);
-        // when(congestionProfile.value(anyInt())).thenReturn(175.0);
-        // when(congestionProfile.values()).thenReturn(new double[4 * 24 *
+        // when(abstractTimeSeriesImplementation.value(anyInt())).thenReturn(175.0);
+        // when(abstractTimeSeriesImplementation.values()).thenReturn(new double[4 * 24 *
         // 365]);
 
         sim = Simulator.createSimulator(testsize);

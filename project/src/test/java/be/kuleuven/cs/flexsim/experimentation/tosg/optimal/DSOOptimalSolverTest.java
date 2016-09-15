@@ -5,7 +5,8 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
@@ -35,7 +36,7 @@ public class DSOOptimalSolverTest {
     @Before
     public void setUp() throws Exception {
         try {
-            profile = (CongestionProfile) CongestionProfile
+            profile = CongestionProfile
                     .createFromCSV(file, column);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -55,7 +56,7 @@ public class DSOOptimalSolverTest {
             }
 
             @Override
-            public CongestionProfile getEnergyProfileToMinimizeWithFlex() {
+            public AbstractTimeSeriesImplementation getEnergyProfileToMinimizeWithFlex() {
                 return profile;
             }
         }, AbstractOptimalSolver.Solver.CPLEX);
@@ -81,7 +82,7 @@ public class DSOOptimalSolverTest {
     @Test
     public void testReal() {
         try {
-            profile = (CongestionProfile) CongestionProfile
+            profile = CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
             solver = new DSOOptimalSolver(new FlexAllocProblemContext() {
                 @Override
@@ -90,7 +91,7 @@ public class DSOOptimalSolverTest {
                 }
 
                 @Override
-                public CongestionProfile getEnergyProfileToMinimizeWithFlex() {
+                public AbstractTimeSeriesImplementation getEnergyProfileToMinimizeWithFlex() {
                     return profile;
                 }
             }, AbstractOptimalSolver.Solver.CPLEX);

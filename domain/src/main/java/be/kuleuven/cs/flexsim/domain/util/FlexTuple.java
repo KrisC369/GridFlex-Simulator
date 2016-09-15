@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.domain.util.data;
+package be.kuleuven.cs.flexsim.domain.util;
 
 import com.google.auto.value.AutoValue;
 

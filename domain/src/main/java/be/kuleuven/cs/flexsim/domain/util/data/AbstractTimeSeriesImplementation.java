@@ -1,26 +1,19 @@
-package be.kuleuven.cs.flexsim.domain.util;
+package be.kuleuven.cs.flexsim.domain.util.data;
 
-import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
-import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import com.google.common.collect.Lists;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.doubles.DoubleLists;
-import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
-import java.util.stream.DoubleStream;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -29,7 +22,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class CongestionProfile implements TimeSeries {
+public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSeriesImplementation>
+        implements TimeSeries {
 
     private DoubleList dValues;
 
@@ -38,43 +32,16 @@ public class CongestionProfile implements TimeSeries {
     @Nullable
     private Double sumcache;
 
-    CongestionProfile() {
+    AbstractTimeSeriesImplementation() {
         dValues = new DoubleArrayList();
     }
 
-    CongestionProfile(final DoubleList values) {
+    AbstractTimeSeriesImplementation(final DoubleList values) {
         dValues = new DoubleArrayList(values);
     }
 
-    CongestionProfile(final double[] values) {
+    AbstractTimeSeriesImplementation(final double[] values) {
         dValues = new DoubleArrayList(values);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#mean()
-     */
-    @Override
-    public double mean() {
-        return applyStatistic(new Mean());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#median()
-     */
-    @Override
-    public double median() {
-        return applyStatistic(new Median());
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see be.kuleuven.cs.flexsim.domain.util.data.TimeSeries#std()
-     */
-    @Override
-    public double std() {
-        return applyStatistic(new StandardDeviation());
     }
 
     /**
@@ -166,43 +133,6 @@ public class CongestionProfile implements TimeSeries {
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
-    CongestionProfile transform(DoubleToDoubleFunction function) {
-        return new CongestionProfile(
-                DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
-    }
+    abstract R transform(DoubleToDoubleFunction function);
 
-    /**
-     * Factory method for building a time series from a csv file.
-     *
-     * @param filename The filename.
-     * @param column   The column label to use as data.
-     * @return the time series.
-     * @throws IOException           If reading from the file is not possible.
-     * @throws FileNotFoundException If the file with that name cannot be found.
-     */
-    public static CongestionProfile createFromCSV(final String filename, final String column)
-            throws IOException {
-        final CongestionProfile cp = new CongestionProfile();
-        cp.load(filename, column);
-        return cp;
-    }
-
-    /**
-     * Factory method for building time series from other time series.
-     *
-     * @param series The series to copy from.
-     * @return the time series.
-     */
-    public static CongestionProfile createFromTimeSeries(final TimeSeries series) {
-        return new CongestionProfile(series.values());
-    }
-
-    /**
-     * Create a new empty congestion profile.
-     *
-     * @return
-     */
-    public static CongestionProfile empty() {
-        return new CongestionProfile();
-    }
 }
