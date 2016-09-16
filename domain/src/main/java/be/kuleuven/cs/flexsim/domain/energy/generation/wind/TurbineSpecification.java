@@ -71,13 +71,13 @@ public abstract class TurbineSpecification {
      * @return A Double list with values where indexes correspond to wind speed values (integer
      * samples) and the values are the power output values.
      */
-    public abstract List getPowerValues();
+    public abstract List<Double> getPowerValues();
 
     /**
      * @return A Double list with values where indexes correspond to wind speed   values
      * (integer samples) and the values are the power coefficient values.
      */
-    public abstract List getPowerCoefficientValues();
+    public abstract List<Double> getPowerCoefficientValues();
 
     /**
      * Default creational method.

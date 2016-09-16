@@ -4,6 +4,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFacto
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import be.kuleuven.cs.flexsim.domain.util.data.WindSpeedProfile;
 
 /**
  * Represents a portfolio balancing entity that solves intraday imbalances because of prediction
@@ -27,7 +28,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         super(fac, c);
         this.turbineSpec = specs;
         imbalance = calculateImbalanceFromActual(
-                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c, turbineSpec))), c);
+                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c, turbineSpec)), turbineSpec),
+                c);
     }
 
     /**
@@ -45,11 +47,25 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
     /**
      * Convert wind speeds to energy volume profile using nominal wind production power values.
      *
-     * @param timeSeries the input wind speeds.
+     * @param windprofile the input wind speeds.
      * @return profile with wind energy volumes.
      */
-    private static TimeSeries toEnergyVolumes(TimeSeries timeSeries) {
-        return timeSeries;
+    private static TimeSeries toEnergyVolumes(WindSpeedProfile windprofile,
+            TurbineSpecification specs) {
+
+        return CableCurrentProfile.createFromTimeSeries(windprofile
+                .transform(p -> convertWindToPower(p, specs)));
+    }
+
+    private static double convertWindToPower(double p, TurbineSpecification specs) {
+        //        if (p < specs.getRatedPower()) {
+        double rest = p % 1;
+        int idx = (int) p;
+        double interval = specs.getPowerValues().get(idx + 1) - specs.getPowerValues().get(idx);
+        return specs.getPowerValues().get(idx) + interval * rest;
+        //        }else{
+        //        }
+        //        return p;
     }
 
     /**
@@ -58,7 +74,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param timeSeries The input wind speeds
      * @return wind speeds with sample errors added to them
      */
-    private static TimeSeries applyPredictionErrors(TimeSeries timeSeries) {
+    private static WindSpeedProfile applyPredictionErrors(WindSpeedProfile timeSeries) {
         return timeSeries;
     }
 
@@ -69,7 +85,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param c the energy volume profile
      * @return the wind speeds profile
      */
-    private static TimeSeries toWindSpeed(CableCurrentProfile c, TurbineSpecification specs) {
+    private static WindSpeedProfile toWindSpeed(CableCurrentProfile c, TurbineSpecification specs) {
         final double conversion = 1.5d;
         final double toPower = 1.73 * 15.6;
 
@@ -90,13 +106,38 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
         CableCurrentProfile singlePower = CableCurrentProfile
                 .createFromTimeSeries(aggregatedPower.transform(p -> p / nbTurbines));
-        return CableCurrentProfile.createFromTimeSeries(singlePower
-                .transform(p -> convertSinglePowerToWind(p, lowerMarker, upperMarker, specs)));
+        return WindSpeedProfile.createFromTimeSeries(singlePower
+                .transform(p -> convertSinglePowerToWind(p, upperMarker, specs)));
     }
 
-    private static double convertSinglePowerToWind(double p, double lowerMarker, double upperMarker,
+    private static double convertSinglePowerToWind(double p, double upperMarker,
             TurbineSpecification specs) {
-        return p;
+        int i = specs.getPowerValues().indexOf(specs.getRatedPower());
+        if (p < specs.getRatedPower()) {
+            int idx = 1;
+            while (idx < i) {
+                if (p < specs.getPowerValues().get(idx)) {
+                    idx++;
+                }
+            }
+            double margin = specs.getPowerValues().get(idx) - specs.getPowerValues()
+                    .get(idx - 1);
+            if (margin == 0) {
+                return idx;
+            } else {
+                return idx + (p - specs.getPowerValues()
+                        .get(idx - 1)) / (specs.getPowerValues().get(idx) - specs
+                        .getPowerValues()
+                        .get(idx - 1));
+            }
+        } else
+
+        {
+            int j = specs.getPowerValues().lastIndexOf(specs.getRatedPower());
+
+            double perc = (p - specs.getRatedPower()) / (upperMarker - specs.getRatedPower());
+            return i + StrictMath.floor(perc * (j - i));
+        }
     }
 
 }
