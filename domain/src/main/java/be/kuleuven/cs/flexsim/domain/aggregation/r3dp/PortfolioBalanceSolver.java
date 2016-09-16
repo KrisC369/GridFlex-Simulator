@@ -14,8 +14,8 @@ import be.kuleuven.cs.flexsim.domain.util.data.WindSpeedProfile;
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
-    private final CableCurrentProfile imbalance;
-    private final TurbineSpecification turbineSpec;
+    //    private final CableCurrentProfile imbalance;
+    //    private final TurbineSpecification turbineSpec;
 
     /**
      * Default constructor
@@ -25,11 +25,17 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, TurbineSpecification specs) {
-        super(fac, c);
-        this.turbineSpec = specs;
-        imbalance = calculateImbalanceFromActual(
-                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c, turbineSpec)), turbineSpec),
-                c);
+        super(fac, convertProfile(c, specs));
+        //        this.turbineSpec = specs;
+        //        imbalance = calculateImbalanceFromActual(
+        //                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c, turbineSpec)),
+        // turbineSpec),
+        //                c);
+    }
+
+    static CableCurrentProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs) {
+        return calculateImbalanceFromActual(
+                toEnergyVolumes(applyPredictionErrors(toWindSpeed(c, specs)), specs), c);
     }
 
     /**
@@ -61,7 +67,10 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         //        if (p < specs.getRatedPower()) {
         double rest = p % 1;
         int idx = (int) p;
-        double interval = specs.getPowerValues().get(idx + 1) - specs.getPowerValues().get(idx);
+        double interval = 0;
+        if (rest != 0) {
+            interval = specs.getPowerValues().get(idx + 1) - specs.getPowerValues().get(idx);
+        }
         return specs.getPowerValues().get(idx) + interval * rest;
         //        }else{
         //        }
@@ -118,6 +127,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
             while (idx < i) {
                 if (p < specs.getPowerValues().get(idx)) {
                     idx++;
+                } else {
+                    break;
                 }
             }
             double margin = specs.getPowerValues().get(idx) - specs.getPowerValues()
