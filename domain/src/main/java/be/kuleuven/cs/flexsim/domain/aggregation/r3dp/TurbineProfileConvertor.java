@@ -19,6 +19,12 @@ public final class TurbineProfileConvertor {
     private int nbTurbines;
     private double maxPSingle;
 
+    /**
+     * Default Constructor.
+     *
+     * @param profile The profile to convert.
+     * @param specs   The turbine specs to use.
+     */
     public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs) {
         this.profile = profile;
         this.specs = specs;
