@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
-import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.distribution.GammaDistribution;

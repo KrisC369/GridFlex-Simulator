@@ -1,5 +1,8 @@
-package be.kuleuven.cs.flexsim.domain.util.data;
+package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import org.junit.Before;
 import org.junit.Test;
 

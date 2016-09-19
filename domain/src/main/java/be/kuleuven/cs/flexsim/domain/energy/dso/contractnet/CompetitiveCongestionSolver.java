@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtils;
-import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.protocol.contractnet.ContractNetInitiator;
 
 import java.util.List;

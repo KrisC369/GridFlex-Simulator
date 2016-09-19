@@ -1,27 +1,32 @@
-package be.kuleuven.cs.flexsim.domain.util.data;
+package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
+import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.DoubleStream;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Data time series to represent current values in cable infrastructure in Amps.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableCurrentProfile> {
+public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeedProfile> {
 
-    CableCurrentProfile() {
+    WindSpeedProfile() {
         super();
     }
 
-    CableCurrentProfile(final DoubleList values) {
+    WindSpeedProfile(final DoubleList values) {
         super(values);
     }
 
-    CableCurrentProfile(final double[] values) {
+    WindSpeedProfile(final double[] values) {
         super(values);
     }
 
@@ -31,9 +36,20 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
-    public CableCurrentProfile transform(DoubleToDoubleFunction function) {
-        return new CableCurrentProfile(
+    public WindSpeedProfile transform(DoubleToDoubleFunction function) {
+        return new WindSpeedProfile(
                 DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+    }
+
+    @Override
+    public WindSpeedProfile subtractValues(TimeSeries ts) {
+        checkArgument(ts.length() == length(),
+                "Timeseries should be equal in length to this profile.");
+        DoubleList dl = new DoubleArrayList(length());
+        for (int i = 0; i < length(); i++) {
+            dl.add(value(i) - ts.value(i));
+        }
+        return new WindSpeedProfile(dl);
     }
 
     /**
@@ -45,10 +61,10 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
-    public static CableCurrentProfile createFromCSV(final String filename,
+    public static WindSpeedProfile createFromCSV(final String filename,
             final String column)
             throws IOException {
-        final CableCurrentProfile cp = new CableCurrentProfile();
+        final WindSpeedProfile cp = new WindSpeedProfile();
         cp.load(filename, column);
         return cp;
     }
@@ -59,8 +75,8 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
      * @param series The series to copy from.
      * @return the time series.
      */
-    public static CableCurrentProfile createFromTimeSeries(final TimeSeries series) {
-        return new CableCurrentProfile(series.values());
+    public static WindSpeedProfile createFromTimeSeries(final TimeSeries series) {
+        return new WindSpeedProfile(series.values());
     }
 
     /**
@@ -68,7 +84,7 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
      *
      * @return
      */
-    public static CableCurrentProfile empty() {
-        return new CableCurrentProfile();
+    public static WindSpeedProfile empty() {
+        return new WindSpeedProfile();
     }
 }

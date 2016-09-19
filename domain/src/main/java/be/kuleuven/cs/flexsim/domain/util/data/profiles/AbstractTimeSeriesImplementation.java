@@ -1,5 +1,7 @@
-package be.kuleuven.cs.flexsim.domain.util.data;
+package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
+import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import com.google.common.collect.Lists;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -20,6 +22,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * A time series representation of values in energy domain contexts.
  *
+ * @param <R> The concrete implementation type of the series.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSeriesImplementation>
@@ -131,8 +134,16 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
      * Apply a double to double function to the elements in this profile and return a new profile.
      *
      * @param function The function transformation to apply.
-     * @return A new Congestion profile instance.
+     * @return A new profile instance.
      */
     abstract R transform(DoubleToDoubleFunction function);
+
+    /**
+     * Subtract argument time series from this profile.
+     *
+     * @param ts The ts to subtract from this profile.
+     * @return A new profile instance.
+     */
+    abstract R subtractValues(TimeSeries ts);
 
 }

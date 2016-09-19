@@ -11,7 +11,7 @@ import com.google.common.collect.Lists;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.DSMPartner;
-import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 

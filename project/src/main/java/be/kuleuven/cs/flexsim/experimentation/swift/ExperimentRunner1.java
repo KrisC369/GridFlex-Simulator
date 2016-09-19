@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.LoggerFactory;

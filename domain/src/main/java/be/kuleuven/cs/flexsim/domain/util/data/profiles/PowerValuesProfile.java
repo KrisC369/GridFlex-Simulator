@@ -1,27 +1,32 @@
-package be.kuleuven.cs.flexsim.domain.util.data;
+package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
+import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.DoubleStream;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Data time series to represent current values in cable infrastructure in Amps.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeedProfile> {
+public class PowerValuesProfile extends AbstractTimeSeriesImplementation<PowerValuesProfile> {
 
-    WindSpeedProfile() {
+    PowerValuesProfile() {
         super();
     }
 
-    WindSpeedProfile(final DoubleList values) {
+    PowerValuesProfile(final DoubleList values) {
         super(values);
     }
 
-    WindSpeedProfile(final double[] values) {
+    PowerValuesProfile(final double[] values) {
         super(values);
     }
 
@@ -31,9 +36,20 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
-    public WindSpeedProfile transform(DoubleToDoubleFunction function) {
-        return new WindSpeedProfile(
+    public PowerValuesProfile transform(DoubleToDoubleFunction function) {
+        return new PowerValuesProfile(
                 DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+    }
+
+    @Override
+    public PowerValuesProfile subtractValues(TimeSeries ts) {
+        checkArgument(ts.length() == length(),
+                "Timeseries should be equal in length to this profile.");
+        DoubleList dl = new DoubleArrayList(length());
+        for (int i = 0; i < length(); i++) {
+            dl.add(value(i) - ts.value(i));
+        }
+        return new PowerValuesProfile(dl);
     }
 
     /**
@@ -45,10 +61,10 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
-    public static WindSpeedProfile createFromCSV(final String filename,
+    public static PowerValuesProfile createFromCSV(final String filename,
             final String column)
             throws IOException {
-        final WindSpeedProfile cp = new WindSpeedProfile();
+        final PowerValuesProfile cp = new PowerValuesProfile();
         cp.load(filename, column);
         return cp;
     }
@@ -59,8 +75,8 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
      * @param series The series to copy from.
      * @return the time series.
      */
-    public static WindSpeedProfile createFromTimeSeries(final TimeSeries series) {
-        return new WindSpeedProfile(series.values());
+    public static PowerValuesProfile createFromTimeSeries(final TimeSeries series) {
+        return new PowerValuesProfile(series.values());
     }
 
     /**
@@ -68,7 +84,7 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
      *
      * @return
      */
-    public static WindSpeedProfile empty() {
-        return new WindSpeedProfile();
+    public static PowerValuesProfile empty() {
+        return new PowerValuesProfile();
     }
 }

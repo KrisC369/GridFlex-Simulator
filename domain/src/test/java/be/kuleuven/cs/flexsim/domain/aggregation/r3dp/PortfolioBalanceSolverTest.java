@@ -1,11 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,23 +48,28 @@ public class PortfolioBalanceSolverTest {
     }
 
     @Test
-    public void testConvertProfiles() {
-        CableCurrentProfile cableCurrentProfile2 = PortfolioBalanceSolver.convertProfile(c2, specs);
+    public void testToWindAndBackProfiles() {
+        PowerValuesProfile cableCurrentProfile2 = toWindAndBack(c2, specs);
         List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER).values();
         List<Double> actual = cableCurrentProfile2.values();
         //        assertEquals(expected, actual);
-        //        printAvgDelta(expected, actual);
+        printAvgDelta(expected, actual);
         assertEqualArrays(expected, actual);
+    }
+
+    private PowerValuesProfile toWindAndBack(CableCurrentProfile c2, TurbineSpecification specs) {
+        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs);
+        return t.toPowerValues(t.toWindSpeed());
     }
 
     private void printAvgDelta(List<Double> expected, List<Double> actual) {
         long count = IntStream.range(0, expected.size())
-                .filter(i -> notEqual(expected.get(i), actual.get(i)))
-                .count();
+                .filter(i -> notEqual(expected.get(i), actual.get(i))).count();
         double avg = IntStream.range(0, expected.size())
-                .map(i -> (int) (100 * Math.abs(expected.get(i) - actual.get(i))))
-                .sum() / (100d * count);
-        System.out.println(avg);
+                .map(i -> (int) (100 * Math.abs(expected.get(i) - actual.get(i)))).sum() / (100d
+                * count);
+        LoggerFactory.getLogger(PortfolioBalanceSolverTest.class)
+                .info("Avg Diff between profiles: " + avg);
     }
 
     public <R extends Number> void assertEqualArrays(List<R> first, List<R> second) {

@@ -1,10 +1,15 @@
-package be.kuleuven.cs.flexsim.domain.util.data;
+package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
+import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.stream.DoubleStream;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Data time series to represent grid congestion in energy volumes of kWh.
@@ -34,6 +39,17 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
     public CongestionProfile transform(DoubleToDoubleFunction function) {
         return new CongestionProfile(
                 DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+    }
+
+    @Override
+    public CongestionProfile subtractValues(TimeSeries ts) {
+        checkArgument(ts.length() == length(),
+                "Timeseries should be equal in length to this profile.");
+        DoubleList dl = new DoubleArrayList(length());
+        for (int i = 0; i < length(); i++) {
+            dl.add(value(i) - ts.value(i));
+        }
+        return new CongestionProfile(dl);
     }
 
     /**

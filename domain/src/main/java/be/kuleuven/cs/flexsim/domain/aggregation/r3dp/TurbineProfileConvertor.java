@@ -1,9 +1,9 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.flexsim.domain.util.data.CableCurrentProfile;
-import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
-import be.kuleuven.cs.flexsim.domain.util.data.WindSpeedProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.WindSpeedProfile;
 
 /**
  * Convertor class for converting current profiles to imbalance profiles.
@@ -13,55 +13,56 @@ import be.kuleuven.cs.flexsim.domain.util.data.WindSpeedProfile;
 public final class TurbineProfileConvertor {
     static final double TO_POWER = 1.73 * 15.6;
     private static final double CONVERSION = 1.5d;
-    private final CableCurrentProfile profile;
-    private final CableCurrentProfile singleTProfile;
+    private final PowerValuesProfile powerProfile;
+    private final PowerValuesProfile singleTProfile;
     private final TurbineSpecification specs;
-    private int nbTurbines;
-    private double maxPSingle;
+    private final int nbTurbines;
+    private final double maxPSingle;
 
     /**
      * Default Constructor.
      *
-     * @param profile The profile to convert.
+     * @param profile The powerProfile to convert.
      * @param specs   The turbine specs to use.
      */
     public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs) {
-        this.profile = profile;
         this.specs = specs;
-        CableCurrentProfile aggregatedPower = CableCurrentProfile
+        this.powerProfile = PowerValuesProfile
                 .createFromTimeSeries(profile.transform(p -> (p / CONVERSION) * TO_POWER));
-        double maxPFound = aggregatedPower.max();
+        double maxPFound = powerProfile.max();
         this.nbTurbines = (int) Math.floor(maxPFound / specs.getRatedPower());
         this.maxPSingle = maxPFound / nbTurbines;
-        this.singleTProfile = CableCurrentProfile
-                .createFromTimeSeries(aggregatedPower.transform(p -> p / (double) nbTurbines));
-    }
-
-    public final CableCurrentProfile convertProfileWith() {
-        return calculateImbalanceFromActual(
-                toEnergyVolumes(applyPredictionErrors(toWindSpeed())));
+        this.singleTProfile = PowerValuesProfile
+                .createFromTimeSeries(powerProfile.transform(p -> p / (double) nbTurbines));
     }
 
     /**
-     * Calculate imbalance profile from current and error sampled energy volumes.
+     * @return The conversion of the initial profile to an imbalance profile.
+     */
+    public final PowerValuesProfile convertProfileWith() {
+        return calculateImbalanceFromActual(
+                toPowerValues(applyPredictionErrors(toWindSpeed())));
+    }
+
+    /**
+     * Calculate imbalance powerProfile from current and error sampled energy volumes.
      *
      * @param tSPredicted  the Predicted output volumes.
      * @param tSCongestion the actual output volumes.
      * @return
      */
-    private CableCurrentProfile calculateImbalanceFromActual(TimeSeries tSPredicted) {
-        //subtract from orig.
-        return CableCurrentProfile.createFromTimeSeries(tSPredicted);
+    PowerValuesProfile calculateImbalanceFromActual(PowerValuesProfile tSPredicted) {
+        return PowerValuesProfile.createFromTimeSeries(powerProfile.subtractValues(tSPredicted));
     }
 
     /**
-     * Convert wind speeds to energy volume profile using nominal wind production power values.
+     * Convert wind speeds to energy volume powerProfile using nominal wind production power values.
      *
      * @param windprofile the input wind speeds.
-     * @return profile with wind energy volumes.
+     * @return powerProfile with wind energy volumes.
      */
-    private TimeSeries toEnergyVolumes(WindSpeedProfile windprofile) {
-        return CableCurrentProfile.createFromTimeSeries(windprofile
+    PowerValuesProfile toPowerValues(WindSpeedProfile windprofile) {
+        return PowerValuesProfile.createFromTimeSeries(windprofile
                 .transform(p -> convertWindToPower(p)).transform(p -> p * nbTurbines)
                 .transform(p -> p * CONVERSION));
     }
@@ -77,13 +78,13 @@ public final class TurbineProfileConvertor {
     }
 
     /**
-     * Transforms the given profile of energy volumes to estimated wind speeds needed to cause
+     * Transforms the given powerProfile of energy volumes to estimated wind speeds needed to cause
      * these errors.
      *
-     * @param c the energy volume profile
-     * @return the wind speeds profile
+     * @param c the energy volume powerProfile
+     * @return the wind speeds powerProfile
      */
-    private WindSpeedProfile toWindSpeed() {
+    WindSpeedProfile toWindSpeed() {
         double upperMarker = maxPSingle;
         return WindSpeedProfile.createFromTimeSeries(singleTProfile
                 .transform(p -> convertSinglePowerToWind(p, upperMarker)));
@@ -129,7 +130,6 @@ public final class TurbineProfileConvertor {
             }
         } else {
             int j = specs.getPowerValues().lastIndexOf(specs.getRatedPower());
-
             double perc = (p - specs.getRatedPower()) / (upperMarker - specs.getRatedPower());
             return i + StrictMath.floor(perc * (j - i));
         }

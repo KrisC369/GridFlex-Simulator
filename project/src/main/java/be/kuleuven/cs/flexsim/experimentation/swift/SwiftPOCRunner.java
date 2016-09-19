@@ -7,8 +7,7 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSo
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CompetitiveCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CooperativeCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.DSMPartner;
-import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
-import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.slf4j.LoggerFactory;
 

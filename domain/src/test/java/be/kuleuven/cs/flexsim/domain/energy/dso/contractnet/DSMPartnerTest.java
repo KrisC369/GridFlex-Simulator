@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.contractnet;
 
-import be.kuleuven.cs.flexsim.domain.util.data.AbstractTimeSeriesImplementation;
-import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.junit.Before;
 import org.junit.Test;

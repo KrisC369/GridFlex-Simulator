@@ -22,7 +22,7 @@ import be.kuleuven.cs.flexsim.domain.util.BufferTest;
 import be.kuleuven.cs.flexsim.domain.util.CollectionUtilsTest;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.flexsim.domain.util.TrapzPosTest;
-import be.kuleuven.cs.flexsim.domain.util.data.CongestionProfileTest;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfileTest;
 import be.kuleuven.cs.flexsim.domain.util.data.FlexTupleTest;
 import be.kuleuven.cs.flexsim.domain.util.listener.ListenerTest;
 import be.kuleuven.cs.flexsim.domain.workstation.WorkstationTest;
