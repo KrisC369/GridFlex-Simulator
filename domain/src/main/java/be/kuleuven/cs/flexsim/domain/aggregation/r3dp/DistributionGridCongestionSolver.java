@@ -16,12 +16,12 @@ import java.util.List;
  */
 public class DistributionGridCongestionSolver extends FlexibilityUtiliser<SolutionResults> {
 
-    private TimeSeries congestion;
+    private final TimeSeries congestion;
     @Nullable
     private SolutionResults results;
 
-    public DistributionGridCongestionSolver(AbstractSolverFactory<SolutionResults> fac,
-            TimeSeries c) {
+    public DistributionGridCongestionSolver(final AbstractSolverFactory<SolutionResults> fac,
+            final TimeSeries c) {
         super(fac);
         congestion = c;
     }
@@ -42,26 +42,26 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     }
 
     @Override
-    protected void performSolveStep(Solver<SolutionResults> s) {
+    protected void performSolveStep(final Solver<SolutionResults> s) {
         s.solve();
         this.results = s.getSolution();
         processActivations(results);
     }
 
-    private void processActivations(@Nullable SolutionResults results) {
-        for (FlexibilityProvider p : getFlexibilityProviders()) {
+    private void processActivations(@Nullable final SolutionResults results) {
+        for (final FlexibilityProvider p : getFlexibilityProviders()) {
             processActivationsFor(p, results.getAllocationMaps().get(p),
                     results.getDiscretisationInNbSlotsPerHour());
         }
     }
 
-    private void processActivationsFor(FlexibilityProvider p, List<Boolean> booleen,
-            int discretisationInNbSlotsPerHour) {
+    private void processActivationsFor(final FlexibilityProvider p, final List<Boolean> booleen,
+            final int discretisationInNbSlotsPerHour) {
         int ind = 0;
         while (ind < booleen.size()) {
             if (booleen.get(ind)) {
                 //start activation;
-                int start = ind;
+                final int start = ind;
                 int count = 0;
                 while (ind < booleen.size() && booleen.get(ind)) {
                     count++;

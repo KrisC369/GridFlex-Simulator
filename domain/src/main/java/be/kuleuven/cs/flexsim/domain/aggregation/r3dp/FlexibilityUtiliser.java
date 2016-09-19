@@ -15,7 +15,7 @@ import java.util.Set;
 public abstract class FlexibilityUtiliser<R extends SolutionResults> {
     private final Set<FlexibilityProvider> providers;
     private boolean solutionReady;
-    private AbstractSolverFactory<R> solverFactory;
+    private final AbstractSolverFactory<R> solverFactory;
 
     FlexibilityUtiliser(AbstractSolverFactory<R> solver) {
         providers = Sets.newLinkedHashSet();
