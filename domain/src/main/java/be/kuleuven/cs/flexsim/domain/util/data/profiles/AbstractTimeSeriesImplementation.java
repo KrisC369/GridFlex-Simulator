@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
-import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import com.google.common.collect.Lists;
 import com.opencsv.CSVReader;
@@ -16,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.IntToDoubleFunction;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -136,7 +137,15 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
      * @param function The function transformation to apply.
      * @return A new profile instance.
      */
-    abstract R transform(DoubleToDoubleFunction function);
+    abstract R transform(Function<Double, Double> function);
+
+    /**
+     * Apply a double to double function to the elements in this profile and return a new profile.
+     *
+     * @param function The function transformation to apply.
+     * @return A new profile instance.
+     */
+    abstract R transformFromIndex(IntToDoubleFunction function);
 
     /**
      * Subtract argument time series from this profile.

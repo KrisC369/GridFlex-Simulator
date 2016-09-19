@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
+import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
 import org.apache.commons.math3.distribution.GammaDistribution;
@@ -28,6 +29,7 @@ public class PortfolioBalanceSolverTest {
     private TurbineSpecification specs;
     private GammaDistribution gd;
     private PortfolioBalanceSolver solver;
+    private WindErrorGenerator generator;
 
     @Before
     public void setUp() throws Exception {
@@ -36,6 +38,9 @@ public class PortfolioBalanceSolverTest {
         try {
             specs = TurbineSpecification.loadFromResource("specs_enercon_e101-e1.csv");
             c2 = CableCurrentProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
+            ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+                    .loadFromCSV("windspeedDistributions.csv");
+            this.generator = new WindErrorGenerator(SEED, distribution);
             //            c2 = CableCurrentProfile.createFromCSV("4kwartOpEnNeer.csv",
             // "startprofiel+extra");
 
@@ -58,7 +63,7 @@ public class PortfolioBalanceSolverTest {
     }
 
     private PowerValuesProfile toWindAndBack(CableCurrentProfile c2, TurbineSpecification specs) {
-        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs);
+        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
         return t.toPowerValues(t.toWindSpeed());
     }
 

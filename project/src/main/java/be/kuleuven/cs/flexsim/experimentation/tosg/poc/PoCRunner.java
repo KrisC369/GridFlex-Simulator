@@ -4,15 +4,16 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestion
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.WindErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
+import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
@@ -46,58 +47,13 @@ public class PoCRunner {
         System.out.println(director.getFormattedResults().getFormattedResultString());
     }
 
+    private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
     private static final String DATAFILE = "2kwartOpEnNeer.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String COLUMN = "verlies aan energie";
     private static final int NAGENTS = 2;
 
     public PoCRunner() {
-    }
-
-    @Deprecated
-    private void pocInstantiation() {
-        TurbineSpecification specs = TurbineSpecification.empty();
-        CongestionProfile c1 = CongestionProfile.empty();
-        CableCurrentProfile c2 = CableCurrentProfile.empty();
-        Simulator s;
-        try {
-            specs = TurbineSpecification.loadFromResource(SPECFILE);
-            WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
-            c1 = dataIn.getCongestionProfile();
-            c2 = dataIn.getCableCurrentProfile();
-
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-        s = Simulator.createSimulator(1000);
-        AbstractSolverFactory<SolutionResults> fact = new AbstractSolverFactory<SolutionResults>
-                () {
-            @Override
-            public Solver<SolutionResults> createSolver(FlexAllocProblemContext context) {
-                return new SolverAdapter<AllocResults, SolutionResults>(
-                        new DSOOptimalSolver(context, AbstractOptimalSolver.Solver.CPLEX)) {
-
-                    @Override
-                    public SolutionResults adaptResult(AllocResults solution) {
-                        return SolutionResults.EMPTY;
-                    }
-                };
-            }
-        };
-        FlexProvider p1 = new FlexProvider(300);
-        FlexProvider p2 = new FlexProvider(300);
-        PortfolioBalanceSolver tso = new PortfolioBalanceSolver(fact, c2, specs);
-        DistributionGridCongestionSolver dso = new DistributionGridCongestionSolver(fact, c1);
-        tso.registerFlexProvider(p1);
-        dso.registerFlexProvider(p2);
-        dso.solve();
-        tso.solve();
-        SolutionResults r1 = dso.getSolution();
-        SolutionResults r2 = tso.getSolution();
-        System.out.println(r1);
-        System.out.println(r2);
     }
 
     public static class PoCConfigurator
@@ -108,7 +64,7 @@ public class PoCRunner {
         private CongestionProfile c1;
         private CableCurrentProfile c2;
         private TurbineSpecification specs;
-
+        private ForecastHorizonErrorDistribution distribution;
         final GammaDistribution gd;
 
         public PoCConfigurator() {
@@ -119,6 +75,8 @@ public class PoCRunner {
                 specs = TurbineSpecification.loadFromResource(SPECFILE);
                 c1 = dataIn.getCongestionProfile();
                 c2 = dataIn.getCableCurrentProfile();
+                distribution = ForecastHorizonErrorDistribution.loadFromCSV(DISTRIBUTIONFILE);
+
             } catch (final FileNotFoundException e) {
                 e.printStackTrace();
             } catch (final IOException e) {
@@ -133,7 +91,7 @@ public class PoCRunner {
 
         @Override
         public GameInstance<FlexibilityProvider, FlexibilityUtiliser> generateInstance() {
-            return new PoCGame(c1, c2, specs);
+            return new PoCGame(c1, c2, specs, new WindErrorGenerator(SEED, distribution));
         }
 
         @Override
@@ -150,11 +108,14 @@ public class PoCRunner {
         private final List<FlexibilityUtiliser> actions;
 
         private final Map<FlexibilityProvider, FlexibilityUtiliser> agentActionMap;
-        private CongestionProfile c1;
-        private CableCurrentProfile c2;
-        private TurbineSpecification specs;
+        private final CongestionProfile c1;
+        private final CableCurrentProfile c2;
+        private final TurbineSpecification specs;
+        private final WindErrorGenerator generator;
 
-        public PoCGame(CongestionProfile c1, CableCurrentProfile c2, TurbineSpecification specs) {
+        public PoCGame(CongestionProfile c1, CableCurrentProfile c2, TurbineSpecification specs,
+                WindErrorGenerator gen) {
+            this.generator = gen;
             agents = Sets.newLinkedHashSet();
             actions = Lists.newArrayList();
             //            this.nAgents = nAgents;
@@ -176,7 +137,7 @@ public class PoCRunner {
                     };
                 }
             };
-            actions.add(new PortfolioBalanceSolver(fact, this.c2, specs));
+            actions.add(new PortfolioBalanceSolver(fact, this.c2, specs, generator));
             actions.add(new DistributionGridCongestionSolver(fact, this.c1));
         }
 

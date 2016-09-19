@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Represents a distribution grid management entity that solves current congestion problems in
+ * distribution grid infrastructure.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class DistributionGridCongestionSolver extends FlexibilityUtiliser<SolutionResults> {

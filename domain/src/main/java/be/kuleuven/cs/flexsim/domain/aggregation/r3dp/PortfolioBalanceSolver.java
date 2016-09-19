@@ -23,16 +23,12 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param c   The initial imbalance profile to transform to imbalances.
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
-            CableCurrentProfile c, TurbineSpecification specs) {
-        super(fac, convertProfile(c, specs));
-        //        this.turbineSpec = specs;
-        //        imbalance = calculateImbalanceFromActual(
-        //                toPowerValues(applyPredictionErrors(toWindSpeed(c, turbineSpec)),
-        // turbineSpec),
-        //                c);
+            CableCurrentProfile c, TurbineSpecification specs, WindErrorGenerator gen) {
+        super(fac, convertProfile(c, specs, gen));
     }
 
-    static PowerValuesProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs) {
-        return new TurbineProfileConvertor(c, specs).convertProfileWith();
+    static PowerValuesProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs,
+            WindErrorGenerator randomGen) {
+        return new TurbineProfileConvertor(c, specs, randomGen).convertProfileWith();
     }
 }

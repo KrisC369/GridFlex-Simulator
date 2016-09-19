@@ -13,22 +13,30 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.WindSpeedProfile;
 public final class TurbineProfileConvertor {
     static final double TO_POWER = 1.73 * 15.6;
     private static final double CONVERSION = 1.5d;
+    private static final double HOURS_PER_DAY = 24;
     private final PowerValuesProfile powerProfile;
     private final PowerValuesProfile singleTProfile;
     private final TurbineSpecification specs;
     private final int nbTurbines;
     private final double maxPSingle;
+    private final WindErrorGenerator random;
+    public static final double DAY_AHEAD_NOMINATION_DEADLINE = 15;
+    public static final double PROFILE_START_TIME = 0;
 
     /**
      * Default Constructor.
      *
-     * @param profile The powerProfile to convert.
-     * @param specs   The turbine specs to use.
+     * @param profile      The powerProfile to convert.
+     * @param specs        The turbine specs to use.
+     * @param distribution
+     * @param random
      */
-    public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs) {
+    public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
+            WindErrorGenerator random) {
         this.specs = specs;
         this.powerProfile = PowerValuesProfile
                 .createFromTimeSeries(profile.transform(p -> (p / CONVERSION) * TO_POWER));
+        this.random = random;
         double maxPFound = powerProfile.max();
         this.nbTurbines = (int) Math.floor(maxPFound / specs.getRatedPower());
         this.maxPSingle = maxPFound / nbTurbines;
@@ -70,11 +78,22 @@ public final class TurbineProfileConvertor {
     /**
      * Apply prediction erros taking into account different time horizons and
      *
-     * @param timeSeries The input wind speeds
+     * @param timeSeries         The input wind speeds
+     * @param error_distribution
      * @return wind speeds with sample errors added to them
      */
-    private static WindSpeedProfile applyPredictionErrors(WindSpeedProfile timeSeries) {
-        return timeSeries;
+    private WindSpeedProfile applyPredictionErrors(WindSpeedProfile timeSeries) {
+        //TODO fix round to zero
+        return WindSpeedProfile.createFromTimeSeries(timeSeries.transformFromIndex(
+                i -> timeSeries.value(i) + applyErrorSingleError(i, timeSeries.value(i)))
+                .transform(w -> w < 0 ? 0 : w));
+    }
+
+    private double applyErrorSingleError(int idx, double value) {
+        int errorGenIdx = (int) Math
+                .ceil(((idx - PROFILE_START_TIME) % HOURS_PER_DAY) + (HOURS_PER_DAY
+                        - DAY_AHEAD_NOMINATION_DEADLINE));
+        return random.generateErrorForHorizon(errorGenIdx);
     }
 
     /**

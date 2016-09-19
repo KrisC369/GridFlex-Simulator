@@ -1,13 +1,15 @@
 package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
-import be.kuleuven.cs.flexsim.domain.util.data.DoubleToDoubleFunction;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.function.Function;
+import java.util.function.IntToDoubleFunction;
 import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -36,9 +38,16 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
-    public WindSpeedProfile transform(DoubleToDoubleFunction function) {
+    @Override
+    public WindSpeedProfile transform(Function<Double, Double> function) {
         return new WindSpeedProfile(
                 DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+    }
+
+    @Override
+    public WindSpeedProfile transformFromIndex(IntToDoubleFunction function) {
+        return new WindSpeedProfile(IntStream.range(0, length())
+                .mapToDouble(i -> function.applyAsDouble(i)).toArray());
     }
 
     @Override
