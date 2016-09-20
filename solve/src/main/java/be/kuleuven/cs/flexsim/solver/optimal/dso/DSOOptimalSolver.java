@@ -1,7 +1,8 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexProvider;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
+import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
@@ -40,12 +41,11 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     private static final String ALLOC = "alloc:";
     private static final String FLEX = "Flex";
     private static final Logger logger = LoggerFactory.getLogger(DSOOptimalSolver.class);
-    private final CongestionProfile profile;
-    private final AbstractOptimalSolver.Solver solver;
+    private final TimeSeries profile;
     private final List<String> congID;
     private final List<String> solvedID;
-    private final Map<FlexProvider, String> flexID;
-    private final ListMultimap<FlexProvider, String> allocDvarID;
+    private final Map<FlexibilityProvider, String> flexID;
+    private final ListMultimap<FlexibilityProvider, String> allocDvarID;
     @Nullable
     private AllocResults results;
 
@@ -55,9 +55,9 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
      * @param c The congestion profile to use.
      * @param s The solver to use.
      */
-    public DSOOptimalSolver(final CongestionProfile c, final Solver s) {
-        profile = c;
-        solver = s;
+    public DSOOptimalSolver(final FlexAllocProblemContext context, final Solver s) {
+        super(context, s);
+        profile = context.getEnergyProfileToMinimizeWithFlex();
         congID = Lists.newArrayList();
         solvedID = Lists.newArrayList();
         flexID = Maps.newLinkedHashMap();
@@ -76,9 +76,10 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
             final MpResult concreteResult = result.get();
             logger.info(concreteResult.toString());
             final List<Boolean> t = Lists.newArrayList();
-            final ListMultimap<FlexProvider, Boolean> allocResults = ArrayListMultimap.create();
+            final ListMultimap<FlexibilityProvider, Boolean> allocResults = ArrayListMultimap
+                    .create();
 
-            for (final FlexProvider p : getProviders()) {
+            for (final FlexibilityProvider p : getProviders()) {
                 for (final String s : allocDvarID.get(p)) {
                     t.add(concreteResult.getBoolean(s));
                     allocResults.put(p, concreteResult.getBoolean(s));
@@ -92,23 +93,18 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
     }
 
     @Override
-    public Solver getSolver() {
-        return this.solver;
-    }
-
-    @Override
     public MpProblem getProblem() {
         final MpProblem prob = new MpProblem();
         addDataToProblem(prob);
 
-        for (final FlexProvider f : getProviders()) {
+        for (final FlexibilityProvider f : getProviders()) {
             addDVarsForAllocationToProb(prob, f);
         }
 
         addSolvedClauseToProb(prob);
         addGoalToProb(prob);
 
-        for (final FlexProvider f : getProviders()) {
+        for (final FlexibilityProvider f : getProviders()) {
             addConstraintsForFlexToProb(prob, f);
         }
         return prob;
@@ -129,8 +125,9 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
         for (int i = 0; i < profile.length(); i++) {
             final MpExpr lhs = new MpExpr().add(solvedID.get(i));
             final MpExpr rhs = new MpExpr();
-            for (final FlexProvider p : getProviders()) {
-                rhs.add(prod(prod(allocDvarID.get(p).get(i), p.getPowerRate()),
+            for (final FlexibilityProvider p : getProviders()) {
+                rhs.add(prod(
+                        prod(allocDvarID.get(p).get(i), p.getFlexibilityActivationRate().getUp()),
                         1 / STEPS_PER_HOUR));
             }
             prob.addConstraint(new MpConstraint(lhs, MpOperator.LE, rhs));
@@ -149,12 +146,12 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
             prob.addConstraint(new MpConstraint(lhs, MpOperator.EQ, rhs));
         }
         //flexRateConstraints
-        for (final FlexProvider f : getProviders()) {
+        for (final FlexibilityProvider f : getProviders()) {
             final String flexVar = getFlexID(f);
             flexID.put(f, flexVar);
             prob.addVar(flexVar, Double.class);
             final MpExpr lhs = new MpExpr().add(flexVar);
-            final MpExpr rhs = new MpExpr().add(f.getPowerRate());
+            final MpExpr rhs = new MpExpr().add(f.getFlexibilityActivationRate().getUp());
             prob.addConstraint(new MpConstraint(lhs, MpOperator.EQ, rhs));
         }
     }
@@ -167,7 +164,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
         tempProb.setObjective(goalExpr, MpDirection.MAX);
     }
 
-    private void addDVarsForAllocationToProb(final MpProblem p, final FlexProvider pv) {
+    private void addDVarsForAllocationToProb(final MpProblem p, final FlexibilityProvider pv) {
         for (int c = 0; c < profile.length(); c++) {
             final String alloc = ALLOC + pv.hashCode() + ":" + c;
             allocDvarID.put(pv, alloc);
@@ -175,14 +172,14 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
         }
     }
 
-    private String getFlexID(final FlexProvider pv) {
+    private String getFlexID(final FlexibilityProvider pv) {
         return FLEX + ":" + pv.hashCode();
     }
 
-    private void addConstraintsForFlexToProb(final MpProblem p, final FlexProvider pv) {
+    private void addConstraintsForFlexToProb(final MpProblem p, final FlexibilityProvider pv) {
         //flexConstraints
         final QuarterHourlyFlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
-                pv.getActivationConstraints());
+                pv.getFlexibilityActivationConstraints());
         final MpDsoAdapter adapt = new MpDsoAdapter(adapted, allocDvarID.get(pv));
         adapt.getConstraints().forEach(p::addConstraint);
 
@@ -192,7 +189,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
      * @return The results.
      */
     @Override
-    public AllocResults getResults() {
+    public AllocResults getSolution() {
         checkNotNull(results, "Results has not been set yet.");
         return this.results;
     }

@@ -6,7 +6,7 @@ package be.kuleuven.cs.flexsim.domain.process;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.util.Buffer;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.flexsim.domain.workstation.Workstation;

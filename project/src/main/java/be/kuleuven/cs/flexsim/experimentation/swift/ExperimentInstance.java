@@ -9,9 +9,9 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.DSMPartner;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.DSMPartner;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 
@@ -44,7 +44,7 @@ public class ExperimentInstance {
      *            The total energy produced on the feeder.
      */
     public ExperimentInstance(final SolverBuilder b, final DoubleList powerRealisation,
-            final CongestionProfile profile, final boolean allow, final double producedE) {
+            final AbstractTimeSeriesImplementation profile, final boolean allow, final double producedE) {
         checkNotNull(profile);
         this.solver = b.getSolver(profile, FORECAST_HORIZON);
         this.partners = Lists.newArrayList();

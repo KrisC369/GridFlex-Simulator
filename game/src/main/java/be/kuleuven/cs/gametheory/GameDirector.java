@@ -28,6 +28,7 @@ public class GameDirector {
         this.game = game;
         game.configureInstances();
         this.playables = Sets.newConcurrentHashSet();
+        this.playables.addAll(game.getGameInstances());
     }
 
     /**
@@ -66,7 +67,6 @@ public class GameDirector {
      * @return the playable variations.
      */
     public List<Playable> getPlayableVersions() {
-        this.playables.addAll(game.getGameInstances());
         return Collections.unmodifiableList(Lists.newArrayList(this.playables));
     }
 

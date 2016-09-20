@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.LinkedListMultimap;

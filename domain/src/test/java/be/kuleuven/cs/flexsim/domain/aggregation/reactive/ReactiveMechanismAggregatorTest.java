@@ -2,13 +2,13 @@ package be.kuleuven.cs.flexsim.domain.aggregation.reactive;
 
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
-import be.kuleuven.cs.flexsim.domain.util.data.PowerCapabilityBand;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
-import static be.kuleuven.cs.flexsim.domain.util.data.FlexTuple.Direction.fromRepresentation;
+import static be.kuleuven.cs.flexsim.domain.util.FlexTuple.Direction.fromRepresentation;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
@@ -42,9 +42,9 @@ public class ReactiveMechanismAggregatorTest {
         agg.tick(0);
         agg.tick(1);
 
-        PowerCapabilityBand arg = agg.getPowerCapacity();
-        // ArgumentCaptor<PowerCapabilityBand> argument = ArgumentCaptor
-        // .forClass(PowerCapabilityBand.class);
+        IntPowerCapabilityBand arg = agg.getPowerCapacity();
+        // ArgumentCaptor<IntPowerCapabilityBand> argument = ArgumentCaptor
+        // .forClass(IntPowerCapabilityBand.class);
         // verify(tso, times(1)).signalNewLimits(eq(agg), argument.capture());
         assertEquals(120, arg.getUp());
         assertEquals(100, arg.getDown());

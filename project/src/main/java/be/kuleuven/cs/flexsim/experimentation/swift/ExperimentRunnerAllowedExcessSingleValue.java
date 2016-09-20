@@ -1,25 +1,25 @@
 /**
- * 
+ *
  */
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import java.io.IOException;
-import java.util.Arrays;
-
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * * Runner for single threaded experiments on allowed activation rate value for
  * single param environment.
- * 
+ *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ExperimentRunnerAllowedExcessSingleValue
@@ -40,11 +40,11 @@ public class ExperimentRunnerAllowedExcessSingleValue
     }
 
     /**
-     * @param args
-     *            default stdin args
+     * @param args default stdin args
      */
     public static void main(final String[] args) {
-        final ExperimentRunnerAllowedExcessSingleValue er = new ExperimentRunnerAllowedExcessSingleValue();
+        final ExperimentRunnerAllowedExcessSingleValue er = new
+                ExperimentRunnerAllowedExcessSingleValue();
         er.runSingle();
     }
 
@@ -53,7 +53,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
         final CongestionProfile profile;
         final double[] result = new double[100];
         try {
-            profile = (CongestionProfile) CongestionProfile
+            profile = CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
             final GammaDistribution gd = new GammaDistribution(
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
@@ -93,7 +93,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
         }
 
         @Override
-        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+        public AbstractCongestionSolver getSolver(final AbstractTimeSeriesImplementation profile,
                 final int n) {
             return new CompetitiveCongestionSolver(profile, 8, i);
         }
@@ -107,7 +107,7 @@ public class ExperimentRunnerAllowedExcessSingleValue
         }
 
         @Override
-        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+        public AbstractCongestionSolver getSolver(final AbstractTimeSeriesImplementation profile,
                 final int n) {
             return new CooperativeCongestionSolver(profile, 8, i);
         }

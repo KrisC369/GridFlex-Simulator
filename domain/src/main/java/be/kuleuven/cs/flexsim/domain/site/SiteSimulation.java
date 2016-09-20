@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.site;
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
 import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
 import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;

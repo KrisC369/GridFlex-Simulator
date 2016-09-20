@@ -1,9 +1,10 @@
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
@@ -150,9 +151,9 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
      *
      */
     protected void runSingle() {
-        final CongestionProfile profile;
+        final AbstractTimeSeriesImplementation profile;
         try {
-            profile = (CongestionProfile) CongestionProfile.createFromCSV(FILE,
+            profile = CongestionProfile.createFromCSV(FILE,
                     COLUMN);
             final GammaDistribution gd = new GammaDistribution(
                     new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
@@ -185,7 +186,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         final GammaDistribution gd = new GammaDistribution(new MersenneTwister(SEED),
                 R3DP_GAMMA_SHAPE, R3DP_GAMMA_SCALE);
         try {
-            profile = (CongestionProfile) CongestionProfile.createFromCSV(FILE,
+            profile = CongestionProfile.createFromCSV(FILE,
                     COLUMN);
             for (int i = 0; i < n; i++) {
                 instances.add(new ExperimentAtomImplementation(
@@ -334,11 +335,10 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
         private final DoubleList real;
         @Nullable
         private ExperimentInstance p;
-        @Nullable
-        private final CongestionProfile profile;
+        private final @Nullable AbstractTimeSeriesImplementation profile;
 
         ExperimentAtomImplementation(final DoubleList realisation,
-                final CongestionProfile profile) {
+                final AbstractTimeSeriesImplementation profile) {
             this.real = new DoubleArrayList(realisation);
             this.profile = profile;
             doRegistration();
@@ -382,7 +382,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
 
     class CompetitiveSolverBuilder implements SolverBuilder {
         @Override
-        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+        public AbstractCongestionSolver getSolver(final AbstractTimeSeriesImplementation profile,
                 final int n) {
             return new CompetitiveCongestionSolver(profile, 8, allowedExcess);
         }
@@ -391,7 +391,7 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     class CooperativeSolverBuilder implements SolverBuilder {
 
         @Override
-        public AbstractCongestionSolver getSolver(final CongestionProfile profile,
+        public AbstractCongestionSolver getSolver(final AbstractTimeSeriesImplementation profile,
                 final int n) {
             return new CooperativeCongestionSolver(profile, 8, allowedExcess);
         }

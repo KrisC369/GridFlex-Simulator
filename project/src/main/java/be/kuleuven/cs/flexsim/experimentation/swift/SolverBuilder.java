@@ -3,8 +3,8 @@
  */
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -20,6 +20,6 @@ public interface SolverBuilder {
      *            The forecast horizon.
      * @return A congestion solver instance.
      */
-    AbstractCongestionSolver getSolver(CongestionProfile profile, int n);
+    AbstractCongestionSolver getSolver(AbstractTimeSeriesImplementation profile, int n);
 
 }

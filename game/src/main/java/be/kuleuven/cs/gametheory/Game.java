@@ -46,8 +46,7 @@ public class Game<N, K> {
         this.agents = agents;
         this.actions = config.getActionSpaceSize();
         this.agentGen = config;
-        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents,
-                this.actions);
+        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents, this.actions);
         this.instanceGen = config;
         this.reps = reps;
         this.logger = LoggerFactory.getLogger(CONSOLE);
@@ -58,7 +57,7 @@ public class Game<N, K> {
      * Configure and set-up the game specifics for different iterations of games
      * over the strategy space.
      */
-    void configureInstances() {
+    void configureInstances() { //TODO Refactor method to not use actionSize before loop
         this.instanceList = Lists.newArrayList();
         int progressCounter = 0;
         for (int iteration = 0; iteration < reps; iteration++) {
@@ -102,6 +101,7 @@ public class Game<N, K> {
     void gatherResults() {
         for (final GameInstance<N, K> instance : instanceList) {
             final List<K> actionSet = instance.getActionSet();
+            assert (actionSet.size() == this.actions);
             final Map<N, Long> payoffResults = instance.getPayOffs();
             final Map<N, K> mapping = instance.getAgentToActionMapping();
             final List<K> actualActions = Lists.newArrayList();

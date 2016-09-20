@@ -1,7 +1,7 @@
 package be.kuleuven.cs.flexsim.solver.optimal;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.HourlyFlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 
 /**
  * Utility class for converting flex constraints from and to different time horizons.

@@ -1,22 +1,20 @@
 /**
- * 
+ *
  */
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.io.IOException;
-
-import javax.annotation.Nullable;
-
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CompetitiveCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.CooperativeCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.DSMPartner;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.slf4j.LoggerFactory;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.AbstractCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CompetitiveCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.CooperativeCongestionSolver;
-import be.kuleuven.cs.flexsim.domain.energy.dso.online.contractnet.DSMPartner;
-import be.kuleuven.cs.flexsim.domain.util.CongestionProfile;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import javax.annotation.Nullable;
+import java.io.IOException;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
@@ -39,7 +37,7 @@ public class SwiftPOCRunner {
      */
     public SwiftPOCRunner() {
         try {
-            this.profile = (CongestionProfile) CongestionProfile
+            this.profile = CongestionProfile
                     .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         } catch (final IOException e) {
             LoggerFactory.getLogger(SwiftPOCRunner.class)
@@ -61,8 +59,7 @@ public class SwiftPOCRunner {
     }
 
     /**
-     * @param args
-     *            std in params.
+     * @param args std in params.
      */
     public static void main(final String[] args) {
         final SwiftPOCRunner r = new SwiftPOCRunner();

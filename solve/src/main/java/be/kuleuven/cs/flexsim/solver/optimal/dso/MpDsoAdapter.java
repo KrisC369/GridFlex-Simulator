@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.solver.optimal.dso;
 
-import be.kuleuven.cs.flexsim.domain.energy.dso.offline.r3dp.FlexConstraints;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.solver.optimal.MpAdapter;
 import be.kuleuven.cs.flexsim.solver.optimal.QuarterHourlyFlexConstraints;
 import com.google.common.collect.Lists;

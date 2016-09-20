@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class EquidistantSiteSimulationTest {

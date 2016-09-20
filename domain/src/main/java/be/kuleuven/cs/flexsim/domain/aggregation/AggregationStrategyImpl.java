@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
-import be.kuleuven.cs.flexsim.domain.util.data.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 
 /**
  * Some implementations of aggregation strategies.
