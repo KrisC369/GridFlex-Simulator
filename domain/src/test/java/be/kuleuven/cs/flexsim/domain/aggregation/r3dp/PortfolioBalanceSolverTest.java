@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -53,13 +54,33 @@ public class PortfolioBalanceSolverTest {
     }
 
     @Test
+    public void testApplicationOfError0s() throws IOException {
+        ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+                .loadFromCSV("windspeedDistributionsEmpty.csv");
+        this.generator = new WindErrorGenerator(SEED, distribution);
+
+        PowerValuesProfile cableCurrentProfile2 = toWindAndBackWErrors(c2, specs);
+        List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER).values();
+        List<Double> actual = cableCurrentProfile2.values();
+        //        printAvgDelta(actual,
+        //                Collections.nCopies(c2.length(), 0d));
+        assertEqualArrays(Collections.nCopies(c2.length(), 0d), actual);
+    }
+
+    @Test
     public void testToWindAndBackProfiles() {
         PowerValuesProfile cableCurrentProfile2 = toWindAndBack(c2, specs);
         List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER).values();
         List<Double> actual = cableCurrentProfile2.values();
         //        assertEquals(expected, actual);
-        printAvgDelta(expected, actual);
+        //        printAvgDelta(expected, actual);
         assertEqualArrays(expected, actual);
+    }
+
+    private PowerValuesProfile toWindAndBackWErrors(CableCurrentProfile c2,
+            TurbineSpecification specs) {
+        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
+        return t.convertProfileWith();
     }
 
     private PowerValuesProfile toWindAndBack(CableCurrentProfile c2, TurbineSpecification specs) {
@@ -69,10 +90,11 @@ public class PortfolioBalanceSolverTest {
 
     private void printAvgDelta(List<Double> expected, List<Double> actual) {
         long count = IntStream.range(0, expected.size())
-                .filter(i -> notEqual(expected.get(i), actual.get(i))).count();
+                .filter(i -> notEqual(expected.get(i), actual.get(i)))
+                .filter(i -> (Math.abs(expected.get(i) - actual.get(i)) > 0)).count();
         double avg = IntStream.range(0, expected.size())
-                .map(i -> (int) (100 * Math.abs(expected.get(i) - actual.get(i)))).sum() / (100d
-                * count);
+                .filter(i -> notEqual(expected.get(i), actual.get(i))).filter(i -> i > 0)
+                .mapToDouble(i -> Math.abs(expected.get(i) - actual.get(i))).sum() / count;
         LoggerFactory.getLogger(PortfolioBalanceSolverTest.class)
                 .info("Avg Diff between profiles: " + avg);
     }
