@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -67,8 +68,8 @@ public abstract class ForecastHorizonErrorDistribution {
      */
     public static ForecastHorizonErrorDistribution loadFromCSV(String filename)
             throws IOException {
-        final List<Double> means = Lists.newArrayList();
-        final List<Double> sds = Lists.newArrayList();
+        List<Double> means = Lists.newArrayList();
+        List<Double> sds = Lists.newArrayList();
 
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
@@ -77,11 +78,15 @@ public abstract class ForecastHorizonErrorDistribution {
         String[] nextLine = reader.readNext();
 
         //Assuming formatting of header line is following:
-        //"hour.horizon","mean","sd"
+        //"hour.horizon","mean","sd" in km/h
         while ((nextLine = reader.readNext()) != null) {
             means.add(Double.valueOf(nextLine[1]));
             sds.add(Double.valueOf(nextLine[2]));
         }
+        //Apply correction: converting from km/h to m/s
+        means = means.stream().map(v -> v / 3.6d).collect(Collectors.toList());
+        sds = sds.stream().map(v -> v / 3.6d).collect(Collectors.toList());
+
         return create(means, sds);
     }
 

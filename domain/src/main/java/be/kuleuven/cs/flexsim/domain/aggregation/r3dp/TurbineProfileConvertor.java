@@ -34,6 +34,7 @@ public final class TurbineProfileConvertor {
     public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
             WindErrorGenerator random) {
         this.specs = specs;
+        //reduced power profile.
         this.powerProfile = PowerValuesProfile
                 .createFromTimeSeries(profile.transform(p -> (p / CONVERSION) * TO_POWER));
         this.random = random;
@@ -60,7 +61,9 @@ public final class TurbineProfileConvertor {
      * @return A power profile that represents forecast error induced imbalance.
      */
     PowerValuesProfile calculateImbalanceFromActual(PowerValuesProfile tSPredicted) {
-        return PowerValuesProfile.createFromTimeSeries(powerProfile.subtractValues(tSPredicted));
+        //Don't forget to convert to given boosted profile.
+        return PowerValuesProfile.createFromTimeSeries(
+                tSPredicted.subtractValues(powerProfile.transform(p -> p * CONVERSION)));
     }
 
     /**
@@ -121,6 +124,11 @@ public final class TurbineProfileConvertor {
             int j = specs.getPowerValues().lastIndexOf(specs.getRatedPower());
             double margin = maxPSingle - specs.getRatedPower();
             double perc = (w - i) / (j - i);
+            if (perc > 1) {
+                //do cutoff above rated cutoff speeds
+
+                return 0;
+            }
             return specs.getRatedPower() + (perc * margin);
         }
     }
