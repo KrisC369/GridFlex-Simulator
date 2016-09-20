@@ -13,7 +13,6 @@ import java.util.List;
  */
 public final class WindErrorGenerator {
 
-    private final long seed;
     private final ForecastHorizonErrorDistribution distribution;
     private final List<MersenneTwister> twisters;
 
@@ -24,7 +23,6 @@ public final class WindErrorGenerator {
      * @param distribution The error distributions.
      */
     public WindErrorGenerator(long seed, ForecastHorizonErrorDistribution distribution) {
-        this.seed = seed;
         this.distribution = distribution;
         twisters = Lists.newArrayList();
         for (int i = 0; i < distribution.getMaxForecastHorizon(); i++) {

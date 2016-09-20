@@ -95,6 +95,13 @@ public abstract class TurbineSpecification {
                 pcV);
     }
 
+    /**
+     * Load specs file from resource.
+     *
+     * @param filename The filename
+     * @return A Turbine spec instance.
+     * @throws IOException If the resource cannot be found.
+     */
     public static TurbineSpecification loadFromResource(final String filename) throws IOException {
         int bladeLKey = -1;
         int powerRKey = -1;
@@ -105,7 +112,6 @@ public abstract class TurbineSpecification {
         int powerValuesKey = -1;
         int powerCoeffHeader = -1;
 
-        //        final List<Double> dataRead = Lists.newArrayList();
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
         final CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
@@ -142,12 +148,6 @@ public abstract class TurbineSpecification {
         IntList wind = new IntArrayList();
         DoubleList powerValues = new DoubleArrayList();
         DoubleList powerCoeffValues = new DoubleArrayList();
-
-        //        DoubleList dl = new DoubleArrayList();
-        //        Double d = new Double(0);
-        //        Integer i = 2;
-        //        dl.add(i, d);
-        //        dl.add(2, d);
 
         //fill in data arrays.
         String[] values;

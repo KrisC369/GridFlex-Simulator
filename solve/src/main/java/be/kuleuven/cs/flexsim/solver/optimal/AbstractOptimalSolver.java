@@ -48,6 +48,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
         this.verbose = b;
     }
 
+    @Override
     public void solve() {
         final MpSolver s = getSolver().getInstance();
         s.add(getProblem());
@@ -79,6 +80,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
     /**
      * @return The results.
      */
+    @Override
     public abstract AllocResults getSolution();
 
     /**

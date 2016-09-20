@@ -41,13 +41,13 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
     @Override
     public WindSpeedProfile transform(Function<Double, Double> function) {
         return new WindSpeedProfile(
-                DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+                DoubleStream.of(values().toDoubleArray()).map(function::apply).toArray());
     }
 
     @Override
     public WindSpeedProfile transformFromIndex(IntToDoubleFunction function) {
         return new WindSpeedProfile(IntStream.range(0, length())
-                .mapToDouble(i -> function.applyAsDouble(i)).toArray());
+                .mapToDouble(function::applyAsDouble).toArray());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeed
     /**
      * Create a new empty congestion profile.
      *
-     * @return
+     * @return an empty windspeed profile.
      */
     public static WindSpeedProfile empty() {
         return new WindSpeedProfile();

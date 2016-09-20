@@ -13,6 +13,9 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class FlexTuple {
 
+    FlexTuple() {
+    }
+
     /**
      * Represents no flex.
      */
@@ -41,9 +44,6 @@ public abstract class FlexTuple {
      */
     public static FlexTuple createNONE() {
         return new AutoValue_FlexTuple(0, 0, Direction.DOWN, 0, 0, 0);
-    }
-
-    FlexTuple() {
     }
 
     /**
@@ -98,6 +98,7 @@ public abstract class FlexTuple {
 
         /**
          * @return the boolean representation of this direction
+         * @deprecated only here to support legacy code, use enum instead.
          */
         @Deprecated
         public boolean booleanRepresentation() {
@@ -107,6 +108,7 @@ public abstract class FlexTuple {
         /**
          * @param rep The boolean representation of the desired direction.
          * @return the direction based on its boolean representation.
+         * @deprecated only here to support legacy code, use enum instead.
          */
         @Deprecated
         public static Direction fromRepresentation(boolean rep) {

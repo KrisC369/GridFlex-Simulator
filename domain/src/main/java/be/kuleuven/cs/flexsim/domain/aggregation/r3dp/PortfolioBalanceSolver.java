@@ -12,15 +12,13 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
-
-    //    private final CableCurrentProfile imbalance;
-    //    private final TurbineSpecification turbineSpec;
-
     /**
      * Default constructor
      *
-     * @param fac The solver factory to draw solver from.
-     * @param c   The initial imbalance profile to transform to imbalances.
+     * @param fac   The solver factory to draw solver from.
+     * @param c     The initial imbalance profile to transform to imbalances.
+     * @param specs The turbine specifications of the problem site.
+     * @param gen   The wind speed error generator to use to realise different profiles.
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, TurbineSpecification specs, WindErrorGenerator gen) {

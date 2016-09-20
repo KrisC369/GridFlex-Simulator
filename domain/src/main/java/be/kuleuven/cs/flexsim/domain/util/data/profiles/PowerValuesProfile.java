@@ -38,15 +38,16 @@ public class PowerValuesProfile extends AbstractTimeSeriesImplementation<PowerVa
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
+    @Override
     public PowerValuesProfile transform(Function<Double, Double> function) {
         return new PowerValuesProfile(
-                DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+                DoubleStream.of(values().toDoubleArray()).map(function::apply).toArray());
     }
 
     @Override
     public PowerValuesProfile transformFromIndex(IntToDoubleFunction function) {
         return new PowerValuesProfile(IntStream.range(0, length())
-                .mapToDouble(i -> function.applyAsDouble(i)).toArray());
+                .mapToDouble(function::applyAsDouble).toArray());
     }
 
     @Override
@@ -90,7 +91,7 @@ public class PowerValuesProfile extends AbstractTimeSeriesImplementation<PowerVa
     /**
      * Create a new empty congestion profile.
      *
-     * @return
+     * @return an empty PowerValues profile.
      */
     public static PowerValuesProfile empty() {
         return new PowerValuesProfile();

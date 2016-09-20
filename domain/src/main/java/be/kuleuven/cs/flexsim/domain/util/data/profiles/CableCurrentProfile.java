@@ -41,13 +41,13 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
     @Override
     public CableCurrentProfile transform(Function<Double, Double> function) {
         return new CableCurrentProfile(
-                DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+                DoubleStream.of(values().toDoubleArray()).map(function::apply).toArray());
     }
 
     @Override
     public CableCurrentProfile transformFromIndex(IntToDoubleFunction function) {
         return new CableCurrentProfile(IntStream.range(0, length())
-                .mapToDouble(i -> function.applyAsDouble(i)).toArray());
+                .mapToDouble(function::applyAsDouble).toArray());
     }
 
     @Override
@@ -91,7 +91,7 @@ public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableC
     /**
      * Create a new empty congestion profile.
      *
-     * @return
+     * @return An empty cable current profile.
      */
     public static CableCurrentProfile empty() {
         return new CableCurrentProfile();

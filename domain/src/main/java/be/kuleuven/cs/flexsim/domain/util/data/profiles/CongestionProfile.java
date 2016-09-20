@@ -38,15 +38,16 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.
      */
+    @Override
     public CongestionProfile transform(Function<Double, Double> function) {
         return new CongestionProfile(
-                DoubleStream.of(values().toDoubleArray()).map(y -> function.apply(y)).toArray());
+                DoubleStream.of(values().toDoubleArray()).map(function::apply).toArray());
     }
 
     @Override
     public CongestionProfile transformFromIndex(IntToDoubleFunction function) {
         return new CongestionProfile(IntStream.range(0, length())
-                .mapToDouble(i -> function.applyAsDouble(i)).toArray());
+                .mapToDouble(function::applyAsDouble).toArray());
     }
 
     @Override
@@ -90,7 +91,7 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
     /**
      * Create a new empty congestion profile.
      *
-     * @return
+     * @return An empty congestion profile.
      */
     public static CongestionProfile empty() {
         return new CongestionProfile();
