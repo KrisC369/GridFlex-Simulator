@@ -14,6 +14,7 @@ public final class TurbineProfileConvertor {
     static final double TO_POWER = 1.73 * 15.6;
     private static final double CONVERSION = 1.5d;
     private static final double HOURS_PER_DAY = 24;
+    private static final double EPS = 0.00001;
     private final PowerValuesProfile powerProfile;
     private final PowerValuesProfile singleTProfile;
     private final TurbineSpecification specs;
@@ -26,10 +27,9 @@ public final class TurbineProfileConvertor {
     /**
      * Default Constructor.
      *
-     * @param profile      The powerProfile to convert.
-     * @param specs        The turbine specs to use.
-     * @param distribution
-     * @param random
+     * @param profile The powerProfile to convert.
+     * @param specs   The turbine specs to use.
+     * @param random  The random generator of wind errors for different horizons.
      */
     public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
             WindErrorGenerator random) {
@@ -47,7 +47,7 @@ public final class TurbineProfileConvertor {
     /**
      * @return The conversion of the initial profile to an imbalance profile.
      */
-    public final PowerValuesProfile convertProfileWith() {
+    public PowerValuesProfile convertProfileWith() {
         return calculateImbalanceFromActual(
                 toPowerValues(applyPredictionErrors(toWindSpeed())));
     }
@@ -57,7 +57,7 @@ public final class TurbineProfileConvertor {
      *
      * @param tSPredicted  the Predicted output volumes.
      * @param tSCongestion the actual output volumes.
-     * @return
+     * @return A power profile that represents forecast error induced imbalance.
      */
     PowerValuesProfile calculateImbalanceFromActual(PowerValuesProfile tSPredicted) {
         return PowerValuesProfile.createFromTimeSeries(powerProfile.subtractValues(tSPredicted));
@@ -71,21 +71,19 @@ public final class TurbineProfileConvertor {
      */
     PowerValuesProfile toPowerValues(WindSpeedProfile windprofile) {
         return PowerValuesProfile.createFromTimeSeries(windprofile
-                .transform(p -> convertWindToPower(p)).transform(p -> p * nbTurbines)
+                .transform(this::convertWindToPower).transform(p -> p * nbTurbines)
                 .transform(p -> p * CONVERSION));
     }
 
     /**
      * Apply prediction erros taking into account different time horizons and
      *
-     * @param timeSeries         The input wind speeds
-     * @param error_distribution
+     * @param timeSeries The input wind speeds
      * @return wind speeds with sample errors added to them
      */
     private WindSpeedProfile applyPredictionErrors(WindSpeedProfile timeSeries) {
-        //TODO fix round to zero
         return WindSpeedProfile.createFromTimeSeries(timeSeries.transformFromIndex(
-                i -> timeSeries.value(i) + applyErrorSingleError(i, timeSeries.value(i)))
+                i -> applyErrorSingleError(i, timeSeries.value(i)))
                 .transform(w -> w < 0 ? 0 : w));
     }
 
@@ -93,7 +91,7 @@ public final class TurbineProfileConvertor {
         int errorGenIdx = (int) Math
                 .ceil(((idx - PROFILE_START_TIME) % HOURS_PER_DAY) + (HOURS_PER_DAY
                         - DAY_AHEAD_NOMINATION_DEADLINE));
-        return random.generateErrorForHorizon(errorGenIdx);
+        return value + random.generateErrorForHorizon(errorGenIdx);
     }
 
     /**
@@ -115,10 +113,10 @@ public final class TurbineProfileConvertor {
             double rest = w % 1;
             int idx = (int) w;
             double interval = 0;
-            if (rest != 0) {
+            if (rest > EPS) {//is not 0.
                 interval = specs.getPowerValues().get(idx + 1) - specs.getPowerValues().get(idx);
             }
-            return (specs.getPowerValues().get(idx) + interval * rest);
+            return specs.getPowerValues().get(idx) + interval * rest;
         } else {
             int j = specs.getPowerValues().lastIndexOf(specs.getRatedPower());
             double margin = maxPSingle - specs.getRatedPower();
@@ -140,8 +138,8 @@ public final class TurbineProfileConvertor {
             }
             double margin = specs.getPowerValues().get(idx) - specs.getPowerValues()
                     .get(idx - 1);
-            if (margin == 0) {
-                return idx - 1;
+            if (margin <= EPS) {
+                return idx - 1d;
             } else {
                 return (idx - 1) + (p - specs.getPowerValues()
                         .get(idx - 1)) / (specs.getPowerValues().get(idx) - specs

@@ -16,6 +16,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
+@FunctionalInterface
 public interface TimeSeries {
 
     /**

@@ -22,6 +22,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 @AutoValue
 public abstract class ForecastHorizonErrorDistribution {
 
+    ForecastHorizonErrorDistribution() {
+    }
+
     /**
      * @return All means for this distribution instance.
      */

@@ -23,6 +23,12 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     @Nullable
     private SolutionResults results;
 
+    /**
+     * Default constructor
+     *
+     * @param fac The factory that provides the solver.
+     * @param c   The congestion profile
+     */
     public DistributionGridCongestionSolver(final AbstractSolverFactory<SolutionResults> fac,
             final TimeSeries c) {
         super(fac);
@@ -58,12 +64,12 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
         }
     }
 
-    private void processActivationsFor(final FlexibilityProvider p, final List<Boolean> booleen,
-            final int discretisationInNbSlotsPerHour) {
+    private static void processActivationsFor(final FlexibilityProvider p,
+            final List<Boolean> booleen, final int discretisationInNbSlotsPerHour) {
         int ind = 0;
         while (ind < booleen.size()) {
             if (booleen.get(ind)) {
-                //start activation;
+                //start activation.
                 final int start = ind;
                 int count = 0;
                 while (ind < booleen.size() && booleen.get(ind)) {
