@@ -116,16 +116,16 @@ public class WgmfGameRunner {
             if (line.hasOption("s")) {
                 solver = AbstractOptimalSolver.Solver.valueOf(line.getOptionValue("s"));
             }
+            logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
+                    + " agents using: " + solver.toString());
+            new WgmfGameRunner(nReps, nAgents, solver).execute();
 
         } catch (ParseException exp) {
             // oops, something went wrong
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("ant", o);
+            formatter.printHelp("WgmfGameRunner", o);
             System.err.println("Parsing failed.  Reason: " + exp.getMessage());
         }
-        logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
-                + " agents using: " + solver.toString());
-        new WgmfGameRunner(nReps, nAgents, solver).execute();
     }
 
     private class SolverFactory implements AbstractSolverFactory<SolutionResults> {
