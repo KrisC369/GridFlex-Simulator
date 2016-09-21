@@ -60,6 +60,16 @@
 			<artifactId>flexsim-solve</artifactId>
 			<version>0.1.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>cplex</groupId>
+			<artifactId>cplex</artifactId>
+			<version>12.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>gurobi</groupId>
+			<artifactId>gurobi</artifactId>
+			<version>6.5.2</version>
+		</dependency>
 	</dependencies>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
