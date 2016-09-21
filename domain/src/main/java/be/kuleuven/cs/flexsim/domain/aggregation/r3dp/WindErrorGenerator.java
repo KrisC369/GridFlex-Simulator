@@ -7,7 +7,7 @@ import org.apache.commons.math3.random.MersenneTwister;
 import java.util.List;
 
 /**
- * This class can generate errors to forecasts.
+ * This class can generate normally distributed errors to forecasts.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
@@ -37,8 +37,8 @@ public final class WindErrorGenerator {
      * @return The error value.
      */
     public double generateErrorForHorizon(int i) {
-        return twisters.get(i).nextGaussian() * distribution.getMeanForHorizon(i) + distribution
-                .getSdForHorizon(i);
+        return twisters.get(i).nextGaussian() * distribution.getSdForHorizon(i) + distribution
+                .getMeanForHorizon(i);
     }
 
 }

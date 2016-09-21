@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
-import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 
 /**
  * Represents a portfolio balancing entity that solves intraday imbalances because of prediction
@@ -12,6 +12,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
+
     /**
      * Default constructor
      *
@@ -25,8 +26,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         super(fac, convertProfile(c, specs, gen));
     }
 
-    static PowerValuesProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs,
+    static CongestionProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs,
             WindErrorGenerator randomGen) {
-        return new TurbineProfileConvertor(c, specs, randomGen).convertProfileWith();
+        return new TurbineProfileConvertor(c, specs, randomGen).convertProfileToImbalanceVolumes();
     }
 }
