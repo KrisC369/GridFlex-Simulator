@@ -79,7 +79,7 @@ public class WgmfGameRunner {
                     repititions);
             GameDirector director = new GameDirector(game);
             director.playAutonomously();
-            logger.info(director.getFormattedResults().getFormattedResultString());
+            logger.warn(director.getFormattedResults().getFormattedResultString());
         } catch (IOException e) {
             e.printStackTrace();
         }
