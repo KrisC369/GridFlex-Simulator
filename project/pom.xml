@@ -16,7 +16,6 @@
     <name>FlexSimulator projects</name>
     <description>Projects using flexsim to produce results.</description>
 
-<<<<<<< HEAD
 	<dependencies>
 		<dependency>
 			<groupId>be.kuleuven.cs</groupId>
