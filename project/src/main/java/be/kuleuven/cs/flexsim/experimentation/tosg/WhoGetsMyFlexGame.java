@@ -48,15 +48,15 @@ public class WhoGetsMyFlexGame implements GameInstance<FlexibilityProvider, Flex
     public WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
             WindErrorGenerator gen, AbstractSolverFactory<SolutionResults> solverplatform) {
         this.generator = gen;
-        agents = Sets.newLinkedHashSet();
-        actions = Lists.newArrayList();
+        this.agents = Sets.newLinkedHashSet();
+        this.actions = Lists.newArrayList();
         //            this.nAgents = nAgents;
-        agentActionMap = Maps.newLinkedHashMap();
+        this.agentActionMap = Maps.newLinkedHashMap();
         this.c1 = dataIn.getCongestionProfile();
         this.c2 = dataIn.getCableCurrentProfile();
         this.specs = specs;
-        actions.add(new PortfolioBalanceSolver(solverplatform, this.c2, specs, generator));
-        actions.add(new DistributionGridCongestionSolver(solverplatform, this.c1));
+        this.actions.add(new PortfolioBalanceSolver(solverplatform, this.c2, specs, generator));
+        this.actions.add(new DistributionGridCongestionSolver(solverplatform, this.c1));
     }
 
     @Override

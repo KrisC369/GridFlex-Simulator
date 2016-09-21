@@ -64,9 +64,16 @@ public class PortfolioBalanceSolverTest {
         List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER / 4d)
                 .values();
         List<Double> actual = cableCurrentProfile2.values();
-        //        printAvgDelta(actual,
-        //                Collections.nCopies(c2.length(), 0d));
+        //printList(actual, expected);
+        //printAvgDelta(actual, Collections.nCopies(c2.length(), 0d));
         assertEqualArrays(Collections.nCopies(c2.length(), 0d), actual);
+    }
+
+    private void printList(List<Double>... lists) {
+        for (List<Double> l : lists) {
+            LoggerFactory.getLogger(PortfolioBalanceSolverTest.class)
+                    .info(l.toString());
+        }
     }
 
     @Test

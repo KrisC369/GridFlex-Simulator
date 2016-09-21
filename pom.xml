@@ -208,7 +208,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                be.kuleuven.cs.flexsim.experimentation.swift.ExperimentRunnerAllRes
+                                be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameRunner
                             </mainClass>
                         </manifest>
                     </archive>

@@ -29,6 +29,8 @@ import java.io.IOException;
 import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.GUROBI;
 
 /**
+ * Experiment runner for the Who-gets-my-flex game.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class WgmfGameRunner {
