@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
+package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 
@@ -12,6 +12,11 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 public abstract class SolverAdapter<F, T> implements Solver<T> {
     private Solver<F> target;
 
+    /**
+     * Default constructor.
+     *
+     * @param from The solver type to adapt.
+     */
     public SolverAdapter(Solver<F> from) {
         this.target = from;
     }
@@ -26,5 +31,11 @@ public abstract class SolverAdapter<F, T> implements Solver<T> {
         return adaptResult(target.getSolution());
     }
 
+    /**
+     * Perform the actual adaptation.
+     *
+     * @param solution The solution result to adapt.
+     * @return The actual T type solution result.
+     */
     public abstract T adaptResult(F solution);
 }

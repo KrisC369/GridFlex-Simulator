@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.WindSpeedProfile;
 
@@ -14,6 +15,7 @@ public final class TurbineProfileConvertor {
     static final double TO_POWER = 1.73 * 15.6;
     private static final double CONVERSION = 1.5d;
     private static final double HOURS_PER_DAY = 24;
+    private static final double SLOTS_PER_HOUR = 4;
     private static final double EPS = 0.00001;
     private final PowerValuesProfile powerProfile;
     private final PowerValuesProfile singleTProfile;
@@ -34,6 +36,7 @@ public final class TurbineProfileConvertor {
     public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
             WindErrorGenerator random) {
         this.specs = specs;
+        //reduced power profile.
         this.powerProfile = PowerValuesProfile
                 .createFromTimeSeries(profile.transform(p -> (p / CONVERSION) * TO_POWER));
         this.random = random;
@@ -47,8 +50,8 @@ public final class TurbineProfileConvertor {
     /**
      * @return The conversion of the initial profile to an imbalance profile.
      */
-    public PowerValuesProfile convertProfileWith() {
-        return calculateImbalanceFromActual(
+    public CongestionProfile convertProfileToImbalanceVolumes() {
+        return calculateImbalanceVolumeFromActual(
                 toPowerValues(applyPredictionErrors(toWindSpeed())));
     }
 
@@ -59,8 +62,11 @@ public final class TurbineProfileConvertor {
      * @param tSCongestion the actual output volumes.
      * @return A power profile that represents forecast error induced imbalance.
      */
-    PowerValuesProfile calculateImbalanceFromActual(PowerValuesProfile tSPredicted) {
-        return PowerValuesProfile.createFromTimeSeries(powerProfile.subtractValues(tSPredicted));
+    CongestionProfile calculateImbalanceVolumeFromActual(PowerValuesProfile tSPredicted) {
+        //Don't forget to convert to given boosted profile.
+        return CongestionProfile.createFromTimeSeries(
+                tSPredicted.subtractValues(powerProfile.transform(p -> p * CONVERSION))
+                        .transform(p -> p / SLOTS_PER_HOUR));
     }
 
     /**
@@ -104,7 +110,7 @@ public final class TurbineProfileConvertor {
     WindSpeedProfile toWindSpeed() {
         double upperMarker = maxPSingle;
         return WindSpeedProfile.createFromTimeSeries(singleTProfile
-                .transform(p -> convertSinglePowerToWind(p, upperMarker)));
+                .transform(p -> convertSingleTPowerToWind(p, upperMarker)));
     }
 
     private double convertWindToPower(double w) {
@@ -121,11 +127,16 @@ public final class TurbineProfileConvertor {
             int j = specs.getPowerValues().lastIndexOf(specs.getRatedPower());
             double margin = maxPSingle - specs.getRatedPower();
             double perc = (w - i) / (j - i);
+            if (perc > 1) {
+                //do cutoff above rated cutoff speeds
+
+                return 0;
+            }
             return specs.getRatedPower() + (perc * margin);
         }
     }
 
-    private double convertSinglePowerToWind(double p, double upperMarker) {
+    private double convertSingleTPowerToWind(double p, double upperMarker) {
         int i = specs.getPowerValues().indexOf(specs.getRatedPower());
         if (p < specs.getRatedPower()) {
             int idx = 1;
