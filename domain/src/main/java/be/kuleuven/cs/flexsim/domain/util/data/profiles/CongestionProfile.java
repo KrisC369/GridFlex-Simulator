@@ -34,6 +34,7 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
 
     /**
      * Apply a double to double function to the elements in this profile and return a new profile.
+     * Units are in volumes of energy, KWh.
      *
      * @param function The function transformation to apply.
      * @return A new Congestion profile instance.

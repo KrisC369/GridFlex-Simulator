@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
+package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Adapter to trigger solving of whole horizon flex in one go using the simulator mechanism.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class SimulatedGamePlayAdapter {
@@ -26,6 +28,9 @@ public class SimulatedGamePlayAdapter {
         this.actions = actions;
     }
 
+    /**
+     * Play the game. Triggers the simulation.start() method.
+     */
     public void play() {
         actions.forEach(agent -> s.register(new SimAdapter(() -> agent.solve())));
         s.start();

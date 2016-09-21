@@ -14,6 +14,9 @@ import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.experimentation.tosg.SimulatedGamePlayAdapter;
+import be.kuleuven.cs.flexsim.experimentation.tosg.SolutionResultAdapter;
+import be.kuleuven.cs.flexsim.experimentation.tosg.SolverAdapter;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
@@ -41,7 +44,7 @@ public class PoCRunner {
 
     public static void main(String[] args) {
         PoCConfigurator poCConfigurator = new PoCConfigurator();
-        Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(2, poCConfigurator, 1);
+        Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(2, poCConfigurator, 2);
         GameDirector director = new GameDirector(game);
         director.playAutonomously();
         System.out.println(director.getFormattedResults().getFormattedResultString());

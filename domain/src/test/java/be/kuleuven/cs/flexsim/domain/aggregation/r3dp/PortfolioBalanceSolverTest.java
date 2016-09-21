@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PowerValuesProfile;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
@@ -59,8 +60,9 @@ public class PortfolioBalanceSolverTest {
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
         this.generator = new WindErrorGenerator(SEED, distribution);
 
-        PowerValuesProfile cableCurrentProfile2 = toWindAndBackWErrors(c2, specs);
-        List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER).values();
+        CongestionProfile cableCurrentProfile2 = toWindAndBackWErrors(c2, specs);
+        List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER / 4d)
+                .values();
         List<Double> actual = cableCurrentProfile2.values();
         //        printAvgDelta(actual,
         //                Collections.nCopies(c2.length(), 0d));
@@ -70,17 +72,18 @@ public class PortfolioBalanceSolverTest {
     @Test
     public void testToWindAndBackProfiles() {
         PowerValuesProfile cableCurrentProfile2 = toWindAndBack(c2, specs);
-        List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER).values();
+        List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER)
+                .values();
         List<Double> actual = cableCurrentProfile2.values();
         //        assertEquals(expected, actual);
         //        printAvgDelta(expected, actual);
         assertEqualArrays(expected, actual);
     }
 
-    private PowerValuesProfile toWindAndBackWErrors(CableCurrentProfile c2,
+    private CongestionProfile toWindAndBackWErrors(CableCurrentProfile c2,
             TurbineSpecification specs) {
         TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
-        return t.convertProfileWith();
+        return t.convertProfileToImbalanceVolumes();
     }
 
     private PowerValuesProfile toWindAndBack(CableCurrentProfile c2, TurbineSpecification specs) {
