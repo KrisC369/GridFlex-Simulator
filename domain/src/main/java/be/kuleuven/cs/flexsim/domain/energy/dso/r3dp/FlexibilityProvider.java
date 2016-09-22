@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.r3dp;
 
+import be.kuleuven.cs.flexsim.domain.util.Payment;
 import be.kuleuven.cs.flexsim.domain.util.data.DoublePowerCapabilityBand;
 
 /**
@@ -27,5 +28,5 @@ public interface FlexibilityProvider {
     /**
      * Register an activation event for this Flexibility provider.
      */
-    void registerActivation(FlexActivation activation);
+    void registerActivation(FlexActivation activation, Payment payment);
 }

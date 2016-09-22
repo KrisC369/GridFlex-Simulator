@@ -8,9 +8,6 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.WindErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
-import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.poc.WindBasedInputData;
 import be.kuleuven.cs.gametheory.GameInstance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -32,31 +29,38 @@ public class WhoGetsMyFlexGame implements GameInstance<FlexibilityProvider, Flex
     private final Set<FlexibilityProvider> agents;
     private final List<FlexibilityUtiliser> actions;
     private final Map<FlexibilityProvider, FlexibilityUtiliser> agentActionMap;
-    private final CongestionProfile c1;
-    private final CableCurrentProfile c2;
     private final TurbineSpecification specs;
+    private final WindBasedInputData dataIn;
+    private final ImbalancePriceInputData imbalIn;
     private final WindErrorGenerator generator;
+    private final AbstractSolverFactory<SolutionResults> solverplatform;
 
     /**
      * Default Constructor
      *
      * @param dataIn         The data profile to work from.
      * @param specs          The specs of the windturbine used in these simulations.
+     * @param imbalIn
      * @param gen            The generator instance for generating wind forecast errors.
      * @param solverplatform The specific solver factory platform to use.
      */
     public WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
-            WindErrorGenerator gen, AbstractSolverFactory<SolutionResults> solverplatform) {
+            ImbalancePriceInputData imbalIn, WindErrorGenerator gen,
+            AbstractSolverFactory<SolutionResults> solverplatform) {
+        this.dataIn = dataIn;
+        this.imbalIn = imbalIn;
         this.generator = gen;
+        this.solverplatform = solverplatform;
         this.agents = Sets.newLinkedHashSet();
         this.actions = Lists.newArrayList();
         //            this.nAgents = nAgents;
         this.agentActionMap = Maps.newLinkedHashMap();
-        this.c1 = dataIn.getCongestionProfile();
-        this.c2 = dataIn.getCableCurrentProfile();
         this.specs = specs;
-        this.actions.add(new PortfolioBalanceSolver(solverplatform, this.c2, specs, generator));
-        this.actions.add(new DistributionGridCongestionSolver(solverplatform, this.c1));
+        this.actions.add(new PortfolioBalanceSolver(solverplatform,
+                this.dataIn.getCableCurrentProfile(), imbalIn.getNetRegulatedVolumeProfile(),
+                imbalIn.getPositiveImbalancePriceProfile(), specs, generator));
+        this.actions.add(new DistributionGridCongestionSolver(solverplatform,
+                this.dataIn.getCongestionProfile()));
     }
 
     @Override

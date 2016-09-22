@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
+package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
@@ -15,8 +15,8 @@ import java.io.IOException;
 @AutoValue
 public abstract class WindBasedInputData {
 
-    private static final String DEFAULT_CONGESTION_COLUMN_KEY = "verlies aan energie";
-    private static final String DEFAULT_CURRENT_COLUMN_KEY = "startprofiel+extra";
+    private static final String CONGESTION_COLUMN_KEY = "verlies aan energie";
+    private static final String CURRENT_COLUMN_KEY = "startprofiel+extra";
 
     WindBasedInputData() {
     }
@@ -35,9 +35,9 @@ public abstract class WindBasedInputData {
      */
     public static WindBasedInputData loadFromResource(String filename) throws IOException {
         CongestionProfile congestion = CongestionProfile
-                .createFromCSV(filename, DEFAULT_CONGESTION_COLUMN_KEY);
+                .createFromCSV(filename, CONGESTION_COLUMN_KEY);
         CableCurrentProfile current = CableCurrentProfile
-                .createFromCSV(filename, DEFAULT_CONGESTION_COLUMN_KEY);
+                .createFromCSV(filename, CURRENT_COLUMN_KEY);
         return new AutoValue_WindBasedInputData(congestion, current);
     }
 

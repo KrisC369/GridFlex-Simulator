@@ -1,5 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.energy.dso.r3dp;
 
+import be.kuleuven.cs.flexsim.domain.util.Payment;
 import be.kuleuven.cs.flexsim.domain.util.data.DoublePowerCapabilityBand;
 import com.google.common.collect.Lists;
 
@@ -56,18 +57,24 @@ public class FlexProvider implements FlexibilityProvider {
     }
 
     @Override
-    public void registerActivation(FlexActivation activation) {
+    public void registerActivation(FlexActivation activation, Payment payment) {
         checkForActivationConstraintViolation(activation);
         addActivation(activation);
-        registerCompensation(activation);
+        //registerCompensation(activation); //TODO one or the other...
+        registerCompensation(payment);
     }
 
     private void addActivation(FlexActivation activation) {
         this.activations.add(activation);
     }
 
+    @Deprecated
     private void registerCompensation(FlexActivation activation) {
         runningCompensationValue += activation.getEnergyVolume() * FIXED_PRICE;
+    }
+
+    private void registerCompensation(Payment compensation) {
+        runningCompensationValue += compensation.getMonetaryAmount();
     }
 
     private void checkForActivationConstraintViolation(FlexActivation activation) {

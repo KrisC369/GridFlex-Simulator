@@ -18,17 +18,18 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class CongestionProfile extends AbstractTimeSeriesImplementation<CongestionProfile> {
+public class PositiveImbalancePriceProfile
+        extends AbstractTimeSeriesImplementation<PositiveImbalancePriceProfile> {
 
-    CongestionProfile() {
+    PositiveImbalancePriceProfile() {
         super();
     }
 
-    CongestionProfile(final DoubleList values) {
+    PositiveImbalancePriceProfile(final DoubleList values) {
         super(values);
     }
 
-    CongestionProfile(final double[] values) {
+    PositiveImbalancePriceProfile(final double[] values) {
         super(values);
     }
 
@@ -40,26 +41,26 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
      * @return A new Congestion profile instance.
      */
     @Override
-    public CongestionProfile transform(Function<Double, Double> function) {
-        return new CongestionProfile(
+    public PositiveImbalancePriceProfile transform(Function<Double, Double> function) {
+        return new PositiveImbalancePriceProfile(
                 DoubleStream.of(values().toDoubleArray()).map(function::apply).toArray());
     }
 
     @Override
-    public CongestionProfile transformFromIndex(IntToDoubleFunction function) {
-        return new CongestionProfile(IntStream.range(0, length())
+    public PositiveImbalancePriceProfile transformFromIndex(IntToDoubleFunction function) {
+        return new PositiveImbalancePriceProfile(IntStream.range(0, length())
                 .mapToDouble(function::applyAsDouble).toArray());
     }
 
     @Override
-    public CongestionProfile subtractValues(TimeSeries ts) {
+    public PositiveImbalancePriceProfile subtractValues(TimeSeries ts) {
         checkArgument(ts.length() == length(),
                 "Timeseries should be equal in length to this profile.");
         DoubleList dl = new DoubleArrayList(length());
         for (int i = 0; i < length(); i++) {
             dl.add(value(i) - ts.value(i));
         }
-        return new CongestionProfile(dl);
+        return new PositiveImbalancePriceProfile(dl);
     }
 
     /**
@@ -71,9 +72,9 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
-    public static CongestionProfile createFromCSV(final String filename, final String column)
+    public static PositiveImbalancePriceProfile createFromCSV(final String filename, final String column)
             throws IOException {
-        final CongestionProfile cp = new CongestionProfile();
+        final PositiveImbalancePriceProfile cp = new PositiveImbalancePriceProfile();
         cp.load(filename, column);
         return cp;
     }
@@ -84,8 +85,8 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
      * @param series The series to copy from.
      * @return the time series.
      */
-    public static CongestionProfile createFromTimeSeries(final TimeSeries series) {
-        return new CongestionProfile(series.values());
+    public static PositiveImbalancePriceProfile createFromTimeSeries(final TimeSeries series) {
+        return new PositiveImbalancePriceProfile(series.values());
     }
 
     /**
@@ -93,7 +94,7 @@ public class CongestionProfile extends AbstractTimeSeriesImplementation<Congesti
      *
      * @return An empty congestion profile.
      */
-    public static CongestionProfile empty() {
-        return new CongestionProfile();
+    public static PositiveImbalancePriceProfile empty() {
+        return new PositiveImbalancePriceProfile();
     }
 }
