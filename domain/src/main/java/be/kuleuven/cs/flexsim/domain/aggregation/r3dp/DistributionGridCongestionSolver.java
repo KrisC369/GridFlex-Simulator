@@ -90,7 +90,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
 
     protected double calculatePaymentFor(FlexActivation activation,
             int discretisationInNbSlotsPerHour) {
-        return activation.getEnergyVolume() * FIXED_PRICE;
+        return activation.getEnergyVolume() * (FIXED_PRICE / 10E3d);
 
     }
 
