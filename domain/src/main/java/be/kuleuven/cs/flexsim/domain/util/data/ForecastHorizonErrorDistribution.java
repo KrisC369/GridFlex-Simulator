@@ -2,14 +2,14 @@ package be.kuleuven.cs.flexsim.domain.util.data;
 
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,23 +70,22 @@ public abstract class ForecastHorizonErrorDistribution {
             throws IOException {
         List<Double> means = Lists.newArrayList();
         List<Double> sds = Lists.newArrayList();
-
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
-        final CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
-                new FileInputStream(file), Charset.defaultCharset())).build();
-        String[] nextLine = reader.readNext();
-
+        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        InputStreamReader fileReader = new InputStreamReader(
+                new FileInputStream(file));
+        Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
         //Assuming formatting of header line is following:
         //"hour.horizon","mean","sd" in km/h
-        while ((nextLine = reader.readNext()) != null) {
-            means.add(Double.valueOf(nextLine[1]));
-            sds.add(Double.valueOf(nextLine[2]));
+        for (CSVRecord record : records) {
+            means.add(Double.valueOf(record.get(1)));
+            sds.add(Double.valueOf(record.get(2)));
         }
         //Apply correction: converting from km/h to m/s
         means = means.stream().map(v -> v / 3.6d).collect(Collectors.toList());
         sds = sds.stream().map(v -> v / 3.6d).collect(Collectors.toList());
-
+        fileReader.close();
         return create(means, sds);
     }
 
