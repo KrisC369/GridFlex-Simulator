@@ -10,7 +10,6 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.poc.WindBasedInputData;
 import be.kuleuven.cs.gametheory.GameInstance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

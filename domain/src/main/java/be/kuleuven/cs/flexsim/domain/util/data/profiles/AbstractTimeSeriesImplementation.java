@@ -77,6 +77,7 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
         dValues = new DoubleArrayList();
         dValues.addAll(dataRead);
         resetCache();
+        reader.close();
     }
 
     @Override

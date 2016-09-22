@@ -1,7 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import com.google.common.collect.Sets;
 
@@ -38,18 +37,18 @@ public abstract class FlexibilityUtiliser<R extends SolutionResults> {
      * Perform solving of the problem.
      */
     public void solve() {
-        Solver<R> s = configureSolver();
-        performSolveStep(s);
+        performSolveStep();
         markSolved();
     }
-
-    protected abstract Solver<R> configureSolver();
 
     private void markSolved() {
         solutionReady = true;
     }
 
-    protected abstract void performSolveStep(Solver<R> s);
+    /**
+     * Perform solving of the problem and making the results available.
+     */
+    protected abstract void performSolveStep();
 
     /**
      * @return The solution of the solving process if available.

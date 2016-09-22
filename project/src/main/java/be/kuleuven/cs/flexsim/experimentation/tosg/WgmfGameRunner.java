@@ -8,7 +8,6 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
-import be.kuleuven.cs.flexsim.experimentation.tosg.poc.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;

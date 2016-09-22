@@ -17,6 +17,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.SimulatedGamePlayAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.SolutionResultAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.SolverAdapter;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;

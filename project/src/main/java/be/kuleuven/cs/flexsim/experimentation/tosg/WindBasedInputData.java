@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.poc;
+package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;

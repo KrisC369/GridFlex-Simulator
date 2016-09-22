@@ -8,7 +8,6 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
-import be.kuleuven.cs.flexsim.experimentation.tosg.poc.WindBasedInputData;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
 import org.apache.commons.math3.distribution.GammaDistribution;
