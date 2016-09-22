@@ -81,13 +81,15 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
                                 count / (double) discretisationInNbSlotsPerHour,
                                 count * p.getFlexibilityActivationRate().getUp()
                                         / (double) discretisationInNbSlotsPerHour);
-                p.registerActivation(activation, Payment.create(calculatePaymentFor(activation)));
+                p.registerActivation(activation, Payment.create(
+                        calculatePaymentFor(activation, discretisationInNbSlotsPerHour)));
             }
             ind++;
         }
     }
 
-    protected double calculatePaymentFor(FlexActivation activation) {
+    protected double calculatePaymentFor(FlexActivation activation,
+            int discretisationInNbSlotsPerHour) {
         return activation.getEnergyVolume() * FIXED_PRICE;
 
     }

@@ -31,18 +31,31 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
             TurbineSpecification specs, WindErrorGenerator gen) {
-        super(fac, convertProfile(c, specs, gen));
+        super(fac, convertProfile(c, specs, gen, nrv));
         this.nrv = nrv;
         this.pip = pip;
     }
 
     static CongestionProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs,
-            WindErrorGenerator randomGen) {
-        return new TurbineProfileConvertor(c, specs, randomGen).convertProfileToImbalanceVolumes();
+            WindErrorGenerator randomGen, NetRegulatedVolumeProfile nrv) {
+        CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
+                .convertProfileToImbalanceVolumes();
+        //Only neg NRV should apply.
+        return profile.transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
     }
 
     @Override
-    protected double calculatePaymentFor(FlexActivation activation) {
-        return activation.getEnergyVolume() * FIXED_PRICE;
+    protected double calculatePaymentFor(FlexActivation activation,
+            int discretisationInNbSlotsPerHour) {
+        int idx = (int) (activation.getStart() * discretisationInNbSlotsPerHour);
+        int dur = (int) (activation.getDuration() * discretisationInNbSlotsPerHour);
+        double singleStepVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
+        double sum = 0;
+        for (int i = 0; i < dur; i++) {
+            if (nrv.value(i) < 0) {
+                sum += (pip.value(i) / 10E3d) * singleStepVolume;
+            }
+        }
+        return sum;
     }
 }

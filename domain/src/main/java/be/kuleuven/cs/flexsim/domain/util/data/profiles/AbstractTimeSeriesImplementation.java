@@ -2,18 +2,18 @@ package be.kuleuven.cs.flexsim.domain.util.data.profiles;
 
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import com.google.common.collect.Lists;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.doubles.DoubleLists;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntToDoubleFunction;
@@ -60,24 +60,19 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
         final List<Double> dataRead = Lists.newArrayList();
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
-        final CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
-                new FileInputStream(file), Charset.defaultCharset())).build();
-        String[] nextLine = reader.readNext();
-        int key = -1;
-        for (int i = 0; i < nextLine.length; i++) {
-            if (nextLine[i].equalsIgnoreCase(column)) {
-                key = i;
-                break;
-            }
+        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        InputStreamReader fileReader = new InputStreamReader(
+                new FileInputStream(file));
+        Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
+
+        for (CSVRecord record : records) {
+            dataRead.add(Double.valueOf(record.get(column)));
         }
 
-        while ((nextLine = reader.readNext()) != null) {
-            dataRead.add(Double.valueOf(nextLine[key]));
-        }
         dValues = new DoubleArrayList();
         dValues.addAll(dataRead);
         resetCache();
-        reader.close();
+        fileReader.close();
     }
 
     @Override
@@ -87,7 +82,7 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
 
     @Override
     public double value(final int index) {
-        checkArgument(index >= 0 && index < length());
+        checkArgument(index >= 0 && index < length(), "Index out of bounds: " + index);
         return dValues.getDouble(index);
     }
 
