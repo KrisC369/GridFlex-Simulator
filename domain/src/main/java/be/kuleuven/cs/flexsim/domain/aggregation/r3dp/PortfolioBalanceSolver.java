@@ -38,10 +38,11 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         this.pip = pip;
     }
 
-    static CongestionProfile convertProfile(CableCurrentProfile c, TurbineSpecification specs,
-            WindErrorGenerator randomGen, NetRegulatedVolumeProfile nrv) {
+    public static CongestionProfile convertProfile(CableCurrentProfile c,
+            TurbineSpecification specs, WindErrorGenerator randomGen,
+            NetRegulatedVolumeProfile nrv) {
         CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
-                .convertProfileToImbalanceVolumes();
+                .convertProfileTPositiveOnlyoImbalanceVolumes();
         //Only neg NRV should apply.
         return profile.transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
     }
