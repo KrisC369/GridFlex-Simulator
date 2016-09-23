@@ -82,7 +82,7 @@ public class WgmfGameRunner {
             logger.warn(director.getFormattedResults().getFormattedResultString());
         } catch (IOException e) {
             logger.error("IOException caught.", e);
-            throw new RuntimeException(e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -125,7 +125,7 @@ public class WgmfGameRunner {
             // oops, something went wrong
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("WgmfGameRunner", o);
-            System.err.println("Parsing failed.  Reason: " + exp.getMessage());
+            logger.error("Parsing failed.  Reason: " + exp.getMessage(), exp);
         }
     }
 
