@@ -8,6 +8,8 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.NetRegulatedVolumeProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PositiveImbalancePriceProfile;
 
+import java.util.List;
+
 /**
  * Represents a portfolio balancing entity that solves intraday imbalances because of prediction
  * error in portfolios.
@@ -49,14 +51,14 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
     @Override
     protected double calculatePaymentFor(FlexActivation activation,
-            int discretisationInNbSlotsPerHour) {
+            int discretisationInNbSlotsPerHour, List<Integer> acts) {
         int idx = (int) (activation.getStart() * discretisationInNbSlotsPerHour);
         int dur = (int) (activation.getDuration() * discretisationInNbSlotsPerHour);
         double singleStepVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
         double sum = 0;
         for (int i = 0; i < dur; i++) {
             if (nrv.value(idx + i) < 0) {
-                sum += (pip.value(idx + i) / TO_KILO) * singleStepVolume;
+                sum += (pip.value(idx + i) / TO_KILO) * singleStepVolume / acts.get(idx + i);
             }
         }
         return sum;

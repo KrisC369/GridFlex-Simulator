@@ -8,10 +8,15 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.util.Payment;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.ListMultimap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.OptionalInt;
 
 /**
  * Represents a distribution grid management entity that solves current congestion problems in
@@ -59,14 +64,32 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     }
 
     private void processActivations(@Nullable final SolutionResults results) {
+        List<Integer> acts = consolidateActivations(results.getAllocationMaps());
         for (final FlexibilityProvider p : getFlexibilityProviders()) {
             processActivationsFor(p, results.getAllocationMaps().get(p),
-                    results.getDiscretisationInNbSlotsPerHour());
+                    results.getDiscretisationInNbSlotsPerHour(), acts);
         }
     }
 
+    @VisibleForTesting
+    List<Integer> consolidateActivations(
+            ListMultimap<FlexibilityProvider, Boolean> values) {
+        OptionalInt min = values.keySet().stream().mapToInt(fpC -> values.get(fpC).size())
+                .reduce(Integer::min);
+        IntList toRet = new IntArrayList(
+                min.orElseThrow(() -> new IllegalStateException("No int found.")));
+        for (int j = 0;
+             j < min.orElseThrow(() -> new IllegalStateException("No int found.")); j++) {
+            final int jj = j;
+            toRet.add(
+                    values.keySet().stream().mapToInt(fp -> values.get(fp).get(jj) ? 1 : 0).sum());
+        }
+        return toRet;
+    }
+
     private void processActivationsFor(final FlexibilityProvider p,
-            final List<Boolean> booleen, final int discretisationInNbSlotsPerHour) {
+            final List<Boolean> booleen, final int discretisationInNbSlotsPerHour,
+            List<Integer> acts) {
         int ind = 0;
         while (ind < booleen.size()) {
             if (booleen.get(ind)) {
@@ -83,14 +106,14 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
                                 count * p.getFlexibilityActivationRate().getUp()
                                         / (double) discretisationInNbSlotsPerHour);
                 p.registerActivation(activation, Payment.create(
-                        calculatePaymentFor(activation, discretisationInNbSlotsPerHour)));
+                        calculatePaymentFor(activation, discretisationInNbSlotsPerHour, acts)));
             }
             ind++;
         }
     }
 
     protected double calculatePaymentFor(FlexActivation activation,
-            int discretisationInNbSlotsPerHour) {
+            int discretisationInNbSlotsPerHour, List<Integer> acts) {
         return activation.getEnergyVolume() * (FIXED_PRICE / TO_KILO);
     }
 
