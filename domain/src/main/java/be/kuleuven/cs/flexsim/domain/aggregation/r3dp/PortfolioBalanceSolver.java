@@ -27,6 +27,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      * @param c     The initial imbalance profile to transform to imbalances.
      * @param specs The turbine specifications of the problem site.
      * @param gen   The wind speed error generator to use to realise different profiles.
+     * @param nrv   The profile containing the system net regulation volumes.
+     * @param pip   The positive imbalance price profiles.
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
@@ -52,8 +54,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         double singleStepVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
         double sum = 0;
         for (int i = 0; i < dur; i++) {
-            if (nrv.value(i) < 0) {
-                sum += (pip.value(i) / TO_KILO) * singleStepVolume;
+            if (nrv.value(idx + i) < 0) {
+                sum += (pip.value(idx + i) / TO_KILO) * singleStepVolume;
             }
         }
         return sum;
