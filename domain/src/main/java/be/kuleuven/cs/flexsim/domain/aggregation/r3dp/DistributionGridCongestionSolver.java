@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class DistributionGridCongestionSolver extends FlexibilityUtiliser<SolutionResults> {
     private static final double FIXED_PRICE = 35.4;
+    protected static final double TO_KILO = 10E3d;
     private final CongestionProfile congestion;
 
     @Nullable
@@ -90,8 +91,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
 
     protected double calculatePaymentFor(FlexActivation activation,
             int discretisationInNbSlotsPerHour) {
-        return activation.getEnergyVolume() * (FIXED_PRICE / 10E3d);
-
+        return activation.getEnergyVolume() * (FIXED_PRICE / TO_KILO);
     }
 
     @Override
