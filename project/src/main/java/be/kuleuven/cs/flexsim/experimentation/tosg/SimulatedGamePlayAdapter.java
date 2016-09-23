@@ -25,7 +25,7 @@ public class SimulatedGamePlayAdapter {
     public SimulatedGamePlayAdapter(List<FlexibilityUtiliser> actions) {
 
         this.s = Simulator.createSimulator(1);
-        this.actions = actions;
+        this.actions = Collections.unmodifiableList(actions);
     }
 
     /**
