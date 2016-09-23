@@ -81,7 +81,8 @@ public class WgmfGameRunner {
             director.playAutonomously();
             logger.warn(director.getFormattedResults().getFormattedResultString());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException caught.", e);
+            throw new RuntimeException(e);
         }
     }
 
