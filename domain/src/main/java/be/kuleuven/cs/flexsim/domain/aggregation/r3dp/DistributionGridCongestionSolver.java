@@ -10,13 +10,13 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import org.eclipse.jdt.annotation.Nullable;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.OptionalInt;
 
 /**
  * Represents a distribution grid management entity that solves current congestion problems in
@@ -64,22 +64,24 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     }
 
     private void processActivations(@Nullable final SolutionResults results) {
-        List<Integer> acts = consolidateActivations(results.getAllocationMaps());
-        for (final FlexibilityProvider p : getFlexibilityProviders()) {
-            processActivationsFor(p, results.getAllocationMaps().get(p),
-                    results.getDiscretisationInNbSlotsPerHour(), acts);
+        if (!getFlexibilityProviders().isEmpty()) {
+            List<Integer> acts = consolidateActivations(results.getAllocationMaps());
+            for (final FlexibilityProvider p : getFlexibilityProviders()) {
+                processActivationsFor(p, results.getAllocationMaps().get(p),
+                        results.getDiscretisationInNbSlotsPerHour(), acts);
+            }
         }
     }
 
     @VisibleForTesting
     List<Integer> consolidateActivations(
             ListMultimap<FlexibilityProvider, Boolean> values) {
-        OptionalInt min = values.keySet().stream().mapToInt(fpC -> values.get(fpC).size())
-                .reduce(Integer::min);
-        IntList toRet = new IntArrayList(
-                min.orElseThrow(() -> new IllegalStateException("No int found.")));
+        List<Integer> sizes = Lists.newArrayList();
+        values.keySet().forEach(p -> sizes.add(values.get(p).size()));
+        int min = Collections.min(sizes);
+        IntList toRet = new IntArrayList(min);
         for (int j = 0;
-             j < min.orElseThrow(() -> new IllegalStateException("No int found.")); j++) {
+             j < min; j++) {
             final int jj = j;
             toRet.add(
                     values.keySet().stream().mapToInt(fp -> values.get(fp).get(jj) ? 1 : 0).sum());
@@ -114,7 +116,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
 
     protected double calculatePaymentFor(FlexActivation activation,
             int discretisationInNbSlotsPerHour, List<Integer> acts) {
-        return activation.getEnergyVolume() * (FIXED_PRICE / TO_KILO);
+        return activation.getEnergyVolume() * (FIXED_PRICE / TO_KILO);//TODO divide budgets.
     }
 
     @Override
