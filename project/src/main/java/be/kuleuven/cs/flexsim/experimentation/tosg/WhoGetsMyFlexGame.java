@@ -81,7 +81,6 @@ public class WhoGetsMyFlexGame implements GameInstance<FlexibilityProvider, Flex
     public void init() {
         agentActionMap.forEach((FlexibilityProvider fp, FlexibilityUtiliser action) -> action
                 .registerFlexProvider(fp));
-
     }
 
     @Override

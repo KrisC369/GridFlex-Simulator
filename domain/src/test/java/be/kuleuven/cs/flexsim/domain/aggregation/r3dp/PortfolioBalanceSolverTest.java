@@ -103,6 +103,11 @@ public class PortfolioBalanceSolverTest {
         assertEqualArrays(expected, actual);
     }
 
+    @Test
+    public void testProcessActivations() {
+
+    }
+
     private CongestionProfile toWindAndBackWErrors(CableCurrentProfile c2,
             TurbineSpecification specs) {
         TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
