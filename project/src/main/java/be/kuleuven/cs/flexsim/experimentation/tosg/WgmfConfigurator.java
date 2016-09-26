@@ -36,7 +36,7 @@ public class WgmfConfigurator implements
             AbstractSolverFactory<SolutionResults> factory, TurbineSpecification specs,
             ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn) {
         this.imbalIn = imbalIn;
-        this.gd = new GammaDistribution(new MersenneTwister(SEED + currentSeed++), R3DP_GAMMA_SHAPE,
+        this.gd = new GammaDistribution(new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
         this.dataIn = inputData;
         this.specs = specs;
