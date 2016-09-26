@@ -58,7 +58,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         double sum = 0;
         for (int i = 0; i < dur; i++) {
             if (nrv.value(idx + i) < 0) {
-                sum += (pip.value(idx + i) / TO_KILO) * singleStepVolume / acts.get(idx + i);
+                sum += (pip.value(idx + i) / TO_KILO) * singleStepVolume / (double) acts
+                        .get(idx + i);
             }
         }
         return sum;

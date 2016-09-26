@@ -116,7 +116,14 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
 
     protected double calculatePaymentFor(FlexActivation activation,
             int discretisationInNbSlotsPerHour, List<Integer> acts) {
-        return activation.getEnergyVolume() * (FIXED_PRICE / TO_KILO);//TODO divide budgets.
+        int idx = (int) (activation.getStart() * discretisationInNbSlotsPerHour);
+        int dur = (int) (activation.getDuration() * discretisationInNbSlotsPerHour);
+        double singleStepVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
+        double sum = 0;
+        for (int i = 0; i < dur; i++) {
+            sum += (FIXED_PRICE / TO_KILO) * singleStepVolume / (double) acts.get(idx + i);
+        }
+        return sum;
     }
 
     @Override
