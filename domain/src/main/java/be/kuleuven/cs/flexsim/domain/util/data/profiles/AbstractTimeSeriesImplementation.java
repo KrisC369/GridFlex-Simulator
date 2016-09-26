@@ -61,8 +61,7 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-        InputStreamReader fileReader = new InputStreamReader(
-                new FileInputStream(file));
+        InputStreamReader fileReader = new InputStreamReader(new FileInputStream(file));
         Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
 
         for (CSVRecord record : records) {
