@@ -8,7 +8,6 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
-import be.kuleuven.cs.flexsim.experimentation.tosg.poc.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
@@ -39,7 +38,7 @@ public class WgmfGameRunner {
     private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
     private static final String DATAFILE = "2kwartOpEnNeer.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
-    private static final String COLUMN = "verlies aan energie";
+    private static final String IMBAL = "imbalance_prices.csv";
     private static final int NAGENTS_DEFAULT = 2;
     private static final int NREPS_DEFAULT = 1;
     private static final AbstractOptimalSolver.Solver SOLVER_DEFAULT = GUROBI;
@@ -70,18 +69,20 @@ public class WgmfGameRunner {
         try {
             WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
+            ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(DISTRIBUTIONFILE);
 
             WgmfConfigurator configurator = new WgmfConfigurator(dataIn, new SolverFactory(type),
-                    specs, distribution);
+                    specs, distribution, imbalIn);
             Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(nAgents, configurator,
                     repititions);
             GameDirector director = new GameDirector(game);
             director.playAutonomously();
             logger.warn(director.getFormattedResults().getFormattedResultString());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException caught.", e);
+            throw new IllegalStateException(e);
         }
     }
 
@@ -124,7 +125,7 @@ public class WgmfGameRunner {
             // oops, something went wrong
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("WgmfGameRunner", o);
-            System.err.println("Parsing failed.  Reason: " + exp.getMessage());
+            logger.error("Parsing failed.  Reason: " + exp.getMessage(), exp);
         }
     }
 

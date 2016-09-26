@@ -1,18 +1,19 @@
 package be.kuleuven.cs.flexsim.domain.energy.generation.wind;
 
 import com.google.auto.value.AutoValue;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,42 +104,13 @@ public abstract class TurbineSpecification {
      * @throws IOException If the resource cannot be found.
      */
     public static TurbineSpecification loadFromResource(final String filename) throws IOException {
-        int bladeLKey = -1;
-        int powerRKey = -1;
-        int hubHeightKey = -1;
-        int cutInKey = -1;
-        int cutOutKey = -1;
-        int windValuesKey = -1;
-        int powerValuesKey = -1;
-        int powerCoeffHeader = -1;
-
+        final List<Double> dataRead = Lists.newArrayList();
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
-        final CSVReader reader = new CSVReaderBuilder(new InputStreamReader(
-                new FileInputStream(file), Charset.defaultCharset())).build();
-        String[] headers = reader.readNext();
-
-        //set the column keys
-        for (int i = 0; i < headers.length; i++) {
-            String header = headers[i];
-            if (BLADE_LENGTH_HEADER.equalsIgnoreCase(header)) {
-                bladeLKey = i;
-            } else if (POWER_RATE_HEADER.equalsIgnoreCase(header)) {
-                powerRKey = i;
-            } else if (HUB_HEIGHT_HEADER.equalsIgnoreCase(header)) {
-                hubHeightKey = i;
-            } else if (CUT_IN_HEADER.equalsIgnoreCase(header)) {
-                cutInKey = i;
-            } else if (CUT_OUT_HEADER.equalsIgnoreCase(header)) {
-                cutOutKey = i;
-            } else if (WIND_VALUES_HEADER.equalsIgnoreCase(header)) {
-                windValuesKey = i;
-            } else if (POWER_VALUES_HEADER.equalsIgnoreCase(header)) {
-                powerValuesKey = i;
-            } else if (POWER_COEFF_HEADER.equalsIgnoreCase(header)) {
-                powerCoeffHeader = i;
-            }
-        }
+        CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
+        InputStreamReader fileReader = new InputStreamReader(
+                new FileInputStream(file));
+        Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
 
         double bladeLength = 0;
         double powerRate = 0;
@@ -148,22 +120,19 @@ public abstract class TurbineSpecification {
         IntList wind = new IntArrayList();
         DoubleList powerValues = new DoubleArrayList();
         DoubleList powerCoeffValues = new DoubleArrayList();
-
-        //fill in data arrays.
-        String[] values;
         boolean firstLine = true;
-        while ((values = reader.readNext()) != null) {
+        for (CSVRecord record : records) {
             if (firstLine) {
-                bladeLength = Double.valueOf(values[bladeLKey]);
-                powerRate = Double.valueOf(values[powerRKey]);
-                hubHeight = Double.valueOf(values[hubHeightKey]);
-                cutIn = Double.valueOf(values[cutInKey]);
-                cutOut = Double.valueOf(values[cutOutKey]);
+                bladeLength = Double.valueOf(record.get(BLADE_LENGTH_HEADER));
+                powerRate = Double.valueOf(record.get(POWER_RATE_HEADER));
+                hubHeight = Double.valueOf(record.get(HUB_HEIGHT_HEADER));
+                cutIn = Double.valueOf(record.get(CUT_IN_HEADER));
+                cutOut = Double.valueOf(record.get(CUT_OUT_HEADER));
                 firstLine = false;
             }
-            wind.add(Integer.valueOf(values[windValuesKey]));
-            powerValues.add(Double.valueOf(values[powerValuesKey]));
-            powerCoeffValues.add(Double.valueOf(values[powerCoeffHeader]));
+            wind.add(Integer.valueOf(record.get(WIND_VALUES_HEADER)));
+            powerValues.add(Double.valueOf(record.get(POWER_VALUES_HEADER)));
+            powerCoeffValues.add(Double.valueOf(record.get(POWER_COEFF_HEADER)));
         }
 
         int last = wind.get(wind.size() - 1);
@@ -179,6 +148,7 @@ public abstract class TurbineSpecification {
             corrPowerCoeffValues.set(wind.getInt(i), powerCoeffValues.get(i));
         }
 
+        fileReader.close();
         return new AutoValue_TurbineSpecification(bladeLength, powerRate, hubHeight, cutIn,
                 cutOut, corrPowerValues, corrPowerCoeffValues);
     }

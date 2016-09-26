@@ -13,7 +13,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.WindSpeedProfile;
  */
 public final class TurbineProfileConvertor {
     static final double TO_POWER = 1.73 * 15.6;
-    private static final double CONVERSION = 1.5d;
+    static final double CONVERSION = 1.5d;
     private static final double HOURS_PER_DAY = 24;
     private static final double SLOTS_PER_HOUR = 4;
     private static final double EPS = 0.00001;
@@ -56,7 +56,17 @@ public final class TurbineProfileConvertor {
     }
 
     /**
+     * @return The conversion of the initial profile to an imbalance profile with only positive
+     * values.
+     */
+    public CongestionProfile convertProfileTPositiveOnlyoImbalanceVolumes() {
+        return convertProfileToImbalanceVolumes().transform(v -> v > 0 ? v : 0);
+    }
+
+    /**
      * Calculate imbalance powerProfile from current and error sampled energy volumes.
+     * To give the volumes that are unpredictably excessive, the predicted values are subtracted
+     * from the actuals.
      *
      * @param tSPredicted  the Predicted output volumes.
      * @param tSCongestion the actual output volumes.
@@ -64,8 +74,11 @@ public final class TurbineProfileConvertor {
      */
     CongestionProfile calculateImbalanceVolumeFromActual(PowerValuesProfile tSPredicted) {
         //Don't forget to convert to given boosted profile.
+        //        return CongestionProfile.createFromTimeSeries(
+        //                tSPredicted.subtractValues(powerProfile).transform(p -> p * CONVERSION)
+        //                        .transform(p -> p / SLOTS_PER_HOUR));
         return CongestionProfile.createFromTimeSeries(
-                tSPredicted.subtractValues(powerProfile.transform(p -> p * CONVERSION))
+                powerProfile.subtractValues(tSPredicted).transform(p -> p * CONVERSION)
                         .transform(p -> p / SLOTS_PER_HOUR));
     }
 
@@ -77,8 +90,7 @@ public final class TurbineProfileConvertor {
      */
     PowerValuesProfile toPowerValues(WindSpeedProfile windprofile) {
         return PowerValuesProfile.createFromTimeSeries(windprofile
-                .transform(this::convertWindToPower).transform(p -> p * nbTurbines)
-                .transform(p -> p * CONVERSION));
+                .transform(this::convertWindToPower).transform(p -> p * nbTurbines));
     }
 
     /**
@@ -162,4 +174,16 @@ public final class TurbineProfileConvertor {
             return i + StrictMath.floor(perc * (j - i));
         }
     }
+
+    public CongestionProfile getOriginalCongestionProfile() {
+        return CongestionProfile
+                .createFromTimeSeries(powerProfile.transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
+    }
+
+    public CongestionProfile getPredictionCongestionProfile() {
+        return CongestionProfile.createFromTimeSeries(
+                toPowerValues(applyPredictionErrors(toWindSpeed()))
+                        .transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
+    }
+
 }

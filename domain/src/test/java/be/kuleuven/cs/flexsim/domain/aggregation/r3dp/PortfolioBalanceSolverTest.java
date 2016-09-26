@@ -79,12 +79,33 @@ public class PortfolioBalanceSolverTest {
     @Test
     public void testToWindAndBackProfiles() {
         PowerValuesProfile cableCurrentProfile2 = toWindAndBack(c2, specs);
-        List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER)
+        List<Double> expected = c2.transform(
+                p -> p * TurbineProfileConvertor.TO_POWER / TurbineProfileConvertor.CONVERSION)
                 .values();
         List<Double> actual = cableCurrentProfile2.values();
         //        assertEquals(expected, actual);
         //        printAvgDelta(expected, actual);
         assertEqualArrays(expected, actual);
+    }
+
+    @Test
+    public void testToWindAndBackProfiles2() throws IOException {
+        ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+                .loadFromCSV("windspeedDistributionsEmpty.csv");
+        this.generator = new WindErrorGenerator(SEED, distribution);
+        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
+        CongestionProfile orig = t.getOriginalCongestionProfile();
+        CongestionProfile cableCurrentProfile2 = t.getPredictionCongestionProfile();
+        List<Double> expected = orig.values();
+        List<Double> actual = cableCurrentProfile2.values();
+        //        assertEquals(expected, actual);
+        //        printAvgDelta(expected, actual);
+        assertEqualArrays(expected, actual);
+    }
+
+    @Test
+    public void testProcessActivations() {
+
     }
 
     private CongestionProfile toWindAndBackWErrors(CableCurrentProfile c2,
