@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
@@ -8,11 +8,18 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.flexsim.experimentation.tosg.ImbalancePriceInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.SolutionResultAdapter;
+import be.kuleuven.cs.flexsim.experimentation.tosg.SolverAdapter;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfConfigurator;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
 import be.kuleuven.cs.gametheory.Game;
 import be.kuleuven.cs.gametheory.GameDirector;
+import be.kuleuven.cs.gametheory.JPPFGameDirector;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -25,14 +32,14 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.GUROBI;
+import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.DUMMY;
 
 /**
  * Experiment runner for the Who-gets-my-flex game.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WgmfGameRunner {
+public class JppFWgmfGameRunner {
 
     private static final int SEED = 3722;
     private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
@@ -41,20 +48,20 @@ public class WgmfGameRunner {
     private static final String IMBAL = "imbalance_prices.csv";
     private static final int NAGENTS_DEFAULT = 2;
     private static final int NREPS_DEFAULT = 1;
-    private static final AbstractOptimalSolver.Solver SOLVER_DEFAULT = GUROBI;
-    protected static final Logger logger = LoggerFactory.getLogger(WgmfGameRunner.class);
+    private static final AbstractOptimalSolver.Solver SOLVER_DEFAULT = DUMMY;
+    protected static final Logger logger = LoggerFactory.getLogger(JppFWgmfGameRunner.class);
     protected final String loggerTag;
     private final AbstractOptimalSolver.Solver type;
     private final int nAgents;
     private final int repititions;
 
-    protected WgmfGameRunner(final int repititions, final int nAgents,
+    protected JppFWgmfGameRunner(final int repititions, final int nAgents,
             AbstractOptimalSolver.Solver type) {
         this(repititions, nAgents, type, "");
 
     }
 
-    protected WgmfGameRunner(final int repititions, final int nAgents,
+    protected JppFWgmfGameRunner(final int repititions, final int nAgents,
             AbstractOptimalSolver.Solver type, final String loggerTag) {
         this.type = type;
         this.loggerTag = loggerTag;
@@ -76,7 +83,7 @@ public class WgmfGameRunner {
         }
     }
 
-    public GameDirector getGameDirectorInstance() throws IOException {
+    public JPPFGameDirector getGameDirectorInstance() throws IOException {
         WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
         TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
         ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
@@ -88,14 +95,14 @@ public class WgmfGameRunner {
                         .create(dataIn, new SolverFactory(type), specs, distribution, imbalIn));
         Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(nAgents, configurator,
                 repititions);
-        return new GameDirector(game);
+        return new JPPFGameDirector(game);
     }
 
     public static void main(String[] args) {
         parseInputAndExec(args).execute();
     }
 
-    public static WgmfGameRunner parseInputAndExec(String[] args) {
+    public static JppFWgmfGameRunner parseInputAndExec(String[] args) {
         Options o = new Options();
         o.addOption("n", true, "The number of participating agents");
         o.addOption("r", true, "The number of repititions");
@@ -124,7 +131,7 @@ public class WgmfGameRunner {
             }
             logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
                     + " agents using: " + solver.toString());
-            return new WgmfGameRunner(nReps, nAgents, solver);
+            return new JppFWgmfGameRunner(nReps, nAgents, solver);
 
         } catch (ParseException exp) {
             // oops, something went wrong

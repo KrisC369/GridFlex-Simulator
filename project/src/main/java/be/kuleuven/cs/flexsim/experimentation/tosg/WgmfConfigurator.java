@@ -32,16 +32,14 @@ public class WgmfConfigurator implements
     private final AbstractSolverFactory<SolutionResults> factory;
     private int currentSeed = 0;
 
-    public WgmfConfigurator(WindBasedInputData inputData,
-            AbstractSolverFactory<SolutionResults> factory, TurbineSpecification specs,
-            ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn) {
-        this.imbalIn = imbalIn;
+    public WgmfConfigurator(WgmfGameParams wgmfGameParams) {
+        this.imbalIn = wgmfGameParams.getImbalIn();
         this.gd = new GammaDistribution(new MersenneTwister(SEED), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
-        this.dataIn = inputData;
-        this.specs = specs;
-        this.distribution = distribution;
-        this.factory = factory;
+        this.dataIn = wgmfGameParams.getInputData();
+        this.specs = wgmfGameParams.getSpecs();
+        this.distribution = wgmfGameParams.getDistribution();
+        this.factory = wgmfGameParams.getFactory();
     }
 
     @Override

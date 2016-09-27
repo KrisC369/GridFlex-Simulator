@@ -99,4 +99,9 @@ public class GameDirector {
     }
     // TODO check state (have experiments been run or not, before drawing upon
     // results).
+
+    Game<?, ?> getGame() {
+        return game;
+    }
+
 }

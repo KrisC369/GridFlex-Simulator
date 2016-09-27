@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  * @param <K> The type of actions.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class Game<N, K> {
+public class JPPFGame<N, K> {
     private static final String CONSOLE = "CONSOLE";
     private static final String CONFIGURING = "Configuring instance: ";
     private static final String EXECUTING = "Executing instance: ";
@@ -42,7 +42,7 @@ public class Game<N, K> {
      * @param config The configurator instance.
      * @param reps   The number of repetitions.
      */
-    public Game(final int agents, final GameConfigurator<N, K> config, final int reps) {
+    public JPPFGame(final int agents, final GameConfigurator<N, K> config, final int reps) {
         this.agents = agents;
         this.actions = config.getActionSpaceSize();
         this.agentGen = config;
