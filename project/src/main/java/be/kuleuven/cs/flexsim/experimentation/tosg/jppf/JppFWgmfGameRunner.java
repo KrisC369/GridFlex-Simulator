@@ -1,11 +1,9 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
-import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.experimentation.tosg.ImbalancePriceInputData;
@@ -17,9 +15,8 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
-import be.kuleuven.cs.gametheory.Game;
-import be.kuleuven.cs.gametheory.GameDirector;
-import be.kuleuven.cs.gametheory.JPPFGameDirector;
+import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
+import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -69,21 +66,7 @@ public class JppFWgmfGameRunner {
         this.repititions = repititions;
     }
 
-    /**
-     * Main start hook for these experimentations.
-     */
-    public void execute() {
-        try {
-            GameDirector director = getGameDirectorInstance();
-            director.playAutonomously();
-            logger.warn(director.getFormattedResults().getFormattedResultString());
-        } catch (IOException e) {
-            logger.error("IOException caught.", e);
-            throw new IllegalStateException(e);
-        }
-    }
-
-    public JPPFGameDirector getGameDirectorInstance() throws IOException {
+    public ConfigurableGameDirector getGameDirectorInstance() throws IOException {
         WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
         TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
         ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
@@ -93,13 +76,9 @@ public class JppFWgmfGameRunner {
         WgmfConfigurator configurator = new WgmfConfigurator(
                 WgmfGameParams
                         .create(dataIn, new SolverFactory(type), specs, distribution, imbalIn));
-        Game<FlexibilityProvider, FlexibilityUtiliser> game = new Game<>(nAgents, configurator,
-                repititions);
-        return new JPPFGameDirector(game);
-    }
-
-    public static void main(String[] args) {
-        parseInputAndExec(args).execute();
+        ConfigurableGame game = new ConfigurableGame(nAgents,
+                configurator.getActionSpaceSize(), repititions);
+        return new ConfigurableGameDirector(game);
     }
 
     public static JppFWgmfGameRunner parseInputAndExec(String[] args) {
@@ -142,7 +121,7 @@ public class JppFWgmfGameRunner {
         }
     }
 
-    private class SolverFactory implements AbstractSolverFactory<SolutionResults> {
+    public class SolverFactory implements AbstractSolverFactory<SolutionResults> {
         private AbstractOptimalSolver.Solver type;
 
         private SolverFactory(AbstractOptimalSolver.Solver type) {

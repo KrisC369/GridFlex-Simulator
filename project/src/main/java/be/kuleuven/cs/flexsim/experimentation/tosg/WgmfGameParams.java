@@ -6,8 +6,10 @@ import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import com.google.auto.value.AutoValue;
 
+import java.io.Serializable;
+
 @AutoValue
-public abstract class WgmfGameParams {
+public abstract class WgmfGameParams implements Serializable {
 
     public abstract WindBasedInputData getInputData();
 

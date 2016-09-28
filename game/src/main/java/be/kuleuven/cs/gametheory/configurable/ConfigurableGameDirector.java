@@ -1,18 +1,19 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.configurable;
 
+import be.kuleuven.cs.gametheory.AbstractGameDirector;
+import be.kuleuven.cs.gametheory.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.GameInstanceResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class JPPFGameDirector<N, K> extends GameDirector {
+public class ConfigurableGameDirector<N, K>
+        extends AbstractGameDirector<GameInstanceConfiguration, GameInstanceResult> {
 
-    private final Set<AbstractGameInstance<N, K>> playables;
     private final List<GameInstanceResult> results;
 
     /**
@@ -20,12 +21,8 @@ public class JPPFGameDirector<N, K> extends GameDirector {
      *
      * @param game The game to direct.
      */
-    public JPPFGameDirector(Game<N, K> game) {
+    public ConfigurableGameDirector(ConfigurableGame game) {
         super(game);
-        this.playables = Sets.newConcurrentHashSet();
-        for (GameInstance gi : game.getGameInstances()) {
-            this.playables.add((AbstractGameInstance) gi);
-        }
         this.results = Lists.newArrayList();
     }
 
@@ -42,32 +39,23 @@ public class JPPFGameDirector<N, K> extends GameDirector {
                     "The played instance does not occur in the current game.");
         }
         this.results.add(gir);
-        if (playables.isEmpty()) {
+        if (getInternalPlayables().isEmpty()) {
             runPostGame(results);
         }
     }
 
     private void runPostGame(List<GameInstanceResult> results) {
         getGame().gatherResults(results);
-        getGame().logResults();
+        logResults();
     }
 
     private boolean crossoff(GameInstanceResult gir) {
-        for (AbstractGameInstance gi : Sets.newConcurrentHashSet(playables)) {
-            if (gi.getConfig().getAgentActionMap()
+        for (GameInstanceConfiguration gi : Sets.newConcurrentHashSet(getInternalPlayables())) {
+            if (gi.getAgentActionMap()
                     .equals(gir.getGameInstanceConfig().getAgentActionMap())) {
-                return playables.remove(gi);
+                return getInternalPlayables().remove(gi);
             }
         }
         return false;
-    }
-
-    /**
-     * Return all the playable versions of this game.
-     *
-     * @return the playable variations.
-     */
-    public List<GameInstanceParams> getPlayableAbstractInstanceVersions() {
-        return Collections.unmodifiableList(Lists.newArrayList(this.playables));
     }
 }

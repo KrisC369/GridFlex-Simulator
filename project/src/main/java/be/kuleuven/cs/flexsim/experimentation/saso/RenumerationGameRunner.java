@@ -1,15 +1,17 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
+import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
+import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.experimentation.techreport.RetributionFactorSensitivityRunner;
 import be.kuleuven.cs.flexsim.io.ResultWriter;
-import be.kuleuven.cs.gametheory.Game;
-import be.kuleuven.cs.gametheory.GameDirector;
 import be.kuleuven.cs.gametheory.GameResult;
 import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
+import be.kuleuven.cs.gametheory.standalone.Game;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
 import com.google.common.collect.Lists;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.DumperOptions;
@@ -50,7 +52,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
                 final double retrb2 = retributionFactor2 / factor;
                 final RenumerationGameConfigurator config = new RenumerationGameConfigurator(
                         retrb1, retrb2, getTwister());
-                final GameDirector director = new GameDirector(
+                final GameDirector<Site, BRPAggregator> director = new GameDirector<>(
                         new Game<>(nAgents, config, repititions));
 
                 final List<ExperimentAtom> experiments = adapt(director);
@@ -97,7 +99,7 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
         LoggerFactory.getLogger("YAML").info(writer.toString());
     }
 
-    private List<ExperimentAtom> adapt(final GameDirector dir) {
+    private List<ExperimentAtom> adapt(final GameDirector<Site, BRPAggregator> dir) {
         final List<ExperimentAtom> experiments = Lists.newArrayList();
         for (final Playable p : dir.getPlayableVersions()) {
             this.incrementCounter();

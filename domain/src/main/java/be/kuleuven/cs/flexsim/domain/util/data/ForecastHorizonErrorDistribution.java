@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @AutoValue
-public abstract class ForecastHorizonErrorDistribution {
+public abstract class ForecastHorizonErrorDistribution implements Serializable {
 
     ForecastHorizonErrorDistribution() {
     }

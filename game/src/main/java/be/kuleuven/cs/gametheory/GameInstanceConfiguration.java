@@ -2,13 +2,14 @@ package be.kuleuven.cs.gametheory;
 
 import com.google.common.collect.Maps;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class GameInstanceConfiguration {
+public class GameInstanceConfiguration implements Serializable {
     private final int agentSize;
     private final int actionSize;
 
@@ -20,7 +21,7 @@ public class GameInstanceConfiguration {
         this.agentActionMap = Maps.newLinkedHashMap();
     }
 
-    void fixAgentToAction(int tokenAgent, int tokenAction) {
+    public void fixAgentToAction(int tokenAgent, int tokenAction) {
         agentActionMap.put(tokenAgent, tokenAction);
     }
 

@@ -1,8 +1,8 @@
 package be.kuleuven.cs.flexsim.examples;
 
 import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
-import be.kuleuven.cs.gametheory.Game;
-import be.kuleuven.cs.gametheory.GameDirector;
+import be.kuleuven.cs.gametheory.standalone.Game;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
 import be.kuleuven.cs.gametheory.GameResultWriter;
 
 /**

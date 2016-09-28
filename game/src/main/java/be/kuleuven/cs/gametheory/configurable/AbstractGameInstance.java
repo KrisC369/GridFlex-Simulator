@@ -1,5 +1,8 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.configurable;
 
+import be.kuleuven.cs.gametheory.GameInstance;
+import be.kuleuven.cs.gametheory.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.GameInstanceResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
@@ -28,6 +31,7 @@ public abstract class AbstractGameInstance<N, K> implements GameInstance<N, K> {
     }
 
     @Override
+    @Deprecated
     public void fixActionToAgent(N agent, K action) {
         agents.add(agent);
         agentActionMap.put(agent, action);
