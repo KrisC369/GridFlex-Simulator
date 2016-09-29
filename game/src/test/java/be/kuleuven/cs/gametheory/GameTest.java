@@ -6,6 +6,8 @@ import static org.mockito.Mockito.mock;
 import java.util.List;
 import java.util.Map;
 
+import be.kuleuven.cs.gametheory.standalone.Game;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
 import org.junit.Before;
 import org.junit.Test;
 

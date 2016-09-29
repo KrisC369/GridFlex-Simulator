@@ -3,6 +3,8 @@ package be.kuleuven.cs.gametheory;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import be.kuleuven.cs.gametheory.standalone.Game;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,23 +1,23 @@
 package be.kuleuven.cs.flexsim.experimentation.techreport;
 
-import java.util.List;
-
-import org.apache.commons.math3.random.MersenneTwister;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
-
+import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
+import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.io.ResultWriter;
-import be.kuleuven.cs.gametheory.Game;
-import be.kuleuven.cs.gametheory.GameDirector;
 import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
+import be.kuleuven.cs.gametheory.standalone.Game;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
+import com.google.common.collect.Lists;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * An example class running some experiments.
@@ -96,7 +96,7 @@ public class RetributionFactorSensitivityRunner {
         }
     }
 
-    private List<ExperimentAtom> adapt(final GameDirector dir) {
+    private List<ExperimentAtom> adapt(final GameDirector<Site, BRPAggregator> dir) {
         final List<ExperimentAtom> experiments = Lists.newArrayList();
         for (final Playable p : dir.getPlayableVersions()) {
             this.counter++;
@@ -139,8 +139,7 @@ public class RetributionFactorSensitivityRunner {
     }
 
     /**
-     * @param counter
-     *            the counter to set
+     * @param counter the counter to set
      */
     protected final void incrementCounter() {
         this.counter = counter + 1;

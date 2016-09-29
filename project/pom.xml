@@ -75,6 +75,24 @@
             <artifactId>commons-cli</artifactId>
             <version>1.2</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jppf/jppf-client -->
+        <dependency>
+            <groupId>org.jppf</groupId>
+            <artifactId>jppf-client</artifactId>
+            <version>5.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jppf</groupId>
+            <artifactId>jppf-server</artifactId>
+            <version>5.2.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jppf</groupId>
+            <artifactId>jppf-node</artifactId>
+            <version>5.2.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

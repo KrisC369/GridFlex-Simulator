@@ -8,6 +8,7 @@ package be.kuleuven.cs.gametheory;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @FunctionalInterface
+@Deprecated
 public interface Agent<T> {
     /**
      * Returns the concrete agent.

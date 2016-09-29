@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.io.ResultWriter;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
 
 /**
  * Writes game results to this writer.
