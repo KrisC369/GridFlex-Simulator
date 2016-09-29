@@ -8,6 +8,8 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import be.kuleuven.cs.gametheory.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import org.jppf.server.JPPFDriver;
+import org.jppf.utils.JPPFConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +33,8 @@ public class WgmfJppfTaskTest {
     private WgmfJppfTask task;
     private final String PARAMS = "test";
     private ExperimentParams expP;
+    @SuppressWarnings("null")
+    private static JPPFDriver driver;
 
     @Before
     public void setUp() {
@@ -55,6 +59,10 @@ public class WgmfJppfTaskTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        JPPFConfiguration.getProperties().setBoolean("jppf.local.node.enabled",
+                true);
+        JPPFDriver.main(new String[] { "noLauncher" });
+        driver = JPPFDriver.getInstance();
     }
 
     @Test
