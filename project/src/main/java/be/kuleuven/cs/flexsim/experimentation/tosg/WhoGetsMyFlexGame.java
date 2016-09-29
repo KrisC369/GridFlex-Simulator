@@ -8,15 +8,14 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.WindErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gametheory.GameInstance;
+import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SimulatedGamePlayAdapter;
+import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.gametheory.configurable.AbstractGameInstance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Game representing the strategic choice of providing your flexibility as a flex consumer to 1)
@@ -24,11 +23,9 @@ import java.util.Set;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WhoGetsMyFlexGame implements GameInstance<FlexibilityProvider, FlexibilityUtiliser> {
+public class WhoGetsMyFlexGame extends
+                               AbstractGameInstance<FlexibilityProvider, FlexibilityUtiliser> {
 
-    private final Set<FlexibilityProvider> agents;
-    private final List<FlexibilityUtiliser> actions;
-    private final Map<FlexibilityProvider, FlexibilityUtiliser> agentActionMap;
     private final TurbineSpecification specs;
     private final WindBasedInputData dataIn;
     private final ImbalancePriceInputData imbalIn;
@@ -44,53 +41,46 @@ public class WhoGetsMyFlexGame implements GameInstance<FlexibilityProvider, Flex
      * @param gen            The generator instance for generating wind forecast errors.
      * @param solverplatform The specific solver factory platform to use.
      */
-    public WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
+    private WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
             ImbalancePriceInputData imbalIn, WindErrorGenerator gen,
             AbstractSolverFactory<SolutionResults> solverplatform) {
+        super(Lists.newArrayList(new PortfolioBalanceSolver(solverplatform,
+                        dataIn.getCableCurrentProfile(), imbalIn
+                        .getNetRegulatedVolumeProfile(),
+                        imbalIn.getPositiveImbalancePriceProfile(), specs, gen),
+                new DistributionGridCongestionSolver(solverplatform,
+                        dataIn.getCongestionProfile())));
         this.dataIn = dataIn;
         this.imbalIn = imbalIn;
         this.generator = gen;
         this.solverplatform = solverplatform;
-        this.agents = Sets.newLinkedHashSet();
-        this.actions = Lists.newArrayList();
-        //            this.nAgents = nAgents;
-        this.agentActionMap = Maps.newLinkedHashMap();
         this.specs = specs;
-        this.actions.add(new PortfolioBalanceSolver(solverplatform,
-                this.dataIn.getCableCurrentProfile(), imbalIn.getNetRegulatedVolumeProfile(),
-                imbalIn.getPositiveImbalancePriceProfile(), specs, generator));
-        this.actions.add(new DistributionGridCongestionSolver(solverplatform,
-                this.dataIn.getCongestionProfile()));
+    }
+
+    /**
+     * Constructor from param object.
+     *
+     * @param params   The input params for this game.
+     * @param baseSeed The base seed to work from.
+     */
+    public WhoGetsMyFlexGame(WgmfGameParams params, long baseSeed) {
+        this(params.getInputData(), params.getSpecs(), params.getImbalIn(),
+                new WindErrorGenerator(baseSeed, params.getDistribution()), params.getFactory());
     }
 
     @Override
     public Map<FlexibilityProvider, Long> getPayOffs() {
         Map<FlexibilityProvider, Long> results = Maps.newLinkedHashMap();
-        agentActionMap.forEach(
+        getAgentToActionMapping().forEach(
                 (agent, action) -> results.put(agent, agent.getMonetaryCompensationValue()));
         return results;
     }
 
     @Override
-    public void fixActionToAgent(FlexibilityProvider agent, FlexibilityUtiliser action) {
-        agents.add(agent);
-        agentActionMap.put(agent, action);
-    }
-
-    @Override
     public void init() {
-        agentActionMap.forEach((FlexibilityProvider fp, FlexibilityUtiliser action) -> action
-                .registerFlexProvider(fp));
-    }
-
-    @Override
-    public List<FlexibilityUtiliser> getActionSet() {
-        return Collections.unmodifiableList(actions);
-    }
-
-    @Override
-    public Map<FlexibilityProvider, FlexibilityUtiliser> getAgentToActionMapping() {
-        return Collections.unmodifiableMap(agentActionMap);
+        getAgentToActionMapping()
+                .forEach((FlexibilityProvider fp, FlexibilityUtiliser action) -> action
+                        .registerFlexProvider(fp));
     }
 
     @Override
@@ -100,7 +90,7 @@ public class WhoGetsMyFlexGame implements GameInstance<FlexibilityProvider, Flex
 
     @Override
     public void play() {
-        new SimulatedGamePlayAdapter(actions).play();
+        new SimulatedGamePlayAdapter(getActionSet()).play();
     }
 
 }

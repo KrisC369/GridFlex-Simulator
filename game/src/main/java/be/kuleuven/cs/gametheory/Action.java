@@ -8,6 +8,7 @@ package be.kuleuven.cs.gametheory;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @FunctionalInterface
+@Deprecated
 public interface Action<T> {
     /**
      * Returns the target for this action. Eg. if this target is a computation

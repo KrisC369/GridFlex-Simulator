@@ -1,11 +1,10 @@
 package be.kuleuven.cs.gametheory;
 
-import static org.junit.Assert.assertEquals;
-
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
-import autovalue.shaded.com.google.common.common.collect.Lists;
+import static org.junit.Assert.assertEquals;
 
 public class GameResultTest {
 

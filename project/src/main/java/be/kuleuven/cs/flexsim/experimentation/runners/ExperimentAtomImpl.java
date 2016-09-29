@@ -1,8 +1,8 @@
 package be.kuleuven.cs.flexsim.experimentation.runners;
 
-import java.util.List;
-
 import com.google.common.collect.Lists;
+
+import java.util.List;
 
 /**
  * Concrete implementation for the experiment task with a callback mechanism.
@@ -14,8 +14,9 @@ public abstract class ExperimentAtomImpl implements ExperimentAtom {
     final List<ExperimentCallback> callbacks = Lists.newArrayList();
 
     @Override
-    public void run() {
+    public Object call() {
         doRun();
+        return null;
     }
 
     protected final void doRun() {

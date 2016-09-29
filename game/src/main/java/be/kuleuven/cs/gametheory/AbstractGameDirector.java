@@ -2,11 +2,9 @@ package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.io.Writable;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This instance governs the sequential rules and protocols involved when
@@ -14,51 +12,21 @@ import java.util.Set;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class GameDirector {
+public class AbstractGameDirector<T, I> {
 
-    private final Game<?, ?> game;
-    private final Set<Playable> playables;
+    private final AbstractGame<T, I> game;
+    private final List<T> playables;
 
     /**
      * Default constructor.
      *
      * @param game The game to direct.
      */
-    public GameDirector(final Game<?, ?> game) {
+    public AbstractGameDirector(final AbstractGame<T, I> game) {
         this.game = game;
-        game.configureInstances();
-        this.playables = Sets.newConcurrentHashSet();
+        this.game.configureInstances();
+        this.playables = Lists.newArrayList();
         this.playables.addAll(game.getGameInstances());
-    }
-
-    /**
-     * Call this method when an instance of the game has been played. This
-     * method will perform post game-play clean-ups and hooks.
-     *
-     * @param finished The finished game variation.
-     */
-    public void notifyVersionHasBeenPlayed(final Playable finished) {
-        final boolean successful = playables.remove(finished);
-        if (!successful) {
-            throw new IllegalArgumentException(
-                    "The played instance does not occur in the current game.");
-        }
-        if (playables.isEmpty()) {
-            runPostGame();
-        }
-    }
-
-    private void runPostGame() {
-        game.gatherResults();
-        game.logResults();
-    }
-
-    /**
-     * Play a full game specification autonomously.
-     */
-    public void playAutonomously() {
-        game.runExperiments();
-        runPostGame();
     }
 
     /**
@@ -66,8 +34,23 @@ public class GameDirector {
      *
      * @return the playable variations.
      */
-    public List<Playable> getPlayableVersions() {
+    public List<T> getPlayableVersions() {
         return Collections.unmodifiableList(Lists.newArrayList(this.playables));
+    }
+
+    /**
+     * @return The internal list, backed.
+     */
+    protected List<T> getInternalPlayables() {
+        return this.playables;
+    }
+
+    protected void logResults() {
+        getGame().logResults();
+    }
+
+    protected void runExperiments() {
+        getGame().runExperiments();
     }
 
     /**
@@ -99,4 +82,12 @@ public class GameDirector {
     }
     // TODO check state (have experiments been run or not, before drawing upon
     // results).
+
+    /**
+     * @return This director's game instance.
+     */
+    protected AbstractGame<T, I> getGame() {
+        return game;
+    }
+
 }

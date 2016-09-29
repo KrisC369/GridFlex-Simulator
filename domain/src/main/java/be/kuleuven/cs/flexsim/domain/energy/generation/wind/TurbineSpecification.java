@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @AutoValue
-public abstract class TurbineSpecification {
+public abstract class TurbineSpecification implements Serializable {
     private static final String BLADE_LENGTH_HEADER = "BladeLength";
     private static final String POWER_RATE_HEADER = "RatedPower";
     private static final String HUB_HEIGHT_HEADER = "HubHeight";
