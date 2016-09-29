@@ -1,7 +1,8 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.data;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.NetRegulatedVolumeProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PositiveImbalancePriceProfile;
+import be.kuleuven.cs.flexsim.experimentation.tosg.AutoValue_ImbalancePriceInputData;
 import com.google.auto.value.AutoValue;
 
 import java.io.FileNotFoundException;

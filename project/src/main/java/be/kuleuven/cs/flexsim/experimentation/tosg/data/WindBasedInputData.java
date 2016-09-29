@@ -1,7 +1,8 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.data;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.experimentation.tosg.AutoValue_WindBasedInputData;
 import com.google.auto.value.AutoValue;
 
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.configurable;
 
 import com.google.common.collect.Maps;
 

@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.adapters;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;

@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.solver.dummy;
+package be.kuleuven.cs.flexsim.solver.optimal.dummy;
 
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
