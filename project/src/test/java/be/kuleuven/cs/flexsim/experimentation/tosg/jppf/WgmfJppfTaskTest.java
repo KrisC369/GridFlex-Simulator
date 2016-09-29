@@ -10,7 +10,8 @@ import be.kuleuven.cs.gametheory.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import org.jppf.server.JPPFDriver;
 import org.jppf.utils.JPPFConfiguration;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class WgmfJppfTaskTest {
     @SuppressWarnings("null")
     private static JPPFDriver driver;
 
-    @Before
+    @BeforeClass
     public void setUp() {
         WindBasedInputData dataIn = null;
         try {
@@ -63,6 +64,14 @@ public class WgmfJppfTaskTest {
                 true);
         JPPFDriver.main(new String[] { "noLauncher" });
         driver = JPPFDriver.getInstance();
+    }
+
+    /**
+     * Stops the JPPF driver.
+     */
+    @AfterClass
+    public static void tearDown() {
+        driver.shutdown();
     }
 
     @Test
