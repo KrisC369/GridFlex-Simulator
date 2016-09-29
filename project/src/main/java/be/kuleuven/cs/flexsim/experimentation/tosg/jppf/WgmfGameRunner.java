@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static be.kuleuven.cs.flexsim.experimentation.tosg.WgmfInputParser.parseInputAndExec;
+import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -38,12 +39,15 @@ public class WgmfGameRunner {
 
     private final ExecutionStrategy strategy;
 
-    public WgmfGameRunner(ExperimentParams expP) {
-        //        WgmfAgentGenerator configurator = new WgmfAgentGenerator(SEED);
+    public WgmfGameRunner(ExperimentParams expP, ExecutionStrategy strat) {
         ConfigurableGame game = new ConfigurableGame(expP.getNAgents(),
                 ACTION_SIZE, expP.getNRepititions());
         this.director = new ConfigurableGameDirector(game);
-        this.strategy = ExecutionStrategy.REMOTE;
+        this.strategy = strat;
+    }
+
+    private WgmfGameRunner(ExperimentParams expP) {
+        this(expP, REMOTE);
     }
 
     public static void main(String[] args) {

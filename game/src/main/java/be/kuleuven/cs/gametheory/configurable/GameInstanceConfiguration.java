@@ -12,6 +12,7 @@ import java.io.Serializable;
  */
 @AutoValue
 public abstract class GameInstanceConfiguration implements Serializable {
+    private static final long DEF_SEED = 12345L;
 
     GameInstanceConfiguration() {
     }
@@ -40,7 +41,7 @@ public abstract class GameInstanceConfiguration implements Serializable {
      * @return A builder instance.
      */
     public static Builder builder() {
-        return new AutoValue_GameInstanceConfiguration.Builder();
+        return new AutoValue_GameInstanceConfiguration.Builder().setSeed(DEF_SEED);
     }
 
     abstract Builder toBuilder();
@@ -61,19 +62,19 @@ public abstract class GameInstanceConfiguration implements Serializable {
      */
     @AutoValue.Builder
     public abstract static class Builder {
-        abstract Builder setAgentSize(int value);
+        public abstract Builder setAgentSize(int value);
 
-        abstract Builder setActionSize(int value);
+        public abstract Builder setActionSize(int value);
 
-        abstract Builder setSeed(long value);
+        public abstract Builder setSeed(long value);
 
         abstract ImmutableMap.Builder<Integer, Integer> agentActionMapBuilder();
 
-        Builder fixAgentToAction(int tokenAgent, int tokenAction) {
+        public Builder fixAgentToAction(int tokenAgent, int tokenAction) {
             agentActionMapBuilder().put(tokenAgent, tokenAction);
             return this;
         }
 
-        abstract GameInstanceConfiguration build();
+        public abstract GameInstanceConfiguration build();
     }
 }
