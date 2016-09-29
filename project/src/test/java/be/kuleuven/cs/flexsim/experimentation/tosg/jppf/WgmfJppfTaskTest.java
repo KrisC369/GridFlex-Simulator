@@ -11,6 +11,7 @@ import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import org.jppf.server.JPPFDriver;
 import org.jppf.utils.JPPFConfiguration;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -38,6 +39,14 @@ public class WgmfJppfTaskTest {
     private static JPPFDriver driver;
 
     @BeforeClass
+    public static void setUpClass() {
+        JPPFConfiguration.getProperties().setBoolean("jppf.local.node.enabled",
+                true);
+        JPPFDriver.main(new String[] { "noLauncher" });
+        driver = JPPFDriver.getInstance();
+    }
+
+    @Before
     public void setUp() {
         WindBasedInputData dataIn = null;
         try {
@@ -60,10 +69,6 @@ public class WgmfJppfTaskTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        JPPFConfiguration.getProperties().setBoolean("jppf.local.node.enabled",
-                true);
-        JPPFDriver.main(new String[] { "noLauncher" });
-        driver = JPPFDriver.getInstance();
     }
 
     /**
