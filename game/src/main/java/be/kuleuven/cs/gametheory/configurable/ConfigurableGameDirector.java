@@ -1,7 +1,6 @@
 package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.gametheory.AbstractGameDirector;
-import be.kuleuven.cs.gametheory.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.GameInstanceResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -9,6 +8,9 @@ import com.google.common.collect.Sets;
 import java.util.List;
 
 /**
+ * A game director for configurable games. This director generates configurations that can be
+ * used for instantiation later as opposed to the direction of generating runnable instances.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class ConfigurableGameDirector<N, K>

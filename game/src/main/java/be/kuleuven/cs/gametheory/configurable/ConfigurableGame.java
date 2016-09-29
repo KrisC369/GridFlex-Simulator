@@ -2,7 +2,6 @@ package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
-import be.kuleuven.cs.gametheory.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.GameInstanceResult;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
@@ -59,13 +58,13 @@ public class ConfigurableGame
                 final List<ICombinatoricsVector<Integer>> possCombinatoricsVectors = gen
                         .generateAllObjects();
                 assert possCombinatoricsVectors.size() == combinations;
-                GameInstanceConfiguration config = new GameInstanceConfiguration(
-                        agents, actions);
+                GameInstanceConfiguration.Builder builder = GameInstanceConfiguration.builder()
+                        .setAgentSize(agents).setActionSize(actions);
                 int ag = 0;
                 for (final Integer k : possCombinatoricsVectors.get(i)) {
-                    config.fixAgentToAction(ag++, k);
+                    builder.fixAgentToAction(ag++, k);
                 }
-                getInternalInstanceList().add(config);
+                getInternalInstanceList().add(builder.build());
             }
         }
     }

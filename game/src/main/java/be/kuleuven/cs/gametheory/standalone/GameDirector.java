@@ -29,7 +29,7 @@ public class GameDirector<N, K>
      * @param finished The finished game variation.
      */
     public void notifyVersionHasBeenPlayed(final Playable finished) {
-        final boolean successful = getPlayableVersions().remove(finished);
+        final boolean successful = getInternalPlayables().remove(finished);
         if (!successful) {
             throw new IllegalArgumentException(
                     "The played instance does not occur in the current game.");

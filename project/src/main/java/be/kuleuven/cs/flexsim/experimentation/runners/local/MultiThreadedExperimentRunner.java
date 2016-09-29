@@ -1,16 +1,17 @@
 package be.kuleuven.cs.flexsim.experimentation.runners.local;
 
-import java.util.ArrayList;
+import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
+import org.slf4j.LoggerFactory;
+
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import org.slf4j.LoggerFactory;
-
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
-import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
+import static java.lang.Thread.sleep;
 
 /**
  * An example class running some experiments.
@@ -20,15 +21,17 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 public class MultiThreadedExperimentRunner implements ExperimentRunner {
 
     private final ExecutorService executor;
+    private static final int SLEEPTIME = 100;
+    private Optional<List<Future<Object>>> futures;
 
     /**
      * Run the experiment multi-threaded with a specified number of threads.
      *
-     * @param threads
-     *            The number of threads.
+     * @param threads The number of threads.
      */
-    public MultiThreadedExperimentRunner(final int threads) {
+    MultiThreadedExperimentRunner(final int threads) {
         this(Executors.newFixedThreadPool(threads));
+        this.futures = futures.empty();
     }
 
     protected MultiThreadedExperimentRunner(final ExecutorService exec) {
@@ -39,18 +42,12 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
      * Run the experiments in different threads, varying a parameter between 0
      * and 1 with a step size defined at construction.
      *
-     * @param experiments
-     *            The experiment collection to take tasks from.
+     * @param experiments The experiment collection to take tasks from.
      */
     @Override
-    public void runExperiments(
-            final Collection<? extends ExperimentAtom> experiments) {
-        final List<Callable<Object>> todo = new ArrayList<>(experiments.size());
-        for (final ExperimentAtom e : experiments) {
-            todo.add(Executors.callable(e));
-        }
+    public void runExperiments(Collection<? extends Callable<Object>> experiments) {
         try {
-            executor.invokeAll(todo);
+            this.futures = Optional.of(executor.invokeAll(experiments));
         } catch (final InterruptedException e1) {
             LoggerFactory.getLogger(MultiThreadedExperimentRunner.class)
                     .warn("Interrupt called during invocation", e1);
@@ -66,5 +63,20 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
     @Override
     public synchronized boolean isRunning() {
         return !this.executor.isTerminated();
+    }
+
+    @Override
+    public List<Future<Object>> waitAndGetResults() {
+        if (!futures.isPresent()) {
+            throw new IllegalStateException("Experiments have not run yet.");
+        }
+        while (isRunning()) {
+            try {
+                sleep(SLEEPTIME);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        return futures.get();
     }
 }

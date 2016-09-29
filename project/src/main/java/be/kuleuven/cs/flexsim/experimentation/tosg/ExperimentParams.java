@@ -1,31 +1,38 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
-import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
-import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
-import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;
 
+/**
+ * Experiment parameters.
+ */
 @AutoValue
 public abstract class ExperimentParams implements Serializable {
 
-    public abstract WindBasedInputData getInputData();
+    ExperimentParams() {
+    }
 
-    public abstract AbstractSolverFactory<SolutionResults> getFactory();
+    /**
+     * @return The number of agents to use.
+     */
+    public abstract int getNAgents();
 
-    public abstract TurbineSpecification getSpecs();
+    /**
+     * @return The number of repititions to perform.
+     */
+    public abstract int getNRepititions();
 
-    public abstract ForecastHorizonErrorDistribution getDistribution();
+    /**
+     * @return The solver to use.
+     */
+    public abstract AbstractOptimalSolver.Solver getSolver();
 
-    public abstract ImbalancePriceInputData getImbalIn();
-
-    public static ExperimentParams create(WindBasedInputData inputData,
-            AbstractSolverFactory<SolutionResults> factory, TurbineSpecification specs,
-            ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn) {
-        return new AutoValue_WgmfGameParams(inputData, factory, specs, distribution, imbalIn);
+    /**
+     * @return An instance of ExperimentParams.
+     */
+    public static ExperimentParams create(int ng, int nr, AbstractOptimalSolver.Solver s) {
+        return new AutoValue_ExperimentParams(ng, nr, s);
     }
 }

@@ -2,7 +2,6 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.data;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.NetRegulatedVolumeProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PositiveImbalancePriceProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.AutoValue_ImbalancePriceInputData;
 import com.google.auto.value.AutoValue;
 
 import java.io.FileNotFoundException;
@@ -15,7 +14,7 @@ import java.io.Serializable;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @AutoValue
-public abstract class ImbalancePriceInputData implements Serializable{
+public abstract class ImbalancePriceInputData implements Serializable {
 
     private static final String NRV_COLUMN_KEY = "NRV";
     private static final String PPOS_COLUMN_KEY = "PPOS";

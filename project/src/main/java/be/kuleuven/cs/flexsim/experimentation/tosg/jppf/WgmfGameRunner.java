@@ -21,6 +21,7 @@ import static be.kuleuven.cs.flexsim.experimentation.tosg.WgmfInputParser.parseI
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
+ * Game runner for wgmf games.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */

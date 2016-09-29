@@ -2,12 +2,11 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
-import be.kuleuven.cs.flexsim.experimentation.tosg.ImbalancePriceInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WindBasedInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.gametheory.GameInstanceConfiguration;
-import be.kuleuven.cs.gametheory.GameInstanceParams;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.GameInstanceResult;
 import org.junit.Before;
 import org.junit.Test;
