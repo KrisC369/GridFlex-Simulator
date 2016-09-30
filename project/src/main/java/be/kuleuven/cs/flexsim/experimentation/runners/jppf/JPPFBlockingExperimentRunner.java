@@ -8,6 +8,7 @@ import org.jppf.client.JPPFJob;
 import org.jppf.node.protocol.DataProvider;
 import org.jppf.node.protocol.MemoryMapDataProvider;
 import org.jppf.node.protocol.Task;
+import org.jppf.utils.JPPFConfiguration;
 
 import java.util.Collection;
 import java.util.List;
@@ -44,7 +45,7 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
                 e.printStackTrace();
             }
         });
-
+        JPPFConfiguration.getProperties().setBoolean("jppf.discovery.enabled", false);
         try (JPPFClient jppfClient = new JPPFClient()) {
             jppfClient.submitJob(job);
         }
