@@ -1,6 +1,5 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.configurable;
 
-import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;

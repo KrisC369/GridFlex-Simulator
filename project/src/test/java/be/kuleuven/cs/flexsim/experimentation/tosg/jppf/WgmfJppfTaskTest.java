@@ -6,7 +6,7 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
-import be.kuleuven.cs.gametheory.GameInstanceResult;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import org.jppf.server.JPPFDriver;
 import org.jppf.utils.JPPFConfiguration;

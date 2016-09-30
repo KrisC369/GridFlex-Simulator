@@ -2,7 +2,6 @@ package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
-import be.kuleuven.cs.gametheory.GameInstanceResult;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;

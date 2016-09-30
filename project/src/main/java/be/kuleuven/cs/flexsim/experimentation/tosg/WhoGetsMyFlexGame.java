@@ -26,12 +26,6 @@ import java.util.Map;
 public class WhoGetsMyFlexGame extends
                                AbstractGameInstance<FlexibilityProvider, FlexibilityUtiliser> {
 
-    private final TurbineSpecification specs;
-    private final WindBasedInputData dataIn;
-    private final ImbalancePriceInputData imbalIn;
-    private final WindErrorGenerator generator;
-    private final AbstractSolverFactory<SolutionResults> solverplatform;
-
     /**
      * Default Constructor
      *
@@ -50,11 +44,6 @@ public class WhoGetsMyFlexGame extends
                         imbalIn.getPositiveImbalancePriceProfile(), specs, gen),
                 new DistributionGridCongestionSolver(solverplatform,
                         dataIn.getCongestionProfile())));
-        this.dataIn = dataIn;
-        this.imbalIn = imbalIn;
-        this.generator = gen;
-        this.solverplatform = solverplatform;
-        this.specs = specs;
     }
 
     /**

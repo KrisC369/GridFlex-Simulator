@@ -1,7 +1,6 @@
 package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.gametheory.GameInstance;
-import be.kuleuven.cs.gametheory.GameInstanceResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
