@@ -10,7 +10,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class SolverAdapter<F, T> implements Solver<T> {
-    private Solver<F> target;
+    private final Solver<F> target;
 
     /**
      * Default constructor.

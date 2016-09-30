@@ -3,9 +3,9 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfAgentGenerator;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
-import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.AbstractGameInstanceConfigurator;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import com.google.common.annotations.VisibleForTesting;
 import org.jppf.node.protocol.AbstractTask;
 
@@ -17,9 +17,9 @@ import java.util.concurrent.Callable;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WgmfJppfTask extends AbstractTask<GameInstanceResult>
-        implements Callable<Object> {
+public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Callable<Object> {
 
+    private static final long serialVersionUID = -5970733781444570465L;
     private WgmfGameParams params;
     private final GameInstanceConfiguration instanceConfig;
     private final String paramsDataKey;

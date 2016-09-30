@@ -18,7 +18,6 @@ import java.util.List;
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
-    private static final double FIXED_PRICE = 35.4;
     private final NetRegulatedVolumeProfile nrv;
     private final PositiveImbalancePriceProfile pip;
 

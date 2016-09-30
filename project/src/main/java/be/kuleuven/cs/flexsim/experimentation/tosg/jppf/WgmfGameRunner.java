@@ -73,7 +73,7 @@ public class WgmfGameRunner {
     }
 
     public void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> adapted = strategy.adapt(director, params, BASE_SEED, PARAMS_KEY);
+        List<WgmfJppfTask> adapted = strategy.adapt(director, params, PARAMS_KEY);
         ExperimentRunner runner = strategy.getRunner(params, PARAMS_KEY);
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();

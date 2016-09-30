@@ -36,7 +36,7 @@ public class SimulatedGamePlayAdapter {
         s.start();
     }
 
-    private class SimAdapter implements SimulationComponent {
+    private static class SimAdapter implements SimulationComponent {
 
         private final Runnable target;
 

@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class NetRegulatedVolumeProfile
         extends AbstractTimeSeriesImplementation<NetRegulatedVolumeProfile> {
 
+    private static final long serialVersionUID = 7250959408641831836L;
+
     NetRegulatedVolumeProfile() {
         super();
     }
@@ -72,7 +74,8 @@ public class NetRegulatedVolumeProfile
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
-    public static NetRegulatedVolumeProfile createFromCSV(final String filename, final String column)
+    public static NetRegulatedVolumeProfile createFromCSV(final String filename,
+            final String column)
             throws IOException {
         final NetRegulatedVolumeProfile cp = new NetRegulatedVolumeProfile();
         cp.load(filename, column);

@@ -11,6 +11,8 @@ import java.util.Map;
 /**
  * Abstract implementation of the GameInstance interface.
  *
+ * @param <N> The type of agents.
+ * @param <K> The type of actions.
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class AbstractGameInstance<N, K> implements GameInstance<N, K> {
@@ -22,7 +24,7 @@ public abstract class AbstractGameInstance<N, K> implements GameInstance<N, K> {
 
     protected AbstractGameInstance(List<K> actions) {
         agents = Lists.newArrayList();
-        this.actions = actions;
+        this.actions = Lists.newArrayList(actions);
         this.agentActionMap = Maps.newLinkedHashMap();
         this.config = GameInstanceConfiguration.builder().setAgentSize(agents.size())
                 .setActionSize(actions.size()).build();

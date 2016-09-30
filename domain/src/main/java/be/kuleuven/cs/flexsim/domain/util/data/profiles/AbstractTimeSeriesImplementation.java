@@ -30,6 +30,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSeriesImplementation>
         implements TimeSeries, Serializable {
 
+    private static final long serialVersionUID = -7784771631667547974L;
     private DoubleList dValues;
 
     @Nullable

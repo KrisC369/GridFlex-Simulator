@@ -18,6 +18,7 @@ import java.io.Serializable;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>, Serializable {
+    private static final long serialVersionUID = -5851172788369007725L;
     private final AbstractOptimalSolver.Solver type;
 
     WgmfSolverFactory(AbstractOptimalSolver.Solver type) {

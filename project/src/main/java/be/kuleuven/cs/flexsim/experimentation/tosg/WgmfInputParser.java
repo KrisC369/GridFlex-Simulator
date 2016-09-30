@@ -60,15 +60,19 @@ public final class WgmfInputParser {
             if (line.hasOption("s")) {
                 solver = AbstractOptimalSolver.Solver.valueOf(line.getOptionValue("s"));
             }
-            logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
-                    + " agents using: " + solver.toString());
+            if (logger.isWarnEnabled()) {
+                logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
+                        + " agents using: " + solver.toString());
+            }
             return ExperimentParams.create(nReps, nAgents, solver);
 
         } catch (ParseException exp) {
             // oops, something went wrong
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("WgmfGameRunner", o);
-            logger.error("Parsing failed.  Reason: " + exp.getMessage(), exp);
+            if (logger.isErrorEnabled()) {
+                logger.error("Parsing failed.  Reason: " + exp.getMessage(), exp);
+            }
             throw new IllegalStateException(exp);
         }
     }

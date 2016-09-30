@@ -1,7 +1,6 @@
 package be.kuleuven.cs.flexsim.domain.energy.generation.wind;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
@@ -15,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,12 +105,11 @@ public abstract class TurbineSpecification implements Serializable {
      * @throws IOException If the resource cannot be found.
      */
     public static TurbineSpecification loadFromResource(final String filename) throws IOException {
-        final List<Double> dataRead = Lists.newArrayList();
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
         InputStreamReader fileReader = new InputStreamReader(
-                new FileInputStream(file));
+                new FileInputStream(file), Charset.defaultCharset());
         Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
 
         double bladeLength = 0;
@@ -158,7 +157,7 @@ public abstract class TurbineSpecification implements Serializable {
      * @return A new empty spec object.
      */
     public static TurbineSpecification empty() {
-        return new AutoValue_TurbineSpecification(0, 0, 0, 0,
-                0, new DoubleArrayList(), new DoubleArrayList());
+        return new AutoValue_TurbineSpecification(0, 0, 0, 0, 0, new DoubleArrayList(),
+                new DoubleArrayList());
     }
 }

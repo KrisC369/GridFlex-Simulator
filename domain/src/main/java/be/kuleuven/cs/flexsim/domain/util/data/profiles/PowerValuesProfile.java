@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class PowerValuesProfile extends AbstractTimeSeriesImplementation<PowerValuesProfile> {
 
+    private static final long serialVersionUID = 7862187271854302212L;
+
     PowerValuesProfile() {
         super();
     }

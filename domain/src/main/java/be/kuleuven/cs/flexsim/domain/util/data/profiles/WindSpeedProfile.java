@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class WindSpeedProfile extends AbstractTimeSeriesImplementation<WindSpeedProfile> {
 
+    private static final long serialVersionUID = 2709635940149863284L;
+
     WindSpeedProfile() {
         super();
     }

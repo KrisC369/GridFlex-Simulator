@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 @AutoValue
 public abstract class ForecastHorizonErrorDistribution implements Serializable {
+
+    private static final double KMH_TO_MS = 3.6d;
 
     ForecastHorizonErrorDistribution() {
     }
@@ -75,7 +78,7 @@ public abstract class ForecastHorizonErrorDistribution implements Serializable {
         final File file = new File(classLoader.getResource(filename).getFile());
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
         InputStreamReader fileReader = new InputStreamReader(
-                new FileInputStream(file));
+                new FileInputStream(file), Charset.defaultCharset());
         Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
         //Assuming formatting of header line is following:
         //"hour.horizon","mean","sd" in km/h
@@ -84,8 +87,8 @@ public abstract class ForecastHorizonErrorDistribution implements Serializable {
             sds.add(Double.valueOf(record.get(2)));
         }
         //Apply correction: converting from km/h to m/s
-        means = means.stream().map(v -> v / 3.6d).collect(Collectors.toList());
-        sds = sds.stream().map(v -> v / 3.6d).collect(Collectors.toList());
+        means = means.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
+        sds = sds.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
         fileReader.close();
         return create(means, sds);
     }

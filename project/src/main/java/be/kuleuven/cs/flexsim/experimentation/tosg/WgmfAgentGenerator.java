@@ -16,7 +16,6 @@ public class WgmfAgentGenerator implements
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private final GammaDistribution gd;
-    private final long currentSeed;
 
     /**
      * Default constructor.
@@ -24,8 +23,7 @@ public class WgmfAgentGenerator implements
      * @param seed The seed to use.
      */
     public WgmfAgentGenerator(long seed) {
-        this.currentSeed = seed;
-        this.gd = new GammaDistribution(new MersenneTwister(currentSeed), R3DP_GAMMA_SHAPE,
+        this.gd = new GammaDistribution(new MersenneTwister(seed), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
     }
 

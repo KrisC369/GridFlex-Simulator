@@ -6,9 +6,9 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.jppf.RemoteRunners;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jppf.node.protocol.Task;
@@ -36,7 +36,7 @@ enum ExecutionStrategy {
     LOCAL;
 
     ExperimentRunner getRunner(WgmfGameParams params, String paramString) {
-        ExperimentRunner toRet = LocalRunners.createDefaultSingleThreadedRunner();
+        ExperimentRunner toRet;
         switch (this) {
         case REMOTE:
             Map<String, Object> data = Maps.newLinkedHashMap();
@@ -46,6 +46,8 @@ enum ExecutionStrategy {
         case LOCAL:
             toRet = LocalRunners.createDefaultMultiThreadedRunner();
             break;
+        default:
+            toRet = LocalRunners.createDefaultSingleThreadedRunner();
         }
         return toRet;
     }
@@ -76,13 +78,14 @@ enum ExecutionStrategy {
                 }
             }
             break;
+        default:
         }
     }
 
     List<WgmfJppfTask> adapt(
             final ConfigurableGameDirector<FlexibilityProvider, FlexibilityUtiliser> dir,
-            WgmfGameParams params, long seed, String paramString) {
-        List<WgmfJppfTask> experiments = Lists.newArrayList();
+            WgmfGameParams params, String paramString) {
+        List<WgmfJppfTask> experiments;
         switch (this) {
         case REMOTE:
             experiments = Lists.newArrayList();
@@ -96,6 +99,8 @@ enum ExecutionStrategy {
                 experiments.add(new WgmfJppfTask(p, params));
             }
             break;
+        default:
+            experiments = Lists.newArrayList();
         }
         return experiments;
     }

@@ -74,9 +74,6 @@ public final class TurbineProfileConvertor {
      */
     CongestionProfile calculateImbalanceVolumeFromActual(PowerValuesProfile tSPredicted) {
         //Don't forget to convert to given boosted profile.
-        //        return CongestionProfile.createFromTimeSeries(
-        //                tSPredicted.subtractValues(powerProfile).transform(p -> p * CONVERSION)
-        //                        .transform(p -> p / SLOTS_PER_HOUR));
         return CongestionProfile.createFromTimeSeries(
                 powerProfile.subtractValues(tSPredicted).transform(p -> p * CONVERSION)
                         .transform(p -> p / SLOTS_PER_HOUR));
@@ -131,19 +128,19 @@ public final class TurbineProfileConvertor {
             double rest = w % 1;
             int idx = (int) w;
             double interval = 0;
-            if (rest > EPS) {//is not 0.
+            //if not 0.
+            if (rest > EPS) {
                 interval = specs.getPowerValues().get(idx + 1) - specs.getPowerValues().get(idx);
             }
             return specs.getPowerValues().get(idx) + interval * rest;
         } else {
             int j = specs.getPowerValues().lastIndexOf(specs.getRatedPower());
-            double margin = maxPSingle - specs.getRatedPower();
             double perc = (w - i) / (j - i);
             if (perc > 1) {
                 //do cutoff above rated cutoff speeds
-
                 return 0;
             }
+            double margin = maxPSingle - specs.getRatedPower();
             return specs.getRatedPower() + (perc * margin);
         }
     }

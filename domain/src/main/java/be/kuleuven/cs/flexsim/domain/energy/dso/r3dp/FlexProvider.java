@@ -60,17 +60,11 @@ public class FlexProvider implements FlexibilityProvider {
     public void registerActivation(FlexActivation activation, Payment payment) {
         checkForActivationConstraintViolation(activation);
         addActivation(activation);
-        //registerCompensation(activation); //TODO one or the other...
         registerCompensation(payment);
     }
 
     private void addActivation(FlexActivation activation) {
         this.activations.add(activation);
-    }
-
-    @Deprecated
-    private void registerCompensation(FlexActivation activation) {
-        runningCompensationValue += activation.getEnergyVolume() * FIXED_PRICE;
     }
 
     private void registerCompensation(Payment compensation) {
@@ -82,8 +76,8 @@ public class FlexProvider implements FlexibilityProvider {
                 "Activation duration does not match constraints. Got: " + activation.getDuration());
         if (hasActivations()) {
             double timeBetweenLast =
-                    (activation.getStart() - (getLastActivation().getStart() + getLastActivation()
-                            .getDuration()));
+                    activation.getStart() - (getLastActivation().getStart() + getLastActivation()
+                            .getDuration());
             checkArgument(
                     timeBetweenLast >= constraints.getInterActivationTime(),
                     "Time between activations should be at least " + constraints
@@ -94,7 +88,7 @@ public class FlexProvider implements FlexibilityProvider {
     }
 
     private boolean hasActivations() {
-        return activations.size() > 0;
+        return !activations.isEmpty();
     }
 
     FlexActivation getLastActivation() {

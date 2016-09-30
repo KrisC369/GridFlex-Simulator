@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class CableCurrentProfile extends AbstractTimeSeriesImplementation<CableCurrentProfile> {
 
+    private static final long serialVersionUID = 8148091227931725197L;
+
     CableCurrentProfile() {
         super();
     }

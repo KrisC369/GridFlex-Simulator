@@ -21,6 +21,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class PositiveImbalancePriceProfile
         extends AbstractTimeSeriesImplementation<PositiveImbalancePriceProfile> {
 
+    private static final long serialVersionUID = -1307830669782098778L;
+
     PositiveImbalancePriceProfile() {
         super();
     }
@@ -72,7 +74,8 @@ public class PositiveImbalancePriceProfile
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
-    public static PositiveImbalancePriceProfile createFromCSV(final String filename, final String column)
+    public static PositiveImbalancePriceProfile createFromCSV(final String filename,
+            final String column)
             throws IOException {
         final PositiveImbalancePriceProfile cp = new PositiveImbalancePriceProfile();
         cp.load(filename, column);

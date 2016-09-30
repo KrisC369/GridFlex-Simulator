@@ -20,6 +20,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class CongestionProfile extends AbstractTimeSeriesImplementation<CongestionProfile> {
 
+    private static final long serialVersionUID = 3895948935547221988L;
+
     CongestionProfile() {
         super();
     }

@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.experimentation.runners.local;
 
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
@@ -20,8 +21,10 @@ import static java.lang.Thread.sleep;
  */
 public class MultiThreadedExperimentRunner implements ExperimentRunner {
 
-    private final ExecutorService executor;
+    private static final Logger logger = LoggerFactory
+            .getLogger(MultiThreadedExperimentRunner.class);
     private static final int SLEEPTIME = 100;
+    private final ExecutorService executor;
     private Optional<List<Future<Object>>> futures;
 
     /**
@@ -31,11 +34,11 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
      */
     MultiThreadedExperimentRunner(final int threads) {
         this(Executors.newFixedThreadPool(threads));
-        this.futures = futures.empty();
     }
 
     protected MultiThreadedExperimentRunner(final ExecutorService exec) {
         this.executor = exec;
+        this.futures = Optional.empty();
     }
 
     /**
@@ -74,9 +77,15 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
             try {
                 sleep(SLEEPTIME);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logInterrupt(e);
             }
         }
         return futures.get();
+    }
+
+    private void logInterrupt(InterruptedException e) {
+        if (logger.isWarnEnabled()) {
+            logger.warn("Interrupt caught.", e);
+        }
     }
 }

@@ -12,7 +12,7 @@ import com.google.common.collect.ListMultimap;
  */
 public class SolutionResultAdapter {
 
-    private AllocResults target;
+    private final AllocResults target;
 
     /**
      * Default constructor
