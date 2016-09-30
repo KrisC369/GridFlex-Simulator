@@ -92,7 +92,7 @@ public class Game<N, K> extends AbstractGame<GameInstance<N, K>, GameInstance<N,
     public void gatherResults(List<GameInstance<N, K>> gameInstances) {
         for (final GameInstance<N, K> instance : getGameInstances()) {
             final List<K> actionSet = instance.getActionSet();
-            assert (actionSet.size() == this.actions);
+            assert actionSet.size() == this.actions;
             final Map<N, Long> payoffResults = instance.getPayOffs();
             final Map<N, K> mapping = instance.getAgentToActionMapping();
             final int[] entry = new int[actionSet.size()];

@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class ConfigurableGameDirector<N, K>
+public class ConfigurableGameDirector
         extends AbstractGameDirector<GameInstanceConfiguration, GameInstanceResult> {
 
     private final List<GameInstanceResult> results;

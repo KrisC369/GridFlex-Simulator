@@ -53,7 +53,7 @@ enum ExecutionStrategy {
     }
 
     <R> void processExecutionResults(List<R> results,
-            ConfigurableGameDirector<FlexibilityProvider, FlexibilityUtiliser> director) {
+            ConfigurableGameDirector director) {
         switch (this) {
         case REMOTE:
             for (Task<?> result : (List<Task<?>>) results) {
@@ -83,7 +83,7 @@ enum ExecutionStrategy {
     }
 
     List<WgmfJppfTask> adapt(
-            final ConfigurableGameDirector<FlexibilityProvider, FlexibilityUtiliser> dir,
+            final ConfigurableGameDirector dir,
             WgmfGameParams params, String paramString) {
         List<WgmfJppfTask> experiments;
         switch (this) {

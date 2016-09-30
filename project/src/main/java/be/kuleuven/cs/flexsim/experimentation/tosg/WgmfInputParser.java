@@ -5,13 +5,13 @@ import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.DUMMY;
+import static org.apache.commons.cli.OptionBuilder.withLongOpt;
 
 /**
  * Input parser for who-gets-my-flex games.
@@ -37,7 +37,7 @@ public final class WgmfInputParser {
         Options o = new Options();
         o.addOption("n", true, "The number of participating agents");
         o.addOption("r", true, "The number of repititions");
-        o.addOption(OptionBuilder.withLongOpt("solver")
+        o.addOption(withLongOpt("solver")
                 .withDescription("Which solver to use. [CPLEX|GUROBI]")
                 .hasArg()
                 .withArgName("SOLVER")

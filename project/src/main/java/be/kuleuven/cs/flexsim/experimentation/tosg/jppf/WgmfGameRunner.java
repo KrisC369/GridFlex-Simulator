@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
-import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
@@ -33,9 +31,9 @@ public class WgmfGameRunner {
     private static final String IMBAL = "imbalance_prices.csv";
     private static final String PARAMS_KEY = "PARAMS_KEY";
     private static final int ACTION_SIZE = 2;
-    private static final long BASE_SEED = 19486454L;
-    private final ConfigurableGameDirector<FlexibilityProvider, FlexibilityUtiliser> director;
-    private final Logger logger = getLogger(WgmfGameRunner.class);
+    public static final ExecutionStrategy EXECUTION_STRATEGY_DEFAULT = REMOTE;
+    private final ConfigurableGameDirector director;
+    private static final Logger logger = getLogger(WgmfGameRunner.class);
 
     private final ExecutionStrategy strategy;
 
@@ -47,7 +45,7 @@ public class WgmfGameRunner {
     }
 
     private WgmfGameRunner(ExperimentParams expP) {
-        this(expP, REMOTE);
+        this(expP, EXECUTION_STRATEGY_DEFAULT);
     }
 
     public static void main(String[] args) {

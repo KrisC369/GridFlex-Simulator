@@ -80,7 +80,8 @@ public class ConfigurableGame
             final long[] values = new long[agents];
             int j = 0;
             for (final Entry<Integer, Long> e : instance.getPayoffs().entrySet()) {
-                final int whichAction = e.getKey();
+                final int whichAction = instance.getGameInstanceConfig().getAgentActionMap()
+                        .get(e.getKey());
                 entry[whichAction] = entry[whichAction] + 1;
                 values[j] = e.getValue();
                 j++;
