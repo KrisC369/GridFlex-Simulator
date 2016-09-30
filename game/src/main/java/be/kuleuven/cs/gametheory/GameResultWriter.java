@@ -1,7 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.io.ResultWriter;
-import be.kuleuven.cs.gametheory.standalone.GameDirector;
 
 /**
  * Writes game results to this writer.
@@ -27,7 +26,7 @@ public class GameResultWriter extends ResultWriter {
      * @param target    the game target.
      * @param loggerTag The result writer tag.
      */
-    public GameResultWriter(final GameDirector target, final String loggerTag) {
+    public GameResultWriter(final AbstractGameDirector target, final String loggerTag) {
         super(target.getFormattedResults(), loggerTag);
         this.g = target;
     }

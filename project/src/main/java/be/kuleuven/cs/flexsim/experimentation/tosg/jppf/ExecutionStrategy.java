@@ -6,7 +6,7 @@ import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.jppf.RemoteRunners;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.gametheory.GameInstanceResult;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import com.google.common.collect.Lists;

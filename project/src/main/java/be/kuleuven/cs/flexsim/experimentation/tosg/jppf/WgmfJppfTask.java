@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfAgentGenerator;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
-import be.kuleuven.cs.gametheory.GameInstanceResult;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.configurable.AbstractGameInstanceConfigurator;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import com.google.common.annotations.VisibleForTesting;
