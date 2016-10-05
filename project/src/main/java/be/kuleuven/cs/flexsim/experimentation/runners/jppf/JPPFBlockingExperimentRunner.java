@@ -71,13 +71,6 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
         }
     }
 
-    private void attemptToReadConfig() {
-        JPPFConfiguration.getProperties().setBoolean("jppf.discovery.enabled", false);
-        JPPFConfiguration.getProperties().setString("jppf.drivers", "driver-1");
-        JPPFConfiguration.getProperties().setString("driver-1.jppf.server.host", "localhost");
-        JPPFConfiguration.getProperties().setString("driver-1.jppf.server.port", "12111");
-    }
-
     @Override
     public boolean isRunning() {
         return false;
