@@ -45,13 +45,17 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
                 e.printStackTrace();
             }
         });
+
+        try (JPPFClient jppfClient = new JPPFClient()) {
+            jppfClient.submitJob(job);
+        }
+    }
+
+    private void attemptToReadConfig() {
         JPPFConfiguration.getProperties().setBoolean("jppf.discovery.enabled", false);
         JPPFConfiguration.getProperties().setString("jppf.drivers", "driver-1");
         JPPFConfiguration.getProperties().setString("driver-1.jppf.server.host", "localhost");
         JPPFConfiguration.getProperties().setString("driver-1.jppf.server.port", "12111");
-        try (JPPFClient jppfClient = new JPPFClient()) {
-            jppfClient.submitJob(job);
-        }
     }
 
     @Override
