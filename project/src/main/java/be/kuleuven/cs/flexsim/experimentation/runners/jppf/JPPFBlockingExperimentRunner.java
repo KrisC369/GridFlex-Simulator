@@ -9,6 +9,9 @@ import org.jppf.node.protocol.DataProvider;
 import org.jppf.node.protocol.MemoryMapDataProvider;
 import org.jppf.node.protocol.Task;
 import org.jppf.utils.JPPFConfiguration;
+import org.jppf.utils.configuration.JPPFProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,6 +27,8 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
     private final boolean blocking;
     @Nullable
     private JPPFJob job;
+    private static final Logger logger = LoggerFactory
+            .getLogger(JPPFBlockingExperimentRunner.class);
 
     JPPFBlockingExperimentRunner(String jobName, Map<String, Object> dataParams) {
         this.jobName = jobName;
@@ -33,6 +38,9 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
 
     @Override
     public void runExperiments(Collection<? extends Callable<Object>> experiments) {
+        if (logger.isInfoEnabled()) {
+            logger.info("Running experiments on jppf cluster");
+        }
         DataProvider dP = new MemoryMapDataProvider();
         dataParams.entrySet().forEach(e -> dP.setParameter(e.getKey(), e.getValue()));
         job = new JPPFJob(jobName);
@@ -46,8 +54,20 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
             }
         });
 
+        if (logger.isInfoEnabled()) {
+            logger.info("JPPF Client connecting to " + JPPFConfiguration.getProperties()
+                    .get(JPPFProperties.SERVER_HOST) + ":" + JPPFConfiguration.getProperties()
+                    .get(JPPFProperties.SERVER_PORT));
+        }
         try (JPPFClient jppfClient = new JPPFClient()) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Connected to manager: " + jppfClient.getJobManager().toString());
+                logger.info("Submitting job: " + job);
+            }
             jppfClient.submitJob(job);
+            if (logger.isInfoEnabled()) {
+                logger.info("Jobs submitted!");
+            }
         }
     }
 
