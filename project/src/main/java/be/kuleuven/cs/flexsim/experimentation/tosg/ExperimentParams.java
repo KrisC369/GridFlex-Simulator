@@ -30,9 +30,15 @@ public abstract class ExperimentParams implements Serializable {
     public abstract AbstractOptimalSolver.Solver getSolver();
 
     /**
+     * @return true if remote execution should be enabled.
+     */
+    public abstract boolean runRemote();
+
+    /**
      * @return An instance of ExperimentParams.
      */
-    public static ExperimentParams create(int ng, int nr, AbstractOptimalSolver.Solver s) {
-        return new AutoValue_ExperimentParams(ng, nr, s);
+    public static ExperimentParams create(int ng, int nr, AbstractOptimalSolver.Solver s,
+            boolean remote) {
+        return new AutoValue_ExperimentParams(ng, nr, s, remote);
     }
 }

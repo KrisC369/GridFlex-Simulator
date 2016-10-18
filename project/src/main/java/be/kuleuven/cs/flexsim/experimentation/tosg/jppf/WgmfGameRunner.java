@@ -31,7 +31,7 @@ public class WgmfGameRunner {
     private static final String IMBAL = "imbalance_prices.csv";
     private static final String PARAMS_KEY = "PARAMS_KEY";
     private static final int ACTION_SIZE = 2;
-    public static final ExecutionStrategy EXECUTION_STRATEGY_DEFAULT = REMOTE;
+    private static final ExecutionStrategy EXECUTION_STRATEGY_DEFAULT = REMOTE;
     private final ConfigurableGameDirector director;
     private static final Logger logger = getLogger(WgmfGameRunner.class);
 
@@ -45,7 +45,7 @@ public class WgmfGameRunner {
     }
 
     private WgmfGameRunner(ExperimentParams expP) {
-        this(expP, EXECUTION_STRATEGY_DEFAULT);
+        this(expP, expP.runRemote() ? ExecutionStrategy.REMOTE : ExecutionStrategy.LOCAL);
     }
 
     public static void main(String[] args) {

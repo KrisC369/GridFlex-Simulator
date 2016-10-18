@@ -67,7 +67,7 @@ public class WgmfJppfTaskTest {
                     .setSeed(231L).build();
 
             this.task = new WgmfJppfTask(config, params);
-            this.expP = ExperimentParams.create(2, 1, DUMMY);
+            this.expP = ExperimentParams.create(2, 1, DUMMY, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
