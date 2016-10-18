@@ -89,7 +89,6 @@
             <!-- <dependency> <groupId>net.sf.jung</groupId> <artifactId>jung2</artifactId>
                 <version>2.0.1</version> <type>pom</type> </dependency> <dependency> <groupId>net.sf.jung</groupId>
                 <artifactId>jung-graph-impl</artifactId> <version>2.0.1</version> </dependency> -->
-
             <dependency>
                 <groupId>net.sf.jung</groupId>
                 <artifactId>jung2</artifactId>
@@ -305,6 +304,11 @@
             <id>eclipse-staging</id>
             <name>Eclipse.org Staging</name>
             <url>https://repo.eclipse.org/content/repositories/eclipse-staging/</url>
+        </repository>
+        <repository>
+            <id>aw-repo</id>
+            <name>AgentWise Custom repo</name>
+            <url>https://github.com/agentwise/mvn-repo/raw/master</url>
         </repository>
     </repositories>
 </project>
