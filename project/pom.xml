@@ -84,6 +84,16 @@
             <version>5.2.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.gurobi</groupId>
+            <artifactId>gurobi</artifactId>
+            <version>6.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cplex</groupId>
+            <artifactId>cplex</artifactId>
+            <version>12.6.3</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
