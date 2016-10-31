@@ -28,7 +28,7 @@ public final class WgmfInputParser {
     }
 
     /**
-     * Use --help or -r [repititions] -n [numberOfAgents] -s [GUROBI|CPLEX|DUMMY]
+     * Use --help or -r [repititions] -n [numberOfAgents] -s [GUROBI|CPLEX|DUMMY] -m [LOCAL|REMOTE]
      *
      * @param args The commandline args.
      * @return The experiment params.
