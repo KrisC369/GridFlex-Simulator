@@ -58,7 +58,8 @@ public class ConfigurableGame
                         .generateAllObjects();
                 assert possCombinatoricsVectors.size() == combinations;
                 GameInstanceConfiguration.Builder builder = GameInstanceConfiguration.builder()
-                        .setAgentSize(agents).setActionSize(actions);
+                        .setAgentSize(agents).setActionSize(actions)
+                        .setSeed(GameInstanceConfiguration.DEF_SEED + iteration);
                 int ag = 0;
                 for (final Integer k : possCombinatoricsVectors.get(i)) {
                     builder.fixAgentToAction(ag++, k);

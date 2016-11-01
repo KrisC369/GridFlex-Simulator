@@ -12,7 +12,7 @@ import java.io.Serializable;
  */
 @AutoValue
 public abstract class GameInstanceConfiguration implements Serializable {
-    private static final long DEF_SEED = 12345L;
+    public static final long DEF_SEED = 12345L;
 
     GameInstanceConfiguration() {
     }
