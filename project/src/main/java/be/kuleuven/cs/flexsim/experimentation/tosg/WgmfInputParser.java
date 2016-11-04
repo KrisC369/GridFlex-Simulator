@@ -72,8 +72,10 @@ public final class WgmfInputParser {
             }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";
-                logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
-                        + " agents using: " + solver.toString() + " executionMode: " + remote);
+                logger.warn(
+                        "Performing {} repititions for experiment with {} agents using: {} "
+                                + "execution mode: {}",
+                        nReps, nAgents, solver.toString(), remote);
             }
             return ExperimentParams.create(nAgents, nReps, solver, remoteExec);
 
@@ -82,7 +84,7 @@ public final class WgmfInputParser {
             HelpFormatter formatter = new HelpFormatter();
             formatter.printHelp("WgmfGameRunner", o);
             if (logger.isErrorEnabled()) {
-                logger.error("Parsing failed.  Reason: " + exp.getMessage(), exp);
+                logger.error("Parsing failed.  Reason: {}", exp.getMessage(), exp);
             }
             throw new IllegalStateException(exp);
         }

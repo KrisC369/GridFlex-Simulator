@@ -89,11 +89,12 @@ public class WgmfGameRunner {
             double[] fixedPoints = egtResultParser
                     .findFixedPointForDynEquationParams(
                             eqnParams.stream().mapToDouble(Double::doubleValue).toArray());
-            logger.warn("Phase plot fixed points found at: " + Arrays.toString(fixedPoints));
+            logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
         }
-        logger.warn("Dynamics equation params: " + director.getDynamicEquationArguments());
-        logger.warn("Payoff table: \n" + director.getFormattedResults().getFormattedResultString());
+        logger.warn("Dynamics equation params: {}", director.getDynamicEquationArguments());
+        logger.warn("Payoff table: \n{}",
+                director.getFormattedResults().getFormattedResultString());
     }
 }

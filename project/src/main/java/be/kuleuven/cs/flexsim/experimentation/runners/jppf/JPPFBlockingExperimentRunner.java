@@ -55,14 +55,14 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
         });
 
         if (logger.isInfoEnabled()) {
-            logger.info("JPPF Client connecting to " + JPPFConfiguration.getProperties()
-                    .get(JPPFProperties.SERVER_HOST) + ":" + JPPFConfiguration.getProperties()
+            logger.info("JPPF Client connecting to: {}:{}", JPPFConfiguration.getProperties()
+                    .get(JPPFProperties.SERVER_HOST), JPPFConfiguration.getProperties()
                     .get(JPPFProperties.SERVER_PORT));
         }
         try (JPPFClient jppfClient = new JPPFClient()) {
             if (logger.isInfoEnabled()) {
-                logger.info("Connected to manager: " + jppfClient.getJobManager().toString());
-                logger.info("Submitting job: " + job);
+                logger.info("Connected to manager: {}", jppfClient.getJobManager().toString());
+                logger.info("Submitting job: {}", job);
             }
             jppfClient.submitJob(job);
             if (logger.isInfoEnabled()) {
