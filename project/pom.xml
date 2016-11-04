@@ -112,7 +112,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameRunner
+                                be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunner
                             </mainClass>
                         </manifest>
                     </archive>

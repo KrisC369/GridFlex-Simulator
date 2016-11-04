@@ -61,6 +61,8 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
                         .get(idx + i);
             }
         }
+        //TODO resolve imbalance in other direction.
+
         return sum;
     }
 }
