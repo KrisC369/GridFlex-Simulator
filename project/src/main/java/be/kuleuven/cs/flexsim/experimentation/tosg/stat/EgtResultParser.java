@@ -23,6 +23,12 @@ public class EgtResultParser implements AutoCloseable {
     private final String ml_location;
     private final AtomicReference<MatlabProxy> proxy = new AtomicReference<>();
 
+    /**
+     * Default constructor.
+     *
+     * @param pathToML Path to the matlab executable or null if on classpath.
+     * @throws IllegalStateException If the matlab connection proxy cannot be made.
+     */
     public EgtResultParser(String pathToML) {
         this.ml_location = pathToML;
         Properties p = new Properties();
@@ -36,6 +42,13 @@ public class EgtResultParser implements AutoCloseable {
         }
     }
 
+    /**
+     * Find the fixed points of the population dynamics using ML code.
+     *
+     * @param dynParams The parameters for building the differential equations.
+     * @return the array of fixed points.
+     * @throws IllegalStateException If an exception occurs when calling the ML code.
+     */
     public double[] findFixedPointForDynEquationParams(double[] dynParams) {
         try {
             getProxy().setVariable("PARAMS", dynParams);
