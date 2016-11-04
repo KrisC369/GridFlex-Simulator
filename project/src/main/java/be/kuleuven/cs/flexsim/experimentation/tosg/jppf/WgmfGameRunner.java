@@ -7,12 +7,15 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
+import com.google.common.collect.ImmutableList;
 import org.jppf.node.protocol.Task;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static be.kuleuven.cs.flexsim.experimentation.tosg.WgmfInputParser.parseInputAndExec;
@@ -75,7 +78,22 @@ public class WgmfGameRunner {
         ExperimentRunner runner = strategy.getRunner(params, PARAMS_KEY);
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();
+        logger.info("Experiment results received. \nProcessing results... ");
         strategy.processExecutionResults(results, director);
-        logger.warn(director.getFormattedResults().getFormattedResultString());
+        logResults();
+    }
+
+    private void logResults() {
+        try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
+            ImmutableList<Double> eqnParams = director.getResults().getResults();
+            double[] fixedPoints = egtResultParser
+                    .findFixedPointForDynEquationParams(
+                            eqnParams.stream().mapToDouble(Double::doubleValue).toArray());
+            logger.warn("Phase plot fixed points found at: " + Arrays.toString(fixedPoints));
+        } catch (Exception e) {
+            logger.error("Something went wrong parsing the results", e);
+        }
+        logger.warn("Dynamics equation params: " + director.getDynamicEquationArguments());
+        logger.warn("Payoff table: \n" + director.getFormattedResults().getFormattedResultString());
     }
 }

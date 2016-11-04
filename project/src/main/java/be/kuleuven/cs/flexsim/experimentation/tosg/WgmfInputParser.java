@@ -75,7 +75,7 @@ public final class WgmfInputParser {
                 logger.warn("Performing " + nReps + " repititions for experiment with " + nAgents
                         + " agents using: " + solver.toString() + " executionMode: " + remote);
             }
-            return ExperimentParams.create(nReps, nAgents, solver, remoteExec);
+            return ExperimentParams.create(nAgents, nReps, solver, remoteExec);
 
         } catch (ParseException exp) {
             // oops, something went wrong

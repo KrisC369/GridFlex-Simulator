@@ -37,8 +37,8 @@ public abstract class ExperimentParams implements Serializable {
     /**
      * @return An instance of ExperimentParams.
      */
-    public static ExperimentParams create(int ng, int nr, AbstractOptimalSolver.Solver s,
+    public static ExperimentParams create(int nAg, int nr, AbstractOptimalSolver.Solver s,
             boolean remote) {
-        return new AutoValue_ExperimentParams(ng, nr, s, remote);
+        return new AutoValue_ExperimentParams(nAg, nr, s, remote);
     }
 }
