@@ -7,7 +7,6 @@ import org.n52.matlab.control.MatlabProxy;
 import org.n52.matlab.control.MatlabProxyFactory;
 import org.n52.matlab.control.MatlabProxyFactoryOptions;
 
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -31,7 +30,6 @@ public class EgtResultParser implements AutoCloseable {
      */
     public EgtResultParser(String pathToML) {
         this.ml_location = pathToML;
-        Properties p = new Properties();
         MatlabProxyFactoryOptions options = new MatlabProxyFactoryOptions.Builder()
                 .setUsePreviouslyControlledSession(REUSE_PREVIOUS).setMatlabLocation(ml_location)
                 .setHidden(HIDDEN).build();
