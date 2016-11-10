@@ -2,6 +2,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.AggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.NominationTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.independent.IndependentAggregatorTest;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.BudgetTrackerTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolverTest;
 import be.kuleuven.cs.flexsim.domain.aggregation.reactive.ReactiveMechanismAggregatorTest;
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.DSMPartnerTest;
@@ -45,6 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
         NominationTest.class, CongestionProfileTest.class, TrapzPosTest.class,
         CollectionUtilsTest.class, DSMProposalTest.class, DSMPartnerTest.class,
         DSOIntegrationTest.class, TurbineSpecificationTest.class,
-        PortfolioBalanceSolverTest.class, ForecastHorizonErrorDistributionTest.class })
+        PortfolioBalanceSolverTest.class, ForecastHorizonErrorDistributionTest.class,
+        BudgetTrackerTest.class })
 public class DomainTests {
 }

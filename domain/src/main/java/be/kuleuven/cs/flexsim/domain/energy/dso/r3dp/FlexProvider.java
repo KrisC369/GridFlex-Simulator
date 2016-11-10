@@ -18,7 +18,7 @@ public class FlexProvider implements FlexibilityProvider {
     private final HourlyFlexConstraints constraints;
     private final double powerRate;
     private final List<FlexActivation> activations;
-    private long runningCompensationValue;
+    private double runningCompensationValue;
 
     /**
      * Constructor
@@ -52,7 +52,7 @@ public class FlexProvider implements FlexibilityProvider {
     }
 
     @Override
-    public long getMonetaryCompensationValue() {
+    public double getMonetaryCompensationValue() {
         return runningCompensationValue;
     }
 

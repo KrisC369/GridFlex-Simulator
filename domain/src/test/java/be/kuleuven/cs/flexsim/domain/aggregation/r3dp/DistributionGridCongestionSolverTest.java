@@ -64,7 +64,7 @@ public class DistributionGridCongestionSolverTest {
 
     @Test
     public void testConsolidateActivations() {
-        List<Integer> integers = solver.consolidateActivations(toTest);
+        List<Integer> integers = solver.getTotalActivationsProfile(toTest);
         long count = integers.stream().mapToInt(i -> i).sum();
         assertEquals(2 * 40, count, 0);
     }

@@ -83,6 +83,28 @@ public class DayAheadPriceProfile
     }
 
     /**
+     * Factory method for building a time series from a csv file.
+     *
+     * @param filename The filename.
+     * @param column   The column label to use as data.
+     * @return the time series.
+     * @throws IOException           If reading from the file is not possible.
+     * @throws FileNotFoundException If the file with that name cannot be found.
+     */
+    public static DayAheadPriceProfile extrapolateFromHourlyOneDayData(final String filename,
+            final String column)
+            throws IOException {
+        final DayAheadPriceProfile cp = new DayAheadPriceProfile();
+        cp.load(filename, column);
+        DoubleList dl = new DoubleArrayList();
+        for (int i = 0; i < 4 * 24 * 365; i++) {
+            int idx = (i / 4) % 24;
+            dl.add(cp.value(idx));
+        }
+        return DayAheadPriceProfile.createFromTimeSeries(() -> dl);
+    }
+
+    /**
      * Factory method for building time series from other time series.
      *
      * @param series The series to copy from.

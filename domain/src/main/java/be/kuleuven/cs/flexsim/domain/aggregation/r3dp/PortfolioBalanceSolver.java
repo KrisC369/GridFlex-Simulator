@@ -5,10 +5,13 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.NetRegulatedVolumeProfile;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.PositiveImbalancePriceProfile;
 
 import java.util.List;
+
+import static java.lang.StrictMath.min;
 
 /**
  * Represents a portfolio balancing entity that solves intraday imbalances because of prediction
@@ -20,6 +23,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
     private final NetRegulatedVolumeProfile nrv;
     private final PositiveImbalancePriceProfile pip;
+    private final BudgetTracker budget;
 
     /**
      * Default constructor
@@ -33,36 +37,38 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
-            TurbineSpecification specs, WindErrorGenerator gen) {
-        super(fac, convertProfile(c, specs, gen, nrv));
+            TurbineSpecification specs, WindErrorGenerator gen, DayAheadPriceProfile dapp) {
+        super(fac, applyWindForecastErrorAndBudgetConstraints(c, specs, gen, nrv, pip));
         this.nrv = nrv;
         this.pip = pip;
+        this.budget = BudgetTracker.createDayAheadSellingPrice(pip, dapp);
     }
 
-    public static CongestionProfile convertProfile(CableCurrentProfile c,
+    public static CongestionProfile applyWindForecastErrorAndBudgetConstraints(
+            CableCurrentProfile c,
             TurbineSpecification specs, WindErrorGenerator randomGen,
-            NetRegulatedVolumeProfile nrv) {
+            NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip) {
         CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
                 .convertProfileTPositiveOnlyoImbalanceVolumes();
-        //Only neg NRV should apply.
+        //Only neg NRV should be corrected.
         return profile.transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
     }
 
     @Override
     protected double calculatePaymentFor(FlexActivation activation,
-            int discretisationInNbSlotsPerHour, List<Integer> acts) {
+            int discretisationInNbSlotsPerHour, List<Integer> acts, List<Double> totalVolumes) {
         int idx = (int) (activation.getStart() * discretisationInNbSlotsPerHour);
         int dur = (int) (activation.getDuration() * discretisationInNbSlotsPerHour);
-        double singleStepVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
+        double singleStepActVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
         double sum = 0;
         for (int i = 0; i < dur; i++) {
-            if (nrv.value(idx + i) < 0) {
-                sum += (pip.value(idx + i) / TO_KILO) * singleStepVolume / (double) acts
-                        .get(idx + i);
-            }
+            double singleStepTotalVolume =
+                    totalVolumes.get(idx + i) / discretisationInNbSlotsPerHour;
+            double resolved = min(getBaseProfile().value(idx + i), singleStepTotalVolume);
+            double budgetValue = (budget.getBudgetForPeriod(idx + i) / TO_KILO) * resolved;
+            double part = singleStepActVolume / singleStepTotalVolume;
+            sum += part * budgetValue;
         }
-        //TODO resolve imbalance in other direction.
-
         return sum;
     }
 }

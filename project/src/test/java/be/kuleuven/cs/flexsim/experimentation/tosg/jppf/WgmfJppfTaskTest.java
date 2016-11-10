@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
@@ -32,6 +33,8 @@ public class WgmfJppfTaskTest {
     private static final String DATAFILE = "largeTest.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String IMBAL = "imbalance_prices.csv";
+    private static final String DAM_COLUMN = "damhp";
+    private static final String DAMPRICES_DAILY = "dailyDayAheadPrices.csv";
     private WgmfJppfTask task;
     private final String PARAMS = "test";
     private ExperimentParams expP;
@@ -57,10 +60,11 @@ public class WgmfJppfTaskTest {
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(DISTRIBUTIONFILE);
-
+            DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
+                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN);
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
-                            DUMMY), specs, distribution, imbalIn);
+                            DUMMY), specs, distribution, imbalIn, dayAheadPriceProfile);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)
                     .fixAgentToAction(0, 0).fixAgentToAction(1, 0).fixAgentToAction(2, 1)

@@ -8,6 +8,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.WindErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SimulatedGamePlayAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
@@ -26,6 +27,8 @@ import java.util.Map;
 public class WhoGetsMyFlexGame extends
                                AbstractGameInstance<FlexibilityProvider, FlexibilityUtiliser> {
 
+    public static final int TO_LONG_SCALE = 100;
+
     /**
      * Default Constructor
      *
@@ -36,12 +39,12 @@ public class WhoGetsMyFlexGame extends
      * @param solverplatform The specific solver factory platform to use.
      */
     private WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
-            ImbalancePriceInputData imbalIn, WindErrorGenerator gen,
+            ImbalancePriceInputData imbalIn, DayAheadPriceProfile dap, WindErrorGenerator gen,
             AbstractSolverFactory<SolutionResults> solverplatform) {
         super(Lists.newArrayList(new PortfolioBalanceSolver(solverplatform,
                         dataIn.getCableCurrentProfile(), imbalIn
                         .getNetRegulatedVolumeProfile(),
-                        imbalIn.getPositiveImbalancePriceProfile(), specs, gen),
+                        imbalIn.getPositiveImbalancePriceProfile(), specs, gen, dap),
                 new DistributionGridCongestionSolver(solverplatform,
                         dataIn.getCongestionProfile())));
     }
@@ -53,15 +56,17 @@ public class WhoGetsMyFlexGame extends
      * @param baseSeed The base seed to work from.
      */
     public WhoGetsMyFlexGame(WgmfGameParams params, long baseSeed) {
-        this(params.getInputData(), params.getSpecs(), params.getImbalIn(),
+        this(params.getInputData(), params.getSpecs(), params.getImbalancePriceData(),
+                params.getDayAheadPriceData(),
                 new WindErrorGenerator(baseSeed, params.getDistribution()), params.getFactory());
     }
 
     @Override
-    public Map<FlexibilityProvider, Long> getPayOffs() {
-        Map<FlexibilityProvider, Long> results = Maps.newLinkedHashMap();
+    public Map<FlexibilityProvider, Double> getPayOffs() {
+        Map<FlexibilityProvider, Double> results = Maps.newLinkedHashMap();
         getAgentToActionMapping().forEach(
-                (agent, action) -> results.put(agent, agent.getMonetaryCompensationValue()));
+                (agent, action) -> results.put(agent,
+                        agent.getMonetaryCompensationValue() * TO_LONG_SCALE));
         return results;
     }
 

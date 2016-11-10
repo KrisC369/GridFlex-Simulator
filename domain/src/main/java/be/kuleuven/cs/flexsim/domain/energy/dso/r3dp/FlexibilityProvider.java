@@ -23,7 +23,7 @@ public interface FlexibilityProvider {
     /**
      * @return The amaount of monetary compensation for activating flexibility.
      */
-    long getMonetaryCompensationValue();
+    double getMonetaryCompensationValue();
 
     /**
      * Register an activation event for this Flexibility provider.

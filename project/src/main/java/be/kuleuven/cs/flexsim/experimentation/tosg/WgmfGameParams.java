@@ -4,6 +4,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import com.google.auto.value.AutoValue;
@@ -36,9 +37,14 @@ public abstract class WgmfGameParams implements Serializable {
     public abstract ForecastHorizonErrorDistribution getDistribution();
 
     /**
-     * @return
+     * @return Imbalance price input data.
      */
-    public abstract ImbalancePriceInputData getImbalIn();
+    public abstract ImbalancePriceInputData getImbalancePriceData();
+
+    /**
+     * @return Day ahead market prices.
+     */
+    public abstract DayAheadPriceProfile getDayAheadPriceData();
 
     /**
      * Static factory method.
@@ -52,7 +58,8 @@ public abstract class WgmfGameParams implements Serializable {
      */
     public static WgmfGameParams create(WindBasedInputData inputData,
             AbstractSolverFactory<SolutionResults> factory, TurbineSpecification specs,
-            ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn) {
-        return new AutoValue_WgmfGameParams(inputData, factory, specs, distribution, imbalIn);
+            ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn,
+            DayAheadPriceProfile dap) {
+        return new AutoValue_WgmfGameParams(inputData, factory, specs, distribution, imbalIn, dap);
     }
 }

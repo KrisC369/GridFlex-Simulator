@@ -58,10 +58,10 @@ public abstract class AggregationGame<S, A extends Aggregator>
     }
 
     @Override
-    public Map<S, Long> getPayOffs() {
-        final Map<S, Long> r = Maps.newLinkedHashMap();
+    public Map<S, Double> getPayOffs() {
+        final Map<S, Double> r = Maps.newLinkedHashMap();
         for (int ag = 0; ag < getSites().size(); ag++) {
-            r.put(sites.get(ag), (long) ft.get(ag).getTotalProfit());
+            r.put(sites.get(ag), ft.get(ag).getTotalProfit());
         }
         return r;
     }
