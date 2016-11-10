@@ -63,7 +63,7 @@ public abstract class AbstractGame<T, I> {
 
     public abstract void gatherResults(List<I> results);
 
-    protected final void addPayoffEntry(final long[] values, final int[] entry) {
+    protected final void addPayoffEntry(final Double[] values, final int[] entry) {
         this.payoffs.addEntry(values, entry);
     }
 

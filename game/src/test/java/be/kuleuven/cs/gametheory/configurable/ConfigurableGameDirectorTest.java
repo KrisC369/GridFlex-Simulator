@@ -71,9 +71,9 @@ public class ConfigurableGameDirectorTest {
     public void notifyVersionHasBeenPlayed() throws Exception {
         List<GameInstanceConfiguration> playableVersions = director.getPlayableVersions();
         List<GameInstanceResult> results = Lists.newArrayList();
-        Map<Integer, Long> po = Maps.newLinkedHashMap();
-        po.put(0, 12345L);
-        po.put(1, 12345L);
+        Map<Integer, Double> po = Maps.newLinkedHashMap();
+        po.put(0, 12345d);
+        po.put(1, 12345d);
         playableVersions
                 .forEach(p -> results.add(GameInstanceResult.create(p, Maps.newLinkedHashMap(po))));
         results.forEach(r -> director.notifyVersionHasBeenPlayed(r));

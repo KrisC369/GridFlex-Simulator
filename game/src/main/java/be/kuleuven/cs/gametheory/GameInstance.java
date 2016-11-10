@@ -18,11 +18,12 @@ public interface GameInstance<N, K> extends Playable {
      *
      * @return The payoff vector.
      */
-    Map<N, Long> getPayOffs();
+    Map<N, Double> getPayOffs();
 
     /**
      * Fix a certain agent to a action. Call for every agent before calling
      * This method is called before @link{init()}
+     *
      * @param agent  The agent.
      * @param action The action to fix the agent to.
      * @see{GameInstance.init or @see{GameInstance.play}.

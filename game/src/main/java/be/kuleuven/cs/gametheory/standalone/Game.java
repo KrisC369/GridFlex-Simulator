@@ -93,12 +93,12 @@ public class Game<N, K> extends AbstractGame<GameInstance<N, K>, GameInstance<N,
         for (final GameInstance<N, K> instance : getGameInstances()) {
             final List<K> actionSet = instance.getActionSet();
             assert actionSet.size() == this.actions;
-            final Map<N, Long> payoffResults = instance.getPayOffs();
+            final Map<N, Double> payoffResults = instance.getPayOffs();
             final Map<N, K> mapping = instance.getAgentToActionMapping();
             final int[] entry = new int[actionSet.size()];
-            final long[] values = new long[payoffResults.keySet().size()];
+            final Double[] values = new Double[payoffResults.keySet().size()];
             int j = 0;
-            for (final Entry<N, Long> e : payoffResults.entrySet()) {
+            for (final Entry<N, Double> e : payoffResults.entrySet()) {
                 final int whichAction = getIndexFor(actionSet,
                         mapping.get(e.getKey()));
                 entry[whichAction] = entry[whichAction] + 1;

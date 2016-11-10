@@ -51,8 +51,8 @@ public abstract class AbstractGameInstance<N, K> implements GameInstance<N, K> {
      * @return The concrete game instance results for this game.
      */
     public GameInstanceResult getGameInstanceResult() {
-        Map<Integer, Long> results = Maps.newLinkedHashMap();
-        for (Map.Entry<N, Long> e : this.getPayOffs().entrySet()) {
+        Map<Integer, Double> results = Maps.newLinkedHashMap();
+        for (Map.Entry<N, Double> e : this.getPayOffs().entrySet()) {
             results.put(agents.indexOf(e.getKey()), e.getValue());
         }
         return GameInstanceResult.create(this.config, results);

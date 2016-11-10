@@ -1,16 +1,16 @@
 package be.kuleuven.cs.gametheory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class HeuristicSymmetricPayoffMatrixTest {
     private HeuristicSymmetricPayoffMatrix table = mock(
@@ -33,7 +33,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testCompleteFalse() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         table.addEntry(value, 1, 2);
         assertFalse(this.table.isComplete());
 
@@ -44,28 +44,28 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testAddEntryInvalid() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3);
     }
 
     @Test
     public void testAddEntryInvalid2() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3, 4, 3);
     }
 
     @Test
     public void testAddEntryInvalid3() {
-        long[] value = new long[] { 34, 34, 34, 14 };
+        Double[] value = new Double[] { 34d, 34d, 34d, 14d };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 2);
     }
 
     @Test
     public void testAddEntryInvalidGet() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         table.addEntry(value, 1, 2);
         exception.expect(IllegalArgumentException.class);
         table.getEntry(2, 1);
@@ -73,7 +73,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testCompleteTrue() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -82,8 +82,8 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testDoubleGetTrue() {
-        long[] value = new long[] { 34, 34, 34 };
-        long[] value2 = new long[] { 17, 17, 17 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
+        Double[] value2 = new Double[] { 17d, 17d, 17d };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -99,9 +99,9 @@ public class HeuristicSymmetricPayoffMatrixTest {
         int high = 34;
         int low = 17;
         int higher = 53;
-        long[] value = new long[] { high };
-        long[] value2 = new long[] { low };
-        long[] value3 = new long[] { higher };
+        Double[] value = new Double[] { (double) high };
+        Double[] value2 = new Double[] { (double) low };
+        Double[] value3 = new Double[] { (double) higher };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -114,7 +114,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
         assertTrue(table.isComplete());
         for (int i = 0; i <= agents; i++) {
             // table.addEntry(value2, agents - i, i);
-            double[] current = table.getEntry(agents - i, i);
+            Double[] current = table.getEntry(agents - i, i);
             assertTrue(current[0] > low && current[0] < higher);
             assertEquals(current[0], (high + low + higher) / 3.0, 0.5);
         }
@@ -122,11 +122,11 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testGetDynamicsArgs() {
-        int reward = 39;
-        long[] value = new long[] { reward, reward, reward };
+        double reward = 39;
+        Double[] value = new Double[] { reward, reward, reward };
         for (int i = 0; i <= agents; i++) {
             reward -= 5;
-            value = new long[] { reward, reward, reward };
+            value = new Double[] { reward, reward, reward };
             table.addEntry(value, agents - i, i);
         }
         List<Double> result = table.getDynamicEquationFactors();
@@ -145,21 +145,21 @@ public class HeuristicSymmetricPayoffMatrixTest {
         agents = 2;
         actions = 3;
         this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
-        int reward = 39;
-        long[] value = new long[] { reward, reward };
+        double reward = 39;
+        Double[] value = new Double[] { reward, reward };
         for (int i = 0; i <= agents; i++) {
             reward -= 5;
-            value = new long[] { reward, reward };
+            value = new Double[] { reward, reward };
             table.addEntry(value, agents - i, i, 0);
         }
         reward -= 5;
-        value = new long[] { reward, reward };
+        value = new Double[] { reward, reward };
         table.addEntry(value, 1, 0, 1);
         reward -= 5;
-        value = new long[] { reward, reward };
+        value = new Double[] { reward, reward };
         table.addEntry(value, 0, 1, 1);
         reward -= 5;
-        value = new long[] { reward, reward };
+        value = new Double[] { reward, reward };
         table.addEntry(value, 0, 0, 2);
 
         List<Double> result = table.getDynamicEquationFactors();
@@ -177,10 +177,10 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testToString() {
-        int valueL = 34;
+        double valueL = 34d;
         System.out.println(table.toString());
         assertTrue(this.table.toString().isEmpty());
-        long[] value = new long[] { valueL, valueL, valueL };
+        Double[] value = new Double[] { valueL, valueL, valueL };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }

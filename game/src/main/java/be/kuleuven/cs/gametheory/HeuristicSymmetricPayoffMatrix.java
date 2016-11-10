@@ -1,16 +1,15 @@
 package be.kuleuven.cs.gametheory;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * This class represents heuristic payoff tables or matrices. The heuristic part
@@ -27,7 +26,7 @@ import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 public class HeuristicSymmetricPayoffMatrix {
     private final int agents;
     private final int actions;
-    private final Map<PayoffEntry, Long[]> table;
+    private final Map<PayoffEntry, Double[]> table;
     private final Map<PayoffEntry, Integer> tableCount;
     private final long numberOfCombinations;
 
@@ -35,10 +34,8 @@ public class HeuristicSymmetricPayoffMatrix {
      * Default constructor using the dimensions of the table. and having only
      * all multicombinations as entries.
      *
-     * @param agents
-     *            the amount of agents.
-     * @param actions
-     *            the amount of actions.
+     * @param agents  the amount of agents.
+     * @param actions the amount of actions.
      */
     public HeuristicSymmetricPayoffMatrix(final int agents, final int actions) {
         this.agents = agents;
@@ -69,12 +66,10 @@ public class HeuristicSymmetricPayoffMatrix {
     /**
      * Adds a new entry to this payoff matrix.
      *
-     * @param value
-     *            [] The payoff values.
-     * @param key
-     *            The population shares as indices for the value
+     * @param value [] The payoff values.
+     * @param key   The population shares as indices for the value
      */
-    public void addEntry(final long[] value, final int... key) {
+    public void addEntry(final Double[] value, final int... key) {
         checkArgument(testKey(key));
         checkArgument(testValues(value));
         final PayoffEntry entry = PayoffEntry.from(key);
@@ -99,28 +94,28 @@ public class HeuristicSymmetricPayoffMatrix {
         return true;
     }
 
-    private boolean testValues(final long[] value) {
+    private boolean testValues(final Double[] value) {
         if (value.length != agents) {
             return false;
         }
         return true;
     }
 
-    private void plusEntry(final PayoffEntry entry, final long[] value) {
+    private void plusEntry(final PayoffEntry entry, final Double[] value) {
         this.table.put(entry, arrayAdd(table.get(entry), value));
         this.tableCount.put(entry, tableCount.get(entry) + 1);
     }
 
-    private Long[] arrayAdd(final Long[] first, final long[] second) {
-        final Long[] toret = new Long[first.length];
+    private Double[] arrayAdd(final Double[] first, final Double[] second) {
+        final Double[] toret = new Double[first.length];
         for (int i = 0; i < first.length; i++) {
             toret[i] = first[i] + second[i];
         }
         return toret;
     }
 
-    private void newEntry(final PayoffEntry entry, final long[] value) {
-        final Long[] toret = new Long[value.length];
+    private void newEntry(final PayoffEntry entry, final Double[] value) {
+        final Double[] toret = new Double[value.length];
         for (int i = 0; i < value.length; i++) {
             toret[i] = value[i];
         }
@@ -138,16 +133,15 @@ public class HeuristicSymmetricPayoffMatrix {
     /**
      * Returns an entry in the payoff matrix.
      *
-     * @param key
-     *            the index keys.
+     * @param key the index keys.
      * @return the value recorded in the matrix.
      */
-    public double[] getEntry(final int... key) {
+    public Double[] getEntry(final int... key) {
         checkArgument(testKey(key));
         final PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        final Long[] sums = table.get(entry);
-        final double[] toret = new double[sums.length];
+        final Double[] sums = table.get(entry);
+        final Double[] toret = new Double[sums.length];
         for (int i = 0; i < sums.length; i++) {
             toret[i] = sums[i] / (double) tableCount.get(entry);
         }
@@ -157,7 +151,7 @@ public class HeuristicSymmetricPayoffMatrix {
     @Override
     public String toString() {
         final StringBuilder b = new StringBuilder();
-        for (final Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+        for (final Entry<PayoffEntry, Double[]> e : table.entrySet()) {
             b.append("V:").append(e.getKey()).append("->")
                     .append(Arrays
                             .toString(this.getEntry(e.getKey().getEntries())))
@@ -178,9 +172,9 @@ public class HeuristicSymmetricPayoffMatrix {
     // other specs in the refactored out module.
     public List<Double> getDynamicEquationFactors() {
         final List<Double> toReturn = Lists.newArrayList();
-        for (final Entry<PayoffEntry, Long[]> e : table.entrySet()) {
+        for (final Entry<PayoffEntry, Double[]> e : table.entrySet()) {
             final PayoffEntry entry = e.getKey();
-            final double[] values = getEntry(e.getKey().getEntries());
+            final Double[] values = getEntry(e.getKey().getEntries());
             int coeffDone = 0;
             for (int i = 0; i < entry.getEntries().length; i++) {
                 final int currCoeff = entry.getEntries()[i];

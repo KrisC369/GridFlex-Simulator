@@ -22,7 +22,7 @@ public abstract class GameInstanceResult implements Serializable {
     /**
      * @return The payoff mapping.
      */
-    public abstract Map<Integer, Long> getPayoffs();
+    public abstract Map<Integer, Double> getPayoffs();
 
     /**
      * Static factory method.
@@ -32,7 +32,7 @@ public abstract class GameInstanceResult implements Serializable {
      * @return a game instance result mapping.
      */
     public static GameInstanceResult create(GameInstanceConfiguration config,
-            Map<Integer, Long> po) {
+            Map<Integer, Double> po) {
         return new AutoValue_GameInstanceResult(config, po);
     }
 }

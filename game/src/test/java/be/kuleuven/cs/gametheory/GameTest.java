@@ -1,22 +1,20 @@
 package be.kuleuven.cs.gametheory;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
+import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
+import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
+import be.kuleuven.cs.gametheory.standalone.Game;
+import be.kuleuven.cs.gametheory.standalone.GameDirector;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.List;
 import java.util.Map;
 
-import be.kuleuven.cs.gametheory.standalone.Game;
-import be.kuleuven.cs.gametheory.standalone.GameDirector;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-
-import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
-import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class GameTest {
     private GameConfigurator config = mock(GameConfigurator.class);
@@ -25,7 +23,7 @@ public class GameTest {
     private List<Site> players = Lists.newArrayList();
     private int agents = 3;
     private int reps = 20;
-    private Long value = 34L;
+    private Double value = 34d;
 
     @Before
     public void setUp() throws Exception {
@@ -62,8 +60,8 @@ public class GameTest {
                     }
 
                     @Override
-                    public Map<Site, Long> getPayOffs() {
-                        Map<Site, Long> m = Maps.newLinkedHashMap();
+                    public Map<Site, Double> getPayOffs() {
+                        Map<Site, Double> m = Maps.newLinkedHashMap();
                         for (int i = 0; i < agents; i++) {
                             m.put(players.get(i), value);
                         }

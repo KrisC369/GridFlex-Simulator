@@ -78,9 +78,9 @@ public class ConfigurableGame
     public void gatherResults(List<GameInstanceResult> instances) {
         for (final GameInstanceResult instance : instances) {
             final int[] entry = new int[actions];
-            final long[] values = new long[agents];
+            final Double[] values = new Double[agents];
             int j = 0;
-            for (final Entry<Integer, Long> e : instance.getPayoffs().entrySet()) {
+            for (final Entry<Integer, Double> e : instance.getPayoffs().entrySet()) {
                 final int whichAction = instance.getGameInstanceConfig().getAgentActionMap()
                         .get(e.getKey());
                 entry[whichAction] = entry[whichAction] + 1;
