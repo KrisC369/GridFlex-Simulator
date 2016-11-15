@@ -5,13 +5,14 @@ import com.google.common.collect.Lists;
 import org.apache.commons.math3.random.MersenneTwister;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class can generate normally distributed errors to forecasts.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class WindErrorGenerator {
+public final class MultiHorizonErrorGenerator {
 
     private final ForecastHorizonErrorDistribution distribution;
     private final List<MersenneTwister> twisters;
@@ -22,7 +23,7 @@ public final class WindErrorGenerator {
      * @param seed         The initial seed.
      * @param distribution The error distributions.
      */
-    public WindErrorGenerator(long seed, ForecastHorizonErrorDistribution distribution) {
+    public MultiHorizonErrorGenerator(long seed, ForecastHorizonErrorDistribution distribution) {
         this.distribution = distribution;
         twisters = Lists.newArrayList();
         for (int i = 0; i < distribution.getMaxForecastHorizon(); i++) {

@@ -106,7 +106,7 @@ public class HeuristicSymmetricPayoffMatrix {
         this.tableCount.put(entry, tableCount.get(entry) + 1);
     }
 
-    private Double[] arrayAdd(final Double[] first, final Double[] second) {
+    private static Double[] arrayAdd(final Double[] first, final Double[] second) {
         final Double[] toret = new Double[first.length];
         for (int i = 0; i < first.length; i++) {
             toret[i] = first[i] + second[i];
@@ -115,10 +115,7 @@ public class HeuristicSymmetricPayoffMatrix {
     }
 
     private void newEntry(final PayoffEntry entry, final Double[] value) {
-        final Double[] toret = new Double[value.length];
-        for (int i = 0; i < value.length; i++) {
-            toret[i] = value[i];
-        }
+        final Double[] toret = Arrays.copyOf(value, value.length);
         this.table.put(entry, toret);
         this.tableCount.put(entry, 1);
     }
