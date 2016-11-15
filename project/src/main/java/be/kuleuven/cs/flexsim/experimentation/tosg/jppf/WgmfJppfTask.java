@@ -9,6 +9,7 @@ import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import com.google.common.annotations.VisibleForTesting;
 import org.jppf.node.protocol.AbstractTask;
 
+import java.io.Serializable;
 import java.util.concurrent.Callable;
 
 /**
@@ -70,7 +71,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
     }
 
     @FunctionalInterface
-    interface GameInstanceFactory {
+    interface GameInstanceFactory extends Serializable {
         WhoGetsMyFlexGame createGameInstance(WgmfGameParams params, long getSeed);
     }
 }

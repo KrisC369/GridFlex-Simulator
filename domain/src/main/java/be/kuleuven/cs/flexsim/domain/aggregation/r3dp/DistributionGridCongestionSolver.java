@@ -155,7 +155,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
             double singleStepTotalVolume =
                     totalVolumes.get(idx + i) / discretisationInNbSlotsPerHour;
             double resolved = min(getBaseProfile().value(idx + i), singleStepTotalVolume);
-            double budgetValue = (FIXED_PRICE / TO_KILO) * resolved;
+            double budgetValue = (flex_remuneration / TO_KILO) * resolved;
             double part = singleStepActVolume / singleStepTotalVolume;
             sum += part * budgetValue;
         }

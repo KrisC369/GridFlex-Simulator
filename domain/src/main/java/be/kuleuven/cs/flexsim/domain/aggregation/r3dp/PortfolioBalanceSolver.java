@@ -21,8 +21,6 @@ import static java.lang.StrictMath.min;
  */
 public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
-    private final NetRegulatedVolumeProfile nrv;
-    private final PositiveImbalancePriceProfile pip;
     private final BudgetTracker budget;
 
     /**
@@ -39,8 +37,6 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
             CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
             TurbineSpecification specs, MultiHorizonErrorGenerator gen, DayAheadPriceProfile dapp) {
         super(fac, applyWindForecastErrorAndBudgetConstraints(c, specs, gen, nrv, pip));
-        this.nrv = nrv;
-        this.pip = pip;
         this.budget = BudgetTracker.createDayAheadSellingPrice(pip, dapp);
     }
 

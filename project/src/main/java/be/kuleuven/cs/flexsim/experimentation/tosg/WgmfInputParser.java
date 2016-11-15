@@ -65,10 +65,8 @@ public final class WgmfInputParser {
             if (line.hasOption("s")) {
                 solver = AbstractOptimalSolver.Solver.valueOf(line.getOptionValue("s"));
             }
-            if (line.hasOption("m")) {
-                if (line.getOptionValue("m").equals("REMOTE")) {
-                    remoteExec = true;
-                }
+            if (line.hasOption("m") && "REMOTE".equals(line.getOptionValue("m"))) {
+                remoteExec = true;
             }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";

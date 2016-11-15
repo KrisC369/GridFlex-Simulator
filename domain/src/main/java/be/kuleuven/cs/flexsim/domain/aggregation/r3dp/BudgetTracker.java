@@ -19,7 +19,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class BudgetTracker {
+public final class BudgetTracker {
 
     private final PositiveImbalancePriceProfile ppos;
     private final DayAheadPriceProfile pda;
