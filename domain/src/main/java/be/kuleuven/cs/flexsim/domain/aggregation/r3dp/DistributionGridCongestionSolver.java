@@ -20,6 +20,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static java.lang.StrictMath.min;
+
 /**
  * Represents a distribution grid management entity that solves current congestion problems in
  * distribution grid infrastructure.
@@ -30,7 +32,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     private static final double FIXED_PRICE = 35.4;
     protected static final double TO_KILO = 10E3d;
     private final CongestionProfile congestion;
-
+    private final double flex_remuneration;
     @Nullable
     private SolutionResults results;
 
@@ -42,8 +44,14 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
      */
     public DistributionGridCongestionSolver(final AbstractSolverFactory<SolutionResults> fac,
             final CongestionProfile c) {
+        this(fac, c, FIXED_PRICE);
+    }
+
+    public DistributionGridCongestionSolver(final AbstractSolverFactory<SolutionResults> fac,
+            final CongestionProfile profile, double flexRemunerationPrice) {
         super(fac);
-        congestion = c;
+        congestion = profile;
+        this.flex_remuneration = flexRemunerationPrice;
     }
 
     @Override
@@ -141,10 +149,15 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
             int discretisationInNbSlotsPerHour, List<Integer> acts, List<Double> totalVolumes) {
         int idx = (int) (activation.getStart() * discretisationInNbSlotsPerHour);
         int dur = (int) (activation.getDuration() * discretisationInNbSlotsPerHour);
-        double singleStepVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
+        double singleStepActVolume = activation.getEnergyVolume() / discretisationInNbSlotsPerHour;
         double sum = 0;
         for (int i = 0; i < dur; i++) {
-            sum += (FIXED_PRICE / TO_KILO) * singleStepVolume / (double) acts.get(idx + i);
+            double singleStepTotalVolume =
+                    totalVolumes.get(idx + i) / discretisationInNbSlotsPerHour;
+            double resolved = min(getBaseProfile().value(idx + i), singleStepTotalVolume);
+            double budgetValue = (FIXED_PRICE / TO_KILO) * resolved;
+            double part = singleStepActVolume / singleStepTotalVolume;
+            sum += part * budgetValue;
         }
         return sum;
     }

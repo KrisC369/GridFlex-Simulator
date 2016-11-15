@@ -23,6 +23,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
     private WgmfGameParams params;
     private final GameInstanceConfiguration instanceConfig;
     private final String paramsDataKey;
+    private GameInstanceFactory instanceFactory;
 
     /**
      * Default constructor.
@@ -31,14 +32,18 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
      * @param s              The key for which to query the data provider for the instance
      *                       parameter data.
      */
-    public WgmfJppfTask(GameInstanceConfiguration instanceConfig, String s) {
+    public WgmfJppfTask(GameInstanceConfiguration instanceConfig, String s,
+            GameInstanceFactory factory) {
         this.instanceConfig = instanceConfig;
         paramsDataKey = s;
+        instanceFactory = factory;
     }
 
     @VisibleForTesting
-    WgmfJppfTask(GameInstanceConfiguration instanceConfig, WgmfGameParams params) {
+    WgmfJppfTask(GameInstanceConfiguration instanceConfig, WgmfGameParams params,
+            GameInstanceFactory factory) {
         this.instanceConfig = instanceConfig;
+        this.instanceFactory = factory;
         this.paramsDataKey = "";
         this.params = params;
     }
@@ -49,7 +54,8 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
             params = (WgmfGameParams) getDataProvider().getParameter(paramsDataKey);
         }
         WgmfAgentGenerator configurator = new WgmfAgentGenerator(instanceConfig.getSeed());
-        WhoGetsMyFlexGame gameInstance = new WhoGetsMyFlexGame(params, instanceConfig.getSeed());
+        WhoGetsMyFlexGame gameInstance = instanceFactory
+                .createGameInstance(params, instanceConfig.getSeed());
         AbstractGameInstanceConfigurator.create(gameInstance)
                 .configureGameInstance(configurator, instanceConfig);
         gameInstance.init();
@@ -61,5 +67,10 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
     public GameInstanceResult call() throws Exception {
         run();
         return getResult();
+    }
+
+    @FunctionalInterface
+    interface GameInstanceFactory {
+        WhoGetsMyFlexGame createGameInstance(WgmfGameParams params, long getSeed);
     }
 }

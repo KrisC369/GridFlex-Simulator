@@ -37,7 +37,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
-            TurbineSpecification specs, WindErrorGenerator gen, DayAheadPriceProfile dapp) {
+            TurbineSpecification specs, MultiHorizonErrorGenerator gen, DayAheadPriceProfile dapp) {
         super(fac, applyWindForecastErrorAndBudgetConstraints(c, specs, gen, nrv, pip));
         this.nrv = nrv;
         this.pip = pip;
@@ -46,7 +46,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
 
     public static CongestionProfile applyWindForecastErrorAndBudgetConstraints(
             CableCurrentProfile c,
-            TurbineSpecification specs, WindErrorGenerator randomGen,
+            TurbineSpecification specs, MultiHorizonErrorGenerator randomGen,
             NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip) {
         CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
                 .convertProfileTPositiveOnlyoImbalanceVolumes();

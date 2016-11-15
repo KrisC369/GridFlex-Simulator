@@ -5,6 +5,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
@@ -70,7 +71,9 @@ public class WgmfJppfTaskTest {
                     .fixAgentToAction(0, 0).fixAgentToAction(1, 0).fixAgentToAction(2, 1)
                     .setSeed(231L).build();
 
-            this.task = new WgmfJppfTask(config, params);
+            this.task = new WgmfJppfTask(config, params,
+                    (WgmfGameParams wgmfParams, long seed) -> WhoGetsMyFlexGame
+                            .createBasicGame(wgmfParams, seed));
             this.expP = ExperimentParams.create(2, 1, DUMMY, true);
         } catch (IOException e) {
             e.printStackTrace();

@@ -31,7 +31,7 @@ public class PortfolioBalanceSolverTest {
     private TurbineSpecification specs;
     private GammaDistribution gd;
     private PortfolioBalanceSolver solver;
-    private WindErrorGenerator generator;
+    private MultiHorizonErrorGenerator generator;
 
     @Before
     public void setUp() throws Exception {
@@ -42,7 +42,7 @@ public class PortfolioBalanceSolverTest {
             c2 = CableCurrentProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
-            this.generator = new WindErrorGenerator(SEED, distribution);
+            this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
             //            c2 = CableCurrentProfile.createFromCSV("4kwartOpEnNeer.csv",
             // "startprofiel+extra");
 
@@ -58,7 +58,7 @@ public class PortfolioBalanceSolverTest {
     public void testApplicationOfError0s() throws IOException {
         ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
-        this.generator = new WindErrorGenerator(SEED, distribution);
+        this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
 
         CongestionProfile cableCurrentProfile2 = toWindAndBackWErrors(c2, specs);
         List<Double> expected = c2.transform(p -> p * TurbineProfileConvertor.TO_POWER / 4d)
@@ -92,7 +92,7 @@ public class PortfolioBalanceSolverTest {
     public void testToWindAndBackProfiles2() throws IOException {
         ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
-        this.generator = new WindErrorGenerator(SEED, distribution);
+        this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
         TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
         CongestionProfile orig = t.getOriginalCongestionProfile();
         CongestionProfile cableCurrentProfile2 = t.getPredictionCongestionProfile();

@@ -20,7 +20,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class AbstractWgmfGameRunner {
-    private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
+    //    private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
+    private static final String DISTRIBUTIONFILE = "windspeedDistributionsNormalized.csv";
     private static final String DATAFILE = "2kwartOpEnNeer.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String IMBAL = "imbalance_prices.csv";

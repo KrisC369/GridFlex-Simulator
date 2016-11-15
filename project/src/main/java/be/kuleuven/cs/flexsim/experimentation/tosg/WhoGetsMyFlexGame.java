@@ -4,7 +4,7 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestion
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.WindErrorGenerator;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
@@ -16,6 +16,8 @@ import be.kuleuven.cs.gametheory.configurable.AbstractGameInstance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +32,15 @@ public class WhoGetsMyFlexGame extends
     public static final int TO_LONG_SCALE = 100;
 
     /**
+     * Constructor callable from extensions.
+     *
+     * @param providerList The list of providers.
+     */
+    protected WhoGetsMyFlexGame(List<FlexibilityUtiliser> providerList) {
+        super(providerList);
+    }
+
+    /**
      * Default Constructor
      *
      * @param dataIn         The data profile to work from.
@@ -38,10 +49,11 @@ public class WhoGetsMyFlexGame extends
      * @param gen            The generator instance for generating wind forecast errors.
      * @param solverplatform The specific solver factory platform to use.
      */
+    @Deprecated
     private WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
-            ImbalancePriceInputData imbalIn, DayAheadPriceProfile dap, WindErrorGenerator gen,
+            ImbalancePriceInputData imbalIn, DayAheadPriceProfile dap, MultiHorizonErrorGenerator gen,
             AbstractSolverFactory<SolutionResults> solverplatform) {
-        super(Lists.newArrayList(new PortfolioBalanceSolver(solverplatform,
+        this(Lists.newArrayList(new PortfolioBalanceSolver(solverplatform,
                         dataIn.getCableCurrentProfile(), imbalIn
                         .getNetRegulatedVolumeProfile(),
                         imbalIn.getPositiveImbalancePriceProfile(), specs, gen, dap),
@@ -55,10 +67,11 @@ public class WhoGetsMyFlexGame extends
      * @param params   The input params for this game.
      * @param baseSeed The base seed to work from.
      */
+    @Deprecated
     public WhoGetsMyFlexGame(WgmfGameParams params, long baseSeed) {
         this(params.getInputData(), params.getSpecs(), params.getImbalancePriceData(),
                 params.getDayAheadPriceData(),
-                new WindErrorGenerator(baseSeed, params.getDistribution()), params.getFactory());
+                new MultiHorizonErrorGenerator(baseSeed, params.getDistribution()), params.getFactory());
     }
 
     @Override
@@ -87,4 +100,42 @@ public class WhoGetsMyFlexGame extends
         new SimulatedGamePlayAdapter(getActionSet()).play();
     }
 
+    public static WhoGetsMyFlexGame createBasicGame(WgmfGameParams params, long baseSeed) {
+        WindBasedInputData inputData = params.getInputData();
+        TurbineSpecification specs = params.getSpecs();
+        ImbalancePriceInputData imbalancePriceData = params.getImbalancePriceData();
+        DayAheadPriceProfile dayAheadPriceData = params.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(baseSeed,
+                params.getDistribution());
+        AbstractSolverFactory<SolutionResults> solverplatform = params.getFactory();
+        ArrayList<FlexibilityUtiliser> actions = Lists
+                .newArrayList(new PortfolioBalanceSolver(solverplatform,
+                                inputData.getCableCurrentProfile(), imbalancePriceData
+                                .getNetRegulatedVolumeProfile(),
+                                imbalancePriceData.getPositiveImbalancePriceProfile(), specs,
+                                multiHorizonErrorGenerator, dayAheadPriceData),
+                        new DistributionGridCongestionSolver(solverplatform,
+                                inputData.getCongestionProfile()));
+        return new WhoGetsMyFlexGame(actions);
+    }
+
+    public static WhoGetsMyFlexGame createVariableDSOPricingGame(WgmfGameParams params,
+            long baseSeed, double flexRemunerationPrice) {
+        WindBasedInputData inputData = params.getInputData();
+        TurbineSpecification specs = params.getSpecs();
+        ImbalancePriceInputData imbalancePriceData = params.getImbalancePriceData();
+        DayAheadPriceProfile dayAheadPriceData = params.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(baseSeed,
+                params.getDistribution());
+        AbstractSolverFactory<SolutionResults> solverplatform = params.getFactory();
+        ArrayList<FlexibilityUtiliser> actions = Lists
+                .newArrayList(new PortfolioBalanceSolver(solverplatform,
+                                inputData.getCableCurrentProfile(), imbalancePriceData
+                                .getNetRegulatedVolumeProfile(),
+                                imbalancePriceData.getPositiveImbalancePriceProfile(), specs,
+                                multiHorizonErrorGenerator, dayAheadPriceData),
+                        new DistributionGridCongestionSolver(solverplatform,
+                                inputData.getCongestionProfile(), flexRemunerationPrice));
+        return new WhoGetsMyFlexGame(actions);
+    }
 }

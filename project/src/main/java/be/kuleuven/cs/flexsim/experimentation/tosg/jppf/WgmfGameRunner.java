@@ -3,6 +3,7 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
@@ -54,7 +55,9 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
 
     @Override
     protected void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> adapted = getStrategy().adapt(director, params, PARAMS_KEY);
+        List<WgmfJppfTask> adapted = getStrategy().adapt(director, params, PARAMS_KEY,
+                (WgmfGameParams wgmfParams, long seed) -> WhoGetsMyFlexGame
+                        .createBasicGame(wgmfParams, seed));
         ExperimentRunner runner = getStrategy().getRunner(params, PARAMS_KEY);
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();

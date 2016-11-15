@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
-import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.flexsim.experimentation.runners.jppf.RemoteRunners;
 import be.kuleuven.cs.flexsim.experimentation.runners.local.LocalRunners;
@@ -84,19 +82,19 @@ enum ExecutionStrategy {
 
     List<WgmfJppfTask> adapt(
             final ConfigurableGameDirector dir,
-            WgmfGameParams params, String paramString) {
+            WgmfGameParams params, String paramString, WgmfJppfTask.GameInstanceFactory factory) {
         List<WgmfJppfTask> experiments;
         switch (this) {
         case REMOTE:
             experiments = Lists.newArrayList();
             for (final GameInstanceConfiguration p : dir.getPlayableVersions()) {
-                experiments.add(new WgmfJppfTask(p, paramString));
+                experiments.add(new WgmfJppfTask(p, paramString, factory));
             }
             break;
         case LOCAL:
             experiments = Lists.newArrayList();
             for (final GameInstanceConfiguration p : dir.getPlayableVersions()) {
-                experiments.add(new WgmfJppfTask(p, params));
+                experiments.add(new WgmfJppfTask(p, params, factory));
             }
             break;
         default:

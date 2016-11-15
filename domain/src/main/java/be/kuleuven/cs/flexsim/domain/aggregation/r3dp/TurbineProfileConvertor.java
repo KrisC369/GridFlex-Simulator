@@ -22,7 +22,7 @@ public final class TurbineProfileConvertor {
     private final TurbineSpecification specs;
     private final int nbTurbines;
     private final double maxPSingle;
-    private final WindErrorGenerator random;
+    private final MultiHorizonErrorGenerator random;
     public static final double DAY_AHEAD_NOMINATION_DEADLINE = 15;
     public static final double PROFILE_START_TIME = 0;
 
@@ -34,7 +34,7 @@ public final class TurbineProfileConvertor {
      * @param random  The random generator of wind errors for different horizons.
      */
     public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
-            WindErrorGenerator random) {
+            MultiHorizonErrorGenerator random) {
         this.specs = specs;
         //reduced power profile.
         this.powerProfile = PowerValuesProfile
