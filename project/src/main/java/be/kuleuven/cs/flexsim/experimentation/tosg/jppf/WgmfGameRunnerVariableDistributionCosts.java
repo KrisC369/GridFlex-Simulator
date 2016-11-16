@@ -104,21 +104,20 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         logger.info("Experiment results received. \nProcessing results... ");
         getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
                 UnmodifiableMap.decorate(priceToDirector));
-        //        getStrategy().processExecutionResults(results, director);
     }
 
     @Override
     protected void processResults() {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
-            for (double price : priceToDirector.keySet()) {
-                ImmutableList<Double> eqnParams = priceToDirector.get(price).getResults()
+            for (Map.Entry<Double, ConfigurableGameDirector> entry : priceToDirector.entrySet()) {
+                ImmutableList<Double> eqnParams = entry.getValue().getResults()
                         .getResults();
                 double[] fixedPoints = egtResultParser
                         .findFixedPointForDynEquationParams(
                                 eqnParams.stream().mapToDouble(Double::doubleValue).toArray());
-                logger.warn("Results for pricepoint {}:", price);
+                logger.warn("Results for pricepoint {}:", entry.getKey());
                 logger.warn("Dynamics equation params: {}",
-                        priceToDirector.get(price).getDynamicEquationArguments());
+                        entry.getValue().getDynamicEquationArguments());
                 logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
             }
         } catch (Exception e) {

@@ -24,7 +24,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
     private WgmfGameParams params;
     private final GameInstanceConfiguration instanceConfig;
     private final String paramsDataKey;
-    private GameInstanceFactory instanceFactory;
+    private final GameInstanceFactory instanceFactory;
 
     /**
      * Default constructor.
