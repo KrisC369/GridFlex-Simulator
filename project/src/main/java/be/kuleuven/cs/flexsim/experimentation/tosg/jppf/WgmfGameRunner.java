@@ -7,6 +7,7 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import com.google.common.collect.ImmutableList;
 import org.jppf.node.protocol.Task;
 import org.slf4j.Logger;
@@ -55,9 +56,11 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
 
     @Override
     protected void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> adapted = getStrategy().adapt(director, params, PARAMS_KEY,
-                (WgmfGameParams wgmfParams, long seed) -> WhoGetsMyFlexGame
-                        .createBasicGame(wgmfParams, seed));
+        List<WgmfJppfTask> adapted = getStrategy()
+                .adapt(director.getPlayableVersions(), params, PARAMS_KEY,
+                        (WgmfGameParams wgmfParams, GameInstanceConfiguration config) ->
+                                WhoGetsMyFlexGame
+                                        .createBasicGame(wgmfParams, config.getSeed()));
         ExperimentRunner runner = getStrategy().getRunner(params, PARAMS_KEY);
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();
@@ -66,7 +69,7 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
     }
 
     @Override
-    protected void logResults() {
+    protected void processResults() {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             ImmutableList<Double> eqnParams = director.getResults().getResults();
             double[] fixedPoints = egtResultParser

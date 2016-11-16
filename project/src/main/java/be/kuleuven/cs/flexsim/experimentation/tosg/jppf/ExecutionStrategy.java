@@ -27,11 +27,11 @@ enum ExecutionStrategy {
     /**
      * Run remote on JPPF cluster.
      */
-    REMOTE,
+    REMOTE((o) -> (GameInstanceConfiguration) ((Task<?>) o).getResult()),
     /**
      * Run local with a multithreaded executor service.
      */
-    LOCAL;
+    LOCAL((o) -> (GameInstanceConfiguration) ((Future<?>) o).get());
 
     ExperimentRunner getRunner(WgmfGameParams params, String paramString) {
         ExperimentRunner toRet;
@@ -54,12 +54,11 @@ enum ExecutionStrategy {
             ConfigurableGameDirector director) {
         switch (this) {
         case REMOTE:
-            for (Task<?> result : (List<Task<?>>) results) {
-                if (result.getThrowable() != null) {
-                    getLogger(ExecutionStrategy.class).error(result.getThrowable().toString());
+            for (Task<?> task : (List<Task<?>>) results) {
+                if (task.getThrowable() != null) {
+                    getLogger(ExecutionStrategy.class).error(task.getThrowable().toString());
                 } else {
-                    director.notifyVersionHasBeenPlayed(
-                            (GameInstanceResult) result.getResult());
+                    director.notifyVersionHasBeenPlayed((GameInstanceResult) task.getResult());
                 }
             }
             break;
@@ -80,20 +79,58 @@ enum ExecutionStrategy {
         }
     }
 
+    <R> void processExecutionResults(List<R> allResults, String varKey,
+            Map<Double, ConfigurableGameDirector> directors) {
+        switch (this) {
+        case REMOTE:
+            for (Task<?> task : (List<Task<?>>) allResults) {
+                if (task.getThrowable() != null) {
+                    getLogger(ExecutionStrategy.class).error(task.getThrowable().toString());
+                } else {
+                    GameInstanceResult result = (GameInstanceResult) task.getResult();
+                    Double price = result.getGameInstanceConfig().getExtraConfigValues()
+                            .get(varKey);
+                    directors.get(price)
+                            .notifyVersionHasBeenPlayed((GameInstanceResult) task.getResult());
+                }
+            }
+            break;
+        case LOCAL:
+            for (Future<?> future : (List<Future<?>>) allResults) {
+                try {
+                    GameInstanceResult result = (GameInstanceResult) future.get();
+                    Double price = result.getGameInstanceConfig().getExtraConfigValues()
+                            .get(varKey);
+                    directors.get(price)
+                            .notifyVersionHasBeenPlayed((GameInstanceResult) future.get());
+                } catch (InterruptedException e) {
+                    getLogger(ExecutionStrategy.class)
+                            .error("Experimentation got interrupted.", e);
+                } catch (ExecutionException e) {
+                    getLogger(ExecutionStrategy.class)
+                            .error("An error occured during execution.", e);
+                }
+            }
+            break;
+        default:
+        }
+    }
+
     List<WgmfJppfTask> adapt(
-            final ConfigurableGameDirector dir,
+            final List<GameInstanceConfiguration> playableConfigs,
             WgmfGameParams params, String paramString, WgmfJppfTask.GameInstanceFactory factory) {
+        //TODO take List<GameInstanceCOnfig iso director.
         List<WgmfJppfTask> experiments;
         switch (this) {
         case REMOTE:
             experiments = Lists.newArrayList();
-            for (final GameInstanceConfiguration p : dir.getPlayableVersions()) {
+            for (final GameInstanceConfiguration p : playableConfigs) {
                 experiments.add(new WgmfJppfTask(p, paramString, factory));
             }
             break;
         case LOCAL:
             experiments = Lists.newArrayList();
-            for (final GameInstanceConfiguration p : dir.getPlayableVersions()) {
+            for (final GameInstanceConfiguration p : playableConfigs) {
                 experiments.add(new WgmfJppfTask(p, params, factory));
             }
             break;
@@ -101,5 +138,17 @@ enum ExecutionStrategy {
             experiments = Lists.newArrayList();
         }
         return experiments;
+    }
+
+    private final ConfigurationExtractor extractor;
+
+    private ExecutionStrategy(ConfigurationExtractor ce) {
+        this.extractor = ce;
+    }
+
+    @FunctionalInterface
+    interface ConfigurationExtractor {
+        GameInstanceConfiguration getConfig(Object extractrable)
+                throws InterruptedException, ExecutionException;
     }
 }

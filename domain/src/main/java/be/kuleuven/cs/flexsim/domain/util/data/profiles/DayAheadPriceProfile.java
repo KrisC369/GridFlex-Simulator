@@ -92,12 +92,12 @@ public class DayAheadPriceProfile
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
     public static DayAheadPriceProfile extrapolateFromHourlyOneDayData(final String filename,
-            final String column)
+            final String column, int days)
             throws IOException {
         final DayAheadPriceProfile cp = new DayAheadPriceProfile();
         cp.load(filename, column);
         DoubleList dl = new DoubleArrayList();
-        for (int i = 0; i < 4 * 24 * 365; i++) {
+        for (int i = 0; i < 4 * 24 * days; i++) {
             int idx = (i / 4) % 24;
             dl.add(cp.value(idx));
         }

@@ -56,12 +56,13 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
         }
         WgmfAgentGenerator configurator = new WgmfAgentGenerator(instanceConfig.getSeed());
         WhoGetsMyFlexGame gameInstance = instanceFactory
-                .createGameInstance(params, instanceConfig.getSeed());
+                .createGameInstance(params, instanceConfig);
         AbstractGameInstanceConfigurator.create(gameInstance)
                 .configureGameInstance(configurator, instanceConfig);
         gameInstance.init();
         gameInstance.play();
-        setResult(gameInstance.getGameInstanceResult());
+        setResult(GameInstanceResult
+                .create(instanceConfig, gameInstance.getGameInstanceResult().getPayoffs()));
     }
 
     @Override
@@ -72,6 +73,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
 
     @FunctionalInterface
     interface GameInstanceFactory extends Serializable {
-        WhoGetsMyFlexGame createGameInstance(WgmfGameParams params, long getSeed);
+        WhoGetsMyFlexGame createGameInstance(WgmfGameParams params,
+                GameInstanceConfiguration instanceConfig);
     }
 }

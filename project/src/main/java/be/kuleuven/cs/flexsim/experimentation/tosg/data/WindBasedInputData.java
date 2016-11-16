@@ -35,10 +35,23 @@ public abstract class WindBasedInputData implements Serializable {
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
     public static WindBasedInputData loadFromResource(String filename) throws IOException {
+        return loadFromResource(filename, CONGESTION_COLUMN_KEY, CURRENT_COLUMN_KEY);
+    }
+
+    /**
+     * Load both defined profiles from resource file.
+     *
+     * @param filename the name of the resource (file) to load from.
+     * @return
+     * @throws IOException           If reading from the file is not possible.
+     * @throws FileNotFoundException If the file with that name cannot be found.
+     */
+    public static WindBasedInputData loadFromResource(String filename, String congestionKey,
+            String currentKey) throws IOException {
         CongestionProfile congestion = CongestionProfile
-                .createFromCSV(filename, CONGESTION_COLUMN_KEY);
+                .createFromCSV(filename, congestionKey);
         CableCurrentProfile current = CableCurrentProfile
-                .createFromCSV(filename, CURRENT_COLUMN_KEY);
+                .createFromCSV(filename, currentKey);
         return new AutoValue_WindBasedInputData(congestion, current);
     }
 

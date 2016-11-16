@@ -54,7 +54,7 @@ public class BudgetTrackerTest {
         PositiveImbalancePriceProfile ppos = PositiveImbalancePriceProfile
                 .createFromCSV("imbalance_prices.csv", pipColumn);
         DayAheadPriceProfile pda = DayAheadPriceProfile
-                .extrapolateFromHourlyOneDayData("dailyDayAheadPrices.csv", "damhp");
+                .extrapolateFromHourlyOneDayData("dailyDayAheadPrices.csv", "damhp", 365);
         BudgetTracker target = BudgetTracker.createDayAheadSellingPrice(ppos, pda);
         int idx = 2 + 2 * 4 + 2 * 24 * 4;
         double exp = 44.85 - (-29.63);

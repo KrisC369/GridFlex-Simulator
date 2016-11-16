@@ -38,6 +38,11 @@ public abstract class GameInstanceConfiguration implements Serializable {
     public abstract ImmutableMap<Integer, Integer> getAgentActionMap();
 
     /**
+     * @return The mapping of extra config values that can be specified by users.
+     */
+    public abstract ImmutableMap<String, Double> getExtraConfigValues();
+
+    /**
      * @return A builder instance.
      */
     public static Builder builder() {
@@ -58,6 +63,17 @@ public abstract class GameInstanceConfiguration implements Serializable {
     }
 
     /**
+     * Create a new value object which only differs from the current one by adding one mapping.
+     *
+     * @param tokenAgent  The agentID.
+     * @param tokenAction The actionID.
+     * @return The value object representing the configuration.
+     */
+    public GameInstanceConfiguration withExtraConfigValue(String configKey, double configValue) {
+        return toBuilder().fixConfigKeyToValue(configKey, configValue).build();
+    }
+
+    /**
      * Builder class.
      */
     @AutoValue.Builder
@@ -70,8 +86,15 @@ public abstract class GameInstanceConfiguration implements Serializable {
 
         abstract ImmutableMap.Builder<Integer, Integer> agentActionMapBuilder();
 
+        abstract ImmutableMap.Builder<String, Double> extraConfigValuesBuilder();
+
         public Builder fixAgentToAction(int tokenAgent, int tokenAction) {
             agentActionMapBuilder().put(tokenAgent, tokenAction);
+            return this;
+        }
+
+        public Builder fixConfigKeyToValue(String configKey, Double configValue) {
+            extraConfigValuesBuilder().put(configKey, configValue);
             return this;
         }
 

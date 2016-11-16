@@ -62,7 +62,7 @@ public class WgmfJppfTaskTest {
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(DISTRIBUTIONFILE);
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
-                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN);
+                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 365);
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
                             DUMMY), specs, distribution, imbalIn, dayAheadPriceProfile);
@@ -72,8 +72,8 @@ public class WgmfJppfTaskTest {
                     .setSeed(231L).build();
 
             this.task = new WgmfJppfTask(config, params,
-                    (WgmfGameParams wgmfParams, long seed) -> WhoGetsMyFlexGame
-                            .createBasicGame(wgmfParams, seed));
+                    (WgmfGameParams wgmfParams, GameInstanceConfiguration conf) -> WhoGetsMyFlexGame
+                            .createBasicGame(wgmfParams, conf.getSeed()));
             this.expP = ExperimentParams.create(2, 1, DUMMY, true);
         } catch (IOException e) {
             e.printStackTrace();
