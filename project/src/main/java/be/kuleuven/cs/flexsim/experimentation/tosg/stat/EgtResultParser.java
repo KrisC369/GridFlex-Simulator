@@ -38,6 +38,11 @@ public class EgtResultParser implements AutoCloseable {
         } catch (MatlabConnectionException e) {
             throw new IllegalStateException("Could not instantiate matlab proxy. Quitting!", e);
         }
+        try {
+            getProxy().eval("addpath('~/gitworkspace/EgtTools/src/');");
+        } catch (MatlabInvocationException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
