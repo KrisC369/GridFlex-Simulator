@@ -13,9 +13,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.LOCAL;
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
-
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
@@ -34,15 +31,14 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     @Before
     public void setUp() throws Exception {
         experimentParams = WgmfInputParser.parseInputAndExec(new String[] {
-                "-n", "2", "-r", "1", "-s", "DUMMY", "-m", "LOCAL" });
-        runner = new WgmfGameRunnerVariableDistributionCosts(experimentParams,
-                experimentParams.runRemote() ? REMOTE : LOCAL);
+                "-n", "2", "-r", "1", "-s", "DUMMY", "-m", "LOCAL", "-p1start", "35.4", "-p1step",
+                "10", "-p1end", "61.5" });
+        runner = new WgmfGameRunnerVariableDistributionCosts(experimentParams);
     }
 
     @Test
     public void main() throws Exception {
         runner.execute(loadResources(experimentParams));
-        runner.processResults();
     }
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {

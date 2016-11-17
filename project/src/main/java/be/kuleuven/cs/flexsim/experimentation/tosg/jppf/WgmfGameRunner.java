@@ -42,7 +42,7 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
     }
 
     private WgmfGameRunner(ExperimentParams expP) {
-        this(expP, expP.runRemote() ? REMOTE : LOCAL);
+        this(expP, expP.isRemoteExecutable() ? REMOTE : LOCAL);
     }
 
     /**

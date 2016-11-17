@@ -74,7 +74,8 @@ public class WgmfJppfTaskTest {
             this.task = new WgmfJppfTask(config, params,
                     (WgmfGameParams wgmfParams, GameInstanceConfiguration conf) -> WhoGetsMyFlexGame
                             .createBasicGame(wgmfParams, conf.getSeed()));
-            this.expP = ExperimentParams.create(2, 1, DUMMY, true);
+            this.expP = ExperimentParams.builder().setNAgents(2).setNRepititions(1).setSolver(DUMMY)
+                    .setRemoteExecutable(true).build();
         } catch (IOException e) {
             e.printStackTrace();
         }

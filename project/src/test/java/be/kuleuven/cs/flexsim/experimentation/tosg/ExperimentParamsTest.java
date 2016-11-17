@@ -15,12 +15,12 @@ public class ExperimentParamsTest {
         int reps = 6;
         boolean remote = false;
         AbstractOptimalSolver.Solver solver = AbstractOptimalSolver.Solver.DUMMY;
-        ExperimentParams experimentParams = ExperimentParams
-                .create(agents, reps, solver, remote);
+        ExperimentParams experimentParams = ExperimentParams.builder().setNAgents(agents)
+                .setNRepititions(reps).setSolver(solver).setRemoteExecutable(remote).build();
         assertEquals(agents, experimentParams.getNAgents());
         assertEquals(reps, experimentParams.getNRepititions());
         assertEquals(solver, experimentParams.getSolver());
-        assertEquals(remote, experimentParams.runRemote());
+        assertEquals(remote, experimentParams.isRemoteExecutable());
     }
 
 }

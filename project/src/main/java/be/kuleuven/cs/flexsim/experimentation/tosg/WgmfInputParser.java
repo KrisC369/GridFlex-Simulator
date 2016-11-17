@@ -47,11 +47,15 @@ public final class WgmfInputParser {
                 .hasArg()
                 .withArgName("MODE")
                 .create("m"));
+        o.addOption("p1start", true, "The starting value of first param");
+        o.addOption("p1step", true, "The step size of first param");
+        o.addOption("p1end", true, "The end value of first param");
 
         int nAgents = NAGENTS_DEFAULT;
         int nReps = NREPS_DEFAULT;
         AbstractOptimalSolver.Solver solver = SOLVER_DEFAULT;
         boolean remoteExec = false;
+        ExperimentParams.Builder builder = ExperimentParams.builder();
         CommandLineParser parser = new BasicParser();
         try {
             // parse the command line arguments
@@ -68,6 +72,15 @@ public final class WgmfInputParser {
             if (line.hasOption("m") && "REMOTE".equals(line.getOptionValue("m"))) {
                 remoteExec = true;
             }
+            if (line.hasOption("p1start")) {
+                builder.setP1Start(Double.parseDouble(line.getOptionValue("p1start")));
+            }
+            if (line.hasOption("p1step")) {
+                builder.setP1Step(Double.parseDouble(line.getOptionValue("p1step")));
+            }
+            if (line.hasOption("p1end")) {
+                builder.setP1End(Double.parseDouble(line.getOptionValue("p1end")));
+            }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";
                 logger.warn(
@@ -75,7 +88,8 @@ public final class WgmfInputParser {
                                 + "execution mode: {}",
                         nReps, nAgents, solver.toString(), remote);
             }
-            return ExperimentParams.create(nAgents, nReps, solver, remoteExec);
+            return builder.setNAgents(nAgents).setNRepititions(nReps)
+                    .setSolver(solver).setRemoteExecutable(remoteExec).build();
 
         } catch (ParseException exp) {
             // oops, something went wrong

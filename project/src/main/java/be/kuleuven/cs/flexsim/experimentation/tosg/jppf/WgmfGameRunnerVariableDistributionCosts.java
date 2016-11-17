@@ -37,6 +37,9 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     private int nAgents, nReps;
     private final Map<Double, ConfigurableGameDirector> priceToDirector;
     private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
+    private double minPrice;
+    private double maxPrice;
+    private double priceStep;
 
     /**
      * Public constructor from params object and exec strategy.
@@ -44,8 +47,8 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
      * @param expP  The experiment parameters.
      * @param strat The execution strategy.
      */
-    public WgmfGameRunnerVariableDistributionCosts(ExperimentParams expP, ExecutionStrategy strat) {
-        super(strat);
+    public WgmfGameRunnerVariableDistributionCosts(ExperimentParams expP) {
+        super(expP.isRemoteExecutable() ? REMOTE : LOCAL);
         this.nAgents = expP.getNAgents();
         this.nReps = expP.getNRepititions();
         ConfigurableGame game = new ConfigurableGame(expP.getNAgents(),
@@ -53,10 +56,9 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         //        this.director = new ConfigurableGameDirector(game);
         priceToDirector = Maps.newLinkedHashMap();
         directorToTasks = LinkedListMultimap.create();
-    }
-
-    private WgmfGameRunnerVariableDistributionCosts(ExperimentParams expP) {
-        this(expP, expP.runRemote() ? REMOTE : LOCAL);
+        this.minPrice = expP.getP1Start();
+        this.priceStep = expP.getP1Step();
+        this.maxPrice = expP.getP1End();
     }
 
     /**
@@ -70,9 +72,6 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
 
     @Override
     protected void execute(WgmfGameParams params) {
-        double minPrice = 35.4;
-        double maxPrice = 61.1;
-        double priceStep = 10;
         List<WgmfJppfTask> alltasks = Lists.newArrayList();
         for (double p = minPrice; p <= maxPrice; p += priceStep) {
             final double price = p;
@@ -81,19 +80,11 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
             ConfigurableGameDirector director = new ConfigurableGameDirector(game);
             priceToDirector.put(price, director);
 
-            List<GameInstanceConfiguration> priceContainingConfigs = director.getPlayableVersions()
-                    .stream()
-                    .map((config) -> config.withExtraConfigValue(PRICE_PARAM_KEY, price))
-                    .collect(Collectors.toList());
+            List<GameInstanceConfiguration> priceContainingConfigs =
+                    getConfigsWithPricesFromDirector(price, director);
 
-            List<WgmfJppfTask> adapted = getStrategy()
-                    .adapt(priceContainingConfigs, params, PARAMS_KEY,
-                            (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig)
-                                    -> WhoGetsMyFlexGame
-                                    .createVariableDSOPricingGame(wgmfParams,
-                                            instanceConfig.getSeed(),
-                                            instanceConfig.getExtraConfigValues()
-                                                    .get(PRICE_PARAM_KEY)));
+            List<WgmfJppfTask> adapted = adaptPriceConfigsToRunnableTasks(params,
+                    priceContainingConfigs);
             directorToTasks.putAll(director, adapted);
             alltasks.addAll(adapted);
         }
@@ -104,6 +95,23 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         logger.info("Experiment results received. \nProcessing results... ");
         getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
                 UnmodifiableMap.decorate(priceToDirector));
+    }
+
+    private List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,
+            List<GameInstanceConfiguration> priceContainingConfigs) {
+        return getStrategy().adapt(priceContainingConfigs, params, PARAMS_KEY,
+                (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig) ->
+                        WhoGetsMyFlexGame
+                                .createVariableDSOPricingGame(wgmfParams, instanceConfig.getSeed(),
+                                        instanceConfig.getExtraConfigValues()
+                                                .get(PRICE_PARAM_KEY)));
+    }
+
+    private List<GameInstanceConfiguration> getConfigsWithPricesFromDirector(double price,
+            ConfigurableGameDirector director) {
+        return director.getPlayableVersions().stream()
+                .map((config) -> config.withExtraConfigValue(PRICE_PARAM_KEY, price))
+                .collect(Collectors.toList());
     }
 
     @Override
