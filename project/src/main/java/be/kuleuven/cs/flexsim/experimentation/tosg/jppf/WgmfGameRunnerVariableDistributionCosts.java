@@ -124,9 +124,9 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                         .findFixedPointForDynEquationParams(
                                 eqnParams.stream().mapToDouble(Double::doubleValue).toArray());
                 logger.warn("Results for pricepoint {}:", entry.getKey());
+                logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
                 logger.warn("Dynamics equation params: {}",
                         entry.getValue().getDynamicEquationArguments());
-                logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
             }
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
