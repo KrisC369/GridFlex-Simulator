@@ -63,6 +63,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
         gameInstance.play();
         setResult(GameInstanceResult
                 .create(instanceConfig, gameInstance.getGameInstanceResult().getPayoffs()));
+
     }
 
     @Override

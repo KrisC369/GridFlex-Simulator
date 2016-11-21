@@ -89,7 +89,7 @@ public abstract class AbstractGame<T, I> {
         for (final Double d : payoffs.getDynamicEquationFactors()) {
             b.append(d).append("\n");
         }
-        logger.info(b.toString());
+        logger.debug(b.toString());
     }
 
     protected String getResultString() {
