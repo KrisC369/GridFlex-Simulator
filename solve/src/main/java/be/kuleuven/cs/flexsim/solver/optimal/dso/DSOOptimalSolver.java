@@ -75,13 +75,13 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
         if (result.isPresent()) {
             final MpResult concreteResult = result.get();
             logger.info(concreteResult.toString());
-            final List<Boolean> t = Lists.newArrayList();
+//            final List<Boolean> t = Lists.newArrayList();
             final ListMultimap<FlexibilityProvider, Boolean> allocResults = ArrayListMultimap
                     .create();
 
             for (final FlexibilityProvider p : getProviders()) {
                 for (final String s : allocDvarID.get(p)) {
-                    t.add(concreteResult.getBoolean(s));
+//                    t.add(concreteResult.getBoolean(s));
                     allocResults.put(p, concreteResult.getBoolean(s));
                 }
             }

@@ -15,12 +15,17 @@ public abstract class SolutionResults {
     /**
      * Empty results.
      */
-    public static final SolutionResults EMPTY = create(ArrayListMultimap.create(), 4);
+    public static final SolutionResults EMPTY = create(ArrayListMultimap.create(), 0, 4);
 
     /**
      * @return A map of flexibility profile to their allocation schedule.
      */
     public abstract ListMultimap<FlexibilityProvider, Boolean> getAllocationMaps();
+
+    /**
+     * @return The objective value of this solution.
+     */
+    public abstract double getObjectiveValue();
 
     /**
      * @return The number of descretization time slots per hour.
@@ -35,7 +40,7 @@ public abstract class SolutionResults {
      * @return A SolutionResult instance.
      */
     public static SolutionResults create(ListMultimap<FlexibilityProvider, Boolean> allocs,
-            int slotsPerHour) {
-        return new AutoValue_SolutionResults(allocs, slotsPerHour);
+            double objectiveValue, int slotsPerHour) {
+        return new AutoValue_SolutionResults(allocs, objectiveValue, slotsPerHour);
     }
 }

@@ -31,6 +31,6 @@ public class SolutionResultAdapter {
      * @return The results.
      */
     public SolutionResults getResults() {
-        return SolutionResults.create(getAllocationMaps(), 4);
+        return SolutionResults.create(getAllocationMaps(), target.getObjective(), 4);
     }
 }

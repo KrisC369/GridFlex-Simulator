@@ -2,9 +2,9 @@ package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.FlexibilityUtiliser;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
@@ -51,7 +51,8 @@ public class WhoGetsMyFlexGame extends
      */
     @Deprecated
     private WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,
-            ImbalancePriceInputData imbalIn, DayAheadPriceProfile dap, MultiHorizonErrorGenerator gen,
+            ImbalancePriceInputData imbalIn, DayAheadPriceProfile dap,
+            MultiHorizonErrorGenerator gen,
             AbstractSolverFactory<SolutionResults> solverplatform) {
         this(Lists.newArrayList(new PortfolioBalanceSolver(solverplatform,
                         dataIn.getCableCurrentProfile(), imbalIn
@@ -71,7 +72,8 @@ public class WhoGetsMyFlexGame extends
     public WhoGetsMyFlexGame(WgmfGameParams params, long baseSeed) {
         this(params.getInputData(), params.getSpecs(), params.getImbalancePriceData(),
                 params.getDayAheadPriceData(),
-                new MultiHorizonErrorGenerator(baseSeed, params.getDistribution()), params.getFactory());
+                new MultiHorizonErrorGenerator(baseSeed, params.getDistribution()),
+                params.getFactory());
     }
 
     @Override
@@ -92,7 +94,8 @@ public class WhoGetsMyFlexGame extends
 
     @Override
     public long getExternalityValue() {
-        return 0;
+        return (long) getActionSet().stream().mapToDouble(a -> a.getSolution().getObjectiveValue())
+                .sum();
     }
 
     @Override
@@ -105,7 +108,8 @@ public class WhoGetsMyFlexGame extends
         TurbineSpecification specs = params.getSpecs();
         ImbalancePriceInputData imbalancePriceData = params.getImbalancePriceData();
         DayAheadPriceProfile dayAheadPriceData = params.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(baseSeed,
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                baseSeed,
                 params.getDistribution());
         AbstractSolverFactory<SolutionResults> solverplatform = params.getFactory();
         ArrayList<FlexibilityUtiliser> actions = Lists
@@ -125,7 +129,8 @@ public class WhoGetsMyFlexGame extends
         TurbineSpecification specs = params.getSpecs();
         ImbalancePriceInputData imbalancePriceData = params.getImbalancePriceData();
         DayAheadPriceProfile dayAheadPriceData = params.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(baseSeed,
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                baseSeed,
                 params.getDistribution());
         AbstractSolverFactory<SolutionResults> solverplatform = params.getFactory();
         ArrayList<FlexibilityUtiliser> actions = Lists

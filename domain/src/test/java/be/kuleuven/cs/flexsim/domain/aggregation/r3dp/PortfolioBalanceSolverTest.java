@@ -105,7 +105,6 @@ public class PortfolioBalanceSolverTest {
 
     @Test
     public void testProcessActivations() {
-
     }
 
     private CongestionProfile toWindAndBackWErrors(CableCurrentProfile c2,

@@ -27,7 +27,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
      * The number of discrete units per hour. For this solver the discretization step is in 15
      * min blocks.
      */
-    public static final int STEPS_PER_HOUR = 4;
+    public static final double STEPS_PER_HOUR = 4;
     private boolean verbose = false;
     private final FlexAllocProblemContext context;
     private final Solver solver;

@@ -24,6 +24,7 @@ public abstract class GameInstanceResult implements Serializable {
      */
     public abstract Map<Integer, Double> getPayoffs();
 
+
     /**
      * Static factory method.
      *

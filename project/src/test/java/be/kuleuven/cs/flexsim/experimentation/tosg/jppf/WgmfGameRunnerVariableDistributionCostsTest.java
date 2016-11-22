@@ -1,5 +1,11 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
 
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestionSolver;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.PortfolioBalanceSolver;
+import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
+import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
@@ -9,9 +15,12 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfInputParser;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
@@ -30,9 +39,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
     @Before
     public void setUp() throws Exception {
-        experimentParams = WgmfInputParser.parseInputAndExec(new String[] {
-                "-n", "2", "-r", "1", "-s", "DUMMY", "-m", "LOCAL", "-p1start", "35.4", "-p1step",
-                "10", "-p1end", "61.5" });
+        experimentParams = getParams("DUMMY");
         runner = new WgmfGameRunnerVariableDistributionCosts(experimentParams);
     }
 
@@ -41,21 +48,154 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         runner.execute(loadResources(experimentParams));
     }
 
+    public static ExperimentParams getParams(String solver) {
+        return WgmfInputParser.parseInputAndExec(new String[] {
+                "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
+                "10", "-p1end", "61.5" });
+    }
+
     public static WgmfGameParams loadResources(ExperimentParams expP) {
+        return loadResources(expP, IMBAL, DATAFILE, "test", "test", HORIZON);
+    }
+
+    public static WgmfGameParams loadResources(ExperimentParams expP, String imbal,
+            String datafile, String congColumn, String currColumn, int horizon) {
         try {
             WindBasedInputData dataIn = WindBasedInputData
-                    .loadFromResource(DATAFILE, "test", "test");
+                    .loadFromResource(datafile, congColumn, currColumn);
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
-            ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
+            ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(imbal);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(DISTRIBUTIONFILE);
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
-                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, HORIZON);
+                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, horizon);
             return WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(expP.getSolver()), specs, distribution,
                             imbalIn, dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }
+    }
+
+    @Test
+    @Ignore
+    public void testGurobiCPLEXEquality() {
+        experimentParams = getParams("CPLEX");
+        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        // "imbalance_prices.csv",
+        //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
+        WgmfGameParams wgmfGameParams = loadResources(experimentParams);
+        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getDistribution());
+
+        PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
+                .getImbalancePriceData()
+                .getNetRegulatedVolumeProfile(),
+                wgmfGameParams.getImbalancePriceData()
+                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
+                multiHorizonErrorGenerator, dayAheadPriceData);
+        HourlyFlexConstraints constr = HourlyFlexConstraints.builder().activationDuration(1)
+                .interActivationTime(2).maximumActivations(4).build();
+        portfolioBalanceSolver.registerFlexProvider(new FlexProvider(200, constr));
+        portfolioBalanceSolver.registerFlexProvider(new FlexProvider(500, constr));
+        portfolioBalanceSolver.solve();
+        SolutionResults solutionCPL = portfolioBalanceSolver.getSolution();
+        double compCPL = portfolioBalanceSolver.getFlexibilityProviders().stream()
+                .mapToDouble(fp -> fp.getMonetaryCompensationValue()).sum();
+
+        System.out.println("ObjectiveValue CPL:" + solutionCPL.getObjectiveValue());
+
+        experimentParams = getParams("GUROBI");
+        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        // "imbalance_prices.csv",
+        //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
+        wgmfGameParams = loadResources(experimentParams);
+        dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getDistribution());
+
+        portfolioBalanceSolver = new PortfolioBalanceSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
+                .getImbalancePriceData()
+                .getNetRegulatedVolumeProfile(),
+                wgmfGameParams.getImbalancePriceData()
+                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
+                multiHorizonErrorGenerator, dayAheadPriceData);
+        constr = HourlyFlexConstraints.builder().activationDuration(1)
+                .interActivationTime(2).maximumActivations(4).build();
+        portfolioBalanceSolver.registerFlexProvider(new FlexProvider(200, constr));
+        portfolioBalanceSolver.registerFlexProvider(new FlexProvider(500, constr));
+        portfolioBalanceSolver.solve();
+        SolutionResults solutiongGRB = portfolioBalanceSolver.getSolution();
+        double compGRB = portfolioBalanceSolver.getFlexibilityProviders().stream()
+                .mapToDouble(fp -> fp.getMonetaryCompensationValue()).sum();
+
+        System.out.println(
+                "ObjectiveValue GRB:" + solutiongGRB.getObjectiveValue() + " , CompensationSum: "
+                        + compGRB);
+
+        assertEquals(solutionCPL.getObjectiveValue(), solutiongGRB.getObjectiveValue(), 1.0);
+        assertEquals(compCPL, compGRB, 1.0);
+    }
+
+    @Test
+    @Ignore
+    public void testGurobiCPLEXEquality2() {
+        experimentParams = getParams("CPLEX");
+        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        // "imbalance_prices.csv",
+        //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
+        WgmfGameParams wgmfGameParams = loadResources(experimentParams);
+        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getDistribution());
+
+        DistributionGridCongestionSolver DistributionGridCongestionSolver = new
+                DistributionGridCongestionSolver(
+                wgmfGameParams.getFactory(), wgmfGameParams.getInputData().getCongestionProfile());
+        HourlyFlexConstraints constr = HourlyFlexConstraints.builder().activationDuration(1)
+                .interActivationTime(2).maximumActivations(4).build();
+        DistributionGridCongestionSolver.registerFlexProvider(new FlexProvider(200, constr));
+        DistributionGridCongestionSolver.registerFlexProvider(new FlexProvider(500, constr));
+        DistributionGridCongestionSolver.solve();
+        SolutionResults solutionCPL = DistributionGridCongestionSolver.getSolution();
+        double compCPL = DistributionGridCongestionSolver.getFlexibilityProviders().stream()
+                .mapToDouble(fp -> fp.getMonetaryCompensationValue()).sum();
+
+        System.out.println(
+                "ObjectiveValue CPL:" + solutionCPL.getObjectiveValue() + "; CompensationSum: "
+                        + compCPL);
+
+        experimentParams = getParams("GUROBI");
+        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        // "imbalance_prices.csv",
+        //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
+        wgmfGameParams = loadResources(experimentParams);
+        dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getDistribution());
+
+        DistributionGridCongestionSolver = new
+                DistributionGridCongestionSolver(
+                wgmfGameParams.getFactory(), wgmfGameParams.getInputData().getCongestionProfile());
+        constr = HourlyFlexConstraints.builder().activationDuration(1)
+                .interActivationTime(2).maximumActivations(4).build();
+        DistributionGridCongestionSolver.registerFlexProvider(new FlexProvider(200, constr));
+        DistributionGridCongestionSolver.registerFlexProvider(new FlexProvider(500, constr));
+        DistributionGridCongestionSolver.solve();
+        SolutionResults solutiongGRB = DistributionGridCongestionSolver.getSolution();
+        double compGRB = DistributionGridCongestionSolver.getFlexibilityProviders().stream()
+                .mapToDouble(fp -> fp.getMonetaryCompensationValue()).sum();
+
+        System.out.println(
+                "ObjectiveValue GRB:" + solutiongGRB.getObjectiveValue() + "; CompensationSum: "
+                        + compGRB);
+
+        assertEquals(solutionCPL.getObjectiveValue(), solutiongGRB.getObjectiveValue(), 1.0);
+        assertEquals(compCPL, compGRB, 1.0);
     }
 }
