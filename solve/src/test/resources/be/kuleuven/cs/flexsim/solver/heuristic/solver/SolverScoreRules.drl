@@ -1,0 +1,48 @@
+package be.kuleuven.cs.flexsim.solver.heuristic.solver;
+
+dialect "java"
+
+import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScoreHolder;
+import be.kuleuven.cs.flexsim.solver.heuristic.domain.*;
+import java.util.List
+global HardSoftScoreHolder scoreHolder;
+
+//HARD CONSTRAINTS:
+
+rule "RespectInterActivation"
+    when
+        ActivationAssignment($id : id, $s : startIndex, $p : provider, $lu : lastUnavailableIndex)
+        $aa : ActivationAssignment($id != id, provider == $p, startIndex >= $s, startIndex <= $lu )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext,(int)(($lu-$aa.getStartIndex())*100));
+end
+
+rule "RespectTotalActivations"
+    when
+         $aa : ActivationAssignment($p : provider)
+         $activationList : List(size > $p.QHFlexibilityActivationConstraints.maximumActivations) from collect (
+             ActivationAssignment(provider == $p)
+         )
+    then
+        scoreHolder.addHardConstraintMatch(kcontext,(int)($activationList.size()-$aa.getProvider().getQHFlexibilityActivationConstraints().getActivationDuration()));
+end
+
+
+//SOFT CONSTRAINTS:
+//rule "ResolvedCongestionGoal"
+//    when
+//        $totalResolved: Double() from accumulate(
+//                ActivationAssignment($res : resolvedCongestion, startIndex != null), sum($res)
+//        )
+//
+//    then
+//        scoreHolder.addSoftConstraintMatch(kcontext, (int)($totalResolved*100));
+//end
+
+rule "ResolvedCongestionGoal"
+    when
+        Allocation($totalResolved : resolvedCongestion )
+
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, (int)($totalResolved*100));
+end
