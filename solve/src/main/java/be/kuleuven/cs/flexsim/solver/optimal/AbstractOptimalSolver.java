@@ -55,7 +55,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
         s.add(getProblem());
         s.setVerbose(this.verbose ? 1 : 0);
         final MpResult result = s.solve();
-        processResults(Optional.of(result));
+        processResults(Optional.ofNullable(result));
     }
 
     /**

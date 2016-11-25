@@ -14,7 +14,7 @@ rule "RespectInterActivation"
         ActivationAssignment($id : id, $s : startIndex, $p : provider, $lu : lastUnavailableIndex)
         $aa : ActivationAssignment($id != id, provider == $p, startIndex >= $s, startIndex <= $lu )
     then
-        scoreHolder.addHardConstraintMatch(kcontext,(int)(($lu-$aa.getStartIndex())*100));
+        scoreHolder.addHardConstraintMatch(kcontext,-(int)((($lu+1)-$aa.getStartIndex())*100));
 end
 
 rule "RespectTotalActivations"
@@ -24,7 +24,21 @@ rule "RespectTotalActivations"
              ActivationAssignment(provider == $p)
          )
     then
-        scoreHolder.addHardConstraintMatch(kcontext,(int)($activationList.size()-$aa.getProvider().getQHFlexibilityActivationConstraints().getActivationDuration()));
+        scoreHolder.addHardConstraintMatch(kcontext,-(int)($activationList.size()-$aa.getProvider().getQHFlexibilityActivationConstraints().getMaximumActivations()));
+end
+
+rule "RespectAllocateAll"
+    when
+         ActivationAssignment(bound == false)
+    then
+        scoreHolder.addHardConstraintMatch(kcontext,-10);
+end
+
+rule "RespectAllocateWithinProfileEnd"
+    when
+         ActivationAssignment(bound == true, endIndex >= profile.length())
+    then
+        scoreHolder.addHardConstraintMatch(kcontext,-1);
 end
 
 
@@ -39,10 +53,31 @@ end
 //        scoreHolder.addSoftConstraintMatch(kcontext, (int)($totalResolved*100));
 //end
 
+//rule "ResolvedCongestionGoal"
+//    when
+//        Allocation($totalResolved : resolvedCongestion )
+//
+//    then
+//        scoreHolder.addSoftConstraintMatch(kcontext, (int)($totalResolved*100));
+//end
+
 rule "ResolvedCongestionGoal"
     when
-        Allocation($totalResolved : resolvedCongestion )
+         $resolved : Double() from accumulate(
+              ActivationAssignment(bound==true, $res :resolvedCongestion),
+              sum($res)
+              )
+    then
+        scoreHolder.addSoftConstraintMatch(kcontext, (int)($resolved*100));
+end
+
+rule "OveractivationGoal"
+    when
+        $aa : ActivationAssignment(bound == true,$p : provider)
+        $acts : List(size>0) from collect(
+            ActivationAssignment(bound == true, isOverlapping($aa) == true, provider != $p)
+        )
 
     then
-        scoreHolder.addSoftConstraintMatch(kcontext, (int)($totalResolved*100));
+        scoreHolder.addSoftConstraintMatch(kcontext, -(int)($aa.energyLostInOverlap($acts)*100));
 end

@@ -1,9 +1,7 @@
 package be.kuleuven.cs.flexsim.solver.heuristic.domain;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
-import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import org.apache.commons.math3.util.FastMath;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
 import org.optaplanner.core.api.domain.solution.Solution;
@@ -13,10 +11,14 @@ import org.optaplanner.core.api.score.buildin.hardsoft.HardSoftScore;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.apache.commons.math3.util.FastMath.min;
+
 /**
+ * Allocation instance of flex to profile.
+ * To be used by optaplanner.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @PlanningSolution
@@ -24,56 +26,48 @@ public class Allocation implements Solution<HardSoftScore> {
     private static int SIZE = 35040;
     private List<QHFlexibilityProvider> providers;
     private List<ActivationAssignment> assignments;
-    private ListMultimap<QHFlexibilityProvider, ActivationAssignment> assignmentMap;
-    private final List<Integer> startValueRange;
+    private List<Integer> startValueRange;
     private HardSoftScore score;
     private CongestionProfile profile;
 
+    /**
+     * Default allocation constructor.
+     */
     public Allocation() {
-        this.startValueRange = IntStream.range(0, SIZE).boxed()
-                .collect(Collectors.toList());
     }
 
+    /**
+     * Optaplanner accessor.
+     *
+     * @param p The profile.
+     */
     public void setProfile(CongestionProfile p) {
         this.profile = p;
     }
 
-    public void setProviders(
-            List<QHFlexibilityProvider> providers) {
-        this.providers = providers;
-    }
-
-    public void setAssignments(
-            List<ActivationAssignment> assignments) {
-        this.assignments = assignments;
-    }
-
-    public ListMultimap<QHFlexibilityProvider, ActivationAssignment> getAssignmentMap() {
-        return assignmentMap;
-    }
-
-    public void setAssignmentMap(
-            ListMultimap<QHFlexibilityProvider, ActivationAssignment> assignmentMap) {
-        this.assignmentMap = assignmentMap;
-    }
-
+    /**
+     * @return The list of assignments.
+     */
     @PlanningEntityCollectionProperty
     public List<ActivationAssignment> getAllocationList() {
         return assignments;
     }
 
-    //    @ValueRangeProvider(id = "providerRange")
+    /**
+     * @return the list of providers.
+     */
     public List<QHFlexibilityProvider> getProviders() {
         return providers;
     }
 
-    @ValueRangeProvider(id = "startPeriodRange")
-    public List<Integer> getActivationStartValues() {
-        return startValueRange;
-    }
-
-    public Collection<ActivationAssignment> getAssignments() {
-        return assignmentMap.values();
+    /**
+     * Set the list of providers.
+     *
+     * @param providers The providers.
+     */
+    public void setProviders(
+            List<QHFlexibilityProvider> providers) {
+        this.providers = providers;
     }
 
     @Override
@@ -91,13 +85,36 @@ public class Allocation implements Solution<HardSoftScore> {
         return Lists.newArrayList(getActivationStartValues());
     }
 
+    /**
+     * @return The possible activation start values.
+     */
+    @ValueRangeProvider(id = "startPeriodRange")
+    public List<Integer> getActivationStartValues() {
+
+        return startValueRange;
+    }
+
+    /**
+     * @param startValues The start values to be set by optaplanner.
+     */
+    public void setActivationStartValues(List<Integer> startValues) {
+        this.startValueRange = startValues;
+    }
+
+    /**
+     * @return The resolved congestion by this activation.
+     */
     public double getResolvedCongestion() {
         int[][] acts = getAllocationMaps();
 
         return IntStream.range(0, profile.length()).filter(i -> activated(acts, i))
-                .mapToDouble(i -> FastMath.min(profile.value(i), getSum(acts, i))).sum();
+                .mapToDouble(i -> min(profile.value(i), getSum(acts, i))).sum();
     }
 
+    /**
+     * @return The binary data of 1's and 0's that represent the activaitons for all providers as
+     * a 2dim array.
+     */
     public int[][] getAllocationMaps() {
         int[][] acts = new int[providers.size()][profile.length()];
         for (int[] row : acts) {
@@ -105,22 +122,17 @@ public class Allocation implements Solution<HardSoftScore> {
         }
         for (int i = 0; i < providers.size(); i++) {
             QHFlexibilityProvider p = providers.get(i);
-            for (ActivationAssignment aa : assignmentMap.get(p)) {
-                if (aa.isBound()) {
+            for (ActivationAssignment aa : getAssignments()) {
+                if (aa.isBound() && aa.getProvider().equals(p)) {
                     Arrays.fill(acts[i], aa.getStartIndex(),
-                            (int) (aa.getStartIndex() + aa.getProvider()
+                            (int) min((aa.getStartIndex() + aa.getProvider()
                                     .getQHFlexibilityActivationConstraints()
-                                    .getActivationDuration()),
+                                    .getActivationDuration()), profile.length()),
                             1);
                 }
             }
         }
         return acts;
-    }
-
-    private double getSum(int[][] acts, int idx) {
-        return IntStream.range(0, acts.length).mapToDouble(
-                i -> providers.get(i).getFlexibilityActivationRate().getUp() * acts[i][idx]).sum();
     }
 
     private boolean activated(int[][] acts, int idx) {
@@ -129,6 +141,28 @@ public class Allocation implements Solution<HardSoftScore> {
             prod *= (1 - acts[i][idx]);
         }
         return prod == 1 ? false : true;
+    }
+
+    private double getSum(int[][] acts, int idx) {
+        return IntStream.range(0, acts.length).mapToDouble(
+                i -> providers.get(i).getFlexibilityActivationRate().getUp() * acts[i][idx]).sum();
+    }
+
+    /**
+     * @return The assignments.
+     */
+    public Collection<ActivationAssignment> getAssignments() {
+        return assignments;
+    }
+
+    /**
+     * Setting the list of assignments.
+     *
+     * @param assignments The assignments
+     */
+    public void setAssignments(
+            List<ActivationAssignment> assignments) {
+        this.assignments = assignments;
     }
 
 }

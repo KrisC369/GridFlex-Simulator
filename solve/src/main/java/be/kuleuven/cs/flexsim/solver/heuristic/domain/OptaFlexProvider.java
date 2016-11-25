@@ -7,6 +7,9 @@ import be.kuleuven.cs.flexsim.domain.util.Payment;
 import be.kuleuven.cs.flexsim.domain.util.data.DoublePowerCapabilityBand;
 
 /**
+ * This flex provider wraps a domain entity provider and converts hourly constraints and data to
+ * the current discretization level necessary.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class OptaFlexProvider implements QHFlexibilityProvider {

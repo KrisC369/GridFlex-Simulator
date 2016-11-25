@@ -56,7 +56,6 @@ public final class ConstraintConversion {
         public double getMaximumActivations() {
             return target.getMaximumActivations();
         }
-
     }
 
     static class ConcreteQuarterHourlyConstraints extends ConstraintStepMultiplierDecorator

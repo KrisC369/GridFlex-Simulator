@@ -16,8 +16,12 @@ import org.optaplanner.core.api.solver.SolverFactory;
 
 import java.io.File;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
+ * Heuristic solver making use of optaplanner to find a solution to flex allocation problems.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class HeuristicSolver implements Solver<AllocResults> {
@@ -36,20 +40,16 @@ public class HeuristicSolver implements Solver<AllocResults> {
         final File file = new File(classLoader.getResource(filename).getFile());
         SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlFile(file);
         org.optaplanner.core.api.solver.Solver<Allocation> solver = solverFactory.buildSolver();
-
         Allocation unsolvedAlloc = new AllocationGenerator().createAllocation();
 
         // Solve the problem
-
         solver.solve(unsolvedAlloc);
+        this.solvedAlloc = (Allocation) solver.getBestSolution();
 
-        Allocation solvedAlloc = (Allocation) solver.getBestSolution();
-        this.solvedAlloc = solvedAlloc;
-        // Display the result
+    }
 
-        System.out.println("\nSolved with value:"
-
-                + toDisplayString(solvedAlloc));
+    public void displayResult() {
+        System.out.println("\nSolved with value:" + toDisplayString(solvedAlloc));
     }
 
     @Override
@@ -65,17 +65,18 @@ public class HeuristicSolver implements Solver<AllocResults> {
             }
             actMap.putAll(providers.get(i).getWrappedProvider(), toAdd);
         }
-
-        return AllocResults.create(actMap, solvedAlloc.getResolvedCongestion());
+        if (solvedAlloc.getScore().isFeasible()) {
+            return AllocResults.create(actMap, solvedAlloc.getResolvedCongestion());
+        } else {
+            return AllocResults.INFEASIBLE;
+        }
     }
 
-    public class AllocationGenerator {
-        public Allocation createAllocation() {
+    private class AllocationGenerator {
+        Allocation createAllocation() {
             List<QHFlexibilityProvider> providers = Lists.newArrayList();
             context.getProviders().forEach(p -> providers.add(new OptaFlexProvider(p)));
             List<ActivationAssignment> assignments = Lists.newArrayList();
-            ListMultimap<QHFlexibilityProvider, ActivationAssignment> actMap = ArrayListMultimap
-                    .create();
             CongestionProfile profile = CongestionProfile
                     .createFromTimeSeries(context.getEnergyProfileToMinimizeWithFlex());
             int id = 0;
@@ -86,18 +87,24 @@ public class HeuristicSolver implements Solver<AllocResults> {
                     ActivationAssignment actAss = ActivationAssignment
                             .create(id++, prov, profile);
                     assignments.add(actAss);
-                    actMap.put(prov, actAss);
                 }
             }
             Allocation a = new Allocation();
             a.setAssignments(assignments);
             a.setProfile(profile);
             a.setProviders(providers);
-            a.setAssignmentMap(actMap);
+            a.setActivationStartValues(IntStream.range(0, profile.length()).boxed()
+                    .collect(Collectors.toList()));
             return a;
         }
     }
 
+    /**
+     * Display the allocation results' to string.
+     *
+     * @param allocation The allocation to print
+     * @return A string containing the resolved congestion for this allocation.
+     */
     public static String toDisplayString(Allocation allocation) {
         double sum = allocation.getResolvedCongestion();
         StringBuilder displayString = new StringBuilder();

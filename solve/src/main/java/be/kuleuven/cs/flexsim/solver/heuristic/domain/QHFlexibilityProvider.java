@@ -5,6 +5,8 @@ import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
 import be.kuleuven.cs.flexsim.solver.optimal.QuarterHourlyFlexConstraints;
 
 /**
+ * A quarter hourly discretized flexibility provider.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public interface QHFlexibilityProvider extends FlexibilityProvider {
@@ -18,5 +20,8 @@ public interface QHFlexibilityProvider extends FlexibilityProvider {
                 getFlexibilityActivationConstraints());
     }
 
+    /**
+     * @return The wrapped provider.
+     */
     FlexibilityProvider getWrappedProvider();
 }

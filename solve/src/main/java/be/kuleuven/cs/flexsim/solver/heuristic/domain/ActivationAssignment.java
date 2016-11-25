@@ -1,22 +1,24 @@
 package be.kuleuven.cs.flexsim.solver.heuristic.domain;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
-import org.apache.commons.math3.util.FastMath;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
+import static org.apache.commons.math3.util.FastMath.min;
+
 /**
+ * An assignment of activation of one providers' flexibility.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @PlanningEntity
 public class ActivationAssignment {
 
     private static final double EPS = 0.001;
-    //    @PlanningVariable(valueRangeProviderRefs = { "providerRange" })
     private QHFlexibilityProvider provider;
-    @PlanningVariable(valueRangeProviderRefs = { "startPeriodRange" })
     private Integer startIndex;
     private CongestionProfile profile;
     private int id;
@@ -37,8 +39,18 @@ public class ActivationAssignment {
         this.profile = profile;
     }
 
+    public CongestionProfile getProfile() {
+        return profile;
+    }
+
+    @PlanningVariable(valueRangeProviderRefs = { "startPeriodRange" })
     public Integer getStartIndex() {
         return startIndex;
+    }
+
+    public Integer getEndIndex() {
+        return min(startIndex + (int) (provider.getQHFlexibilityActivationConstraints()
+                .getActivationDuration()), profile.length());
     }
 
     public void setStartIndex(Integer startIndex) {
@@ -49,10 +61,15 @@ public class ActivationAssignment {
         return id;
     }
 
+    /**
+     * the last index of the unavailability period.
+     *
+     * @return
+     */
     public int getLastUnavailableIndex() {
         double idx = startIndex + provider.getQHFlexibilityActivationConstraints()
                 .getActivationDuration()
-                + provider.getQHFlexibilityActivationConstraints().getInterActivationTime();
+                + provider.getQHFlexibilityActivationConstraints().getInterActivationTime() - 1;
         if (idx % 1 > EPS) {
             throw new IllegalStateException("Casting to int will go wrong with: " + idx);
         }
@@ -65,12 +82,38 @@ public class ActivationAssignment {
         }
         return IntStream
                 .range(startIndex,
-                        FastMath.min(profile.length(),
+                        min(profile.length(),
                                 startIndex + (int) provider.getQHFlexibilityActivationConstraints()
-                                        .getActivationDuration())).mapToDouble(i -> FastMath
-                        .min(profile.value(i),
+                                        .getActivationDuration())).mapToDouble(i ->
+                        min(profile.value(i),
                                 provider.getFlexibilityActivationRate().getUp()))
                 .sum();
+    }
+
+    public boolean isOverlapping(ActivationAssignment other) {
+        return (getStartIndex() < other.getEndIndex()) && (getEndIndex() >= other.getStartIndex());
+    }
+
+    public double energyLostInOverlap(List<ActivationAssignment> acts) {
+        double lost = 0;
+        for (int i = getStartIndex(); i < getEndIndex(); i++) {
+            double activated = getProvider().getFlexibilityActivationRate().getUp();
+            //sum all activations with my activation
+            for (ActivationAssignment a : acts) {
+                if (isActiveAt(a, i)) {
+                    activated += a.getProvider().getFlexibilityActivationRate().getUp();
+                }
+            }
+            double diff = (profile.value(i) - activated);
+            if (diff < 0) {
+                lost += -diff;
+            }
+        }
+        return 0;
+    }
+
+    public static boolean isActiveAt(ActivationAssignment aa, int i) {
+        return (aa.getStartIndex() <= i) && (i <= aa.getEndIndex());
     }
 
     public static ActivationAssignment create(int i, QHFlexibilityProvider p,
@@ -78,12 +121,11 @@ public class ActivationAssignment {
         ActivationAssignment aa = new ActivationAssignment();
         aa.setId(i);
         aa.setProvider(p);
-
         aa.setProfile(profile);
         return aa;
     }
 
-    boolean isBound() {
+    public boolean isBound() {
         return getStartIndex() != null;
     }
 }
