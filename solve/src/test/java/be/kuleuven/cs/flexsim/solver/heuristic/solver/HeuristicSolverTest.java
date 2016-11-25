@@ -81,29 +81,19 @@ public class HeuristicSolverTest {
                         .activationDuration(0.5).build());
         solver.solve();
         AllocResults solution = solver.getSolution();
-        //        DSOOptimalSolver dsoOptimalSolver = new DSOOptimalSolver(context,
-        //                AbstractOptimalSolver.Solver.GUROBI);
-        //        dsoOptimalSolver.solve();
-        //        System.out.println("Grb solution: " + dsoOptimalSolver.getSolution()
-        // .getObjective());
         testConstraints(solution);
     }
 
     @Test
     public void testLargeSolve() throws Exception {
         this.profile = CongestionProfile.createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
-        first = new FlexProvider(400,
+        first = new FlexProvider(4000,
                 HourlyFlexConstraints.R3DP);
-        second = new FlexProvider(560,
+        second = new FlexProvider(2560,
                 HourlyFlexConstraints.R3DP);
 
         solver.solve();
         AllocResults solution = solver.getSolution();
-        //        DSOOptimalSolver dsoOptimalSolver = new DSOOptimalSolver(context,
-        //                AbstractOptimalSolver.Solver.GUROBI);
-        //        dsoOptimalSolver.solve();
-        //        System.out.println("Grb solution: " + dsoOptimalSolver.getSolution()
-        // .getObjective());
         testConstraints(solution);
     }
 
