@@ -13,7 +13,7 @@
         <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
         <!-- Speedup that can be applied to most, but not all use cases: -->
         <!--<forager>-->
-            <!--<pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>-->
+        <!--<pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>-->
         <!--</forager>-->
     </constructionHeuristic>
     <!-- Optimization algorithms configuration -->
