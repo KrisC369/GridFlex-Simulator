@@ -1,8 +1,9 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.Solvers;
 import org.junit.Test;
 
+import static be.kuleuven.cs.flexsim.solver.Solvers.TYPE.DUMMY;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -14,7 +15,7 @@ public class ExperimentParamsTest {
         int agents = 3;
         int reps = 6;
         boolean remote = false;
-        AbstractOptimalSolver.Solver solver = AbstractOptimalSolver.Solver.DUMMY;
+        Solvers.TYPE solver = DUMMY;
         ExperimentParams experimentParams = ExperimentParams.builder().setNAgents(agents)
                 .setNRepititions(reps).setSolver(solver).setRemoteExecutable(remote).build();
         assertEquals(agents, experimentParams.getNAgents());

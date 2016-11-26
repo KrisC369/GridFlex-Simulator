@@ -29,7 +29,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     private FlexAllocProblemContext context;
     private Allocation solvedAlloc;
 
-    HeuristicSolver(FlexAllocProblemContext context) {
+    public HeuristicSolver(FlexAllocProblemContext context) {
         this.context = context;
     }
 

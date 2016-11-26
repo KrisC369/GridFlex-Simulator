@@ -21,7 +21,7 @@ import static net.sf.jmpi.main.expression.MpExpr.sum;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class MpDsoAdapter implements MpAdapter {
+public class MPFlexProviderAdapter implements MpAdapter {
     private final FlexConstraints target;
     private final int profileSize;
     private final List<String> dvars;
@@ -32,7 +32,7 @@ public class MpDsoAdapter implements MpAdapter {
      * @param activationConstraints The activation constraints from the Flex provider.
      * @param allocationIDs         the named list of dvar ID's to use to build the constraints.
      */
-    public MpDsoAdapter(final QuarterHourlyFlexConstraints activationConstraints,
+    public MPFlexProviderAdapter(final QuarterHourlyFlexConstraints activationConstraints,
             final List<String> allocationIDs) {
         this.target = activationConstraints;
         this.dvars = Lists.newArrayList(allocationIDs);

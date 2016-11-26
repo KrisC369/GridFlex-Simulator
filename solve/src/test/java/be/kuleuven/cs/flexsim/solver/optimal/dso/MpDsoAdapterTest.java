@@ -23,7 +23,7 @@ public class MpDsoAdapterTest {
     private static int profileSize = 500;
 
     private HourlyFlexConstraints target;
-    private MpDsoAdapter adapt;
+    private MPFlexProviderAdapter adapt;
 
     @Before
     public void setUp() throws Exception {
@@ -34,7 +34,7 @@ public class MpDsoAdapterTest {
         for (int i = 0; i < profileSize; i++) {
             id.add(String.valueOf(i));
         }
-        this.adapt = new MpDsoAdapter(ConstraintConversion.fromHourlyToQuarterHourly(target), id);
+        this.adapt = new MPFlexProviderAdapter(ConstraintConversion.fromHourlyToQuarterHourly(target), id);
     }
 
     @Test

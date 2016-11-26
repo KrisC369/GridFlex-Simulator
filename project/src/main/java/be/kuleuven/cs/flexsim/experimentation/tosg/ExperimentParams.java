@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.Solvers;
 import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;
@@ -32,7 +32,7 @@ public abstract class ExperimentParams implements Serializable {
     /**
      * @return The solver to use.
      */
-    public abstract AbstractOptimalSolver.Solver getSolver();
+    public abstract Solvers.TYPE getSolver();
 
     /**
      * @return true if remote execution should be enabled.
@@ -83,7 +83,7 @@ public abstract class ExperimentParams implements Serializable {
          * @param value The solver to use.
          * @return This builder.
          */
-        public abstract Builder setSolver(AbstractOptimalSolver.Solver solver);
+        public abstract Builder setSolver(Solvers.TYPE solver);
 
         /**
          * @param value The value for this parameter.

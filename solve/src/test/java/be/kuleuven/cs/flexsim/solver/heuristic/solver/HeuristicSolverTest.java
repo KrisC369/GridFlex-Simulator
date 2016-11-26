@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.solver.heuristic.solver;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexProvider;
@@ -11,7 +10,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
-import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.dso.MIPOptimalSolver;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -32,7 +31,7 @@ public class HeuristicSolverTest {
     private FlexibilityProvider first;
     private FlexibilityProvider second;
     private CongestionProfile profile;
-    private Solver<AllocResults> altSolver;
+    private AbstractOptimalSolver altSolver;
 
     @Before
     public void setUp() throws IOException {
@@ -60,7 +59,7 @@ public class HeuristicSolverTest {
             }
         };
         this.solver = new HeuristicSolver(context);
-        this.altSolver = new DSOOptimalSolver(context, AbstractOptimalSolver.Solver.CPLEX);
+        this.altSolver = new MIPOptimalSolver(context, AbstractOptimalSolver.Solver.CPLEX);
     }
 
     @Test
@@ -146,6 +145,7 @@ public class HeuristicSolverTest {
         solver.solve();
         AllocResults solution1 = solver.getSolution();
         logger.info(solution1.toString());
+        altSolver.setVerboseSolving(true);
         altSolver.solve();
         AllocResults solution2 = altSolver.getSolution();
         logger.info(solution2.toString());

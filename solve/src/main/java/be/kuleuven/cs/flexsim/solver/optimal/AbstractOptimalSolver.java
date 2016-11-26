@@ -3,7 +3,6 @@ package be.kuleuven.cs.flexsim.solver.optimal;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.solver.optimal.dummy.SolverDummy;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
@@ -96,7 +95,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
      * Either use Gurobi or Cplex.
      */
     public enum Solver {
-        GUROBI, CPLEX, DUMMY;
+        GUROBI, CPLEX;
 
         /**
          * @return a new MpSolver instance.
@@ -107,8 +106,28 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
             } else if (CPLEX == this) {
                 return new SolverCPLEX();
             } else {
-                return new SolverDummy();
+                return new DummyMIP();
             }
+        }
+    }
+
+    private static class DummyMIP implements MpSolver {
+
+        @Override
+        public void add(MpProblem problem) {
+        }
+
+        @Override
+        public MpResult solve() {
+            return null;
+        }
+
+        @Override
+        public void setTimeout(int value) {
+        }
+
+        @Override
+        public void setVerbose(int value) {
         }
     }
 }

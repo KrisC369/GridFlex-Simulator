@@ -8,6 +8,7 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.flexsim.solver.Solvers;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import org.jppf.server.JPPFDriver;
@@ -22,7 +23,6 @@ import java.io.IOException;
 import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.LOCAL;
 import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
 import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunner.loadResources;
-import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.DUMMY;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -65,7 +65,8 @@ public class WgmfJppfTaskTest {
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 365);
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
-                            DUMMY), specs, distribution, imbalIn, dayAheadPriceProfile);
+                                    Solvers.TYPE.DUMMY), specs, distribution, imbalIn,
+                            dayAheadPriceProfile);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)
                     .fixAgentToAction(0, 0).fixAgentToAction(1, 0).fixAgentToAction(2, 1)
@@ -74,7 +75,8 @@ public class WgmfJppfTaskTest {
             this.task = new WgmfJppfTask(config, params,
                     (WgmfGameParams wgmfParams, GameInstanceConfiguration conf) -> WhoGetsMyFlexGame
                             .createBasicGame(wgmfParams, conf.getSeed()));
-            this.expP = ExperimentParams.builder().setNAgents(2).setNRepititions(1).setSolver(DUMMY)
+            this.expP = ExperimentParams.builder().setNAgents(2).setNRepititions(1).setSolver(
+                    Solvers.TYPE.DUMMY)
                     .setRemoteExecutable(true).build();
         } catch (IOException e) {
             e.printStackTrace();

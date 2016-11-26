@@ -6,9 +6,8 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolutionResultAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolverAdapter;
-import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.Solvers;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
-import be.kuleuven.cs.flexsim.solver.optimal.dso.DSOOptimalSolver;
 
 import java.io.Serializable;
 
@@ -19,16 +18,16 @@ import java.io.Serializable;
  */
 public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>, Serializable {
     private static final long serialVersionUID = -5851172788369007725L;
-    private final AbstractOptimalSolver.Solver type;
+    private final Solvers.TYPE type;
 
-    WgmfSolverFactory(AbstractOptimalSolver.Solver type) {
+    WgmfSolverFactory(Solvers.TYPE type) {
         this.type = type;
     }
 
     @Override
     public Solver<SolutionResults> createSolver(FlexAllocProblemContext context) {
         return new SolverAdapter<AllocResults, SolutionResults>(
-                new DSOOptimalSolver(context, type)) {
+                type.getInstance(context)) {
 
             @Override
             public SolutionResults adaptResult(AllocResults solution) {

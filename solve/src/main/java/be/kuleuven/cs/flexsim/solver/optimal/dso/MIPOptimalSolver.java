@@ -35,12 +35,12 @@ import static net.sf.jmpi.main.expression.MpExpr.prod;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class DSOOptimalSolver extends AbstractOptimalSolver {
+public class MIPOptimalSolver extends AbstractOptimalSolver {
     private static final String CONG = "Cong:";
     private static final String SOLVED = "Solved";
     private static final String ALLOC = "alloc:";
     private static final String FLEX = "Flex";
-    private static final Logger logger = LoggerFactory.getLogger(DSOOptimalSolver.class);
+    private static final Logger logger = LoggerFactory.getLogger(MIPOptimalSolver.class);
     private final TimeSeries profile;
     private final List<String> congID;
     private final List<String> solvedID;
@@ -55,7 +55,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
      * @param c The congestion profile to use.
      * @param s The solver to use.
      */
-    public DSOOptimalSolver(final FlexAllocProblemContext context, final Solver s) {
+    public MIPOptimalSolver(final FlexAllocProblemContext context, final Solver s) {
         super(context, s);
         profile = context.getEnergyProfileToMinimizeWithFlex();
         congID = Lists.newArrayList();
@@ -180,7 +180,7 @@ public class DSOOptimalSolver extends AbstractOptimalSolver {
         //flexConstraints
         final QuarterHourlyFlexConstraints adapted = ConstraintConversion.fromHourlyToQuarterHourly(
                 pv.getFlexibilityActivationConstraints());
-        final MpDsoAdapter adapt = new MpDsoAdapter(adapted, allocDvarID.get(pv));
+        final MPFlexProviderAdapter adapt = new MPFlexProviderAdapter(adapted, allocDvarID.get(pv));
         adapt.getConstraints().forEach(p::addConstraint);
 
     }

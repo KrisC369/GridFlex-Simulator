@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.Solvers;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -10,7 +10,6 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.DUMMY;
 import static org.apache.commons.cli.OptionBuilder.withLongOpt;
 
 /**
@@ -22,7 +21,7 @@ public final class WgmfInputParser {
     private static final int NAGENTS_DEFAULT = 2;
     private static final int NREPS_DEFAULT = 1;
     private static final Logger logger = LoggerFactory.getLogger(WgmfInputParser.class);
-    private static final AbstractOptimalSolver.Solver SOLVER_DEFAULT = DUMMY;
+    private static final Solvers.TYPE SOLVER_DEFAULT = Solvers.TYPE.DUMMY;
 
     private WgmfInputParser() {
     }
@@ -53,7 +52,7 @@ public final class WgmfInputParser {
 
         int nAgents = NAGENTS_DEFAULT;
         int nReps = NREPS_DEFAULT;
-        AbstractOptimalSolver.Solver solver = SOLVER_DEFAULT;
+        Solvers.TYPE solver = SOLVER_DEFAULT;
         boolean remoteExec = false;
         ExperimentParams.Builder builder = ExperimentParams.builder();
         CommandLineParser parser = new BasicParser();
@@ -67,7 +66,7 @@ public final class WgmfInputParser {
                 nReps = Integer.parseInt(line.getOptionValue("r"));
             }
             if (line.hasOption("s")) {
-                solver = AbstractOptimalSolver.Solver.valueOf(line.getOptionValue("s"));
+                solver = Solvers.TYPE.valueOf(line.getOptionValue("s"));
             }
             if (line.hasOption("m") && "REMOTE".equals(line.getOptionValue("m"))) {
                 remoteExec = true;
