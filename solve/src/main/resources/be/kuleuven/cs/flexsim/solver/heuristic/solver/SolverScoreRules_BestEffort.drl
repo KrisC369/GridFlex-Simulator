@@ -27,11 +27,11 @@ rule "RespectTotalActivations"
         scoreHolder.addHardConstraintMatch(kcontext, (int)($activationList.size()-$aa.getProvider().getQHFlexibilityActivationConstraints().getMaximumActivations()));
 end
 
-rule "RespectAllocateAll"
+rule "BestEffort"
     when
          ActivationAssignment(bound == false)
     then
-        scoreHolder.addHardConstraintMatch(kcontext,-10);
+        scoreHolder.addSoftConstraintMatch(kcontext,-10);
 end
 
 rule "RespectAllocateWithinProfileEnd"

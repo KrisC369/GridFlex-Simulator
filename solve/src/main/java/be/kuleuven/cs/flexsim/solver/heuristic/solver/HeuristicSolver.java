@@ -46,7 +46,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
     @Override
     public void solve() {
         final ClassLoader classLoader = getClass().getClassLoader();
-        final File file = new File(classLoader.getResource(CONFIG_FULLSAT).getFile());
+        String actConfig = fullSat ? CONFIG_FULLSAT : CONFIG_BESTEFFORT;
+        final File file = new File(classLoader.getResource(actConfig).getFile());
         SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlFile(file);
 
         ////Score rules.

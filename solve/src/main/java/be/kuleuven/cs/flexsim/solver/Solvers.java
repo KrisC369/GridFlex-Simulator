@@ -7,6 +7,9 @@ import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.mip.MIPOptimalSolver;
 
+import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.CPLEX;
+import static be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver.Solver.GUROBI;
+
 /**
  * Factory utility class for creating solver instances.
  *
@@ -23,7 +26,7 @@ public final class Solvers {
      * @return An instantiated solver instance.
      */
     public static Solver<AllocResults> createMIPgurobi(FlexAllocProblemContext context) {
-        return new MIPOptimalSolver(context, AbstractOptimalSolver.Solver.GUROBI);
+        return new MIPOptimalSolver(context, GUROBI);
     }
 
     /**
@@ -33,7 +36,7 @@ public final class Solvers {
      * @return An instantiated solver instance.
      */
     public static Solver<AllocResults> createMIPcplex(FlexAllocProblemContext context) {
-        return new MIPOptimalSolver(context, AbstractOptimalSolver.Solver.CPLEX);
+        return new MIPOptimalSolver(context, CPLEX);
     }
 
     /**
@@ -66,17 +69,19 @@ public final class Solvers {
     public enum TYPE {
         DUMMY,
         OPTA,
+        OPTA_BEST_EFFORT,
         GUROBI,
         CPLEX;
 
         public Solver<AllocResults> getInstance(FlexAllocProblemContext context) {
             if (GUROBI == this) {
                 return createMIPgurobi(context);
-
             } else if (CPLEX == this) {
                 return createMIPcplex(context);
             } else if (OPTA == this) {
                 return createHeuristicOptaplanner(context, true);
+            } else if (OPTA_BEST_EFFORT == this) {
+                return createHeuristicOptaplanner(context, false);
             } else {
                 return createDummySolver(context);
             }
