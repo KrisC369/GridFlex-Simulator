@@ -95,7 +95,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
      * Either use Gurobi or Cplex.
      */
     public enum Solver {
-        GUROBI, CPLEX;
+        GUROBI, CPLEX, DUMMY;
 
         /**
          * @return a new MpSolver instance.
@@ -119,7 +119,31 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
 
         @Override
         public MpResult solve() {
-            return null;
+            return new MpResult() {
+                @Override
+                public Number getObjective() {
+                    return 0;
+                }
+
+                @Override
+                public boolean getBoolean(Object var) {
+                    return false;
+                }
+
+                @Override
+                public Number get(Object var) {
+                    return 0;
+                }
+
+                @Override
+                public void put(Object var, Number value) {
+                }
+
+                @Override
+                public Boolean containsVar(Object var) {
+                    return true;
+                }
+            };
         }
 
         @Override

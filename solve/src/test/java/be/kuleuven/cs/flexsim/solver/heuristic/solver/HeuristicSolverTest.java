@@ -10,7 +10,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.solver.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;
-import be.kuleuven.cs.flexsim.solver.optimal.dso.MIPOptimalSolver;
+import be.kuleuven.cs.flexsim.solver.optimal.mip.MIPOptimalSolver;
 import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -32,6 +33,7 @@ public class HeuristicSolverTest {
     private FlexibilityProvider second;
     private CongestionProfile profile;
     private AbstractOptimalSolver altSolver;
+    private Logger logger = org.slf4j.LoggerFactory.getLogger(HeuristicSolverTest.class);
 
     @Before
     public void setUp() throws IOException {
@@ -80,6 +82,7 @@ public class HeuristicSolverTest {
                         .activationDuration(0.5).build());
         solver.solve();
         AllocResults solution = solver.getSolution();
+        logger.info(solution.toString());
         testConstraints(solution);
     }
 
@@ -99,7 +102,6 @@ public class HeuristicSolverTest {
     @Test
     @Ignore
     public void testCompareResults() {
-        Logger logger = org.slf4j.LoggerFactory.getLogger(HeuristicSolverTest.class);
         solver.solve();
         AllocResults solution1 = solver.getSolution();
         logger.info(solution1.toString());
@@ -121,7 +123,6 @@ public class HeuristicSolverTest {
                 HourlyFlexConstraints.builder().maximumActivations(6).interActivationTime(2)
                         .activationDuration(0.5).build());
         initSolvers();
-        Logger logger = org.slf4j.LoggerFactory.getLogger(HeuristicSolverTest.class);
         solver.solve();
         AllocResults solution1 = solver.getSolution();
         logger.info(solution1.toString());
@@ -141,7 +142,6 @@ public class HeuristicSolverTest {
         second = new FlexProvider(2560,
                 HourlyFlexConstraints.R3DP);
         initSolvers();
-        Logger logger = org.slf4j.LoggerFactory.getLogger(HeuristicSolverTest.class);
         solver.solve();
         AllocResults solution1 = solver.getSolution();
         logger.info(solution1.toString());

@@ -16,6 +16,7 @@ public abstract class SolutionResults {
      * Empty results.
      */
     public static final SolutionResults EMPTY = create(ArrayListMultimap.create(), 0, 4);
+    public static final SolutionResults INFEASIBLE = create(ArrayListMultimap.create(), -1, 4);
 
     /**
      * @return A map of flexibility profile to their allocation schedule.

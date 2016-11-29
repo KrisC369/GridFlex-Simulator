@@ -20,6 +20,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.lang.StrictMath.min;
 
 /**
@@ -74,7 +75,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     }
 
     private void processActivations(@Nullable final SolutionResults results) {
-        if (!getFlexibilityProviders().isEmpty()) {
+        if (!getFlexibilityProviders().isEmpty() && !results.equals(SolutionResults.INFEASIBLE)) {
             List<Integer> acts = getTotalActivationsProfile(results.getAllocationMaps());
             List<Double> volumes = getTotalActivatedVolumesProfile(results.getAllocationMaps());
 
@@ -88,9 +89,13 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     @VisibleForTesting
     List<Integer> getTotalActivationsProfile(
             ListMultimap<FlexibilityProvider, Boolean> values) {
+        checkArgument(!values.isEmpty(), "Values provided should not be empty.");
         List<Integer> sizes = Lists.newArrayList();
         values.keySet().forEach(p -> sizes.add(values.get(p).size()));
-        int min = Collections.min(sizes);
+        int min = sizes.get(0);
+        if (sizes.size() > 0) {
+            min = Collections.min(sizes);
+        }
         IntList toRet = new IntArrayList(min);
         for (int j = 0;
              j < min; j++) {

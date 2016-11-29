@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+    <!-- Domain model configuration -->
+    <scanAnnotatedClasses/>
+
+    <!-- Score configuration -->
+    <scoreDirectorFactory>
+        <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
+        <scoreDrl>be/kuleuven/cs/flexsim/solver/heuristic/solver/solverScoreRules_BestEffort.drl
+        </scoreDrl>
+        <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solver/cloudBalancingScoreRules.drl</scoreDrl>-->
+    </scoreDirectorFactory>
+    <constructionHeuristic>
+        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        <!-- Speedup that can be applied to most, but not all use cases: -->
+        <!--<forager>-->
+        <!--<pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>-->
+        <!--</forager>-->
+    </constructionHeuristic>
+    <!-- Optimization algorithms configuration -->
+    <termination>
+        <!--<terminationCompositionStyle>OR</terminationCompositionStyle>-->
+        <secondsSpentLimit>180</secondsSpentLimit>
+        <!--<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>-->
+    </termination>
+</solver>

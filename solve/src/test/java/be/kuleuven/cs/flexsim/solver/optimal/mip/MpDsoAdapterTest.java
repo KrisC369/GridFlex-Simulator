@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.solver.optimal.dso;
+package be.kuleuven.cs.flexsim.solver.optimal.mip;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.solver.optimal.ConstraintConversion;

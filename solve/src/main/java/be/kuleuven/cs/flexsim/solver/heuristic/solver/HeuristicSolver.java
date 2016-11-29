@@ -13,6 +13,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import org.optaplanner.core.api.solver.SolverFactory;
+import org.optaplanner.core.config.solver.termination.TerminationCompositionStyle;
 
 import java.io.File;
 import java.util.List;
@@ -26,19 +27,49 @@ import java.util.stream.IntStream;
  */
 public class HeuristicSolver implements Solver<AllocResults> {
 
+    private static String CONFIG_FULLSAT =
+            "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
+    private static String CONFIG_BESTEFFORT =
+            "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
+    private static String SOLVER_RULES =
+            "be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_FullSat.drl";
+    private static double FRACTION_OF_THEORETICAL_OPT = 0.65;
     private FlexAllocProblemContext context;
+    private boolean fullSat;
     private Allocation solvedAlloc;
 
-    public HeuristicSolver(FlexAllocProblemContext context) {
+    HeuristicSolver(FlexAllocProblemContext context, boolean fullSat) {
         this.context = context;
+        this.fullSat = fullSat;
     }
 
     @Override
     public void solve() {
-        String filename = "HeuristicSolverConfig.xml";
-        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        final File file = new File(classLoader.getResource(filename).getFile());
+        final ClassLoader classLoader = getClass().getClassLoader();
+        final File file = new File(classLoader.getResource(CONFIG_FULLSAT).getFile());
         SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlFile(file);
+
+        ////Score rules.
+        //        solverFactory.getSolverConfig().getScoreDirectorFactoryConfig()
+        // .setScoreDefinitionType(
+        //                ScoreDefinitionType.HARD_SOFT);
+        //        solverFactory.getSolverConfig().getScoreDirectorFactoryConfig()
+        //                .setScoreDrlList(Lists.newArrayList(SOLVER_RULES));
+
+        //Termination rules.
+        solverFactory.getSolverConfig().getTerminationConfig().setSecondsSpentLimit(300L);
+        solverFactory.getSolverConfig().getTerminationConfig().setUnimprovedSecondsSpentLimit(30L);
+
+        double sum = Lists.newArrayList(context.getProviders()).stream()
+                .mapToDouble(p -> p.getFlexibilityActivationRate().getUp() * p
+                        .getFlexibilityActivationConstraints().getMaximumActivations() * p
+                        .getFlexibilityActivationConstraints().getActivationDuration()).sum();
+        double bestScore = sum * FRACTION_OF_THEORETICAL_OPT * 100;
+
+        solverFactory.getSolverConfig().getTerminationConfig()
+                .setBestScoreLimit("0hard/" + String.valueOf((int) bestScore) + "soft");
+        solverFactory.getSolverConfig().getTerminationConfig().setTerminationCompositionStyle(
+                TerminationCompositionStyle.AND);
         org.optaplanner.core.api.solver.Solver<Allocation> solver = solverFactory.buildSolver();
         Allocation unsolvedAlloc = new AllocationGenerator().createAllocation();
 
@@ -110,5 +141,13 @@ public class HeuristicSolver implements Solver<AllocResults> {
         StringBuilder displayString = new StringBuilder();
         displayString.append("Solved Congestion: ").append(sum);
         return displayString.toString();
+    }
+
+    public static HeuristicSolver createFullSatHeuristicSolver(FlexAllocProblemContext context) {
+        return new HeuristicSolver(context, true);
+    }
+
+    public static HeuristicSolver createBestEffortHeuristicSolver(FlexAllocProblemContext context) {
+        return new HeuristicSolver(context, false);
     }
 }
