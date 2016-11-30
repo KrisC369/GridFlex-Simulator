@@ -30,7 +30,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     private static String CONFIG_FULLSAT =
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
     private static String CONFIG_BESTEFFORT =
-            "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
+            "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
     private static String SOLVER_RULES =
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_FullSat.drl";
     private static double FRACTION_OF_THEORETICAL_OPT = 0.65;
