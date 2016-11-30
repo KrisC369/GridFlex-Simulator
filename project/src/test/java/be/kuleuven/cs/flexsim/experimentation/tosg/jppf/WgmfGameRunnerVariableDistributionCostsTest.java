@@ -39,7 +39,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
     @Before
     public void setUp() throws Exception {
-        experimentParams = getParams("OPTA_BEST_EFFORT");
+        experimentParams = getParams("DUMMY");
         runner = new WgmfGameRunnerVariableDistributionCosts(experimentParams);
     }
 
