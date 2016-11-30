@@ -9,13 +9,19 @@ import be.kuleuven.cs.flexsim.solver.heuristic.domain.Allocation;
 import be.kuleuven.cs.flexsim.solver.heuristic.domain.OptaFlexProvider;
 import be.kuleuven.cs.flexsim.solver.heuristic.domain.QHFlexibilityProvider;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.io.Resources;
 import org.optaplanner.core.api.solver.SolverFactory;
+import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationCompositionStyle;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -47,19 +53,22 @@ public class HeuristicSolver implements Solver<AllocResults> {
     public void solve() {
         final ClassLoader classLoader = getClass().getClassLoader();
         String actConfig = fullSat ? CONFIG_FULLSAT : CONFIG_BESTEFFORT;
-        final File file = new File(classLoader.getResource(actConfig).getFile());
-        SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlFile(file);
+        //        SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlInputStream(
+        //                getClass().getResourceAsStream(actConfig));
 
-        ////Score rules.
-        //        solverFactory.getSolverConfig().getScoreDirectorFactoryConfig()
-        // .setScoreDefinitionType(
-        //                ScoreDefinitionType.HARD_SOFT);
-        //        solverFactory.getSolverConfig().getScoreDirectorFactoryConfig()
-        //                .setScoreDrlList(Lists.newArrayList(SOLVER_RULES));
+        SolverFactory<Allocation> solverFactory = SolverFactory
+                .createFromXmlReader(new StringReader(resourceToString(actConfig)));
+
+        //config
+        SolverConfig solverConfig = solverFactory.getSolverConfig();
+
+        solverConfig.setEntityClassList(
+                ImmutableList.<Class<?>>of(ActivationAssignment.class));
+        solverConfig.setSolutionClass(Allocation.class);
 
         //Termination rules.
-        solverFactory.getSolverConfig().getTerminationConfig().setSecondsSpentLimit(300L);
-        solverFactory.getSolverConfig().getTerminationConfig().setUnimprovedSecondsSpentLimit(30L);
+        solverConfig.getTerminationConfig().setSecondsSpentLimit(300L);
+        solverConfig.getTerminationConfig().setUnimprovedSecondsSpentLimit(30L);
 
         double sum = Lists.newArrayList(context.getProviders()).stream()
                 .mapToDouble(p -> p.getFlexibilityActivationRate().getUp() * p
@@ -67,9 +76,9 @@ public class HeuristicSolver implements Solver<AllocResults> {
                         .getFlexibilityActivationConstraints().getActivationDuration()).sum();
         double bestScore = sum * FRACTION_OF_THEORETICAL_OPT * 100;
 
-        solverFactory.getSolverConfig().getTerminationConfig()
+        solverConfig.getTerminationConfig()
                 .setBestScoreLimit("0hard/" + String.valueOf((int) bestScore) + "soft");
-        solverFactory.getSolverConfig().getTerminationConfig().setTerminationCompositionStyle(
+        solverConfig.getTerminationConfig().setTerminationCompositionStyle(
                 TerminationCompositionStyle.AND);
         org.optaplanner.core.api.solver.Solver<Allocation> solver = solverFactory.buildSolver();
         Allocation unsolvedAlloc = new AllocationGenerator().createAllocation();
@@ -142,6 +151,16 @@ public class HeuristicSolver implements Solver<AllocResults> {
         StringBuilder displayString = new StringBuilder();
         displayString.append("Solved Congestion: ").append(sum);
         return displayString.toString();
+    }
+
+    static String resourceToString(String resourcePath) {
+        try {
+            final URL url = Resources.getResource(resourcePath);
+            return Resources.toString(url, Charsets.UTF_8);
+        } catch (final IOException e) {
+            throw new IllegalArgumentException(
+                    "A problem occured while attempting to read: " + resourcePath, e);
+        }
     }
 
     public static HeuristicSolver createFullSatHeuristicSolver(FlexAllocProblemContext context) {
