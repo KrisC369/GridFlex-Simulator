@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -60,7 +59,7 @@ public class HeuristicSolverTest {
                 return profile;
             }
         };
-        this.solver = new HeuristicSolver(context);
+        this.solver = new HeuristicSolver(context, true);
         this.altSolver = new MIPOptimalSolver(context, AbstractOptimalSolver.Solver.CPLEX);
     }
 
