@@ -42,7 +42,7 @@ enum ExecutionStrategy {
             toRet = RemoteRunners.createDefaultBlockedJPPFRunner("PocJob", data);
             break;
         case LOCAL:
-            toRet = LocalRunners.createDefaultMultiThreadedRunner();
+            toRet = LocalRunners.createOSTunedMultiThreadedRunner();
             break;
         default:
             toRet = LocalRunners.createDefaultSingleThreadedRunner();
