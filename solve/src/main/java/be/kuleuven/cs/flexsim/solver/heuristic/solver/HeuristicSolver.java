@@ -18,6 +18,8 @@ import com.google.common.io.Resources;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationCompositionStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -39,10 +41,11 @@ public class HeuristicSolver implements Solver<AllocResults> {
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
     private static String SOLVER_RULES =
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_FullSat.drl";
-    private static double FRACTION_OF_THEORETICAL_OPT = 0.65;
+    private static double FRACTION_OF_THEORETICAL_OPT = 0.80;
     private FlexAllocProblemContext context;
     private boolean fullSat;
     private Allocation solvedAlloc;
+    private static final Logger logger = LoggerFactory.getLogger(HeuristicSolver.class);
 
     HeuristicSolver(FlexAllocProblemContext context, boolean fullSat) {
         this.context = context;
@@ -51,11 +54,16 @@ public class HeuristicSolver implements Solver<AllocResults> {
 
     @Override
     public void solve() {
-        final ClassLoader classLoader = getClass().getClassLoader();
+        if (logger.isInfoEnabled()) {
+            logger.info("Starting solve run.");
+        }
         String actConfig = fullSat ? CONFIG_FULLSAT : CONFIG_BESTEFFORT;
         //        SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlInputStream(
         //                getClass().getResourceAsStream(actConfig));
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Reading xml config at location: {}", actConfig);
+        }
         SolverFactory<Allocation> solverFactory = SolverFactory
                 .createFromXmlReader(new StringReader(resourceToString(actConfig)));
 
@@ -76,17 +84,33 @@ public class HeuristicSolver implements Solver<AllocResults> {
                         .getFlexibilityActivationConstraints().getActivationDuration()).sum();
         double bestScore = sum * FRACTION_OF_THEORETICAL_OPT * 100;
 
+        String bestScoreString = "0hard/" + String.valueOf((int) bestScore) + "soft";
         solverConfig.getTerminationConfig()
-                .setBestScoreLimit("0hard/" + String.valueOf((int) bestScore) + "soft");
+                .setBestScoreLimit(bestScoreString);
         solverConfig.getTerminationConfig().setTerminationCompositionStyle(
                 TerminationCompositionStyle.AND);
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                    "Minimum best score: {} added to termination condition. This is {}% relative "
+                            + "efficiency of theoretical max: {}",
+                    bestScoreString, FRACTION_OF_THEORETICAL_OPT * 100, sum * 100);
+        }
         org.optaplanner.core.api.solver.Solver<Allocation> solver = solverFactory.buildSolver();
         Allocation unsolvedAlloc = new AllocationGenerator().createAllocation();
 
         // Solve the problem
+        if (logger.isDebugEnabled()) {
+            logger.debug("Starting search.", actConfig);
+        }
         solver.solve(unsolvedAlloc);
         this.solvedAlloc = (Allocation) solver.getBestSolution();
-
+        if (logger.isInfoEnabled()) {
+            double objValue = solvedAlloc.getResolvedCongestion();
+            logger.info("Search ended with with objective function result: {}.",
+                    objValue);
+            logger.info("Obj value percentage of theoretical max useful allocation: {}",
+                    objValue / sum);
+        }
     }
 
     public void displayResult() {

@@ -99,6 +99,38 @@ public class HeuristicSolverTest {
     }
 
     @Test
+    public void testMultiModels() throws Exception {
+        this.profile = CongestionProfile.createFromCSV("test.csv", "test");
+        this.context = new FlexAllocProblemContext() {
+
+            @Override
+            public Iterable<FlexibilityProvider> getProviders() {
+                return Lists.newArrayList(first, second);
+            }
+
+            @Override
+            public TimeSeries getEnergyProfileToMinimizeWithFlex() {
+                return profile;
+            }
+        };
+        this.solver = new HeuristicSolver(context, true);
+        HeuristicSolver newSolver = new HeuristicSolver(context, false);
+
+        solver.solve();
+        AllocResults solution1 = solver.getSolution();
+        newSolver.solve();
+        AllocResults solution2 = newSolver.getSolution();
+        testConstraints(solution1);
+        testConstraints(solution2);
+        assertResultEquality(solution1, solution2);
+    }
+
+    private void assertResultEquality(AllocResults solution1, AllocResults solution2) {
+        assertEquals(solution1.getObjective(), solution2.getObjective(), 0.1);
+        assertEquals(solution1.getAllocationResults(), solution2.getAllocationResults());
+    }
+
+    @Test
     @Ignore
     public void testCompareResults() {
         solver.solve();
@@ -107,8 +139,7 @@ public class HeuristicSolverTest {
         altSolver.solve();
         AllocResults solution2 = altSolver.getSolution();
         logger.info(solution2.toString());
-        assertEquals(solution1.getObjective(), solution2.getObjective(), 0.1);
-        assertEquals(solution1.getAllocationResults(), solution2.getAllocationResults());
+        assertResultEquality(solution1, solution2);
     }
 
     @Test
@@ -148,8 +179,7 @@ public class HeuristicSolverTest {
         altSolver.solve();
         AllocResults solution2 = altSolver.getSolution();
         logger.info(solution2.toString());
-        assertEquals(solution1.getObjective(), solution2.getObjective(), 0.1);
-        assertEquals(solution1.getAllocationResults(), solution2.getAllocationResults());
+        assertResultEquality(solution1, solution2);
     }
 
     private void testConstraints(AllocResults res) {

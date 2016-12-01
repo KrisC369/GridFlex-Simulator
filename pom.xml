@@ -191,6 +191,11 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>**org.optaplanner.core.impl.solver.kie*</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <!-- <plugin> <groupId>com.github.github</groupId> <artifactId>downloads-maven-plugin</artifactId>
             <version>0.6</version> <configuration> <description>Official ${project.name}

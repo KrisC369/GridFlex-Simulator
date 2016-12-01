@@ -91,7 +91,7 @@ public class ActivationAssignment {
     }
 
     public boolean isOverlapping(ActivationAssignment other) {
-        return (getStartIndex() < other.getEndIndex()) && (getEndIndex() >= other.getStartIndex());
+        return (getStartIndex() < other.getEndIndex()) && (getEndIndex() > other.getStartIndex());
     }
 
     public double energyLostInOverlap(List<ActivationAssignment> acts) {
@@ -109,11 +109,11 @@ public class ActivationAssignment {
                 lost += -diff;
             }
         }
-        return 0;
+        return lost;
     }
 
     public static boolean isActiveAt(ActivationAssignment aa, int i) {
-        return (aa.getStartIndex() <= i) && (i <= aa.getEndIndex());
+        return (aa.getStartIndex() <= i) && (i < aa.getEndIndex());
     }
 
     public static ActivationAssignment create(int i, QHFlexibilityProvider p,
