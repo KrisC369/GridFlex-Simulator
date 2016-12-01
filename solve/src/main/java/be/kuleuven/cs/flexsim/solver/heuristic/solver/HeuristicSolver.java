@@ -11,7 +11,6 @@ import be.kuleuven.cs.flexsim.solver.heuristic.domain.QHFlexibilityProvider;
 import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
@@ -41,7 +40,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
     private static String SOLVER_RULES =
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_FullSat.drl";
-    private static double FRACTION_OF_THEORETICAL_OPT = 0.80;
+    private static double FRACTION_OF_THEORETICAL_OPT = 0.75;
     private FlexAllocProblemContext context;
     private boolean fullSat;
     private Allocation solvedAlloc;
@@ -70,9 +69,9 @@ public class HeuristicSolver implements Solver<AllocResults> {
         //config
         SolverConfig solverConfig = solverFactory.getSolverConfig();
 
-        solverConfig.setEntityClassList(
-                ImmutableList.<Class<?>>of(ActivationAssignment.class));
-        solverConfig.setSolutionClass(Allocation.class);
+        //        solverConfig.setEntityClassList(
+        //                ImmutableList.<Class<?>>of(ActivationAssignment.class));
+        //        solverConfig.setSolutionClass(Allocation.class);
 
         //Termination rules.
         solverConfig.getTerminationConfig().setSecondsSpentLimit(300L);
@@ -137,8 +136,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
         }
     }
 
-    private class AllocationGenerator {
-        Allocation createAllocation() {
+    public class AllocationGenerator {
+        public Allocation createAllocation() {
             List<QHFlexibilityProvider> providers = Lists.newArrayList();
             context.getProviders().forEach(p -> providers.add(new OptaFlexProvider(p)));
             List<ActivationAssignment> assignments = Lists.newArrayList();

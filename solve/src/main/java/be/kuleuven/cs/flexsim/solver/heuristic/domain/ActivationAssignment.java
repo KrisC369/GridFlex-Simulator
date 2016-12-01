@@ -1,6 +1,9 @@
 package be.kuleuven.cs.flexsim.solver.heuristic.domain;
 
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.solver.heuristic.domain.comparators
+        .ActivationAssignmentDifficultyComparator;
+import be.kuleuven.cs.flexsim.solver.heuristic.domain.comparators.IntegerStrengthComparator;
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 
@@ -14,7 +17,7 @@ import static org.apache.commons.math3.util.FastMath.min;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-@PlanningEntity
+@PlanningEntity(difficultyComparatorClass = ActivationAssignmentDifficultyComparator.class)
 public class ActivationAssignment {
 
     private static final double EPS = 0.001;
@@ -43,7 +46,7 @@ public class ActivationAssignment {
         return profile;
     }
 
-    @PlanningVariable(valueRangeProviderRefs = { "startPeriodRange" })
+    @PlanningVariable(valueRangeProviderRefs = { "startPeriodRange" },strengthComparatorClass = IntegerStrengthComparator.class)
     public Integer getStartIndex() {
         return startIndex;
     }

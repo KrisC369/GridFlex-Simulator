@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <solver>
     <!-- Domain model configuration -->
-
+    <solutionClass>be.kuleuven.cs.flexsim.solver.heuristic.domain.Allocation</solutionClass>
+    <entityClass>be.kuleuven.cs.flexsim.solver.heuristic.domain.ActivationAssignment</entityClass>
     <!-- Score configuration -->
     <scoreDirectorFactory>
         <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
@@ -21,12 +22,12 @@
         <secondsSpentLimit>180</secondsSpentLimit>
         <!--<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>-->
     </termination>
-    <localSearch>
-        <acceptor>
-            <simulatedAnnealingStartingTemperature>40000hard/500000soft</simulatedAnnealingStartingTemperature>
-        </acceptor>
-        <forager>
-            <acceptedCountLimit>4</acceptedCountLimit>
-        </forager>
-    </localSearch>
+    <!--<localSearch>-->
+        <!--<acceptor>-->
+            <!--<simulatedAnnealingStartingTemperature>40000hard/500000soft</simulatedAnnealingStartingTemperature>-->
+        <!--</acceptor>-->
+        <!--<forager>-->
+            <!--<acceptedCountLimit>4</acceptedCountLimit>-->
+        <!--</forager>-->
+    <!--</localSearch>-->
 </solver>
