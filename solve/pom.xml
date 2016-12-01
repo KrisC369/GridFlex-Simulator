@@ -67,10 +67,5 @@
             <artifactId>cplex</artifactId>
             <version>12.6.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.optaplanner</groupId>
-            <artifactId>optaplanner-benchmark</artifactId>
-            <version>6.5.0.Final</version>
-        </dependency>
     </dependencies>
 </project>

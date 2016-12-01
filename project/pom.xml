@@ -99,6 +99,11 @@
             <artifactId>matlab-control</artifactId>
             <version>5.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.optaplanner</groupId>
+            <artifactId>optaplanner-benchmark</artifactId>
+            <version>6.5.0.Final</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
