@@ -109,7 +109,7 @@ public class ActivationAssignment {
             }
             double diff = (profile.value(i) - activated);
             if (diff < 0) {
-                lost += -diff;
+                lost -= diff;
             }
         }
         return lost;

@@ -22,12 +22,15 @@
         <secondsSpentLimit>180</secondsSpentLimit>
         <!--<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>-->
     </termination>
+    <!--<localSearch>-->
+        <!--<acceptor>-->
+            <!--<simulatedAnnealingStartingTemperature>40000hard/500000soft</simulatedAnnealingStartingTemperature>-->
+        <!--</acceptor>-->
+        <!--<forager>-->
+            <!--<acceptedCountLimit>4</acceptedCountLimit>-->
+        <!--</forager>-->
+    <!--</localSearch>-->
     <localSearch>
-        <acceptor>
-            <simulatedAnnealingStartingTemperature>40000hard/500000soft</simulatedAnnealingStartingTemperature>
-        </acceptor>
-        <forager>
-            <acceptedCountLimit>4</acceptedCountLimit>
-        </forager>
+        <localSearchType>TABU_SEARCH</localSearchType>
     </localSearch>
 </solver>

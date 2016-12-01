@@ -73,11 +73,10 @@ end
 
 rule "OveractivationGoal"
     when
-        $aa : ActivationAssignment(bound == true,$p : provider)
+        $aa : ActivationAssignment(bound == true, $p : provider, $id : id)
         $acts : List(size>0) from collect(
-            ActivationAssignment(bound == true, isOverlapping($aa) == true, provider != $p)
+            ActivationAssignment(bound == true, id > $id, provider != $p, isOverlapping($aa) == true)
         )
-
     then
         scoreHolder.addSoftConstraintMatch(kcontext, -(int)($aa.energyLostInOverlap($acts)*100));
 end

@@ -1,5 +1,5 @@
 <plannerBenchmark>
-    <benchmarkDirectory>local/data/nqueens</benchmarkDirectory>
+    <benchmarkDirectory>local/data/bench</benchmarkDirectory>
     <!--<parallelBenchmarkCount>AUTO</parallelBenchmarkCount>-->
     <warmUpSecondsSpentLimit>30</warmUpSecondsSpentLimit>
     <inheritedSolverBenchmark>
@@ -23,14 +23,15 @@
                 <secondsSpentLimit>180</secondsSpentLimit>
                 <!--<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>-->
             </termination>
-            <constructionHeuristic>
-                <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
-            </constructionHeuristic>
+            <!--<constructionHeuristic>-->
+                <!--<constructionHeuristicType>FIRST_FIT</constructionHeuristicType>-->
+            <!--</constructionHeuristic>-->
         </solver>
     </inheritedSolverBenchmark>
     <solverBenchmarkBluePrint>
         <solverBenchmarkBluePrintType>EVERY_CONSTRUCTION_HEURISTIC_TYPE_WITH_EVERY_LOCAL_SEARCH_TYPE</solverBenchmarkBluePrintType>
     </solverBenchmarkBluePrint>
+    <parallelBenchmarkCount>AUTO</parallelBenchmarkCount>
     <!--<solverBenchmark>-->
     <!--<name>Entity tabu</name>-->
     <!--<solver>-->

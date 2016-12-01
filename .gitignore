@@ -15,4 +15,4 @@ build.properties
 CleanUpProfEclipse.xml
 FormatterProfEclipse.xml
 checkstyle.xml
-
+local
