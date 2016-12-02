@@ -1,13 +1,12 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
-import org.apache.commons.math3.random.MersenneTwister;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.experimentation.DefaultSiteAgentGenerator;
 import be.kuleuven.cs.flexsim.experimentation.TwoActionGameExample;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
+import org.apache.commons.math3.random.MersenneTwister;
 
 /**
  * Configuration provider. This is a factory for generating participating

@@ -1,5 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 
+import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
+import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -8,16 +17,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
-import be.kuleuven.cs.flexsim.domain.site.Site;
-import be.kuleuven.cs.flexsim.domain.site.SiteBuilder;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
 
 public class BRPAggregatorTest {
     @Rule

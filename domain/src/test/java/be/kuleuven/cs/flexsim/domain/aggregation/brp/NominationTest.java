@@ -1,10 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class NominationTest {
     private static final long target = 243;

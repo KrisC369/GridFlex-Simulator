@@ -3,12 +3,11 @@
  */
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 import java.util.Iterator;
-import java.util.function.ToIntBiFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.StreamSupport;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * This class represents some generic utility function making use of mapping

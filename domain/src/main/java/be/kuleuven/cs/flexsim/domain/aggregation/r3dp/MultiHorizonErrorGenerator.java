@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import org.apache.commons.math3.random.MersenneTwister;
 
 import java.util.List;
-import java.util.Random;
 
 /**
  * This class can generate normally distributed errors to forecasts.

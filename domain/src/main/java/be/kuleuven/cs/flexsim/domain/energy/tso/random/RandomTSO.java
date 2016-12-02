@@ -1,16 +1,15 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.random;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.math3.random.RandomGenerator;
-
 import be.kuleuven.cs.flexsim.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
 import be.kuleuven.cs.flexsim.domain.util.listener.MultiplexListener;
 import be.kuleuven.cs.flexsim.domain.util.listener.NoopListener;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import org.apache.commons.math3.random.RandomGenerator;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents a TSO implementation with random signal.

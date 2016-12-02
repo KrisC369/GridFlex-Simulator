@@ -1,7 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.resource;
 
-import java.io.Serializable;
-
 import be.kuleuven.cs.flexsim.domain.util.Bufferable;
 
 /**

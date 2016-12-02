@@ -1,11 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
-import java.util.List;
-
-import org.apache.commons.math3.random.MersenneTwister;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.AncilServiceNominationManager;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.Nomination;
@@ -14,6 +8,10 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.flexsim.domain.finance.FinanceTracker;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.experimentation.AggregationGame;
+import com.google.common.collect.Lists;
+import org.apache.commons.math3.random.MersenneTwister;
+
+import java.util.List;
 
 /**
  * Represents a game with two possible actions to choose between.

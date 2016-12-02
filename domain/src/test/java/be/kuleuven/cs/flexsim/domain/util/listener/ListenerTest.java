@@ -1,12 +1,12 @@
 package be.kuleuven.cs.flexsim.domain.util.listener;
 
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class ListenerTest {
     Listener<? super Integer> test = NoopListener.INSTANCE;

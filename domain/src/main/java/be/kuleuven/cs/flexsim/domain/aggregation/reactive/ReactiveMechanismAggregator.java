@@ -1,11 +1,5 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.reactive;
 
-import java.util.Collections;
-import java.util.List;
-
-import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
-import com.google.common.collect.LinkedListMultimap;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationUtils;
@@ -14,8 +8,13 @@ import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
 import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.ContractualMechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.collect.LinkedListMultimap;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Subclasses the aggregator abstract class to add the behavior of reacting to

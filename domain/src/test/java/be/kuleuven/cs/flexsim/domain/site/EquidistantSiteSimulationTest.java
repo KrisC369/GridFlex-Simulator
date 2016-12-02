@@ -1,21 +1,20 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
+import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import be.kuleuven.cs.flexsim.domain.process.FlexProcess;
-import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 public class EquidistantSiteSimulationTest {
     private Site site = mock(SiteSimulation.class);

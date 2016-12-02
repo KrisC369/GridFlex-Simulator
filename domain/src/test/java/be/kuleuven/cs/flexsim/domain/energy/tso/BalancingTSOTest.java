@@ -1,16 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
+import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
+import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.ContractualMechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.util.data.IntPowerCapabilityBand;
+import be.kuleuven.cs.flexsim.simulation.Simulator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,10 +14,15 @@ import org.junit.experimental.theories.Theory;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 
-import be.kuleuven.cs.flexsim.domain.energy.generation.EnergyProductionTrackable;
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.BalancingTSO;
-import be.kuleuven.cs.flexsim.domain.energy.tso.contractual.ContractualMechanismParticipant;
-import be.kuleuven.cs.flexsim.simulation.Simulator;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(Theories.class)
 public class BalancingTSOTest {

@@ -1,15 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
+import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
 
 /**
  * Utility class for generation of Permutation and combinations of items.

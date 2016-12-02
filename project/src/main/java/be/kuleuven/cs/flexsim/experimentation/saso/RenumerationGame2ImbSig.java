@@ -1,9 +1,8 @@
 package be.kuleuven.cs.flexsim.experimentation.saso;
 
-import org.apache.commons.math3.random.MersenneTwister;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
+import org.apache.commons.math3.random.MersenneTwister;
 
 /**
  * Represents a game with two possible actions to choose between.

@@ -1,19 +1,17 @@
 package be.kuleuven.cs.flexsim.experimentation.runners.local;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentAtomImpl;
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
+import com.google.common.collect.Lists;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class MultiThreadedExperimentRunnerTest {
 

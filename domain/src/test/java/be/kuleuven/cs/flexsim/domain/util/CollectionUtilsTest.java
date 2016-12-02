@@ -1,14 +1,13 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static org.junit.Assert.assertEquals;
+import com.google.common.collect.Lists;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
+import static org.junit.Assert.assertEquals;
 
 public class CollectionUtilsTest {
 

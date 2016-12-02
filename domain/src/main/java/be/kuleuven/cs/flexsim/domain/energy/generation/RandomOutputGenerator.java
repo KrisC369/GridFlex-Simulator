@@ -1,17 +1,15 @@
 package be.kuleuven.cs.flexsim.domain.energy.generation;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
+import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.apache.commons.math3.random.RandomGenerator;
 
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.math3.random.MersenneTwister;
-import org.apache.commons.math3.random.RandomGenerator;
-
-import com.google.common.annotations.VisibleForTesting;
-
-import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
-import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Represents a TSO implementation with random signal.

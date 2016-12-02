@@ -1,10 +1,9 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import java.util.List;
-
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import com.google.common.collect.Lists;
 
-import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import java.util.List;
 
 /**
  * Class representing a site module that makes abstraction of the underlying

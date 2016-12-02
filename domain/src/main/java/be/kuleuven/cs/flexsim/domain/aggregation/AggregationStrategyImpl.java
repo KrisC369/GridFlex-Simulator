@@ -1,20 +1,18 @@
 package be.kuleuven.cs.flexsim.domain.aggregation;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.math3.random.MersenneTwister;
-
+import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
+import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import org.apache.commons.math3.random.MersenneTwister;
 
-import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.flexsim.domain.util.NPermuteAndCombiner;
-import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Some implementations of aggregation strategies.

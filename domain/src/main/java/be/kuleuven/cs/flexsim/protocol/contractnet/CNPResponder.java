@@ -1,11 +1,10 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
-import org.slf4j.LoggerFactory;
-
 import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
 import be.kuleuven.cs.flexsim.protocol.NoOpAnswerAnticipator;
 import be.kuleuven.cs.flexsim.protocol.Proposal;
 import be.kuleuven.cs.flexsim.protocol.Responder;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)

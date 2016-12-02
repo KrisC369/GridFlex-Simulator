@@ -3,12 +3,11 @@
  */
 package be.kuleuven.cs.flexsim.domain.aggregation.brp;
 
-import com.google.common.collect.Multimap;
-
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext;
 import be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy;
 import be.kuleuven.cs.flexsim.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
+import com.google.common.collect.Multimap;
 
 /**
  * AggregationStrategy to use with BRP implementation of aggregator

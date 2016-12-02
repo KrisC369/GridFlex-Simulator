@@ -1,10 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso.auctioning;
 
-import java.util.Collection;
-
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismHost;
 import be.kuleuven.cs.flexsim.domain.energy.tso.MechanismParticipant;
 import be.kuleuven.cs.flexsim.domain.util.AbstractBid;
+
+import java.util.Collection;
 
 /**
  * Interface representing an abstract auction where one can place bids.

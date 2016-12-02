@@ -1,9 +1,9 @@
 package be.kuleuven.cs.flexsim.domain.site;
 
-import java.util.List;
-
 import be.kuleuven.cs.flexsim.domain.util.FlexTuple;
 import be.kuleuven.cs.flexsim.domain.util.listener.Listener;
+
+import java.util.List;
 
 /**
  * API for gathering data about the flexibility for an entity.

@@ -1,17 +1,16 @@
 package be.kuleuven.cs.flexsim.event;
 
+import org.junit.Test;
+
+import javax.naming.directory.NoSuchAttributeException;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.naming.directory.NoSuchAttributeException;
-
-import org.junit.Test;
 
 /**
  * @author Rutger Claes <rutger.claes@cs.kuleuven.be>

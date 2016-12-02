@@ -1,10 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.process;
 
-import java.util.Collection;
-import java.util.List;
-
 import be.kuleuven.cs.flexsim.domain.energy.consumption.EnergyConsumptionTrackable;
 import be.kuleuven.cs.flexsim.domain.resource.Resource;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents a simulation component for which the process can be tracked and

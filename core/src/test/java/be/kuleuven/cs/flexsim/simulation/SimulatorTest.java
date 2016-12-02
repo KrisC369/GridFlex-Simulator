@@ -1,5 +1,18 @@
 package be.kuleuven.cs.flexsim.simulation;
 
+import be.kuleuven.cs.flexsim.event.Event;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.google.common.eventbus.Subscribe;
+import org.apache.commons.math3.random.MersenneTwister;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -9,21 +22,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.math3.random.MersenneTwister;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.google.common.eventbus.Subscribe;
-
-import be.kuleuven.cs.flexsim.event.Event;
 
 public class SimulatorTest {
     public static class ChangeEventComponent implements SimulationComponent {

@@ -1,16 +1,16 @@
 package be.kuleuven.cs.flexsim.domain.energy.generation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
 import org.apache.commons.math3.random.RandomGenerator;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class OutputGeneratorTest {
     private EnergyProductionTrackable gen = mock(ConstantOutputGenerator.class);

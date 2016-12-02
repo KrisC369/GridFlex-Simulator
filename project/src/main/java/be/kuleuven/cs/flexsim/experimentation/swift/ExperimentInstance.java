@@ -3,17 +3,16 @@
  */
 package be.kuleuven.cs.flexsim.experimentation.swift;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.AbstractCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.contractnet.DSMPartner;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.flexsim.simulation.Simulator;
+import com.google.common.collect.Lists;
 import it.unimi.dsi.fastutil.doubles.DoubleList;
+
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)

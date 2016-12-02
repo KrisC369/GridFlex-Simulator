@@ -1,9 +1,9 @@
 package be.kuleuven.cs.flexsim.time;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class ClockTest {
     SimulationClock c = new SimulationClock();

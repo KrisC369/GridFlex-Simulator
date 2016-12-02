@@ -1,22 +1,21 @@
 package be.kuleuven.cs.flexsim.domain.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import be.kuleuven.cs.flexsim.domain.resource.Resource;
+import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import be.kuleuven.cs.flexsim.domain.resource.Resource;
-import be.kuleuven.cs.flexsim.domain.resource.ResourceFactory;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class BufferTest {
 

@@ -1,13 +1,12 @@
 package be.kuleuven.cs.flexsim.domain.energy.tso;
 
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
+import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.junit.Before;
 import org.junit.Test;
 
-import be.kuleuven.cs.flexsim.domain.energy.tso.random.RandomTSO;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class RandomTSOTest {
     private BalancingSignal tso = mock(BalancingSignal.class);

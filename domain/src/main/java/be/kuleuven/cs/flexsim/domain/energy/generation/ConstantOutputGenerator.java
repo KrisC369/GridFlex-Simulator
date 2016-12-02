@@ -1,10 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.energy.generation;
 
-import java.util.Collections;
-import java.util.List;
-
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Electricity generator capable of producing a constant output.

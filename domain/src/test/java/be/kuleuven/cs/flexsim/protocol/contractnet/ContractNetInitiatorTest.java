@@ -1,12 +1,7 @@
 package be.kuleuven.cs.flexsim.protocol.contractnet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
+import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
+import be.kuleuven.cs.flexsim.protocol.Proposal;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +10,12 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import be.kuleuven.cs.flexsim.protocol.AnswerAnticipator;
-import be.kuleuven.cs.flexsim.protocol.Proposal;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ContractNetInitiatorTest {

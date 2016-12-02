@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import static be.kuleuven.cs.flexsim.domain.util.FlexTuple.Direction.fromRepresentation;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ReactiveMechanismAggregatorTest {
     private BalancingTSO tso = mock(BalancingTSO.class);

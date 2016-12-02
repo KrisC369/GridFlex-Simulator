@@ -1,10 +1,10 @@
 package be.kuleuven.cs.flexsim.domain.workstation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import be.kuleuven.cs.flexsim.simulation.SimulationComponent;
 import be.kuleuven.cs.flexsim.simulation.SimulationContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Abstract base class implementing the decorator pattern for Workstation
