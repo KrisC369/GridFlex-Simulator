@@ -22,7 +22,7 @@ public abstract class WgmfGameParams implements Serializable {
     public abstract WindBasedInputData getInputData();
 
     /**
-     * @return The specific solver factory platform to use.
+     * @return The specific solvers factory platform to use.
      */
     public abstract AbstractSolverFactory<SolutionResults> getFactory();
 
@@ -53,7 +53,7 @@ public abstract class WgmfGameParams implements Serializable {
      * @param specs        The specs of the windturbine used in these simulations.
      * @param imbalIn      The imbalance prices.
      * @param distribution The distribution of wind errors to use.
-     * @param factory      The specific solver factory platform to use.
+     * @param factory      The specific solvers factory platform to use.
      * @return A parameter object.
      */
     public static WgmfGameParams create(WindBasedInputData inputData,

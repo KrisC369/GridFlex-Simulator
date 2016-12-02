@@ -8,13 +8,13 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolutionResultAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolverAdapter;
-import be.kuleuven.cs.flexsim.solver.Solvers;
-import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.Solvers;
+import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 
 import java.io.Serializable;
 
 /**
- * A solver factory for wgmf games.
+ * A solvers factory for wgmf games.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */

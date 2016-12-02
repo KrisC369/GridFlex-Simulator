@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.solver.Solvers;
+import be.kuleuven.cs.flexsim.solvers.Solvers;
 import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public abstract class ExperimentParams implements Serializable {
     public abstract int getNRepititions();
 
     /**
-     * @return The solver to use.
+     * @return The solvers to use.
      */
     public abstract Solvers.TYPE getSolver();
 
@@ -80,7 +80,7 @@ public abstract class ExperimentParams implements Serializable {
         public abstract Builder setNRepititions(int value);
 
         /**
-         * @param value The solver to use.
+         * @param value The solvers to use.
          * @return This builder.
          */
         public abstract Builder setSolver(Solvers.TYPE solver);

@@ -1,5 +1,5 @@
 /**
- * Package for all solver abstractions that can be used and programmed against.
+ * Package for all solvers abstractions that can be used and programmed against.
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */

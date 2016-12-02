@@ -26,7 +26,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
     /**
      * Default constructor
      *
-     * @param fac   The solver factory to draw solver from.
+     * @param fac   The solvers factory to draw solvers from.
      * @param c     The initial imbalance profile to transform to imbalances.
      * @param specs The turbine specifications of the problem site.
      * @param gen   The wind speed error generator to use to realise different profiles.

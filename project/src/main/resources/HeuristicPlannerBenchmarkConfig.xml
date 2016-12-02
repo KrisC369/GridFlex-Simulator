@@ -18,12 +18,12 @@
 
         </problemBenchmarks>
         <solver>
-            <solutionClass>be.kuleuven.cs.flexsim.solver.heuristic.domain.Allocation</solutionClass>
-            <entityClass>be.kuleuven.cs.flexsim.solver.heuristic.domain.ActivationAssignment</entityClass>
+            <solutionClass>be.kuleuven.cs.flexsim.solvers.heuristic.domain.Allocation</solutionClass>
+            <entityClass>be.kuleuven.cs.flexsim.solvers.heuristic.domain.ActivationAssignment</entityClass>
             <scoreDirectorFactory>
                 <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
                 <scoreDrl>be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_FullSat.drl</scoreDrl>
-                <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solver/cloudBalancingScoreRules.drl</scoreDrl>-->
+                <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solvers/cloudBalancingScoreRules.drl</scoreDrl>-->
             </scoreDirectorFactory>
             <termination>
                 <!--<terminationCompositionStyle>OR</terminationCompositionStyle>-->
@@ -41,7 +41,7 @@
     <parallelBenchmarkCount>AUTO</parallelBenchmarkCount>
     <!--<solverBenchmark>-->
     <!--<name>Entity tabu</name>-->
-    <!--<solver>-->
+    <!--<solvers>-->
     <!--<localSearch>-->
     <!--<changeMoveSelector>-->
     <!--<selectionOrder>ORIGINAL</selectionOrder>-->
@@ -53,11 +53,11 @@
     <!--<pickEarlyType>NEVER</pickEarlyType>-->
     <!--</forager>-->
     <!--</localSearch>-->
-    <!--</solver>-->
+    <!--</solvers>-->
     <!--</solverBenchmark>-->
     <!--<solverBenchmark>-->
     <!--<name>Value tabu</name>-->
-    <!--<solver>-->
+    <!--<solvers>-->
     <!--<localSearch>-->
     <!--<changeMoveSelector>-->
     <!--<selectionOrder>ORIGINAL</selectionOrder>-->
@@ -69,11 +69,11 @@
     <!--<pickEarlyType>NEVER</pickEarlyType>-->
     <!--</forager>-->
     <!--</localSearch>-->
-    <!--</solver>-->
+    <!--</solvers>-->
     <!--</solverBenchmark>-->
     <!--<solverBenchmark>-->
     <!--<name>Move tabu</name>-->
-    <!--<solver>-->
+    <!--<solvers>-->
     <!--<localSearch>-->
     <!--<changeMoveSelector>-->
     <!--<selectionOrder>ORIGINAL</selectionOrder>-->
@@ -85,6 +85,6 @@
     <!--<pickEarlyType>NEVER</pickEarlyType>-->
     <!--</forager>-->
     <!--</localSearch>-->
-    <!--</solver>-->
+    <!--</solvers>-->
     <!--</solverBenchmark>-->
 </plannerBenchmark>

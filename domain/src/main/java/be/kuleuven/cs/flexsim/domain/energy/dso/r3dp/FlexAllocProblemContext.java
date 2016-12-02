@@ -15,7 +15,7 @@ public interface FlexAllocProblemContext {
     Iterable<FlexibilityProvider> getProviders();
 
     /**
-     * @return The energy profile to minimize as a goal for the solver.
+     * @return The energy profile to minimize as a goal for the solvers.
      */
     TimeSeries getEnergyProfileToMinimizeWithFlex();
 

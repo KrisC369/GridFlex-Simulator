@@ -15,7 +15,7 @@ public abstract class SolverAdapter<F, T> implements Solver<T> {
     /**
      * Default constructor.
      *
-     * @param from The solver type to adapt.
+     * @param from The solvers type to adapt.
      */
     public SolverAdapter(Solver<F> from) {
         this.target = from;

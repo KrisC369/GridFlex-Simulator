@@ -1,14 +1,14 @@
 package be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver;
 
 /**
- * Generic solver interface.
+ * Generic solvers interface.
  *
  * @param <T> The result solution type.
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public interface Solver<T> {
     /**
-     * Solve the problem configured in the solver.
+     * Solve the problem configured in the solvers.
      */
     void solve();
 

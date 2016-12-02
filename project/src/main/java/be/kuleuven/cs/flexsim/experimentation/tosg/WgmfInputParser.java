@@ -1,6 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.solver.Solvers;
+import be.kuleuven.cs.flexsim.solvers.Solvers;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -37,8 +37,8 @@ public final class WgmfInputParser {
         Options o = new Options();
         o.addOption("n", true, "The number of participating agents");
         o.addOption("r", true, "The number of repititions");
-        o.addOption(withLongOpt("solver")
-                .withDescription("Which solver to use. [CPLEX|GUROBI]")
+        o.addOption(withLongOpt("solvers")
+                .withDescription("Which solvers to use. [CPLEX|GUROBI]")
                 .hasArg()
                 .withArgName("SOLVER")
                 .create("s"));

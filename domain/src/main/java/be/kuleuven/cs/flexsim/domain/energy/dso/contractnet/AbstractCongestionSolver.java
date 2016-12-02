@@ -60,7 +60,7 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
     }
 
     /**
-     * Register this dsm partner to this solver instance.
+     * Register this dsm partner to this solvers instance.
      *
      * @param dsm the partner to add.
      */

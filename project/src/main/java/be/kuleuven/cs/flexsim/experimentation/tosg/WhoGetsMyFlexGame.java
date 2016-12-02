@@ -47,7 +47,7 @@ public class WhoGetsMyFlexGame extends
      * @param specs          The specs of the windturbine used in these simulations.
      * @param imbalIn        The input imbalance price data.
      * @param gen            The generator instance for generating wind forecast errors.
-     * @param solverplatform The specific solver factory platform to use.
+     * @param solverplatform The specific solvers factory platform to use.
      */
     @Deprecated
     private WhoGetsMyFlexGame(WindBasedInputData dataIn, TurbineSpecification specs,

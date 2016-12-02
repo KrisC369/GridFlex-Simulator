@@ -2,11 +2,11 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.adapters;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.solver.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 import com.google.common.collect.ListMultimap;
 
 /**
- * Adapts the solution results from the solver to domain level solution results.
+ * Adapts the solution results from the solvers to domain level solution results.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */

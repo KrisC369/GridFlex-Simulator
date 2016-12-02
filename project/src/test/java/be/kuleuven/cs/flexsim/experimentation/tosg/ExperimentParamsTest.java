@@ -1,9 +1,9 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.solver.Solvers;
+import be.kuleuven.cs.flexsim.solvers.Solvers;
 import org.junit.Test;
 
-import static be.kuleuven.cs.flexsim.solver.Solvers.TYPE.DUMMY;
+import static be.kuleuven.cs.flexsim.solvers.Solvers.TYPE.DUMMY;
 import static org.junit.Assert.assertEquals;
 
 /**

@@ -12,13 +12,13 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.AbstractTimeSeriesImplem
 public interface SolverBuilder {
 
     /**
-     * Abstract factory creator method for returning a specific solver.
+     * Abstract factory creator method for returning a specific solvers.
      * 
      * @param profile
      *            The congestion profile to be used.
      * @param n
      *            The forecast horizon.
-     * @return A congestion solver instance.
+     * @return A congestion solvers instance.
      */
     AbstractCongestionSolver getSolver(AbstractTimeSeriesImplementation profile, int n);
 

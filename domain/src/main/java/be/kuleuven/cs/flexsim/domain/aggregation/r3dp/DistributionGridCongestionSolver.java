@@ -40,7 +40,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     /**
      * Default constructor
      *
-     * @param fac The factory that provides the solver.
+     * @param fac The factory that provides the solvers.
      * @param c   The congestion profile
      */
     public DistributionGridCongestionSolver(final AbstractSolverFactory<SolutionResults> fac,
