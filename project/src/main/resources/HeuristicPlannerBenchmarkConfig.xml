@@ -6,9 +6,16 @@
         <problemBenchmarks>
             <solutionFileIOClass>be.kuleuven.cs.flexsim.experimentation.tosg.benchmark.persistence.HeuristicSolverIO</solutionFileIOClass>
             <inputSolutionFile>/tmp/foo/model_a1_1.txt</inputSolutionFile>
+            <inputSolutionFile>/tmp/foo/model_a1_2.txt</inputSolutionFile>
+            <inputSolutionFile>/tmp/foo/model_a1_3.txt</inputSolutionFile>
             <!--<inputSolutionFile>be/kuleuven/cs/flexsim/experimentation/data/dummy.txt</inputSolutionFile>-->
             <!--<inputSolutionFile>be/kuleuven/cs/flexsim/experimentation/data/dummy.txt</inputSolutionFile>-->
             <problemStatisticType>BEST_SCORE</problemStatisticType>
+            <problemStatisticType>STEP_SCORE</problemStatisticType>
+            <problemStatisticType>MEMORY_USE</problemStatisticType>
+            <problemStatisticType>MOVE_COUNT_PER_STEP</problemStatisticType>
+            <problemStatisticType>CALCULATE_COUNT_PER_SECOND</problemStatisticType>
+
         </problemBenchmarks>
         <solver>
             <solutionClass>be.kuleuven.cs.flexsim.solver.heuristic.domain.Allocation</solutionClass>

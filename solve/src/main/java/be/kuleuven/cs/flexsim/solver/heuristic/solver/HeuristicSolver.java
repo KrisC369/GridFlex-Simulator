@@ -38,17 +38,17 @@ public class HeuristicSolver implements Solver<AllocResults> {
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
     private static String CONFIG_BESTEFFORT =
             "be/kuleuven/cs/flexsim/solver/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
-    private static String SOLVER_RULES =
-            "be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_FullSat.drl";
-    private static double FRACTION_OF_THEORETICAL_OPT = 0.75;
+    private static double FRACTION_OF_THEORETICAL_OPT = 0.90;
     private FlexAllocProblemContext context;
     private boolean fullSat;
     private Allocation solvedAlloc;
     private static final Logger logger = LoggerFactory.getLogger(HeuristicSolver.class);
+    private final long randomSeed;
 
     HeuristicSolver(FlexAllocProblemContext context, boolean fullSat) {
         this.context = context;
         this.fullSat = fullSat;
+        this.randomSeed = context.getSeedValue();
     }
 
     @Override
@@ -57,8 +57,6 @@ public class HeuristicSolver implements Solver<AllocResults> {
             logger.info("Starting solve run.");
         }
         String actConfig = fullSat ? CONFIG_FULLSAT : CONFIG_BESTEFFORT;
-        //        SolverFactory<Allocation> solverFactory = SolverFactory.createFromXmlInputStream(
-        //                getClass().getResourceAsStream(actConfig));
 
         if (logger.isDebugEnabled()) {
             logger.debug("Reading xml config at location: {}", actConfig);
@@ -69,13 +67,11 @@ public class HeuristicSolver implements Solver<AllocResults> {
         //config
         SolverConfig solverConfig = solverFactory.getSolverConfig();
 
-        //        solverConfig.setEntityClassList(
-        //                ImmutableList.<Class<?>>of(ActivationAssignment.class));
-        //        solverConfig.setSolutionClass(Allocation.class);
+        //Random seed
+        solverConfig.setRandomSeed(randomSeed);
 
         //Termination rules.
-        solverConfig.getTerminationConfig().setSecondsSpentLimit(300L);
-        solverConfig.getTerminationConfig().setUnimprovedSecondsSpentLimit(30L);
+        solverConfig.getTerminationConfig().setMinutesSpentLimit(10L);
 
         double sum = Lists.newArrayList(context.getProviders()).stream()
                 .mapToDouble(p -> p.getFlexibilityActivationRate().getUp() * p
@@ -87,13 +83,17 @@ public class HeuristicSolver implements Solver<AllocResults> {
         solverConfig.getTerminationConfig()
                 .setBestScoreLimit(bestScoreString);
         solverConfig.getTerminationConfig().setTerminationCompositionStyle(
-                TerminationCompositionStyle.AND);
+                TerminationCompositionStyle.OR);
+        //        solverConfig.getTerminationConfig().setUnimprovedStepCountLimit(500);
+
         if (logger.isDebugEnabled()) {
             logger.debug(
                     "Minimum best score: {} added to termination condition. This is {}% relative "
                             + "efficiency of theoretical max: {}",
                     bestScoreString, FRACTION_OF_THEORETICAL_OPT * 100, sum * 100);
         }
+
+        //Build solver
         org.optaplanner.core.api.solver.Solver<Allocation> solver = solverFactory.buildSolver();
         Allocation unsolvedAlloc = new AllocationGenerator().createAllocation();
 
@@ -105,7 +105,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
         this.solvedAlloc = (Allocation) solver.getBestSolution();
         if (logger.isInfoEnabled()) {
             double objValue = solvedAlloc.getResolvedCongestion();
-            logger.info("Search ended with with objective function result: {}.",
+            logger.info("Search ended with objective function result: {}.",
                     objValue);
             logger.info("Obj value percentage of theoretical max useful allocation: {}",
                     objValue / sum);

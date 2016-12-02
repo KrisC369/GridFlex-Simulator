@@ -41,12 +41,21 @@ public class HeuristicSolverIO implements SolutionFileIO {
     @Override
     public Allocation read(File file) {
         Allocation readCase = null;
+        double v1 = 1000;
+        double v2 = 800;
+        if(file.getPath().toString().contains("model_a1_2")){
+            v1= 300;
+            v2 =600;
+        }else if(file.getPath().toString().contains("model_a1_3")){
+            v1=1400;
+            v2=2000;
+        }
         try {
             this.profile = CongestionProfile.createFromCSV("2kwartOpEnNeer.csv", "verlies aan "
                     + "energie");
-            first = new FlexProvider(1000,
+            first = new FlexProvider(v1,
                     HourlyFlexConstraints.R3DP);
-            second = new FlexProvider(800,
+            second = new FlexProvider(v2,
                     HourlyFlexConstraints.R3DP);
             this.context = new FlexAllocProblemContext() {
 

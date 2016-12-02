@@ -24,4 +24,5 @@ public interface QHFlexibilityProvider extends FlexibilityProvider {
      * @return The wrapped provider.
      */
     FlexibilityProvider getWrappedProvider();
+
 }

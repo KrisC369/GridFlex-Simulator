@@ -46,4 +46,11 @@ public class OptaFlexProvider implements QHFlexibilityProvider {
     public FlexibilityProvider getWrappedProvider() {
         return provider;
     }
+
+    @Override
+    public String toString() {
+        return "OptaFlexProvider{" +
+                "rateUp=" + provider.getFlexibilityActivationRate().getUp() +
+                '}';
+    }
 }

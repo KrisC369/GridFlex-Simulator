@@ -18,19 +18,22 @@
     </constructionHeuristic>
     <!-- Optimization algorithms configuration -->
     <termination>
-        <!--<terminationCompositionStyle>OR</terminationCompositionStyle>-->
-        <secondsSpentLimit>180</secondsSpentLimit>
-        <!--<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>-->
+        <!--&lt;!&ndash;<terminationCompositionStyle>AND</terminationCompositionStyle>&ndash;&gt;-->
+        <!--&lt;!&ndash;<secondsSpentLimit>180</secondsSpentLimit>&ndash;&gt;-->
+        <!--&lt;!&ndash;<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>&ndash;&gt;-->
     </termination>
-    <!--<localSearch>-->
+    <localSearch>
+        <changeMoveSelector/>
+        <localSearchType>TABU_SEARCH</localSearchType>
         <!--<acceptor>-->
-            <!--<simulatedAnnealingStartingTemperature>40000hard/500000soft</simulatedAnnealingStartingTemperature>-->
+        <!--<solutionTabuSize>1000</solutionTabuSize>-->
         <!--</acceptor>-->
         <!--<forager>-->
-            <!--<acceptedCountLimit>4</acceptedCountLimit>-->
+        <!--<acceptedCountLimit>1000</acceptedCountLimit>-->
         <!--</forager>-->
-    <!--</localSearch>-->
-    <localSearch>
-        <localSearchType>TABU_SEARCH</localSearchType>
+        <termination>
+            <!--<terminationCompositionStyle>AND</terminationCompositionStyle>-->
+            <unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>
+        </termination>
     </localSearch>
 </solver>

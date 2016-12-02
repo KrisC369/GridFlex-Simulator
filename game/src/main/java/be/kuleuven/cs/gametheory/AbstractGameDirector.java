@@ -89,5 +89,4 @@ public class AbstractGameDirector<T, I> {
     protected AbstractGame<T, I> getGame() {
         return game;
     }
-
 }

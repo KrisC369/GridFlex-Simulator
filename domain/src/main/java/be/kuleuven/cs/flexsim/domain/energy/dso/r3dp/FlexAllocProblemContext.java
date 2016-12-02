@@ -19,4 +19,11 @@ public interface FlexAllocProblemContext {
      */
     TimeSeries getEnergyProfileToMinimizeWithFlex();
 
+    /**
+     * @return the seed value. (default = 0)
+     */
+    default long getSeedValue() {
+        return 0L;
+    }
+
 }

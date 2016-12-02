@@ -12,6 +12,8 @@ public class ActivationAssignmentDifficultyComparator implements Comparator<Acti
     @Override
     public int compare(ActivationAssignment o1, ActivationAssignment o2) {
         return new CompareToBuilder()
+                .append(o1.getProvider().getFlexibilityActivationRate().getUp(),
+                        o2.getProvider().getFlexibilityActivationRate().getUp())
                 .append(o1.getProvider().getQHFlexibilityActivationConstraints()
                                 .getInterActivationTime(),
                         o2.getProvider().getQHFlexibilityActivationConstraints()

@@ -99,6 +99,35 @@ public class HeuristicSolverTest {
     }
 
     @Test
+    public void testLargeSolve2() throws Exception {
+        this.profile = CongestionProfile.createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
+        first = new FlexProvider(1000,
+                HourlyFlexConstraints.R3DP);
+        second = new FlexProvider(800,
+                HourlyFlexConstraints.R3DP);
+        FlexibilityProvider third = new FlexProvider(2000,
+                HourlyFlexConstraints.R3DP);
+        FlexibilityProvider fourth = new FlexProvider(600,
+                HourlyFlexConstraints.R3DP);
+        this.context = new FlexAllocProblemContext() {
+
+            @Override
+            public Iterable<FlexibilityProvider> getProviders() {
+                return Lists.newArrayList(first, second,third,fourth);
+            }
+
+            @Override
+            public TimeSeries getEnergyProfileToMinimizeWithFlex() {
+                return profile;
+            }
+        };
+        this.solver = new HeuristicSolver(context, true);
+        solver.solve();
+        AllocResults solution = solver.getSolution();
+        testConstraints(solution);
+    }
+
+    @Test
     public void testMultiModels() throws Exception {
         this.profile = CongestionProfile.createFromCSV("test.csv", "test");
         this.context = new FlexAllocProblemContext() {

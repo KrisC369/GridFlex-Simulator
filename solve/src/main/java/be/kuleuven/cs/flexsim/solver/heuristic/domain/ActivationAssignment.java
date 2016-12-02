@@ -46,7 +46,8 @@ public class ActivationAssignment {
         return profile;
     }
 
-    @PlanningVariable(valueRangeProviderRefs = { "startPeriodRange" },strengthComparatorClass = IntegerStrengthComparator.class)
+    @PlanningVariable(valueRangeProviderRefs = {
+            "startPeriodRange" }, strengthComparatorClass = IntegerStrengthComparator.class)
     public Integer getStartIndex() {
         return startIndex;
     }
@@ -130,5 +131,14 @@ public class ActivationAssignment {
 
     public boolean isBound() {
         return getStartIndex() != null;
+    }
+
+    @Override
+    public String toString() {
+        return "ActivationAssignment{" +
+                "id=" + id +
+                ", startIndex=" + startIndex +
+                ", provider=" + provider +
+                '}';
     }
 }
