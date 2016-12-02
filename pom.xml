@@ -193,7 +193,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>**org.optaplanner.core.impl.solver.kie*</exclude>
+                        <exclude>**org.optaplanner*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
