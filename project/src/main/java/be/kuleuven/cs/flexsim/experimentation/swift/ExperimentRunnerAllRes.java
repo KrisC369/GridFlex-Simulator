@@ -43,7 +43,8 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     private static final boolean ALLOW_LESS_ACTIVATIONS = true;
     private static final double TOTAL_PRODUCED_E = 36360905;
     private static final String CL_ERROR = "Unparseable cl parameters passed";
-    private static final String FILE = "2kwartOpEnNeer.csv";
+    private static final String FILE = "be/kuleuven/cs/flexsim/experimentation/data"
+            + "/2kwartOpEnNeer.csv";
     private static final String COLUMN = "verlies aan energie";
     private final int n;
     private final int nagents;

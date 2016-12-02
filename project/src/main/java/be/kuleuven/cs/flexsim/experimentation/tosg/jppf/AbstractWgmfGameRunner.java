@@ -20,13 +20,17 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class AbstractWgmfGameRunner {
-    //    private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
-    private static final String DISTRIBUTIONFILE = "windspeedDistributionsNormalized.csv";
-    private static final String DATAFILE = "2kwartOpEnNeer.csv";
-    private static final String SPECFILE = "specs_enercon_e101-e1.csv";
-    private static final String IMBAL = "imbalance_prices.csv";
+    private static final String DISTRIBUTIONFILE =
+            "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributionsNormalized.csv";
+    private static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
+            + "/2kwartOpEnNeer.csv";
+    private static final String SPECFILE =
+            "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";
+    private static final String IMBAL =
+            "be/kuleuven/cs/flexsim/experimentation/data/imbalance_prices.csv";
     private static final String DAM_COLUMN = "damhp";
-    private static final String DAMPRICES_DAILY = "dailyDayAheadPrices.csv";
+    private static final String DAMPRICES_DAILY =
+            "be/kuleuven/cs/flexsim/experimentation/data/dailyDayAheadPrices.csv";
     private static final int FULL_YEAR = 365;
     private static final Logger logger = getLogger(AbstractWgmfGameRunner.class);
     protected static final String PARAMS_KEY = "PARAMS_KEY";

@@ -6,7 +6,7 @@
     <!-- Score configuration -->
     <scoreDirectorFactory>
         <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
-        <scoreDrl>be/kuleuven/cs/flexsim/solver/heuristic/solver/SolverScoreRules_BestEffort.drl</scoreDrl>
+        <scoreDrl>be/kuleuven/cs/flexsim/solvers/heuristic/solver/SolverScoreRules_BestEffort.drl</scoreDrl>
         <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solvers/cloudBalancingScoreRules.drl</scoreDrl>-->
     </scoreDirectorFactory>
     <constructionHeuristic>
