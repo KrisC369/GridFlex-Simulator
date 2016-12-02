@@ -188,12 +188,21 @@
                                     </limits>
                                 </rule>
                             </rules>
+                            <excludes>
+                                <exclude>**/optaplanner/*</exclude>
+                                <exclude>**/kie/*</exclude>
+                                <exclude>**/mvel/*</exclude>
+                                <exclude>**/drools/*</exclude>
+                            </excludes>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>**org.optaplanner*</exclude>
+                        <exclude>**/optaplanner/*</exclude>
+                        <exclude>**/kie/*</exclude>
+                        <exclude>**/mvel/*</exclude>
+                        <exclude>**/drools/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
