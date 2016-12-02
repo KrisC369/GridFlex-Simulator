@@ -148,11 +148,8 @@
                     <forkCount>1C</forkCount>
                     <parallel>classes</parallel>
                     <threadCount>4</threadCount>
-                    <argLine>${argLine} -Xms2056M -Xmx4096M -XX:MaxPermSize=512M</argLine>
+                    <argLine>${argLine} -Xms2056M -Xmx4096M</argLine>
                     <excludedGroups>${test.excludedGroups}</excludedGroups>
-                    <!--<systemPropertyVariables>-->
-                        <!--<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>-->
-                    <!--</systemPropertyVariables>-->
                 </configuration>
             </plugin>
             <plugin>
@@ -206,12 +203,6 @@
                                     </limits>
                                 </rule>
                             </rules>
-                            <!--<excludes>-->
-                                <!--<exclude>**/optaplanner/*</exclude>-->
-                                <!--<exclude>**/kie/*</exclude>-->
-                                <!--<exclude>**/mvel/*</exclude>-->
-                                <!--<exclude>**/drools/*</exclude>-->
-                            <!--</excludes>-->
                         </configuration>
                     </execution>
                 </executions>
