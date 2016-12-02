@@ -1,0 +1,23 @@
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk7
+env:
+  - CODACY_PROJECT_TOKEN=d0c6fa1f55764d958a2c161ea84ee58b
+
+# OpenJDK 7 buffer overflow workaround from https://github.com/travis-ci/travis-ci/issues/5227
+before_install:
+   - cat /etc/hosts # optionally check the content *before*
+   - sudo hostname "$(hostname | cut -c1-63)"
+   - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts > /tmp/hosts
+   - sudo mv /tmp/hosts /etc/hosts
+   - cat /etc/hosts # optionally check the content *after*
+  
+install: mvn install -DskipTests=true
+before_install:
+   - curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
+   - java -jar jpm4j.jar -u init
+   - ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
+
+after_success:
+   - ~/jpm/bin/codacy-coverage-reporter -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
