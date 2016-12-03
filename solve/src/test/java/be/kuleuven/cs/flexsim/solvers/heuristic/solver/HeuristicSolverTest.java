@@ -86,6 +86,7 @@ public class HeuristicSolverTest {
     }
 
     @Test
+    @Ignore
     public void testLargeSolve() throws Exception {
         this.profile = CongestionProfile.createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         first = new FlexProvider(1000,
@@ -99,6 +100,7 @@ public class HeuristicSolverTest {
     }
 
     @Test
+    @Ignore
     public void testLargeSolve2() throws Exception {
         this.profile = CongestionProfile.createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         first = new FlexProvider(1000,
@@ -113,7 +115,7 @@ public class HeuristicSolverTest {
 
             @Override
             public Iterable<FlexibilityProvider> getProviders() {
-                return Lists.newArrayList(first, second,third,fourth);
+                return Lists.newArrayList(first, second, third, fourth);
             }
 
             @Override

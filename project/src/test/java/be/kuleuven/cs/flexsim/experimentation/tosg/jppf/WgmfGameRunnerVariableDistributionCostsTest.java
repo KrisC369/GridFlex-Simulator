@@ -44,6 +44,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     }
 
     @Test
+    @Ignore
     public void main() throws Exception {
         runner.execute(loadResources(experimentParams));
     }

@@ -261,22 +261,6 @@
             </plugins>
         </pluginManagement>
     </build>
-    <profiles>
-        <profile>
-            <id>skip-test-groups</id>
-            <activation>
-                <property>
-                    <name>skip.test.categories</name>
-                    <value>solving</value>
-                </property>
-            </activation>
-            <properties>
-                <test.excludedGroups>
-                    be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunnerVariableDistributionCostsTest,be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolverTest
-                </test.excludedGroups>
-            </properties>
-        </profile>
-    </profiles>
     <reporting>
         <plugins>
             <plugin>
