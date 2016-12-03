@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/KrisC369/Flexsim.svg?branch=master)](https://travis-ci.org/KrisC369/Flexsim) 
+[![Build Status](https://circleci.com/gh/KrisC369/Flexsim/tree/develop.png?style=shield&circle-token=:circle-token)](https://circleci.com/gh/KrisC369/Flexsim) 
 
 Flexsim
 =======
