@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/KrisC369/Flexsim.svg?branch=master)](https://travis-ci.org/KrisC369/Flexsim) 
 [![Build Status](https://circleci.com/gh/KrisC369/Flexsim/tree/develop.png?style=shield&circle-token=:circle-token)](https://circleci.com/gh/KrisC369/Flexsim) 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2453a1b571704a45a0f078591635ab6b)](https://www.codacy.com/app/kristofconinx369/Flexsim?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KrisC369/Flexsim&amp;utm_campaign=Badge_Grade)
 
 Flexsim
 =======
