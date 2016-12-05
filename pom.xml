@@ -148,7 +148,7 @@
                     <forkCount>1C</forkCount>
                     <parallel>classes</parallel>
                     <threadCount>4</threadCount>
-                    <argLine>${argLine} -Xms2056M -Xmx4096M -XX:MaxPermSize=512M</argLine>
+                    <argLine>${argLine} -Xms256m -Xmx4096M -XX:MaxPermSize=512M</argLine>
                     <excludedGroups>${test.excludedGroups}</excludedGroups>
                     <outputDirectory>${basedir}/target/site</outputDirectory>
                 </configuration>

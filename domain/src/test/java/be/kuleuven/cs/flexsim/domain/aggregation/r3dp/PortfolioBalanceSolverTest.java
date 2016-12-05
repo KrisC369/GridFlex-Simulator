@@ -43,8 +43,6 @@ public class PortfolioBalanceSolverTest {
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
             this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
-            //            c2 = CableCurrentProfile.createFromCSV("4kwartOpEnNeer.csv",
-            // "startprofiel+extra");
 
         } catch (final FileNotFoundException e) {
             e.printStackTrace();

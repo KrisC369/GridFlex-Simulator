@@ -678,7 +678,7 @@ public class DSOIntegrationTest {
 
     @Test
     public void testVarParamLargeScen() {
-        for (int i = 2; i <= 200; i++) {
+        for (int i = 2; i <= 100; i++) {
             System.out.println("Scen with " + i + "agents.");
             testScenarioManyAgentsLargerScen(i);
         }
@@ -688,9 +688,6 @@ public class DSOIntegrationTest {
         try {
             abstractTimeSeriesImplementation = CongestionProfile
                     .createFromCSV(file, column);
-            // abstractTimeSeriesImplementation = (AbstractTimeSeriesImplementation)
-            // AbstractTimeSeriesImplementation
-            // .createFromCSV("4kwartOpEnNeer.csv", "verlies aan energie");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             fail();

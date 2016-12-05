@@ -46,8 +46,6 @@ public class DistributionGridCongestionSolverTest {
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
             this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
-            //            c2 = CableCurrentProfile.createFromCSV("4kwartOpEnNeer.csv",
-            // "startprofiel+extra");
             AbstractSolverFactory<SolutionResults> t = mock(AbstractSolverFactory.class);
             solver = new DistributionGridCongestionSolver(t, c2);
             toTest = ArrayListMultimap.create();
