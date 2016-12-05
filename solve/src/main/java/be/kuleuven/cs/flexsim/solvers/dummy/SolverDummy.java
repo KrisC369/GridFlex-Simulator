@@ -24,8 +24,8 @@ public class SolverDummy extends AbstractOptimalSolver {
      * @param context
      * @param s
      */
-    public SolverDummy(FlexAllocProblemContext context, Solver s) {
-        super(context, s);
+    public SolverDummy(FlexAllocProblemContext context) {
+        super(context, Solver.DUMMY);
         this.profileLength = context.getEnergyProfileToMinimizeWithFlex().length();
     }
 

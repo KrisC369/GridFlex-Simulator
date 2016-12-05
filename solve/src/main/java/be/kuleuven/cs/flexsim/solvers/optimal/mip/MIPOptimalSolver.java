@@ -74,14 +74,12 @@ public class MIPOptimalSolver extends AbstractOptimalSolver {
     protected void processResults(final Optional<MpResult> result) {
         if (result.isPresent()) {
             final MpResult concreteResult = result.get();
-            logger.info(concreteResult.toString());
-//            final List<Boolean> t = Lists.newArrayList();
+            logger.info("Processing MpResult: {}", concreteResult.toString());
             final ListMultimap<FlexibilityProvider, Boolean> allocResults = ArrayListMultimap
                     .create();
 
             for (final FlexibilityProvider p : getProviders()) {
                 for (final String s : allocDvarID.get(p)) {
-//                    t.add(concreteResult.getBoolean(s));
                     allocResults.put(p, concreteResult.getBoolean(s));
                 }
             }
