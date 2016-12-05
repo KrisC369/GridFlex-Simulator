@@ -6,7 +6,7 @@ dependencies:
       - mvn clean install -DskipTests=true
 test:
   override:
-      - mvn test -B 
+      - mvn verify 
   post:
       - mvn jacoco:report
       - curl http://www.jpm4j.org/install/script > jpmInstall.sh
