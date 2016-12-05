@@ -150,6 +150,7 @@
                     <threadCount>4</threadCount>
                     <argLine>${argLine} -Xms2056M -Xmx4096M -XX:MaxPermSize=512M</argLine>
                     <excludedGroups>${test.excludedGroups}</excludedGroups>
+                    <outputDirectory>${basedir}/target/site</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
@@ -212,6 +213,7 @@
                         <exclude>**/kie/*</exclude>
                         <exclude>**/mvel/*</exclude>
                         <exclude>**/drools/*</exclude>
+                        <exclude>**/jmpi/*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -269,6 +271,7 @@
                 <version>2.16</version>
                 <configuration>
                     <showSuccess>true</showSuccess>
+                    <outputDirectory>${basedir}/target/site</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>

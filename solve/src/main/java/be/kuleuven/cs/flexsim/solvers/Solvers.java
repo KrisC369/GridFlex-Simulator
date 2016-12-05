@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.solvers;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
+import be.kuleuven.cs.flexsim.solvers.dummy.SolverDummy;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolver;
 import be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
@@ -63,7 +64,7 @@ public final class Solvers {
      * @return An instantiated solvers instance.
      */
     public static Solver<AllocResults> createDummySolver(FlexAllocProblemContext context) {
-        return new MIPOptimalSolver(context, AbstractOptimalSolver.Solver.DUMMY);
+        return new SolverDummy(context, AbstractOptimalSolver.Solver.DUMMY);
     }
 
     public enum TYPE {

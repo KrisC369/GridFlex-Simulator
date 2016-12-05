@@ -31,9 +31,9 @@ import static org.junit.Assert.assertEquals;
 public class WgmfJppfTaskTest {
     private static final int SEED = 3722;
     private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
-    private static final String DATAFILE = "largeTest.csv";
+    private static final String DATAFILE = "test.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
-    private static final String IMBAL = "imbalance_prices.csv";
+    private static final String IMBAL = "imbalance_prices_short.csv";
     private static final String DAM_COLUMN = "damhp";
     private static final String DAMPRICES_DAILY = "dailyDayAheadPrices.csv";
     private WgmfJppfTask task;
@@ -56,13 +56,13 @@ public class WgmfJppfTaskTest {
     public void setUp() {
         WindBasedInputData dataIn = null;
         try {
-            dataIn = WindBasedInputData.loadFromResource(DATAFILE);
+            dataIn = WindBasedInputData.loadFromResource(DATAFILE, "test", "test");
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(DISTRIBUTIONFILE);
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
-                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 365);
+                    .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 7);
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
                                     Solvers.TYPE.DUMMY), specs, distribution, imbalIn,
