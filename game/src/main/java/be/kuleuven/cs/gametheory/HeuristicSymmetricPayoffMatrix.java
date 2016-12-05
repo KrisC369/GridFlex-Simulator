@@ -5,9 +5,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Spliterator;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -23,7 +25,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class HeuristicSymmetricPayoffMatrix {
+public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntry, Double[]>> {
     private final int agents;
     private final int actions;
     private final Map<PayoffEntry, Double[]> table;
@@ -165,6 +167,7 @@ public class HeuristicSymmetricPayoffMatrix {
      *
      * @return A list of coefficients.
      */
+    @Deprecated
     // TODO Refactor out this analysis specific data computation + calculate
     // other specs in the refactored out module.
     public List<Double> getDynamicEquationFactors() {
@@ -187,5 +190,15 @@ public class HeuristicSymmetricPayoffMatrix {
             }
         }
         return toReturn;
+    }
+
+    @Override
+    public Spliterator<Entry<PayoffEntry, Double[]>> spliterator() {
+        return table.entrySet().spliterator();
+    }
+
+    @Override
+    public Iterator<Entry<PayoffEntry, Double[]>> iterator() {
+        return table.entrySet().iterator();
     }
 }

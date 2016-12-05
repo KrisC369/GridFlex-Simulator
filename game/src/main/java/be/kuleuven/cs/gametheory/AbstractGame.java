@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
+import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,7 +87,7 @@ public abstract class AbstractGame<T, I> {
         final StringBuilder b = new StringBuilder(30);
         b.append(getResultString()).append("\n")
                 .append("Dynamics equation params:");
-        for (final Double d : payoffs.getDynamicEquationFactors()) {
+        for (final Double d : EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors()) {
             b.append(d).append("\n");
         }
         logger.debug(b.toString());
@@ -105,7 +106,7 @@ public abstract class AbstractGame<T, I> {
         final StringBuilder b = new StringBuilder(30);
         char character = 'a';
         b.append("\n");
-        for (final Double d : payoffs.getDynamicEquationFactors()) {
+        for (final Double d : EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors()) {
             b.append(character++).append("=").append(d).append(";\n");
         }
         return b.toString();
@@ -119,7 +120,7 @@ public abstract class AbstractGame<T, I> {
      */
     protected GameResult getResults() {
         final GameResult result = GameResult
-                .create(payoffs.getDynamicEquationFactors())
+                .create(EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors())
                 .withDescription("Reps", String.valueOf(reps))
                 .withDescription("agents", String.valueOf(agents))
                 .withDescription("actions", String.valueOf(actions));

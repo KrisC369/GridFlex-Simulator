@@ -120,60 +120,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
         }
     }
 
-    @Test
-    public void testGetDynamicsArgs() {
-        double reward = 39;
-        Double[] value = new Double[] { reward, reward, reward };
-        for (int i = 0; i <= agents; i++) {
-            reward -= 5;
-            value = new Double[] { reward, reward, reward };
-            table.addEntry(value, agents - i, i);
-        }
-        List<Double> result = table.getDynamicEquationFactors();
 
-        // Test values:
-        assertEquals(34, result.get(0), 0);
-        assertEquals(29, result.get(1), 0);
-        assertEquals(29, result.get(2), 0);
-        assertEquals(24, result.get(3), 0);
-        assertEquals(24, result.get(4), 0);
-        assertEquals(19, result.get(5), 0);
-    }
-
-    @Test
-    public void testGetDynamicsArgs3S() {
-        agents = 2;
-        actions = 3;
-        this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
-        double reward = 39;
-        Double[] value = new Double[] { reward, reward };
-        for (int i = 0; i <= agents; i++) {
-            reward -= 5;
-            value = new Double[] { reward, reward };
-            table.addEntry(value, agents - i, i, 0);
-        }
-        reward -= 5;
-        value = new Double[] { reward, reward };
-        table.addEntry(value, 1, 0, 1);
-        reward -= 5;
-        value = new Double[] { reward, reward };
-        table.addEntry(value, 0, 1, 1);
-        reward -= 5;
-        value = new Double[] { reward, reward };
-        table.addEntry(value, 0, 0, 2);
-
-        List<Double> result = table.getDynamicEquationFactors();
-        assertEquals(9, result.size(), 0);
-        // Test values:
-        assertEquals(34, result.get(0), 0);
-        assertEquals(29, result.get(1), 0);
-        assertEquals(29, result.get(2), 0);
-        assertEquals(24, result.get(3), 0);
-        assertEquals(19, result.get(5), 0);
-        assertEquals(14, result.get(6), 0);
-        assertEquals(14, result.get(7), 0);
-        assertEquals(9, result.get(8), 0);
-    }
 
     @Test
     public void testToString() {
