@@ -70,6 +70,7 @@ public class EvolutionaryGameDynamicsTest {
         table.addEntry(value, 0, 0, 2);
 
         List<Double> result = EvolutionaryGameDynamics.from(table).getDynamicEquationFactors();
+
         assertEquals(9, result.size(), 0);
         // Test values:
         assertEquals(34, result.get(0), 0);
@@ -80,6 +81,27 @@ public class EvolutionaryGameDynamicsTest {
         assertEquals(14, result.get(6), 0);
         assertEquals(14, result.get(7), 0);
         assertEquals(9, result.get(8), 0);
+    }
+
+    @Test
+    public void testGetDynamicsArgs2by2() {
+        this.table = new HeuristicSymmetricPayoffMatrix(2, 2);
+        table.addEntry(new Double[] { 5d, 15d }, 2, 0);
+        table.addEntry(new Double[] { 20d, 25d }, 1, 1);
+        table.addEntry(new Double[] { 20d, 40d }, 0, 2);
+
+        List<Double> result = EvolutionaryGameDynamics.from(table).getDynamicEquationFactors();
+        List<Double> vars = EvolutionaryGameDynamics.from(table).getDynamicEquationStds();
+        System.out.println(vars);
+        // Test values:
+        assertEquals(10, result.get(0), 0);
+        assertEquals(20, result.get(1), 0);
+        assertEquals(25, result.get(2), 0);
+        assertEquals(30, result.get(3), 0);
+        assertEquals(0, vars.get(0), 0);
+        assertEquals(0, vars.get(1), 0);
+        assertEquals(0, vars.get(2), 0);
+        assertEquals(0, vars.get(3), 0);
     }
 
 }

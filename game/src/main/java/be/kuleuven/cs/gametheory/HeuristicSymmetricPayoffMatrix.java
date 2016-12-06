@@ -1,17 +1,20 @@
 package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Spliterator;
 
+import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arrayAdd;
+import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arrayDot;
+import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arrayScale;
+import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arraySubtract;
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Arrays.fill;
 
 /**
  * This class represents heuristic payoff tables or matrices. The heuristic part
@@ -28,7 +31,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntry, Double[]>> {
     private final int agents;
     private final int actions;
-    private final Map<PayoffEntry, Double[]> table;
+    private final Map<PayoffEntry, Double[]> tableMean;
+    private final Map<PayoffEntry, Double[]> tableVariance;
     private final Map<PayoffEntry, Integer> tableCount;
     private final long numberOfCombinations;
 
@@ -42,23 +46,20 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
     public HeuristicSymmetricPayoffMatrix(final int agents, final int actions) {
         this.agents = agents;
         this.actions = actions;
-        this.table = Maps.newLinkedHashMap();
+        this.tableMean = Maps.newLinkedHashMap();
+        this.tableVariance = Maps.newLinkedHashMap();
         this.tableCount = Maps.newLinkedHashMap();
         this.numberOfCombinations = MathUtils.multiCombinationSize(actions,
                 agents);
     }
 
     /**
-     * Returns true if every space in the table is filled in with a value.
+     * Returns true if every space in the tableMean is filled in with a value.
      *
      * @return true if every entry has a value.
      */
     public boolean isComplete() {
-        final long possibilities = getNumberOfPossibilities();
-        if (this.table.size() != possibilities) {
-            return false;
-        }
-        return true;
+        return this.tableMean.size() == getNumberOfPossibilities();
     }
 
     private long getNumberOfPossibilities() {
@@ -78,7 +79,7 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         if (getEntryCount(entry) == 0) {
             newEntry(entry, value);
         } else {
-            plusEntry(entry, value);
+            updateEntry(entry, value);
         }
     }
 
@@ -90,36 +91,31 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         for (final int i : key) {
             count += i;
         }
-        if (count != agents) {
-            return false;
-        }
-        return true;
+        return count == agents;
     }
 
     private boolean testValues(final Double[] value) {
-        if (value.length != agents) {
-            return false;
-        }
-        return true;
+        return value.length == agents;
     }
 
-    private void plusEntry(final PayoffEntry entry, final Double[] value) {
-        this.table.put(entry, arrayAdd(table.get(entry), value));
-        this.tableCount.put(entry, tableCount.get(entry) + 1);
-    }
-
-    private static Double[] arrayAdd(final Double[] first, final Double[] second) {
-        final Double[] toret = new Double[first.length];
-        for (int i = 0; i < first.length; i++) {
-            toret[i] = first[i] + second[i];
-        }
-        return toret;
+    private void updateEntry(final PayoffEntry entry, final Double[] value) {
+        int nplus1 = getEntryCount(entry) + 1;
+        Double[] deltas = arraySubtract(value, tableMean.get(entry));
+        this.tableMean.put(entry,
+                arrayAdd(tableMean.get(entry), arrayScale(deltas, 1 / (double) nplus1)));
+        Double[] deltas2 = arraySubtract(value, tableMean.get(entry));
+        Double[] m2s = arrayDot(deltas, deltas2);
+        this.tableVariance.put(entry, arrayAdd(tableVariance.get(entry), m2s));
+        this.tableCount.put(entry, nplus1);
     }
 
     private void newEntry(final PayoffEntry entry, final Double[] value) {
         final Double[] toret = Arrays.copyOf(value, value.length);
-        this.table.put(entry, toret);
+        this.tableMean.put(entry, toret);
         this.tableCount.put(entry, 1);
+        Double[] zeros = new Double[value.length];
+        fill(zeros, 0d);
+        this.tableVariance.put(entry, zeros);
     }
 
     private int getEntryCount(final PayoffEntry entry) {
@@ -139,10 +135,27 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         checkArgument(testKey(key));
         final PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        final Double[] sums = table.get(entry);
-        final Double[] toret = new Double[sums.length];
-        for (int i = 0; i < sums.length; i++) {
-            toret[i] = sums[i] / (double) tableCount.get(entry);
+        return tableMean.get(entry);
+    }
+
+    /**
+     * Returns an entry in the payoff matrix.
+     *
+     * @param key the index keys.
+     * @return the value recorded in the matrix.
+     */
+    public Double[] getVariance(final int... key) {
+        checkArgument(testKey(key));
+        final PayoffEntry entry = PayoffEntry.from(key);
+        checkArgument(tableCount.containsKey(entry));
+        final Double[] variance = tableVariance.get(entry);
+        final Double[] toret = new Double[variance.length];
+        for (int i = 0; i < variance.length; i++) {
+            if (tableCount.get(entry) > 1) {
+                toret[i] = variance[i] / ((double) tableCount.get(entry) - 1);
+            } else {
+                toret[i] = 0d;
+            }
         }
         return toret;
     }
@@ -150,7 +163,7 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
     @Override
     public String toString() {
         final StringBuilder b = new StringBuilder();
-        for (final Entry<PayoffEntry, Double[]> e : table.entrySet()) {
+        for (final Entry<PayoffEntry, Double[]> e : tableMean.entrySet()) {
             b.append("V:").append(e.getKey()).append("->")
                     .append(Arrays
                             .toString(this.getEntry(e.getKey().getEntries())))
@@ -161,44 +174,13 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         return b.toString();
     }
 
-    /**
-     * Generate all unique coefficients that are used for specifying dynamics
-     * equations.
-     *
-     * @return A list of coefficients.
-     */
-    @Deprecated
-    // TODO Refactor out this analysis specific data computation + calculate
-    // other specs in the refactored out module.
-    public List<Double> getDynamicEquationFactors() {
-        final List<Double> toReturn = Lists.newArrayList();
-        for (final Entry<PayoffEntry, Double[]> e : table.entrySet()) {
-            final PayoffEntry entry = e.getKey();
-            final Double[] values = getEntry(e.getKey().getEntries());
-            int coeffDone = 0;
-            for (int i = 0; i < entry.getEntries().length; i++) {
-                final int currCoeff = entry.getEntries()[i];
-                long sum = 0;
-                for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
-                    sum += values[j];
-                }
-                if (currCoeff > 0) {
-                    final double avg = sum / (double) currCoeff;
-                    toReturn.add(avg);
-                }
-                coeffDone += currCoeff;
-            }
-        }
-        return toReturn;
-    }
-
     @Override
     public Spliterator<Entry<PayoffEntry, Double[]>> spliterator() {
-        return table.entrySet().spliterator();
+        return tableMean.entrySet().spliterator();
     }
 
     @Override
     public Iterator<Entry<PayoffEntry, Double[]>> iterator() {
-        return table.entrySet().iterator();
+        return tableMean.entrySet().iterator();
     }
 }

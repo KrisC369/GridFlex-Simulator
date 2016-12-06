@@ -14,10 +14,14 @@ public class EvolutionaryGameDynamics {
 
     private HeuristicSymmetricPayoffMatrix payoffs;
     private List<Double> eqnFactors;
+    private List<Double> eqnFactorsStd;
 
     private EvolutionaryGameDynamics(HeuristicSymmetricPayoffMatrix payoffs) {
         this.payoffs = payoffs;
-        eqnFactors = calculateFactors(payoffs);
+        eqnFactors = Lists.newArrayList();
+        eqnFactorsStd = Lists.newArrayList();
+        calculateFactors(payoffs, eqnFactors, eqnFactorsStd);
+        //        calculateStds(payoffs, eqnFactorsStd);
     }
 
     /**
@@ -26,32 +30,45 @@ public class EvolutionaryGameDynamics {
      *
      * @return A list of coefficients.
      */
-    // TODO Refactor out this analysis specific data computation + calculate
-    // other specs in the refactored out module.
     public List<Double> getDynamicEquationFactors() {
         return Lists.newArrayList(eqnFactors);
     }
 
-    private List<Double> calculateFactors(HeuristicSymmetricPayoffMatrix payoffs) {
-        final List<Double> toReturn = Lists.newArrayList();
+    public List<Double> getDynamicEquationStds() {
+        return Lists.newArrayList(eqnFactorsStd);
+    }
+
+    private void calculateFactors(HeuristicSymmetricPayoffMatrix payoffs,
+            List<Double> means, List<Double> stds) {
+
         for (final Map.Entry<PayoffEntry, Double[]> e : payoffs) {
             final PayoffEntry entry = e.getKey();
             final Double[] values = payoffs.getEntry(e.getKey().getEntries());
-            int coeffDone = 0;
+            final Double[] vars = payoffs.getVariance(e.getKey().getEntries());
 
+            int coeffDone = 0;
             for (int currCoeff : entry.getEntries()) {
-                long sum = 0;
-                for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
-                    sum += values[j];
-                }
-                if (currCoeff > 0) {
-                    final double avg = sum / (double) currCoeff;
-                    toReturn.add(avg);
-                }
-                coeffDone += currCoeff;//TODO CHECK THIS LINE.
+                sumSimilarAgentPayoffs(means, stds, values, vars, coeffDone, currCoeff);
+                coeffDone += currCoeff;
             }
         }
-        return toReturn;
+    }
+
+    private static void sumSimilarAgentPayoffs(List<Double> means, List<Double> stds,
+            Double[] values, Double[] vars,
+            int coeffDone, int currCoeff) {
+        long sum = 0;
+        long varTotal = 0;
+        for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
+            sum += values[j];
+            varTotal += vars[j];
+        }
+        if (currCoeff > 0) {
+            final double avg = sum / (double) currCoeff;
+            final double avgVar = varTotal / (double) currCoeff;
+            means.add(avg);
+            stds.add(Math.sqrt(avgVar));
+        }
     }
 
     /**

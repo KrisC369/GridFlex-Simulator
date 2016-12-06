@@ -5,8 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -120,7 +118,28 @@ public class HeuristicSymmetricPayoffMatrixTest {
         }
     }
 
+    @Test
+    public void test2by2() {
+        this.table = new HeuristicSymmetricPayoffMatrix(2, 2);
+        table.addEntry(new Double[] { 5d, 15d }, 2, 0);
+        table.addEntry(new Double[] { 20d, 25d }, 1, 1);
+        table.addEntry(new Double[] { 20d, 40d }, 0, 2);
 
+        Double[] result = table.getEntry(1, 1);
+        Double[] resultVar = table.getVariance(1, 1);
+
+        // Test values:
+        assertEquals(20, result[0], 0);
+        assertEquals(25, result[1], 0);
+        assertEquals(0, resultVar[0], 0);
+        assertEquals(0, resultVar[1], 0);
+
+        table.addEntry(new Double[] { 20d, 40d }, 1, 1);
+        resultVar = table.getVariance(1, 1);
+        assertEquals(0, resultVar[0], 0);
+        assertEquals(112.5, resultVar[1], 0);
+
+    }
 
     @Test
     public void testToString() {
