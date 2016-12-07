@@ -118,7 +118,7 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         this.tableVariance.put(entry, zeros);
     }
 
-    private int getEntryCount(final PayoffEntry entry) {
+    public int getEntryCount(final PayoffEntry entry) {
         if (this.tableCount.containsKey(entry)) {
             return this.tableCount.get(entry);
         }
