@@ -9,12 +9,12 @@ import com.google.auto.value.AutoValue;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @AutoValue
-abstract class PayoffEntry {
+public abstract class PayoffEntry {
 
     PayoffEntry() {
     }
 
-    abstract int[] getEntries();
+    public abstract int[] getEntries();
 
     static PayoffEntry from(final int... key) {
         return new AutoValue_PayoffEntry(key);

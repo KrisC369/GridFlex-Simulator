@@ -8,20 +8,23 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
-import com.google.common.collect.ImmutableList;
+import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections15.map.UnmodifiableMap;
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
 import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.LOCAL;
 import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
+import static com.google.common.base.Preconditions.checkArgument;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -32,6 +35,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRunner {
     private static final Logger logger = getLogger(WgmfGameRunnerVariableDistributionCosts.class);
     public static final String PRICE_PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
+    public static final EvolutionaryGameDynamics.ConfidenceLevel CI_LEVEL = EvolutionaryGameDynamics
+            .ConfidenceLevel._95pc;
     //    private final ConfigurableGameDirector director;
 
     private int nAgents, nReps;
@@ -118,18 +123,56 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     protected void processResults() {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             for (Map.Entry<Double, ConfigurableGameDirector> entry : priceToDirector.entrySet()) {
-                ImmutableList<Double> eqnParams = entry.getValue().getResults()
-                        .getResults();
+                EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
+                        .from(entry.getValue().getResults().getResults());
+                double[] eqnParams = dynamics.getDynamicEquationFactors().stream()
+                        .mapToDouble(Double::doubleValue).toArray();
+                double[] lowerCI = getLowerCIParams(dynamics).stream()
+                        .mapToDouble(Double::doubleValue).toArray();
+                double[] higherCI = getHigherCIParams(dynamics).stream()
+                        .mapToDouble(Double::doubleValue).toArray();
                 double[] fixedPoints = egtResultParser
-                        .findFixedPointForDynEquationParams(
-                                eqnParams.stream().mapToDouble(Double::doubleValue).toArray());
+                        .findFixedPointForDynEquationParams(eqnParams);
+                double[] fixedPointsLower = egtResultParser
+                        .findFixedPointForDynEquationParams(lowerCI);
+                double[] fixedPointsHigher = egtResultParser
+                        .findFixedPointForDynEquationParams(higherCI);
                 logger.warn("Results for pricepoint {}:", entry.getKey());
-                logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
                 logger.warn("Dynamics equation params: {}",
                         entry.getValue().getDynamicEquationArguments());
+                logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
+                logger.warn("{} CI Upper bound Phase plot fixed points found at: {}",
+                        CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
+                logger.warn("{} CI Lower bound Phase plot fixed points found at: {}",
+                        CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
             }
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
         }
+    }
+
+    private List<Double> getHigherCIParams(EvolutionaryGameDynamics dynamics) {
+        return getGenericCIParams(dynamics, ci -> ci.getLowerBound(), ci -> ci.getUpperBound());
+    }
+
+    private List<Double> getLowerCIParams(EvolutionaryGameDynamics dynamics) {
+        return getGenericCIParams(dynamics, ci -> ci.getUpperBound(), ci -> ci.getLowerBound());
+    }
+
+    private List<Double> getGenericCIParams(EvolutionaryGameDynamics dynamics,
+            ToDoubleFunction<ConfidenceInterval> first, ToDoubleFunction<ConfidenceInterval> last) {
+        List<ConfidenceInterval> cis = dynamics.getConfidenceIntervals(CI_LEVEL);
+        checkArgument(!cis.isEmpty(), "Dynamics should not be empty.");
+        List<Double> toRet = Lists.newArrayList();
+        toRet.add(first.applyAsDouble(cis.get(0)));
+        for (int i = 1; i < cis.size() - 1; i++) {
+            if (i % 2 != 0) {
+                toRet.add(first.applyAsDouble(cis.get(i)));
+            } else {
+                toRet.add(last.applyAsDouble(cis.get(i)));
+            }
+        }
+        toRet.add(last.applyAsDouble(cis.get(cis.size())));
+        return toRet;
     }
 }

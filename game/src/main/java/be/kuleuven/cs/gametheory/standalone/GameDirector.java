@@ -4,6 +4,8 @@ import be.kuleuven.cs.gametheory.AbstractGameDirector;
 import be.kuleuven.cs.gametheory.GameInstance;
 import be.kuleuven.cs.gametheory.Playable;
 
+import java.util.List;
+
 /**
  * This instance governs the sequential rules and protocols involved when
  * setting up and playing games.
@@ -11,7 +13,7 @@ import be.kuleuven.cs.gametheory.Playable;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class GameDirector<N, K>
-        extends AbstractGameDirector<GameInstance<N, K>, GameInstance<N, K>> {
+        extends AbstractGameDirector<GameInstance<N, K>, GameInstance<N, K>, List<Double>> {
 
     /**
      * Default constructor.

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 public class GameTest {
     private GameConfigurator config = mock(GameConfigurator.class);
     private Game<Site, Aggregator> g = mock(Game.class);
-    private GameDirector director = mock(GameDirector.class);
+    private GameDirector<Site, Aggregator> director = mock(GameDirector.class);
     private List<Site> players = Lists.newArrayList();
     private int agents = 3;
     private int reps = 20;

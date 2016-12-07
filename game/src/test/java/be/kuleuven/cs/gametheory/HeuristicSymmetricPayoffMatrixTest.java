@@ -5,8 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -121,58 +119,26 @@ public class HeuristicSymmetricPayoffMatrixTest {
     }
 
     @Test
-    public void testGetDynamicsArgs() {
-        double reward = 39;
-        Double[] value = new Double[] { reward, reward, reward };
-        for (int i = 0; i <= agents; i++) {
-            reward -= 5;
-            value = new Double[] { reward, reward, reward };
-            table.addEntry(value, agents - i, i);
-        }
-        List<Double> result = table.getDynamicEquationFactors();
+    public void test2by2() {
+        this.table = new HeuristicSymmetricPayoffMatrix(2, 2);
+        table.addEntry(new Double[] { 5d, 15d }, 2, 0);
+        table.addEntry(new Double[] { 20d, 25d }, 1, 1);
+        table.addEntry(new Double[] { 20d, 40d }, 0, 2);
+
+        Double[] result = table.getEntry(1, 1);
+        Double[] resultVar = table.getVariance(1, 1);
 
         // Test values:
-        assertEquals(34, result.get(0), 0);
-        assertEquals(29, result.get(1), 0);
-        assertEquals(29, result.get(2), 0);
-        assertEquals(24, result.get(3), 0);
-        assertEquals(24, result.get(4), 0);
-        assertEquals(19, result.get(5), 0);
-    }
+        assertEquals(20, result[0], 0);
+        assertEquals(25, result[1], 0);
+        assertEquals(0, resultVar[0], 0);
+        assertEquals(0, resultVar[1], 0);
 
-    @Test
-    public void testGetDynamicsArgs3S() {
-        agents = 2;
-        actions = 3;
-        this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
-        double reward = 39;
-        Double[] value = new Double[] { reward, reward };
-        for (int i = 0; i <= agents; i++) {
-            reward -= 5;
-            value = new Double[] { reward, reward };
-            table.addEntry(value, agents - i, i, 0);
-        }
-        reward -= 5;
-        value = new Double[] { reward, reward };
-        table.addEntry(value, 1, 0, 1);
-        reward -= 5;
-        value = new Double[] { reward, reward };
-        table.addEntry(value, 0, 1, 1);
-        reward -= 5;
-        value = new Double[] { reward, reward };
-        table.addEntry(value, 0, 0, 2);
+        table.addEntry(new Double[] { 20d, 40d }, 1, 1);
+        resultVar = table.getVariance(1, 1);
+        assertEquals(0, resultVar[0], 0);
+        assertEquals(112.5, resultVar[1], 0);
 
-        List<Double> result = table.getDynamicEquationFactors();
-        assertEquals(9, result.size(), 0);
-        // Test values:
-        assertEquals(34, result.get(0), 0);
-        assertEquals(29, result.get(1), 0);
-        assertEquals(29, result.get(2), 0);
-        assertEquals(24, result.get(3), 0);
-        assertEquals(19, result.get(5), 0);
-        assertEquals(14, result.get(6), 0);
-        assertEquals(14, result.get(7), 0);
-        assertEquals(9, result.get(8), 0);
     }
 
     @Test

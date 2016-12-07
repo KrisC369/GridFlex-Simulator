@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
+import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +14,10 @@ import java.util.List;
  *
  * @param <T> The type instances for games returned.
  * @param <I> The type of results expected to be handled.
+ * @param <R> The main result type to aggregate and return.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public abstract class AbstractGame<T, I> {
+public abstract class AbstractGame<T, I, R> {
     private static final String CONSOLE = "CONSOLE";
     private static final String CONFIGURING = "Configuring instance: ";
     private static final String EXECUTING = "Executing instance: ";
@@ -53,6 +55,9 @@ public abstract class AbstractGame<T, I> {
      */
     protected abstract void runExperiments();
 
+    /**
+     * @return The runnable game instances.
+     */
     public List<T> getGameInstances() {
         return Collections.unmodifiableList(this.instanceList);
     }
@@ -61,6 +66,9 @@ public abstract class AbstractGame<T, I> {
         return this.instanceList;
     }
 
+    /**
+     * @param results The simulation results to parse and process.
+     */
     public abstract void gatherResults(List<I> results);
 
     protected final void addPayoffEntry(final Double[] values, final int[] entry) {
@@ -86,7 +94,7 @@ public abstract class AbstractGame<T, I> {
         final StringBuilder b = new StringBuilder(30);
         b.append(getResultString()).append("\n")
                 .append("Dynamics equation params:");
-        for (final Double d : payoffs.getDynamicEquationFactors()) {
+        for (final Double d : EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors()) {
             b.append(d).append("\n");
         }
         logger.debug(b.toString());
@@ -105,7 +113,8 @@ public abstract class AbstractGame<T, I> {
         final StringBuilder b = new StringBuilder(30);
         char character = 'a';
         b.append("\n");
-        for (final Double d : payoffs.getDynamicEquationFactors()) {
+        for (final Double d : EvolutionaryGameDynamics.from(payoffs)
+                .getDynamicEquationFactors()) {
             b.append(character++).append("=").append(d).append(";\n");
         }
         return b.toString();
@@ -117,12 +126,9 @@ public abstract class AbstractGame<T, I> {
      * @return A gameresult object based on the currently available result date
      * for this game.
      */
-    protected GameResult getResults() {
-        final GameResult result = GameResult
-                .create(payoffs.getDynamicEquationFactors())
-                .withDescription("Reps", String.valueOf(reps))
-                .withDescription("agents", String.valueOf(agents))
-                .withDescription("actions", String.valueOf(actions));
-        return result;
+    protected abstract GameResult<R> getResults();
+
+    protected HeuristicSymmetricPayoffMatrix getPayoffs() {
+        return this.payoffs;
     }
 }

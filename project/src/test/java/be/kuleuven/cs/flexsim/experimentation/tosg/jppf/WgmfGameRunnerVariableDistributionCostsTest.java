@@ -46,13 +46,18 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     @Test
     @Ignore
     public void main() throws Exception {
-        runner.execute(loadResources(experimentParams));
+        //        runner.execute(loadResources(experimentParams));
+        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
     }
 
     public static ExperimentParams getParams(String solver) {
-        return WgmfInputParser.parseInputAndExec(new String[] {
-                "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
-                "10", "-p1end", "61.5" });
+        return WgmfInputParser.parseInputAndExec(getArgLine(solver));
+    }
+
+    public static String[] getArgLine(String solver) {
+        return new String[] {
+                "-n", "2", "-r", "2", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
+                "10", "-p1end", "45.4" };
     }
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {

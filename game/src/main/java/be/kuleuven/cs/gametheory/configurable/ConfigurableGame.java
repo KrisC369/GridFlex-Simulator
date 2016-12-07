@@ -2,6 +2,8 @@ package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
+import be.kuleuven.cs.gametheory.GameResult;
+import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrix;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
@@ -20,7 +22,9 @@ import java.util.stream.IntStream;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ConfigurableGame
-        extends AbstractGame<GameInstanceConfiguration, GameInstanceResult> {
+        extends
+        AbstractGame<GameInstanceConfiguration, GameInstanceResult,
+                HeuristicSymmetricPayoffMatrix> {
     private final int agents;
     private final int actions;
     private final int reps;
@@ -89,5 +93,15 @@ public class ConfigurableGame
             }
             addPayoffEntry(values, entry);
         }
+    }
+
+    @Override
+    protected GameResult<HeuristicSymmetricPayoffMatrix> getResults() {
+        final GameResult result = GameResult
+                .create(getPayoffs())
+                .withDescription("Reps", String.valueOf(reps))
+                .withDescription("agents", String.valueOf(agents))
+                .withDescription("actions", String.valueOf(actions));
+        return result;
     }
 }

@@ -1,13 +1,15 @@
 package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Spliterator;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -23,10 +25,11 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class HeuristicSymmetricPayoffMatrix {
+public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntry, Double[]>> {
     private final int agents;
     private final int actions;
-    private final Map<PayoffEntry, Double[]> table;
+    private final Map<PayoffEntry, Mean[]> tableMean;
+    private final Map<PayoffEntry, Variance[]> tableVariance;
     private final Map<PayoffEntry, Integer> tableCount;
     private final long numberOfCombinations;
 
@@ -40,23 +43,20 @@ public class HeuristicSymmetricPayoffMatrix {
     public HeuristicSymmetricPayoffMatrix(final int agents, final int actions) {
         this.agents = agents;
         this.actions = actions;
-        this.table = Maps.newLinkedHashMap();
+        this.tableMean = Maps.newLinkedHashMap();
+        this.tableVariance = Maps.newLinkedHashMap();
         this.tableCount = Maps.newLinkedHashMap();
         this.numberOfCombinations = MathUtils.multiCombinationSize(actions,
                 agents);
     }
 
     /**
-     * Returns true if every space in the table is filled in with a value.
+     * Returns true if every space in the tableMean is filled in with a value.
      *
      * @return true if every entry has a value.
      */
     public boolean isComplete() {
-        final long possibilities = getNumberOfPossibilities();
-        if (this.table.size() != possibilities) {
-            return false;
-        }
-        return true;
+        return this.tableMean.size() == getNumberOfPossibilities();
     }
 
     private long getNumberOfPossibilities() {
@@ -76,7 +76,7 @@ public class HeuristicSymmetricPayoffMatrix {
         if (getEntryCount(entry) == 0) {
             newEntry(entry, value);
         } else {
-            plusEntry(entry, value);
+            updateEntry(entry, value);
         }
     }
 
@@ -88,39 +88,37 @@ public class HeuristicSymmetricPayoffMatrix {
         for (final int i : key) {
             count += i;
         }
-        if (count != agents) {
-            return false;
-        }
-        return true;
+        return count == agents;
     }
 
     private boolean testValues(final Double[] value) {
-        if (value.length != agents) {
-            return false;
-        }
-        return true;
+        return value.length == agents;
     }
 
-    private void plusEntry(final PayoffEntry entry, final Double[] value) {
-        this.table.put(entry, arrayAdd(table.get(entry), value));
-        this.tableCount.put(entry, tableCount.get(entry) + 1);
-    }
-
-    private static Double[] arrayAdd(final Double[] first, final Double[] second) {
-        final Double[] toret = new Double[first.length];
-        for (int i = 0; i < first.length; i++) {
-            toret[i] = first[i] + second[i];
+    private void updateEntry(final PayoffEntry entry, final Double[] value) {
+        for (int i = 0; i < value.length; i++) {
+            tableMean.get(entry)[i].increment(value[i]);
+            tableVariance.get(entry)[i].increment(value[i]);
         }
-        return toret;
+        int nplus1 = getEntryCount(entry) + 1;
+        this.tableCount.put(entry, nplus1);
     }
 
     private void newEntry(final PayoffEntry entry, final Double[] value) {
-        final Double[] toret = Arrays.copyOf(value, value.length);
-        this.table.put(entry, toret);
+        final Mean[] means = new Mean[value.length];
+        final Variance[] vars = new Variance[value.length];
+        for (int i = 0; i < value.length; i++) {
+            means[i] = new Mean();
+            means[i].increment(value[i]);
+            vars[i] = new Variance();
+            vars[i].increment(value[i]);
+        }
+        this.tableMean.put(entry, means);
+        this.tableVariance.put(entry, vars);
         this.tableCount.put(entry, 1);
     }
 
-    private int getEntryCount(final PayoffEntry entry) {
+    public int getEntryCount(final PayoffEntry entry) {
         if (this.tableCount.containsKey(entry)) {
             return this.tableCount.get(entry);
         }
@@ -137,55 +135,57 @@ public class HeuristicSymmetricPayoffMatrix {
         checkArgument(testKey(key));
         final PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        final Double[] sums = table.get(entry);
-        final Double[] toret = new Double[sums.length];
-        for (int i = 0; i < sums.length; i++) {
-            toret[i] = sums[i] / (double) tableCount.get(entry);
+        Mean[] meen = tableMean.get(entry);
+        Double[] toRet = new Double[meen.length];
+        for (int i = 0; i < meen.length; i++) {
+            toRet[i] = meen[i].getResult();
         }
-        return toret;
+        return toRet;
+    }
+
+    /**
+     * Returns an entry in the payoff matrix.
+     *
+     * @param key the index keys.
+     * @return the value recorded in the matrix.
+     */
+    public Double[] getVariance(final int... key) {
+        checkArgument(testKey(key));
+        final PayoffEntry entry = PayoffEntry.from(key);
+        checkArgument(tableCount.containsKey(entry));
+        Variance[] vars = tableVariance.get(entry);
+        Double[] toRet = new Double[vars.length];
+        for (int i = 0; i < vars.length; i++) {
+            toRet[i] = vars[i].getResult();
+        }
+        return toRet;
     }
 
     @Override
     public String toString() {
         final StringBuilder b = new StringBuilder();
-        for (final Entry<PayoffEntry, Double[]> e : table.entrySet()) {
+        for (final Entry<PayoffEntry, Double[]> e : this) {
             b.append("V:").append(e.getKey()).append("->")
-                    .append(Arrays
-                            .toString(this.getEntry(e.getKey().getEntries())))
+                    .append(Arrays.toString(this.getEntry(e.getKey().getEntries()))).append("\n");
+            b.append("C:").append(e.getKey()).append("->").append(tableCount.get(e.getKey()))
                     .append("\n");
-            b.append("C:").append(e.getKey()).append("->")
-                    .append(tableCount.get(e.getKey())).append("\n");
         }
         return b.toString();
     }
 
-    /**
-     * Generate all unique coefficients that are used for specifying dynamics
-     * equations.
-     *
-     * @return A list of coefficients.
-     */
-    // TODO Refactor out this analysis specific data computation + calculate
-    // other specs in the refactored out module.
-    public List<Double> getDynamicEquationFactors() {
-        final List<Double> toReturn = Lists.newArrayList();
-        for (final Entry<PayoffEntry, Double[]> e : table.entrySet()) {
-            final PayoffEntry entry = e.getKey();
-            final Double[] values = getEntry(e.getKey().getEntries());
-            int coeffDone = 0;
-            for (int i = 0; i < entry.getEntries().length; i++) {
-                final int currCoeff = entry.getEntries()[i];
-                long sum = 0;
-                for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
-                    sum += values[j];
-                }
-                if (currCoeff > 0) {
-                    final double avg = sum / (double) currCoeff;
-                    toReturn.add(avg);
-                }
-                coeffDone += currCoeff;
-            }
-        }
-        return toReturn;
+    @Override
+    public Spliterator<Entry<PayoffEntry, Double[]>> spliterator() {
+        Map<PayoffEntry, Double[]> toRet = Maps.newLinkedHashMap();
+        tableMean.entrySet()
+                .forEach((e) -> toRet.put(e.getKey(), getEntry(e.getKey().getEntries())));
+        return toRet.entrySet().spliterator();
+    }
+
+    @Override
+    public Iterator<Entry<PayoffEntry, Double[]>> iterator() {
+        Map<PayoffEntry, Double[]> toRet = Maps.newLinkedHashMap();
+        tableMean.entrySet()
+                .forEach((e) -> toRet.put(e.getKey(), getEntry(e.getKey().getEntries())));
+        return toRet.entrySet().iterator();
     }
 }

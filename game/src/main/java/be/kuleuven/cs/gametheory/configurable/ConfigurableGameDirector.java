@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.gametheory.AbstractGameDirector;
+import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrix;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
@@ -13,7 +14,8 @@ import java.util.List;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class ConfigurableGameDirector
-        extends AbstractGameDirector<GameInstanceConfiguration, GameInstanceResult> {
+        extends AbstractGameDirector<GameInstanceConfiguration, GameInstanceResult,
+        HeuristicSymmetricPayoffMatrix> {
 
     private final List<GameInstanceResult> results;
 
