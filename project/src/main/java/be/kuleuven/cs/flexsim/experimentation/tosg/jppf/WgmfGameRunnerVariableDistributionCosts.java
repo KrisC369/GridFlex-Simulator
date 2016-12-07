@@ -148,6 +148,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
             }
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
+            throw new RuntimeException(e);
         }
     }
 
