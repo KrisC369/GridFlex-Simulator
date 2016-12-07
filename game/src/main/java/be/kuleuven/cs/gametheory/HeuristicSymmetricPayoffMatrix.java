@@ -2,6 +2,8 @@ package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import com.google.common.collect.Maps;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -9,12 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Spliterator;
 
-import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arrayAdd;
-import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arrayDot;
-import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arrayScale;
-import static be.kuleuven.cs.flexsim.domain.util.ArrayUtils.arraySubtract;
 import static com.google.common.base.Preconditions.checkArgument;
-import static java.util.Arrays.fill;
 
 /**
  * This class represents heuristic payoff tables or matrices. The heuristic part
@@ -31,8 +28,8 @@ import static java.util.Arrays.fill;
 public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntry, Double[]>> {
     private final int agents;
     private final int actions;
-    private final Map<PayoffEntry, Double[]> tableMean;
-    private final Map<PayoffEntry, Double[]> tableVariance;
+    private final Map<PayoffEntry, Mean[]> tableMean;
+    private final Map<PayoffEntry, Variance[]> tableVariance;
     private final Map<PayoffEntry, Integer> tableCount;
     private final long numberOfCombinations;
 
@@ -99,23 +96,26 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
     }
 
     private void updateEntry(final PayoffEntry entry, final Double[] value) {
+        for (int i = 0; i < value.length; i++) {
+            tableMean.get(entry)[i].increment(value[i]);
+            tableVariance.get(entry)[i].increment(value[i]);
+        }
         int nplus1 = getEntryCount(entry) + 1;
-        Double[] deltas = arraySubtract(value, tableMean.get(entry));
-        this.tableMean.put(entry,
-                arrayAdd(tableMean.get(entry), arrayScale(deltas, 1 / (double) nplus1)));
-        Double[] deltas2 = arraySubtract(value, tableMean.get(entry));
-        Double[] m2s = arrayDot(deltas, deltas2);
-        this.tableVariance.put(entry, arrayAdd(tableVariance.get(entry), m2s));
         this.tableCount.put(entry, nplus1);
     }
 
     private void newEntry(final PayoffEntry entry, final Double[] value) {
-        final Double[] toret = Arrays.copyOf(value, value.length);
-        this.tableMean.put(entry, toret);
+        final Mean[] means = new Mean[value.length];
+        final Variance[] vars = new Variance[value.length];
+        for (int i = 0; i < value.length; i++) {
+            means[i] = new Mean();
+            means[i].increment(value[i]);
+            vars[i] = new Variance();
+            vars[i].increment(value[i]);
+        }
+        this.tableMean.put(entry, means);
+        this.tableVariance.put(entry, vars);
         this.tableCount.put(entry, 1);
-        Double[] zeros = new Double[value.length];
-        fill(zeros, 0d);
-        this.tableVariance.put(entry, zeros);
     }
 
     public int getEntryCount(final PayoffEntry entry) {
@@ -135,7 +135,12 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         checkArgument(testKey(key));
         final PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        return tableMean.get(entry);
+        Mean[] meen = tableMean.get(entry);
+        Double[] toRet = new Double[meen.length];
+        for (int i = 0; i < meen.length; i++) {
+            toRet[i] = meen[i].getResult();
+        }
+        return toRet;
     }
 
     /**
@@ -148,39 +153,39 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         checkArgument(testKey(key));
         final PayoffEntry entry = PayoffEntry.from(key);
         checkArgument(tableCount.containsKey(entry));
-        final Double[] variance = tableVariance.get(entry);
-        final Double[] toret = new Double[variance.length];
-        for (int i = 0; i < variance.length; i++) {
-            if (tableCount.get(entry) > 1) {
-                toret[i] = variance[i] / ((double) tableCount.get(entry) - 1);
-            } else {
-                toret[i] = 0d;
-            }
+        Variance[] vars = tableVariance.get(entry);
+        Double[] toRet = new Double[vars.length];
+        for (int i = 0; i < vars.length; i++) {
+            toRet[i] = vars[i].getResult();
         }
-        return toret;
+        return toRet;
     }
 
     @Override
     public String toString() {
         final StringBuilder b = new StringBuilder();
-        for (final Entry<PayoffEntry, Double[]> e : tableMean.entrySet()) {
+        for (final Entry<PayoffEntry, Double[]> e : this) {
             b.append("V:").append(e.getKey()).append("->")
-                    .append(Arrays
-                            .toString(this.getEntry(e.getKey().getEntries())))
+                    .append(Arrays.toString(this.getEntry(e.getKey().getEntries()))).append("\n");
+            b.append("C:").append(e.getKey()).append("->").append(tableCount.get(e.getKey()))
                     .append("\n");
-            b.append("C:").append(e.getKey()).append("->")
-                    .append(tableCount.get(e.getKey())).append("\n");
         }
         return b.toString();
     }
 
     @Override
     public Spliterator<Entry<PayoffEntry, Double[]>> spliterator() {
-        return tableMean.entrySet().spliterator();
+        Map<PayoffEntry, Double[]> toRet = Maps.newLinkedHashMap();
+        tableMean.entrySet()
+                .forEach((e) -> toRet.put(e.getKey(), getEntry(e.getKey().getEntries())));
+        return toRet.entrySet().spliterator();
     }
 
     @Override
     public Iterator<Entry<PayoffEntry, Double[]>> iterator() {
-        return tableMean.entrySet().iterator();
+        Map<PayoffEntry, Double[]> toRet = Maps.newLinkedHashMap();
+        tableMean.entrySet()
+                .forEach((e) -> toRet.put(e.getKey(), getEntry(e.getKey().getEntries())));
+        return toRet.entrySet().iterator();
     }
 }

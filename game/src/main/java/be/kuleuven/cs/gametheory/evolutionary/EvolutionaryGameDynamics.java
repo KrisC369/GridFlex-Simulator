@@ -3,6 +3,7 @@ package be.kuleuven.cs.gametheory.evolutionary;
 import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrix;
 import be.kuleuven.cs.gametheory.PayoffEntry;
 import com.google.common.collect.Lists;
+import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 
 import java.util.List;
@@ -76,20 +77,29 @@ public class EvolutionaryGameDynamics {
         }
     }
 
+    /**
+     * @param means      the means list to store results into.
+     * @param stds       the stds list to store results into.
+     * @param samples    the samples N amount list to store results into.
+     * @param values     The entry means to encorporate into the results
+     * @param vars       The entry vars to encorporate into the results.
+     * @param coeffDone  The coefficient count already seen.
+     * @param currCoeff  The current number of agents to consider.
+     * @param sampleSize The number of samples.
+     */
     private static void sumSimilarAgentPayoffs(List<Double> means, List<Double> stds,
-            List<Integer> samples, Double[] values, Double[] vars,
-            int coeffDone, int currCoeff, int sampleSize) {
-        double sum = 0;
+            List<Integer> samples, Double[] values, Double[] vars, int coeffDone, int currCoeff,
+            int sampleSize) {
+        Mean meanOfMeans = new Mean();
+        Mean meanOfVars = new Mean();
         double varTotal = 0;
         for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
-            sum += values[j];
-            varTotal += vars[j];
+            meanOfMeans.increment(values[j]);
+            meanOfVars.increment(vars[j]);
         }
         if (currCoeff > 0) {
-            final double avg = sum / (double) currCoeff;
-            final double avgVar = varTotal / (double) currCoeff;
-            means.add(avg);
-            stds.add(Math.sqrt(avgVar));
+            means.add(meanOfMeans.getResult());
+            stds.add(Math.sqrt(meanOfVars.getResult()));
             samples.add(sampleSize * currCoeff);
         }
     }
