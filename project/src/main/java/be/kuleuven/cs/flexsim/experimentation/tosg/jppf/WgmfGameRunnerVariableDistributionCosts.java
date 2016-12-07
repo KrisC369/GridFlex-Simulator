@@ -172,7 +172,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 toRet.add(last.applyAsDouble(cis.get(i)));
             }
         }
-        toRet.add(last.applyAsDouble(cis.get(cis.size())));
+        toRet.add(last.applyAsDouble(cis.get(cis.size() - 1)));
         return toRet;
     }
 }
