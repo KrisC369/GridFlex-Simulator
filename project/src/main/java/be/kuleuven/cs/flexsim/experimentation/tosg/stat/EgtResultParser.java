@@ -58,7 +58,7 @@ public class EgtResultParser implements AutoCloseable {
             getProxy().eval("RES = solveN(PARAMS);");
             double[] res = (double[]) getProxy().getVariable("RES");
             if (res.length == 0) {
-                return new double[] { dynParams[0] < dynParams[dynParams.length] ? 0 : 1 };
+                return new double[] { dynParams[0] < dynParams[dynParams.length - 1] ? 0 : 1 };
             }
             return res;
         } catch (MatlabInvocationException e) {
