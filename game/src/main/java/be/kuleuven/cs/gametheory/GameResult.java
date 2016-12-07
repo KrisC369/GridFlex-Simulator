@@ -1,12 +1,10 @@
 package be.kuleuven.cs.gametheory;
 
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +13,7 @@ import java.util.Map;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @AutoValue
-public abstract class GameResult {
+public abstract class GameResult<T> {
 
     GameResult() {
     }
@@ -28,7 +26,7 @@ public abstract class GameResult {
     /**
      * @return the results of this game as a list of values.
      */
-    public abstract ImmutableList<Double> getResults();
+    public abstract T getResults();
 
     /**
      * Creates a new result object from a specific result object but with the
@@ -52,15 +50,15 @@ public abstract class GameResult {
      * @return A GameResult object with no description and with the specified
      * results.
      */
-    public static GameResult create(final List<Double> results) {
+    public static <T> GameResult create(final T results) {
         return new AutoValue_GameResult(
                 ImmutableMap.copyOf(new LinkedHashMap<>()),
-                ImmutableList.copyOf(results));
+                results);
     }
 
-    private static GameResult create(final Map<String, String> description,
-            final List<Double> results) {
+    private static <T> GameResult create(final Map<String, String> description,
+            final T results) {
         return new AutoValue_GameResult(ImmutableMap.copyOf(description),
-                ImmutableList.copyOf(results));
+                results);
     }
 }

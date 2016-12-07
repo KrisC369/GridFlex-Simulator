@@ -6,6 +6,8 @@ import be.kuleuven.cs.gametheory.AgentGenerator;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
 import be.kuleuven.cs.gametheory.GameInstanceGenerator;
+import be.kuleuven.cs.gametheory.GameResult;
+import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import org.eclipse.jdt.annotation.NonNull;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
@@ -23,7 +25,8 @@ import java.util.Map.Entry;
  * @param <K> The type of actions.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class Game<N, K> extends AbstractGame<GameInstance<N, K>, GameInstance<N, K>> {
+public class Game<N, K>
+        extends AbstractGame<GameInstance<N, K>, GameInstance<N, K>, List<Double>> {
     private final int agents;
     private final int actions;
     private final AgentGenerator<N> agentGen;
@@ -107,6 +110,16 @@ public class Game<N, K> extends AbstractGame<GameInstance<N, K>, GameInstance<N,
             }
             addPayoffEntry(values, entry);
         }
+    }
+
+    @Override
+    protected GameResult<List<Double>> getResults() {
+        final GameResult result = GameResult
+                .create(EvolutionaryGameDynamics.from(getPayoffs()).getDynamicEquationFactors())
+                .withDescription("Reps", String.valueOf(reps))
+                .withDescription("agents", String.valueOf(agents))
+                .withDescription("actions", String.valueOf(actions));
+        return result;
     }
 
     private int getIndexFor(final List<@NonNull K> set, final K element) {

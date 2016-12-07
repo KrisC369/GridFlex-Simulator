@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
-import com.google.common.collect.ImmutableList;
+import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -118,8 +118,8 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     protected void processResults() {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             for (Map.Entry<Double, ConfigurableGameDirector> entry : priceToDirector.entrySet()) {
-                ImmutableList<Double> eqnParams = entry.getValue().getResults()
-                        .getResults();
+                List<Double> eqnParams = EvolutionaryGameDynamics.from(entry.getValue().getResults()
+                        .getResults()).getDynamicEquationFactors();
                 double[] fixedPoints = egtResultParser
                         .findFixedPointForDynEquationParams(
                                 eqnParams.stream().mapToDouble(Double::doubleValue).toArray());

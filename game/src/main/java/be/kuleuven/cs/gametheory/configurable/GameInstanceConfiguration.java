@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gametheory.configurable;
 
+import be.kuleuven.cs.gametheory.Playable;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ImmutableMap;
 
@@ -11,7 +12,7 @@ import java.io.Serializable;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @AutoValue
-public abstract class GameInstanceConfiguration implements Serializable {
+public abstract class GameInstanceConfiguration implements Serializable, Playable {
     public static final long DEF_SEED = 12345L;
 
     GameInstanceConfiguration() {
@@ -41,6 +42,11 @@ public abstract class GameInstanceConfiguration implements Serializable {
      * @return The mapping of extra config values that can be specified by users.
      */
     public abstract ImmutableMap<String, Double> getExtraConfigValues();
+
+    @Override
+    public void play() {
+        throw new UnsupportedOperationException("This configuration is not playable");
+    }
 
     /**
      * @return A builder instance.

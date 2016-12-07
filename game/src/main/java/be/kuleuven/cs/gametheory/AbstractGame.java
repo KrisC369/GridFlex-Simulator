@@ -14,9 +14,10 @@ import java.util.List;
  *
  * @param <T> The type instances for games returned.
  * @param <I> The type of results expected to be handled.
+ * @param <R> The main result type to aggregate and return.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public abstract class AbstractGame<T, I> {
+public abstract class AbstractGame<T, I, R> {
     private static final String CONSOLE = "CONSOLE";
     private static final String CONFIGURING = "Configuring instance: ";
     private static final String EXECUTING = "Executing instance: ";
@@ -54,6 +55,9 @@ public abstract class AbstractGame<T, I> {
      */
     protected abstract void runExperiments();
 
+    /**
+     * @return The runnable game instances.
+     */
     public List<T> getGameInstances() {
         return Collections.unmodifiableList(this.instanceList);
     }
@@ -62,6 +66,9 @@ public abstract class AbstractGame<T, I> {
         return this.instanceList;
     }
 
+    /**
+     * @param results The simulation results to parse and process.
+     */
     public abstract void gatherResults(List<I> results);
 
     protected final void addPayoffEntry(final Double[] values, final int[] entry) {
@@ -106,7 +113,8 @@ public abstract class AbstractGame<T, I> {
         final StringBuilder b = new StringBuilder(30);
         char character = 'a';
         b.append("\n");
-        for (final Double d : EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors()) {
+        for (final Double d : EvolutionaryGameDynamics.from(payoffs)
+                .getDynamicEquationFactors()) {
             b.append(character++).append("=").append(d).append(";\n");
         }
         return b.toString();
@@ -118,12 +126,9 @@ public abstract class AbstractGame<T, I> {
      * @return A gameresult object based on the currently available result date
      * for this game.
      */
-    protected GameResult getResults() {
-        final GameResult result = GameResult
-                .create(EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors())
-                .withDescription("Reps", String.valueOf(reps))
-                .withDescription("agents", String.valueOf(agents))
-                .withDescription("actions", String.valueOf(actions));
-        return result;
+    protected abstract GameResult<R> getResults();
+
+    protected HeuristicSymmetricPayoffMatrix getPayoffs() {
+        return this.payoffs;
     }
 }

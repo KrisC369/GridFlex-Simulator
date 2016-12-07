@@ -5,6 +5,8 @@ import be.kuleuven.cs.gametheory.PayoffEntry;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -16,6 +18,7 @@ import static java.lang.StrictMath.sqrt;
  */
 public class EvolutionaryGameDynamics {
 
+    private static final Logger logger = LoggerFactory.getLogger(EvolutionaryGameDynamics.class);
     private HeuristicSymmetricPayoffMatrix payoffs;
     private List<Double> eqnFactorMeans;
     private List<Double> eqnFactorStds;
@@ -105,12 +108,40 @@ public class EvolutionaryGameDynamics {
     }
 
     /**
+     * Returns the parameters of the dynamics in a formatted string.
+     *
+     * @return the params in a MATLAB style formatted string.
+     */
+    protected String getDynamicsParametersString() {
+        final StringBuilder b = new StringBuilder(30);
+        char character = 'a';
+        b.append("\n");
+        for (final Double d : getDynamicEquationFactors()) {
+            b.append(character++).append("=").append(d).append(";\n");
+        }
+        return b.toString();
+    }
+
+    protected void logResults() {
+        final StringBuilder b = new StringBuilder(30);
+        b.append(getResultString()).append("\n")
+                .append("Dynamics equation params:");
+        for (final Double d : EvolutionaryGameDynamics.from(payoffs).getDynamicEquationFactors()) {
+            b.append(d).append("\n");
+        }
+        logger.debug(b.toString());
+    }
+
+    protected String getResultString() {
+        return payoffs.toString();
+    }
+
+    /**
      * Creates a EGD object from a specified payoff matrix.
      *
      * @param payoffs The payoff matrix.
      * @return The initialized EGD instance.
      */
-
     public static EvolutionaryGameDynamics from(HeuristicSymmetricPayoffMatrix payoffs) {
         return new EvolutionaryGameDynamics(payoffs);
     }

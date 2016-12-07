@@ -10,11 +10,14 @@ import java.util.List;
  * This instance governs the sequential rules and protocols involved when
  * setting up and playing games.
  *
+ * @param <T> The type instances for games returned.
+ * @param <I> The type of results expected to be handled.
+ * @param <R> The main result type to aggregate and return.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class AbstractGameDirector<T, I> {
+public class AbstractGameDirector<T extends Playable, I, R> {
 
-    private final AbstractGame<T, I> game;
+    private final AbstractGame<T, I, R> game;
     private final List<T> playables;
 
     /**
@@ -22,7 +25,7 @@ public class AbstractGameDirector<T, I> {
      *
      * @param game The game to direct.
      */
-    public AbstractGameDirector(final AbstractGame<T, I> game) {
+    public AbstractGameDirector(final AbstractGame<T, I, R> game) {
         this.game = game;
         this.game.configureInstances();
         this.playables = Lists.newArrayList();
@@ -77,7 +80,7 @@ public class AbstractGameDirector<T, I> {
      * @return A gameresult object based on the currently available result date
      * for this game.
      */
-    public GameResult getResults() {
+    public GameResult<R> getResults() {
         return game.getResults();
     }
     // TODO check state (have experiments been run or not, before drawing upon
@@ -86,7 +89,8 @@ public class AbstractGameDirector<T, I> {
     /**
      * @return This director's game instance.
      */
-    protected AbstractGame<T, I> getGame() {
+    protected AbstractGame<T, I, R> getGame() {
         return game;
     }
 }
+

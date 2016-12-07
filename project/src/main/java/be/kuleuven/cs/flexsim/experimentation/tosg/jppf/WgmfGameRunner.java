@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
-import com.google.common.collect.ImmutableList;
+import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import org.jppf.node.protocol.Task;
 import org.slf4j.Logger;
 
@@ -71,7 +71,8 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
     @Override
     protected void processResults() {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
-            ImmutableList<Double> eqnParams = director.getResults().getResults();
+            List<Double> eqnParams = EvolutionaryGameDynamics
+                    .from(director.getResults().getResults()).getDynamicEquationFactors();
             double[] fixedPoints = egtResultParser
                     .findFixedPointForDynEquationParams(
                             eqnParams.stream().mapToDouble(Double::doubleValue).toArray());
