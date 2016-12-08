@@ -144,9 +144,9 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 logger.warn("Dynamics equation params: {}",
                         entry.getValue().getDynamicEquationArguments());
                 logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
-                logger.warn("{} CI Upper bound Phase plot fixed points found at: {}",
-                        CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
                 logger.warn("{} CI Lower bound Phase plot fixed points found at: {}",
+                        CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsLower));
+                logger.warn("{} CI Upper bound Phase plot fixed points found at: {}",
                         CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
                 String[] splitted = DATAFILE.split("/");
                 toWrite.add(CsvResultWriter.WgmfDynamicsResults

@@ -67,7 +67,7 @@ public class CsvResultWriter {
 
         public abstract double[] getLowerBoundDynEqnParams();
 
-        public abstract double[] getUpperBoundEqnParams();
+        public abstract double[] getUpperBoundDynEqnParams();
 
         public abstract double ciLevel();
 
@@ -76,7 +76,10 @@ public class CsvResultWriter {
                     getPricePoint(),
                     Arrays.toString(getMedianFixedPoints()),
                     Arrays.toString(getLowerBoundCIFixedPoints()),
-                    Arrays.toString(getUpperBoundCIFixedPoints()), getDataFileName());
+                    Arrays.toString(getUpperBoundCIFixedPoints()), getDataFileName(),
+                    Arrays.toString(getMedianDynEqnParams()),
+                    Arrays.toString(getLowerBoundDynEqnParams()),
+                    Arrays.toString(getUpperBoundDynEqnParams()), ciLevel());
         }
 
         public static WgmfDynamicsResults create(int n, int r, String data, double pp,
