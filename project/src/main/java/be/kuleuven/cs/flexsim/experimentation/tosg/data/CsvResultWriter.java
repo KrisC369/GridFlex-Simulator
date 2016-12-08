@@ -21,8 +21,10 @@ public class CsvResultWriter {
     private static final char DELIMITER = ';';
 
     //CSV file header
-    private static final Object[] FILE_HEADER = { "nAgents", "price point", "median fixed points",
-            "lower bound fixed points", "upper bound fixed points" };
+    private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
+            "median fixed points",
+            "lower bound fixed points", "upper bound fixed points", "data file",
+            "median eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level" };
 
     public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR)
@@ -49,6 +51,10 @@ public class CsvResultWriter {
     public static abstract class WgmfDynamicsResults {
         public abstract int getNAgents();
 
+        public abstract int getRepititions();
+
+        public abstract String getDataFileName();
+
         public abstract double getPricePoint();
 
         public abstract double[] getMedianFixedPoints();
@@ -57,16 +63,28 @@ public class CsvResultWriter {
 
         public abstract double[] getUpperBoundCIFixedPoints();
 
+        public abstract double[] getMedianDynEqnParams();
+
+        public abstract double[] getLowerBoundDynEqnParams();
+
+        public abstract double[] getUpperBoundEqnParams();
+
+        public abstract double ciLevel();
+
         public List getValues() {
-            return Lists.newArrayList(getNAgents(), getPricePoint(),
+            return Lists.newArrayList(getNAgents(), getRepititions(),
+                    getPricePoint(),
                     Arrays.toString(getMedianFixedPoints()),
                     Arrays.toString(getLowerBoundCIFixedPoints()),
-                    Arrays.toString(getUpperBoundCIFixedPoints()));
+                    Arrays.toString(getUpperBoundCIFixedPoints()), getDataFileName());
         }
 
-        public static WgmfDynamicsResults create(int n, double pp, double[] median, double[] lower,
-                double[] upper) {
-            return new AutoValue_CsvResultWriter_WgmfDynamicsResults(n, pp, median, lower, upper);
+        public static WgmfDynamicsResults create(int n, int r, String data, double pp,
+                double[] median, double[] lower,
+                double[] upper, double[] medianEqn, double[] lowerEqn, double[] upperEqn,
+                double ciLevel) {
+            return new AutoValue_CsvResultWriter_WgmfDynamicsResults(n, r, data, pp, median, lower,
+                    upper, medianEqn, lowerEqn, upperEqn, ciLevel);
         }
     }
 }

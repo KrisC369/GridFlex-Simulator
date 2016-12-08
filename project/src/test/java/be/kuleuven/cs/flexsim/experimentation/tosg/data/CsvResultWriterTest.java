@@ -20,7 +20,8 @@ public class CsvResultWriterTest {
         String file = "testOut.csv";
         CsvResultWriter.WgmfDynamicsResults wgmfDynamicsResults = CsvResultWriter
                 .WgmfDynamicsResults
-                .create(2, pp, fixedPoints, fixedPoints, fixedPoints);
+                .create(2, 4, "TestData", pp, fixedPoints, fixedPoints, fixedPoints, fixedPoints,
+                        fixedPoints, fixedPoints, 0.99);
         List<CsvResultWriter.WgmfDynamicsResults> results = Lists
                 .newArrayList(wgmfDynamicsResults, wgmfDynamicsResults);
         CsvResultWriter.writeCsvFile(file, results);

@@ -22,7 +22,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public abstract class AbstractWgmfGameRunner {
     private static final String DISTRIBUTIONFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributionsNormalized.csv";
-    private static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
+    protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
             + "/2kwartOpEnNeer.csv";
     private static final String SPECFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";

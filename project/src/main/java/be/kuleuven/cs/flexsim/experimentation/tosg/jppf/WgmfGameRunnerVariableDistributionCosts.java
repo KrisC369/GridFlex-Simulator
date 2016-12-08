@@ -38,7 +38,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     public static final String PRICE_PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
     public static final EvolutionaryGameDynamics.ConfidenceLevel CI_LEVEL = EvolutionaryGameDynamics
             .ConfidenceLevel._95pc;
-    private static final String RES_OUTPUT_FILE = "res_outputN2";
+    private static final String RES_OUTPUT_FILE = "res_outputA";
     //    private final ConfigurableGameDirector director;
 
     private int nAgents, nReps;
@@ -148,12 +148,18 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                         CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
                 logger.warn("{} CI Lower bound Phase plot fixed points found at: {}",
                         CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
+                String[] splitted = DATAFILE.split("/");
                 toWrite.add(CsvResultWriter.WgmfDynamicsResults
-                        .create(nAgents, entry.getKey(), fixedPoints, fixedPointsLower,
-                                fixedPointsHigher));
+                        .create(nAgents, nReps, splitted[splitted.length - 1], entry.getKey(),
+                                fixedPoints,
+                                fixedPointsLower,
+                                fixedPointsHigher, eqnParams, lowerCI, higherCI,
+                                CI_LEVEL.getConfidenceLevel()));
             }
             CsvResultWriter.writeCsvFile(
-                    RES_OUTPUT_FILE + String.valueOf(System.currentTimeMillis() / 100), toWrite);
+                    RES_OUTPUT_FILE + String.valueOf(nAgents) + "R" + String.valueOf(nReps) + "_"
+                            + String
+                            .valueOf(System.currentTimeMillis() / 100), toWrite);
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
             throw new RuntimeException(e);
