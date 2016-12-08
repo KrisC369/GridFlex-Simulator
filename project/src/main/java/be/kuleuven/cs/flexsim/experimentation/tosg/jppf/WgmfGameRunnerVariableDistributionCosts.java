@@ -38,7 +38,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     public static final String PRICE_PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
     public static final EvolutionaryGameDynamics.ConfidenceLevel CI_LEVEL = EvolutionaryGameDynamics
             .ConfidenceLevel._95pc;
-    private static final String RES_OUTPUT_FILE = "res_outputA";
+    private static final String RES_OUTPUT_FILE = "res/res_outputA";
     //    private final ConfigurableGameDirector director;
 
     private int nAgents, nReps;
