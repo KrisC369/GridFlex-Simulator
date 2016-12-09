@@ -46,6 +46,7 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts extends AbstractWgm
     private double minPrice;
     private double maxPrice;
     private double priceStep;
+
     private final List<CsvResultWriter.WgmfDynamicsResults> writableResults;
 
     /**
@@ -79,10 +80,9 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts extends AbstractWgm
 
     @Override
     protected void execute(WgmfGameParams params) {
-        for (double p = minPrice; p <= maxPrice; p += priceStep) {
+        for (double price = minPrice; price <= maxPrice; price += priceStep) {
             List<WgmfJppfTask> alltasks = Lists.newArrayList();
 
-            final double price = p;
             ConfigurableGame game = new ConfigurableGame(nAgents,
                     ACTION_SIZE, nReps);
             ConfigurableGameDirector director = new ConfigurableGameDirector(game);
@@ -97,13 +97,15 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts extends AbstractWgm
                     priceContainingConfigs);
             directorToTasks.putAll(director, adapted);
             alltasks.addAll(adapted);
-            ExperimentRunner runner = getStrategy().getRunner(params, PARAMS_KEY);
+            ExperimentRunner runner = getStrategy()
+                    .getRunner(params, PARAMS_KEY, "JobWPrice:" + String.valueOf(price));
             runner.runExperiments(alltasks);
             List<?> results = runner.waitAndGetResults();
-            logger.info("Experiment results received for price: {}. \nProcessing results... ", p);
+            logger.info("Experiment results received for price: {}. \nProcessing results... ",
+                    price);
             getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
                     UnmodifiableMap.decorate(priceToDirector));
-            processSingleResult(p, director);
+            processSingleResult(price, director);
         }
 
     }
