@@ -24,7 +24,7 @@ public class CsvResultWriterTest {
                         fixedPoints, fixedPoints, 0.99);
         List<CsvResultWriter.WgmfDynamicsResults> results = Lists
                 .newArrayList(wgmfDynamicsResults, wgmfDynamicsResults);
-        CsvResultWriter.writeCsvFile(file, results);
+        CsvResultWriter.writeCsvFile(file, results, false);
 
         File varTmpDir = new File(file);
         boolean exists = varTmpDir.exists();
