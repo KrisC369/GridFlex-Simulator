@@ -37,14 +37,14 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     public static final String PRICE_PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
     public static final EvolutionaryGameDynamics.ConfidenceLevel CI_LEVEL = EvolutionaryGameDynamics
             .ConfidenceLevel._95pc;
-    private static final String RES_OUTPUT_FILE = "res/res_outputA";
-
-    private int nAgents, nReps;
+    protected static final String RES_OUTPUT_FILE = "res/res_outputA";
+    protected static final String RES_EXTENSION = ".csv";
     private final Map<Double, ConfigurableGameDirector> priceToDirector;
-    //    private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
-    private double minPrice;
-    private double maxPrice;
-    private double priceStep;
+    private final int nAgents;
+    private final int nReps;
+    private final double minPrice;
+    private final double maxPrice;
+    private final double priceStep;
 
     /**
      * Public constructor from params object and exec strategy.
@@ -76,10 +76,10 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     @Override
     protected void execute(WgmfGameParams params) {
         List<WgmfJppfTask> alltasks = Lists.newArrayList();
-        for (double p = minPrice; p <= maxPrice; p += priceStep) {
+        for (double p = getMinPrice(); p <= getMaxPrice(); p += getPriceStep()) {
             final double price = p;
-            ConfigurableGame game = new ConfigurableGame(nAgents,
-                    ACTION_SIZE, nReps);
+            ConfigurableGame game = new ConfigurableGame(getnAgents(),
+                    ACTION_SIZE, getnReps());
             ConfigurableGameDirector director = new ConfigurableGameDirector(game);
             priceToDirector.put(price, director);
 
@@ -99,7 +99,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 UnmodifiableMap.decorate(priceToDirector));
     }
 
-    private List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,
+    protected final List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,
             List<GameInstanceConfiguration> priceContainingConfigs) {
         return getStrategy().adapt(priceContainingConfigs, params, PARAMS_KEY,
                 (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig) ->
@@ -109,7 +109,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                                                 .get(PRICE_PARAM_KEY)));
     }
 
-    private List<GameInstanceConfiguration> getConfigsWithPricesFromDirector(double price,
+    protected final List<GameInstanceConfiguration> getConfigsWithPricesFromDirector(double price,
             ConfigurableGameDirector director) {
         return director.getPlayableVersions().stream()
                 .map((config) -> config.withExtraConfigValue(PRICE_PARAM_KEY, price))
@@ -121,55 +121,63 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         List<CsvResultWriter.WgmfDynamicsResults> toWrite = Lists.newArrayList();
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             for (Map.Entry<Double, ConfigurableGameDirector> entry : priceToDirector.entrySet()) {
-                EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
-                        .from(entry.getValue().getResults().getResults());
-                double[] eqnParams = dynamics.getDynamicEquationFactors().stream()
-                        .mapToDouble(Double::doubleValue).toArray();
-                double[] lowerCI = getLowerCIParams(dynamics).stream()
-                        .mapToDouble(Double::doubleValue).toArray();
-                double[] higherCI = getHigherCIParams(dynamics).stream()
-                        .mapToDouble(Double::doubleValue).toArray();
-                double[] fixedPoints = egtResultParser
-                        .findFixedPointForDynEquationParams(eqnParams);
-                double[] fixedPointsLower = egtResultParser
-                        .findFixedPointForDynEquationParams(lowerCI);
-                double[] fixedPointsHigher = egtResultParser
-                        .findFixedPointForDynEquationParams(higherCI);
-                logger.warn("Results for pricepoint {}:", entry.getKey());
-                logger.warn("Dynamics equation params: {}",
-                        entry.getValue().getDynamicEquationArguments());
-                logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
-                logger.warn("{} CI Lower bound Phase plot fixed points found at: {}",
-                        CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsLower));
-                logger.warn("{} CI Upper bound Phase plot fixed points found at: {}",
-                        CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
-                String[] splitted = DATAFILE.split("/");
-                toWrite.add(CsvResultWriter.WgmfDynamicsResults
-                        .create(nAgents, nReps, splitted[splitted.length - 1], entry.getKey(),
-                                fixedPoints,
-                                fixedPointsLower,
-                                fixedPointsHigher, eqnParams, lowerCI, higherCI,
-                                CI_LEVEL.getConfidenceLevel()));
+                parseDynamicsAndAddToResults(entry.getKey(), entry.getValue(), toWrite,
+                        egtResultParser);
             }
             CsvResultWriter.writeCsvFile(
-                    RES_OUTPUT_FILE + String.valueOf(nAgents) + "R" + String.valueOf(nReps) + "_"
-                            + String
-                            .valueOf(System.currentTimeMillis() / 100), toWrite);
+                    RES_OUTPUT_FILE + String.valueOf(getnAgents()) + "R" + String
+                            .valueOf(getnReps()) + "_" + String
+                            .valueOf(System.currentTimeMillis() / 100), toWrite, false);
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
             throw new RuntimeException(e);
         }
     }
 
-    private List<Double> getHigherCIParams(EvolutionaryGameDynamics dynamics) {
+    protected final void parseDynamicsAndAddToResults(double pricePoint,
+            ConfigurableGameDirector director, List<CsvResultWriter.WgmfDynamicsResults> results,
+            EgtResultParser egtResultParser) {
+        EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
+                .from(director.getResults().getResults());
+        double[] eqnParams = dynamics.getDynamicEquationFactors().stream()
+                .mapToDouble(Double::doubleValue).toArray();
+        double[] lowerCI = getLowerCIParams(dynamics).stream()
+                .mapToDouble(Double::doubleValue).toArray();
+        double[] higherCI = getHigherCIParams(dynamics).stream()
+                .mapToDouble(Double::doubleValue).toArray();
+        double[] fixedPoints = egtResultParser
+                .findFixedPointForDynEquationParams(eqnParams);
+        double[] fixedPointsLower = egtResultParser
+                .findFixedPointForDynEquationParams(lowerCI);
+        double[] fixedPointsHigher = egtResultParser
+                .findFixedPointForDynEquationParams(higherCI);
+        logger.warn("Results for pricepoint {}:", pricePoint);
+        logger.warn("Dynamics equation params: {}",
+                director.getDynamicEquationArguments());
+        logger.warn("Phase plot fixed points found at: {}", Arrays.toString(fixedPoints));
+        logger.warn("{} CI Lower bound Phase plot fixed points found at: {}",
+                CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsLower));
+        logger.warn("{} CI Upper bound Phase plot fixed points found at: {}",
+                CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
+        String[] splitted = DATAFILE.split("/");
+        results.add(CsvResultWriter.WgmfDynamicsResults
+                .create(getnAgents(), getnReps(), splitted[splitted.length - 1],
+                        pricePoint,
+                        fixedPoints,
+                        fixedPointsLower,
+                        fixedPointsHigher, eqnParams, lowerCI, higherCI,
+                        CI_LEVEL.getConfidenceLevel()));
+    }
+
+    protected static final List<Double> getHigherCIParams(EvolutionaryGameDynamics dynamics) {
         return getGenericCIParams(dynamics, ci -> ci.getUpperBound(), ci -> ci.getLowerBound());
     }
 
-    private List<Double> getLowerCIParams(EvolutionaryGameDynamics dynamics) {
+    protected static final List<Double> getLowerCIParams(EvolutionaryGameDynamics dynamics) {
         return getGenericCIParams(dynamics, ci -> ci.getLowerBound(), ci -> ci.getUpperBound());
     }
 
-    private List<Double> getGenericCIParams(EvolutionaryGameDynamics dynamics,
+    private static List<Double> getGenericCIParams(EvolutionaryGameDynamics dynamics,
             ToDoubleFunction<ConfidenceInterval> first, ToDoubleFunction<ConfidenceInterval> last) {
         List<ConfidenceInterval> cis = dynamics.getConfidenceIntervals(CI_LEVEL);
         checkArgument(!cis.isEmpty(), "Dynamics should not be empty.");
@@ -184,5 +192,25 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         }
         toRet.add(last.applyAsDouble(cis.get(cis.size() - 1)));
         return toRet;
+    }
+
+    protected double getMinPrice() {
+        return minPrice;
+    }
+
+    protected double getMaxPrice() {
+        return maxPrice;
+    }
+
+    protected double getPriceStep() {
+        return priceStep;
+    }
+
+    protected int getnAgents() {
+        return nAgents;
+    }
+
+    protected int getnReps() {
+        return nReps;
     }
 }

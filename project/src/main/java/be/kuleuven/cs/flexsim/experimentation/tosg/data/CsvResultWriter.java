@@ -19,7 +19,6 @@ public class CsvResultWriter {
     //Delimiter used in CSV file
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final char DELIMITER = ';';
-    private static final boolean APPEND = true;
 
     //CSV file header
     private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
@@ -27,12 +26,15 @@ public class CsvResultWriter {
             "lower bound fixed points", "upper bound fixed points", "data file",
             "median eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level" };
 
-    public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results) {
+    public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results,
+            boolean append) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR)
                 .withDelimiter(DELIMITER);
-        try (FileWriter fileWriter = new FileWriter(fileName, APPEND)) {
+        try (FileWriter fileWriter = new FileWriter(fileName, append)) {
             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, csvFileFormat);
-            csvPrinter.printRecord(FILE_HEADER);
+            if (!append) {
+                csvPrinter.printRecord(FILE_HEADER);
+            }
             for (WgmfDynamicsResults res : results) {
                 csvPrinter.printRecord(res.getValues());
             }
