@@ -9,6 +9,8 @@ import org.n52.matlab.control.MatlabProxyFactoryOptions;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Result parser that can produce fixed point of equations using Matlab and evolutionary game
  * theory principles.
@@ -50,15 +52,27 @@ public class EgtResultParser implements AutoCloseable {
      *
      * @param dynParams The parameters for building the differential equations.
      * @return the array of fixed points.
-     * @throws IllegalStateException If an exception occurs when calling the ML code.
+     * @throws IllegalStateException    If an exception occurs when calling the ML code.
+     * @throws IllegalArgumentException If dynParams is empty.
      */
     public double[] findFixedPointForDynEquationParams(double[] dynParams) {
+        checkArgument(dynParams.length > 0, "Params should not be empty.");
         try {
             getProxy().setVariable("PARAMS", dynParams);
             getProxy().eval("RES = solveN(PARAMS);");
             double[] res = (double[]) getProxy().getVariable("RES");
+
             if (res.length == 0) {
-                return new double[] { dynParams[0] < dynParams[dynParams.length - 1] ? 1 : 0 };
+                double ac1 = dynParams[0];
+                double ac2 = dynParams[dynParams.length - 1];
+                for (int i = 1; i < dynParams.length - 1; i++) {
+                    if (i % 2 != 0) {
+                        ac1 += dynParams[i];
+                    } else {
+                        ac2 += dynParams[i];
+                    }
+                }
+                return new double[] { ac1 < ac2 ? 0 : 1 };
             }
             return res;
         } catch (MatlabInvocationException e) {
