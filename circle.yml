@@ -7,12 +7,12 @@ dependencies:
 test:
   override:
       - mvn verify 
-  post:
-      - mvn jacoco:report
-      - curl http://www.jpm4j.org/install/script > jpmInstall.sh
-      - sudo sh jpmInstall.sh
-      - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
-      - codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml --projectToken d0c6fa1f55764d958a2c161ea84ee58b
+#  post:
+#      - mvn jacoco:report
+#      - curl http://www.jpm4j.org/install/script > jpmInstall.sh
+#      - sudo sh jpmInstall.sh
+#      - sudo jpm install com.codacy:codacy-coverage-reporter:assembly
+#      - codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml --projectToken d0c6fa1f55764d958a2c161ea84ee58b
 general:
   branches:
       only:
