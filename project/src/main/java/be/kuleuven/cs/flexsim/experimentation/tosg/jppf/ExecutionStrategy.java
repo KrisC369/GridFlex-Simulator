@@ -34,12 +34,16 @@ enum ExecutionStrategy {
     LOCAL((o) -> (GameInstanceConfiguration) ((Future<?>) o).get());
 
     ExperimentRunner getRunner(WgmfGameParams params, String paramString) {
+        return getRunner(params, paramString, "PocJob");
+    }
+
+    ExperimentRunner getRunner(WgmfGameParams params, String paramString, String jobName) {
         ExperimentRunner toRet;
         switch (this) {
         case REMOTE:
             Map<String, Object> data = Maps.newLinkedHashMap();
             data.put(paramString, params);
-            toRet = RemoteRunners.createDefaultBlockedJPPFRunner("PocJob", data);
+            toRet = RemoteRunners.createDefaultBlockedJPPFRunner(jobName, data);
             break;
         case LOCAL:
             toRet = LocalRunners.createOSTunedMultiThreadedRunner();

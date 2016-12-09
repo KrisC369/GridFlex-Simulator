@@ -19,6 +19,7 @@ public class CsvResultWriter {
     //Delimiter used in CSV file
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final char DELIMITER = ';';
+    private static final boolean APPEND = true;
 
     //CSV file header
     private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
@@ -29,7 +30,7 @@ public class CsvResultWriter {
     public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR)
                 .withDelimiter(DELIMITER);
-        try (FileWriter fileWriter = new FileWriter(fileName)) {
+        try (FileWriter fileWriter = new FileWriter(fileName, APPEND)) {
             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, csvFileFormat);
             csvPrinter.printRecord(FILE_HEADER);
             for (WgmfDynamicsResults res : results) {
