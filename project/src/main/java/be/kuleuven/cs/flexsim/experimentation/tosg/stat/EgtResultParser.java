@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.stat;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.n52.matlab.control.MatlabConnectionException;
 import org.n52.matlab.control.MatlabInvocationException;
 import org.n52.matlab.control.MatlabProxy;
@@ -20,8 +19,6 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class EgtResultParser implements AutoCloseable {
     private static final boolean HIDDEN = true;
     private static final boolean REUSE_PREVIOUS = true;
-    @Nullable
-    private final String ml_location;
     private final AtomicReference<MatlabProxy> proxy = new AtomicReference<>();
 
     /**
@@ -31,9 +28,8 @@ public class EgtResultParser implements AutoCloseable {
      * @throws IllegalStateException If the matlab connection proxy cannot be made.
      */
     public EgtResultParser(String pathToML) {
-        this.ml_location = pathToML;
         MatlabProxyFactoryOptions options = new MatlabProxyFactoryOptions.Builder()
-                .setUsePreviouslyControlledSession(REUSE_PREVIOUS).setMatlabLocation(ml_location)
+                .setUsePreviouslyControlledSession(REUSE_PREVIOUS).setMatlabLocation(pathToML)
                 .setHidden(HIDDEN).build();
         try {
             proxy.set(new MatlabProxyFactory(options).getProxy());

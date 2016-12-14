@@ -30,7 +30,7 @@ public abstract class ImbalancePriceInputData implements Serializable {
      * Load both defined profiles from resource file.
      *
      * @param filename the name of the resource (file) to load from.
-     * @return
+     * @return a data value class.
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */

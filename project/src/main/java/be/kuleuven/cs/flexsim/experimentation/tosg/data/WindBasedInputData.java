@@ -30,7 +30,7 @@ public abstract class WindBasedInputData implements Serializable {
      * Load both defined profiles from resource file.
      *
      * @param filename the name of the resource (file) to load from.
-     * @return
+     * @return An input data value class.
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */
@@ -42,7 +42,7 @@ public abstract class WindBasedInputData implements Serializable {
      * Load both defined profiles from resource file.
      *
      * @param filename the name of the resource (file) to load from.
-     * @return
+     * @return An input data value class.
      * @throws IOException           If reading from the file is not possible.
      * @throws FileNotFoundException If the file with that name cannot be found.
      */

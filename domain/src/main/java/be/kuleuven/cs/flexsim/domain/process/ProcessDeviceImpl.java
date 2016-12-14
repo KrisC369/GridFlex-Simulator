@@ -153,7 +153,7 @@ class ProcessDeviceImpl implements ProcessDevice {
         return this;
     }
 
-    private final class UpFlexVisitor implements WorkstationVisitor {
+    private static final class UpFlexVisitor implements WorkstationVisitor {
 
         private void logDualModeHigh(final DualModeWorkstation ws) {
             if (logger.isDebugEnabled()) {
@@ -188,7 +188,7 @@ class ProcessDeviceImpl implements ProcessDevice {
         }
     }
 
-    private final class DownFlexVisitor implements WorkstationVisitor {
+    private static final class DownFlexVisitor implements WorkstationVisitor {
 
         private void logDualModeLow(final DualModeWorkstation ws) {
             if (logger.isDebugEnabled()) {

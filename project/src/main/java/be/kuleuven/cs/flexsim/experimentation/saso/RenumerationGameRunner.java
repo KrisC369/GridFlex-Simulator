@@ -40,6 +40,36 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
     }
 
     /**
+     * Runs some experiments as a PoC.
+     *
+     * @param args commandline args.
+     */
+    public static void main(final String[] args) {
+        if (args.length == 0) {
+            new RenumerationGameRunner(1, 8).execute();
+        } else if (args.length == 1) {
+            try {
+                final int agents = Integer.parseInt(args[0]);
+                new RenumerationGameRunner(200, agents).execute();
+            } catch (final RuntimeException e) {
+                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                        .error("Unparseable cl parameters passed");
+                throw e;
+            }
+        } else if (args.length == 2) {
+            try {
+                final int agents = Integer.parseInt(args[1]);
+                final int reps = Integer.parseInt(args[0]);
+                new RenumerationGameRunner(reps, agents).execute();
+            } catch (final RuntimeException e) {
+                LoggerFactory.getLogger(RenumerationGameRunner.class)
+                        .error("Unparseable cl parameters passed");
+                throw e;
+            }
+        }
+    }
+
+    /**
      * Main start hook for these experimentations.
      */
     @Override
@@ -89,16 +119,6 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
         dumpYamlResults();
     }
 
-    private void dumpYamlResults() {
-        final DumperOptions options = new DumperOptions();
-        options.setExplicitStart(true);
-        options.setAllowReadOnlyProperties(true);
-        final Yaml yaml = new Yaml(options);
-        final StringWriter writer = new StringWriter();
-        yaml.dumpAll(results.iterator(), writer);
-        LoggerFactory.getLogger("YAML").info(writer.toString());
-    }
-
     private List<ExperimentAtom> adapt(final GameDirector<Site, BRPAggregator> dir) {
         final List<ExperimentAtom> experiments = Lists.newArrayList();
         for (final Playable p : dir.getPlayableVersions()) {
@@ -123,40 +143,20 @@ public class RenumerationGameRunner extends RetributionFactorSensitivityRunner {
         return experiments;
     }
 
+    private void dumpYamlResults() {
+        final DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        options.setAllowReadOnlyProperties(true);
+        final Yaml yaml = new Yaml(options);
+        final StringWriter writer = new StringWriter();
+        yaml.dumpAll(results.iterator(), writer);
+        LoggerFactory.getLogger("YAML").info(writer.toString());
+    }
+
     private void printProgress(final int progressCounter) {
         final StringBuilder b = new StringBuilder(25);
         b.append("Simulating instance: ").append(progressCounter).append("/")
                 .append(factor * factor * repititions * totalCombinations);
         logger.warn(b.toString());
-    }
-
-    /**
-     * Runs some experiments as a PoC.
-     *
-     * @param args commandline args.
-     */
-    public static void main(final String[] args) {
-        if (args.length == 0) {
-            new RenumerationGameRunner(1, 8).execute();
-        } else if (args.length == 1) {
-            try {
-                final int agents = Integer.parseInt(args[0]);
-                new RenumerationGameRunner(200, agents).execute();
-            } catch (final RuntimeException e) {
-                LoggerFactory.getLogger(RenumerationGameRunner.class)
-                        .error("Unparseable cl parameters passed");
-                throw e;
-            }
-        } else if (args.length == 2) {
-            try {
-                final int agents = Integer.parseInt(args[1]);
-                final int reps = Integer.parseInt(args[0]);
-                new RenumerationGameRunner(reps, agents).execute();
-            } catch (final RuntimeException e) {
-                LoggerFactory.getLogger(RenumerationGameRunner.class)
-                        .error("Unparseable cl parameters passed");
-                throw e;
-            }
-        }
     }
 }

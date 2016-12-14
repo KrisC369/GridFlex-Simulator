@@ -26,8 +26,7 @@ public class ExperimentRunner1 extends ExperimentRunnerAllRes {
      * @param args Standard in args.
      */
     public static void main(final String[] args) {
-        final ExpGenerator gen = (reps, agents,
-                allowed) -> new ExperimentRunner1(reps, agents, allowed);
+        final ExpGenerator gen = ExperimentRunner1::new;
         parseInput(gen, args, DEFAULT_N_REPITITIONS, ALLOWED_EXCESS);
     }
 

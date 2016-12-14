@@ -32,12 +32,12 @@
             <artifactId>flexsim-example</artifactId>
             <version>0.1.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>junit</groupId>-->
+            <!--<artifactId>junit</artifactId>-->
+            <!--<version>4.11</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -52,10 +52,10 @@
             <groupId>it.unimi.dsi</groupId>
             <artifactId>fastutil</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.jdt</groupId>
-            <artifactId>org.eclipse.jdt.annotation</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.eclipse.jdt</groupId>-->
+            <!--<artifactId>org.eclipse.jdt.annotation</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>flexsim-solve</artifactId>
@@ -122,7 +122,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunner
+                                be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunnerVariableDistributionCosts
                             </mainClass>
                         </manifest>
                     </archive>

@@ -22,8 +22,6 @@ import java.io.IOException;
  */
 public class HeuristicSolverIO implements SolutionFileIO {
     private static Logger logger = LoggerFactory.getLogger(HeuristicSolverIO.class);
-    private HeuristicSolver solver;
-    private FlexAllocProblemContext context;
     private FlexibilityProvider first;
     private FlexibilityProvider second;
     private CongestionProfile profile;
@@ -40,25 +38,27 @@ public class HeuristicSolverIO implements SolutionFileIO {
 
     @Override
     public Allocation read(File file) {
+        HeuristicSolver solver;
+        FlexAllocProblemContext context;
         Allocation readCase = null;
         double v1 = 1000;
         double v2 = 800;
-        if(file.getPath().toString().contains("model_a1_2")){
-            v1= 300;
-            v2 =600;
-        }else if(file.getPath().toString().contains("model_a1_3")){
-            v1=1400;
-            v2=2000;
+        if (file.getPath().toString().contains("model_a1_2")) {
+            v1 = 300;
+            v2 = 600;
+        } else if (file.getPath().toString().contains("model_a1_3")) {
+            v1 = 1400;
+            v2 = 2000;
         }
         try {
             this.profile = CongestionProfile.createFromCSV(
                     "be/kuleuven/cs/flexsim/experimentation/data/2kwartOpEnNeer.csv", "verlies aan "
-                    + "energie");
+                            + "energie");
             first = new FlexProvider(v1,
                     HourlyFlexConstraints.R3DP);
             second = new FlexProvider(v2,
                     HourlyFlexConstraints.R3DP);
-            this.context = new FlexAllocProblemContext() {
+            context = new FlexAllocProblemContext() {
 
                 @Override
                 public Iterable<FlexibilityProvider> getProviders() {
@@ -70,7 +70,7 @@ public class HeuristicSolverIO implements SolutionFileIO {
                     return profile;
                 }
             };
-            this.solver = HeuristicSolver.createFullSatHeuristicSolver(context);
+            solver = HeuristicSolver.createFullSatHeuristicSolver(context);
         } catch (IOException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

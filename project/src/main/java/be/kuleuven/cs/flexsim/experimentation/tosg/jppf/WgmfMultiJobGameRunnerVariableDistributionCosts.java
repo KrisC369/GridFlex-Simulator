@@ -14,6 +14,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections15.map.UnmodifiableMap;
 import org.slf4j.Logger;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,9 +29,9 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
         extends WgmfGameRunnerVariableDistributionCosts {
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableDistributionCosts.class);
-
     private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
     private final List<CsvResultWriter.WgmfDynamicsResults> writableResults;
+    private final String resultFileName;
 
     /**
      * Public constructor from params object and exec strategy.
@@ -38,12 +39,13 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
      * @param expP  The experiment parameters.
      * @param strat The execution strategy.
      */
-    public WgmfMultiJobGameRunnerVariableDistributionCosts(ExperimentParams expP) {
+    private WgmfMultiJobGameRunnerVariableDistributionCosts(ExperimentParams expP) {
         super(expP);
-        ConfigurableGame game = new ConfigurableGame(expP.getNAgents(),
-                ACTION_SIZE, expP.getNRepititions());
         directorToTasks = LinkedListMultimap.create();
         writableResults = Lists.newArrayList();
+        resultFileName =
+                RES_OUTPUT_FILE + String.valueOf(getnAgents()) + "R" + String.valueOf(getnReps())
+                        + "_" + String.valueOf(System.currentTimeMillis() / 100) + RES_EXTENSION;
     }
 
     /**
@@ -53,11 +55,12 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
      */
     public static void main(String[] args) {
         startExecution(args,
-                (params) -> new WgmfMultiJobGameRunnerVariableDistributionCosts(params));
+                WgmfMultiJobGameRunnerVariableDistributionCosts::new);
     }
 
     @Override
     protected void execute(WgmfGameParams params) {
+        CsvResultWriter.writeCsvFile(resultFileName, Collections.emptyList(), false);
         for (double price = getMinPrice(); price <= getMaxPrice(); price += getPriceStep()) {
             List<WgmfJppfTask> alltasks = Lists.newArrayList();
 
@@ -88,9 +91,12 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
 
     }
 
-    protected void processSingleResult(Double price, ConfigurableGameDirector d) {
+    private void processSingleResult(Double price, ConfigurableGameDirector d) {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             parseDynamicsAndAddToResults(price, d, writableResults, egtResultParser);
+            CsvResultWriter.writeCsvFile(resultFileName,
+                    writableResults.subList(writableResults.size() - 1, writableResults.size()),
+                    true);
         } catch (Exception e) {
             logger.error("Something went wrong parsing the results", e);
             throw new RuntimeException(e);
@@ -99,9 +105,6 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
 
     @Override
     protected void processResults() {
-        CsvResultWriter.writeCsvFile(
-                RES_OUTPUT_FILE + String.valueOf(getnAgents()) + "R" + String.valueOf(getnReps())
-                        + "_" + String.valueOf(System.currentTimeMillis() / 100) + RES_EXTENSION,
-                writableResults, false);
+        CsvResultWriter.writeCsvFile(resultFileName + ".whole", writableResults, false);
     }
 }

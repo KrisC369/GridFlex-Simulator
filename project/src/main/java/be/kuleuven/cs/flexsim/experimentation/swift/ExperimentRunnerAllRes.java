@@ -207,24 +207,23 @@ public class ExperimentRunnerAllRes implements ExecutableExperiment {
     }
 
     protected void logResults() {
-        final StringBuilder builder = new StringBuilder(200);
-        builder.append("BEGINRESULT:\n").append("Res1=").append(mainRes1)
-                .append("\n")
-                .append("Res2=").append(mainRes2).append("\n")
-                .append("ActRes1=").append(actRes1).append("\n")
-                .append("ActRes2=").append(actRes2).append("\n")
-                .append("ActEffRes1=").append(actEffRes1).append("\n")
-                .append("ActEffRes2=").append(actEffRes2).append("\n")
-                .append("SolvRes1=").append(solvRes1).append("\n")
-                .append("SolvRes2=").append(solvRes2).append("\n")
-                .append("RemediedRes1=").append(remediedCong1).append("\n")
-                .append("RemediedRes2=").append(remediedCong2).append("\n")
-                .append("Not meeting 40 acts: ")
-                .append(String.valueOf(n - mainRes1.size())).append("\n")
-                .append("Not meeting 40 acts: ")
-                .append(String.valueOf(n - mainRes2.size())).append("\n")
-                .append("ENDRESULT:\n");
-        LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER).info(builder.toString());
+        final String builder = "BEGINRESULT:\n" + "Res1=" + mainRes1 +
+                "\n" +
+                "Res2=" + mainRes2 + "\n" +
+                "ActRes1=" + actRes1 + "\n" +
+                "ActRes2=" + actRes2 + "\n" +
+                "ActEffRes1=" + actEffRes1 + "\n" +
+                "ActEffRes2=" + actEffRes2 + "\n" +
+                "SolvRes1=" + solvRes1 + "\n" +
+                "SolvRes2=" + solvRes2 + "\n" +
+                "RemediedRes1=" + remediedCong1 + "\n" +
+                "RemediedRes2=" + remediedCong2 + "\n" +
+                "Not meeting 40 acts: " +
+                String.valueOf(n - mainRes1.size()) + "\n" +
+                "Not meeting 40 acts: " +
+                String.valueOf(n - mainRes2.size()) + "\n" +
+                "ENDRESULT:\n";
+        LoggerFactory.getLogger(RESULT_CONSOLE_LOGGER).info(builder);
     }
 
     protected synchronized void addMainResult(final String label, final double eff) {

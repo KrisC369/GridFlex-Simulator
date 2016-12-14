@@ -29,7 +29,7 @@ import java.util.Map;
 public class WhoGetsMyFlexGame extends
                                AbstractGameInstance<FlexibilityProvider, FlexibilityUtiliser> {
 
-    public static final int TO_LONG_SCALE = 100;
+    private static final int TO_LONG_SCALE = 100;
 
     /**
      * Constructor callable from extensions.

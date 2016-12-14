@@ -118,10 +118,9 @@ public class RetributionFactorSensitivityRunner {
     }
 
     private void printProgress(final int progressCounter) {
-        final StringBuilder b = new StringBuilder();
-        b.append("Simulating instance: ").append(progressCounter).append("/")
-                .append(factor * repititions * totalCombinations);
-        logger.warn(b.toString());
+        final String b = "Simulating instance: " + progressCounter + "/" +
+                factor * repititions * totalCombinations;
+        logger.warn(b);
     }
 
     /**

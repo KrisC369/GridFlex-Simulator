@@ -100,7 +100,7 @@ public abstract class Aggregator implements SimulationComponent {
                 t, target);
     }
 
-    private class AggregationDispatch implements AggregationContext {
+    private static class AggregationDispatch implements AggregationContext {
 
         private void logCurtail(final FlexTuple tt) {
             LoggerFactory.getLogger(Aggregator.class)

@@ -3,12 +3,14 @@ package be.kuleuven.cs.flexsim.solvers.heuristic.domain.comparators;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.ActivationAssignment;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class ActivationAssignmentDifficultyComparator implements Comparator<ActivationAssignment> {
+public class ActivationAssignmentDifficultyComparator
+        implements Comparator<ActivationAssignment>, Serializable {
     @Override
     public int compare(ActivationAssignment o1, ActivationAssignment o2) {
         return new CompareToBuilder()

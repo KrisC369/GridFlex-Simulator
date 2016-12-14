@@ -29,7 +29,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
     /**
      * Default constructor.
      *
-     * @param instanceConfig
+     * @param instanceConfig The instance config value for this task.
      * @param s              The key for which to query the data provider for the instance
      *                       parameter data.
      */

@@ -56,8 +56,6 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         super(expP.isRemoteExecutable() ? REMOTE : LOCAL);
         this.nAgents = expP.getNAgents();
         this.nReps = expP.getNRepititions();
-        ConfigurableGame game = new ConfigurableGame(expP.getNAgents(),
-                ACTION_SIZE, expP.getNRepititions());
         priceToDirector = Maps.newLinkedHashMap();
         this.minPrice = expP.getP1Start();
         this.priceStep = expP.getP1Step();
@@ -70,14 +68,13 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
      * @param args The arguments passed.
      */
     public static void main(String[] args) {
-        startExecution(args, (params) -> new WgmfGameRunnerVariableDistributionCosts(params));
+        startExecution(args, WgmfGameRunnerVariableDistributionCosts::new);
     }
 
     @Override
     protected void execute(WgmfGameParams params) {
         List<WgmfJppfTask> alltasks = Lists.newArrayList();
-        for (double p = getMinPrice(); p <= getMaxPrice(); p += getPriceStep()) {
-            final double price = p;
+        for (double price = getMinPrice(); price <= getMaxPrice(); price += getPriceStep()) {
             ConfigurableGame game = new ConfigurableGame(getnAgents(),
                     ACTION_SIZE, getnReps());
             ConfigurableGameDirector director = new ConfigurableGameDirector(game);
@@ -170,11 +167,13 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     }
 
     protected static final List<Double> getHigherCIParams(EvolutionaryGameDynamics dynamics) {
-        return getGenericCIParams(dynamics, ci -> ci.getUpperBound(), ci -> ci.getLowerBound());
+        return getGenericCIParams(dynamics, ConfidenceInterval::getUpperBound,
+                ConfidenceInterval::getLowerBound);
     }
 
     protected static final List<Double> getLowerCIParams(EvolutionaryGameDynamics dynamics) {
-        return getGenericCIParams(dynamics, ci -> ci.getLowerBound(), ci -> ci.getUpperBound());
+        return getGenericCIParams(dynamics, ConfidenceInterval::getLowerBound,
+                ConfidenceInterval::getUpperBound);
     }
 
     private static List<Double> getGenericCIParams(EvolutionaryGameDynamics dynamics,

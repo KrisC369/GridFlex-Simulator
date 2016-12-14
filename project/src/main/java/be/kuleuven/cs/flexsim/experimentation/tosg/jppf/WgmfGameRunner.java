@@ -51,7 +51,7 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
      * @param args The arguments passed.
      */
     public static void main(String[] args) {
-        startExecution(args, (params) -> new WgmfGameRunner(params));
+        startExecution(args, WgmfGameRunner::new);
     }
 
     @Override
