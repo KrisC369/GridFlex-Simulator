@@ -58,7 +58,7 @@ public class WorkstationTest {
         pushResource(3);
         multiTick(iew, 5);
         assertEquals(11, iew.getTotalConsumption(), DELTA);// 1:in + 1:out +
-                                                           // 3*3:cons
+        // 3*3:cons
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
@@ -67,7 +67,7 @@ public class WorkstationTest {
         pushResource(1);
         multiTick(iew, 3);
         assertEquals(5, iew.getTotalConsumption(), DELTA); // 1:in + 1:out +
-                                                           // 1*3:cons
+        // 1*3:cons
         assertEquals(1, iew.getProcessedItemsCount());
     }
 
@@ -593,8 +593,9 @@ public class WorkstationTest {
         assertTrue(w.isIdle());
     }
 
-    private void multiTick(Workstation s, int times) {
-        for (; times > 0; times--) {
+    private void multiTick(Workstation s, int timesArg) {
+
+        for (int times = timesArg; times > 0; times--) {
             s.tick(0);
             s.afterTick(0);
         }

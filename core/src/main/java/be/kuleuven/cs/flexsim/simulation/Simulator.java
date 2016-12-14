@@ -193,11 +193,7 @@ public final class Simulator implements SimulationContext {
     }
 
     private boolean shouldRun() {
-        if (getClock().getTimeCount() >= getDuration()) {
-            return false;
-        }
-        return true;
-
+        return getClock().getTimeCount() < getDuration();
     }
 
     private void simloop() {
