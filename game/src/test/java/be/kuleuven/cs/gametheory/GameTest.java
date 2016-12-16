@@ -94,8 +94,8 @@ public class GameTest {
                     }
 
                     @Override
-                    public long getExternalityValue() {
-                        return 0;
+                    public double getExternalityValue() {
+                        return 0d;
                     }
                 };
             }

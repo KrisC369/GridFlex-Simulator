@@ -97,8 +97,7 @@ public class ConfigurableGame
 
     @Override
     protected GameResult<HeuristicSymmetricPayoffMatrix> getResults() {
-        final GameResult result = GameResult
-                .create(getPayoffs())
+        final GameResult result = GameResult.create(getPayoffs())
                 .withDescription("Reps", String.valueOf(reps))
                 .withDescription("agents", String.valueOf(agents))
                 .withDescription("actions", String.valueOf(actions));

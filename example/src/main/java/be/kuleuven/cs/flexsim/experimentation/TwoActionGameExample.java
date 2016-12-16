@@ -27,13 +27,10 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
     /**
      * Default constructor for this game with two actions.
      *
-     * @param seed
-     *            The seed for this experiment.
-     * @param baselineConsumption
-     *            The baseline for the sites consumption. This is used to base
-     *            production params on.
-     * @param factor
-     *            The retribution factor.
+     * @param seed                The seed for this experiment.
+     * @param baselineConsumption The baseline for the sites consumption. This is used to base
+     *                            production params on.
+     * @param factor              The retribution factor.
      */
     public TwoActionGameExample(final int seed, final int baselineConsumption,
             final double factor) {
@@ -51,11 +48,9 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
     /**
      * Default constructor for this game with two actions.
      *
-     * @param seed
-     *            The seed for this experiment.
-     * @param baselineConsumption
-     *            The baseline for the sites consumption. This is used to base
-     *            production params on.
+     * @param seed                The seed for this experiment.
+     * @param baselineConsumption The baseline for the sites consumption. This is used to base
+     *                            production params on.
      */
     public TwoActionGameExample(final int seed, final int baselineConsumption) {
         this(seed, baselineConsumption, 1);
@@ -106,7 +101,7 @@ public class TwoActionGameExample extends AggregationGame<Site, Aggregator> {
     }
 
     @Override
-    public long getExternalityValue() {
-        return 0;
+    public double getExternalityValue() {
+        return 0d;
     }
 }

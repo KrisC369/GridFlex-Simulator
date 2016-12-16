@@ -55,7 +55,7 @@ public abstract class AbstractGameInstance<N, K> implements GameInstance<N, K> {
         for (Map.Entry<N, Double> e : this.getPayOffs().entrySet()) {
             results.put(agents.indexOf(e.getKey()), e.getValue());
         }
-        return GameInstanceResult.create(this.config, results);
+        return GameInstanceResult.create(this.config, results, getExternalityValue());
     }
 
     /**

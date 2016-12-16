@@ -31,6 +31,7 @@ public class SolutionResultAdapter {
      * @return The results.
      */
     public SolutionResults getResults() {
-        return SolutionResults.create(getAllocationMaps(), target.getObjective(), 4);
+        return SolutionResults.create(getAllocationMaps(), target.getObjective(),
+                target.getObjectiveRelativeToUnconstrainedOptimal(), 4);
     }
 }

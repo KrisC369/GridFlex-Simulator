@@ -93,9 +93,9 @@ public class WhoGetsMyFlexGame extends
     }
 
     @Override
-    public long getExternalityValue() {
-        return (long) getActionSet().stream().mapToDouble(a -> a.getSolution().getObjectiveValue())
-                .sum();
+    public double getExternalityValue() {
+        return getActionSet().stream()
+                .mapToDouble(a -> a.getSolution().getNormalizedObjectiveValue()).sum();
     }
 
     @Override

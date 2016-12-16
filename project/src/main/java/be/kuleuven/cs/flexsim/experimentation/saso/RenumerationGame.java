@@ -85,7 +85,7 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
     }
 
     @Override
-    public long getExternalityValue() {
+    public double getExternalityValue() {
         return runningRemainingImbalance;
     }
 

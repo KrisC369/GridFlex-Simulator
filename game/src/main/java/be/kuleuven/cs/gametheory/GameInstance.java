@@ -55,5 +55,5 @@ public interface GameInstance<N, K> extends Playable {
      *
      * @return positive or negative externality for this game.
      */
-    long getExternalityValue();
+    double getExternalityValue();
 }
