@@ -10,6 +10,7 @@ import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
+import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections15.map.UnmodifiableMap;
@@ -35,8 +36,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRunner {
     private static final Logger logger = getLogger(WgmfGameRunnerVariableDistributionCosts.class);
     public static final String PRICE_PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
-    public static final EvolutionaryGameDynamics.ConfidenceLevel CI_LEVEL = EvolutionaryGameDynamics
-            .ConfidenceLevel._95pc;
+    public static final ConfidenceLevel CI_LEVEL = ConfidenceLevel._95pc;
     protected static final String RES_OUTPUT_FILE = "res/res_outputA";
     protected static final String RES_EXTENSION = ".csv";
     private final Map<Double, ConfigurableGameDirector> priceToDirector;
@@ -136,6 +136,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
             EgtResultParser egtResultParser) {
         EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
                 .from(director.getResults().getResults());
+        ConfidenceInterval ciExt = director.getResults().getResults().getExternalityCI(CI_LEVEL);
         double[] eqnParams = dynamics.getDynamicEquationFactors().stream()
                 .mapToDouble(Double::doubleValue).toArray();
         double[] lowerCI = getLowerCIParams(dynamics).stream()
@@ -163,7 +164,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                         fixedPoints,
                         fixedPointsLower,
                         fixedPointsHigher, eqnParams, lowerCI, higherCI,
-                        CI_LEVEL.getConfidenceLevel()));
+                        CI_LEVEL.getConfidenceLevel(), ciExt));
     }
 
     protected static final List<Double> getHigherCIParams(EvolutionaryGameDynamics dynamics) {

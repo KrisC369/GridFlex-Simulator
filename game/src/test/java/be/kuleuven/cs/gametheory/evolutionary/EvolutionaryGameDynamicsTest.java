@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 
 import java.util.List;
 
-import static be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics.ConfidenceLevel._90pc;
+import static be.kuleuven.cs.gametheory.stats.ConfidenceLevel._90pc;
 import static java.lang.StrictMath.sqrt;
 import static org.junit.Assert.assertEquals;
 

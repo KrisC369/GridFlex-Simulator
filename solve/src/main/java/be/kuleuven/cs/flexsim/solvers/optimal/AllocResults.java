@@ -29,6 +29,28 @@ public abstract class AllocResults {
     public abstract double getObjective();
 
     /**
+     * If the maximum unconstrained objective value is known, or can be computed, returns the
+     * percentage of this maximum achieved.
+     * Can be negative if not known.
+     *
+     * @return the relative percentage or negative if not known or relevant.
+     */
+    public abstract double getObjectiveRelativeToUnconstrainedOptimal();
+
+    /**
+     * Factory method.
+     *
+     * @param allocs      The allocation results.
+     * @param objective   The objective function value.
+     * @param relativeObj the relative obj value.
+     * @return A value object containing the results.
+     */
+    public static AllocResults create(final ListMultimap<FlexibilityProvider, Boolean> allocs,
+            final double objective, final double relativeObj) {
+        return new AutoValue_AllocResults(allocs, objective, relativeObj);
+    }
+
+    /**
      * Factory method.
      *
      * @param allocs    The allocation results.
@@ -37,7 +59,7 @@ public abstract class AllocResults {
      */
     public static AllocResults create(final ListMultimap<FlexibilityProvider, Boolean> allocs,
             final double objective) {
-        return new AutoValue_AllocResults(allocs, objective);
+        return new AutoValue_AllocResults(allocs, objective, -1d);
     }
 
 }

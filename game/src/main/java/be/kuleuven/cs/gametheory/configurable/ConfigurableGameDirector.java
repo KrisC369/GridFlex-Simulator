@@ -54,8 +54,7 @@ public class ConfigurableGameDirector
 
     private boolean crossoff(GameInstanceResult gir) {
         for (GameInstanceConfiguration gi : Sets.newConcurrentHashSet(getInternalPlayables())) {
-            if (gi.getAgentActionMap()
-                    .equals(gir.getGameInstanceConfig().getAgentActionMap())) {
+            if (gi.getAgentActionMap().equals(gir.getGameInstanceConfig().getAgentActionMap())) {
                 return getInternalPlayables().remove(gi);
             }
         }

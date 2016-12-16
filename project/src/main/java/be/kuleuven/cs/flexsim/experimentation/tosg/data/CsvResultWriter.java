@@ -4,6 +4,7 @@ import com.google.auto.value.AutoValue;
 import com.google.common.collect.Lists;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,8 @@ public class CsvResultWriter {
     private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
             "median fixed points",
             "lower bound fixed points", "upper bound fixed points", "data file",
-            "median eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level" };
+            "median eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level",
+            "Allocation efficiency" };
 
     public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results,
             boolean append) {
@@ -72,7 +74,9 @@ public class CsvResultWriter {
 
         public abstract double[] getUpperBoundDynEqnParams();
 
-        public abstract double ciLevel();
+        public abstract double getCiLevel();
+
+        public abstract ConfidenceInterval getAllocEff();
 
         public List getValues() {
             return Lists.newArrayList(getNAgents(), getRepititions(),
@@ -82,15 +86,16 @@ public class CsvResultWriter {
                     Arrays.toString(getUpperBoundCIFixedPoints()), getDataFileName(),
                     Arrays.toString(getMedianDynEqnParams()),
                     Arrays.toString(getLowerBoundDynEqnParams()),
-                    Arrays.toString(getUpperBoundDynEqnParams()), ciLevel());
+                    Arrays.toString(getUpperBoundDynEqnParams()), getCiLevel(),
+                    getAllocEff().toString());
         }
 
         public static WgmfDynamicsResults create(int n, int r, String data, double pp,
                 double[] median, double[] lower,
                 double[] upper, double[] medianEqn, double[] lowerEqn, double[] upperEqn,
-                double ciLevel) {
+                double ciLevel, ConfidenceInterval allocEff) {
             return new AutoValue_CsvResultWriter_WgmfDynamicsResults(n, r, data, pp, median, lower,
-                    upper, medianEqn, lowerEqn, upperEqn, ciLevel);
+                    upper, medianEqn, lowerEqn, upperEqn, ciLevel, allocEff);
         }
     }
 }

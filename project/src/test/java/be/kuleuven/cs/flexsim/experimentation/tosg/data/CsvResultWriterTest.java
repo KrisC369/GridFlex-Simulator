@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.data;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.junit.Test;
 
 import java.io.File;
@@ -21,7 +22,7 @@ public class CsvResultWriterTest {
         CsvResultWriter.WgmfDynamicsResults wgmfDynamicsResults = CsvResultWriter
                 .WgmfDynamicsResults
                 .create(2, 4, "TestData", pp, fixedPoints, fixedPoints, fixedPoints, fixedPoints,
-                        fixedPoints, fixedPoints, 0.99);
+                        fixedPoints, fixedPoints, 0.99, new ConfidenceInterval(0, 1, 0.95));
         List<CsvResultWriter.WgmfDynamicsResults> results = Lists
                 .newArrayList(wgmfDynamicsResults, wgmfDynamicsResults);
         CsvResultWriter.writeCsvFile(file, results, false);

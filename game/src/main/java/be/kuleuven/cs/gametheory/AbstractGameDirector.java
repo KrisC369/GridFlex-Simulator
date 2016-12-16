@@ -70,6 +70,7 @@ public class AbstractGameDirector<T extends Playable, I, R> {
      *
      * @return the results in string format.
      */
+    @Deprecated
     public String getDynamicEquationArguments() {
         return game.getDynamicsParametersString();
     }

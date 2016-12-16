@@ -24,6 +24,10 @@ public abstract class GameInstanceResult implements Serializable {
      */
     public abstract Map<Integer, Double> getPayoffs();
 
+    /**
+     * @return externality value.
+     */
+    public abstract double getExternalityValue();
 
     /**
      * Static factory method.
@@ -34,6 +38,19 @@ public abstract class GameInstanceResult implements Serializable {
      */
     public static GameInstanceResult create(GameInstanceConfiguration config,
             Map<Integer, Double> po) {
-        return new AutoValue_GameInstanceResult(config, po);
+        return new AutoValue_GameInstanceResult(config, po, 0);
+    }
+
+    /**
+     * Static factory method.
+     *
+     * @param config The configuration.
+     * @param po     The payoff mapping.
+     * @param ext    The externality value.
+     * @return a game instance result mapping.
+     */
+    public static GameInstanceResult create(GameInstanceConfiguration config,
+            Map<Integer, Double> po, double ext) {
+        return new AutoValue_GameInstanceResult(config, po, ext);
     }
 }

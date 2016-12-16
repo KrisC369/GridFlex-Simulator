@@ -1,9 +1,11 @@
 package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import com.google.common.collect.Maps;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -12,6 +14,7 @@ import java.util.Map.Entry;
 import java.util.Spliterator;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.lang.StrictMath.sqrt;
 
 /**
  * This class represents heuristic payoff tables or matrices. The heuristic part
@@ -33,6 +36,10 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
     private final Map<PayoffEntry, Integer> tableCount;
     private final long numberOfCombinations;
 
+    private final Mean externalityMean;
+    private final Variance externalityVariance;
+    private int externalitySamples;
+
     /**
      * Default constructor using the dimensions of the table. and having only
      * all multicombinations as entries.
@@ -48,6 +55,9 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         this.tableCount = Maps.newLinkedHashMap();
         this.numberOfCombinations = MathUtils.multiCombinationSize(actions,
                 agents);
+        this.externalityMean = new Mean();
+        this.externalityVariance = new Variance();
+        this.externalitySamples = 0;
     }
 
     /**
@@ -159,6 +169,41 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
             toRet[i] = vars[i].getResult();
         }
         return toRet;
+    }
+
+    /**
+     * Add externality value to accumulate basic statistics.
+     *
+     * @param value The externality value.
+     */
+    public void addExternalityValue(double value) {
+        this.externalityMean.increment(value);
+        this.externalityVariance.increment(value);
+        this.externalitySamples++;
+    }
+
+    double getExternalityMean() {
+        return externalityMean.getResult();
+    }
+
+    int getExternalitySamples() {
+        return externalitySamples;
+    }
+
+    double getExternalityVariance() {
+        return externalityVariance.getResult();
+    }
+
+    public ConfidenceInterval getExternalityCI(ConfidenceLevel level) {
+        double mean = getExternalityMean();
+        double std = Math.sqrt(getExternalitySamples());
+        int sampleSize = getExternalitySamples();
+        //hack to allow creating CI's
+        if (std == 0) {
+            std += 0.00001;
+        }
+        double error = level.getConfideneCoeff() * std / sqrt((double) sampleSize);
+        return new ConfidenceInterval(mean - error, mean + error, level.getConfidenceLevel());
     }
 
     @Override

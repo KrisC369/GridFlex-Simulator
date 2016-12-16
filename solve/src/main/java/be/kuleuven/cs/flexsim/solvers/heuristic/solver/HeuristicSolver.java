@@ -9,11 +9,13 @@ import be.kuleuven.cs.flexsim.solvers.heuristic.domain.Allocation;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.OptaFlexProvider;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.QHFlexibilityProvider;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
+import org.eclipse.jdt.annotation.Nullable;
 import org.optaplanner.core.api.solver.SolverFactory;
 import org.optaplanner.core.config.solver.SolverConfig;
 import org.optaplanner.core.config.solver.termination.TerminationCompositionStyle;
@@ -41,7 +43,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
     private static double FRACTION_OF_THEORETICAL_OPT = 0.90;
     private FlexAllocProblemContext context;
     private boolean fullSat;
-    private Allocation solvedAlloc;
+    @Nullable
+    private SolveResult solvedAllocResult;
     private static final Logger logger = LoggerFactory.getLogger(HeuristicSolver.class);
     private final long randomSeed;
 
@@ -102,22 +105,27 @@ public class HeuristicSolver implements Solver<AllocResults> {
             logger.debug("Starting search.", actConfig);
         }
         solver.solve(unsolvedAlloc);
-        this.solvedAlloc = (Allocation) solver.getBestSolution();
+        Allocation solvedAlloc = (Allocation) solver.getBestSolution();
+        double objValue = solvedAlloc.getResolvedCongestion();
+        double relative = objValue / sum;
+
         if (logger.isInfoEnabled()) {
-            double objValue = solvedAlloc.getResolvedCongestion();
             logger.info("Search ended with objective function result: {}.",
                     objValue);
             logger.info("Obj value percentage of theoretical max useful allocation: {}",
-                    objValue / sum);
+                    relative);
         }
+        solvedAllocResult = SolveResult.create(solvedAlloc, objValue, relative);
     }
 
     public void displayResult() {
-        System.out.println("\nSolved with value:" + toDisplayString(solvedAlloc));
+        System.out.println(
+                "\nSolved with value:" + toDisplayString(solvedAllocResult.getAllocation()));
     }
 
     @Override
     public AllocResults getSolution() {
+        Allocation solvedAlloc = solvedAllocResult.getAllocation();
         List<QHFlexibilityProvider> providers = solvedAlloc.getProviders();
         ListMultimap<FlexibilityProvider, Boolean> actMap = ArrayListMultimap
                 .create();
@@ -130,7 +138,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
             actMap.putAll(providers.get(i).getWrappedProvider(), toAdd);
         }
         if (solvedAlloc.getScore().isFeasible()) {
-            return AllocResults.create(actMap, solvedAlloc.getResolvedCongestion());
+            return AllocResults.create(actMap, solvedAlloc.getResolvedCongestion(),
+                    solvedAllocResult.getRelativeObj());
         } else {
             return AllocResults.INFEASIBLE;
         }
@@ -192,5 +201,18 @@ public class HeuristicSolver implements Solver<AllocResults> {
 
     public static HeuristicSolver createBestEffortHeuristicSolver(FlexAllocProblemContext context) {
         return new HeuristicSolver(context, false);
+    }
+
+    @AutoValue
+    static abstract class SolveResult {
+        abstract Allocation getAllocation();
+
+        abstract double getObjectiveValue();
+
+        abstract double getRelativeObj();
+
+        static SolveResult create(Allocation a, double obj, double rel) {
+            return new AutoValue_HeuristicSolver_SolveResult(a, obj, rel);
+        }
     }
 }
