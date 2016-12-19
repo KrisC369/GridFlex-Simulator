@@ -26,14 +26,15 @@
         <changeMoveSelector/>
         <localSearchType>TABU_SEARCH</localSearchType>
         <!--<acceptor>-->
-            <!--<solutionTabuSize>1000</solutionTabuSize>-->
+        <!--<solutionTabuSize>1000</solutionTabuSize>-->
         <!--</acceptor>-->
         <!--<forager>-->
-            <!--<acceptedCountLimit>1000</acceptedCountLimit>-->
+        <!--<acceptedCountLimit>1000</acceptedCountLimit>-->
         <!--</forager>-->
         <termination>
             <!--<terminationCompositionStyle>AND</terminationCompositionStyle>-->
-            <unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>
+            <!--<unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>-->
+            <stepCountLimit>1250</stepCountLimit>
         </termination>
     </localSearch>
 </solver>

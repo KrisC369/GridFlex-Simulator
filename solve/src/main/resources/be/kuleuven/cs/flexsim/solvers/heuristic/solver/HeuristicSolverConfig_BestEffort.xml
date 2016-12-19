@@ -33,7 +33,8 @@
         <!--</forager>-->
         <termination>
             <!--<terminationCompositionStyle>AND</terminationCompositionStyle>-->
-            <unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>
+            <!--<unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>-->
+            <stepCountLimit>1250</stepCountLimit>
         </termination>
     </localSearch>
 </solver>

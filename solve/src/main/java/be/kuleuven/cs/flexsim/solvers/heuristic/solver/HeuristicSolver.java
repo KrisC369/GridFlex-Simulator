@@ -74,7 +74,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
         solverConfig.setRandomSeed(randomSeed);
 
         //Termination rules.
-        solverConfig.getTerminationConfig().setMinutesSpentLimit(10L);
+        //        solverConfig.getTerminationConfig().setMinutesSpentLimit(10L);
+        //        solverConfig.getTerminationConfig().setStepCountLimit(500);
 
         double sum = Lists.newArrayList(context.getProviders()).stream()
                 .mapToDouble(p -> p.getFlexibilityActivationRate().getUp() * p
