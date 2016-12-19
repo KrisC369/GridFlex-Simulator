@@ -21,10 +21,8 @@ import java.util.stream.IntStream;
  * @param <K> The type of actions.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public class ConfigurableGame
-        extends
-        AbstractGame<GameInstanceConfiguration, GameInstanceResult,
-                HeuristicSymmetricPayoffMatrix> {
+public class ConfigurableGame extends AbstractGame<GameInstanceConfiguration, GameInstanceResult,
+        HeuristicSymmetricPayoffMatrix> {
     private final int agents;
     private final int actions;
     private final int reps;
@@ -92,6 +90,7 @@ public class ConfigurableGame
                 j++;
             }
             addPayoffEntry(values, entry);
+            getPayoffs().addExternalityValue(instance.getExternalityValue());
         }
     }
 
