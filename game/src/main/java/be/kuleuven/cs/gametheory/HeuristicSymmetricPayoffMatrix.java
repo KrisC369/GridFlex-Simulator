@@ -177,9 +177,11 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
      * @param value The externality value.
      */
     public void addExternalityValue(double value) {
-        this.externalityMean.increment(value);
-        this.externalityVariance.increment(value);
-        this.externalitySamples++;
+        if (!Double.isNaN(value)) {
+            this.externalityMean.increment(value);
+            this.externalityVariance.increment(value);
+            this.externalitySamples++;
+        }
     }
 
     double getExternalityMean() {

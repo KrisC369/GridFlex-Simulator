@@ -1,5 +1,7 @@
 package be.kuleuven.cs.gametheory;
 
+import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -152,5 +154,36 @@ public class HeuristicSymmetricPayoffMatrixTest {
         }
         assertFalse(this.table.toString().isEmpty());
         assertTrue(this.table.toString().contains(String.valueOf(valueL)));
+    }
+
+    @Test
+    public void testExternalityCI() {
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
+        //        System.out.println(ci);
+        assertTrue(ci.getLowerBound() > 10);
+        assertTrue(ci.getUpperBound() < 20);
+        assertEquals(14, ci.getLowerBound() + ((ci.getUpperBound() - ci.getLowerBound()) / 2d),
+                0.001);
+    }
+
+    @Test
+    public void testExternalityCINAN() {
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        table.addExternalityValue(0.0 / 0.0);
+        ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
+        System.out.println(ci);
+        assertTrue(ci.getLowerBound() > 10);
+        assertTrue(ci.getUpperBound() < 20);
+        assertEquals(14, ci.getLowerBound() + ((ci.getUpperBound() - ci.getLowerBound()) / 2d),
+                0.001);
     }
 }
