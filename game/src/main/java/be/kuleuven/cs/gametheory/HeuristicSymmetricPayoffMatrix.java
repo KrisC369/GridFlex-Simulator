@@ -198,7 +198,7 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
 
     public ConfidenceInterval getExternalityCI(ConfidenceLevel level) {
         double mean = getExternalityMean();
-        double std = Math.sqrt(getExternalitySamples());
+        double std = Math.sqrt(getExternalityVariance());
         int sampleSize = getExternalitySamples();
         //hack to allow creating CI's
         if (std == 0) {

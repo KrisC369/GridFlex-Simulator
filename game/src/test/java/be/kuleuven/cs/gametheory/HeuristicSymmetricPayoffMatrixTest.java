@@ -13,6 +13,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class HeuristicSymmetricPayoffMatrixTest {
+    private static final double DELTA = 0.001;
     private HeuristicSymmetricPayoffMatrix table = mock(
             HeuristicSymmetricPayoffMatrix.class);
     private int agents = 3;
@@ -164,8 +165,8 @@ public class HeuristicSymmetricPayoffMatrixTest {
         table.addExternalityValue(20);
         table.addExternalityValue(20);
         ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
-        //        System.out.println(ci);
-        assertTrue(ci.getLowerBound() > 10);
+        System.out.println(ci);
+        assertTrue(ci.getLowerBound() > 9);
         assertTrue(ci.getUpperBound() < 20);
         assertEquals(14, ci.getLowerBound() + ((ci.getUpperBound() - ci.getLowerBound()) / 2d),
                 0.001);
@@ -181,9 +182,27 @@ public class HeuristicSymmetricPayoffMatrixTest {
         table.addExternalityValue(0.0 / 0.0);
         ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
         System.out.println(ci);
-        assertTrue(ci.getLowerBound() > 10);
+        assertTrue(ci.getLowerBound() > 9);
         assertTrue(ci.getUpperBound() < 20);
         assertEquals(14, ci.getLowerBound() + ((ci.getUpperBound() - ci.getLowerBound()) / 2d),
                 0.001);
+    }
+
+    @Test
+    public void testExternalityCIMultiSampleSize() {
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        ConfidenceInterval ci2 = table.getExternalityCI(ConfidenceLevel._95pc);
+        assertTrue(ci.getLowerBound() - ci2.getLowerBound() < DELTA);
+        assertTrue(ci.getUpperBound() - ci2.getUpperBound() > DELTA);
     }
 }
