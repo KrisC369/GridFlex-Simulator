@@ -34,7 +34,7 @@
         <termination>
             <!--<terminationCompositionStyle>AND</terminationCompositionStyle>-->
             <!--<unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>-->
-            <stepCountLimit>2500</stepCountLimit>
+            <stepCountLimit>1500</stepCountLimit>
         </termination>
     </localSearch>
 </solver>
