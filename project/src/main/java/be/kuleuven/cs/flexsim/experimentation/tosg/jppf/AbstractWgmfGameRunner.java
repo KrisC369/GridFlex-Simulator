@@ -23,8 +23,8 @@ public abstract class AbstractWgmfGameRunner {
     private static final String DISTRIBUTIONFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributionsNormalized.csv";
     protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
-            + "/2kwartOpEnNeer.csv";
-    private static final String SPECFILE =
+            + "/4kwartOpEnNeer.csv";
+    private staticc final String SPECFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";
     private static final String IMBAL =
             "be/kuleuven/cs/flexsim/experimentation/data/imbalance_prices.csv";
