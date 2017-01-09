@@ -1,45 +1,40 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>be.kuleuven.cs</groupId>
-		<artifactId>flexsim-main</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
-	</parent>
-	<artifactId>flexsim-example</artifactId>
-	<name>FlexSimulator examples</name>
-	<description>Example module for demonstrating flexsim usage.</description>
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>be.kuleuven.cs</groupId>
+        <artifactId>flexsim-main</artifactId>
+        <version>0.1.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>flexsim-example</artifactId>
+    <name>FlexSimulator examples</name>
+    <description>Example module for demonstrating flexsim usage.</description>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>be.kuleuven.cs</groupId>
-			<artifactId>flexsim-nucleus</artifactId>
-			<version>0.1.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>be.kuleuven.cs</groupId>
-			<artifactId>flexsim-domain</artifactId>
-			<version>0.1.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>be.kuleuven.cs</groupId>
-			<artifactId>flexsim-game</artifactId>
-			<version>0.1.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.annotation</artifactId>
-		</dependency>
-	</dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>be.kuleuven.cs</groupId>
+            <artifactId>flexsim-nucleus</artifactId>
+            <version>0.1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>be.kuleuven.cs</groupId>
+            <artifactId>flexsim-domain</artifactId>
+            <version>0.1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>be.kuleuven.cs</groupId>
+            <artifactId>flexsim-game</artifactId>
+            <version>0.1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.annotation</artifactId>
+        </dependency>
+    </dependencies>
 </project>
