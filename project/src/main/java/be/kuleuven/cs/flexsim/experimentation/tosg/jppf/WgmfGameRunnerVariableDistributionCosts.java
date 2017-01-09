@@ -13,7 +13,7 @@ import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections15.map.UnmodifiableMap;
+import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 
@@ -93,7 +93,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         List<?> results = runner.waitAndGetResults();
         logger.info("Experiment results received. \nProcessing results... ");
         getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
-                UnmodifiableMap.decorate(priceToDirector));
+                UnmodifiableMap.unmodifiableMap(priceToDirector));
     }
 
     protected final List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,

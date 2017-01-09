@@ -11,7 +11,7 @@ import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections15.map.UnmodifiableMap;
+import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -85,7 +85,7 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
             logger.info("Experiment results received for price: {}. \nProcessing results... ",
                     price);
             getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
-                    UnmodifiableMap.decorate(priceToDirector));
+                    UnmodifiableMap.unmodifiableMap(priceToDirector));
             processSingleResult(price, director);
         }
 
