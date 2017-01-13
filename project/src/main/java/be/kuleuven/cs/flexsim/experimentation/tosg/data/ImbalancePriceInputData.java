@@ -22,8 +22,14 @@ public abstract class ImbalancePriceInputData implements Serializable {
     ImbalancePriceInputData() {
     }
 
+    /**
+     * @return The Net Regulated Volume indicator profile.
+     */
     public abstract NetRegulatedVolumeProfile getNetRegulatedVolumeProfile();
 
+    /**
+     * @return The positive imbalance price profile.
+     */
     public abstract PositiveImbalancePriceProfile getPositiveImbalancePriceProfile();
 
     /**

@@ -15,6 +15,7 @@ public class ExperimentParamsTest {
         int agents = 3;
         int reps = 6;
         boolean remote = false;
+        int wpIdx = -1;
         Solvers.TYPE solver = DUMMY;
         ExperimentParams experimentParams = ExperimentParams.builder().setNAgents(agents)
                 .setNRepititions(reps).setSolver(solver).setRemoteExecutable(remote).build();
@@ -22,6 +23,7 @@ public class ExperimentParamsTest {
         assertEquals(reps, experimentParams.getNRepititions());
         assertEquals(solver, experimentParams.getSolver());
         assertEquals(remote, experimentParams.isRemoteExecutable());
+        assertEquals(wpIdx, experimentParams.getWindErrorProfileIndex());
     }
 
 }

@@ -15,6 +15,7 @@ public abstract class ExperimentParams implements Serializable {
     private static final int DEF_P1STEP = 1;
     private static final int DEF_P1END = 1;
     private static final int DEF_P1START = 0;
+    private static final int DEF_WINDPROF = -1;
 
     ExperimentParams() {
     }
@@ -55,11 +56,17 @@ public abstract class ExperimentParams implements Serializable {
     public abstract double getP1End();
 
     /**
+     * @return The index of which hard coded profile to use for wind errors.
+     */
+    public abstract int getWindErrorProfileIndex();
+
+    /**
      * @return A builder instance.
      */
     public static ExperimentParams.Builder builder() {
         return new AutoValue_ExperimentParams.Builder().setP1Start(DEF_P1START)
-                .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(false);
+                .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(false)
+                .setWindErrorProfileIndex(DEF_WINDPROF);
     }
 
     /**
@@ -108,6 +115,12 @@ public abstract class ExperimentParams implements Serializable {
          * @return This builder.
          */
         public abstract Builder setP1End(double value);
+
+        /**
+         * @param idx The index to set in this param object.
+         * @return This builder.
+         */
+        public abstract Builder setWindErrorProfileIndex(int idx);
 
         /**
          * @return Builds an experimentparams instance.
