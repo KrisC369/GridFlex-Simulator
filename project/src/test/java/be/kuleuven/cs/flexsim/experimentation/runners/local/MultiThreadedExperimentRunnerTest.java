@@ -64,7 +64,7 @@ public class MultiThreadedExperimentRunnerTest {
         runner.runExperiments(experiments);
         blockWait(runner);
         assertEquals(6, list.size());
-        for (float i = 0; i <= 1.0; i += 0.2) {
+        for (double i = 0; i <= 1.0; i += 0.2) {
             assertTrue(containsAprox(list, i, 0.01));
         }
     }
@@ -82,7 +82,7 @@ public class MultiThreadedExperimentRunnerTest {
         runner.runExperiments(experiments);
         blockWait(runner);
         assertEquals(11, list.size());
-        for (float i = 0; i <= 1.0; i += 0.1) {
+        for (double i = 0; i <= 1.0; i += 0.1) {
             assertTrue(containsAprox(list, i, 0.01));
         }
     }
