@@ -34,11 +34,11 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRunner {
-    private static final Logger logger = getLogger(WgmfGameRunnerVariableDistributionCosts.class);
     public static final String PRICE_PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
     public static final ConfidenceLevel CI_LEVEL = ConfidenceLevel._95pc;
     protected static final String RES_OUTPUT_FILE = "res/res_outputA";
     protected static final String RES_EXTENSION = ".csv";
+    private static final Logger logger = getLogger(WgmfGameRunnerVariableDistributionCosts.class);
     private final Map<Double, ConfigurableGameDirector> priceToDirector;
     private final int nAgents;
     private final int nReps;
@@ -50,8 +50,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     /**
      * Public constructor from params object and exec strategy.
      *
-     * @param expP  The experiment parameters.
-     * @param strat The execution strategy.
+     * @param expP The experiment parameters.
      */
     public WgmfGameRunnerVariableDistributionCosts(ExperimentParams expP) {
         super(expP.isRemoteExecutable() ? REMOTE : LOCAL);

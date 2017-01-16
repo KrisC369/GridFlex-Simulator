@@ -36,8 +36,7 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
     /**
      * Public constructor from params object and exec strategy.
      *
-     * @param expP  The experiment parameters.
-     * @param strat The execution strategy.
+     * @param expP The experiment parameters.
      */
     private WgmfMultiJobGameRunnerVariableDistributionCosts(ExperimentParams expP) {
         super(expP);

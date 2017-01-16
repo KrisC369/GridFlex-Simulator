@@ -22,7 +22,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 public abstract class AbstractWgmfGameRunner {
     public static final String DISTRIBUTIONFILE_TEMPLATE =
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
-    //TODO incorporate index in experiment params to profile loading.
     protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
             + "/profDLR_zeebrugge.csv";
     private static final String SPECFILE =
