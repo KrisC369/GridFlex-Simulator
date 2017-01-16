@@ -92,7 +92,7 @@ public class CsvResultWriter {
                     Arrays.toString(getMedianDynEqnParams()),
                     Arrays.toString(getLowerBoundDynEqnParams()),
                     Arrays.toString(getUpperBoundDynEqnParams()), getCiLevel(),
-                    getAllocEff().toString());
+                    getAllocEff().toString(), getWindErrorFileIdx());
         }
 
         public static WgmfDynamicsResults create(int n, int r, String data, double pp,
