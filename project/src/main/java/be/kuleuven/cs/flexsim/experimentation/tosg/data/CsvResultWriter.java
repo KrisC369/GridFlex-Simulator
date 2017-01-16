@@ -26,7 +26,7 @@ public class CsvResultWriter {
             "median fixed points",
             "lower bound fixed points", "upper bound fixed points", "data file",
             "median eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level",
-            "Allocation efficiency" };
+            "Allocation efficiency", "Wind error file idx" };
 
     public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results,
             boolean append) {
@@ -78,6 +78,8 @@ public class CsvResultWriter {
 
         public abstract ConfidenceInterval getAllocEff();
 
+        public abstract int getWindErrorFileIdx();
+
         public List getValues() {
             return Lists.newArrayList(getNAgents(), getRepititions(),
                     getPricePoint(),
@@ -93,9 +95,9 @@ public class CsvResultWriter {
         public static WgmfDynamicsResults create(int n, int r, String data, double pp,
                 double[] median, double[] lower,
                 double[] upper, double[] medianEqn, double[] lowerEqn, double[] upperEqn,
-                double ciLevel, ConfidenceInterval allocEff) {
+                double ciLevel, ConfidenceInterval allocEff, int windErrorFileNameIdx) {
             return new AutoValue_CsvResultWriter_WgmfDynamicsResults(n, r, data, pp, median, lower,
-                    upper, medianEqn, lowerEqn, upperEqn, ciLevel, allocEff);
+                    upper, medianEqn, lowerEqn, upperEqn, ciLevel, allocEff, windErrorFileNameIdx);
         }
     }
 }

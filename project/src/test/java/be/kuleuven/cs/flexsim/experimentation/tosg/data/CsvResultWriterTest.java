@@ -22,7 +22,7 @@ public class CsvResultWriterTest {
         CsvResultWriter.WgmfDynamicsResults wgmfDynamicsResults = CsvResultWriter
                 .WgmfDynamicsResults
                 .create(2, 4, "TestData", pp, fixedPoints, fixedPoints, fixedPoints, fixedPoints,
-                        fixedPoints, fixedPoints, 0.99, new ConfidenceInterval(0, 1, 0.95));
+                        fixedPoints, fixedPoints, 0.99, new ConfidenceInterval(0, 1, 0.95), 1);
         List<CsvResultWriter.WgmfDynamicsResults> results = Lists
                 .newArrayList(wgmfDynamicsResults, wgmfDynamicsResults);
         CsvResultWriter.writeCsvFile(file, results, false);

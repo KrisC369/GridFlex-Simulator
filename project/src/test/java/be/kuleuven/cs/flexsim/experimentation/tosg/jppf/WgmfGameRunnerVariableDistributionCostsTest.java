@@ -60,7 +60,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     public static String[] getArgLine(String solver) {
         return new String[] {
                 "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
-                "10", "-p1end", "45.5","-dIdx", "2" };
+                "10", "-p1end", "45.5" };
     }
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {
