@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.IntToDoubleFunction;
@@ -63,7 +64,8 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final File file = new File(classLoader.getResource(filename).getFile());
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
-        InputStreamReader fileReader = new InputStreamReader(new FileInputStream(file));
+        InputStreamReader fileReader = new InputStreamReader(new FileInputStream(file),
+                StandardCharsets.UTF_8);
         Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
 
         for (CSVRecord record : records) {

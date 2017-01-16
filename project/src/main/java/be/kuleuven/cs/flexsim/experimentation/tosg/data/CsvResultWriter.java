@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg.data;
 
 import com.google.auto.value.AutoValue;
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -8,7 +9,8 @@ import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,7 +34,8 @@ public class CsvResultWriter {
             boolean append) {
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR)
                 .withDelimiter(DELIMITER);
-        try (FileWriter fileWriter = new FileWriter(fileName, append)) {
+        try (OutputStreamWriter fileWriter = new OutputStreamWriter(
+                new FileOutputStream(fileName, append), Charsets.UTF_8)) {
             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, csvFileFormat);
             if (!append) {
                 csvPrinter.printRecord(FILE_HEADER);
