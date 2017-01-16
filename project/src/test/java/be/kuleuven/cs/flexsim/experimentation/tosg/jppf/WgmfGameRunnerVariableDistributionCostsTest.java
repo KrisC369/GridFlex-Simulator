@@ -21,6 +21,8 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
@@ -58,7 +60,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     public static String[] getArgLine(String solver) {
         return new String[] {
                 "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
-                "10", "-p1end", "45.5" };
+                "10", "-p1end", "45.5","-dIdx", "2" };
     }
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {
@@ -204,5 +206,17 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
         assertEquals(solutionCPL.getObjectiveValue(), solutiongGRB.getObjectiveValue(), 1.0);
         assertEquals(compCPL, compGRB, 1.0);
+    }
+
+    @Test
+    public void testAbstractRunnerParseDistributionFileString() {
+        String string = AbstractWgmfGameRunner
+                .parseDistributionFile(experimentParams, "testString*.csv");
+        assertEquals("testString.csv", string);
+        ExperimentParams p = mock(ExperimentParams.class);
+        when(p.getWindErrorProfileIndex()).thenReturn(3);
+        String string2 = AbstractWgmfGameRunner
+                .parseDistributionFile(p, "testString*.csv");
+        assertEquals("testString[3].csv", string2);
     }
 }

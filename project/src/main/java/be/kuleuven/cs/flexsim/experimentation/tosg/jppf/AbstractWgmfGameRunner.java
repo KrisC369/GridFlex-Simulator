@@ -20,8 +20,8 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class AbstractWgmfGameRunner {
-    private static final String DISTRIBUTIONFILE =
-            "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributionsNormalized.csv";
+    public static final String DISTRIBUTIONFILE_TEMPLATE =
+            "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
     //TODO incorporate index in experiment params to profile loading.
     protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
             + "/profDLR_zeebrugge.csv";
@@ -48,8 +48,9 @@ public abstract class AbstractWgmfGameRunner {
             WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
+            String distFile = parseDistributionFile(expP, DISTRIBUTIONFILE_TEMPLATE);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
-                    .loadFromCSV(DISTRIBUTIONFILE);
+                    .loadFromCSV(distFile);
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, FULL_YEAR);
             return WgmfGameParams
@@ -58,6 +59,18 @@ public abstract class AbstractWgmfGameRunner {
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }
+    }
+
+    static String parseDistributionFile(ExperimentParams expP,
+            String distributionfileTemplate) {
+        String dFile = distributionfileTemplate;
+        final int windErrorProfileIndex = expP.getWindErrorProfileIndex();
+        if (windErrorProfileIndex < 0) {
+            dFile = dFile.replace("*", "");
+        } else {
+            dFile = dFile.replace("*", "[" + windErrorProfileIndex + "]");
+        }
+        return dFile;
     }
 
     public static void startExecution(String[] args, RunnerFactory factory) {
