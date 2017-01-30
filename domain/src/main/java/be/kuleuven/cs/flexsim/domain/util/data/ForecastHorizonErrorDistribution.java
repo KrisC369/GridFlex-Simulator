@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,7 +77,7 @@ public abstract class ForecastHorizonErrorDistribution implements Serializable {
         InputStream resourceAsStream = classLoader.getResourceAsStream(filename);
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withFirstRecordAsHeader();
         InputStreamReader fileReader = new InputStreamReader(
-                resourceAsStream, Charset.defaultCharset());
+                resourceAsStream, StandardCharsets.UTF_8);
         Iterable<CSVRecord> records = new CSVParser(fileReader, csvFileFormat).getRecords();
         //Assuming formatting of header line is following:
         //"hour.horizon","mean","sd" in km/h
