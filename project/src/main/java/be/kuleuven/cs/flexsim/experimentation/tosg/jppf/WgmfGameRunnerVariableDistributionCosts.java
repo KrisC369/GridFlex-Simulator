@@ -46,6 +46,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     private final double maxPrice;
     private final double priceStep;
     private final int windErrorFileIdx;
+    private final int dataProfileIdx;
 
     /**
      * Public constructor from params object and exec strategy.
@@ -61,6 +62,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         this.priceStep = expP.getP1Step();
         this.maxPrice = expP.getP1End();
         this.windErrorFileIdx = expP.getWindErrorProfileIndex();
+        this.dataProfileIdx = expP.getCurrentDataProfileIndex();
     }
 
     /**
@@ -158,10 +160,12 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsLower));
         logger.warn("{} CI Upper bound Phase plot fixed points found at: {}",
                 CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
-        String[] splitted = DATAFILE.split("/");
+        String[] splitted = DATAPROFILE_TEMPLATE.split("/");
 
         results.add(CsvResultWriter.WgmfDynamicsResults
-                .create(getnAgents(), getnReps(), splitted[splitted.length - 1],
+                .create(getnAgents(), getnReps(),
+                        splitted[splitted.length - 1]
+                                .replace("*", String.valueOf("[" + dataProfileIdx + "]")),
                         pricePoint,
                         fixedPoints,
                         fixedPointsLower,
