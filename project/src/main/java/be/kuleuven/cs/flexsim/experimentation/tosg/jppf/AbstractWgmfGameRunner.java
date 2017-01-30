@@ -24,8 +24,8 @@ public abstract class AbstractWgmfGameRunner {
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
     public static final String DATAPROFILE_TEMPLATE =
             "be/kuleuven/cs/flexsim/experimentation/data/currentAndCongestionProfile*.csv";
-    protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
-            + "/2kwartOpEnNeer.csv";
+//    protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
+//            + "/2kwartOpEnNeer.csv";
     private static final String SPECFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";
     private static final String IMBAL =
@@ -46,17 +46,22 @@ public abstract class AbstractWgmfGameRunner {
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {
         try {
-            String dataFile = parseDataFile(expP.getCurrentDataProfileIndex(),
+            String dataFile = parseDataFileName(expP.getCurrentDataProfileIndex(),
                     DATAPROFILE_TEMPLATE);
             WindBasedInputData dataIn = WindBasedInputData.loadFromResource(dataFile);
+
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
+
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
-            String distFile = parseDataFile(expP.getWindErrorProfileIndex(),
+
+            String distFile = parseDataFileName(expP.getWindErrorProfileIndex(),
                     DISTRIBUTIONFILE_TEMPLATE);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(distFile);
+
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, FULL_YEAR);
+
             return WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(expP.getSolver()), specs, distribution,
                             imbalIn, dayAheadPriceProfile);
@@ -65,7 +70,7 @@ public abstract class AbstractWgmfGameRunner {
         }
     }
 
-    static String parseDataFile(int expPIndex,
+    static String parseDataFileName(int expPIndex,
             String distributionfileTemplate) {
         String dFile = distributionfileTemplate;
         final int idx = expPIndex;

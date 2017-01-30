@@ -67,11 +67,11 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 "10", "-p1end", "45.5", "-pIdx", "1" };
     }
 
-    public static WgmfGameParams loadResources(ExperimentParams expP) {
-        return loadResources(expP, IMBAL, DATAFILE, "test", "test", HORIZON);
+    public static WgmfGameParams loadTestResources(ExperimentParams expP) {
+        return loadTestResources(expP, IMBAL, DATAFILE, "test", "test", HORIZON);
     }
 
-    public static WgmfGameParams loadResources(ExperimentParams expP, String imbal,
+    public static WgmfGameParams loadTestResources(ExperimentParams expP, String imbal,
             String datafile, String congColumn, String currColumn, int horizon) {
         try {
             WindBasedInputData dataIn = WindBasedInputData
@@ -94,10 +94,10 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     @Ignore
     public void testGurobiCPLEXEquality() {
         experimentParams = getParams("CPLEX");
-        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
         // "imbalance_prices.csv",
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
-        WgmfGameParams wgmfGameParams = loadResources(experimentParams);
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 1000, wgmfGameParams.getDistribution());
@@ -122,10 +122,10 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         System.out.println("ObjectiveValue CPL:" + solutionCPL.getObjectiveValue());
 
         experimentParams = getParams("GUROBI");
-        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
         // "imbalance_prices.csv",
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
-        wgmfGameParams = loadResources(experimentParams);
+        wgmfGameParams = loadTestResources(experimentParams);
         dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
         multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 1000, wgmfGameParams.getDistribution());
@@ -159,10 +159,10 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     @Ignore
     public void testGurobiCPLEXEquality2() {
         experimentParams = getParams("CPLEX");
-        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
         // "imbalance_prices.csv",
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
-        WgmfGameParams wgmfGameParams = loadResources(experimentParams);
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 1000, wgmfGameParams.getDistribution());
@@ -184,10 +184,10 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                         + compCPL);
 
         experimentParams = getParams("GUROBI");
-        //        WgmfGameParams wgmfGameParams = loadResources(experimentParams,
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
         // "imbalance_prices.csv",
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
-        wgmfGameParams = loadResources(experimentParams);
+        wgmfGameParams = loadTestResources(experimentParams);
         dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
         multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 1000, wgmfGameParams.getDistribution());
@@ -215,13 +215,13 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     @Test
     public void testAbstractRunnerParseDistributionFileString() {
         String string = AbstractWgmfGameRunner
-                .parseDataFile(experimentParams.getWindErrorProfileIndex(), "testString*.csv");
+                .parseDataFileName(experimentParams.getWindErrorProfileIndex(), "testString*.csv");
         assertEquals("testString.csv", string);
         ExperimentParams p = mock(ExperimentParams.class);
         when(p.getWindErrorProfileIndex()).thenReturn(3);
         when(p.getCurrentDataProfileIndex()).thenReturn(3);
         String string2 = AbstractWgmfGameRunner
-                .parseDataFile(p.getCurrentDataProfileIndex(), "testString*.csv");
+                .parseDataFileName(p.getCurrentDataProfileIndex(), "testString*.csv");
         assertEquals("testString[3].csv", string2);
     }
 }
