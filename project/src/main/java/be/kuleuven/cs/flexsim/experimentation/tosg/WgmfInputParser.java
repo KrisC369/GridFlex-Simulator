@@ -2,9 +2,9 @@ package be.kuleuven.cs.flexsim.experimentation.tosg;
 
 import be.kuleuven.cs.flexsim.experimentation.tosg.jppf.AbstractWgmfGameRunner;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
-import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -25,6 +25,7 @@ public final class WgmfInputParser {
     private static final String P1END_KEY = "p1end";
     private static final String P1STEP_KEY = "p1step";
     private static final String DISTINDEX_KEY = "dIdx";
+    private static final String PROFINDEX_KEY = "pIdx";
     private static final String MODE_KEY = "m";
     private static final String SOLVER_KEY = "s";
 
@@ -65,13 +66,18 @@ public final class WgmfInputParser {
                         + "following convention: "
                         + AbstractWgmfGameRunner.DISTRIBUTIONFILE_TEMPLATE
                         + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
+        o.addOption(PROFINDEX_KEY, true,
+                "The index of elec data profile file to load. Make sure the input file is named using "
+                        + "following convention: "
+                        + AbstractWgmfGameRunner.DATAPROFILE_TEMPLATE
+                        + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
 
         int nAgents = NAGENTS_DEFAULT;
         int nReps = NREPS_DEFAULT;
         Solvers.TYPE solver = SOLVER_DEFAULT;
         boolean remoteExec = false;
         ExperimentParams.Builder builder = ExperimentParams.builder();
-        CommandLineParser parser = new BasicParser();
+        CommandLineParser parser = new DefaultParser();
         try {
             // parse the command line arguments
             CommandLine line = parser.parse(o, args);
@@ -99,6 +105,10 @@ public final class WgmfInputParser {
             if (line.hasOption(DISTINDEX_KEY)) {
                 builder.setWindErrorProfileIndex(
                         Integer.parseInt(line.getOptionValue(DISTINDEX_KEY)));
+            }
+            if (line.hasOption(PROFINDEX_KEY)) {
+                builder.setCurrentDataProfileIndex(
+                        Integer.parseInt(line.getOptionValue(PROFINDEX_KEY)));
             }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";

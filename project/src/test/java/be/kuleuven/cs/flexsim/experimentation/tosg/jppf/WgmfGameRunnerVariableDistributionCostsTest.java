@@ -58,9 +58,13 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     }
 
     public static String[] getArgLine(String solver) {
+        //        return new String[] {
+        //                "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4",
+        // "-p1step",
+        //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
                 "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
-                "10", "-p1end", "45.5" };
+                "10", "-p1end", "45.5"};
     }
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {
@@ -211,12 +215,13 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     @Test
     public void testAbstractRunnerParseDistributionFileString() {
         String string = AbstractWgmfGameRunner
-                .parseDistributionFile(experimentParams, "testString*.csv");
+                .parseDataFile(experimentParams.getWindErrorProfileIndex(), "testString*.csv");
         assertEquals("testString.csv", string);
         ExperimentParams p = mock(ExperimentParams.class);
         when(p.getWindErrorProfileIndex()).thenReturn(3);
+        when(p.getCurrentDataProfileIndex()).thenReturn(3);
         String string2 = AbstractWgmfGameRunner
-                .parseDistributionFile(p, "testString*.csv");
+                .parseDataFile(p.getCurrentDataProfileIndex(), "testString*.csv");
         assertEquals("testString[3].csv", string2);
     }
 }

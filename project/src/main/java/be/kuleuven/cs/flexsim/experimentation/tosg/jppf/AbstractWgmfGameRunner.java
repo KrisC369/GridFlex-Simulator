@@ -22,6 +22,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 public abstract class AbstractWgmfGameRunner {
     public static final String DISTRIBUTIONFILE_TEMPLATE =
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
+    public static final String DATAPROFILE_TEMPLATE =
+            "be/kuleuven/cs/flexsim/experimentation/data/currentAndCongestionProfile*.csv";
     protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
             + "/2kwartOpEnNeer.csv";
     private static final String SPECFILE =
@@ -44,10 +46,13 @@ public abstract class AbstractWgmfGameRunner {
 
     public static WgmfGameParams loadResources(ExperimentParams expP) {
         try {
-            WindBasedInputData dataIn = WindBasedInputData.loadFromResource(DATAFILE);
+            String dataFile = parseDataFile(expP.getCurrentDataProfileIndex(),
+                    DATAPROFILE_TEMPLATE);
+            WindBasedInputData dataIn = WindBasedInputData.loadFromResource(dataFile);
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
-            String distFile = parseDistributionFile(expP, DISTRIBUTIONFILE_TEMPLATE);
+            String distFile = parseDataFile(expP.getWindErrorProfileIndex(),
+                    DISTRIBUTIONFILE_TEMPLATE);
             ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
                     .loadFromCSV(distFile);
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
@@ -60,14 +65,14 @@ public abstract class AbstractWgmfGameRunner {
         }
     }
 
-    static String parseDistributionFile(ExperimentParams expP,
+    static String parseDataFile(int expPIndex,
             String distributionfileTemplate) {
         String dFile = distributionfileTemplate;
-        final int windErrorProfileIndex = expP.getWindErrorProfileIndex();
-        if (windErrorProfileIndex < 0) {
+        final int idx = expPIndex;
+        if (idx < 0) {
             dFile = dFile.replace("*", "");
         } else {
-            dFile = dFile.replace("*", "[" + windErrorProfileIndex + "]");
+            dFile = dFile.replace("*", "[" + idx + "]");
         }
         return dFile;
     }
