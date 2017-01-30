@@ -23,7 +23,7 @@ public abstract class AbstractWgmfGameRunner {
     public static final String DISTRIBUTIONFILE_TEMPLATE =
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
     protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
-            + "/profDLR_zeebrugge.csv";
+            + "/2kwartOpEnNeer.csv";
     private static final String SPECFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";
     private static final String IMBAL =
@@ -80,7 +80,7 @@ public abstract class AbstractWgmfGameRunner {
         gameJPPFRunner.processResults();
     }
 
-    protected ExecutionStrategy getStrategy() {
+    ExecutionStrategy getStrategy() {
         return strategy;
     }
 
@@ -89,7 +89,7 @@ public abstract class AbstractWgmfGameRunner {
     protected abstract void processResults();
 
     @FunctionalInterface
-    protected interface RunnerFactory {
+    interface RunnerFactory {
         AbstractWgmfGameRunner getRunner(ExperimentParams params);
     }
 }
