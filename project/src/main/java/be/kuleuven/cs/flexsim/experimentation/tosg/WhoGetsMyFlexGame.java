@@ -12,6 +12,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SimulatedGamePlayAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfSolverFactory;
 import be.kuleuven.cs.gametheory.configurable.AbstractGameInstance;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -132,7 +133,8 @@ public class WhoGetsMyFlexGame extends
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 baseSeed,
                 params.getDistribution());
-        AbstractSolverFactory<SolutionResults> solverplatform = params.getFactory();
+        WgmfSolverFactory solverplatform = params.getFactory();
+//        solverplatform.setSeed(baseSeed);//TODO review! This makes the solver also random.
         ArrayList<FlexibilityUtiliser> actions = Lists
                 .newArrayList(new PortfolioBalanceSolver(solverplatform,
                                 inputData.getCableCurrentProfile(), imbalancePriceData

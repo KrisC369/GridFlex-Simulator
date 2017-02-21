@@ -1,12 +1,11 @@
 package be.kuleuven.cs.flexsim.experimentation.tosg;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
-import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfSolverFactory;
 import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;
@@ -24,7 +23,7 @@ public abstract class WgmfGameParams implements Serializable {
     /**
      * @return The specific solvers factory platform to use.
      */
-    public abstract AbstractSolverFactory<SolutionResults> getFactory();
+    public abstract WgmfSolverFactory getFactory();
 
     /**
      * @return The specs of the windturbine used in these simulations.
@@ -57,7 +56,7 @@ public abstract class WgmfGameParams implements Serializable {
      * @return A parameter object.
      */
     public static WgmfGameParams create(WindBasedInputData inputData,
-            AbstractSolverFactory<SolutionResults> factory, TurbineSpecification specs,
+            WgmfSolverFactory factory, TurbineSpecification specs,
             ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn,
             DayAheadPriceProfile dap) {
         return new AutoValue_WgmfGameParams(inputData, factory, specs, distribution, imbalIn, dap);

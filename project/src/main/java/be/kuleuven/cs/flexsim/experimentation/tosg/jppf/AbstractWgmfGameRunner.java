@@ -18,7 +18,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  * Abstract game runner. Extend this for variations on similar experiments.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- */
+ *///TODO REFACTOR all non-jppf out of this package.
 public abstract class AbstractWgmfGameRunner {
     public static final String DISTRIBUTIONFILE_TEMPLATE =
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";

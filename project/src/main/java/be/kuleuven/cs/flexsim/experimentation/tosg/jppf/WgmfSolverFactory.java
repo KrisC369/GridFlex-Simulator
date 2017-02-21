@@ -17,7 +17,7 @@ import java.io.Serializable;
  * A solvers factory for wgmf games.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- */
+ *///TODO move to outer package
 public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>, Serializable {
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;

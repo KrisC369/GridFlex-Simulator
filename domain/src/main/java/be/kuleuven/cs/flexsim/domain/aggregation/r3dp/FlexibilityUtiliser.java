@@ -52,7 +52,7 @@ public abstract class FlexibilityUtiliser<R extends SolutionResults> {
 
     /**
      * @return The solution of the solving process if available.
-     * @Throws IllegalStateException if this method is called before solving completes and
+     * @throws IllegalStateException if this method is called before solving completes and
      * solution is available.
      */
     public R getSolution() {
