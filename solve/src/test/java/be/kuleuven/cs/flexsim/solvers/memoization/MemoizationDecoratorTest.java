@@ -78,11 +78,9 @@ public class MemoizationDecoratorTest {
 
     @Test
     public void solve() throws Exception {
-        decoratedSolver.solve();
-        AllocResults solution1 = decoratedSolver.getSolution();
+        AllocResults solution1 = decoratedSolver.solve();
 
-        returningSolver.solve();
-        AllocResults solution2 = returningSolver.getSolution();
+        AllocResults solution2 = returningSolver.solve();
 
         assertEquals(solution1, solution2);
         verify(solver, times(1)).solve();

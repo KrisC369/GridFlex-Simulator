@@ -7,17 +7,10 @@ package be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public interface Solver<T> {
+
     /**
      * Solve the problem configured in the solvers.
+     * * @return the solution
      */
-    void solve();
-
-    /**
-     * Get the solution.
-     *
-     * @return the solution
-     */
-    T getSolution();
-
-
+    T solve();
 }

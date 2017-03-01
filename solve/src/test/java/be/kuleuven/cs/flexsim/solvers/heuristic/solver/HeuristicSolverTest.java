@@ -65,8 +65,7 @@ public class HeuristicSolverTest {
 
     @Test
     public void testSolve() throws Exception {
-        solver.solve();
-        AllocResults solution = solver.getSolution();
+        AllocResults solution = solver.solve();
         testConstraints(solution);
     }
 
@@ -79,8 +78,7 @@ public class HeuristicSolverTest {
         second = new FlexProvider(560,
                 HourlyFlexConstraints.builder().maximumActivations(6).interActivationTime(2)
                         .activationDuration(0.5).build());
-        solver.solve();
-        AllocResults solution = solver.getSolution();
+        AllocResults solution = solver.solve();
         logger.info(solution.toString());
         testConstraints(solution);
     }
@@ -94,8 +92,7 @@ public class HeuristicSolverTest {
         second = new FlexProvider(800,
                 HourlyFlexConstraints.R3DP);
 
-        solver.solve();
-        AllocResults solution = solver.getSolution();
+        AllocResults solution = solver.solve();
         testConstraints(solution);
     }
 
@@ -124,8 +121,7 @@ public class HeuristicSolverTest {
             }
         };
         this.solver = new HeuristicSolver(context, true);
-        solver.solve();
-        AllocResults solution = solver.getSolution();
+        AllocResults solution = solver.solve();
         testConstraints(solution);
     }
 
@@ -147,10 +143,8 @@ public class HeuristicSolverTest {
         this.solver = new HeuristicSolver(context, true);
         HeuristicSolver newSolver = new HeuristicSolver(context, false);
 
-        solver.solve();
-        AllocResults solution1 = solver.getSolution();
-        newSolver.solve();
-        AllocResults solution2 = newSolver.getSolution();
+        AllocResults solution1 = solver.solve();
+        AllocResults solution2 = newSolver.solve();
         testConstraints(solution1);
         testConstraints(solution2);
         assertResultEquality(solution1, solution2);
@@ -164,11 +158,9 @@ public class HeuristicSolverTest {
     @Test
     @Ignore
     public void testCompareResults() {
-        solver.solve();
-        AllocResults solution1 = solver.getSolution();
+        AllocResults solution1 = solver.solve();
         logger.info(solution1.toString());
-        altSolver.solve();
-        AllocResults solution2 = altSolver.getSolution();
+        AllocResults solution2 = altSolver.solve();
         logger.info(solution2.toString());
         assertResultEquality(solution1, solution2);
     }
@@ -184,11 +176,9 @@ public class HeuristicSolverTest {
                 HourlyFlexConstraints.builder().maximumActivations(6).interActivationTime(2)
                         .activationDuration(0.5).build());
         initSolvers();
-        solver.solve();
-        AllocResults solution1 = solver.getSolution();
+        AllocResults solution1 = solver.solve();
         logger.info(solution1.toString());
-        altSolver.solve();
-        AllocResults solution2 = altSolver.getSolution();
+        AllocResults solution2 = altSolver.solve();
         logger.info(solution2.toString());
         assertEquals(solution1.getObjective(), solution2.getObjective(), 0.1);
         //        assertEquals(solution1.getAllocationResults(), solution2.getAllocationResults());
@@ -203,12 +193,10 @@ public class HeuristicSolverTest {
         second = new FlexProvider(2560,
                 HourlyFlexConstraints.R3DP);
         initSolvers();
-        solver.solve();
-        AllocResults solution1 = solver.getSolution();
+        AllocResults solution1 = solver.solve();
         logger.info(solution1.toString());
         altSolver.setVerboseSolving(true);
-        altSolver.solve();
-        AllocResults solution2 = altSolver.getSolution();
+        AllocResults solution2 = altSolver.solve();
         logger.info(solution2.toString());
         assertResultEquality(solution1, solution2);
     }

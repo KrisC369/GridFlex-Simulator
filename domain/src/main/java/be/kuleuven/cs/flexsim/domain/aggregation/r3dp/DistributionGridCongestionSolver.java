@@ -69,8 +69,9 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
                         return congestion;
                     }
                 });
-        solver.solve();
-        this.results = solver.getSolution();
+//        solver.solve();
+//        this.results = solver.getSolution();
+        this.results = solver.solve();
         processActivations(results);
     }
 
