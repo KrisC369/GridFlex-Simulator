@@ -2,6 +2,7 @@ package be.kuleuven.cs.flexsim.persistence;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.igormaznitsa.jute.annotations.JUteTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,8 +45,7 @@ public class MapDBMemoizationContextTest {
 
     @After
     public void tearDown() throws Exception {
-        //target.close();
-        target.resetStore();
+        //target.resetStore();
     }
 
     @Test
@@ -80,10 +80,28 @@ public class MapDBMemoizationContextTest {
 
     @Test
     public void inOutMultiThread() throws Exception {
-        parallelTestImpl(5, 8, 20);
+        parallelTestImpl(5, 8, 20, true);
     }
 
-    public void parallelTestImpl(int offset, final int threads, final int insertRange)
+    @JUteTest(order = 1, jvm = "java", printConsole = true)
+    public void parallell_1_JuteTest() throws Exception {
+        parallelTestImpl(0, 4, 250, false);
+
+    }
+
+    @JUteTest(order = 1, jvm = "java", printConsole = true)
+    public void parallell_2_JuteTest() throws Exception {
+        parallelTestImpl(1000, 4, 250, false);
+
+    }
+
+    @JUteTest(order = 1, jvm = "java", printConsole = true)
+    public void parallell_3_JuteTest() throws Exception {
+        parallelTestImpl(2000, 4, 250, false);
+    }
+
+    public void parallelTestImpl(int offset, final int threads, final int insertRange,
+            boolean doRangeCheck)
             throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(threads);
         Collection<Callable<String>> runnables = Lists.newArrayList();
@@ -93,10 +111,12 @@ public class MapDBMemoizationContextTest {
         ExecutorService executorService = Executors.newFixedThreadPool(threads);
         executorService.invokeAll(runnables);
 
-        Map<String, String> wholeMap = target.getWholeMap();
-        System.out.println(wholeMap);
-        assertEquals((threads) * insertRange, wholeMap.size());
-        assertEquals((threads) * insertRange, target.getMemoizationTableSize(), 0);
+        if (doRangeCheck) {
+            Map<String, String> wholeMap = target.getWholeMap();
+            //        System.out.println(wholeMap);
+            assertEquals((threads) * insertRange, wholeMap.size());
+            assertEquals((threads) * insertRange, target.getMemoizationTableSize(), 0);
+        }
         for (int i = 0 + offset; i < offset + ((threads) * insertRange); i++) {
             assertEquals(((Integer) i).toString(),
                     target.getMemoizedResultFor(((Integer) i).toString()));
