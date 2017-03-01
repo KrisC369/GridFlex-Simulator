@@ -5,10 +5,13 @@ import com.google.common.collect.Maps;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
@@ -22,6 +25,7 @@ public class MapDBMemoizationContextTest {
 
     private MapDBMemoizationContext<String, String> target;
     private Map<String, String> db = Maps.newLinkedHashMap();
+    private static final Logger logger = LoggerFactory.getLogger(MapDBMemoizationContextTest.class);
 
     @Before
     public void setUp() throws Exception {
@@ -76,30 +80,57 @@ public class MapDBMemoizationContextTest {
 
     @Test
     public void inOutMultiThread() throws Exception {
-        final int threads = 10;
-        final int insertRange = 200;
+        parallelTestImpl(5, 8, 20);
+    }
+
+    public void parallelTestImpl(int offset, final int threads, final int insertRange)
+            throws InterruptedException {
+        final CountDownLatch latch = new CountDownLatch(threads);
         Collection<Callable<String>> runnables = Lists.newArrayList();
-        IntStream.range(1, threads).forEach(i -> runnables.add(new CallableImpl(insertRange)));
+        IntStream.range(0, threads)
+                .forEach(i -> runnables
+                        .add(new CallableImpl(latch, offset + ((i) * insertRange), insertRange)));
         ExecutorService executorService = Executors.newFixedThreadPool(threads);
         executorService.invokeAll(runnables);
-        IntStream.range(1, insertRange).boxed().forEach(
-                (e) -> assertEquals(e.toString(), target.getMemoizedResultFor(e.toString())));
+
+        Map<String, String> wholeMap = target.getWholeMap();
+        System.out.println(wholeMap);
+        assertEquals((threads) * insertRange, wholeMap.size());
+        assertEquals((threads) * insertRange, target.getMemoizationTableSize(), 0);
+        for (int i = 0 + offset; i < offset + ((threads) * insertRange); i++) {
+            assertEquals(((Integer) i).toString(),
+                    target.getMemoizedResultFor(((Integer) i).toString()));
+        }
     }
 
     class CallableImpl implements Callable<String> {
+        private CountDownLatch latch;
         private int endRange;
+        private int start;
 
-        CallableImpl(int endrange) {
+        CallableImpl(CountDownLatch latch, int start, int endrange) {
+            this.latch = latch;
             this.endRange = endrange;
+            this.start = start;
         }
 
         @Override
         public String call() throws Exception {
-            MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-                    .createDefault();
-            IntStream.range(1, endRange).boxed().forEach(
-                    (e) -> target.memoizeEntry(e.toString(), e.toString()));
+            try {
+                MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
+                        .createDefault();
+                IntStream.range(start, start + endRange).boxed().forEach(
+                        (e) -> doMemo(e, target));
+                latch.countDown();
+                logger.debug("Thread done inserting. Latch now at {}", latch.getCount());
+            } catch (Exception e) {
+                logger.error("Exception caught", e);
+            }
             return "";
         }
+    }
+
+    private static void doMemo(Integer i, MapDBMemoizationContext target) {
+        target.memoizeEntry(i.toString(), i.toString());
     }
 }
