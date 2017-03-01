@@ -49,7 +49,12 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
     }
 
     @Override
-    public void solve() {
+    public AllocResults solve() {
+        doSolve();
+        return getSolution();
+    }
+
+    private void doSolve() {
         final MpSolver s = getSolver().getInstance();
         s.add(getProblem());
         s.setVerbose(this.verbose ? 1 : 0);
@@ -80,8 +85,8 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
     /**
      * @return The results.
      */
-    @Override
-    public abstract AllocResults getSolution();
+
+    protected abstract AllocResults getSolution();
 
     /**
      * @return the registered flex providers.

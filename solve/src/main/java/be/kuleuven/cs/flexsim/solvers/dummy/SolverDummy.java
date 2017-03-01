@@ -22,7 +22,6 @@ public class SolverDummy extends AbstractOptimalSolver {
      * Default constructor
      *
      * @param context
-     * @param s
      */
     public SolverDummy(FlexAllocProblemContext context) {
         super(context, Solver.DUMMY);

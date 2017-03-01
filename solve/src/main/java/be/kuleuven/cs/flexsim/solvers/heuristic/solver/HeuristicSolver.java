@@ -55,7 +55,12 @@ public class HeuristicSolver implements Solver<AllocResults> {
     }
 
     @Override
-    public void solve() {
+    public AllocResults solve(){
+        doSolve();
+        return getSolution();
+    }
+
+    private void doSolve() {
         if (logger.isInfoEnabled()) {
             logger.info("Starting solve run.");
         }
@@ -124,8 +129,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
                 "\nSolved with value:" + toDisplayString(solvedAllocResult.getAllocation()));
     }
 
-    @Override
-    public AllocResults getSolution() {
+    AllocResults getSolution() {
         Allocation solvedAlloc = solvedAllocResult.getAllocation();
         List<QHFlexibilityProvider> providers = solvedAlloc.getProviders();
         ListMultimap<FlexibilityProvider, Boolean> actMap = ArrayListMultimap
