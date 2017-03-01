@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.solvers.memoization;
+package be.kuleuven.cs.flexsim.persistence;
 
 /**
  * Memoization context for storing costly calculated results for later use without the calculation.
@@ -12,7 +12,7 @@ public interface MemoizationContext<E,R> {
      * @param entry The entry parameters.
      * @param result The costly calculated results.
      */
-    void memoizeEntry(E entry, R result );
+    void memoizeEntry(E entry, R result);
 
     /**
      * Test if this context has results stored for this entry.
