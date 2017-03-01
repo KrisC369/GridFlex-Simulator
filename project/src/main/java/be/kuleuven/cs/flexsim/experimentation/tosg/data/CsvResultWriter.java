@@ -27,7 +27,7 @@ public class CsvResultWriter {
     private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
             "median fixed points",
             "lower bound fixed points", "upper bound fixed points", "data file",
-            "median eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level",
+            "mean eqn params", "lower bound eqn params", "upper bound eqn params", "CI Level",
             "Allocation efficiency", "Wind error file idx" };
 
     public static void writeCsvFile(String fileName, List<WgmfDynamicsResults> results,
@@ -65,13 +65,13 @@ public class CsvResultWriter {
 
         public abstract double getPricePoint();
 
-        public abstract double[] getMedianFixedPoints();
+        public abstract double[] getMeanFixedPoints();
 
         public abstract double[] getLowerBoundCIFixedPoints();
 
         public abstract double[] getUpperBoundCIFixedPoints();
 
-        public abstract double[] getMedianDynEqnParams();
+        public abstract double[] getMeanDynEqnParams();
 
         public abstract double[] getLowerBoundDynEqnParams();
 
@@ -86,10 +86,10 @@ public class CsvResultWriter {
         public List getValues() {
             return Lists.newArrayList(getNAgents(), getRepititions(),
                     getPricePoint(),
-                    Arrays.toString(getMedianFixedPoints()),
+                    Arrays.toString(getMeanFixedPoints()),
                     Arrays.toString(getLowerBoundCIFixedPoints()),
                     Arrays.toString(getUpperBoundCIFixedPoints()), getDataFileName(),
-                    Arrays.toString(getMedianDynEqnParams()),
+                    Arrays.toString(getMeanDynEqnParams()),
                     Arrays.toString(getLowerBoundDynEqnParams()),
                     Arrays.toString(getUpperBoundDynEqnParams()), getCiLevel(),
                     getAllocEff().toString(), getWindErrorFileIdx());
