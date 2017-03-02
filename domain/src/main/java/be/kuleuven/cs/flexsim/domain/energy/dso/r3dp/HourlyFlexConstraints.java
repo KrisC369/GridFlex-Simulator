@@ -2,6 +2,8 @@ package be.kuleuven.cs.flexsim.domain.energy.dso.r3dp;
 
 import com.google.auto.value.AutoValue;
 
+import java.io.Serializable;
+
 /**
  * Concrete flexibility constraint representation.
  * All values are in hours unless specified otherwise.
@@ -9,7 +11,7 @@ import com.google.auto.value.AutoValue;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 @AutoValue
-public abstract class HourlyFlexConstraints implements FlexConstraints {
+public abstract class HourlyFlexConstraints implements FlexConstraints, Serializable {
 
     /**
      * No flex available.
@@ -25,6 +27,7 @@ public abstract class HourlyFlexConstraints implements FlexConstraints {
     private static final int R3DP_MAX_ACTIVATIONS = 40;
     private static final int R3DP_INTERACTIVATION_TIME = 12;
     private static final int R3DP_ACTIVATION_DURATION = 2;
+    private static final long serialVersionUID = -2416632613892993893L;
 
     HourlyFlexConstraints() {
     }

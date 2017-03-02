@@ -1,6 +1,5 @@
 package be.kuleuven.cs.flexsim.persistence;
 
-import com.igormaznitsa.jute.annotations.JUteTest;
 import org.junit.After;
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -27,30 +26,23 @@ public class MapDBMemoizationContextTest_Issues {
     public void tearDown() throws Exception {
     }
 
-    //    @AfterClass
-    //    public static void cleanup() throws Exception {
-    //        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-    // .createDefault();
-    //        target.resetStore();
-    //    }
-
     private void reset() {
         target.resetStore();
     }
 
-    @JUteTest(order = 1, jvm = "java", printConsole = true)
+    //    @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_1_JuteTest() throws Exception {
         parallelTestImpl(0, 4, 250, false, NAME_DB);
 
     }
 
-    @JUteTest(order = 1, jvm = "java", printConsole = true)
+    //    @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_2_JuteTest() throws Exception {
         parallelTestImpl(1000, 4, 250, false, NAME_DB);
 
     }
 
-    @JUteTest(order = 1, jvm = "java", printConsole = true)
+    //    @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_3_JuteTest() throws Exception {
         parallelTestImpl(2000, 4, 250, false, NAME_DB);
     }

@@ -11,7 +11,7 @@ import be.kuleuven.cs.flexsim.solvers.heuristic.domain.QHFlexibilityProvider;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
-import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
@@ -55,7 +55,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     }
 
     @Override
-    public AllocResults solve(){
+    public AllocResults solve() {
         doSolve();
         return getSolution();
     }
@@ -132,7 +132,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     AllocResults getSolution() {
         Allocation solvedAlloc = solvedAllocResult.getAllocation();
         List<QHFlexibilityProvider> providers = solvedAlloc.getProviders();
-        ListMultimap<FlexibilityProvider, Boolean> actMap = ArrayListMultimap
+        ListMultimap<FlexibilityProvider, Boolean> actMap = LinkedListMultimap
                 .create();
         int[][] allocationMaps = solvedAlloc.getAllocationMaps();
         for (int i = 0; i < allocationMaps.length; i++) {
@@ -153,7 +153,13 @@ public class HeuristicSolver implements Solver<AllocResults> {
     public class AllocationGenerator {
         public Allocation createAllocation() {
             List<QHFlexibilityProvider> providers = Lists.newArrayList();
-            context.getProviders().forEach(p -> providers.add(new OptaFlexProvider(p)));
+            //Order preserving needed.
+            //            context.getProviders().forEach(p -> providers.add(new OptaFlexProvider
+            // (p)));
+            for (FlexibilityProvider p : context.getProviders()) {
+                providers.add(new OptaFlexProvider(p));
+            }
+
             List<ActivationAssignment> assignments = Lists.newArrayList();
             CongestionProfile profile = CongestionProfile
                     .createFromTimeSeries(context.getEnergyProfileToMinimizeWithFlex());

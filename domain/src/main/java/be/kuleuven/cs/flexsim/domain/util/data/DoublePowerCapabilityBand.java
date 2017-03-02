@@ -2,6 +2,8 @@ package be.kuleuven.cs.flexsim.domain.util.data;
 
 import com.google.auto.value.AutoValue;
 
+import java.io.Serializable;
+
 /**
  * Data class signifying a band of operation concerning the power for an entity.
  * Has an upper limit in up and down area.
@@ -9,7 +11,9 @@ import com.google.auto.value.AutoValue;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 @AutoValue
-public abstract class DoublePowerCapabilityBand {
+public abstract class DoublePowerCapabilityBand implements Serializable {
+
+    private static final long serialVersionUID = -4424924189815284177L;
 
     DoublePowerCapabilityBand() {
     }

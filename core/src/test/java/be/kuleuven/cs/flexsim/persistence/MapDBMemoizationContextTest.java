@@ -1,15 +1,21 @@
 package be.kuleuven.cs.flexsim.persistence;
 
+import com.google.auto.value.AutoValue;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.igormaznitsa.jute.annotations.JUteTest;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -17,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -25,6 +32,7 @@ import static org.junit.Assert.assertEquals;
 public class MapDBMemoizationContextTest {
 
     private MapDBMemoizationContext<String, String> target;
+    private MapDBMemoizationContext<KeyObject, ValueObject> target2;
     private Map<String, String> db = Maps.newLinkedHashMap();
     private static final Logger logger = LoggerFactory.getLogger(MapDBMemoizationContextTest.class);
     private static final String NAME_DB = "TestFile";
@@ -49,12 +57,15 @@ public class MapDBMemoizationContextTest {
         //target.resetStore();
     }
 
-    //    @AfterClass
-    //    public static void cleanup() throws Exception {
-    //        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-    // .createDefault();
-    //        target.resetStore();
-    //    }
+    @AfterClass
+    public static void cleanup() throws Exception {
+        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
+                .createDefault(NAME_DB);
+        target.resetStore();
+        MapDBMemoizationContext<KeyObject, ValueObject> target2 = MapDBMemoizationContext
+                .createDefault("testObj.db");
+        target.resetStore();
+    }
 
     private void reset() {
         target.resetStore();
@@ -94,21 +105,15 @@ public class MapDBMemoizationContextTest {
                 (e) -> assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
     }
 
-    @JUteTest(order = 1, jvm = "java", printConsole = true)
-    public void parallell_1_JuteTest() throws Exception {
-        parallelTestImpl(0, 4, 250, false, "juteTest.db");
-
-    }
-
-    @JUteTest(order = 1, jvm = "java", printConsole = true)
-    public void parallell_2_JuteTest() throws Exception {
-        parallelTestImpl(1000, 4, 250, false, "juteTest.db");
-
-    }
-
-    @JUteTest(order = 1, jvm = "java", printConsole = true)
-    public void parallell_3_JuteTest() throws Exception {
-        parallelTestImpl(2000, 4, 250, false, "juteTest.db");
+    @Test
+    public void hasEntryTest() throws Exception {
+        reset();
+        int count = 0;
+        for (Map.Entry<String, String> e : db.entrySet()) {
+            target.memoizeEntry(e.getKey(), e.getValue());
+        }
+        db.entrySet().forEach(
+                (e) -> assertTrue(target.hasResultFor(e.getKey())));
     }
 
     @Test
@@ -143,6 +148,32 @@ public class MapDBMemoizationContextTest {
         }
     }
 
+    @Test
+    public void testObjectSerialization() {
+        MapDBMemoizationContext<KeyObject, ValueObject> target2 = MapDBMemoizationContext
+                .createDefaultEnsureFileExists("testObj.db");
+        ArrayList<Double> list = Lists.newArrayList();
+        list.add((double) 2);
+        list.add((double) 2);
+        list.add((double) 2);
+        list.add((double) 2);
+
+        KeyObject key = KeyObject.create(2, "TestK", list);
+        ListMultimap<KeyObject, Boolean> map = LinkedListMultimap.create();
+        map.put(key, Boolean.TRUE);
+        map.put(key, Boolean.FALSE);
+        map.put(key, Boolean.TRUE);
+
+        ValueObject value = ValueObject.create(2, "TestV", list, map);
+        target2.memoizeEntry(key, value);
+        ValueObject memoizedResultFor = target2.getMemoizedResultFor(key);
+        assertEquals(value, memoizedResultFor);
+    }
+
+    private static void doMemo(Integer i, MapDBMemoizationContext target) {
+        target.memoizeEntry(i.toString(), i.toString());
+    }
+
     static class CallableImpl implements Callable<String> {
         private final CountDownLatch latch;
         private final int endRange;
@@ -172,7 +203,41 @@ public class MapDBMemoizationContextTest {
         }
     }
 
-    private static void doMemo(Integer i, MapDBMemoizationContext target) {
-        target.memoizeEntry(i.toString(), i.toString());
+    @AutoValue
+    abstract static class KeyObject implements Serializable {
+        private static final long serialVersionUID = 8555103073003453496L;
+
+        public abstract double getVal1();
+
+        public abstract String getVal2();
+
+        public abstract List<Double> getVal3();
+
+        public static KeyObject create(double newVal1, String newVal2,
+                List<Double> newVal3) {
+            return new AutoValue_MapDBMemoizationContextTest_KeyObject(newVal1, newVal2, newVal3);
+        }
     }
+
+    @AutoValue
+    abstract static class ValueObject implements Serializable {
+
+        private static final long serialVersionUID = 4794871360396143260L;
+
+        public abstract double getVal1();
+
+        public abstract String getVal2();
+
+        public abstract List<Double> getVal3();
+
+        public abstract ListMultimap<KeyObject, Boolean> getVal4();
+
+        public static ValueObject create(double newVal1, String newVal2,
+                List<Double> newVal3, ListMultimap<KeyObject, Boolean> val4) {
+            return new AutoValue_MapDBMemoizationContextTest_ValueObject(newVal1, newVal2, newVal3,
+                    val4);
+        }
+
+    }
+
 }

@@ -7,11 +7,17 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
 import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolverTest;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -27,13 +33,13 @@ import static org.mockito.Mockito.verify;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class MemoizationDecoratorTest {
+    private static final String DB_NAME = "SolveTest.db";
     private Solver<AllocResults> solver;
     private Solver<AllocResults> solver2;
     private Solver<AllocResults> decoratedSolver;
     private Solver<AllocResults> returningSolver;
 
-    private AllocResults memoresults;
-
+    private MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> memo;
     private FlexAllocProblemContext context;
     private FlexibilityProvider first;
     private FlexibilityProvider second;
@@ -49,10 +55,21 @@ public class MemoizationDecoratorTest {
         second = new FlexProvider(560,
                 HourlyFlexConstraints.builder().maximumActivations(2).interActivationTime(1)
                         .activationDuration(0.5).build());
-        initSolvers();
+        initSolvers(false);
     }
 
-    private void initSolvers() {
+    @AfterClass
+    public static void cleanup() throws Exception {
+        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
+                .createDefault(DB_NAME);
+        target.resetStore();
+        MapDBMemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> target2 =
+                MapDBMemoizationContext
+                        .createDefault(DB_NAME);
+        target.resetStore();
+    }
+
+    private void initSolvers(boolean realMemo) {
         this.context = new FlexAllocProblemContext() {
 
             @Override
@@ -69,9 +86,11 @@ public class MemoizationDecoratorTest {
         Solver<AllocResults> t2 = Solvers.createHeuristicOptaplanner(context, true);
         solver = spy(t1);
         solver2 = spy(t2);
-
-        SimpleMemoizationContext memo = new SimpleMemoizationContext();
-
+        if (realMemo) {
+            memo = MapDBMemoizationContext.createDefaultEnsureFileExists(DB_NAME);
+        } else {
+            memo = new SimpleMemoizationContext();
+        }
         this.decoratedSolver = new MemoizationDecorator(solver, context, memo);
         this.returningSolver = new MemoizationDecorator(solver2, context, memo);
 
@@ -79,8 +98,11 @@ public class MemoizationDecoratorTest {
 
     @Test
     public void solve() throws Exception {
-        AllocResults solution1 = decoratedSolver.solve();
+        doTest1();
+    }
 
+    private void doTest1() {
+        AllocResults solution1 = decoratedSolver.solve();
         AllocResults solution2 = returningSolver.solve();
 
         assertEquals(solution1, solution2);
@@ -89,33 +111,57 @@ public class MemoizationDecoratorTest {
     }
 
     @Test
+    public void solveRealMemo() throws Exception {
+        setUp();
+        initSolvers(true);
+        doTest1();
+        ((MapDBMemoizationContext) memo).resetStore();
+    }
+
+    @Test
     public void getSolution() throws Exception {
-
     }
 
-    void setArg(AllocResults results) {
-        this.memoresults = results;
+    @Test
+    public void testObjectSerialization() throws Exception {
+        initSolvers(true);
+        MapDBMemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> target2 =
+                MapDBMemoizationContext
+                        .createDefaultEnsureFileExists(DB_NAME);
+
+        ListMultimap<FlexibilityProvider, Boolean> lmm = LinkedListMultimap.create();
+        lmm.put(first, Boolean.TRUE);
+        lmm.put(first, Boolean.FALSE);
+        lmm.put(second, Boolean.TRUE);
+        lmm.put(second, Boolean.FALSE);
+
+        ImmutableSolverProblemContextView key = ImmutableSolverProblemContextView.from(context);
+        AllocResultsView value = AllocResultsView.from(AllocResults.create(lmm, 342.0, 2342.3));
+        target2.memoizeEntry(key, value);
+        AllocResultsView memoizedResultFor = target2.getMemoizedResultFor(key);
+        assertEquals(value, memoizedResultFor);
+        ((MapDBMemoizationContext) memo).resetStore();
     }
 
-    class SimpleMemoizationContext
-            implements MemoizationContext<FlexAllocProblemContext, AllocResults> {
+    static class SimpleMemoizationContext
+            implements MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> {
 
-        private FlexAllocProblemContext context;
-        private AllocResults cachedResults;
+        private ImmutableSolverProblemContextView context;
+        private AllocResultsView cachedResults;
 
         @Override
-        public void memoizeEntry(FlexAllocProblemContext entry, AllocResults result) {
+        public void memoizeEntry(ImmutableSolverProblemContextView entry, AllocResultsView result) {
             this.context = entry;
             this.cachedResults = result;
         }
 
         @Override
-        public boolean hasResultFor(FlexAllocProblemContext entry) {
+        public boolean hasResultFor(ImmutableSolverProblemContextView entry) {
             return context != null;
         }
 
         @Override
-        public AllocResults getMemoizedResultFor(FlexAllocProblemContext entry) {
+        public AllocResultsView getMemoizedResultFor(ImmutableSolverProblemContextView entry) {
             if (entry.equals(context)) {
                 return cachedResults;
             } else {
