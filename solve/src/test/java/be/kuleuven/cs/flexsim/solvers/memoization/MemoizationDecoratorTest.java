@@ -151,26 +151,6 @@ public class MemoizationDecoratorTest {
         private AllocResultsView cachedResults;
 
         @Override
-        public void memoizeEntry(ImmutableSolverProblemContextView entry, AllocResultsView result) {
-            this.context = entry;
-            this.cachedResults = result;
-        }
-
-        @Override
-        public boolean hasResultFor(ImmutableSolverProblemContextView entry) {
-            return context != null;
-        }
-
-        @Override
-        public AllocResultsView getMemoizedResultFor(ImmutableSolverProblemContextView entry) {
-            if (entry.equals(context)) {
-                return cachedResults;
-            } else {
-                throw new IllegalStateException("No cached result here.");
-            }
-        }
-
-        @Override
         public AllocResultsView testAndCall(ImmutableSolverProblemContextView entry,
                 Supplier<AllocResultsView> calculationFu) {
             if (context != null) {

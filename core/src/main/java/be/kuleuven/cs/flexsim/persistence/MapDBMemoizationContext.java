@@ -12,11 +12,12 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Memoization context for concurrent read and writes to a file data store using MapDB.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- *         //TODO refactor this class to be more like classic memoization api.
  */
 public final class MapDBMemoizationContext<E extends Serializable, R extends Serializable>
         implements MemoizationContext<E, R> {
@@ -25,7 +26,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     private static final int CONCURRENCY_SCALE = 4;
     private static final String DB_FILE = "TestFile";
     private static final String MAP_NAME = "map";
-    private static Logger logger = org.slf4j.LoggerFactory.getLogger(MapDBMemoizationContext.class);
+    private static Logger logger = getLogger(MapDBMemoizationContext.class);
     private DB dbConnection;
     private volatile ConcurrentMap<E, R> dbAPI;
     private final String db_filename;
@@ -38,7 +39,13 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         this.db_filename = filename;
     }
 
-    @Override
+    /**
+     * Save the results from this entry parameters in the memoization context.
+     *
+     * @param entry  The entry parameters.
+     * @param result The costly calculated results.
+     */
+    @VisibleForTesting
     public void memoizeEntry(E entry, R result) {
         openForWrite();
         dbAPI.put(entry, result);
@@ -47,7 +54,13 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         close();
     }
 
-    @Override
+    /**
+     * Test if this context has results stored for this entry.
+     *
+     * @param entry The entry parameters.
+     * @return True if precalculated results are available.
+     */
+    @VisibleForTesting
     public boolean hasResultFor(E entry) {
         openForRead();
         boolean res = dbAPI.containsKey(entry);
@@ -56,7 +69,13 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         return res;
     }
 
-    @Override
+    /**
+     * Get the results stored in the memoization context.
+     *
+     * @param entry The entry parameters.
+     * @return The precalculated results.
+     */
+    @VisibleForTesting
     public R getMemoizedResultFor(E entry) {
         openForRead();
         R res = dbAPI.get(entry);

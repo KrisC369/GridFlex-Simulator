@@ -19,6 +19,13 @@ public class MemoizationDecorator implements Solver<AllocResults> {
             memoization;
     private final ImmutableSolverProblemContextView contextView;
 
+    /**
+     * Constructor
+     *
+     * @param actualSolver
+     * @param context
+     * @param memoization
+     */
     public MemoizationDecorator(Solver<AllocResults> actualSolver, FlexAllocProblemContext context,
             MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> memoization) {
         this.actualSolver = actualSolver;
@@ -27,19 +34,6 @@ public class MemoizationDecorator implements Solver<AllocResults> {
         this.contextView = ImmutableSolverProblemContextView.from(context);
     }
 
-    //    @Override
-    //    public AllocResults solve() {
-    //        if (memoization.hasResultFor(contextView)) {
-    //            AllocResultsView cachedResult = memoization.getMemoizedResultFor(contextView);
-    //            if (cachedResult == null) {
-    //                throw new IllegalStateException(
-    //                        "Return from memoziation should not be null at this point.");
-    //            }
-    //            return cachedResult.toBackedView(context);
-    //        } else {
-    //            return intern(actualSolver.solve());
-    //        }
-    //    }
     @Override
     public AllocResults solve() {
         return memoization.testAndCall(contextView, this::calculateResult).toBackedView(context);
@@ -47,10 +41,5 @@ public class MemoizationDecorator implements Solver<AllocResults> {
 
     private AllocResultsView calculateResult() {
         return AllocResultsView.from(actualSolver.solve());
-    }
-
-    private AllocResults intern(AllocResults solution) {
-        this.memoization.memoizeEntry(contextView, AllocResultsView.from(solution));
-        return solution;
     }
 }
