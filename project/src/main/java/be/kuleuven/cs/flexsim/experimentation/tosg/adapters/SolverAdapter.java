@@ -23,13 +23,13 @@ public abstract class SolverAdapter<F, T> implements Solver<T> {
 
     @Override
     public T solve() {
-        target.solve();
+        return adaptResult(target.solve());
     }
 
     //    @Override
     //    public T getSolution() {
-//        return adaptResult(target.getSolution());
-//    }
+    //        return adaptResult(target.getSolution());
+    //    }
 
     /**
      * Perform the actual adaptation.

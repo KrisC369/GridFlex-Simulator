@@ -48,8 +48,13 @@ public class MapDBMemoizationContextTest {
         //target.resetStore();
     }
 
+    private void reset() {
+        target.resetStore();
+    }
+
     @Test
     public void simpleInOutTest() throws Exception {
+        reset();
         db.entrySet().forEach((e) -> target.memoizeEntry(e.getKey(), e.getValue()));
         db.entrySet().forEach(
                 (e) -> assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
@@ -57,6 +62,7 @@ public class MapDBMemoizationContextTest {
 
     @Test
     public void largerInOutTest() throws Exception {
+        reset();
         IntStream.range(1, 1000).boxed()
                 .forEach((i) -> target.memoizeEntry(i.toString(), i.toString()));
         IntStream.range(1, 1000).boxed().forEach(
@@ -65,6 +71,7 @@ public class MapDBMemoizationContextTest {
 
     @Test
     public void inOutSingleThread() throws Exception {
+        reset();
         MapDBMemoizationContext<String, String> target2 = MapDBMemoizationContext.createDefault();
         int count = 0;
         for (Map.Entry<String, String> e : db.entrySet()) {
@@ -76,11 +83,6 @@ public class MapDBMemoizationContextTest {
         }
         db.entrySet().forEach(
                 (e) -> assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
-    }
-
-    @Test
-    public void inOutMultiThread() throws Exception {
-        parallelTestImpl(5, 8, 20, true);
     }
 
     @JUteTest(order = 1, jvm = "java", printConsole = true)
@@ -98,6 +100,12 @@ public class MapDBMemoizationContextTest {
     @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_3_JuteTest() throws Exception {
         parallelTestImpl(2000, 4, 250, false);
+    }
+
+    @Test
+    public void inOutMultiThread() throws Exception {
+        reset();
+        parallelTestImpl(5, 8, 20, true);
     }
 
     public void parallelTestImpl(int offset, final int threads, final int insertRange,
