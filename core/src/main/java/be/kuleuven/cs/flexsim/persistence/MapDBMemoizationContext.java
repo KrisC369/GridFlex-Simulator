@@ -27,17 +27,21 @@ public class MapDBMemoizationContext<E extends Serializable, R extends Serializa
     private static Logger logger = org.slf4j.LoggerFactory.getLogger(MapDBMemoizationContext.class);
     private DB dbConnection;
     private volatile ConcurrentMap<E, R> dbAPI;
+    private final String db_filename;
 
     private MapDBMemoizationContext() {
+        this(DB_FILE);
+    }
+
+    public MapDBMemoizationContext(String filename) {
+        this.db_filename = filename;
     }
 
     @Override
     public void memoizeEntry(E entry, R result) {
         openForWrite();
         dbAPI.put(entry, result);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Entry {} added to data store.", entry.toString());
-        }
+        logger.debug("Entry {} added to data store.", entry);
         commitChanges();
         close();
     }
@@ -51,19 +55,15 @@ public class MapDBMemoizationContext<E extends Serializable, R extends Serializa
     public R getMemoizedResultFor(E entry) {
         openForRead();
         R res = dbAPI.get(entry);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Accessed result for entry {}", entry.toString());
-        }
+        logger.debug("Accessed result for entry {}", entry);
         close();
         return res;
     }
 
     private synchronized void openForWrite() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Attempting opening DB connection for read-write.");
-        }
+        logger.debug("Attempting opening DB connection for read-write.");
         synchronized (LOCK) {
-            this.dbConnection = DBMaker.fileDB(DB_FILE).closeOnJvmShutdown().fileChannelEnable()
+            this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
                     .fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported().transactionEnable()
                     .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
                     .make();
@@ -71,25 +71,19 @@ public class MapDBMemoizationContext<E extends Serializable, R extends Serializa
                     .createOrOpen();
         }
         dbConnection.checkThreadSafe();
-        if (logger.isDebugEnabled()) {
-            logger.debug("DB connection opened for read-write.");
-        }
+        logger.debug("DB connection opened for read-write.");
     }
 
     private void openForRead() {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Attempting opening DB connection for read only.");
-        }
-        this.dbConnection = DBMaker.fileDB(DB_FILE).closeOnJvmShutdown().fileChannelEnable()
+        logger.debug("Attempting opening DB connection for read only.");
+        this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
                 .readOnly().fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported()
                 .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
                 .transactionEnable().make();
         this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer.STRING)
                 .createOrOpen();
         dbConnection.checkThreadSafe();
-        if (logger.isDebugEnabled()) {
-            logger.debug("DB connection opened for read only.");
-        }
+        logger.debug("DB connection opened for read only.");
 
     }
 
@@ -97,9 +91,7 @@ public class MapDBMemoizationContext<E extends Serializable, R extends Serializa
     int getMemoizationTableSize() {
         openForRead();
         int size = dbAPI.size();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Accessed table size with value {}", size);
-        }
+        logger.debug("Accessed table size with value {}", size);
         close();
         return size;
     }
@@ -108,42 +100,34 @@ public class MapDBMemoizationContext<E extends Serializable, R extends Serializa
     Map<E, R> getWholeMap() {
         openForRead();
         Map<E, R> tmp = Maps.newLinkedHashMap(dbAPI);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Accessed full table.");
-        }
+        logger.debug("Accessed full table.");
         close();
         return tmp;
     }
 
     private void commitChanges() {
         dbConnection.commit();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Changes to store comitted");
-        }
+        logger.debug("Changes to store comitted");
     }
 
     public void close() {
         //        commitChanges();
         dbConnection.close();
         dbAPI = null;
-        if (logger.isDebugEnabled()) {
-            logger.debug("DB connection closed");
-        }
+        logger.debug("DB connection closed");
     }
 
     void resetStore() {
-        this.dbConnection = DBMaker.fileDB(DB_FILE).closeOnJvmShutdown().fileChannelEnable()
+        this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
                 .fileDeleteAfterClose().transactionEnable()
                 .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
                 .make();
-        if (logger.isDebugEnabled()) {
-            logger.debug("Connection opened with delete file after close -option.");
-        }
+        logger.debug("Connection opened with delete file after close -option.");
         close();
     }
 
     @VisibleForTesting
-    static MapDBMemoizationContext createDefault() {
-        return new MapDBMemoizationContext();
+    static MapDBMemoizationContext createDefault(String filename) {
+        return new MapDBMemoizationContext(filename);
     }
 }

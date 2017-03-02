@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.igormaznitsa.jute.annotations.JUteTest;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -28,10 +27,11 @@ public class MapDBMemoizationContextTest {
     private MapDBMemoizationContext<String, String> target;
     private Map<String, String> db = Maps.newLinkedHashMap();
     private static final Logger logger = LoggerFactory.getLogger(MapDBMemoizationContextTest.class);
+    private static final String NAME_DB = "TestFile";
 
     @Before
     public void setUp() throws Exception {
-        target = MapDBMemoizationContext.createDefault();
+        target = MapDBMemoizationContext.createDefault(NAME_DB);
         db.put("one", "1");
         db.put("two", "2");
         db.put("three", "3");
@@ -49,11 +49,12 @@ public class MapDBMemoizationContextTest {
         //target.resetStore();
     }
 
-    @AfterClass
-    public static void cleanup() throws Exception {
-        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext.createDefault();
-        target.resetStore();
-    }
+    //    @AfterClass
+    //    public static void cleanup() throws Exception {
+    //        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
+    // .createDefault();
+    //        target.resetStore();
+    //    }
 
     private void reset() {
         target.resetStore();
@@ -79,7 +80,8 @@ public class MapDBMemoizationContextTest {
     @Test
     public void inOutSingleThread() throws Exception {
         reset();
-        MapDBMemoizationContext<String, String> target2 = MapDBMemoizationContext.createDefault();
+        MapDBMemoizationContext<String, String> target2 = MapDBMemoizationContext
+                .createDefault(NAME_DB);
         int count = 0;
         for (Map.Entry<String, String> e : db.entrySet()) {
             if (count % 2 == 0) {
@@ -94,35 +96,38 @@ public class MapDBMemoizationContextTest {
 
     @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_1_JuteTest() throws Exception {
-        parallelTestImpl(0, 4, 250, false);
+        parallelTestImpl(0, 4, 250, false, "juteTest.db");
 
     }
 
     @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_2_JuteTest() throws Exception {
-        parallelTestImpl(1000, 4, 250, false);
+        parallelTestImpl(1000, 4, 250, false, "juteTest.db");
 
     }
 
     @JUteTest(order = 1, jvm = "java", printConsole = true)
     public void parallell_3_JuteTest() throws Exception {
-        parallelTestImpl(2000, 4, 250, false);
+        parallelTestImpl(2000, 4, 250, false, "juteTest.db");
     }
 
     @Test
     public void inOutMultiThread() throws Exception {
         reset();
-        parallelTestImpl(5, 8, 20, true);
+        parallelTestImpl(5, 8, 20, true, NAME_DB);
     }
 
-    public void parallelTestImpl(int offset, final int threads, final int insertRange,
-            boolean doRangeCheck)
+    public static void parallelTestImpl(int offset, final int threads, final int insertRange,
+            boolean doRangeCheck, String dbfilename)
             throws InterruptedException {
+        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
+                .createDefault(dbfilename);
         final CountDownLatch latch = new CountDownLatch(threads);
         Collection<Callable<String>> runnables = Lists.newArrayList();
         IntStream.range(0, threads)
                 .forEach(i -> runnables
-                        .add(new CallableImpl(latch, offset + ((i) * insertRange), insertRange)));
+                        .add(new CallableImpl(latch, offset + ((i) * insertRange), insertRange,
+                                dbfilename)));
         ExecutorService executorService = Executors.newFixedThreadPool(threads);
         executorService.invokeAll(runnables);
 
@@ -138,22 +143,24 @@ public class MapDBMemoizationContextTest {
         }
     }
 
-    class CallableImpl implements Callable<String> {
-        private CountDownLatch latch;
-        private int endRange;
-        private int start;
+    static class CallableImpl implements Callable<String> {
+        private final CountDownLatch latch;
+        private final int endRange;
+        private final int start;
+        private final String dbfilename;
 
-        CallableImpl(CountDownLatch latch, int start, int endrange) {
+        CallableImpl(CountDownLatch latch, int start, int endrange, String dbfilename) {
             this.latch = latch;
             this.endRange = endrange;
             this.start = start;
+            this.dbfilename = dbfilename;
         }
 
         @Override
         public String call() throws Exception {
             try {
                 MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-                        .createDefault();
+                        .createDefault(dbfilename);
                 IntStream.range(start, start + endRange).boxed().forEach(
                         (e) -> doMemo(e, target));
                 latch.countDown();
