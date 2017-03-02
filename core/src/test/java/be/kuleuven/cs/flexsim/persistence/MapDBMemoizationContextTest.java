@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.igormaznitsa.jute.annotations.JUteTest;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -46,6 +47,12 @@ public class MapDBMemoizationContextTest {
     @After
     public void tearDown() throws Exception {
         //target.resetStore();
+    }
+
+    @AfterClass
+    public static void cleanup() throws Exception {
+        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext.createDefault();
+        target.resetStore();
     }
 
     private void reset() {

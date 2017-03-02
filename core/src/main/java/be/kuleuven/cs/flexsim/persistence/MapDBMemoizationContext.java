@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentMap;
  * Memoization context for concurrent read and writes to a file data store using MapDB.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
+ *         //TODO refactor this class to be more like classic memoization api.
  */
 public class MapDBMemoizationContext<E extends Serializable, R extends Serializable>
         implements MemoizationContext<E, R> {
