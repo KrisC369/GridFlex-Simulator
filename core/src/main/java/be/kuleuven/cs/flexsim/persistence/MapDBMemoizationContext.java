@@ -183,7 +183,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         return new MapDBMemoizationContext(filename);
     }
 
-    @VisibleForTesting
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
     createDefaultEnsureFileExists(String filename) {
         MapDBMemoizationContext mapDBMemoizationContext = new MapDBMemoizationContext(filename);

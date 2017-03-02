@@ -6,6 +6,7 @@ import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import com.google.common.base.Supplier;
 
 /**
  * Decorator making use of memozation to avoid costly recalculation.
@@ -24,13 +25,14 @@ public class MemoizationDecorator implements Solver<AllocResults> {
      *
      * @param actualSolver
      * @param context
-     * @param memoization
+     * @param memoizationSupplier
      */
     public MemoizationDecorator(Solver<AllocResults> actualSolver, FlexAllocProblemContext context,
-            MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> memoization) {
+            Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
+                    memoizationSupplier) {
         this.actualSolver = actualSolver;
         this.context = context;
-        this.memoization = memoization;
+        this.memoization = memoizationSupplier.get();
         this.contextView = ImmutableSolverProblemContextView.from(context);
     }
 

@@ -21,10 +21,12 @@ import java.io.Serializable;
 public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>, Serializable {
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
+    private final String filepath;
     private long defaultSeed = 0L;
 
-    WgmfSolverFactory(Solvers.TYPE type) {
+    WgmfSolverFactory(Solvers.TYPE type, String filepath) {
         this.type = type;
+        this.filepath = filepath;
     }
 
     public void setSeed(long seed) {
@@ -34,7 +36,7 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
     @Override
     public Solver<SolutionResults> createSolver(final FlexAllocProblemContext context) {
         return new SolverAdapter<AllocResults, SolutionResults>(
-                type.getInstance(new FlexAllocProblemContext() {
+                type.getCachingInstance(new FlexAllocProblemContext() {
                     @Override
                     public Iterable<FlexibilityProvider> getProviders() {
                         return context.getProviders();
@@ -49,7 +51,7 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
                     public long getSeedValue() {
                         return defaultSeed;
                     }
-                })) {
+                }, filepath)) {
 
             @Override
             public SolutionResults adaptResult(AllocResults solution) {

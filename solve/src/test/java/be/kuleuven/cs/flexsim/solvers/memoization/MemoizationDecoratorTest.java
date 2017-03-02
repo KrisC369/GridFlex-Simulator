@@ -92,8 +92,8 @@ public class MemoizationDecoratorTest {
         } else {
             memo = new SimpleMemoizationContext();
         }
-        this.decoratedSolver = new MemoizationDecorator(solver, context, memo);
-        this.returningSolver = new MemoizationDecorator(solver2, context, memo);
+        this.decoratedSolver = new MemoizationDecorator(solver, context, () -> memo);
+        this.returningSolver = new MemoizationDecorator(solver2, context, () -> memo);
 
     }
 

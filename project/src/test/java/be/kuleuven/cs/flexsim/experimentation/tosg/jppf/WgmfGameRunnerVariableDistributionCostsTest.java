@@ -34,6 +34,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     private static final String IMBAL = "imbalance_prices_short.csv";
     private static final String DAM_COLUMN = "damhp";
     private static final String DAMPRICES_DAILY = "dailyDayAheadPrices.csv";
+    private static final String DB_PATH = "persistence/testDB.db";
     private static final int HORIZON = 7;
 
     private ExperimentParams experimentParams;
@@ -83,8 +84,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, horizon);
             return WgmfGameParams
-                    .create(dataIn, new WgmfSolverFactory(expP.getSolver()), specs, distribution,
-                            imbalIn, dayAheadPriceProfile);
+                    .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_PATH), specs,
+                            distribution, imbalIn, dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }
@@ -153,6 +154,11 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
         assertEquals(solutionCPL.getObjectiveValue(), solutiongGRB.getObjectiveValue(), 1.0);
         assertEquals(compCPL, compGRB, 1.0);
+    }
+
+    @Test
+    @Ignore
+    public void testHeuristicCachingEquality() {
     }
 
     @Test

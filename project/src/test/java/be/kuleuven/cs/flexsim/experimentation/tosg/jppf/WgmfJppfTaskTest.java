@@ -65,8 +65,8 @@ public class WgmfJppfTaskTest {
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 7);
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
-                                    Solvers.TYPE.DUMMY), specs, distribution, imbalIn,
-                            dayAheadPriceProfile);
+                                    Solvers.TYPE.DUMMY, "persistence/testDB.db"), specs,
+                            distribution, imbalIn, dayAheadPriceProfile);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)
                     .fixAgentToAction(0, 0).fixAgentToAction(1, 0).fixAgentToAction(2, 1)
