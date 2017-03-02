@@ -1,5 +1,7 @@
 package be.kuleuven.cs.flexsim.persistence;
 
+import com.google.common.base.Supplier;
+
 /**
  * Memoization context for storing costly calculated results for later use without the calculation.
  * Serves as a sort of cache.
@@ -16,6 +18,7 @@ public interface MemoizationContext<E, R> {
      * @param entry  The entry parameters.
      * @param result The costly calculated results.
      */
+    @Deprecated
     void memoizeEntry(E entry, R result);
 
     /**
@@ -24,6 +27,7 @@ public interface MemoizationContext<E, R> {
      * @param entry The entry parameters.
      * @return True if precalculated results are available.
      */
+    @Deprecated
     boolean hasResultFor(E entry);
 
     /**
@@ -32,5 +36,15 @@ public interface MemoizationContext<E, R> {
      * @param entry The entry parameters.
      * @return The precalculated results.
      */
+    @Deprecated
     R getMemoizedResultFor(E entry);
+
+    /**
+     * Classic memoiztion function.
+     *
+     * @param entry
+     * @param calculationFu
+     * @return
+     */
+    R testAndCall(E entry, Supplier<R> calculationFu);
 }

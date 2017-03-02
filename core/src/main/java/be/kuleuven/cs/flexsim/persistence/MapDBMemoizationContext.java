@@ -1,6 +1,7 @@
 package be.kuleuven.cs.flexsim.persistence;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Maps;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
@@ -64,6 +65,25 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         return res;
     }
 
+    @Override
+    public R testAndCall(E entry, Supplier<R> calculationFu) {
+        openForRead();
+        R res = null;
+        if (dbAPI.containsKey(entry)) {
+            res = getMemoizedResultFor(entry);
+        }
+        close();
+        if (res != null) {
+            return res;
+        }
+        res = calculationFu.get();
+        openForWrite();
+        dbAPI.put(entry, res);
+        commitChanges();
+        close();
+        return res;
+    }
+
     private synchronized void openForWrite() {
         logger.debug("Attempting opening DB connection for read-write.");
         synchronized (LOCK) {
@@ -73,9 +93,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
                     .make();
             this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer
                     .JAVA).createOrOpen();
-            //            this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer
-            // .CLASS)
-            //                    .createOrOpen();
         }
         dbConnection.checkThreadSafe();
         logger.debug("DB connection opened for read-write.");

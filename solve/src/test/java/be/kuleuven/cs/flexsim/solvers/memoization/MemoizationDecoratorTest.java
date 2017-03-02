@@ -14,6 +14,7 @@ import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolverTest;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import com.google.common.base.Supplier;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
@@ -167,6 +168,17 @@ public class MemoizationDecoratorTest {
             } else {
                 throw new IllegalStateException("No cached result here.");
             }
+        }
+
+        @Override
+        public AllocResultsView testAndCall(ImmutableSolverProblemContextView entry,
+                Supplier<AllocResultsView> calculationFu) {
+            if (context != null) {
+                return cachedResults;
+            }
+            this.context = entry;
+            this.cachedResults = calculationFu.get();
+            return cachedResults;
         }
     }
 }

@@ -27,18 +27,26 @@ public class MemoizationDecorator implements Solver<AllocResults> {
         this.contextView = ImmutableSolverProblemContextView.from(context);
     }
 
+    //    @Override
+    //    public AllocResults solve() {
+    //        if (memoization.hasResultFor(contextView)) {
+    //            AllocResultsView cachedResult = memoization.getMemoizedResultFor(contextView);
+    //            if (cachedResult == null) {
+    //                throw new IllegalStateException(
+    //                        "Return from memoziation should not be null at this point.");
+    //            }
+    //            return cachedResult.toBackedView(context);
+    //        } else {
+    //            return intern(actualSolver.solve());
+    //        }
+    //    }
     @Override
     public AllocResults solve() {
-        if (memoization.hasResultFor(contextView)) {
-            AllocResultsView cachedResult = memoization.getMemoizedResultFor(contextView);
-            if (cachedResult == null) {
-                throw new IllegalStateException(
-                        "Return from memoziation should not be null at this point.");
-            }
-            return cachedResult.toBackedView(context);
-        } else {
-            return intern(actualSolver.solve());
-        }
+        return memoization.testAndCall(contextView, this::calculateResult).toBackedView(context);
+    }
+
+    private AllocResultsView calculateResult() {
+        return AllocResultsView.from(actualSolver.solve());
     }
 
     private AllocResults intern(AllocResults solution) {
