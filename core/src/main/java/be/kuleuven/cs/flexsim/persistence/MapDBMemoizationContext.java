@@ -8,6 +8,7 @@ import org.mapdb.DBMaker;
 import org.mapdb.Serializer;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
@@ -37,6 +38,17 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
 
     public MapDBMemoizationContext(String filename) {
         this.db_filename = filename;
+        writeDir(filename);
+    }
+
+    private static void writeDir(String fullPath) {
+        String[] dirs = fullPath.split("/");
+        String dirPath = "";
+        for (int i = 0; i < dirs.length - 1; i++) {
+            dirPath += dirs[i] + "/";
+        }
+        File f = new File(dirPath);
+        f.mkdirs();
     }
 
     /**
