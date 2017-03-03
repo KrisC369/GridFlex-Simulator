@@ -5,6 +5,7 @@ import org.n52.matlab.control.MatlabInvocationException;
 import org.n52.matlab.control.MatlabProxy;
 import org.n52.matlab.control.MatlabProxyFactory;
 import org.n52.matlab.control.MatlabProxyFactoryOptions;
+import org.slf4j.Logger;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -17,9 +18,11 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class EgtResultParser implements AutoCloseable {
+    private static final Object LOCK = new Object();
     private static final boolean HIDDEN = true;
     private static final boolean REUSE_PREVIOUS = true;
     private final AtomicReference<MatlabProxy> proxy = new AtomicReference<>();
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(EgtResultParser.class);
 
     /**
      * Default constructor.
@@ -32,7 +35,13 @@ public class EgtResultParser implements AutoCloseable {
                 .setUsePreviouslyControlledSession(REUSE_PREVIOUS).setMatlabLocation(pathToML)
                 .setHidden(HIDDEN).build();
         try {
-            proxy.set(new MatlabProxyFactory(options).getProxy());
+            synchronized (LOCK) {
+                logger.debug(
+                        "Attempting to connect matlab proxy to instance using options: {}",
+                        options);
+                proxy.set(new MatlabProxyFactory(options).getProxy());
+                logger.debug("Matlab proxy connected");
+            }
         } catch (MatlabConnectionException e) {
             throw new IllegalStateException("Could not instantiate matlab proxy. Quitting!", e);
         }
@@ -53,6 +62,7 @@ public class EgtResultParser implements AutoCloseable {
      */
     public double[] findFixedPointForDynEquationParams(double[] dynParams) {
         checkArgument(dynParams.length > 0, "Params should not be empty.");
+        logger.debug("Evaluating function call for finding fixed points.");
         try {
             getProxy().setVariable("PARAMS", dynParams);
             getProxy().eval("RES = solveN(PARAMS);");
@@ -82,7 +92,11 @@ public class EgtResultParser implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        this.getProxy().exit();
-        this.getProxy().disconnect();
+        synchronized (LOCK) {
+            logger.debug("Closing matlab instance and disconnecting proxy.");
+            this.getProxy().exit();
+            this.getProxy().disconnect();
+            logger.debug("Matlab instance closed and proxy disconnected.");
+        }
     }
 }
