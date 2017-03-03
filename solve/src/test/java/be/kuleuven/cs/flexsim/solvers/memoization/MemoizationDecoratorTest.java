@@ -13,7 +13,7 @@ import be.kuleuven.cs.flexsim.solvers.Solvers;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolverTest;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import com.google.common.base.Supplier;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;

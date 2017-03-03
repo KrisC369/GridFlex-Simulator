@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.optimal.ConstraintConversion;
 import be.kuleuven.cs.flexsim.solvers.optimal.mip.MIPOptimalSolver;
 import com.google.common.collect.Lists;

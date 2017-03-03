@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.solvers.dummy;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import net.sf.jmpi.main.MpProblem;

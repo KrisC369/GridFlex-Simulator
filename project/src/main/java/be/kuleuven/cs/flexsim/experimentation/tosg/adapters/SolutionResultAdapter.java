@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.adapters;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import com.google.common.collect.ListMultimap;
 
 /**

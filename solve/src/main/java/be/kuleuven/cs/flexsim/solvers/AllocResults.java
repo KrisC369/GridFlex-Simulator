@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.solvers.optimal;
+package be.kuleuven.cs.flexsim.solvers;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import com.google.auto.value.AutoValue;

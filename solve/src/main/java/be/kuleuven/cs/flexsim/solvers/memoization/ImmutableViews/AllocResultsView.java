@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.solvers.memoization.immutableViews;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import com.google.auto.value.AutoValue;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;

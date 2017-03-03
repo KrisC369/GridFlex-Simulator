@@ -8,7 +8,7 @@ import be.kuleuven.cs.flexsim.solvers.heuristic.domain.ActivationAssignment;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.Allocation;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.OptaFlexProvider;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.QHFlexibilityProvider;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ListMultimap;

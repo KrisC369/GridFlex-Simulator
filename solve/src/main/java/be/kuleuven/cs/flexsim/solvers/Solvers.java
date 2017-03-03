@@ -6,7 +6,6 @@ import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
 import be.kuleuven.cs.flexsim.solvers.dummy.SolverDummy;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolver;
 import be.kuleuven.cs.flexsim.solvers.memoization.MemoizationDecorator;
-import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.optimal.mip.MIPOptimalSolver;
 
 import static be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver.Solver.CPLEX;
