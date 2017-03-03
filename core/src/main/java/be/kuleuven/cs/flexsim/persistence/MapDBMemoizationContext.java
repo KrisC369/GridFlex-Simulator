@@ -152,7 +152,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     }
 
     @VisibleForTesting
-    Map<E, R> getWholeMap() {
+    public Map<E, R> getWholeMap() {
         openForRead();
         Map<E, R> tmp = Maps.newLinkedHashMap(dbAPI);
         logger.debug("Accessed full table.");
