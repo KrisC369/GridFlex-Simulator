@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
@@ -61,7 +62,7 @@ public class HeuristicSolverIO implements SolutionFileIO {
             context = new FlexAllocProblemContext() {
 
                 @Override
-                public Iterable<FlexibilityProvider> getProviders() {
+                public Collection<FlexibilityProvider> getProviders() {
                     return Lists.newArrayList(first, second);
                 }
 

@@ -64,8 +64,9 @@ public abstract class AbstractWgmfGameRunner {
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, FULL_YEAR);
 
             return WgmfGameParams
-                    .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_FILE_LOCATION),
-                            specs, distribution, imbalIn, dayAheadPriceProfile);
+                    .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_FILE_LOCATION,
+                            expP.getCachingEnabled()), specs, distribution, imbalIn,
+                            dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }

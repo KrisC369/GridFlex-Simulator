@@ -18,6 +18,9 @@ public abstract class ImmutableSolverProblemContextView implements Serializable 
 
     private static final long serialVersionUID = -3237434526693894578L;
 
+    ImmutableSolverProblemContextView() {
+    }
+
     /**
      * @return The flexibility providers present for this problem context.
      */

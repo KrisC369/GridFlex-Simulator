@@ -17,6 +17,7 @@ import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import org.eclipse.jdt.annotation.Nullable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
         Solver<SolutionResults> solver = getSolverFactory()
                 .createSolver(new FlexAllocProblemContext() {
                     @Override
-                    public Iterable<FlexibilityProvider> getProviders() {
+                    public Collection<FlexibilityProvider> getProviders() {
                         return Collections.unmodifiableSet(getFlexibilityProviders());
                     }
 
@@ -69,8 +70,8 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
                         return congestion;
                     }
                 });
-//        solver.solve();
-//        this.results = solver.getSolution();
+        //        solver.solve();
+        //        this.results = solver.getSolution();
         this.results = solver.solve();
         processActivations(results);
     }
@@ -89,10 +90,10 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
 
     @VisibleForTesting
     List<Integer> getTotalActivationsProfile(
-            ListMultimap<FlexibilityProvider, Boolean> values) {
-        checkArgument(!values.isEmpty(), "Values provided should not be empty.");
+            ListMultimap<FlexibilityProvider, Boolean> activationProf) {
+        checkArgument(!activationProf.isEmpty(), "ActivationProf provided should not be empty.");
         List<Integer> sizes = Lists.newArrayList();
-        values.keySet().forEach(p -> sizes.add(values.get(p).size()));
+        activationProf.keySet().forEach(p -> sizes.add(activationProf.get(p).size()));
         int min = sizes.get(0);
         if (sizes.size() > 0) {
             min = Collections.min(sizes);
@@ -102,25 +103,27 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
              j < min; j++) {
             final int jj = j;
             toRet.add(
-                    values.keySet().stream().mapToInt(fp -> values.get(fp).get(jj) ? 1 : 0).sum());
+                    activationProf.keySet().stream()
+                            .mapToInt(fp -> activationProf.get(fp).get(jj) ? 1 : 0).sum());
         }
         return toRet;
     }
 
     @VisibleForTesting
     List<Double> getTotalActivatedVolumesProfile(
-            ListMultimap<FlexibilityProvider, Boolean> values) {
+            ListMultimap<FlexibilityProvider, Boolean> activationProf) {
         List<Integer> sizes = Lists.newArrayList();
-        values.keySet().forEach(p -> sizes.add(values.get(p).size()));
+        activationProf.keySet().forEach(p -> sizes.add(activationProf.get(p).size()));
         int min = Collections.min(sizes);
         DoubleList toRet = new DoubleArrayList(min);
         for (int j = 0;
              j < min; j++) {
             final int jj = j;
             toRet.add(
-                    values.keySet().stream().mapToDouble(fp -> values.get(fp).get(jj) ?
-                            fp.getFlexibilityActivationRate().getUp() :
-                            0d).sum());
+                    activationProf.keySet().stream()
+                            .mapToDouble(fp -> activationProf.get(fp).get(jj) ?
+                                    fp.getFlexibilityActivationRate().getUp() :
+                                    0d).sum());
         }
         return toRet;
     }

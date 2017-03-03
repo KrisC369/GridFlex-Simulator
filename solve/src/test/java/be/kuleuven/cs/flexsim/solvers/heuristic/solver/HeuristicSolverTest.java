@@ -18,6 +18,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -50,7 +51,7 @@ public class HeuristicSolverTest {
         this.context = new FlexAllocProblemContext() {
 
             @Override
-            public Iterable<FlexibilityProvider> getProviders() {
+            public Collection<FlexibilityProvider> getProviders() {
                 return Lists.newArrayList(first, second);
             }
 
@@ -111,7 +112,7 @@ public class HeuristicSolverTest {
         this.context = new FlexAllocProblemContext() {
 
             @Override
-            public Iterable<FlexibilityProvider> getProviders() {
+            public Collection<FlexibilityProvider> getProviders() {
                 return Lists.newArrayList(first, second, third, fourth);
             }
 
@@ -131,7 +132,7 @@ public class HeuristicSolverTest {
         this.context = new FlexAllocProblemContext() {
 
             @Override
-            public Iterable<FlexibilityProvider> getProviders() {
+            public Collection<FlexibilityProvider> getProviders() {
                 return Lists.newArrayList(first, second);
             }
 

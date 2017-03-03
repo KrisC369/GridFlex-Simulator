@@ -12,6 +12,7 @@ import be.kuleuven.cs.flexsim.solvers.Solvers;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 /**
  * A solvers factory for wgmf games.
@@ -22,11 +23,13 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
     private final String filepath;
+    private final boolean cachingEnabled;
     private long defaultSeed = 0L;
 
-    WgmfSolverFactory(Solvers.TYPE type, String filepath) {
+    WgmfSolverFactory(Solvers.TYPE type, String filepath, boolean cachingEnabled) {
         this.type = type;
         this.filepath = filepath;
+        this.cachingEnabled = cachingEnabled;
     }
 
     public void setSeed(long seed) {
@@ -35,23 +38,30 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
 
     @Override
     public Solver<SolutionResults> createSolver(final FlexAllocProblemContext context) {
-        return new SolverAdapter<AllocResults, SolutionResults>(
-                type.getCachingInstance(new FlexAllocProblemContext() {
-                    @Override
-                    public Iterable<FlexibilityProvider> getProviders() {
-                        return context.getProviders();
-                    }
+        final FlexAllocProblemContext flexAllocProblemContext = new FlexAllocProblemContext() {
+            @Override
+            public Collection<FlexibilityProvider> getProviders() {
+                return context.getProviders();
+            }
 
-                    @Override
-                    public TimeSeries getEnergyProfileToMinimizeWithFlex() {
-                        return context.getEnergyProfileToMinimizeWithFlex();
-                    }
+            @Override
+            public TimeSeries getEnergyProfileToMinimizeWithFlex() {
+                return context.getEnergyProfileToMinimizeWithFlex();
+            }
 
-                    @Override
-                    public long getSeedValue() {
-                        return defaultSeed;
-                    }
-                }, filepath)) {
+            @Override
+            public long getSeedValue() {
+                return defaultSeed;
+            }
+        };
+        final Solver<AllocResults> solverInstance;
+        if (cachingEnabled) {
+            solverInstance = type
+                    .getCachingInstance(flexAllocProblemContext, filepath);
+        } else {
+            solverInstance = type.getInstance(flexAllocProblemContext);
+        }
+        return new SolverAdapter<AllocResults, SolutionResults>(solverInstance) {
 
             @Override
             public SolutionResults adaptResult(AllocResults solution) {

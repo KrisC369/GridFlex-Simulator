@@ -17,6 +17,8 @@ public abstract class ExperimentParams implements Serializable {
     private static final int DEF_P1START = 0;
     private static final int DEF_WINDPROF = -1;
     private static final int DEF_DATAPROF = -1;
+    private static final boolean DEF_CACHING_ENABLED = false;
+    private static final boolean DEF_REMOTE_EXEC = false;
 
     ExperimentParams() {
     }
@@ -67,12 +69,18 @@ public abstract class ExperimentParams implements Serializable {
     public abstract int getCurrentDataProfileIndex();
 
     /**
+     *
+     */
+    public abstract boolean getCachingEnabled();
+
+    /**
      * @return A builder instance.
      */
     public static ExperimentParams.Builder builder() {
         return new AutoValue_ExperimentParams.Builder().setP1Start(DEF_P1START)
-                .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(false)
-                .setWindErrorProfileIndex(DEF_WINDPROF).setCurrentDataProfileIndex(DEF_DATAPROF);
+                .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(DEF_REMOTE_EXEC)
+                .setWindErrorProfileIndex(DEF_WINDPROF).setCurrentDataProfileIndex(DEF_DATAPROF)
+                .setCachingEnabled(DEF_CACHING_ENABLED);
     }
 
     /**
@@ -135,8 +143,15 @@ public abstract class ExperimentParams implements Serializable {
         public abstract Builder setCurrentDataProfileIndex(int idx);
 
         /**
+         * @param cachingEnabled Is caching of alloc results enabled or not.
+         * @return This builder.
+         */
+        public abstract Builder setCachingEnabled(boolean cachingEnabled);
+
+        /**
          * @return Builds an experimentparams instance.
          */
         public abstract ExperimentParams build();
+
     }
 }

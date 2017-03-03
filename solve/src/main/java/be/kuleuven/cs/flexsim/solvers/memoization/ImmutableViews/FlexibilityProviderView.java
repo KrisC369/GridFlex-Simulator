@@ -17,6 +17,9 @@ public abstract class FlexibilityProviderView implements Serializable {
 
     private static final long serialVersionUID = -7705253266099469069L;
 
+    FlexibilityProviderView() {
+    }
+
     /**
      * @return The amount of flexible power that this entity is capable of delivering in both
      * injection and offtake directions.

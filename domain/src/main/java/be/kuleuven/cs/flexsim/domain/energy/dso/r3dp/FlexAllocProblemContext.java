@@ -2,6 +2,8 @@ package be.kuleuven.cs.flexsim.domain.energy.dso.r3dp;
 
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 
+import java.util.Collection;
+
 /**
  * Represents the context for which to solve flexibility allocation problems.
  *
@@ -12,7 +14,7 @@ public interface FlexAllocProblemContext {
     /**
      * @return The flexibility providers present for this problem context.
      */
-    Iterable<FlexibilityProvider> getProviders();
+    Collection<FlexibilityProvider> getProviders();
 
     /**
      * @return The energy profile to minimize as a goal for the solvers.

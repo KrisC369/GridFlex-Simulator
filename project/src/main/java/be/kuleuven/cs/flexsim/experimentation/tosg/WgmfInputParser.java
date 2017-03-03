@@ -33,13 +33,15 @@ public final class WgmfInputParser {
     private static final int NREPS_DEFAULT = 1;
     private static final Logger logger = LoggerFactory.getLogger(WgmfInputParser.class);
     private static final Solvers.TYPE SOLVER_DEFAULT = Solvers.TYPE.DUMMY;
+    private static final String CACHING_ALLOC_KEY = "c";
 
     private WgmfInputParser() {
     }
 
     /**
      * Use --help or -r [repititions] -n [numberOfAgents] -s [GUROBI|CPLEX|DUMMY|OPTA] -m
-     * [LOCAL|REMOTE]
+     * [LOCAL|REMOTE] -p1start [rangeStart] -p1end [rangeEnd] -p1step [stepSize]
+     * -pIdx[profileIndex] -dIdx [errorDataIdx]
      *
      * @param args The commandline args.
      * @return The experiment params.
@@ -67,10 +69,12 @@ public final class WgmfInputParser {
                         + AbstractWgmfGameRunner.DISTRIBUTIONFILE_TEMPLATE
                         + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
         o.addOption(PROFINDEX_KEY, true,
-                "The index of elec data profile file to load. Make sure the input file is named using "
+                "The index of elec data profile file to load. Make sure the input file is named "
+                        + "using "
                         + "following convention: "
                         + AbstractWgmfGameRunner.DATAPROFILE_TEMPLATE
                         + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
+        o.addOption(CACHING_ALLOC_KEY, false, "Caching enabled");
 
         int nAgents = NAGENTS_DEFAULT;
         int nReps = NREPS_DEFAULT;
@@ -109,6 +113,9 @@ public final class WgmfInputParser {
             if (line.hasOption(PROFINDEX_KEY)) {
                 builder.setCurrentDataProfileIndex(
                         Integer.parseInt(line.getOptionValue(PROFINDEX_KEY)));
+            }
+            if (line.hasOption(CACHING_ALLOC_KEY)) {
+                builder.setCachingEnabled(true);
             }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";

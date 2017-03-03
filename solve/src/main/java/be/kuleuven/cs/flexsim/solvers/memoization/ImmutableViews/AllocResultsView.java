@@ -4,9 +4,9 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 import com.google.auto.value.AutoValue;
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.MultimapBuilder;
 
 import java.io.Serializable;
 import java.util.List;
@@ -22,6 +22,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 public abstract class AllocResultsView implements Serializable {
 
     private static final long serialVersionUID = 5336578454735826891L;
+
+    AllocResultsView() {
+    }
 
     /**
      * @return The allocation results as a map of provider to list of booleans indicating
@@ -51,8 +54,8 @@ public abstract class AllocResultsView implements Serializable {
      */
     public static AllocResultsView from(AllocResults res) {
         ListMultimap<FlexibilityProvider, Boolean> allocationResults = res.getAllocationResults();
-        LinkedListMultimap<FlexibilityProviderView, Boolean> viewMap = LinkedListMultimap
-                .create();
+        ListMultimap<FlexibilityProviderView, Boolean> viewMap = MultimapBuilder
+                .linkedHashKeys().arrayListValues().build();
         for (FlexibilityProvider fp : allocationResults.keySet()) {
             viewMap.putAll(FlexibilityProviderView.from(fp), allocationResults.get(fp));
         }
@@ -63,8 +66,10 @@ public abstract class AllocResultsView implements Serializable {
     public AllocResults toBackedView(FlexAllocProblemContext context) {
         ListMultimap<FlexibilityProviderView, Boolean> allocationResults = this
                 .getAllocationResults();
-        LinkedListMultimap<FlexibilityProvider, Boolean> origMap = LinkedListMultimap
-                .create();
+        ListMultimap<FlexibilityProvider, Boolean> origMap = MultimapBuilder
+                .linkedHashKeys(context.getProviders().size())
+                .arrayListValues(context.getEnergyProfileToMinimizeWithFlex().length())
+                .build();
         List<FlexibilityProvider> providers = Lists.newArrayList(context.getProviders());
         List<FlexibilityProviderView> views = Lists.newArrayList(allocationResults.keySet());
         checkArgument(providers.size() == views.size(),

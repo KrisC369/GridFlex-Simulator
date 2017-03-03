@@ -64,7 +64,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         // "-p1step",
         //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
-                "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4", "-p1step",
+                "-n", "2", "-r", "1", "-s", solver, "-c", "-m", "LOCAL", "-p1start", "35.4",
+                "-p1step",
                 "10", "-p1end", "45.5", "-pIdx", "1" };
     }
 
@@ -84,7 +85,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, horizon);
             return WgmfGameParams
-                    .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_PATH), specs,
+                    .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_PATH,
+                                    expP.getCachingEnabled()), specs,
                             distribution, imbalIn, dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);

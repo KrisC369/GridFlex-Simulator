@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.spy;
@@ -74,7 +75,7 @@ public class MemoizationDecoratorTest {
         this.context = new FlexAllocProblemContext() {
 
             @Override
-            public Iterable<FlexibilityProvider> getProviders() {
+            public Collection<FlexibilityProvider> getProviders() {
                 return Lists.newArrayList(first, second);
             }
 

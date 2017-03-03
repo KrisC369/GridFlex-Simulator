@@ -11,9 +11,9 @@ import be.kuleuven.cs.flexsim.solvers.heuristic.domain.QHFlexibilityProvider;
 import be.kuleuven.cs.flexsim.solvers.optimal.AllocResults;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
-import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.MultimapBuilder;
 import com.google.common.io.Resources;
 import org.eclipse.jdt.annotation.Nullable;
 import org.optaplanner.core.api.solver.SolverFactory;
@@ -132,9 +132,11 @@ public class HeuristicSolver implements Solver<AllocResults> {
     AllocResults getSolution() {
         Allocation solvedAlloc = solvedAllocResult.getAllocation();
         List<QHFlexibilityProvider> providers = solvedAlloc.getProviders();
-        ListMultimap<FlexibilityProvider, Boolean> actMap = LinkedListMultimap
-                .create();
         int[][] allocationMaps = solvedAlloc.getAllocationMaps();
+        ListMultimap<FlexibilityProvider, Boolean> actMap = MultimapBuilder
+                .linkedHashKeys(context.getProviders().size())
+                .arrayListValues(context.getEnergyProfileToMinimizeWithFlex().length())
+                .build();
         for (int i = 0; i < allocationMaps.length; i++) {
             List<Boolean> toAdd = Lists.newArrayList();
             for (int j = 0; j < allocationMaps[i].length; j++) {
