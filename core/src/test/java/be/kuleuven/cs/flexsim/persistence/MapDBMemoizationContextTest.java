@@ -39,7 +39,7 @@ public class MapDBMemoizationContextTest {
 
     @Before
     public void setUp() throws Exception {
-        target = MapDBMemoizationContext.createDefault(NAME_DB);
+        target = MapDBMemoizationContext.createDefaultEnsureFileExists(NAME_DB);
         db.put("one", "1");
         db.put("two", "2");
         db.put("three", "3");
@@ -172,6 +172,27 @@ public class MapDBMemoizationContextTest {
 
     private static void doMemo(Integer i, MapDBMemoizationContext target) {
         target.memoizeEntry(i.toString(), i.toString());
+    }
+
+    @Test
+    public void testMemoizationCall() {
+        final CountDownLatch countDownLatch = new CountDownLatch(3);
+        target.testAndCall(db.get("one"), () -> {
+            logCall(countDownLatch);
+            return db.get("one");
+        });
+        assertEquals(2, countDownLatch.getCount(), 0);
+
+        target.testAndCall(db.get("one"), () -> {
+            logCall(countDownLatch);
+            return db.get("one");
+        });
+        assertEquals(2, countDownLatch.getCount(), 0);
+        assertTrue(target.isClosed());
+    }
+
+    void logCall(CountDownLatch l) {
+        l.countDown();
     }
 
     static class CallableImpl implements Callable<String> {

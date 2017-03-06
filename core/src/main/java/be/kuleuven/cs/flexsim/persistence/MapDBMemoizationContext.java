@@ -21,10 +21,10 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public final class MapDBMemoizationContext<E extends Serializable, R extends Serializable>
-        implements MemoizationContext<E, R> {
+        implements MemoizationContext<E, R>, AutoCloseable {
 
     private static final Object LOCK = new Object();
-    private static final int CONCURRENCY_SCALE = 4;
+    private static final int CONCURRENCY_SCALE = 64;
     private static final String DB_FILE = "TestFile";
     private static final String MAP_NAME = "map";
     private static Logger logger = getLogger(MapDBMemoizationContext.class);
@@ -97,25 +97,27 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     }
 
     @Override
-    public R testAndCall(E entry, Supplier<R> calculationFu) {
+    public R testAndCall(E entry, Supplier<R> calculationFu, boolean updateCache) {
         openForRead();
         R res = null;
-        if (dbAPI.containsKey(entry)) {
-            res = getMemoizedResultFor(entry);
-        }
+        //        if (dbAPI.containsKey(entry)) {
+        res = dbAPI.get(entry);
+        //        }
         close();
         if (res != null) {
             return res;
         }
         res = calculationFu.get();
-        openForWrite();
-        dbAPI.put(entry, res);
-        commitChanges();
-        close();
+        if (updateCache) {
+            openForWrite();
+            dbAPI.put(entry, res);
+            commitChanges();
+            close();
+        }
         return res;
     }
 
-    private synchronized void openForWrite() {
+    private void openForWrite() {
         logger.debug("Attempting opening DB connection for read-write.");
         synchronized (LOCK) {
             this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
@@ -125,21 +127,20 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
             this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer
                     .JAVA).createOrOpen();
         }
-        dbConnection.checkThreadSafe();
         logger.debug("DB connection opened for read-write.");
     }
 
     private void openForRead() {
         logger.debug("Attempting opening DB connection for read only.");
-        this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
-                .readOnly().fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported()
-                .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
-                .transactionEnable().make();
-        this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer.JAVA)
-                .createOrOpen();
-        dbConnection.checkThreadSafe();
+        synchronized (LOCK) {
+            this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
+                    .readOnly().fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported()
+                    .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
+                    .transactionEnable().make();
+            this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer.JAVA)
+                    .createOrOpen();
+        }
         logger.debug("DB connection opened for read only.");
-
     }
 
     @VisibleForTesting
@@ -165,6 +166,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         logger.debug("Changes to store comitted");
     }
 
+    @Override
     public void close() {
         //        commitChanges();
         dbConnection.close();
@@ -189,6 +191,10 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         close();
     }
 
+    boolean isClosed() {
+        return dbConnection.isClosed();
+    }
+
     @VisibleForTesting
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
     createDefault(String filename) {
@@ -201,4 +207,5 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         mapDBMemoizationContext.ensureFileInit();
         return mapDBMemoizationContext;
     }
+
 }
