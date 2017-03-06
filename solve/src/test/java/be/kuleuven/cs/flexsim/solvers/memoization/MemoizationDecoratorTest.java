@@ -9,11 +9,11 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
 import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
+import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolverTest;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
-import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import com.google.common.base.Supplier;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -93,8 +93,8 @@ public class MemoizationDecoratorTest {
         } else {
             memo = new SimpleMemoizationContext();
         }
-        this.decoratedSolver = new MemoizationDecorator(solver, context, () -> memo);
-        this.returningSolver = new MemoizationDecorator(solver2, context, () -> memo);
+        this.decoratedSolver = new MemoizationDecorator(solver, context, () -> memo,true);
+        this.returningSolver = new MemoizationDecorator(solver2, context, () -> memo,true);
 
     }
 
@@ -153,7 +153,7 @@ public class MemoizationDecoratorTest {
 
         @Override
         public AllocResultsView testAndCall(ImmutableSolverProblemContextView entry,
-                Supplier<AllocResultsView> calculationFu) {
+                Supplier<AllocResultsView> calculationFu, boolean whatever) {
             if (context != null) {
                 return cachedResults;
             }

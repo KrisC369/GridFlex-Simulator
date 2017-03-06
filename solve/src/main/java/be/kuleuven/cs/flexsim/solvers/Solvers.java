@@ -17,6 +17,9 @@ import static be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver.Solve
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public final class Solvers {
+
+    private static final boolean UPDATE_CACHE = false;
+
     private Solvers() {
     }
 
@@ -91,8 +94,7 @@ public final class Solvers {
         public Solver<AllocResults> getCachingInstance(FlexAllocProblemContext context,
                 String dbFilePath) {
             return new MemoizationDecorator(getInstance(context), context, () ->
-                    MapDBMemoizationContext.createDefaultEnsureFileExists(dbFilePath));
+                    MapDBMemoizationContext.createDefault(dbFilePath), UPDATE_CACHE);
         }
-
     }
 }

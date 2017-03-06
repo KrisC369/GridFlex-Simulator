@@ -176,6 +176,8 @@ public class MapDBMemoizationContextTest {
 
     @Test
     public void testMemoizationCall() {
+        target.resetStore();
+        target = MapDBMemoizationContext.createDefaultEnsureFileExists(NAME_DB);
         final CountDownLatch countDownLatch = new CountDownLatch(3);
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);

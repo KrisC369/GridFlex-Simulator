@@ -19,6 +19,7 @@ public class MemoizationDecorator implements Solver<AllocResults> {
     private final MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
             memoization;
     private final ImmutableSolverProblemContextView contextView;
+    private final boolean updateCache;
 
     /**
      * Constructor
@@ -29,17 +30,18 @@ public class MemoizationDecorator implements Solver<AllocResults> {
      */
     public MemoizationDecorator(Solver<AllocResults> actualSolver, FlexAllocProblemContext context,
             Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
-                    memoizationSupplier) {
+                    memoizationSupplier, boolean updateCache) {
         this.actualSolver = actualSolver;
         this.context = context;
         this.memoization = memoizationSupplier.get();
         this.contextView = ImmutableSolverProblemContextView.from(context);
+        this.updateCache = updateCache;
     }
 
     @Override
     public AllocResults solve() {
 
-        return memoization.testAndCall(contextView, this::calculateResult, false)
+        return memoization.testAndCall(contextView, this::calculateResult, updateCache)
                 .toBackedView(context);
     }
 
