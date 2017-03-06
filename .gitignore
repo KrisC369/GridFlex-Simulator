@@ -17,3 +17,4 @@ FormatterProfEclipse.xml
 checkstyle.xml
 local
 project/res
+consolidation/*

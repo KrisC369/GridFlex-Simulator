@@ -50,7 +50,8 @@ public final class DBConsolidator {
     }
 
     public static void main(String[] args) {
-        List<String> files = Lists.newArrayList("memo1.db", "memo2.db", "memo3.db", "memo4.db");
+        List<String> files = Lists.newArrayList("consolidation/memo1.db", "consolidation/memo2.db",
+                "consolidation/memo3.db", "consolidation/memo4.db");
         DBConsolidator cons = new DBConsolidator(files);
         cons.consolidate();
     }
