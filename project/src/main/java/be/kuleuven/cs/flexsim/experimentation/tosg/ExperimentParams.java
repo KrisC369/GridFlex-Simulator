@@ -19,6 +19,7 @@ public abstract class ExperimentParams implements Serializable {
     private static final int DEF_DATAPROF = -1;
     private static final boolean DEF_CACHING_ENABLED = false;
     private static final boolean DEF_REMOTE_EXEC = false;
+    private static final boolean DEF_UPDATE_CACHE_ENABLED = false;
 
     ExperimentParams() {
     }
@@ -73,6 +74,8 @@ public abstract class ExperimentParams implements Serializable {
      */
     public abstract boolean getCachingEnabled();
 
+    public abstract boolean getUpdateCacheEnabled();
+
     /**
      * @return A builder instance.
      */
@@ -80,7 +83,8 @@ public abstract class ExperimentParams implements Serializable {
         return new AutoValue_ExperimentParams.Builder().setP1Start(DEF_P1START)
                 .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(DEF_REMOTE_EXEC)
                 .setWindErrorProfileIndex(DEF_WINDPROF).setCurrentDataProfileIndex(DEF_DATAPROF)
-                .setCachingEnabled(DEF_CACHING_ENABLED);
+                .setCachingEnabled(DEF_CACHING_ENABLED).setUpdateCacheEnabled(
+                        DEF_UPDATE_CACHE_ENABLED);
     }
 
     /**
@@ -147,6 +151,11 @@ public abstract class ExperimentParams implements Serializable {
          * @return This builder.
          */
         public abstract Builder setCachingEnabled(boolean cachingEnabled);
+
+        /**
+         * @param updateCacheEnabled True if caching should be write-enabled.
+         */
+        public abstract Builder setUpdateCacheEnabled(boolean updateCacheEnabled);
 
         /**
          * @return Builds an experimentparams instance.

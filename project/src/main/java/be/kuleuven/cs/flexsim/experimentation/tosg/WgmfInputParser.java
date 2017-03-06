@@ -74,7 +74,7 @@ public final class WgmfInputParser {
                         + "following convention: "
                         + AbstractWgmfGameRunner.DATAPROFILE_TEMPLATE
                         + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
-        o.addOption(CACHING_ALLOC_KEY, false, "Caching enabled");
+        o.addOption(CACHING_ALLOC_KEY, true, "Caching enabled");
 
         int nAgents = NAGENTS_DEFAULT;
         int nReps = NREPS_DEFAULT;
@@ -116,6 +116,8 @@ public final class WgmfInputParser {
             }
             if (line.hasOption(CACHING_ALLOC_KEY)) {
                 builder.setCachingEnabled(true);
+                boolean upd = "u".equalsIgnoreCase(line.getOptionValue(CACHING_ALLOC_KEY));
+                builder.setUpdateCacheEnabled(upd);
             }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";

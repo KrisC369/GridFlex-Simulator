@@ -24,12 +24,15 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
     private final Solvers.TYPE type;
     private final String filepath;
     private final boolean cachingEnabled;
+    private final boolean updateCache;
     private long defaultSeed = 0L;
 
-    WgmfSolverFactory(Solvers.TYPE type, String filepath, boolean cachingEnabled) {
+    WgmfSolverFactory(Solvers.TYPE type, String filepath, boolean cachingEnabled,
+            boolean updateCache) {
         this.type = type;
         this.filepath = filepath;
         this.cachingEnabled = cachingEnabled;
+        this.updateCache = updateCache;
     }
 
     public void setSeed(long seed) {
@@ -57,7 +60,7 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
         final Solver<AllocResults> solverInstance;
         if (cachingEnabled) {
             solverInstance = type
-                    .getCachingInstance(flexAllocProblemContext, filepath);
+                    .getCachingInstance(flexAllocProblemContext, filepath, updateCache);
         } else {
             solverInstance = type.getInstance(flexAllocProblemContext);
         }
