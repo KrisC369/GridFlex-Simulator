@@ -86,7 +86,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, horizon);
             return WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_PATH,
-                            expP.getCachingEnabled(), expP.getUpdateCacheEnabled()), specs,
+                                    expP.getCachingEnabled(), expP.getUpdateCacheEnabled(),
+                                    false), specs,
                             distribution, imbalIn, dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
