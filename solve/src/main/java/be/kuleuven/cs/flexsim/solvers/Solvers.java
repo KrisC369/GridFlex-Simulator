@@ -91,7 +91,7 @@ public final class Solvers {
 
         public Solver<AllocResults> getCachingInstance(FlexAllocProblemContext context,
                 String dbFilePath, boolean update, boolean ensureFile) {
-            if (ensureFile) {
+            if (ensureFile) {//TODO clean this sh*t up.
                 return new MemoizationDecorator(getInstance(context), context, () ->
                         MapDBMemoizationContext.createDefaultEnsureFileExists(dbFilePath), update);
             }

@@ -119,7 +119,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         logger.debug("Attempting opening DB connection for read-write.");
         synchronized (LOCK) {
             this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
-                    .fileMmapEnableIfSupported()
                     .fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported().transactionEnable()
                     .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
                     .make();
@@ -133,7 +132,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         logger.debug("Attempting opening DB connection for read only.");
         synchronized (LOCK) {
             this.dbConnection = DBMaker.fileDB(db_filename).closeOnJvmShutdown().fileChannelEnable()
-                    .fileMmapEnableIfSupported()
                     .readOnly().fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported()
                     .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
                     .transactionEnable().make();
