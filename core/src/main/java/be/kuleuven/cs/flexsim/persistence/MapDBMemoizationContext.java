@@ -282,7 +282,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         }
 
         boolean isClosed() {
-            return dbConnection.isClosed();
+            return dbConnection == null || dbConnection.isClosed();
         }
 
         @Override

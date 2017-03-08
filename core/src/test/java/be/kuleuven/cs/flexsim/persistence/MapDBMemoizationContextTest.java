@@ -206,8 +206,8 @@ public class MapDBMemoizationContextTest {
             return db.get("one");
         });
         assertEquals(2, countDownLatch.getCount(), 0);
-        MapDBConsolidator<String, String> consolidator = new MapDBConsolidator<>(
-                Lists.newArrayList(filename_w), filename_r);
+        //        MapDBConsolidator<String, String> consolidator = new MapDBConsolidator<>(
+        //                Lists.newArrayList(filename_w), filename_r);
         //        consolidator.consolidate();
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);
@@ -255,14 +255,14 @@ public class MapDBMemoizationContextTest {
             return db.get("one");
         });
         assertEquals(2, countDownLatch.getCount(), 0);
-        MapDBConsolidator<String, String> consolidator = new MapDBConsolidator<>(
-                Lists.newArrayList(filename_w), filename_r);
-        consolidator.consolidate();
+        //        MapDBConsolidator<String, String> consolidator = new MapDBConsolidator<>(
+        //                Lists.newArrayList(filename_w), filename_r);
+        //        consolidator.consolidate();
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);
             return db.get("one");
         });
-        assertEquals(2, countDownLatch.getCount(), 0);
+        assertEquals(1, countDownLatch.getCount(), 0);
         assertTrue(target.isClosed());
         target.resetStore();
 
