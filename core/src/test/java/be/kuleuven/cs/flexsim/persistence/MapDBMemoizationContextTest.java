@@ -241,6 +241,30 @@ public class MapDBMemoizationContextTest {
         assertEquals(2, countDownLatch.getCount(), 0);
         assertTrue(target.isClosed());
         target.resetStore();
+    }
+
+    @Test
+    public void testTransparantNoRead() {
+        String filename_r = "testReadNotPresent.db";
+        String filename_w = "testwrite.db";
+        target = MapDBMemoizationContext
+                .createTwoFileEnsureFileExists(filename_r, filename_w, false);
+        final CountDownLatch countDownLatch = new CountDownLatch(3);
+        target.testAndCall(db.get("one"), () -> {
+            logCall(countDownLatch);
+            return db.get("one");
+        });
+        assertEquals(2, countDownLatch.getCount(), 0);
+        MapDBConsolidator<String, String> consolidator = new MapDBConsolidator<>(
+                Lists.newArrayList(filename_w), filename_r);
+        consolidator.consolidate();
+        target.testAndCall(db.get("one"), () -> {
+            logCall(countDownLatch);
+            return db.get("one");
+        });
+        assertEquals(2, countDownLatch.getCount(), 0);
+        assertTrue(target.isClosed());
+        target.resetStore();
 
     }
 

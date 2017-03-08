@@ -119,12 +119,17 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     @Override
     public R testAndCall(E entry, Supplier<R> calculationFu, boolean updateCache) {
         logger.debug("Attempting memoization.");
-        R res = getMemoizedResultFor(entry);
-        if (res != null) {
-            logger.debug("Memoized result found. No need to calculate.");
-            return res;
+        R res;
+        try {
+            res = getMemoizedResultFor(entry);
+            if (res != null) {
+                logger.debug("Memoized result found. No need to calculate.");
+                return res;
+            }
+            logger.debug("No memoized result found. Calculating actual result.");
+        } catch (DBException.VolumeIOError e) {
+            logger.warn("No memoization file to read, skipping lookup");
         }
-        logger.debug("No memoized result found. Calculating actual result.");
         res = calculationFu.get();
         if (updateCache) {
             logger.debug("Memoizing calculated result.");
@@ -152,10 +157,8 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     }
 
     private void ensureFileInit() {
-        synchronized (LOCK) {
-            readDB.forceCreation();
-            writeDB.forceCreation();
-        }
+        //        readDB.forceCreation();
+        writeDB.forceCreation();
     }
 
     public void resetStore() {
