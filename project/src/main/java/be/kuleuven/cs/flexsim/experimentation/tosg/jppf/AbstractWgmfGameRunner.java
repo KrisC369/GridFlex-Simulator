@@ -36,6 +36,7 @@ public abstract class AbstractWgmfGameRunner {
     private static final int FULL_YEAR = 365;
     private static final Logger logger = getLogger(AbstractWgmfGameRunner.class);
     private static final String DB_FILE_LOCATION = "persistence/memoDB.db";
+    private static final String DB_WRITE_FILE_LOCATION = "persistence/write/memoDB.db";
     protected static final String PARAMS_KEY = "PARAMS_KEY";
     protected static final int ACTION_SIZE = 2;
 
@@ -65,7 +66,8 @@ public abstract class AbstractWgmfGameRunner {
 
             return WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_FILE_LOCATION,
-                                    expP.getCachingEnabled(), expP.getUpdateCacheEnabled(),
+                            DB_WRITE_FILE_LOCATION, expP.getCachingEnabled(),
+                                    expP.getUpdateCacheEnabled(),
                                     expP.getEnsureCacheExists()), specs,
                             distribution, imbalIn, dayAheadPriceProfile);
         } catch (IOException e) {

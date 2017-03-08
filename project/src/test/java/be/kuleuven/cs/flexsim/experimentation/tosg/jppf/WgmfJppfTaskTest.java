@@ -36,6 +36,8 @@ public class WgmfJppfTaskTest {
     private static final String IMBAL = "imbalance_prices_short.csv";
     private static final String DAM_COLUMN = "damhp";
     private static final String DAMPRICES_DAILY = "dailyDayAheadPrices.csv";
+    private static final String DB_WRITE_FILE_LOCATION = "persistence/write/testDB.db";
+    private static final String PERSISTENCE_TEST_DB_DB = "persistence/testDB.db";
     private WgmfJppfTask task;
     private final String PARAMS = "test";
     private ExperimentParams expP;
@@ -65,8 +67,8 @@ public class WgmfJppfTaskTest {
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 7);
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
-                                    Solvers.TYPE.DUMMY, "persistence/testDB.db",
-                            false, false, false), specs,
+                            Solvers.TYPE.DUMMY, PERSISTENCE_TEST_DB_DB,
+                                    DB_WRITE_FILE_LOCATION, false, false, false), specs,
                             distribution, imbalIn, dayAheadPriceProfile);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)

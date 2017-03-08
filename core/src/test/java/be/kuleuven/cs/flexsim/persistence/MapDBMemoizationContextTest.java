@@ -168,6 +168,7 @@ public class MapDBMemoizationContextTest {
         target2.memoizeEntry(key, value);
         ValueObject memoizedResultFor = target2.getMemoizedResultFor(key);
         assertEquals(value, memoizedResultFor);
+        target2.resetStore();
     }
 
     private static void doMemo(Integer i, MapDBMemoizationContext target) {
@@ -198,7 +199,32 @@ public class MapDBMemoizationContextTest {
         String filename_r = "testRead.db";
         String filename_w = "testwrite.db";
         target = MapDBMemoizationContext
-                .createTwoFileEnsureFileExists(filename_r, filename_w);
+                .createTwoFileEnsureFileExists(filename_r, filename_w, false);
+        final CountDownLatch countDownLatch = new CountDownLatch(3);
+        target.testAndCall(db.get("one"), () -> {
+            logCall(countDownLatch);
+            return db.get("one");
+        });
+        assertEquals(2, countDownLatch.getCount(), 0);
+        MapDBConsolidator<String, String> consolidator = new MapDBConsolidator<>(
+                Lists.newArrayList(filename_w), filename_r);
+        //        consolidator.consolidate();
+        target.testAndCall(db.get("one"), () -> {
+            logCall(countDownLatch);
+            return db.get("one");
+        });
+        assertEquals(1, countDownLatch.getCount(), 0);
+        assertTrue(target.isClosed());
+        target.resetStore();
+
+    }
+
+    @Test
+    public void testTwoFilWCons() {
+        String filename_r = "testRead.db";
+        String filename_w = "testwrite.db";
+        target = MapDBMemoizationContext
+                .createTwoFileEnsureFileExists(filename_r, filename_w, false);
         final CountDownLatch countDownLatch = new CountDownLatch(3);
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);

@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.mapdb.DB;
 import org.mapdb.DBMaker;
 import org.mapdb.Serializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
@@ -19,6 +21,7 @@ public final class MapDBConsolidator<E extends Serializable, R extends Serializa
     private final DB dbConnection;
     private final ConcurrentMap<E, R> dbAPI;
     private List<String> files;
+    private static Logger logger = LoggerFactory.getLogger(MapDBConsolidator.class);
 
     public MapDBConsolidator(List<String> files) {
         this(files, DB_OUT_NAME);
@@ -28,13 +31,13 @@ public final class MapDBConsolidator<E extends Serializable, R extends Serializa
         this.files = Lists.newArrayList(files);
         this.dbConnection = DBMaker.fileDB(outFile).closeOnJvmShutdown().fileChannelEnable()
                 .fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported().transactionEnable()
-                .executorEnable().concurrencyScale(1)
-                .make();
+                .executorEnable().concurrencyScale(1).make();
         this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer
                 .JAVA).createOrOpen();
     }
 
     public void consolidate() {
+        logger.info("Starting consolidation process.");
         List<MapDBMemoizationContext<E, R>>
                 dbConnects = Lists.newArrayList();
         for (String file : files) {
@@ -43,9 +46,10 @@ public final class MapDBConsolidator<E extends Serializable, R extends Serializa
 
         for (MapDBMemoizationContext<E, R> in :
                 dbConnects) {
+            logger.debug("Getting map for {}", in);
             dbAPI.putAll(in.getWholeMap());
+            dbConnection.commit();
         }
-        dbConnection.commit();
         dbConnection.close();
     }
 }

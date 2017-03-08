@@ -43,7 +43,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     }
 
     public MapDBMemoizationContext(String filename_r, String filename_w, boolean uniqueWriteFile) {
-        this.readDB = new StoreAccessWrapper<>(false, filename_r);
+        this.readDB = new StoreAccessWrapper<>(true, filename_r);
 
         String tmpName = filename_w;
         if (uniqueWriteFile) {
@@ -118,45 +118,20 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
 
     @Override
     public R testAndCall(E entry, Supplier<R> calculationFu, boolean updateCache) {
+        logger.debug("Attempting memoization.");
         R res = getMemoizedResultFor(entry);
         if (res != null) {
+            logger.debug("Memoized result found. No need to calculate.");
             return res;
         }
+        logger.debug("No memoized result found. Calculating actual result.");
         res = calculationFu.get();
         if (updateCache) {
+            logger.debug("Memoizing calculated result.");
             memoizeEntry(entry, res);
         }
         return res;
     }
-
-    //    private void openForWrite(String name) {
-    //        logger.debug("Attempting opening DB connection for read-write.");
-    //        synchronized (LOCK) {
-    //            this.dbConnection = DBMaker.fileDB(name).closeOnJvmShutdown()
-    //                    .fileChannelEnable()
-    //                    .fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported()
-    // .transactionEnable()
-    //                    .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
-    //                    .make();
-    //            this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer
-    //                    .JAVA).createOrOpen();
-    //        }
-    //        logger.debug("DB connection opened for read-write.");
-    //    }
-    //
-    //    private void openForRead(String name) {
-    //        logger.debug("Attempting opening DB connection for read only.");
-    //        synchronized (LOCK) {
-    //            this.dbConnection = DBMaker.fileDB(name).closeOnJvmShutdown()
-    //                    .fileChannelEnable()
-    //                    .readOnly().fileLockWait(Long.MAX_VALUE).fileMmapEnableIfSupported()
-    //                    .executorEnable().concurrencyScale(CONCURRENCY_SCALE)
-    //                    .transactionEnable().make();
-    //            this.dbAPI = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer.JAVA)
-    //                    .createOrOpen();
-    //        }
-    //        logger.debug("DB connection opened for read only.");
-    //    }
 
     @VisibleForTesting
     int getMemoizationTableSize() {
@@ -176,17 +151,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         return tmp;
     }
 
-    //    private void commitChanges() {
-    //        dbConnection.commit();
-    //        logger.debug("Changes to store comitted");
-    //    }
-
-    //    public void close() {
-    //        dbConnection.close();
-    //        dbAPI = null;
-    //        logger.debug("DB connection closed");
-    //    }
-
     private void ensureFileInit() {
         synchronized (LOCK) {
             readDB.forceCreation();
@@ -201,6 +165,14 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         }
     }
 
+    @Override
+    public String toString() {
+        return "MapDBMemoizationContext{" +
+                "readDB=" + readDB +
+                ", writeDB=" + writeDB +
+                '}';
+    }
+
     boolean isClosed() {
         return readDB.isClosed() && writeDB.isClosed();
     }
@@ -208,20 +180,25 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     @VisibleForTesting
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
     createDefault(String filename) {
-        return new MapDBMemoizationContext(filename, filename);
+        return new MapDBMemoizationContext<>(filename, filename);
     }
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
     createDefaultEnsureFileExists(String filename) {
-        return createTwoFileEnsureFileExists(filename, filename);
+        return createTwoFileEnsureFileExistsWUnique(filename, filename);
     }
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createTwoFileEnsureFileExists(String filename_r, String filename_w) {
-        MapDBMemoizationContext mapDBMemoizationContext = new MapDBMemoizationContext(filename_r,
-                filename_w);
+    createTwoFileEnsureFileExists(String filename_r, String filename_w, boolean unique) {
+        MapDBMemoizationContext<E, R> mapDBMemoizationContext = new MapDBMemoizationContext<>(
+                filename_r, filename_w, unique);
         mapDBMemoizationContext.ensureFileInit();
         return mapDBMemoizationContext;
+    }
+
+    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
+    createTwoFileEnsureFileExistsWUnique(String filename_r, String filename_w) {
+        return createTwoFileEnsureFileExists(filename_r, filename_w, true);
     }
 
     private static class StoreAccessWrapper<E, R> {
@@ -242,7 +219,10 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         }
 
         private void open() {
-            logger.debug("Attempting opening DB connection for read only.");
+            logger.debug(
+                    "Attempting opening DB connection for " + (readonly ?
+                            "read only." :
+                            "writing."));
             synchronized (LOCK) {
                 DBMaker.Maker maker = DBMaker.fileDB(db_filename).closeOnJvmShutdown()
                         .fileChannelEnable().fileLockWait(Long.MAX_VALUE)
@@ -259,7 +239,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
                 this.persistedMap = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer.JAVA)
                         .createOrOpen();
             }
-            logger.debug("DB connection opened for read only.");
+            logger.debug("DB connection opened for " + (readonly ? "read only." : "writing."));
         }
 
         void commitChanges() {
@@ -300,6 +280,14 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
 
         boolean isClosed() {
             return dbConnection.isClosed();
+        }
+
+        @Override
+        public String toString() {
+            return "StoreAccessWrapper{" +
+                    "db_filename='" + db_filename + '\'' +
+                    ", readonly=" + readonly +
+                    '}';
         }
     }
 }

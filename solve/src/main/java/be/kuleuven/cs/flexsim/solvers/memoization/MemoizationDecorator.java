@@ -7,6 +7,8 @@ import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import com.google.common.base.Supplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Decorator making use of memozation to avoid costly recalculation.
@@ -20,6 +22,7 @@ public class MemoizationDecorator implements Solver<AllocResults> {
             memoization;
     private final ImmutableSolverProblemContextView contextView;
     private final boolean updateCache;
+    private static final Logger logger = LoggerFactory.getLogger(MemoizationDecorator.class);
 
     /**
      * Constructor
@@ -40,7 +43,6 @@ public class MemoizationDecorator implements Solver<AllocResults> {
 
     @Override
     public AllocResults solve() {
-
         return memoization.testAndCall(contextView, this::calculateResult, updateCache)
                 .toBackedView(context);
     }

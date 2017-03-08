@@ -23,15 +23,17 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
     private final String filepath;
+    private final String dbWriteFileLocation;
     private final boolean cachingEnabled;
     private final boolean updateCache;
     private final boolean ensureCacheFileExists;
     private long defaultSeed = 0L;
 
-    WgmfSolverFactory(Solvers.TYPE type, String filepath, boolean cachingEnabled,
-            boolean updateCache, boolean ensureCacheFileExists) {
+    WgmfSolverFactory(Solvers.TYPE type, String filepath, String dbWriteFileLocation,
+            boolean cachingEnabled, boolean updateCache, boolean ensureCacheFileExists) {
         this.type = type;
         this.filepath = filepath;
+        this.dbWriteFileLocation = dbWriteFileLocation;
         this.cachingEnabled = cachingEnabled;
         this.updateCache = updateCache;
         this.ensureCacheFileExists = ensureCacheFileExists;
@@ -62,8 +64,8 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
         final Solver<AllocResults> solverInstance;
         if (cachingEnabled) {
             solverInstance = type
-                    .getCachingInstance(flexAllocProblemContext, filepath, updateCache,
-                            ensureCacheFileExists);
+                    .getCachingInstance(flexAllocProblemContext, filepath, dbWriteFileLocation,
+                            updateCache, ensureCacheFileExists);
         } else {
             solverInstance = type.getInstance(flexAllocProblemContext);
         }

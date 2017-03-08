@@ -15,10 +15,13 @@ import java.util.List;
 public final class DBConsolidatorRunner {
 
     public static void main(String[] args) {
-        List<String> files = Lists.newArrayList("consolidation/memo1.db", "consolidation/memo2.db",
-                "consolidation/memo3.db", "consolidation/memo4.db");
+        String outFile = "consolidation/memoDB_R400N8P0E0.db";
+        List<String> files = Lists.newArrayList("consolidation/memo2.db",
+                "consolidation/memo4.db", "consolidation/memo5.db",
+                "consolidation/memo6.db", "consolidation/memo7.db", "consolidation/memo8.db",
+                "consolidation/memo9.db", "consolidation/memo10.db");
         MapDBConsolidator<ImmutableSolverProblemContextView, AllocResultsView> cons = new
-                MapDBConsolidator(files);
+                MapDBConsolidator(files, outFile);
         cons.consolidate();
     }
 }
