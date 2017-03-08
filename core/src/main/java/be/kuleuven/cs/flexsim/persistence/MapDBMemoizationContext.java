@@ -185,7 +185,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
     createDefaultEnsureFileExists(String filename) {
-        return createTwoFileEnsureFileExistsWUnique(filename, filename);
+        return createTwoFileEnsureFileExists(filename, filename, false);
     }
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
