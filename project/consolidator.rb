@@ -19,8 +19,8 @@ args = "#{pathOut}#{outfile}"
 @files.each do |f|
   args << " #{pathIn}#{f}"
 end
-
-exec 'export MAVEN_OPTS=-Xmx8g'
+puts "Exporting env variable."
+`export MAVEN_OPTS=-Xmx8g`
 execCmd = "mvn exec:java -Dexec.mainClass=be.kuleuven.cs.flexsim.experimentation.#{target} -Dexec.classpathScope=runtime -Dexec.args=\"#{args}\""
 
 puts "running consolidator on all files found in #{pathIn} and writing to #{pathOut}#{outfile}"
