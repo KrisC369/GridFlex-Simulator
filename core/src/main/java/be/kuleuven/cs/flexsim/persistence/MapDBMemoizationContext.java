@@ -187,16 +187,28 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     }
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
+    createUniqueTwoFile(String filename_r, String filename_w) {
+        return createTwoFile(filename_r, filename_w, true, false);
+    }
+
+    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
     createDefaultEnsureFileExists(String filename) {
         return createTwoFileEnsureFileExists(filename, filename, false);
     }
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createTwoFileEnsureFileExists(String filename_r, String filename_w, boolean unique) {
+    createTwoFile(String filename_r, String filename_w, boolean unique, boolean ensure) {
         MapDBMemoizationContext<E, R> mapDBMemoizationContext = new MapDBMemoizationContext<>(
                 filename_r, filename_w, unique);
-        mapDBMemoizationContext.ensureFileInit();
+        if (ensure) {
+            mapDBMemoizationContext.ensureFileInit();
+        }
         return mapDBMemoizationContext;
+    }
+
+    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
+    createTwoFileEnsureFileExists(String filename_r, String filename_w, boolean unique) {
+        return createTwoFile(filename_r, filename_w, unique, true);
     }
 
     public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
