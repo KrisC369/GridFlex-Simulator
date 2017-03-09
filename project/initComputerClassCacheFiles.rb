@@ -2,7 +2,7 @@
 require '../../JPPFRunner/computerlist'
 #AllComputers = ['aalst','heist','aubel']
 path = "/home/u0091633/gitworkspace/JPPFRunner/jppf/current/node/persistence/write/"
-filebase = "memo.db_"
+filebase = "memoDB.db_"
 target = "tosg.utils.WriteFileCreator"
 args = ""
 AllComputers.each do |comp|
