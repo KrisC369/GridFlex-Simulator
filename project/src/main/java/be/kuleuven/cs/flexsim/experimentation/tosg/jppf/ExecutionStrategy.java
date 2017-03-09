@@ -60,7 +60,8 @@ enum ExecutionStrategy {
         case REMOTE:
             for (Task<?> task : (List<Task<?>>) results) {
                 if (task.getThrowable() != null) {
-                    getLogger(ExecutionStrategy.class).error(task.getThrowable().toString());
+                    getLogger(ExecutionStrategy.class)
+                            .error("An error occured executing task:", task.getThrowable());
                 } else {
                     director.notifyVersionHasBeenPlayed((GameInstanceResult) task.getResult());
                 }

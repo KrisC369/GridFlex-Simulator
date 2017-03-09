@@ -114,4 +114,5 @@ public class WgmfJppfTaskTest {
         WgmfGameParams params = loadResources(expP);
         gameJPPFRunner.execute(params);
     }
+
 }

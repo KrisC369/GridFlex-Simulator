@@ -13,10 +13,10 @@ import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
-import org.eclipse.jdt.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.function.Supplier;
 
 /**
  * A solvers factory for wgmf games.
@@ -27,13 +27,12 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
     private final boolean updateCache;
-    @Nullable
-    private MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
+    private Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
             memoizationContext;
     private long defaultSeed = 0L;
 
     WgmfSolverFactory(Solvers.TYPE type, boolean updateCache,
-            @Nullable MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
+            Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
                     memoizationContext) {
         this.type = type;
         this.updateCache = updateCache;
@@ -63,9 +62,10 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
             }
         };
         final Solver<AllocResults> solverInstance;
-        if (memoizationContext != null) {
+        if (memoizationContext.get() != null) {
             solverInstance = type
-                    .getCachingInstance(flexAllocProblemContext, memoizationContext, updateCache);
+                    .getCachingInstance(flexAllocProblemContext, memoizationContext.get(),
+                            updateCache);
         } else {
             solverInstance = type.getInstance(flexAllocProblemContext);
         }

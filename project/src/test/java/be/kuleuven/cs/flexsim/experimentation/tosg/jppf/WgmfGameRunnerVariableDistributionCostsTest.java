@@ -12,19 +12,22 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfInputParser;
+import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfMemContextFactory;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
-import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
-import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
-import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
-import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -69,7 +72,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         // "-p1step",
         //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
-                "-n", "2", "-r", "1", "-s", solver, "-c", "uw", "-m", "LOCAL", "-p1start", "35.4",
+                "-n", "2", "-r", "1", "-s", solver, "-c", "u", "-m", "LOCAL", "-p1start", "35.4",
                 "-p1step",
                 "10", "-p1end", "45.5", "-pIdx", "1" };
     }
@@ -90,19 +93,12 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, horizon);
 
-            MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
-                    memoizationContext = null;
-            if (expP.getCachingEnabled()) {
-                MapDBMemoizationContext.Builder builder = MapDBMemoizationContext
-                        .builder().setFileName(DB_PATH)
-                        .setDifferentWriteFilename(DB_WRITE_FILE_LOCATION).ensureFileExists
-                                (expP.getEnsureCacheExists()).appendHostnameToWriteFileName(false);
-                memoizationContext = builder.build();
-            }
+            WgmfMemContextFactory memContext = new WgmfMemContextFactory(expP.getCachingEnabled(),
+                    expP.getEnsureCacheExists(), DB_PATH, DB_WRITE_FILE_LOCATION);
             return WgmfGameParams
                     .create(dataIn,
-                            new WgmfSolverFactory(expP.getSolver(), expP.getCachingEnabled(),
-                                    memoizationContext), specs, distribution, imbalIn,
+                            new WgmfSolverFactory(expP.getSolver(), expP.getUpdateCacheEnabled(),
+                                    memContext), specs, distribution, imbalIn,
                             dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
@@ -247,5 +243,29 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         String string2 = AbstractWgmfGameRunner
                 .parseDataFileName(p.getCurrentDataProfileIndex(), "testString*.csv");
         assertEquals("testString[3].csv", string2);
+    }
+
+    @Test
+    public void testSerialization() throws IOException, ClassNotFoundException {
+        byte[] pickle1 = pickle(new WgmfMemContextFactory(true, true, "one", "two"));
+        WgmfMemContextFactory unpickle = unpickle(pickle1, WgmfMemContextFactory.class);
+        assertTrue(unpickle != null);
+    }
+
+    private static <T extends Serializable> byte[] pickle(T obj)
+            throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(obj);
+        oos.close();
+        return baos.toByteArray();
+    }
+
+    private static <T extends Serializable> T unpickle(byte[] b, Class<T> cl)
+            throws IOException, ClassNotFoundException {
+        ByteArrayInputStream bais = new ByteArrayInputStream(b);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Object o = ois.readObject();
+        return cl.cast(o);
     }
 }
