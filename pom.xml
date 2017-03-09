@@ -14,6 +14,7 @@
         <module>solve</module>
         <module>example</module>
         <module>domain</module>
+        <module>persistence</module>
     </modules>
 
     <dependencies>

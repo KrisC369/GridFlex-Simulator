@@ -5,8 +5,10 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import junit.framework.TestCase;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -76,7 +78,7 @@ public class MapDBMemoizationContextTest {
         reset();
         db.entrySet().forEach((e) -> target.memoizeEntry(e.getKey(), e.getValue()));
         db.entrySet().forEach(
-                (e) -> assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
+                (e) -> Assert.assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
     }
 
     @Test
@@ -85,7 +87,7 @@ public class MapDBMemoizationContextTest {
         IntStream.range(1, 1000).boxed()
                 .forEach((i) -> target.memoizeEntry(i.toString(), i.toString()));
         IntStream.range(1, 1000).boxed().forEach(
-                (e) -> assertEquals(e.toString(), target.getMemoizedResultFor(e.toString())));
+                (e) -> Assert.assertEquals(e.toString(), target.getMemoizedResultFor(e.toString())));
     }
 
     @Test
@@ -102,7 +104,7 @@ public class MapDBMemoizationContextTest {
             }
         }
         db.entrySet().forEach(
-                (e) -> assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
+                (e) -> Assert.assertEquals(db.get(e.getKey()), target.getMemoizedResultFor(e.getKey())));
     }
 
     @Test
@@ -113,7 +115,7 @@ public class MapDBMemoizationContextTest {
             target.memoizeEntry(e.getKey(), e.getValue());
         }
         db.entrySet().forEach(
-                (e) -> assertTrue(target.hasResultFor(e.getKey())));
+                (e) -> TestCase.assertTrue(target.hasResultFor(e.getKey())));
     }
 
     @Test
@@ -140,10 +142,10 @@ public class MapDBMemoizationContextTest {
             Map<String, String> wholeMap = target.getWholeMap();
             //        System.out.println(wholeMap);
             assertEquals((threads) * insertRange, wholeMap.size());
-            assertEquals((threads) * insertRange, target.getMemoizationTableSize(), 0);
+            Assert.assertEquals((threads) * insertRange, target.getMemoizationTableSize(), 0);
         }
         for (int i = 0 + offset; i < offset + ((threads) * insertRange); i++) {
-            assertEquals(((Integer) i).toString(),
+            Assert.assertEquals(((Integer) i).toString(),
                     target.getMemoizedResultFor(((Integer) i).toString()));
         }
     }
@@ -192,7 +194,7 @@ public class MapDBMemoizationContextTest {
             return db.get("one");
         });
         assertEquals(2, countDownLatch.getCount(), 0);
-        assertTrue(target.isClosed());
+        TestCase.assertTrue(target.isClosed());
     }
 
     @Test
@@ -216,7 +218,7 @@ public class MapDBMemoizationContextTest {
             return db.get("one");
         });
         assertEquals(1, countDownLatch.getCount(), 0);
-        assertTrue(target.isClosed());
+        TestCase.assertTrue(target.isClosed());
         target.resetStore();
 
     }
@@ -242,7 +244,7 @@ public class MapDBMemoizationContextTest {
             return db.get("one");
         });
         assertEquals(2, countDownLatch.getCount(), 0);
-        assertTrue(target.isClosed());
+        TestCase.assertTrue(target.isClosed());
         target.resetStore();
     }
 
@@ -267,7 +269,7 @@ public class MapDBMemoizationContextTest {
             return db.get("one");
         });
         assertEquals(1, countDownLatch.getCount(), 0);
-        assertTrue(target.isClosed());
+        TestCase.assertTrue(target.isClosed());
         target.resetStore();
 
     }
