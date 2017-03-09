@@ -1,4 +1,5 @@
-# require '../../JPPFRunner/computerlist'
+#!/usr/bin/env ruby
+require '../../JPPFRunner/computerlist'
 #AllComputers = ['aalst','heist','aubel']
 path = "/home/u0091633/gitworkspace/JPPFRunner/jppf/current/node/persistence/write/"
 filebase = "memo.db_"
