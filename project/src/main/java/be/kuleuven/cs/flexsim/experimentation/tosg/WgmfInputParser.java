@@ -116,8 +116,8 @@ public final class WgmfInputParser {
             }
             if (line.hasOption(CACHING_ALLOC_KEY)) {
                 builder.setCachingEnabled(true);
-                boolean upd = line.getOptionValue(CACHING_ALLOC_KEY).contains("w");
-                boolean ensure = line.getOptionValue(CACHING_ALLOC_KEY).contains("u");
+                boolean upd = line.getOptionValue(CACHING_ALLOC_KEY).contains("u");
+                boolean ensure = line.getOptionValue(CACHING_ALLOC_KEY).contains("e");
                 builder.setUpdateCacheEnabled(upd);
                 builder.setEnsureCacheExists(ensure);
             }
