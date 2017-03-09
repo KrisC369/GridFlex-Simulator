@@ -68,7 +68,7 @@ public class WgmfJppfTaskTest {
 
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
-                                    Solvers.TYPE.DUMMY, false, null), specs,
+                                    Solvers.TYPE.DUMMY, false, () -> null), specs,
                             distribution, imbalIn, dayAheadPriceProfile);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)
