@@ -7,6 +7,10 @@ import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
+import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
+import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -64,12 +68,20 @@ public abstract class AbstractWgmfGameRunner {
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, FULL_YEAR);
 
-            return WgmfGameParams
-                    .create(dataIn, new WgmfSolverFactory(expP.getSolver(), DB_FILE_LOCATION,
-                            DB_WRITE_FILE_LOCATION, expP.getCachingEnabled(),
-                                    expP.getUpdateCacheEnabled(),
-                                    expP.getEnsureCacheExists()), specs,
-                            distribution, imbalIn, dayAheadPriceProfile);
+            MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
+                    memoizationContext = null;
+            if (expP.getCachingEnabled()) {
+                MapDBMemoizationContext.Builder builder = MapDBMemoizationContext
+                        .builder().setFileName(DB_FILE_LOCATION)
+                        .setDifferentWriteFilename(DB_WRITE_FILE_LOCATION).ensureFileExists
+                                (expP.getEnsureCacheExists()).appendHostnameToWriteFileName(true);
+                memoizationContext = builder.build();
+            }
+
+            return WgmfGameParams.create(dataIn,
+                    new WgmfSolverFactory(expP.getSolver(), expP.getCachingEnabled(),
+                            memoizationContext), specs, distribution, imbalIn,
+                    dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }

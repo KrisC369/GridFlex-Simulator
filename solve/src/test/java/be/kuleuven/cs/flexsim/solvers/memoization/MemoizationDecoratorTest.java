@@ -62,12 +62,13 @@ public class MemoizationDecoratorTest {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-                .createDefault(DB_NAME);
+        MapDBMemoizationContext<String, String> target =
+                MapDBMemoizationContext.builder().setFileName(DB_NAME).build();
+
         target.resetStore();
         MapDBMemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> target2 =
-                MapDBMemoizationContext
-                        .createDefault(DB_NAME);
+                MapDBMemoizationContext.builder().setFileName(DB_NAME).build();
+
         target.resetStore();
     }
 
@@ -89,7 +90,9 @@ public class MemoizationDecoratorTest {
         solver = spy(t1);
         solver2 = spy(t2);
         if (realMemo) {
-            memo = MapDBMemoizationContext.createDefaultEnsureFileExists(DB_NAME);
+            memo = MapDBMemoizationContext.builder().setFileName(DB_NAME).ensureFileExists()
+                    .build();
+
         } else {
             memo = new SimpleMemoizationContext();
         }
@@ -128,8 +131,7 @@ public class MemoizationDecoratorTest {
     public void testObjectSerialization() throws Exception {
         initSolvers(true);
         MapDBMemoizationContext<ImmutableSolverProblemContextView, AllocResultsView> target2 =
-                MapDBMemoizationContext
-                        .createDefaultEnsureFileExists(DB_NAME);
+                MapDBMemoizationContext.builder().setFileName(DB_NAME).ensureFileExists().build();
 
         ListMultimap<FlexibilityProvider, Boolean> lmm = LinkedListMultimap.create();
         lmm.put(first, Boolean.TRUE);

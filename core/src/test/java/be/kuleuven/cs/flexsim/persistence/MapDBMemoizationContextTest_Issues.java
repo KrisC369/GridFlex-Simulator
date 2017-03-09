@@ -19,7 +19,8 @@ public class MapDBMemoizationContextTest_Issues {
 
     @Before
     public void setUp() throws Exception {
-        target = MapDBMemoizationContext.createDefault(NAME_DB);
+        target = MapDBMemoizationContext.builder()
+                .setFileName(NAME_DB).ensureFileExists().build();
     }
 
     @After

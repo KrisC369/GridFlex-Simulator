@@ -34,14 +34,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     private StoreAccessWrapper<E, R> readDB;
     private StoreAccessWrapper<E, R> writeDB;
 
-    private MapDBMemoizationContext() {
-        this(DB_FILE_4_READ, DB_FILE_4_WRITE);
-    }
-
-    public MapDBMemoizationContext(String filename_r, String filename_w) {
-        this(filename_r, filename_w, false);
-    }
-
     public MapDBMemoizationContext(String filename_r, String filename_w, boolean uniqueWriteFile) {
         this.readDB = new StoreAccessWrapper<>(true, filename_r);
 
@@ -180,40 +172,59 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         return readDB.isClosed() && writeDB.isClosed();
     }
 
-    @VisibleForTesting
-    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createDefault(String filename) {
-        return new MapDBMemoizationContext<>(filename, filename);
-    }
+    //    @VisibleForTesting
+    //    @Deprecated
+    //    public static <E extends Serializable, R extends Serializable>
+    // MapDBMemoizationContext<E, R>
+    //    createDefault(String filename) {
+    //        return new Builder().setFileName(filename).setDifferentWriteFilename(filename)
+    //                .build();
+    //    }
+    //
+    //    @Deprecated
+    //    public static <E extends Serializable, R extends Serializable>
+    // MapDBMemoizationContext<E, R>
+    //    createUniqueTwoFile(String filename_r, String filename_w) {
+    //        return createTwoFile(filename_r, filename_w, true, false);
+    //    }
+    //
+    //    @Deprecated
+    //    public static <E extends Serializable, R extends Serializable>
+    // MapDBMemoizationContext<E, R>
+    //    createDefaultEnsureFileExists(String filename) {
+    //        return createTwoFileEnsureFileExists(filename, filename, false);
+    //    }
+    //
+    //    @Deprecated
+    //    public static <E extends Serializable, R extends Serializable>
+    // MapDBMemoizationContext<E, R>
+    //    createTwoFile(String filename_r, String filename_w, boolean unique, boolean ensure) {
+    //        MapDBMemoizationContext<E, R> mapDBMemoizationContext = new Builder()
+    //                .setFileName(filename_r).setDifferentWriteFilename(filename_w)
+    //                .appendHostnameToWriteFileName()
+    //                .build();
+    //        if (ensure) {
+    //            mapDBMemoizationContext.ensureFileInit();
+    //        }
+    //        return mapDBMemoizationContext;
+    //    }
+    //
+    //    @Deprecated
+    //    public static <E extends Serializable, R extends Serializable>
+    // MapDBMemoizationContext<E, R>
+    //    createTwoFileEnsureFileExists(String filename_r, String filename_w, boolean unique) {
+    //        return createTwoFile(filename_r, filename_w, unique, true);
+    //    }
+    //
+    //    @Deprecated
+    //    public static <E extends Serializable, R extends Serializable>
+    // MapDBMemoizationContext<E, R>
+    //    createTwoFileEnsureFileExistsWUnique(String filename_r, String filename_w) {
+    //        return createTwoFileEnsureFileExists(filename_r, filename_w, true);
+    //    }
 
-    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createUniqueTwoFile(String filename_r, String filename_w) {
-        return createTwoFile(filename_r, filename_w, true, false);
-    }
-
-    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createDefaultEnsureFileExists(String filename) {
-        return createTwoFileEnsureFileExists(filename, filename, false);
-    }
-
-    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createTwoFile(String filename_r, String filename_w, boolean unique, boolean ensure) {
-        MapDBMemoizationContext<E, R> mapDBMemoizationContext = new MapDBMemoizationContext<>(
-                filename_r, filename_w, unique);
-        if (ensure) {
-            mapDBMemoizationContext.ensureFileInit();
-        }
-        return mapDBMemoizationContext;
-    }
-
-    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createTwoFileEnsureFileExists(String filename_r, String filename_w, boolean unique) {
-        return createTwoFile(filename_r, filename_w, unique, true);
-    }
-
-    public static <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
-    createTwoFileEnsureFileExistsWUnique(String filename_r, String filename_w) {
-        return createTwoFileEnsureFileExists(filename_r, filename_w, true);
+    public static MapDBMemoizationContext.Builder builder() {
+        return new Builder();
     }
 
     private static class StoreAccessWrapper<E, R> {
@@ -303,6 +314,99 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
                     "db_filename='" + db_filename + '\'' +
                     ", readonly=" + readonly +
                     '}';
+        }
+    }
+
+    /**
+     * Builder for map DB memoziation context.
+     */
+    public static class Builder {
+        private String filename_r = DB_FILE_4_READ;
+        private String filename_w = DB_FILE_4_WRITE;
+        private boolean uniqueWriteFile = false;
+        private boolean ensureFilesExist = false;
+
+        /**
+         * Set the filename for this mem context.
+         * Calling this will set writing and reading pointer to the same file.
+         *
+         * @param filename the file name to read from and write to.
+         * @return this builder.
+         */
+        public Builder setFileName(String filename) {
+            this.filename_r = filename;
+            this.filename_w = filename;
+            return this;
+        }
+
+        /**
+         * Optionally set a different file to write to than the read file.
+         *
+         * @param filename_w the filename to write to.
+         * @return this builder.
+         */
+        public Builder setDifferentWriteFilename(String filename_w) {
+            this.filename_w = filename_w;
+            return this;
+        }
+
+        /**
+         * Make the write files unique based on the hostname of the machine.
+         * The default is false.
+         *
+         * @return this builder.
+         */
+        public Builder appendHostnameToWriteFileName() {
+            return appendHostnameToWriteFileName(true);
+        }
+
+        /**
+         * Make the write files unique based on the hostname of the machine.
+         * The default is false.
+         *
+         * @param unique True if file should be unique across hosts.
+         * @return this builder.
+         */
+        public Builder appendHostnameToWriteFileName(boolean unique) {
+            this.uniqueWriteFile = unique;
+            return this;
+        }
+
+        /**
+         * Ensure the write file exists before read/writing to them.
+         * The default is false.
+         *
+         * @return this builder
+         */
+        public Builder ensureFileExists() {
+            return ensureFileExists(true);
+        }
+
+        /**
+         * Ensure the write file exists before read/writing to them.
+         * The default is false.
+         *
+         * @param ensure true if file should be created.
+         * @return this builder
+         */
+        public Builder ensureFileExists(boolean ensure) {
+            this.ensureFilesExist = ensure;
+            return this;
+        }
+
+        /**
+         * Build the mem context
+         *
+         * @return The fully built memoization context.
+         */
+        public <E extends Serializable, R extends Serializable> MapDBMemoizationContext<E, R>
+        build() {
+            MapDBMemoizationContext<E, R> mapDBMemoizationContext = new MapDBMemoizationContext<>(
+                    filename_r, filename_w, uniqueWriteFile);
+            if (ensureFilesExist) {
+                mapDBMemoizationContext.ensureFileInit();
+            }
+            return mapDBMemoizationContext;
         }
     }
 }

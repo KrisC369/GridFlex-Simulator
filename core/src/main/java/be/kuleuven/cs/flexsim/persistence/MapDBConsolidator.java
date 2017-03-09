@@ -41,7 +41,7 @@ public final class MapDBConsolidator<E extends Serializable, R extends Serializa
         List<MapDBMemoizationContext<E, R>>
                 dbConnects = Lists.newArrayList();
         for (String file : files) {
-            dbConnects.add(MapDBMemoizationContext.createDefault(file));
+            dbConnects.add(MapDBMemoizationContext.builder().setFileName(file).build());
         }
 
         for (MapDBMemoizationContext<E, R> in :

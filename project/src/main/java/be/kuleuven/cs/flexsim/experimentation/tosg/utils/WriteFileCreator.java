@@ -15,7 +15,7 @@ public class WriteFileCreator {
     public static void main(String[] args) {
         for (String file : args) {
             logger.info("Writing ouput caching files for {}", file);
-            MapDBMemoizationContext.createDefaultEnsureFileExists(file);
+            MapDBMemoizationContext.builder().setFileName(file).ensureFileExists().build();
             sleep(SLEEP_TIME);
         }
     }

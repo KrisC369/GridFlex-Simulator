@@ -8,8 +8,12 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolutionResultAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolverAdapter;
+import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
 import be.kuleuven.cs.flexsim.solvers.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
+import org.eclipse.jdt.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -22,21 +26,18 @@ import java.util.Collection;
 public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>, Serializable {
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
-    private final String filepath;
-    private final String dbWriteFileLocation;
-    private final boolean cachingEnabled;
     private final boolean updateCache;
-    private final boolean ensureCacheFileExists;
+    @Nullable
+    private MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
+            memoizationContext;
     private long defaultSeed = 0L;
 
-    WgmfSolverFactory(Solvers.TYPE type, String filepath, String dbWriteFileLocation,
-            boolean cachingEnabled, boolean updateCache, boolean ensureCacheFileExists) {
+    WgmfSolverFactory(Solvers.TYPE type, boolean updateCache,
+            @Nullable MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
+                    memoizationContext) {
         this.type = type;
-        this.filepath = filepath;
-        this.dbWriteFileLocation = dbWriteFileLocation;
-        this.cachingEnabled = cachingEnabled;
         this.updateCache = updateCache;
-        this.ensureCacheFileExists = ensureCacheFileExists;
+        this.memoizationContext = memoizationContext;
     }
 
     public void setSeed(long seed) {
@@ -62,10 +63,9 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
             }
         };
         final Solver<AllocResults> solverInstance;
-        if (cachingEnabled) {
+        if (memoizationContext != null) {
             solverInstance = type
-                    .getCachingInstance(flexAllocProblemContext, filepath, dbWriteFileLocation,
-                            updateCache, ensureCacheFileExists);
+                    .getCachingInstance(flexAllocProblemContext, memoizationContext, updateCache);
         } else {
             solverInstance = type.getInstance(flexAllocProblemContext);
         }

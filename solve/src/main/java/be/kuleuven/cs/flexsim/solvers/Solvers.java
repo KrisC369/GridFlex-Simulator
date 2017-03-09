@@ -2,10 +2,12 @@ package be.kuleuven.cs.flexsim.solvers;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
-import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
+import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
 import be.kuleuven.cs.flexsim.solvers.dummy.SolverDummy;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolver;
 import be.kuleuven.cs.flexsim.solvers.memoization.MemoizationDecorator;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
+import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import be.kuleuven.cs.flexsim.solvers.optimal.mip.MIPOptimalSolver;
 
 import static be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver.Solver.CPLEX;
@@ -90,15 +92,10 @@ public final class Solvers {
         }
 
         public Solver<AllocResults> getCachingInstance(FlexAllocProblemContext context,
-                String dbFilePath, String dbWriteFileLocation, boolean update, boolean ensureFile) {
-            if (ensureFile) {//TODO clean this sh*t up.
-                return new MemoizationDecorator(getInstance(context), context, () ->
-                        MapDBMemoizationContext
-                                .createTwoFileEnsureFileExistsWUnique(dbFilePath, dbWriteFileLocation),
-                        update);
-            }
+                MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
+                        memContext, boolean update) {
             return new MemoizationDecorator(getInstance(context), context, () ->
-                    MapDBMemoizationContext.createDefault(dbFilePath), update);
+                    memContext, update);
         }
     }
 }

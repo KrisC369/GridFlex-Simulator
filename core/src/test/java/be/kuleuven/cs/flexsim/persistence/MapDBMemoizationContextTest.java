@@ -39,7 +39,7 @@ public class MapDBMemoizationContextTest {
 
     @Before
     public void setUp() throws Exception {
-        target = MapDBMemoizationContext.createDefaultEnsureFileExists(NAME_DB);
+        target = MapDBMemoizationContext.builder().setFileName(NAME_DB).ensureFileExists().build();
         db.put("one", "1");
         db.put("two", "2");
         db.put("three", "3");
@@ -59,11 +59,11 @@ public class MapDBMemoizationContextTest {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-                .createDefault(NAME_DB);
+        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext.builder()
+                .setFileName(NAME_DB).ensureFileExists().build();
         target.resetStore();
-        MapDBMemoizationContext<KeyObject, ValueObject> target2 = MapDBMemoizationContext
-                .createDefault("testObj.db");
+        MapDBMemoizationContext<KeyObject, ValueObject> target2 = MapDBMemoizationContext.builder()
+                .setFileName("testObj.db").ensureFileExists().build();
         target.resetStore();
     }
 
@@ -91,8 +91,8 @@ public class MapDBMemoizationContextTest {
     @Test
     public void inOutSingleThread() throws Exception {
         reset();
-        MapDBMemoizationContext<String, String> target2 = MapDBMemoizationContext
-                .createDefault(NAME_DB);
+        MapDBMemoizationContext<String, String> target2 = MapDBMemoizationContext.builder()
+                .setFileName(NAME_DB).ensureFileExists().build();
         int count = 0;
         for (Map.Entry<String, String> e : db.entrySet()) {
             if (count % 2 == 0) {
@@ -125,8 +125,8 @@ public class MapDBMemoizationContextTest {
     public static void parallelTestImpl(int offset, final int threads, final int insertRange,
             boolean doRangeCheck, String dbfilename)
             throws InterruptedException {
-        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-                .createDefault(dbfilename);
+        MapDBMemoizationContext<String, String> target = MapDBMemoizationContext.builder()
+                .setFileName(dbfilename).ensureFileExists().build();
         final CountDownLatch latch = new CountDownLatch(threads);
         Collection<Callable<String>> runnables = Lists.newArrayList();
         IntStream.range(0, threads)
@@ -150,8 +150,8 @@ public class MapDBMemoizationContextTest {
 
     @Test
     public void testObjectSerialization() {
-        MapDBMemoizationContext<KeyObject, ValueObject> target2 = MapDBMemoizationContext
-                .createDefaultEnsureFileExists("testObj.db");
+        MapDBMemoizationContext<KeyObject, ValueObject> target2 = MapDBMemoizationContext.builder()
+                .setFileName("testObj.db").ensureFileExists().build();
         ArrayList<Double> list = Lists.newArrayList();
         list.add((double) 2);
         list.add((double) 2);
@@ -178,7 +178,8 @@ public class MapDBMemoizationContextTest {
     @Test
     public void testMemoizationCall() {
         target.resetStore();
-        target = MapDBMemoizationContext.createDefaultEnsureFileExists(NAME_DB);
+        target = MapDBMemoizationContext.builder()
+                .setFileName(NAME_DB).ensureFileExists().build();
         final CountDownLatch countDownLatch = new CountDownLatch(3);
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);
@@ -198,8 +199,9 @@ public class MapDBMemoizationContextTest {
     public void testTwoFile() {
         String filename_r = "testRead.db";
         String filename_w = "testwrite.db";
-        target = MapDBMemoizationContext
-                .createTwoFileEnsureFileExists(filename_r, filename_w, false);
+        target = MapDBMemoizationContext.builder()
+                .setFileName(filename_r).setDifferentWriteFilename(filename_w).ensureFileExists()
+                .build();
         final CountDownLatch countDownLatch = new CountDownLatch(3);
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);
@@ -223,8 +225,9 @@ public class MapDBMemoizationContextTest {
     public void testTwoFilWCons() {
         String filename_r = "testRead.db";
         String filename_w = "testwrite.db";
-        target = MapDBMemoizationContext
-                .createTwoFileEnsureFileExists(filename_r, filename_w, false);
+        target = MapDBMemoizationContext.builder()
+                .setFileName(filename_r).setDifferentWriteFilename(filename_w).ensureFileExists()
+                .build();
         final CountDownLatch countDownLatch = new CountDownLatch(3);
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);
@@ -247,8 +250,9 @@ public class MapDBMemoizationContextTest {
     public void testTransparantNoRead() {
         String filename_r = "testReadNotPresent.db";
         String filename_w = "testwrite.db";
-        target = MapDBMemoizationContext
-                .createTwoFileEnsureFileExists(filename_r, filename_w, false);
+        target = MapDBMemoizationContext.builder()
+                .setFileName(filename_r).setDifferentWriteFilename(filename_w).ensureFileExists()
+                .build();
         final CountDownLatch countDownLatch = new CountDownLatch(3);
         target.testAndCall(db.get("one"), () -> {
             logCall(countDownLatch);
@@ -288,10 +292,9 @@ public class MapDBMemoizationContextTest {
         @Override
         public String call() throws Exception {
             try {
-                MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
-                        .createDefault(dbfilename);
-                IntStream.range(start, start + endRange).boxed().forEach(
-                        (e) -> doMemo(e, target));
+                final MapDBMemoizationContext<String, String> target = MapDBMemoizationContext
+                        .builder().setFileName(NAME_DB).ensureFileExists().build();
+                IntStream.range(start, start + endRange).boxed().forEach((e) -> doMemo(e, target));
                 latch.countDown();
                 logger.debug("Thread done inserting. Latch now at {}", latch.getCount());
             } catch (Exception e) {
