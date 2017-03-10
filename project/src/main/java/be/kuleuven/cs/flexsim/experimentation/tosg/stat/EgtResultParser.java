@@ -94,7 +94,7 @@ public class EgtResultParser implements AutoCloseable {
     public void close() throws Exception {
         synchronized (LOCK) {
             logger.debug("Closing matlab instance and disconnecting proxy.");
-            this.getProxy().exit();
+            //            this.getProxy().exit();
             this.getProxy().disconnect();
             logger.debug("Matlab instance closed and proxy disconnected.");
         }

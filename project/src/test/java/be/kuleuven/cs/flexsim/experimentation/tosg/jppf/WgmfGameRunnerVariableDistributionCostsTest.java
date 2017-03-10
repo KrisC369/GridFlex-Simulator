@@ -72,7 +72,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         // "-p1step",
         //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
-                "-n", "2", "-r", "1", "-s", solver, "-c", "u", "-m", "LOCAL", "-p1start", "35.4",
+                "-n", "2", "-r", "1", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "35.4",
                 "-p1step",
                 "10", "-p1end", "45.5", "-pIdx", "1" };
     }
