@@ -47,8 +47,14 @@ public final class MapDBConsolidator<E extends Serializable, R extends Serializa
         for (MapDBMemoizationContext<E, R> in :
                 dbConnects) {
             logger.debug("Getting map for {}", in);
-            dbAPI.putAll(in.getWholeMap());
-            dbConnection.commit();
+            try {
+                dbAPI.putAll(in.getWholeMap());
+                dbConnection.commit();
+            } catch (Exception e) {
+                logger.error(
+                        "Something went wrong accessing or storing the results. Continuing with "
+                                + "other resources.", e);
+            }
         }
         dbConnection.close();
     }

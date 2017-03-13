@@ -142,10 +142,18 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     @VisibleForTesting
     public Map<E, R> getWholeMap() {
         ConcurrentMap<E, R> erConcurrentMap = readDB.openAndGetStore();
-        Map<E, R> tmp = Maps.newLinkedHashMap(erConcurrentMap);
-        logger.debug("Accessed full table.");
-        readDB.close();
-        return tmp;
+        try {
+            Map<E, R> tmp = Maps.newLinkedHashMap(erConcurrentMap);
+            logger.debug("Accessed full table.");
+            readDB.close();
+            return tmp;
+        } catch (Exception e) {
+            logger.debug(
+                    "Something went wrong accessing table. Rethrowing exception after closing "
+                            + "resource.");
+            readDB.close();
+            throw e;
+        }
     }
 
     private void ensureFileInit() {
