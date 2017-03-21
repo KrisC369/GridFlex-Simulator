@@ -23,6 +23,7 @@ public class EgtResultParser implements AutoCloseable {
     private static final boolean REUSE_PREVIOUS = true;
     private final AtomicReference<MatlabProxy> proxy = new AtomicReference<>();
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(EgtResultParser.class);
+    private static final String EGT_FUNCTION_PATH = "~/gitworkspace/EgtTools/src/";
 
     /**
      * Default constructor.
@@ -46,7 +47,7 @@ public class EgtResultParser implements AutoCloseable {
             throw new IllegalStateException("Could not instantiate matlab proxy. Quitting!", e);
         }
         try {
-            getProxy().eval("addpath('~/gitworkspace/EgtTools/src/');");
+            getProxy().eval("addpath('" + EGT_FUNCTION_PATH + "');");
         } catch (MatlabInvocationException e) {
             e.printStackTrace();
         }

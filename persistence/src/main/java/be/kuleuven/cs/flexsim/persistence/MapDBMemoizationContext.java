@@ -180,57 +180,6 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
         return readDB.isClosed() && writeDB.isClosed();
     }
 
-    //    @VisibleForTesting
-    //    @Deprecated
-    //    public static <E extends Serializable, R extends Serializable>
-    // MapDBMemoizationContext<E, R>
-    //    createDefault(String filename) {
-    //        return new Builder().setFileName(filename).setDifferentWriteFilename(filename)
-    //                .build();
-    //    }
-    //
-    //    @Deprecated
-    //    public static <E extends Serializable, R extends Serializable>
-    // MapDBMemoizationContext<E, R>
-    //    createUniqueTwoFile(String filename_r, String filename_w) {
-    //        return createTwoFile(filename_r, filename_w, true, false);
-    //    }
-    //
-    //    @Deprecated
-    //    public static <E extends Serializable, R extends Serializable>
-    // MapDBMemoizationContext<E, R>
-    //    createDefaultEnsureFileExists(String filename) {
-    //        return createTwoFileEnsureFileExists(filename, filename, false);
-    //    }
-    //
-    //    @Deprecated
-    //    public static <E extends Serializable, R extends Serializable>
-    // MapDBMemoizationContext<E, R>
-    //    createTwoFile(String filename_r, String filename_w, boolean unique, boolean ensure) {
-    //        MapDBMemoizationContext<E, R> mapDBMemoizationContext = new Builder()
-    //                .setFileName(filename_r).setDifferentWriteFilename(filename_w)
-    //                .appendHostnameToWriteFileName()
-    //                .build();
-    //        if (ensure) {
-    //            mapDBMemoizationContext.ensureFileInit();
-    //        }
-    //        return mapDBMemoizationContext;
-    //    }
-    //
-    //    @Deprecated
-    //    public static <E extends Serializable, R extends Serializable>
-    // MapDBMemoizationContext<E, R>
-    //    createTwoFileEnsureFileExists(String filename_r, String filename_w, boolean unique) {
-    //        return createTwoFile(filename_r, filename_w, unique, true);
-    //    }
-    //
-    //    @Deprecated
-    //    public static <E extends Serializable, R extends Serializable>
-    // MapDBMemoizationContext<E, R>
-    //    createTwoFileEnsureFileExistsWUnique(String filename_r, String filename_w) {
-    //        return createTwoFileEnsureFileExists(filename_r, filename_w, true);
-    //    }
-
     public static MapDBMemoizationContext.Builder builder() {
         return new Builder();
     }
@@ -304,6 +253,7 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
                 storeAccessWrapper.close();
             } catch (DBException.VolumeIOError e) {
                 //means file has already been delete. We're done.
+                logger.debug("Volume exception caught because of closed file.", e);
             }
         }
 
