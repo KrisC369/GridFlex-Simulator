@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
+import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.junit.Before;

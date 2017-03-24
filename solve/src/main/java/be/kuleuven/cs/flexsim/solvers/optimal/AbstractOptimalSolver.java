@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.solvers.optimal;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.solvers.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.data.AllocResults;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;

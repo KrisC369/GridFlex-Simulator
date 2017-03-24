@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gametheory.configurable;
 
 import be.kuleuven.cs.gametheory.AbstractGameDirector;
-import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrix;
+import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 

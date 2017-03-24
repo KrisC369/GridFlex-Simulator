@@ -6,7 +6,7 @@ import be.kuleuven.cs.gametheory.AgentGenerator;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
 import be.kuleuven.cs.gametheory.GameInstanceGenerator;
-import be.kuleuven.cs.gametheory.GameResult;
+import be.kuleuven.cs.gametheory.results.GameResult;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import org.eclipse.jdt.annotation.NonNull;
 import org.paukov.combinatorics.Factory;

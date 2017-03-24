@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.solvers;
+package be.kuleuven.cs.flexsim.solvers.data;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
 

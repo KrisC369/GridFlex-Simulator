@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.results;
 
 import be.kuleuven.cs.flexsim.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;

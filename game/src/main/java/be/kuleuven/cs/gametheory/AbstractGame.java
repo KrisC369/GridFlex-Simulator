@@ -1,6 +1,8 @@
 package be.kuleuven.cs.gametheory;
 
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
+import be.kuleuven.cs.gametheory.results.GameResult;
+import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

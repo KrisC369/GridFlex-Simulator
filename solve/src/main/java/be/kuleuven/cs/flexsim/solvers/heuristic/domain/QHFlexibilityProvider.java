@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.solvers.heuristic.domain;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.solvers.optimal.ConstraintConversion;
-import be.kuleuven.cs.flexsim.solvers.QuarterHourlyFlexConstraints;
+import be.kuleuven.cs.flexsim.solvers.data.QuarterHourlyFlexConstraints;
 
 /**
  * A quarter hourly discretized flexibility provider.

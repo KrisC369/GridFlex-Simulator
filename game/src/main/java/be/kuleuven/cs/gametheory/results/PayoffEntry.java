@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gametheory.results;
 
 import com.google.auto.value.AutoValue;
 

@@ -2,7 +2,7 @@ package be.kuleuven.cs.flexsim.solvers.optimal.mip;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.flexsim.solvers.optimal.MpAdapter;
-import be.kuleuven.cs.flexsim.solvers.QuarterHourlyFlexConstraints;
+import be.kuleuven.cs.flexsim.solvers.data.QuarterHourlyFlexConstraints;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpOperator;

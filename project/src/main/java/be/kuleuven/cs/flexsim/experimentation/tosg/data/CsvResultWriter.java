@@ -23,6 +23,7 @@ public class CsvResultWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final char DELIMITER = ';';
 
+    private CsvResultWriter(){}
     //CSV file header
     private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
             "median fixed points",
@@ -57,6 +58,8 @@ public class CsvResultWriter {
 
     @AutoValue
     public static abstract class WgmfDynamicsResults {
+
+        WgmfDynamicsResults(){}
         public abstract int getNAgents();
 
         public abstract int getRepititions();

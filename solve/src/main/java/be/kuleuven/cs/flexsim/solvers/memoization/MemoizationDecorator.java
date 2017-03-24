@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.solvers.memoization;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
-import be.kuleuven.cs.flexsim.solvers.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.data.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import com.google.common.base.Supplier;

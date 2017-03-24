@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gametheory.evolutionary;
 
-import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrix;
-import be.kuleuven.cs.gametheory.PayoffEntry;
+import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
+import be.kuleuven.cs.gametheory.results.PayoffEntry;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
@@ -20,10 +20,10 @@ import static java.lang.StrictMath.sqrt;
 public class EvolutionaryGameDynamics {
 
     private static final Logger logger = LoggerFactory.getLogger(EvolutionaryGameDynamics.class);
-    private HeuristicSymmetricPayoffMatrix payoffs;
-    private List<Double> eqnFactorMeans;
-    private List<Double> eqnFactorStds;
-    private List<Integer> eqnFactorSamples;
+    private final HeuristicSymmetricPayoffMatrix payoffs;
+    private final List<Double> eqnFactorMeans;
+    private final List<Double> eqnFactorStds;
+    private final  List<Integer> eqnFactorSamples;
 
     private EvolutionaryGameDynamics(HeuristicSymmetricPayoffMatrix payoffs) {
         this.payoffs = payoffs;

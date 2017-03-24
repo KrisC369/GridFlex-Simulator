@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory.evolutionary;
 
-import be.kuleuven.cs.gametheory.HeuristicSymmetricPayoffMatrix;
+import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.junit.Before;
 import org.junit.Rule;

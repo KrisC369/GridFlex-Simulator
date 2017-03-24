@@ -3,7 +3,7 @@ package be.kuleuven.cs.flexsim.examples;
 import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.gametheory.standalone.Game;
 import be.kuleuven.cs.gametheory.standalone.GameDirector;
-import be.kuleuven.cs.gametheory.GameResultWriter;
+import be.kuleuven.cs.gametheory.results.GameResultWriter;
 
 /**
  * An example class running some experiments.

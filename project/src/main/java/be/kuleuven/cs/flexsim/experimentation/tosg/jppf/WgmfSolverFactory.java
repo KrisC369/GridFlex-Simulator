@@ -9,7 +9,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.TimeSeries;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolutionResultAdapter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.adapters.SolverAdapter;
 import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
-import be.kuleuven.cs.flexsim.solvers.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.data.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.flexsim.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
