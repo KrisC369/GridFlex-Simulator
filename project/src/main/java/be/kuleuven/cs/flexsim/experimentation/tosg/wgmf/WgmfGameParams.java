@@ -3,7 +3,6 @@ package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.AutoValue_WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import com.google.auto.value.AutoValue;
