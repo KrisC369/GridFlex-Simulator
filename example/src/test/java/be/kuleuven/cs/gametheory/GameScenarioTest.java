@@ -3,7 +3,6 @@ package be.kuleuven.cs.gametheory;
 import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
 import be.kuleuven.cs.flexsim.domain.site.Site;
 import be.kuleuven.cs.flexsim.experimentation.DefaultGameConfigurator;
-import be.kuleuven.cs.gametheory.results.GameResultWriter;
 import be.kuleuven.cs.gametheory.standalone.Game;
 import be.kuleuven.cs.gametheory.standalone.GameDirector;
 import org.junit.Before;

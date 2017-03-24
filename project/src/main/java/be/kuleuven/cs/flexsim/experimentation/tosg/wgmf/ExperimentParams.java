@@ -1,5 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.flexsim.experimentation.tosg.AutoValue_ExperimentParams;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
 import com.google.auto.value.AutoValue;
 

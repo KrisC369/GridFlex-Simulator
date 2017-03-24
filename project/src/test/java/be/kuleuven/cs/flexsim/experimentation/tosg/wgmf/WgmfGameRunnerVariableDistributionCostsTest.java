@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
@@ -9,10 +9,6 @@ import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfInputParser;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfMemContextFactory;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import org.junit.Before;

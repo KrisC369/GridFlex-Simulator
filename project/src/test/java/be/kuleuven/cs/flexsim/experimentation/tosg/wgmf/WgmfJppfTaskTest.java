@@ -1,11 +1,14 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.flexsim.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.DayAheadPriceProfile;
-import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
+import be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.ExperimentParams;
+import be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfGameParams;
+import be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfGameRunner;
+import be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfJppfTask;
+import be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfSolverFactory;
+import be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.WindBasedInputData;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
@@ -20,9 +23,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.LOCAL;
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunner.loadResources;
+import static be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.ExecutionStrategy.LOCAL;
+import static be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.ExecutionStrategy.REMOTE;
+import static be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfGameRunner.loadResources;
 import static org.junit.Assert.assertEquals;
 
 /**

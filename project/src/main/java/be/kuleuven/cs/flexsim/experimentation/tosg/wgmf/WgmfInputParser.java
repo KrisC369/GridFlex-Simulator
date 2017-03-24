@@ -1,6 +1,5 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.flexsim.experimentation.tosg.jppf.AbstractWgmfGameRunner;
 import be.kuleuven.cs.flexsim.solvers.Solvers;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;

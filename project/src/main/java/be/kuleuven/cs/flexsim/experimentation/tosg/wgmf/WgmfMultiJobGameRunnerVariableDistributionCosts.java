@@ -1,8 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.CsvResultWriter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;

@@ -1,9 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.data.CsvResultWriter;
 import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
@@ -23,8 +20,6 @@ import java.util.Map;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.LOCAL;
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -54,7 +49,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
      * @param expP The experiment parameters.
      */
     public WgmfGameRunnerVariableDistributionCosts(ExperimentParams expP) {
-        super(expP.isRemoteExecutable() ? REMOTE : LOCAL);
+        super(expP.isRemoteExecutable() ? ExecutionStrategy.REMOTE : ExecutionStrategy.LOCAL);
         this.nAgents = expP.getNAgents();
         this.nReps = expP.getNRepititions();
         priceToDirector = Maps.newLinkedHashMap();

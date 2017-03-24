@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.AbstractSolverFactory;

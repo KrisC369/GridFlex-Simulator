@@ -1,9 +1,6 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg.jppf;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.flexsim.experimentation.tosg.ExperimentParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WgmfGameParams;
-import be.kuleuven.cs.flexsim.experimentation.tosg.WhoGetsMyFlexGame;
 import be.kuleuven.cs.flexsim.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
@@ -15,8 +12,6 @@ import org.slf4j.Logger;
 import java.util.Arrays;
 import java.util.List;
 
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.LOCAL;
-import static be.kuleuven.cs.flexsim.experimentation.tosg.jppf.ExecutionStrategy.REMOTE;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -42,7 +37,7 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
     }
 
     private WgmfGameRunner(ExperimentParams expP) {
-        this(expP, expP.isRemoteExecutable() ? REMOTE : LOCAL);
+        this(expP, expP.isRemoteExecutable() ? ExecutionStrategy.REMOTE : ExecutionStrategy.LOCAL);
     }
 
     /**

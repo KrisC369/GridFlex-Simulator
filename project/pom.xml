@@ -119,7 +119,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                be.kuleuven.cs.flexsim.experimentation.tosg.jppf.WgmfGameRunnerVariableDistributionCosts
+                                be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfGameRunnerVariableDistributionCosts
                             </mainClass>
                         </manifest>
                     </archive>

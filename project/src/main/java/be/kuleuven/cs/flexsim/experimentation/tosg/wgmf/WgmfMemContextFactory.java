@@ -1,4 +1,4 @@
-package be.kuleuven.cs.flexsim.experimentation.tosg;
+package be.kuleuven.cs.flexsim.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.flexsim.persistence.MapDBMemoizationContext;
 import be.kuleuven.cs.flexsim.persistence.MemoizationContext;
