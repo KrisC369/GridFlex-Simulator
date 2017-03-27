@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 /**
  * Experiment parameters that define the configuration of concrete experiments.
- * It is up to the implementing classes to define what the P* paramter values are used for.
+ * It is up to the implementing classes to define what the P* parameter values are used for.
  */
 @AutoValue
 public abstract class ExperimentParams implements Serializable {

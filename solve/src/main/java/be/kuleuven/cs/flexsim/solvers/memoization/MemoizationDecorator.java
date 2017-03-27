@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MemoizationDecorator implements Solver<AllocResults> {
     private final Solver<AllocResults> actualSolver;
-    private FlexAllocProblemContext context;
+    private final FlexAllocProblemContext context;
     private final MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>
             memoization;
     private final ImmutableSolverProblemContextView contextView;
@@ -25,11 +25,11 @@ public class MemoizationDecorator implements Solver<AllocResults> {
     private static final Logger logger = LoggerFactory.getLogger(MemoizationDecorator.class);
 
     /**
-     * Constructor
+     * Constructor for decorating another solver solver.
      *
-     * @param actualSolver
-     * @param context
-     * @param memoizationSupplier
+     * @param actualSolver        The actual solver to decorate.
+     * @param context             The problem context.
+     * @param memoizationSupplier The memoization service for storing caching results.
      */
     public MemoizationDecorator(Solver<AllocResults> actualSolver, FlexAllocProblemContext context,
             Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
