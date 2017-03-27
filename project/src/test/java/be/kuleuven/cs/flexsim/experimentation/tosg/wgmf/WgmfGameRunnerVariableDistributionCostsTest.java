@@ -51,11 +51,9 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     }
 
     @Test
-    @Ignore
     public void main() throws Exception {
         //        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
         WgmfMultiJobGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
-
     }
 
     public static ExperimentParams getParams(String solver) {
