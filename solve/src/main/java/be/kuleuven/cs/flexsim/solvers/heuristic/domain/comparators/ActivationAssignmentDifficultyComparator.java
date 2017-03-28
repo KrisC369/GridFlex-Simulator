@@ -11,6 +11,8 @@ import java.util.Comparator;
  */
 public class ActivationAssignmentDifficultyComparator
         implements Comparator<ActivationAssignment>, Serializable {
+    private static final long serialVersionUID = -4701403681060423663L;
+
     @Override
     public int compare(ActivationAssignment o1, ActivationAssignment o2) {
         return new CompareToBuilder()

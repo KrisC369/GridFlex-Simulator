@@ -70,8 +70,6 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
                         return congestion;
                     }
                 });
-        //        solver.solve();
-        //        this.results = solver.getSolution();
         this.results = solver.solve();
         processActivations(results);
     }
@@ -95,7 +93,7 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
         List<Integer> sizes = Lists.newArrayList();
         activationProf.keySet().forEach(p -> sizes.add(activationProf.get(p).size()));
         int min = sizes.get(0);
-        if (sizes.size() > 0) {
+        if (!sizes.isEmpty()) {
             min = Collections.min(sizes);
         }
         IntList toRet = new IntArrayList(min);

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import java.util.List;
@@ -17,13 +18,15 @@ import java.util.List;
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class CsvResultWriter {
+public final class CsvResultWriter {
     private static final Logger logger = LoggerFactory.getLogger(CsvResultWriter.class);
     //Delimiter used in CSV file
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final char DELIMITER = ';';
 
-    private CsvResultWriter(){}
+    private CsvResultWriter() {
+    }
+
     //CSV file header
     private static final Object[] FILE_HEADER = { "nAgents", "reps", "price point",
             "median fixed points",
@@ -51,7 +54,7 @@ public class CsvResultWriter {
             if (logger.isInfoEnabled()) {
                 logger.info("Output written and resources released.");
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             logger.error("Error writing to csv file.", e);
         }
     }
@@ -59,7 +62,9 @@ public class CsvResultWriter {
     @AutoValue
     public static abstract class WgmfDynamicsResults {
 
-        WgmfDynamicsResults(){}
+        WgmfDynamicsResults() {
+        }
+
         public abstract int getNAgents();
 
         public abstract int getRepititions();

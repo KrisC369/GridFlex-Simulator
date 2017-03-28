@@ -1,7 +1,6 @@
 package be.kuleuven.cs.flexsim.experimentation.runners.local;
 
 import be.kuleuven.cs.flexsim.experimentation.runners.ExperimentRunner;
-import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,7 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
             .getLogger(MultiThreadedExperimentRunner.class);
     private static final int SLEEPTIME = 100;
     private final ExecutorService executor;
-    @Nullable
+    //@Nullable
     private Optional<List<Future<Object>>> futures;
 
     /**
@@ -40,7 +39,7 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
 
     protected MultiThreadedExperimentRunner(final ExecutorService exec) {
         this.executor = exec;
-        this.futures = null;
+        this.futures = Optional.empty();
     }
 
     /**
@@ -72,7 +71,7 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
 
     @Override
     public List<Future<Object>> waitAndGetResults() {
-        if (null == futures) {
+        if (!futures.isPresent()) {
             throw new IllegalStateException("Experiments have not run yet.");
         }
         while (isRunning()) {

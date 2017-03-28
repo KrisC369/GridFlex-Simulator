@@ -9,6 +9,7 @@ import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.Allocation;
 import be.kuleuven.cs.flexsim.solvers.heuristic.solver.HeuristicSolver;
 import com.google.common.collect.Lists;
+import org.eclipse.jdt.annotation.Nullable;
 import org.optaplanner.core.api.domain.solution.Solution;
 import org.optaplanner.persistence.common.api.domain.solution.SolutionFileIO;
 import org.slf4j.Logger;
@@ -19,13 +20,24 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
+ * Test class for performing benchmarking.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class HeuristicSolverIO implements SolutionFileIO {
+public final class HeuristicSolverIO implements SolutionFileIO {
     private static Logger logger = LoggerFactory.getLogger(HeuristicSolverIO.class);
+    @Nullable
     private FlexibilityProvider first;
+    @Nullable
     private FlexibilityProvider second;
+    @Nullable
     private CongestionProfile profile;
+
+    HeuristicSolverIO() {
+        first = null;
+        second = null;
+        profile = null;
+    }
 
     @Override
     public String getInputFileExtension() {
@@ -41,13 +53,12 @@ public class HeuristicSolverIO implements SolutionFileIO {
     public Allocation read(File file) {
         HeuristicSolver solver;
         FlexAllocProblemContext context;
-        Allocation readCase = null;
         double v1 = 1000;
         double v2 = 800;
-        if (file.getPath().toString().contains("model_a1_2")) {
+        if (file.getPath().contains("model_a1_2")) {
             v1 = 300;
             v2 = 600;
-        } else if (file.getPath().toString().contains("model_a1_3")) {
+        } else if (file.getPath().contains("model_a1_3")) {
             v1 = 1400;
             v2 = 2000;
         }

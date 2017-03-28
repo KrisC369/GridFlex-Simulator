@@ -2,8 +2,8 @@ package be.kuleuven.cs.flexsim.solvers.dummy;
 
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.flexsim.solvers.data.AllocResults;
+import be.kuleuven.cs.flexsim.solvers.optimal.AbstractOptimalSolver;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import net.sf.jmpi.main.MpProblem;
@@ -21,7 +21,7 @@ public class SolverDummy extends AbstractOptimalSolver {
     /**
      * Default constructor
      *
-     * @param context
+     * @param context The problem context to (not) work with.
      */
     public SolverDummy(FlexAllocProblemContext context) {
         super(context, Solver.DUMMY);

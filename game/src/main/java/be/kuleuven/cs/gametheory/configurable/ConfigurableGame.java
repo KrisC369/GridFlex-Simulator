@@ -17,8 +17,6 @@ import java.util.stream.IntStream;
  * A representation of a full game specification for all configurations of
  * agents over the action space.
  *
- * @param <N> The type of agents.
- * @param <K> The type of actions.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class ConfigurableGame extends AbstractGame<GameInstanceConfiguration, GameInstanceResult,
@@ -30,9 +28,9 @@ public class ConfigurableGame extends AbstractGame<GameInstanceConfiguration, Ga
     /**
      * Default constructor.
      *
-     * @param agents The number of agents.
-     * @param config The configurator instance.
-     * @param reps   The number of repetitions.
+     * @param agents  The number of agents.
+     * @param actions The number of actions.
+     * @param reps    The number of repetitions.
      */
     public ConfigurableGame(final int agents, final int actions, final int reps) {
         super(agents, actions, reps);
@@ -45,6 +43,7 @@ public class ConfigurableGame extends AbstractGame<GameInstanceConfiguration, Ga
      * Configure and set-up the game specifics for different iterations of games
      * over the strategy space.
      */
+    @Override
     protected void configureInstances() { //TODO Refactor method to not use actionSize before loop
         int progressCounter = 0;
         for (int iteration = 0; iteration < reps; iteration++) {

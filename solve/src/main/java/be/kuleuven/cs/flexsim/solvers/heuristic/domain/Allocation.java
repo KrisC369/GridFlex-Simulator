@@ -125,9 +125,9 @@ public class Allocation implements Solution<HardSoftScore> {
             for (ActivationAssignment aa : getAssignments()) {
                 if (aa.isBound() && aa.getProvider().equals(p)) {
                     Arrays.fill(acts[i], aa.getStartIndex(),
-                            (int) min((aa.getStartIndex() + aa.getProvider()
+                            (int) min(aa.getStartIndex() + aa.getProvider()
                                     .getQHFlexibilityActivationConstraints()
-                                    .getActivationDuration()), profile.length()),
+                                    .getActivationDuration(), profile.length()),
                             1);
                 }
             }

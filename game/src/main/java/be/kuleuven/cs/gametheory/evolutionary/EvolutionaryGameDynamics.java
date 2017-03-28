@@ -17,13 +17,13 @@ import static java.lang.StrictMath.sqrt;
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class EvolutionaryGameDynamics {
+public final class EvolutionaryGameDynamics {
 
     private static final Logger logger = LoggerFactory.getLogger(EvolutionaryGameDynamics.class);
     private final HeuristicSymmetricPayoffMatrix payoffs;
     private final List<Double> eqnFactorMeans;
     private final List<Double> eqnFactorStds;
-    private final  List<Integer> eqnFactorSamples;
+    private final List<Integer> eqnFactorSamples;
 
     private EvolutionaryGameDynamics(HeuristicSymmetricPayoffMatrix payoffs) {
         this.payoffs = payoffs;
@@ -31,7 +31,6 @@ public class EvolutionaryGameDynamics {
         eqnFactorStds = Lists.newArrayList();
         eqnFactorSamples = Lists.newArrayList();
         calculateFactors(payoffs, eqnFactorMeans, eqnFactorStds, eqnFactorSamples);
-        //        calculateStds(payoffs, eqnFactorStds);
     }
 
     /**
@@ -96,7 +95,6 @@ public class EvolutionaryGameDynamics {
             int sampleSize) {
         Mean meanOfMeans = new Mean();
         Mean meanOfVars = new Mean();
-        double varTotal = 0;
         for (int j = coeffDone; j < coeffDone + currCoeff; j++) {
             meanOfMeans.increment(values[j]);
             meanOfVars.increment(vars[j]);

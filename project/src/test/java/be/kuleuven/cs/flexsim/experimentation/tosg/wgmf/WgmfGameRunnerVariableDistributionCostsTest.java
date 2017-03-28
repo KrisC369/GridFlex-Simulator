@@ -51,6 +51,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     }
 
     @Test
+    @Ignore
     public void main() throws Exception {
         //        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
         WgmfMultiJobGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
@@ -87,11 +88,11 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, horizon);
 
-            WgmfMemContextFactory memContext = new WgmfMemContextFactory(expP.getCachingEnabled(),
-                    expP.getEnsureCacheExists(), DB_PATH, DB_WRITE_FILE_LOCATION);
+            WgmfMemContextFactory memContext = new WgmfMemContextFactory(expP.isCachingEnabled(),
+                    expP.isCacheExistenceEnsured(), DB_PATH, DB_WRITE_FILE_LOCATION);
             return WgmfGameParams
                     .create(dataIn,
-                            new WgmfSolverFactory(expP.getSolver(), expP.getUpdateCacheEnabled(),
+                            new WgmfSolverFactory(expP.getSolver(), expP.isUpdateCacheEnabled(),
                                     memContext), specs, distribution, imbalIn,
                             dayAheadPriceProfile);
         } catch (IOException e) {

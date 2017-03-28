@@ -5,13 +5,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Utility class for creating the necessary write files and initializing them as memoization dbs.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WriteFileCreator {
+public final class WriteFileCreator {
+
+    private WriteFileCreator() {
+    }
 
     private static final int SLEEP_TIME = 200;
     private static final Logger logger = LoggerFactory.getLogger(WriteFileCreator.class);
 
+    /**
+     * Thre runnable main method.
+     *
+     * @param args cmdline args.
+     */
     public static void main(String[] args) {
         for (String file : args) {
             logger.info("Writing ouput caching files for {}", file);

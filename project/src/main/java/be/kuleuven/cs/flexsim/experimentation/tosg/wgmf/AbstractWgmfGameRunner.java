@@ -22,8 +22,6 @@ public abstract class AbstractWgmfGameRunner {
             "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
     public static final String DATAPROFILE_TEMPLATE =
             "be/kuleuven/cs/flexsim/experimentation/data/currentAndCongestionProfile*.csv";
-    //    protected static final String DATAFILE = "be/kuleuven/cs/flexsim/experimentation/data"
-    //            + "/2kwartOpEnNeer.csv";
     private static final String SPECFILE =
             "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";
     private static final String IMBAL =
@@ -62,10 +60,10 @@ public abstract class AbstractWgmfGameRunner {
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, FULL_YEAR);
 
-            WgmfMemContextFactory memContext = new WgmfMemContextFactory(expP.getCachingEnabled(),
-                    expP.getEnsureCacheExists(), DB_FILE_LOCATION, DB_WRITE_FILE_LOCATION);
+            WgmfMemContextFactory memContext = new WgmfMemContextFactory(expP.isCachingEnabled(),
+                    expP.isCacheExistenceEnsured(), DB_FILE_LOCATION, DB_WRITE_FILE_LOCATION);
             return WgmfGameParams.create(dataIn,
-                    new WgmfSolverFactory(expP.getSolver(), expP.getUpdateCacheEnabled(),
+                    new WgmfSolverFactory(expP.getSolver(), expP.isUpdateCacheEnabled(),
                             memContext), specs, distribution, imbalIn,
                     dayAheadPriceProfile);
         } catch (IOException e) {

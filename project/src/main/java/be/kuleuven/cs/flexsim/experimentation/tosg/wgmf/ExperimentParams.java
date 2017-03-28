@@ -72,11 +72,11 @@ public abstract class ExperimentParams implements Serializable {
     /**
      *
      */
-    public abstract boolean getCachingEnabled();
+    public abstract boolean isCachingEnabled();
 
-    public abstract boolean getUpdateCacheEnabled();
+    public abstract boolean isUpdateCacheEnabled();
 
-    public abstract boolean getEnsureCacheExists();
+    public abstract boolean isCacheExistenceEnsured();
 
     /**
      * @return A builder instance.

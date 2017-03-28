@@ -134,7 +134,8 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
             EgtResultParser egtResultParser) {
         EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
                 .from(director.getResults().getResults());
-        ConfidenceInterval ciExt = director.getResults().getResults().getExternalityCI(CI_LEVEL);
+        final ConfidenceInterval ciExt = director.getResults().getResults()
+                .getExternalityCI(CI_LEVEL);
         double[] eqnParams = dynamics.getDynamicEquationFactors().stream()
                 .mapToDouble(Double::doubleValue).toArray();
         double[] lowerCI = getLowerCIParams(dynamics).stream()

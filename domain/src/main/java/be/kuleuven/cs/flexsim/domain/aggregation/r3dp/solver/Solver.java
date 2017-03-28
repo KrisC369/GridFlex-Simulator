@@ -5,7 +5,7 @@ package be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver;
  *
  * @param <T> The result solution type.
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- */
+ */@FunctionalInterface
 public interface Solver<T> {
 
     /**

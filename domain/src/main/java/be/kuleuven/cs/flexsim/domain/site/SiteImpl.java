@@ -142,7 +142,7 @@ public class SiteImpl implements Site {
                     count++;
                 }
             }
-            toret.add(count == 0 ? sum : sum / count);
+            toret.add(count == 0 ? sum : (sum / count));
         }
         return toret;
     }

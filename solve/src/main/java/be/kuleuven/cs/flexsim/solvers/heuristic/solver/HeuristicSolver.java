@@ -4,11 +4,11 @@ import be.kuleuven.cs.flexsim.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.flexsim.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.flexsim.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.flexsim.solvers.data.AllocResults;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.ActivationAssignment;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.Allocation;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.OptaFlexProvider;
 import be.kuleuven.cs.flexsim.solvers.heuristic.domain.QHFlexibilityProvider;
-import be.kuleuven.cs.flexsim.solvers.data.AllocResults;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ListMultimap;
@@ -41,8 +41,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
     private static String CONFIG_BESTEFFORT =
             "be/kuleuven/cs/flexsim/solvers/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
     private static double FRACTION_OF_THEORETICAL_OPT = 0.90;
-    private FlexAllocProblemContext context;
-    private boolean fullSat;
+    private final FlexAllocProblemContext context;
+    private final boolean fullSat;
     @Nullable
     private SolveResult solvedAllocResult;
     private static final Logger logger = LoggerFactory.getLogger(HeuristicSolver.class);
@@ -125,8 +125,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     }
 
     public void displayResult() {
-        System.out.println(
-                "\nSolved with value:" + toDisplayString(solvedAllocResult.getAllocation()));
+        logger.info("\nSolved with value: {}", toDisplayString(solvedAllocResult.getAllocation()));
     }
 
     AllocResults getSolution() {
@@ -193,7 +192,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
      */
     public static String toDisplayString(Allocation allocation) {
         double sum = allocation.getResolvedCongestion();
-        StringBuilder displayString = new StringBuilder();
+        StringBuilder displayString = new StringBuilder(19);
         displayString.append("Solved Congestion: ").append(sum);
         return displayString.toString();
     }
