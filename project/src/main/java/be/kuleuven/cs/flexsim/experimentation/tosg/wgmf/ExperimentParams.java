@@ -86,7 +86,8 @@ public abstract class ExperimentParams implements Serializable {
                 .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(DEF_REMOTE_EXEC)
                 .setWindErrorProfileIndex(DEF_WINDPROF).setCurrentDataProfileIndex(DEF_DATAPROF)
                 .setCachingEnabled(DEF_CACHING_ENABLED).setUpdateCacheEnabled(
-                        DEF_UPDATE_CACHE_ENABLED).setEnsureCacheExists(DEF_UPDATE_CACHE_ENABLED);
+                        DEF_UPDATE_CACHE_ENABLED)
+                .setCacheExistenceEnsured(DEF_UPDATE_CACHE_ENABLED);
     }
 
     /**
@@ -162,7 +163,7 @@ public abstract class ExperimentParams implements Serializable {
         /**
          * @param ensure File exists
          */
-        public abstract Builder setEnsureCacheExists(boolean ensure);
+        public abstract Builder setCacheExistenceEnsured(boolean ensure);
 
         /**
          * @return Builds an experimentparams instance.

@@ -118,7 +118,7 @@ public final class WgmfInputParser {
                 boolean upd = line.getOptionValue(CACHING_ALLOC_KEY).contains("u");
                 boolean ensure = line.getOptionValue(CACHING_ALLOC_KEY).contains("e");
                 builder.setUpdateCacheEnabled(upd);
-                builder.setEnsureCacheExists(ensure);
+                builder.setCacheExistenceEnsured(ensure);
             }
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";
