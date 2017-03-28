@@ -84,7 +84,7 @@ public final class HeuristicSolverIO implements SolutionFileIO {
             };
             solver = HeuristicSolver.createFullSatHeuristicSolver(context);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException caught.", e);
             throw new RuntimeException(e);
         }
         return solver.new AllocationGenerator().createAllocation();

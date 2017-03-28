@@ -22,7 +22,7 @@ public final class WriteFileCreator {
      *
      * @param args cmdline args.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         for (String file : args) {
             logger.info("Writing ouput caching files for {}", file);
             MapDBMemoizationContext.builder().setFileName(file).ensureFileExists().build();
@@ -30,11 +30,12 @@ public final class WriteFileCreator {
         }
     }
 
-    private static void sleep(long time) {
+    private static void sleep(long time) throws InterruptedException {
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error("Interrupt caught", e);
+            throw e;
         }
     }
 }

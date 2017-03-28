@@ -49,7 +49,7 @@ public class EgtResultParser implements AutoCloseable {
         try {
             getProxy().eval("addpath('" + EGT_FUNCTION_PATH + "');");
         } catch (MatlabInvocationException e) {
-            e.printStackTrace();
+            logger.error("Invocation exception caught", e);
         }
     }
 
