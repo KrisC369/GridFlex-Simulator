@@ -61,6 +61,10 @@ enum ExecutionStrategy {
                 if (task.getThrowable() != null) {
                     getLogger(ExecutionStrategy.class)
                             .error("An error occured executing task:", task.getThrowable());
+                    throw new IllegalStateException(
+                            "An exception occured during task execution. The results are likely "
+                                    + "tainted.",
+                            task.getThrowable());
                 } else {
                     director.notifyVersionHasBeenPlayed((GameInstanceResult) task.getResult());
                 }
@@ -73,9 +77,16 @@ enum ExecutionStrategy {
                 } catch (InterruptedException e) {
                     getLogger(ExecutionStrategy.class)
                             .error("Experimentation got interrupted.", e);
+                    throw new IllegalStateException("Exception caught. Results are likely tainted.",
+                            e);
                 } catch (ExecutionException e) {
                     getLogger(ExecutionStrategy.class)
                             .error("An error occured during execution.", e);
+                    throw new IllegalStateException(
+                            "An exception occured during task execution. The results are likely "
+                                    + "tainted.",
+                            e);
+
                 }
             }
             break;

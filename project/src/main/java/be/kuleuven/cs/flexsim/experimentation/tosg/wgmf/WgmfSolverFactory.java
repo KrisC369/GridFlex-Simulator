@@ -28,7 +28,7 @@ public final class WgmfSolverFactory
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
     private final boolean updateCache;
-    private transient Supplier<MemoizationContext<ImmutableSolverProblemContextView,
+    private Supplier<MemoizationContext<ImmutableSolverProblemContextView,
             AllocResultsView>> memoizationContext;
     private long defaultSeed = 0L;
 
