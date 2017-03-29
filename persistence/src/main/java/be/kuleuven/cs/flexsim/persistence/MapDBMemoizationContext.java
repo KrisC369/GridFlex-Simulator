@@ -203,9 +203,9 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
 
         private void open() {
             logger.debug(
-                    "Attempting opening DB connection for " + (readonly ?
+                    "Attempting opening DB connection to file: {} for " + (readonly ?
                             "read only." :
-                            "writing."));
+                            "writing."), db_filename);
             synchronized (LOCK) {
                 DBMaker.Maker maker = DBMaker.fileDB(db_filename).closeOnJvmShutdown()
                         .fileChannelEnable().fileLockWait(Long.MAX_VALUE)
@@ -222,7 +222,9 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
                 this.persistedMap = dbConnection.hashMap(MAP_NAME, Serializer.JAVA, Serializer.JAVA)
                         .createOrOpen();
             }
-            logger.debug("DB connection opened for " + (readonly ? "read only." : "writing."));
+            logger.debug("DB connection opened to file: {} for " + (readonly ?
+                    "read only." :
+                    "writing."), db_filename);
         }
 
         void commitChanges() {

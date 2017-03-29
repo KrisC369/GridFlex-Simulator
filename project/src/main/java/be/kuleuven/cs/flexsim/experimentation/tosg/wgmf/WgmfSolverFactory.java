@@ -22,8 +22,9 @@ import java.util.function.Supplier;
  * A solvers factory for wgmf games.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
- *///TODO move to outer package
-public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>, Serializable {
+ */
+public final class WgmfSolverFactory
+        implements AbstractSolverFactory<SolutionResults>, Serializable {
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
     private final boolean updateCache;
@@ -31,7 +32,14 @@ public class WgmfSolverFactory implements AbstractSolverFactory<SolutionResults>
             AllocResultsView>> memoizationContext;
     private long defaultSeed = 0L;
 
-    WgmfSolverFactory(Solvers.TYPE type, boolean updateCache,
+    /**
+     * Constructor with public visibility for testing purposes.
+     *
+     * @param type               the solver type.
+     * @param updateCache        update the cache: Yes|no
+     * @param memoizationContext The memoization context supplier.
+     */
+    public WgmfSolverFactory(Solvers.TYPE type, boolean updateCache,
             Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
                     memoizationContext) {
         this.type = type;

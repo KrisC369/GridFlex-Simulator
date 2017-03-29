@@ -15,13 +15,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
+import static be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.SerializationUtils.pickle;
+import static be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.SerializationUtils.unpickle;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -37,9 +34,9 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     private static final String IMBAL = "imbalance_prices_short.csv";
     private static final String DAM_COLUMN = "damhp";
     private static final String DAMPRICES_DAILY = "dailyDayAheadPrices.csv";
-    private static final String DB_PATH = "persistence/testDB.db";
+    private static final String DB_PATH = "persistenceData/testDB.db";
     private static final int HORIZON = 7;
-    private static final String DB_WRITE_FILE_LOCATION = "persistence/write/testDB.db";
+    private static final String DB_WRITE_FILE_LOCATION = "persistenceData/write/testDB.db";
 
     private ExperimentParams experimentParams;
     private WgmfGameRunnerVariableDistributionCosts runner;
@@ -245,22 +242,5 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         byte[] pickle1 = pickle(new WgmfMemContextFactory(true, true, "one", "two"));
         WgmfMemContextFactory unpickle = unpickle(pickle1, WgmfMemContextFactory.class);
         assertTrue(unpickle != null);
-    }
-
-    private static <T extends Serializable> byte[] pickle(T obj)
-            throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(obj);
-        oos.close();
-        return baos.toByteArray();
-    }
-
-    private static <T extends Serializable> T unpickle(byte[] b, Class<T> cl)
-            throws IOException, ClassNotFoundException {
-        ByteArrayInputStream bais = new ByteArrayInputStream(b);
-        ObjectInputStream ois = new ObjectInputStream(bais);
-        Object o = ois.readObject();
-        return cl.cast(o);
     }
 }
