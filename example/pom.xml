@@ -6,7 +6,7 @@
         <artifactId>gridflex-main</artifactId>
         <version>0.1.2-SNAPSHOT</version>
     </parent>
-    <artifactId>flexsim-example</artifactId>
+    <artifactId>gridflex-example</artifactId>
     <name>GridFlex Simulator examples</name>
     <description>Example module for demonstrating GridFlex usage.</description>
 

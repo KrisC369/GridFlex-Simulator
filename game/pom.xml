@@ -6,7 +6,7 @@
 		<artifactId>gridflex-main</artifactId>
 		<version>0.1.2-SNAPSHOT</version>
 	</parent>
-	<artifactId>flexsim-game</artifactId>
+	<artifactId>gridflex-game</artifactId>
 	<name>GridFlex simulator game theory</name>
 	<description>Gametheory abstractions</description>
 	<properties>
