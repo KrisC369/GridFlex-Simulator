@@ -7,8 +7,8 @@
         <version>0.1.2-SNAPSHOT</version>
     </parent>
     <artifactId>flexsim-example</artifactId>
-    <name>FlexSimulator examples</name>
-    <description>Example module for demonstrating flexsim usage.</description>
+    <name>GridFlex Simulator examples</name>
+    <description>Example module for demonstrating GridFlex usage.</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,17 +16,17 @@
     <dependencies>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-nucleus</artifactId>
+            <artifactId>gridflex-nucleus</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-domain</artifactId>
+            <artifactId>gridflex-domain</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-game</artifactId>
+            <artifactId>gridflex-game</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>

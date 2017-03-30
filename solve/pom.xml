@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>be.kuleuven.cs</groupId>
-        <artifactId>flexsim-main</artifactId>
+        <artifactId>gridflex-main</artifactId>
         <version>0.1.2-SNAPSHOT</version>
     </parent>
-    <artifactId>flexsim-solve</artifactId>
-    <name>FlexSimulator solve</name>
-    <description>Solver implementations and support for Flexsim.</description>
+    <artifactId>gridflex-solve</artifactId>
+    <name>GridFlex simulator solve</name>
+    <description>Solver implementations and support for GridFlex.</description>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,12 +18,17 @@
     <dependencies>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-nucleus</artifactId>
+            <artifactId>gridflex-nucleus</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-persistence</artifactId>
+            <artifactId>gridflex-persistence</artifactId>
+            <version>0.1.2-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>be.kuleuven.cs</groupId>
+            <artifactId>gridflex-domain</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
@@ -38,11 +43,6 @@
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.annotation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-domain</artifactId>
-            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.optaplanner</groupId>

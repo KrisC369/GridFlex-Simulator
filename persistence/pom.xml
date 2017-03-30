@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>flexsim-main</artifactId>
+        <artifactId>gridflex-main</artifactId>
         <groupId>be.kuleuven.cs</groupId>
         <version>0.1.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
-    <artifactId>flexsim-persistence</artifactId>
+    <artifactId>gridflex-persistence</artifactId>
     <packaging>jar</packaging>
-    <name>FlexSimulator persistence</name>
-    <description>Flexsim persistence module.</description>
+    <name>GridFlex simulator persistence</name>
+    <description>GridFlex persistence module.</description>
 
     <dependencies>
         <dependency>

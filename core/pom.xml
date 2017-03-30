@@ -10,10 +10,10 @@
         <version>0.1.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
-    <artifactId>flexsim-nucleus</artifactId>
+    <artifactId>gridflex-nucleus</artifactId>
     <packaging>jar</packaging>
-    <name>FlexSimulator core</name>
-    <description>Flexsim core module.</description>
+    <name>GridFlex simulator core</name>
+    <description>GridFlex core module.</description>
 
     <dependencies>
         <dependency>

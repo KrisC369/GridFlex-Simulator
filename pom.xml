@@ -1,11 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.kuleuven.cs</groupId>
-    <artifactId>flexsim-main</artifactId>
+    <artifactId>gridflex-main</artifactId>
     <version>0.1.2-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>FlexSimulator</name>
-    <description>A simple project for some flex-representation experiments.</description>
+    <name>GridFlex Simulator</name>
+    <description>A project for flex-representation and utilization experiments.</description>
 
     <modules>
         <module>project</module>
@@ -298,7 +300,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -336,8 +338,8 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <sonar.language>java</sonar.language>
-        <test.excludedGroups />
-        <skip.test.categories />
+        <test.excludedGroups/>
+        <skip.test.categories/>
     </properties>
     <organization>
         <name>iMinds Distrinet Kuleuven</name>

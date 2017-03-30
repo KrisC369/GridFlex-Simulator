@@ -6,9 +6,9 @@
         <artifactId>flexsim-main</artifactId>
         <version>0.1.2-SNAPSHOT</version>
     </parent>
-    <artifactId>flexsim-domain</artifactId>
-    <name>FlexSimulator domain</name>
-    <description>Domain concepts for Flexsim.</description>
+    <artifactId>gridflex-domain</artifactId>
+    <name>GridFlex Simulator domain</name>
+    <description>Domain concepts for GridFlex.</description>
     <url>http://maven.apache.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>flexsim-nucleus</artifactId>
+            <artifactId>gridflex-nucleus</artifactId>
             <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
