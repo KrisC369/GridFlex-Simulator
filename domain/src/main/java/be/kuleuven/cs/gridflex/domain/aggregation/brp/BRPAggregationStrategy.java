@@ -19,7 +19,7 @@ public class BRPAggregationStrategy implements AggregationStrategy {
 
     /*
      * (non-Javadoc)
-     * @see be.kuleuven.cs.flexsim.domain.aggregation.AggregationStrategy#
+     * @see be.kuleuven.cs.gridflex.domain.aggregation.AggregationStrategy#
      * performAggregationStep
      * (be.kuleuven.cs.flexsim.domain.aggregation.AggregationContext, int,
      * com.google.common.collect.LinkedListMultimap, int)

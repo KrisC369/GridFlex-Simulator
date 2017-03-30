@@ -27,7 +27,7 @@ public class BenchmarkSolver {
 
         PlannerBenchmarkFactory plannerBenchmarkFactory = PlannerBenchmarkFactory
                 .createFromXmlResource(
-                        "be/kuleuven/cs/flexsim/experimentation/configs"
+                        "be/kuleuven/cs/gridflex/experimentation/configs"
                                 + "/HeuristicPlannerBenchmarkConfig.xml");
         PlannerBenchmark plannerBenchmark = plannerBenchmarkFactory.buildPlannerBenchmark();
         plannerBenchmark.benchmark();

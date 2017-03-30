@@ -19,16 +19,16 @@ import static org.slf4j.LoggerFactory.getLogger;
  *///TODO REFACTOR all non-jppf out of this package.
 public abstract class AbstractWgmfGameRunner {
     public static final String DISTRIBUTIONFILE_TEMPLATE =
-            "be/kuleuven/cs/flexsim/experimentation/data/windspeedDistributions*.csv";
+            "be/kuleuven/cs/gridflex/experimentation/data/windspeedDistributions*.csv";
     public static final String DATAPROFILE_TEMPLATE =
-            "be/kuleuven/cs/flexsim/experimentation/data/currentAndCongestionProfile*.csv";
+            "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile*.csv";
     private static final String SPECFILE =
-            "be/kuleuven/cs/flexsim/experimentation/data/specs_enercon_e101-e1.csv";
+            "be/kuleuven/cs/gridflex/experimentation/data/specs_enercon_e101-e1.csv";
     private static final String IMBAL =
-            "be/kuleuven/cs/flexsim/experimentation/data/imbalance_prices.csv";
+            "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv";
     private static final String DAM_COLUMN = "damhp";
     private static final String DAMPRICES_DAILY =
-            "be/kuleuven/cs/flexsim/experimentation/data/dailyDayAheadPrices.csv";
+            "be/kuleuven/cs/gridflex/experimentation/data/dailyDayAheadPrices.csv";
     private static final int FULL_YEAR = 365;
     private static final Logger logger = getLogger(AbstractWgmfGameRunner.class);
     private static final String DB_FILE_LOCATION = "persistence/memoDB.db";

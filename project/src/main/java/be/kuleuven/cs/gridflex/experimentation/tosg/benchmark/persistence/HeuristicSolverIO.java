@@ -64,7 +64,7 @@ public final class HeuristicSolverIO implements SolutionFileIO {
         }
         try {
             this.profile = CongestionProfile.createFromCSV(
-                    "be/kuleuven/cs/flexsim/experimentation/data/2kwartOpEnNeer.csv", "verlies aan "
+                    "be/kuleuven/cs/gridflex/experimentation/data/2kwartOpEnNeer.csv", "verlies aan "
                             + "energie");
             first = new FlexProvider(v1,
                     HourlyFlexConstraints.R3DP);

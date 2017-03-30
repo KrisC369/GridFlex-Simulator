@@ -37,9 +37,9 @@ import java.util.stream.IntStream;
 public class HeuristicSolver implements Solver<AllocResults> {
 
     private static String CONFIG_FULLSAT =
-            "be/kuleuven/cs/flexsim/solvers/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
+            "be/kuleuven/cs/gridflex/solvers/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
     private static String CONFIG_BESTEFFORT =
-            "be/kuleuven/cs/flexsim/solvers/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
+            "be/kuleuven/cs/gridflex/solvers/heuristic/solver/HeuristicSolverConfig_BestEffort.xml";
     private static double FRACTION_OF_THEORETICAL_OPT = 0.90;
     private final FlexAllocProblemContext context;
     private final boolean fullSat;

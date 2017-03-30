@@ -139,7 +139,7 @@ public class FinanceTrackerImpl implements FinanceTracker {
     /*
      * (non-Javadoc)
      * @see
-     * be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalReward()
+     * be.kuleuven.cs.gridflex.domain.finance.FinanceTracker#getTotalReward()
      */
     @Override
     public double getTotalReward() {
@@ -152,7 +152,7 @@ public class FinanceTrackerImpl implements FinanceTracker {
 
     /*
      * (non-Javadoc)
-     * @see be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalCost()
+     * @see be.kuleuven.cs.gridflex.domain.finance.FinanceTracker#getTotalCost()
      */
     @Override
     public double getTotalCost() {
@@ -166,7 +166,7 @@ public class FinanceTrackerImpl implements FinanceTracker {
     /*
      * (non-Javadoc)
      * @see
-     * be.kuleuven.cs.flexsim.domain.finance.FinanceTracker#getTotalProfit()
+     * be.kuleuven.cs.gridflex.domain.finance.FinanceTracker#getTotalProfit()
      */
     @Override
     public double getTotalProfit() {

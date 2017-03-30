@@ -1,5 +1,5 @@
 /**
- * This package contains various protocol implementations for use in Flexsim.
+ * This package contains various protocol implementations for use in gridflex.
  * 
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
