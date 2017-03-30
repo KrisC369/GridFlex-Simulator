@@ -15,7 +15,7 @@ build.properties
 CleanUpProfEclipse.xml
 FormatterProfEclipse.xml
 checkstyle.xml
-local
 project/res
 consolidation/*
 *.db
+./local
