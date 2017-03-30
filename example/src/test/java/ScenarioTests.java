@@ -1,4 +1,4 @@
-import be.kuleuven.cs.flexsim.domain.DomainScenarioTests;
+import be.kuleuven.cs.gridflex.domain.DomainScenarioTests;
 import be.kuleuven.cs.gametheory.GameScenarioTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory.standalone;
 
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import be.kuleuven.cs.gridflex.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
 import be.kuleuven.cs.gametheory.AgentGenerator;
 import be.kuleuven.cs.gametheory.GameConfigurator;

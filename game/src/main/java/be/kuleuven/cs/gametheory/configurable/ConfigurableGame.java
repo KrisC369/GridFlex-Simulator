@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory.configurable;
 
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import be.kuleuven.cs.gridflex.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
 import be.kuleuven.cs.gametheory.results.GameResult;
 import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;

@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory.results;
 
-import be.kuleuven.cs.flexsim.domain.util.MathUtils;
+import be.kuleuven.cs.gridflex.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import com.google.common.collect.Maps;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<solver>
+    <!-- Domain model configuration -->
+    <solutionClass>be.kuleuven.cs.gridflex.solvers.heuristic.domain.Allocation</solutionClass>
+    <entityClass>be.kuleuven.cs.gridflex.solvers.heuristic.domain.ActivationAssignment</entityClass>
+    <!-- Score configuration -->
+    <scoreDirectorFactory>
+        <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
+        <scoreDrl>be/kuleuven/cs/gridflex/solvers/heuristic/solver/SolverScoreRules_BestEffort.drl</scoreDrl>
+        <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solvers/cloudBalancingScoreRules.drl</scoreDrl>-->
+    </scoreDirectorFactory>
+    <constructionHeuristic>
+        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        <!-- Speedup that can be applied to most, but not all use cases: -->
+        <!--<forager>-->
+        <!--<pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>-->
+        <!--</forager>-->
+    </constructionHeuristic>
+    <!-- Optimization algorithms configuration -->
+    <termination>
+        <!--&lt;!&ndash;<terminationCompositionStyle>AND</terminationCompositionStyle>&ndash;&gt;-->
+        <!--&lt;!&ndash;<secondsSpentLimit>180</secondsSpentLimit>&ndash;&gt;-->
+        <!--&lt;!&ndash;<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>&ndash;&gt;-->
+    </termination>
+    <localSearch>
+        <changeMoveSelector/>
+        <localSearchType>TABU_SEARCH</localSearchType>
+        <!--<acceptor>-->
+        <!--<solutionTabuSize>1000</solutionTabuSize>-->
+        <!--</acceptor>-->
+        <!--<forager>-->
+        <!--<acceptedCountLimit>1000</acceptedCountLimit>-->
+        <!--</forager>-->
+        <termination>
+            <!--<terminationCompositionStyle>AND</terminationCompositionStyle>-->
+            <!--<unimprovedSecondsSpentLimit>60</unimprovedSecondsSpentLimit>-->
+            <stepCountLimit>1500</stepCountLimit>
+        </termination>
+    </localSearch>
+</solver>

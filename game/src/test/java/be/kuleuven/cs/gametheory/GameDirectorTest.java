@@ -1,8 +1,8 @@
 package be.kuleuven.cs.gametheory;
 
-import be.kuleuven.cs.flexsim.domain.aggregation.Aggregator;
-import be.kuleuven.cs.flexsim.domain.aggregation.brp.BRPAggregator;
-import be.kuleuven.cs.flexsim.domain.site.Site;
+import be.kuleuven.cs.gridflex.domain.aggregation.Aggregator;
+import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregator;
+import be.kuleuven.cs.gridflex.domain.site.Site;
 import be.kuleuven.cs.gametheory.standalone.Game;
 import be.kuleuven.cs.gametheory.standalone.GameDirector;
 import com.google.common.collect.Lists;

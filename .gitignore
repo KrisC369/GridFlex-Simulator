@@ -18,3 +18,4 @@ checkstyle.xml
 local
 project/res
 consolidation/*
+*.db

@@ -1,6 +1,6 @@
-import be.kuleuven.cs.flexsim.event.EventTest;
-import be.kuleuven.cs.flexsim.simulation.SimulatorTest;
-import be.kuleuven.cs.flexsim.time.ClockTest;
+import be.kuleuven.cs.gridflex.event.EventTest;
+import be.kuleuven.cs.gridflex.simulation.SimulatorTest;
+import be.kuleuven.cs.gridflex.time.ClockTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;

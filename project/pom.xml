@@ -117,7 +117,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                be.kuleuven.cs.flexsim.experimentation.tosg.wgmf.WgmfGameRunnerVariableDistributionCosts
+                                be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.WgmfGameRunnerVariableDistributionCosts
                             </mainClass>
                         </manifest>
                     </archive>

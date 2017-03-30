@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
-import be.kuleuven.cs.flexsim.io.Writable;
+import be.kuleuven.cs.gridflex.io.Writable;
 import be.kuleuven.cs.gametheory.results.GameResult;
 import com.google.common.collect.Lists;
 
