@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>be.kuleuven.cs</groupId>
-        <artifactId>flexsim-main</artifactId>
+        <artifactId>gridflex-main</artifactId>
         <version>0.1.2-SNAPSHOT</version>
     </parent>
     <artifactId>flexsim-example</artifactId>
