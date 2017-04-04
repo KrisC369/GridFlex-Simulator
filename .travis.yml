@@ -26,4 +26,4 @@ script:
   - mvn verify 
 
 after_success:
-   - ~/jpm/bin/codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml
+   #- ~/jpm/bin/codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml
