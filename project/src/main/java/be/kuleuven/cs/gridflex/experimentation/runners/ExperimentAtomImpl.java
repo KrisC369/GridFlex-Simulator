@@ -11,7 +11,7 @@ import java.util.List;
  */
 public abstract class ExperimentAtomImpl implements ExperimentAtom {
 
-    final List<ExperimentCallback> callbacks = Lists.newArrayList();
+    private final List<ExperimentCallback> callbacks = Lists.newArrayList();
 
     @Override
     public Object call() {
