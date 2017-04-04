@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -32,7 +33,7 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
 
     JPPFBlockingExperimentRunner(String jobName, Map<String, Object> dataParams) {
         this.jobName = jobName;
-        this.dataParams = dataParams;
+        this.dataParams = new LinkedHashMap<>(dataParams);
         this.blocking = true;
     }
 
@@ -50,7 +51,9 @@ public class JPPFBlockingExperimentRunner implements ExperimentRunner {
             try {
                 job.add(r);
             } catch (JPPFException e) {
-                e.printStackTrace();
+                logger.error("Could not add experiments to job.", e);
+                throw new IllegalStateException("Something went wrong in creating the job object.",
+                        e);
             }
         });
 

@@ -43,6 +43,11 @@ public final class EvolutionaryGameDynamics {
         return Lists.newArrayList(eqnFactorMeans);
     }
 
+    /**
+     * Generate the standard deviation coefficients for these dynamics.
+     *
+     * @return A list of standard deviations.
+     */
     public List<Double> getDynamicEquationStds() {
         return Lists.newArrayList(eqnFactorStds);
     }
@@ -111,7 +116,7 @@ public final class EvolutionaryGameDynamics {
      *
      * @return the params in a MATLAB style formatted string.
      */
-    protected String getDynamicsParametersString() {
+    String getDynamicsParametersString() {
         final StringBuilder b = new StringBuilder(30);
         char character = 'a';
         b.append("\n");
@@ -121,7 +126,7 @@ public final class EvolutionaryGameDynamics {
         return b.toString();
     }
 
-    protected void logResults() {
+    void logResults() {
         final StringBuilder b = new StringBuilder(30);
         b.append(getResultString()).append("\n")
                 .append("Dynamics equation params:");
@@ -131,7 +136,7 @@ public final class EvolutionaryGameDynamics {
         logger.debug(b.toString());
     }
 
-    protected String getResultString() {
+    String getResultString() {
         return payoffs.toString();
     }
 

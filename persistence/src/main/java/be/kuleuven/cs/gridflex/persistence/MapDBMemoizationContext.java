@@ -31,8 +31,8 @@ public final class MapDBMemoizationContext<E extends Serializable, R extends Ser
     private static final String DB_FILE_4_WRITE = "TestFile";
     private static final String MAP_NAME = "map";
     private static Logger logger = getLogger(MapDBMemoizationContext.class);
-    private StoreAccessWrapper<E, R> readDB;
-    private StoreAccessWrapper<E, R> writeDB;
+    private final StoreAccessWrapper<E, R> readDB;
+    private final StoreAccessWrapper<E, R> writeDB;
 
     public MapDBMemoizationContext(String filename_r, String filename_w, boolean uniqueWriteFile) {
         this.readDB = new StoreAccessWrapper<>(true, filename_r);
