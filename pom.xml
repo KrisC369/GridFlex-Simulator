@@ -342,20 +342,20 @@
         <skip.test.categories/>
     </properties>
     <organization>
-        <name>iMinds Distrinet Kuleuven</name>
+        <name>imec-distrinet Kuleuven</name>
     </organization>
     <scm>
-        <url>https://github.com/KrisC369/Flexsim.git</url>
-        <developerConnection>scm:git:git@github.com:KrisC369/Flexsim.git</developerConnection>
-        <connection>scm:git:git://github.com:KrisC369/Flexsim.git</connection>
+        <url>https://github.com/KrisC369/GridFlex-Simulator.git</url>
+        <developerConnection>scm:git:git@github.com:KrisC369/GridFlex-Simulator.git</developerConnection>
+        <connection>scm:git:git://github.com:KrisC369/GridFlex-Simulator.git</connection>
     </scm>
     <issueManagement>
-        <url>https://github.com/KrisC369/Flexsim/issues</url>
+        <url>https://github.com/KrisC369/GridFlex-Simulator/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
     <ciManagement>
         <system>jenkins</system>
-        <url>http://kraken.cs.kuleuven.be:18080/job/Flexsim</url>
+        <url>http://kraken.cs.kuleuven.be:18080/job/GridFlex-Simulator</url>
         <notifiers>
             <notifier>
                 <type>mail</type>
