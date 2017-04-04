@@ -42,7 +42,7 @@ public class BRPAggregatorTest {
     @Test
     public void testRegisterPaymMediator() {
         agg.registerClient(site1);
-        RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t = agg.getActualPaymentMediatorFor(site1);
         assertNotNull(t);
         assertTrue(agg.getClients().contains(site1));
         assertTrue(t.getTargetAPI().equals(site1));
@@ -51,7 +51,7 @@ public class BRPAggregatorTest {
     @Test
     public void testSetBudget() {
         agg.registerClient(site1);
-        RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t = agg.getActualPaymentMediatorFor(site1);
         t.setBudget(_400);
         assertEquals(_400, t.getCurrentBudget());
     }
@@ -59,7 +59,7 @@ public class BRPAggregatorTest {
     @Test
     public void testDoReservationPayment() {
         agg.registerClient(site1);
-        RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t = agg.getActualPaymentMediatorFor(site1);
         sim.register(t);
         t.setBudget(_400);
         double proportion = 0.3;
@@ -73,7 +73,7 @@ public class BRPAggregatorTest {
         agg.registerClient(site1);
 
         sim.register(agg);
-        RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t = agg.getActualPaymentMediatorFor(site1);
         sim.register(t);
         t.setBudget(_400);
         double proportion = 0.3;
@@ -86,7 +86,7 @@ public class BRPAggregatorTest {
     public void testFullReservationPayment1() {
         sim.register(agg);
         agg.registerClient(site1);
-        RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t = agg.getActualPaymentMediatorFor(site1);
         when(tso.getCurrentImbalance()).thenReturn((int) _400);
         when(price.getCurrentPrice()).thenReturn(1);
 
@@ -103,8 +103,8 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
-        RenumerationMediator t2 = agg.getActualPaymentMediatorFor(site2);
+        RemunerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t2 = agg.getActualPaymentMediatorFor(site2);
         when(tso.getCurrentImbalance()).thenReturn((int) _400);
         when(price.getCurrentPrice()).thenReturn(1);
 
@@ -124,7 +124,7 @@ public class BRPAggregatorTest {
     public void testFullActivationPayment1() {
         agg.registerClient(site1);
         sim.register(agg);
-        RenumerationMediator t = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t = agg.getActualPaymentMediatorFor(site1);
         sim.register(t);
         t.setBudget(_400);
         when(tso.getCurrentImbalance()).thenReturn((int) _400);
@@ -142,8 +142,8 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
-        RenumerationMediator t2 = agg.getActualPaymentMediatorFor(site2);
+        RemunerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t2 = agg.getActualPaymentMediatorFor(site2);
 
         sim.register(t1);
         sim.register(t2);
@@ -163,7 +163,7 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
         thrown.expect(IllegalArgumentException.class);
         t1.registerActivation(1.1);
     }
@@ -173,7 +173,7 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
         thrown.expect(IllegalArgumentException.class);
         t1.registerActivation(-0.5);
     }
@@ -183,7 +183,7 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
         thrown.expect(IllegalArgumentException.class);
         t1.registerReservation(1.1);
     }
@@ -193,7 +193,7 @@ public class BRPAggregatorTest {
         sim.register(agg);
         agg.registerClient(site1);
         agg.registerClient(site2);
-        RenumerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
+        RemunerationMediator t1 = agg.getActualPaymentMediatorFor(site1);
         thrown.expect(IllegalArgumentException.class);
         t1.registerReservation(-0.5);
     }
