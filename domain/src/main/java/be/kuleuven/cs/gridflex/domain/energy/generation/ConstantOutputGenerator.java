@@ -1,10 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.energy.generation;
 
-import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Electricity generator capable of producing a constant output.
@@ -53,11 +49,6 @@ public class ConstantOutputGenerator implements EnergyProductionTrackable {
 
     @Override
     public void tick(final int t) {
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     @Override

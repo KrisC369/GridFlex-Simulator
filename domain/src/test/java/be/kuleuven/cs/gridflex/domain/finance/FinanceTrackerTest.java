@@ -46,7 +46,6 @@ public class FinanceTrackerTest {
     @Test
     public void testConstructor() {
         assertFalse(t.getSimulationSubComponents().isEmpty());
-
     }
 
     @Test

@@ -13,7 +13,6 @@ import org.apache.commons.math3.stat.descriptive.rank.Min;
 import org.apache.commons.math3.util.FastMath;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -150,11 +149,6 @@ public abstract class AbstractCongestionSolver implements SimulationComponent {
      */
     public TimeSeries getCongestion() {
         return this.congestion;
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     /**

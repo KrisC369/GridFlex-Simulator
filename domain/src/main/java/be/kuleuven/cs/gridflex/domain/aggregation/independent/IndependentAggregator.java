@@ -4,11 +4,7 @@ import be.kuleuven.cs.gridflex.domain.aggregation.AggregationStrategy;
 import be.kuleuven.cs.gridflex.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.gridflex.domain.aggregation.Aggregator;
 import be.kuleuven.cs.gridflex.domain.energy.tso.BalancingSignal;
-import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Represents an energy aggregator implementation.
@@ -55,19 +51,10 @@ public class IndependentAggregator extends Aggregator {
     }
 
     @Override
-    public void afterTick(final int t) {
-    }
-
-    @Override
     public void tick(final int t) {
         if (tickcount++ % aggFreq == 0) {
             doAggregationStep(t, getTargetFlex(), gatherFlexInfo());
         }
-    }
-
-    @Override
-    public List<SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     /**

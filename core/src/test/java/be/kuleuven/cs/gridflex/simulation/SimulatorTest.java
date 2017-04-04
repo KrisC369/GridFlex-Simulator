@@ -27,10 +27,6 @@ public class SimulatorTest {
     public static class ChangeEventComponent implements SimulationComponent {
         private Map<String, Object> resultMap = new LinkedHashMap<>();
 
-        @Override
-        public void afterTick(int t) {
-        }
-
         public Map<String, Object> getResult() {
             return resultMap;
         }
@@ -46,11 +42,6 @@ public class SimulatorTest {
 
         @Override
         public void tick(int t) {
-        }
-
-        @Override
-        public List<SimulationComponent> getSimulationSubComponents() {
-            return Collections.emptyList();
         }
     }
 

@@ -105,10 +105,6 @@ public final class ProductionLine implements FlexProcess {
         getFlexProcessor().invalidate();
     }
 
-    @Override
-    public void afterTick(final int t) {
-    }
-
     /**
      * Deliver all the resources and use it as input for the line.
      *

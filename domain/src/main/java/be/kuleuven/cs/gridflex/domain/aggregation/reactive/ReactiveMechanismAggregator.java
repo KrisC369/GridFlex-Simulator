@@ -9,11 +9,9 @@ import be.kuleuven.cs.gridflex.domain.energy.tso.contractual.ContractualMechanis
 import be.kuleuven.cs.gridflex.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
 import be.kuleuven.cs.gridflex.domain.util.data.IntPowerCapabilityBand;
-import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import com.google.common.collect.LinkedListMultimap;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -84,11 +82,6 @@ public class ReactiveMechanismAggregator extends Aggregator
     }
 
     @Override
-    public void afterTick(final int t) {
-
-    }
-
-    @Override
     public void tick(final int t) {
         if (tickcount++ % aggFreq == 0) {
             doAggregationStep(t, currentTarget, currentFlex);
@@ -115,11 +108,6 @@ public class ReactiveMechanismAggregator extends Aggregator
             sum += t.get(t.size() - 1).getDeltaP();
         }
         return sum;
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     @Override

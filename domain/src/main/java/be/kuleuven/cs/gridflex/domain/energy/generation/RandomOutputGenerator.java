@@ -1,13 +1,9 @@
 package be.kuleuven.cs.gridflex.domain.energy.generation;
 
-import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.apache.commons.math3.random.RandomGenerator;
-
-import java.util.Collections;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -108,11 +104,6 @@ public class RandomOutputGenerator implements EnergyProductionTrackable {
 
     @Override
     public void tick(final int t) {
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     @Override

@@ -13,7 +13,6 @@ import com.google.common.eventbus.Subscribe;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +35,6 @@ public class ProductionLineTest {
 
         public ChangeEventComponent(SimulationComponent mock) {
             this.mock = mock;
-        }
-
-        @Override
-        public void afterTick(int t) {
         }
 
         public String getLastType() {
@@ -66,13 +61,6 @@ public class ProductionLineTest {
         @Override
         public void tick(int t) {
         }
-
-        @Override
-        public List<SimulationComponent> getSimulationSubComponents() {
-            // TODO Auto-generated method stub
-            return Collections.emptyList();
-        }
-
     }
 
     // Mocks for avoiding null checks.

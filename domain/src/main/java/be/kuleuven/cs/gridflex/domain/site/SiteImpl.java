@@ -79,11 +79,6 @@ public class SiteImpl implements Site {
     }
 
     @Override
-    public void afterTick(final int t) {
-
-    }
-
-    @Override
     public void tick(final int t) {
         gatherFlex();
     }

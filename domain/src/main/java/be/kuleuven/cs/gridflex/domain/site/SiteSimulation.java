@@ -7,7 +7,6 @@ import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
 import be.kuleuven.cs.gridflex.domain.util.listener.Listener;
 import be.kuleuven.cs.gridflex.domain.util.listener.MultiplexListener;
 import be.kuleuven.cs.gridflex.domain.util.listener.NoopListener;
-import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import be.kuleuven.cs.gridflex.simulation.UIDGenerator;
 import com.google.common.collect.Lists;
@@ -203,11 +202,6 @@ public class SiteSimulation implements Site {
 
     private void resetConsumption() {
         this.currentConsumption = baseConsumption;
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     @Override

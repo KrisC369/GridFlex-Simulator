@@ -45,17 +45,8 @@ public class SimulatedGamePlayAdapter {
         }
 
         @Override
-        public void afterTick(int t) {
-        }
-
-        @Override
         public void tick(int t) {
             target.run();
-        }
-
-        @Override
-        public List<? extends SimulationComponent> getSimulationSubComponents() {
-            return Collections.emptyList();
         }
 
         @Override

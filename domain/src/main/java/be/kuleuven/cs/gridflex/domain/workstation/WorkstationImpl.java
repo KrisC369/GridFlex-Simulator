@@ -3,13 +3,11 @@ package be.kuleuven.cs.gridflex.domain.workstation;
 import be.kuleuven.cs.gridflex.domain.resource.Resource;
 import be.kuleuven.cs.gridflex.domain.util.Buffer;
 import be.kuleuven.cs.gridflex.domain.util.CollectionUtils;
-import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import com.google.common.annotations.VisibleForTesting;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -61,10 +59,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
         this.capacity = capacity;
         this.currentResource = new ArrayList<>();
         this.lastProcessingRate = 0;
-    }
-
-    @Override
-    public void afterTick(final int t) {
     }
 
     @Override
@@ -201,11 +195,6 @@ class WorkstationImpl implements ConfigurableWorkstation {
     @Override
     public final int getRatedCapacity() {
         return capacity;
-    }
-
-    @Override
-    public List<SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 
     private void setFixedECons(final int fixedECons) {

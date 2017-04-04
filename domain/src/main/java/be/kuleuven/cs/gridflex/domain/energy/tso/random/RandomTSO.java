@@ -8,9 +8,6 @@ import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import org.apache.commons.math3.random.RandomGenerator;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Represents a TSO implementation with random signal.
  *
@@ -86,10 +83,5 @@ public class RandomTSO implements BalancingSignal, SimulationComponent {
     @Override
     public void tick(final int t) {
         newBalanceValueListener.eventOccurred(currentValue);
-    }
-
-    @Override
-    public List<? extends SimulationComponent> getSimulationSubComponents() {
-        return Collections.emptyList();
     }
 }
