@@ -16,11 +16,6 @@ before_script:
 
 # OpenJDK 7 buffer overflow workaround from https://github.com/travis-ci/travis-ci/issues/5227
 before_install:
-   - cat /etc/hosts # optionally check the content *before*
-   - sudo hostname "$(hostname | cut -c1-63)"
-   - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts > /tmp/hosts
-   - sudo mv /tmp/hosts /etc/hosts
-   - cat /etc/hosts # optionally check the content *after*
    - curl https://www.jpm4j.org/install/script | sh
    - curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
    - java -jar jpm4j.jar -u init
