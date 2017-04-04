@@ -4,7 +4,7 @@
     <parent>
         <groupId>be.kuleuven.cs</groupId>
         <artifactId>gridflex-main</artifactId>
-        <version>0.1.2-SNAPSHOT</version>
+        <version>0.1.3-SNAPSHOT</version>
     </parent>
     <artifactId>gridflex-domain</artifactId>
     <name>GridFlex Simulator domain</name>
@@ -17,7 +17,7 @@
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-nucleus</artifactId>
-            <version>0.1.2-SNAPSHOT</version>
+            <version>0.1.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.googlecode.combinatoricslib</groupId>
