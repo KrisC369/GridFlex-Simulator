@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>be.kuleuven.cs</groupId>
     <artifactId>gridflex-main</artifactId>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.1.4-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>GridFlex Simulator</name>
     <description>A project for flex-representation and utilization experiments.</description>

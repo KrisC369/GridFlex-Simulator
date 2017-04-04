@@ -14,14 +14,14 @@ import static com.google.common.base.Preconditions.checkArgument;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
-public final class RenumerationMediator extends FinanceTrackerImpl {
+public final class RemunerationMediator extends FinanceTrackerImpl {
     private final SiteFlexAPI target;
     private long currentReservationBudget;
     private long currentActivationBudget;
     private final double reservationPortion;
     private final double activationPortion;
 
-    private RenumerationMediator(final Site client, final double reservePortion) {
+    private RemunerationMediator(final Site client, final double reservePortion) {
         super(client, RewardModel.NONE, DebtModel.NONE);
         this.target = client;
         this.currentReservationBudget = 0;
@@ -40,17 +40,17 @@ public final class RenumerationMediator extends FinanceTrackerImpl {
     }
 
     /**
-     * Factory method for a RenumerationMediator.
+     * Factory method for a RemunerationMediator.
      *
      * @param client
      *            The target client.
      * @param reservePortion
      *            The portion of the budget to use for reservation payments.
-     * @return The newly created RenumerationMediator object.
+     * @return The newly created RemunerationMediator object.
      */
-    public static RenumerationMediator create(final Site client,
+    public static RemunerationMediator create(final Site client,
             final double reservePortion) {
-        return new RenumerationMediator(client, reservePortion);
+        return new RemunerationMediator(client, reservePortion);
     }
 
     /**
