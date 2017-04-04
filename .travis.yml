@@ -1,0 +1,29 @@
+language: java
+jdk:
+  - oraclejdk8
+env:
+  - CODACY_PROJECT_TOKEN=d0c6fa1f55764d958a2c161ea84ee58b
+
+sudo: false
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
+before_script:
+ - "echo $JAVA_OPTS"
+ - "export JAVA_OPTS=-Xmx1024m"
+
+# OpenJDK 7 buffer overflow workaround from https://github.com/travis-ci/travis-ci/issues/5227
+before_install:
+   - curl https://www.jpm4j.org/install/script | sh
+   - curl -sL https://github.com/jpm4j/jpm4j.installers/raw/master/dist/biz.aQute.jpm.run.jar >jpm4j.jar
+   - java -jar jpm4j.jar -u init
+   #- ~/jpm/bin/jpm install com.codacy:codacy-coverage-reporter:assembly
+
+install: mvn clean install -DskipTests=true
+script: 
+  - mvn verify 
+
+after_success:
+   #- ~/jpm/bin/codacy-coverage-reporter -l Java -r target/site/jacoco/jacoco.xml

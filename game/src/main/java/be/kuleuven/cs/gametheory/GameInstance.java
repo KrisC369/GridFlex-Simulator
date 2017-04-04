@@ -7,33 +7,31 @@ import java.util.Map;
  * Represents an instance of a game in a certain configuration generating one
  * entry in a payoff table.
  *
+ * @param <N> The type of agents.
+ * @param <K> The type of actions.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <N>
- *            The type of agents.
- * @param <K>
- *            The type of actions.
  */
 public interface GameInstance<N, K> extends Playable {
     /**
      * Get the payoffs for this configuration of the game.
+     * Will be called post @link{Playable.play()}
      *
      * @return The payoff vector.
      */
-    Map<N, Long> getPayOffs();
+    Map<N, Double> getPayOffs();
 
     /**
      * Fix a certain agent to a action. Call for every agent before calling
+     * This method is called before @link{init()}
      *
+     * @param agent  The agent.
+     * @param action The action to fix the agent to.
      * @see{GameInstance.init or @see{GameInstance.play}.
-     * @param agent
-     *            The agent.
-     * @param action
-     *            The action to fix the agent to.
      */
     void fixActionToAgent(N agent, K action);
 
     /**
-     * Initialize the simulation components.
+     * Initialize the instance components.
      */
     void init();
 
@@ -45,7 +43,7 @@ public interface GameInstance<N, K> extends Playable {
     List<K> getActionSet();
 
     /**
-     * Returns the map from sites to actions.
+     * Returns the map from agents to actions.
      *
      * @return the mapping.
      */
@@ -57,5 +55,5 @@ public interface GameInstance<N, K> extends Playable {
      *
      * @return positive or negative externality for this game.
      */
-    long getExternalityValue();
+    double getExternalityValue();
 }

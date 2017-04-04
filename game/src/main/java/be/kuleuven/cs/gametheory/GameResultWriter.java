@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gametheory;
 
-import be.kuleuven.cs.flexsim.io.ResultWriter;
+import be.kuleuven.cs.gridflex.io.ResultWriter;
 
 /**
  * Writes game results to this writer.
@@ -8,15 +8,14 @@ import be.kuleuven.cs.flexsim.io.ResultWriter;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class GameResultWriter extends ResultWriter {
-    private final GameDirector g;
+    private final AbstractGameDirector g;
 
     /**
      * Default constructor.
      *
-     * @param target
-     *            the game target.
+     * @param target the game target.
      */
-    public GameResultWriter(GameDirector target) {
+    public GameResultWriter(final AbstractGameDirector target) {
         super(target.getFormattedResults());
         this.g = target;
     }
@@ -24,12 +23,10 @@ public class GameResultWriter extends ResultWriter {
     /**
      * Constructor for filenames.
      *
-     * @param target
-     *            the game target.
-     * @param loggerTag
-     *            The result writer tag.
+     * @param target    the game target.
+     * @param loggerTag The result writer tag.
      */
-    public GameResultWriter(GameDirector target, String loggerTag) {
+    public GameResultWriter(final AbstractGameDirector target, final String loggerTag) {
         super(target.getFormattedResults(), loggerTag);
         this.g = target;
     }

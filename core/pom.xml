@@ -1,36 +1,37 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
 
-	<parent>
-		<groupId>be.kuleuven.cs</groupId>
-		<artifactId>flexsim-main</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
-	</parent>
-	<artifactId>flexsim-nucleus</artifactId>
-	<packaging>jar</packaging>
-	<name>FlexSimulator core</name>
-	<description>Flexsim core module.</description>
+    <parent>
+        <groupId>be.kuleuven.cs</groupId>
+        <artifactId>gridflex-main</artifactId>
+        <version>0.1.3-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+    <artifactId>gridflex-nucleus</artifactId>
+    <packaging>jar</packaging>
+    <name>GridFlex simulator core</name>
+    <description>GridFlex core module.</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>net.sf.jung</groupId>
-			<artifactId>jung2</artifactId>
-			<type>pom</type>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.jung</groupId>
-			<artifactId>jung-graph-impl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.jdt</groupId>
-			<artifactId>org.eclipse.jdt.annotation</artifactId>
-		</dependency>
-	</dependencies>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<sonar.language>java</sonar.language>
-	</properties>
+    <dependencies>
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung2</artifactId>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jung</groupId>
+            <artifactId>jung-graph-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jdt</groupId>
+            <artifactId>org.eclipse.jdt.annotation</artifactId>
+        </dependency>
+    </dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <sonar.language>java</sonar.language>
+    </properties>
 </project>

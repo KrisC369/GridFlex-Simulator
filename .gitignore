@@ -10,6 +10,12 @@ build.properties
 .factorypath
 *.rb
 *.csv
-*.xml
 *.iml
 .idea/
+CleanUpProfEclipse.xml
+FormatterProfEclipse.xml
+checkstyle.xml
+project/res
+consolidation/*
+*.db
+./local

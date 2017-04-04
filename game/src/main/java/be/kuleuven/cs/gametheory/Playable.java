@@ -6,6 +6,7 @@ package be.kuleuven.cs.gametheory;
  *
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
+@FunctionalInterface
 public interface Playable {
     /**
      * Play the game.

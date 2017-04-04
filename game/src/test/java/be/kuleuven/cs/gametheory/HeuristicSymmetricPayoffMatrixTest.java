@@ -1,18 +1,20 @@
 package be.kuleuven.cs.gametheory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-
-import java.util.List;
-
+import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
+import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
+import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
 public class HeuristicSymmetricPayoffMatrixTest {
+    private static final double DELTA = 0.001;
     private HeuristicSymmetricPayoffMatrix table = mock(
             HeuristicSymmetricPayoffMatrix.class);
     private int agents = 3;
@@ -33,7 +35,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testCompleteFalse() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         table.addEntry(value, 1, 2);
         assertFalse(this.table.isComplete());
 
@@ -44,28 +46,28 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testAddEntryInvalid() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3);
     }
 
     @Test
     public void testAddEntryInvalid2() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 3, 4, 3);
     }
 
     @Test
     public void testAddEntryInvalid3() {
-        long[] value = new long[] { 34, 34, 34, 14 };
+        Double[] value = new Double[] { 34d, 34d, 34d, 14d };
         exception.expect(IllegalArgumentException.class);
         table.addEntry(value, 1, 2);
     }
 
     @Test
     public void testAddEntryInvalidGet() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         table.addEntry(value, 1, 2);
         exception.expect(IllegalArgumentException.class);
         table.getEntry(2, 1);
@@ -73,7 +75,7 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testCompleteTrue() {
-        long[] value = new long[] { 34, 34, 34 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -82,8 +84,8 @@ public class HeuristicSymmetricPayoffMatrixTest {
 
     @Test
     public void testDoubleGetTrue() {
-        long[] value = new long[] { 34, 34, 34 };
-        long[] value2 = new long[] { 17, 17, 17 };
+        Double[] value = new Double[] { 34d, 34d, 34d };
+        Double[] value2 = new Double[] { 17d, 17d, 17d };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -99,9 +101,9 @@ public class HeuristicSymmetricPayoffMatrixTest {
         int high = 34;
         int low = 17;
         int higher = 53;
-        long[] value = new long[] { high };
-        long[] value2 = new long[] { low };
-        long[] value3 = new long[] { higher };
+        Double[] value = new Double[] { (double) high };
+        Double[] value2 = new Double[] { (double) low };
+        Double[] value3 = new Double[] { (double) higher };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
@@ -114,77 +116,94 @@ public class HeuristicSymmetricPayoffMatrixTest {
         assertTrue(table.isComplete());
         for (int i = 0; i <= agents; i++) {
             // table.addEntry(value2, agents - i, i);
-            double[] current = table.getEntry(agents - i, i);
+            Double[] current = table.getEntry(agents - i, i);
             assertTrue(current[0] > low && current[0] < higher);
             assertEquals(current[0], (high + low + higher) / 3.0, 0.5);
         }
     }
 
     @Test
-    public void testGetDynamicsArgs() {
-        int reward = 39;
-        long[] value = new long[] { reward, reward, reward };
-        for (int i = 0; i <= agents; i++) {
-            reward -= 5;
-            value = new long[] { reward, reward, reward };
-            table.addEntry(value, agents - i, i);
-        }
-        List<Double> result = table.getDynamicEquationFactors();
+    public void test2by2() {
+        this.table = new HeuristicSymmetricPayoffMatrix(2, 2);
+        table.addEntry(new Double[] { 5d, 15d }, 2, 0);
+        table.addEntry(new Double[] { 20d, 25d }, 1, 1);
+        table.addEntry(new Double[] { 20d, 40d }, 0, 2);
+
+        Double[] result = table.getEntry(1, 1);
+        Double[] resultVar = table.getVariance(1, 1);
 
         // Test values:
-        assertEquals(34, result.get(0), 0);
-        assertEquals(29, result.get(1), 0);
-        assertEquals(29, result.get(2), 0);
-        assertEquals(24, result.get(3), 0);
-        assertEquals(24, result.get(4), 0);
-        assertEquals(19, result.get(5), 0);
-    }
+        assertEquals(20, result[0], 0);
+        assertEquals(25, result[1], 0);
+        assertEquals(0, resultVar[0], 0);
+        assertEquals(0, resultVar[1], 0);
 
-    @Test
-    public void testGetDynamicsArgs3S() {
-        agents = 2;
-        actions = 3;
-        this.table = new HeuristicSymmetricPayoffMatrix(agents, actions);
-        int reward = 39;
-        long[] value = new long[] { reward, reward };
-        for (int i = 0; i <= agents; i++) {
-            reward -= 5;
-            value = new long[] { reward, reward };
-            table.addEntry(value, agents - i, i, 0);
-        }
-        reward -= 5;
-        value = new long[] { reward, reward };
-        table.addEntry(value, 1, 0, 1);
-        reward -= 5;
-        value = new long[] { reward, reward };
-        table.addEntry(value, 0, 1, 1);
-        reward -= 5;
-        value = new long[] { reward, reward };
-        table.addEntry(value, 0, 0, 2);
+        table.addEntry(new Double[] { 20d, 40d }, 1, 1);
+        resultVar = table.getVariance(1, 1);
+        assertEquals(0, resultVar[0], 0);
+        assertEquals(112.5, resultVar[1], 0);
 
-        List<Double> result = table.getDynamicEquationFactors();
-        assertEquals(9, result.size(), 0);
-        // Test values:
-        assertEquals(34, result.get(0), 0);
-        assertEquals(29, result.get(1), 0);
-        assertEquals(29, result.get(2), 0);
-        assertEquals(24, result.get(3), 0);
-        assertEquals(19, result.get(5), 0);
-        assertEquals(14, result.get(6), 0);
-        assertEquals(14, result.get(7), 0);
-        assertEquals(9, result.get(8), 0);
     }
 
     @Test
     public void testToString() {
-        int valueL = 34;
+        double valueL = 34d;
         System.out.println(table.toString());
         assertTrue(this.table.toString().isEmpty());
-        long[] value = new long[] { valueL, valueL, valueL };
+        Double[] value = new Double[] { valueL, valueL, valueL };
         for (int i = 0; i <= agents; i++) {
             table.addEntry(value, agents - i, i);
         }
         assertFalse(this.table.toString().isEmpty());
         assertTrue(this.table.toString().contains(String.valueOf(valueL)));
+    }
+
+    @Test
+    public void testExternalityCI() {
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
+        System.out.println(ci);
+        assertTrue(ci.getLowerBound() > 9);
+        assertTrue(ci.getUpperBound() < 20);
+        assertEquals(14, ci.getLowerBound() + ((ci.getUpperBound() - ci.getLowerBound()) / 2d),
+                0.001);
+    }
+
+    @Test
+    public void testExternalityCINAN() {
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        table.addExternalityValue(0.0 / 0.0);
+        ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
+        System.out.println(ci);
+        assertTrue(ci.getLowerBound() > 9);
+        assertTrue(ci.getUpperBound() < 20);
+        assertEquals(14, ci.getLowerBound() + ((ci.getUpperBound() - ci.getLowerBound()) / 2d),
+                0.001);
+    }
+
+    @Test
+    public void testExternalityCIMultiSampleSize() {
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        ConfidenceInterval ci = table.getExternalityCI(ConfidenceLevel._95pc);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(10);
+        table.addExternalityValue(20);
+        table.addExternalityValue(20);
+        ConfidenceInterval ci2 = table.getExternalityCI(ConfidenceLevel._95pc);
+        assertTrue(ci.getLowerBound() - ci2.getLowerBound() < DELTA);
+        assertTrue(ci.getUpperBound() - ci2.getUpperBound() > DELTA);
     }
 }
