@@ -33,7 +33,7 @@ public class DistributionGridCongestionSolverTest {
     private TurbineSpecification specs;
     private GammaDistribution gd;
     private MultiHorizonErrorGenerator generator;
-    private DistributionGridCongestionSolver solver;
+    private AbstractFlexAllocationSolver solver;
     private ListMultimap<FlexibilityProvider, Boolean> toTest;
 
     @Before

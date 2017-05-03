@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.AbstractFlexAllocationSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
@@ -179,7 +180,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 1000, wgmfGameParams.getDistribution());
 
-        DistributionGridCongestionSolver DistributionGridCongestionSolver = new
+        AbstractFlexAllocationSolver DistributionGridCongestionSolver = new
                 DistributionGridCongestionSolver(
                 wgmfGameParams.getFactory(), wgmfGameParams.getInputData().getCongestionProfile());
         HourlyFlexConstraints constr = HourlyFlexConstraints.builder().activationDuration(1)

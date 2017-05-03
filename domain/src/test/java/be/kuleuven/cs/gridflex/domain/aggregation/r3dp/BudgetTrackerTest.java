@@ -3,7 +3,6 @@ package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PositiveImbalancePriceProfile;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -63,7 +62,7 @@ public class BudgetTrackerTest {
     }
 
     @Test
-    @Ignore
+    //@Ignore
     public void testRealSizeProfileWholeYearNoNeg() throws Exception {
         PositiveImbalancePriceProfile ppos = PositiveImbalancePriceProfile
                 .createFromCSV("imbalance_prices.csv", pipColumn);
