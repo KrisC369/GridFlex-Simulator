@@ -41,8 +41,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
     }
 
     public static CongestionProfile applyWindForecastErrorAndBudgetConstraints(
-            CableCurrentProfile c,
-            TurbineSpecification specs, MultiHorizonErrorGenerator randomGen,
+            CableCurrentProfile c, TurbineSpecification specs, MultiHorizonErrorGenerator randomGen,
             NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip) {
         CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
                 .convertProfileTPositiveOnlyoImbalanceVolumes();
@@ -65,6 +64,7 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
             double part = singleStepActVolume / singleStepTotalVolume;
             sum += part * budgetValue;
         }
+        //TODO: Filter profile for negative budget values. (Occurs rarely, but is possible.)
         return sum;
     }
 }

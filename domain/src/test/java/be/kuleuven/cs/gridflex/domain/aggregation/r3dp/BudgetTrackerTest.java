@@ -3,6 +3,7 @@ package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PositiveImbalancePriceProfile;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -59,5 +60,29 @@ public class BudgetTrackerTest {
         int idx = 2 + 2 * 4 + 2 * 24 * 4;
         double exp = 44.85 - (-29.63);
         assertEquals(exp, target.getBudgetForPeriod(idx), DELTA);
+    }
+
+    @Test
+    @Ignore
+    public void testRealSizeProfileWholeYearNoNeg() throws Exception {
+        PositiveImbalancePriceProfile ppos = PositiveImbalancePriceProfile
+                .createFromCSV("imbalance_prices.csv", pipColumn);
+        DayAheadPriceProfile pda = DayAheadPriceProfile
+                .extrapolateFromHourlyOneDayData("dailyDayAheadPrices.csv", "damhp", 365);
+        BudgetTracker target = BudgetTracker.createDayAheadSellingPrice(ppos, pda);
+        int neg = 0;
+        int pos = 0;
+        for (int i = 0; i < target.getTotalBudgetPeriods(); i++) {
+            if (target.getBudgetForPeriod(i) < 0) {
+                neg++;
+            } else if (target.getBudgetForPeriod(i) > 0) {
+                pos++;
+            }
+        }
+        double posPerc = pos / (double) target.getTotalBudgetPeriods();
+        double negPerc = neg / (double) target.getTotalBudgetPeriods();
+        System.out.println("pos: " + posPerc);
+        System.out.println("neg: " + negPerc);
+        System.out.println("zero: " + (1-(negPerc+posPerc)));
     }
 }

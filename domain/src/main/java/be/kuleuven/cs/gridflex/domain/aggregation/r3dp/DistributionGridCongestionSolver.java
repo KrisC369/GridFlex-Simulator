@@ -177,4 +177,11 @@ public class DistributionGridCongestionSolver extends FlexibilityUtiliser<Soluti
     protected CongestionProfile getBaseProfile() {
         return this.congestion;
     }
+
+    /**
+     * @return The congestion volume profile to resolve.
+     */
+    public TimeSeries getCongestionVolumeToResolve() {
+        return this.congestion;
+    }
 }
