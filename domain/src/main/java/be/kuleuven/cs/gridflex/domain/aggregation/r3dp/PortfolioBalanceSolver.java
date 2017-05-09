@@ -12,8 +12,6 @@ import be.kuleuven.cs.gridflex.domain.util.data.profiles.PositiveImbalancePriceP
 
 import java.util.List;
 
-import static be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver
-        .TO_KILO;
 import static org.apache.commons.math3.util.FastMath.min;
 
 /**
@@ -51,7 +49,10 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
                 .convertProfileTPositiveOnlyoImbalanceVolumes();
         //Only neg NRV should be corrected.
-        return profile.transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0)
+        CongestionProfile negOnly = profile
+                .transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
+        //Only positive budgets are useful.
+        return negOnly
                 .transformFromIndex(i -> budget.getBudgetForPeriod(i) < 0 ? 0 : profile.value(i));
     }
 

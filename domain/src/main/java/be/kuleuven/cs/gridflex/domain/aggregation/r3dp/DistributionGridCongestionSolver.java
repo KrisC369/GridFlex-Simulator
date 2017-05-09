@@ -17,7 +17,6 @@ import static java.lang.StrictMath.min;
  */
 public class DistributionGridCongestionSolver extends AbstractFlexAllocationSolver {
     private static final double FIXED_PRICE = 35.4;
-    protected static final double TO_KILO = 10E3d;
     private final CongestionProfile congestion;
     private final double flex_remuneration;
 

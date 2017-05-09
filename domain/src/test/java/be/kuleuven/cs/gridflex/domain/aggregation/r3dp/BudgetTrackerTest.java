@@ -14,7 +14,7 @@ public class BudgetTrackerTest {
     private static final String FILENAME_IMBALANCE = "imbalancePricesTest.csv";
     private static final String FILENAME_DAYAHEAD = "dayAheadPricesTest.csv";
     private static final double FIXED_SELLING_PRICE = 35d;
-    public static final double DELTA = 0.001;
+    private static final double DELTA = 0.001;
     private static String pipColumn = "PPOS";
     private static String dapColumn = "dap";
 

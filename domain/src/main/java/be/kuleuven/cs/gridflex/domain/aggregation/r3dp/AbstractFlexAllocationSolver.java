@@ -26,6 +26,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class AbstractFlexAllocationSolver extends FlexibilityUtiliser<SolutionResults> {
+    protected static final double TO_KILO = 10E3d;
     @Nullable
     private SolutionResults results;
 
