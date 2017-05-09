@@ -59,6 +59,7 @@ public class FlexProvider implements FlexibilityProvider {
     @Override
     public void registerActivation(FlexActivation activation, Payment payment) {
         checkForActivationConstraintViolation(activation);
+        checkForUnacceptablePayment(payment);
         addActivation(activation);
         registerCompensation(payment);
     }
@@ -69,6 +70,14 @@ public class FlexProvider implements FlexibilityProvider {
 
     private void registerCompensation(Payment compensation) {
         runningCompensationValue += compensation.getMonetaryAmount();
+    }
+
+    private void checkForUnacceptablePayment(Payment payment) {
+        if (payment.getMonetaryAmount() < 0) {
+            throw new IllegalArgumentException(
+                    "Negative activation payment " + payment
+                            + " means we are paying. This is not acceptable.");
+        }
     }
 
     private void checkForActivationConstraintViolation(FlexActivation activation) {

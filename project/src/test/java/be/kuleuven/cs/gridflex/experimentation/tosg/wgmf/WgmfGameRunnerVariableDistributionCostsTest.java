@@ -1,12 +1,17 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.AbstractFlexAllocationSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
+import be.kuleuven.cs.gridflex.domain.util.Payment;
+import be.kuleuven.cs.gridflex.domain.util.data.DoublePowerCapabilityBand;
 import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
@@ -179,7 +184,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
                 1000, wgmfGameParams.getDistribution());
 
-        DistributionGridCongestionSolver DistributionGridCongestionSolver = new
+        AbstractFlexAllocationSolver DistributionGridCongestionSolver = new
                 DistributionGridCongestionSolver(
                 wgmfGameParams.getFactory(), wgmfGameParams.getInputData().getCongestionProfile());
         HourlyFlexConstraints constr = HourlyFlexConstraints.builder().activationDuration(1)
@@ -242,5 +247,90 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         byte[] pickle1 = pickle(new WgmfMemContextFactory(true, true, "one", "two"));
         WgmfMemContextFactory unpickle = unpickle(pickle1, WgmfMemContextFactory.class);
         assertTrue(unpickle != null);
+    }
+
+    @Test
+    @Ignore
+    public void testQuantifyNegativePayoffRatio() {
+
+        final double[] positivePayment = { 0 };
+        final double[] negativePayment = { 0 };
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
+                "verlies aan energie", "startprofiel+extra", 365);
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
+        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getDistribution());
+
+        PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
+                .getImbalancePriceData()
+                .getNetRegulatedVolumeProfile(),
+                wgmfGameParams.getImbalancePriceData()
+                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
+                multiHorizonErrorGenerator, dayAheadPriceData);
+
+        portfolioBalanceSolver.registerFlexProvider(
+                new PseudoFlexProvider(negativePayment, positivePayment, 200));
+        portfolioBalanceSolver.registerFlexProvider(
+                new PseudoFlexProvider(negativePayment, positivePayment, 500));
+        portfolioBalanceSolver.solve();
+        SolutionResults solutionCPL = portfolioBalanceSolver.getSolution();
+        double compCPL = portfolioBalanceSolver.getFlexibilityProviders().stream()
+                .mapToDouble(fp -> fp.getMonetaryCompensationValue()).sum();
+
+        System.out.println("ObjectiveValue Opta:" + solutionCPL.getObjectiveValue());
+        double total = positivePayment[0] + negativePayment[0];
+        double posRatio = positivePayment[0] / total;
+        double negRatio = negativePayment[0] / total;
+        System.out
+                .println("Pos/Neg payment ratio: " + positivePayment[0] + "/" + negativePayment[0]);
+        System.out.println("Total payment: " + total);
+        System.out.println("Positive payment ratio: " + posRatio);
+        System.out.println("Negative payment ratio: " + negRatio);
+        assertEquals(0, negRatio, 0);
+    }
+
+    private static class PseudoFlexProvider implements FlexibilityProvider {
+        private double compensation = 0;
+        private final double[] negativePayment;
+        private final double[] positivePayment;
+        private final double rate;
+
+        PseudoFlexProvider(double[] neg, double[] pos, double rate) {
+            this.negativePayment = neg;
+            this.positivePayment = pos;
+            this.rate = rate;
+            this.compensation = 0;
+        }
+
+        @Override
+        public DoublePowerCapabilityBand getFlexibilityActivationRate() {
+            return DoublePowerCapabilityBand.create(0, rate);
+        }
+
+        @Override
+        public HourlyFlexConstraints getFlexibilityActivationConstraints() {
+            return HourlyFlexConstraints.R3DP;
+        }
+
+        @Override
+        public double getMonetaryCompensationValue() {
+            return compensation;
+        }
+
+        @Override
+        public void registerActivation(FlexActivation activation, Payment payment) {
+            compensation += payment.getMonetaryAmount();
+            if (payment.getMonetaryAmount() < 0) {
+                negativePayment[0] += -payment.getMonetaryAmount();
+            } else {
+                positivePayment[0] += payment.getMonetaryAmount();
+            }
+        }
     }
 }

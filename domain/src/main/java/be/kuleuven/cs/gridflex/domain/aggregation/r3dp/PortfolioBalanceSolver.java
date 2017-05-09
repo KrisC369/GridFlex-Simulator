@@ -3,6 +3,7 @@ package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
+import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
@@ -11,7 +12,7 @@ import be.kuleuven.cs.gridflex.domain.util.data.profiles.PositiveImbalancePriceP
 
 import java.util.List;
 
-import static java.lang.StrictMath.min;
+import static org.apache.commons.math3.util.FastMath.min;
 
 /**
  * Represents a portfolio balancing entity that solves intraday imbalances because of prediction
@@ -19,9 +20,10 @@ import static java.lang.StrictMath.min;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
+public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
 
     private final BudgetTracker budget;
+    private CongestionProfile congestion;
 
     /**
      * Default constructor
@@ -36,18 +38,22 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
             TurbineSpecification specs, MultiHorizonErrorGenerator gen, DayAheadPriceProfile dapp) {
-        super(fac, applyWindForecastErrorAndBudgetConstraints(c, specs, gen, nrv, pip));
+        super(fac);
         this.budget = BudgetTracker.createDayAheadSellingPrice(pip, dapp);
+        this.congestion = applyWindForecastErrorAndBudgetConstraints(c, specs, gen, nrv, pip);
     }
 
-    public static CongestionProfile applyWindForecastErrorAndBudgetConstraints(
-            CableCurrentProfile c,
-            TurbineSpecification specs, MultiHorizonErrorGenerator randomGen,
+    private CongestionProfile applyWindForecastErrorAndBudgetConstraints(
+            CableCurrentProfile c, TurbineSpecification specs, MultiHorizonErrorGenerator randomGen,
             NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip) {
         CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
                 .convertProfileTPositiveOnlyoImbalanceVolumes();
         //Only neg NRV should be corrected.
-        return profile.transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
+        CongestionProfile negOnly = profile
+                .transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
+        //Only positive budgets are useful.
+        return negOnly
+                .transformFromIndex(i -> budget.getBudgetForPeriod(i) < 0 ? 0 : profile.value(i));
     }
 
     @Override
@@ -60,11 +66,17 @@ public class PortfolioBalanceSolver extends DistributionGridCongestionSolver {
         for (int i = 0; i < dur; i++) {
             double singleStepTotalVolume =
                     totalVolumes.get(idx + i) / discretisationInNbSlotsPerHour;
-            double resolved = min(getBaseProfile().value(idx + i), singleStepTotalVolume);
+            double resolved = min(getCongestionVolumeToResolve().value(idx + i),
+                    singleStepTotalVolume);
             double budgetValue = (budget.getBudgetForPeriod(idx + i) / TO_KILO) * resolved;
             double part = singleStepActVolume / singleStepTotalVolume;
             sum += part * budgetValue;
         }
         return sum;
+    }
+
+    @Override
+    public TimeSeries getCongestionVolumeToResolve() {
+        return this.congestion;
     }
 }

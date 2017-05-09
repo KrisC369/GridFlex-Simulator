@@ -100,7 +100,7 @@ public abstract class AbstractWgmfGameRunner {
     protected abstract void processResults();
 
     @FunctionalInterface
-    interface RunnerFactory {
+    protected interface RunnerFactory {
         AbstractWgmfGameRunner getRunner(ExperimentParams params);
     }
 }

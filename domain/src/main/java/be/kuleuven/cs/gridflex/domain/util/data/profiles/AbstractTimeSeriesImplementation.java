@@ -136,7 +136,7 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
      * @param function The function transformation to apply.
      * @return A new profile instance.
      */
-    abstract R transform(Function<Double, Double> function);
+    public abstract R transform(Function<Double, Double> function);
 
     /**
      * Apply a double to double function to the elements in this profile and return a new profile.
@@ -144,7 +144,7 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
      * @param function The function transformation to apply.
      * @return A new profile instance.
      */
-    abstract R transformFromIndex(IntToDoubleFunction function);
+    public abstract R transformFromIndex(IntToDoubleFunction function);
 
     /**
      * Subtract argument time series from this profile.
@@ -152,6 +152,6 @@ public abstract class AbstractTimeSeriesImplementation<R extends AbstractTimeSer
      * @param ts The ts to subtract from this profile.
      * @return A new profile instance.
      */
-    abstract R subtractValues(TimeSeries ts);
+    public abstract R subtractValues(TimeSeries ts);
 
 }
