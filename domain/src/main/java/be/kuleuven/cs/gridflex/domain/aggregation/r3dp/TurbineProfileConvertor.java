@@ -23,8 +23,8 @@ public final class TurbineProfileConvertor {
     private final int nbTurbines;
     private final double maxPSingle;
     private final MultiHorizonErrorGenerator random;
-    public static final double DAY_AHEAD_NOMINATION_DEADLINE = 15;
-    public static final double PROFILE_START_TIME = 0;
+    private static final double DAY_AHEAD_NOMINATION_DEADLINE = 15;
+    private static final double PROFILE_START_TIME = 0;
 
     /**
      * Default Constructor.
@@ -68,8 +68,7 @@ public final class TurbineProfileConvertor {
      * To give the volumes that are unpredictably excessive, the predicted values are subtracted
      * from the actuals.
      *
-     * @param tSPredicted  the Predicted output volumes.
-     * @param tSCongestion the actual output volumes.
+     * @param tSPredicted the Predicted output volumes.
      * @return A power profile that represents forecast error induced imbalance.
      */
     CongestionProfile calculateImbalanceVolumeFromActual(PowerValuesProfile tSPredicted) {
@@ -113,7 +112,6 @@ public final class TurbineProfileConvertor {
      * Transforms the given powerProfile of energy volumes to estimated wind speeds needed to cause
      * these errors.
      *
-     * @param c the energy volume powerProfile
      * @return the wind speeds powerProfile
      */
     WindSpeedProfile toWindSpeed() {
@@ -172,12 +170,12 @@ public final class TurbineProfileConvertor {
         }
     }
 
-    public CongestionProfile getOriginalCongestionProfile() {
+    CongestionProfile getOriginalCongestionProfile() {
         return CongestionProfile
                 .createFromTimeSeries(powerProfile.transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
     }
 
-    public CongestionProfile getPredictionCongestionProfile() {
+    CongestionProfile getPredictionCongestionProfile() {
         return CongestionProfile.createFromTimeSeries(
                 toPowerValues(applyPredictionErrors(toWindSpeed()))
                         .transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
