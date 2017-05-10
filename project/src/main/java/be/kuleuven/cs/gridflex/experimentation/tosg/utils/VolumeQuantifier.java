@@ -85,12 +85,7 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
 
             PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                     params.getFactory(),
-                    params.getInputData().getCableCurrentProfile(), params
-                    .getImbalancePriceData()
-                    .getNetRegulatedVolumeProfile(),
-                    params.getImbalancePriceData()
-                            .getPositiveImbalancePriceProfile(), params.getSpecs(),
-                    multiHorizonErrorGenerator, params.getDayAheadPriceData());
+                    params.toSolverInputData(0));
 
             CongestionProfile diff = (CongestionProfile) portfolioBalanceSolver
                     .getCongestionVolumeToResolve();
@@ -100,7 +95,7 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
             this.std.increment(perc);
             this.count++;
 
-//            System.out.println(diff.values());
+            //            System.out.println(diff.values());
 
         }
         double corr = 0;

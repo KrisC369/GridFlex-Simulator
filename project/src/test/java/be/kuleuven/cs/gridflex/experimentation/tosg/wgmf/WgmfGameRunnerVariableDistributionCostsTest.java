@@ -116,12 +116,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 wgmfGameParams.getFactory(),
-                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
-                .getImbalancePriceData()
-                .getNetRegulatedVolumeProfile(),
-                wgmfGameParams.getImbalancePriceData()
-                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
-                multiHorizonErrorGenerator, dayAheadPriceData);
+                wgmfGameParams.toSolverInputData(1000));
         HourlyFlexConstraints constr = HourlyFlexConstraints.builder().activationDuration(1)
                 .interActivationTime(2).maximumActivations(4).build();
         portfolioBalanceSolver.registerFlexProvider(new FlexProvider(200, constr));
@@ -144,12 +139,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
         portfolioBalanceSolver = new PortfolioBalanceSolver(
                 wgmfGameParams.getFactory(),
-                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
-                .getImbalancePriceData()
-                .getNetRegulatedVolumeProfile(),
-                wgmfGameParams.getImbalancePriceData()
-                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
-                multiHorizonErrorGenerator, dayAheadPriceData);
+                wgmfGameParams.toSolverInputData(1000));
         constr = HourlyFlexConstraints.builder().activationDuration(1)
                 .interActivationTime(2).maximumActivations(4).build();
         portfolioBalanceSolver.registerFlexProvider(new FlexProvider(200, constr));
@@ -267,12 +257,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 wgmfGameParams.getFactory(),
-                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
-                .getImbalancePriceData()
-                .getNetRegulatedVolumeProfile(),
-                wgmfGameParams.getImbalancePriceData()
-                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
-                multiHorizonErrorGenerator, dayAheadPriceData);
+                wgmfGameParams.toSolverInputData(1000));
 
         portfolioBalanceSolver.registerFlexProvider(
                 new PseudoFlexProvider(negativePayment, positivePayment, 200));

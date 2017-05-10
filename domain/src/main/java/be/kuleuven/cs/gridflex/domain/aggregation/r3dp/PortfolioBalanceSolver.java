@@ -1,14 +1,10 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
-import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
-import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
-import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
-import be.kuleuven.cs.gridflex.domain.util.data.profiles.NetRegulatedVolumeProfile;
-import be.kuleuven.cs.gridflex.domain.util.data.profiles.PositiveImbalancePriceProfile;
 
 import java.util.List;
 
@@ -23,34 +19,34 @@ import static org.apache.commons.math3.util.FastMath.min;
 public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
 
     private final BudgetTracker budget;
-    private CongestionProfile congestion;
+    private final CongestionProfile congestion;
 
     /**
      * Default constructor
      *
-     * @param fac   The solvers factory to draw solvers from.
-     * @param c     The initial imbalance profile to transform to imbalances.
-     * @param specs The turbine specifications of the problem site.
-     * @param gen   The wind speed error generator to use to realise different profiles.
-     * @param nrv   The profile containing the system net regulation volumes.
-     * @param pip   The positive imbalance price profiles.
+     * @param fac       The solvers factory to draw solvers from.
+     * @param inputData the input data.
      */
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
-            CableCurrentProfile c, NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip,
-            TurbineSpecification specs, MultiHorizonErrorGenerator gen, DayAheadPriceProfile dapp) {
+            SolverInputData inputData) {
         super(fac);
-        this.budget = BudgetTracker.createDayAheadSellingPrice(pip, dapp);
-        this.congestion = applyWindForecastErrorAndBudgetConstraints(c, specs, gen, nrv, pip);
+        this.budget = BudgetTracker
+                .createDayAheadSellingPrice(inputData.getPositiveImbalancePriceProfile(),
+                        inputData.getDayAheadPriceProfile());
+        this.congestion = applyWindForecastErrorAndBudgetConstraints(inputData);
     }
 
-    private CongestionProfile applyWindForecastErrorAndBudgetConstraints(
-            CableCurrentProfile c, TurbineSpecification specs, MultiHorizonErrorGenerator randomGen,
-            NetRegulatedVolumeProfile nrv, PositiveImbalancePriceProfile pip) {
-        CongestionProfile profile = new TurbineProfileConvertor(c, specs, randomGen)
+    private CongestionProfile applyWindForecastErrorAndBudgetConstraints(SolverInputData input) {
+        MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
+                input.getForecastHorizonErrorDistribution());
+        CongestionProfile profile = new TurbineProfileConvertor(input.getCableCurrentProfile(),
+                input.getTurbineSpecifications(), gen)
                 .convertProfileTPositiveOnlyoImbalanceVolumes();
         //Only neg NRV should be corrected.
         CongestionProfile negOnly = profile
-                .transformFromIndex(i -> nrv.value(i) < 0 ? profile.value(i) : 0);
+                .transformFromIndex(i -> input.getNetRegulatedVolumeProfile().value(i) < 0 ?
+                        profile.value(i) :
+                        0);
         //Only positive budgets are useful.
         return negOnly
                 .transformFromIndex(i -> budget.getBudgetForPeriod(i) < 0 ? 0 : profile.value(i));

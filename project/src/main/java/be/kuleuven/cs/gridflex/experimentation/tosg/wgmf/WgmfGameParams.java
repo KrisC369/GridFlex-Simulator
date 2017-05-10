@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
@@ -59,5 +60,19 @@ public abstract class WgmfGameParams implements Serializable {
             ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn,
             DayAheadPriceProfile dap) {
         return new AutoValue_WgmfGameParams(inputData, factory, specs, distribution, imbalIn, dap);
+    }
+
+    /**
+     * Convert to domain internal input data format.
+     *
+     * @param seed the seed to add.
+     * @return A solver input data object.
+     */
+    public SolverInputData toSolverInputData(long seed) {
+        return SolverInputData.create(getInputData().getCableCurrentProfile(),
+                getInputData().getCongestionProfile(),
+                getImbalancePriceData().getNetRegulatedVolumeProfile(), getSpecs(),
+                getDistribution(), getImbalancePriceData().getPositiveImbalancePriceProfile(),
+                getDayAheadPriceData(), seed);
     }
 }
