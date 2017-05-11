@@ -1,7 +1,8 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.WindBasedInputData;
@@ -18,8 +19,10 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  *///TODO REFACTOR all non-jppf out of this package.
 public abstract class AbstractWgmfGameRunner {
-    public static final String DISTRIBUTIONFILE_TEMPLATE =
+    public static final String WIND_DISTRIBUTIONFILE_TEMPLATE =
             "be/kuleuven/cs/gridflex/experimentation/data/windspeedDistributions*.csv";
+    public static final String POWER_DISTRIBUTIONFILE_TEMPLATE =
+            "be/kuleuven/cs/gridflex/experimentation/data/powerDistributions*.csv";
     public static final String DATAPROFILE_TEMPLATE =
             "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile*.csv";
     private static final String SPECFILE =
@@ -52,10 +55,17 @@ public abstract class AbstractWgmfGameRunner {
 
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
 
-            String distFile = parseDataFileName(expP.getWindErrorProfileIndex(),
-                    DISTRIBUTIONFILE_TEMPLATE);
-            ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
-                    .loadFromCSV(distFile);
+            String windSpeedDistFile = parseDataFileName(expP.getWindErrorProfileIndex(),
+                    WIND_DISTRIBUTIONFILE_TEMPLATE);
+            WindSpeedForecastMultiHorizonErrorDistribution windDistribution =
+                    WindSpeedForecastMultiHorizonErrorDistribution
+                            .loadFromCSV(windSpeedDistFile);
+
+            String powerDistFile = parseDataFileName(expP.getWindErrorProfileIndex(),
+                    POWER_DISTRIBUTIONFILE_TEMPLATE);
+            PowerForecastMultiHorizonErrorDistribution powerDistribution =
+                    PowerForecastMultiHorizonErrorDistribution
+                            .loadFromCSV(powerDistFile);
 
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, FULL_YEAR);
@@ -64,7 +74,7 @@ public abstract class AbstractWgmfGameRunner {
                     expP.isCacheExistenceEnsured(), DB_FILE_LOCATION, DB_WRITE_FILE_LOCATION);
             return WgmfGameParams.create(dataIn,
                     new WgmfSolverFactory(expP.getSolver(), expP.isUpdateCacheEnabled(),
-                            memContext), specs, distribution, imbalIn,
+                            memContext), specs, windDistribution, powerDistribution, imbalIn,
                     dayAheadPriceProfile);
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);

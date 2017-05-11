@@ -25,7 +25,7 @@ import be.kuleuven.cs.gridflex.domain.util.CollectionUtilsTest;
 import be.kuleuven.cs.gridflex.domain.util.NPermuteAndCombinerTest;
 import be.kuleuven.cs.gridflex.domain.util.TrapzPosTest;
 import be.kuleuven.cs.gridflex.domain.util.data.FlexTupleTest;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistributionTest;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistributionTest;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfileTest;
 import be.kuleuven.cs.gridflex.domain.util.listener.ListenerTest;
 import be.kuleuven.cs.gridflex.domain.workstation.WorkstationTest;
@@ -46,7 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
         NominationTest.class, CongestionProfileTest.class, TrapzPosTest.class,
         CollectionUtilsTest.class, DSMProposalTest.class, DSMPartnerTest.class,
         DSOIntegrationTest.class, TurbineSpecificationTest.class,
-        PortfolioBalanceSolverTest.class, ForecastHorizonErrorDistributionTest.class,
+        PortfolioBalanceSolverTest.class, WindSpeedForecastMultiHorizonErrorDistributionTest.class,
         BudgetTrackerTest.class })
 public class DomainTests {
 }

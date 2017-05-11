@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
@@ -40,7 +40,7 @@ public class PortfolioBalanceSolverTest {
         try {
             specs = TurbineSpecification.loadFromResource("specs_enercon_e101-e1.csv");
             c2 = CableCurrentProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
-            ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+            WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
             this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
 
@@ -54,7 +54,7 @@ public class PortfolioBalanceSolverTest {
 
     @Test
     public void testApplicationOfError0s() throws IOException {
-        ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+        WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
         this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
 
@@ -88,7 +88,7 @@ public class PortfolioBalanceSolverTest {
 
     @Test
     public void testToWindAndBackProfiles2() throws IOException {
-        ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+        WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
         this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
         TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);

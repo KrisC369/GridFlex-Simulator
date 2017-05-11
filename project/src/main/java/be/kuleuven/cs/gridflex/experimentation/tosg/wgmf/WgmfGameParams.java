@@ -2,7 +2,8 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.WindBasedInputData;
@@ -33,7 +34,12 @@ public abstract class WgmfGameParams implements Serializable {
     /**
      * @return The distribution of wind errors to use.
      */
-    public abstract ForecastHorizonErrorDistribution getDistribution();
+    public abstract WindSpeedForecastMultiHorizonErrorDistribution getWindSpeedErrorDistributions();
+
+    /**
+     * @return The distribution of wind errors to use.
+     */
+    public abstract PowerForecastMultiHorizonErrorDistribution getPowerErrorDistributions();
 
     /**
      * @return Imbalance price input data.
@@ -48,18 +54,21 @@ public abstract class WgmfGameParams implements Serializable {
     /**
      * Static factory method.
      *
-     * @param inputData    The data profile to work from.
-     * @param specs        The specs of the windturbine used in these simulations.
-     * @param imbalIn      The imbalance prices.
-     * @param distribution The distribution of wind errors to use.
-     * @param factory      The specific solvers factory platform to use.
+     * @param inputData The data profile to work from.
+     * @param specs     The specs of the windturbine used in these simulations.
+     * @param imbalIn   The imbalance prices.
+     * @param windDist  The distribution of wind errors to use.
+     * @param factory   The specific solvers factory platform to use.
      * @return A parameter object.
      */
     public static WgmfGameParams create(WindBasedInputData inputData,
             WgmfSolverFactory factory, TurbineSpecification specs,
-            ForecastHorizonErrorDistribution distribution, ImbalancePriceInputData imbalIn,
+            WindSpeedForecastMultiHorizonErrorDistribution windDist,
+            PowerForecastMultiHorizonErrorDistribution powerDist,
+            ImbalancePriceInputData imbalIn,
             DayAheadPriceProfile dap) {
-        return new AutoValue_WgmfGameParams(inputData, factory, specs, distribution, imbalIn, dap);
+        return new AutoValue_WgmfGameParams(inputData, factory, specs, windDist, powerDist, imbalIn,
+                dap);
     }
 
     /**
@@ -72,7 +81,8 @@ public abstract class WgmfGameParams implements Serializable {
         return SolverInputData.create(getInputData().getCableCurrentProfile(),
                 getInputData().getCongestionProfile(),
                 getImbalancePriceData().getNetRegulatedVolumeProfile(), getSpecs(),
-                getDistribution(), getImbalancePriceData().getPositiveImbalancePriceProfile(),
+                getWindSpeedErrorDistributions(), getPowerErrorDistributions(),
+                getImbalancePriceData().getPositiveImbalancePriceProfile(),
                 getDayAheadPriceData(), seed);
     }
 }

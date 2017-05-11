@@ -49,7 +49,7 @@ public class OptaSerializeRegression {
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
-                1000, wgmfGameParams.getDistribution());
+                1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
                 memContext2 = () -> new CacheResultOnlyMemoizationDecorator(

@@ -65,7 +65,7 @@ public final class WgmfInputParser {
         o.addOption(DISTINDEX_KEY, true,
                 "The index of distibution file to load. Make sure the input file is named using "
                         + "following convention: "
-                        + AbstractWgmfGameRunner.DISTRIBUTIONFILE_TEMPLATE
+                        + AbstractWgmfGameRunner.WIND_DISTRIBUTIONFILE_TEMPLATE
                         + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
         o.addOption(PROFINDEX_KEY, true,
                 "The index of elec data profile file to load. Make sure the input file is named "

@@ -3,7 +3,7 @@ package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -43,7 +43,7 @@ public class DistributionGridCongestionSolverTest {
         try {
             specs = TurbineSpecification.loadFromResource("specs_enercon_e101-e1.csv");
             c2 = CongestionProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
-            ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
+            WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
             this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
             AbstractSolverFactory<SolutionResults> factory = mock(AbstractSolverFactory.class);

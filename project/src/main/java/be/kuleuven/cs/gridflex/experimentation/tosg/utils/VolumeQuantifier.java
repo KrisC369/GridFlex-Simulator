@@ -81,7 +81,7 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
     protected void execute(WgmfGameParams params) {
         for (int i = 0; i < 400; i++) {
             MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
-                    baseSeed + i, params.getDistribution());
+                    baseSeed + i, params.getWindSpeedErrorDistributions());
 
             PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                     params.getFactory(),

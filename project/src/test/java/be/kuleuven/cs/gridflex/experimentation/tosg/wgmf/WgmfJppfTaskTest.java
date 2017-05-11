@@ -1,13 +1,14 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.WindBasedInputData;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
-import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
-import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import org.jppf.server.JPPFDriver;
 import org.jppf.utils.JPPFConfiguration;
 import org.junit.AfterClass;
@@ -28,6 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class WgmfJppfTaskTest {
     private static final int SEED = 3722;
     private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
+    private static final String POWERDISTRIBUTION = "powerDistributions.csv";
     private static final String DATAFILE = "test.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String IMBAL = "imbalance_prices_short.csv";
@@ -58,15 +60,19 @@ public class WgmfJppfTaskTest {
             dataIn = WindBasedInputData.loadFromResource(DATAFILE, "test", "test");
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
             ImbalancePriceInputData imbalIn = ImbalancePriceInputData.loadFromResource(IMBAL);
-            ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
-                    .loadFromCSV(DISTRIBUTIONFILE);
+            WindSpeedForecastMultiHorizonErrorDistribution windDist =
+                    WindSpeedForecastMultiHorizonErrorDistribution
+                            .loadFromCSV(DISTRIBUTIONFILE);
+            PowerForecastMultiHorizonErrorDistribution powerDist =
+                    PowerForecastMultiHorizonErrorDistribution
+                            .loadFromCSV(POWERDISTRIBUTION);
             DayAheadPriceProfile dayAheadPriceProfile = DayAheadPriceProfile
                     .extrapolateFromHourlyOneDayData(DAMPRICES_DAILY, DAM_COLUMN, 7);
 
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
                                     Solvers.TYPE.DUMMY, false, () -> null), specs,
-                            distribution, imbalIn, dayAheadPriceProfile);
+                            windDist, powerDist, imbalIn, dayAheadPriceProfile);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)
                     .fixAgentToAction(0, 0).fixAgentToAction(1, 0).fixAgentToAction(2, 1)

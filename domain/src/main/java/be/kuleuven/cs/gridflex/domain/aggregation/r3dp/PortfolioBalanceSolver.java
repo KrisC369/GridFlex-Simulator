@@ -101,7 +101,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
                 MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
-                        input.getForecastHorizonErrorDistribution());
+                        input.getWindSpeedForecastMultiHorizonErrorDistribution());
                 return new TurbineProfileConvertor(input.getCableCurrentProfile(),
                         input.getTurbineSpecifications(), gen)
                         .convertProfileTPositiveOnlyoImbalanceVolumes();
@@ -115,6 +115,9 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
                 //// TODO: 11/05/17 complete conversion.
+                MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
+                        input.getPowerForecastMultiHorizonErrorDistribution());
+
                 return null;
             }
         };
