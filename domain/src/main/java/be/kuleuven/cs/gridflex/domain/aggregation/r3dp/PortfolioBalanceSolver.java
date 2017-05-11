@@ -1,6 +1,8 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation.PowerForecastBasedConvertor;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation.TurbineProfileConvertor;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
@@ -104,7 +106,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
                         input.getWindSpeedForecastMultiHorizonErrorDistribution());
                 return new TurbineProfileConvertor(input.getCableCurrentProfile(),
                         input.getTurbineSpecifications(), gen)
-                        .convertProfileTPositiveOnlyoImbalanceVolumes();
+                        .convertProfileToPositiveOnlyImbalanceVolumes();
             }
         },
         /**
@@ -118,7 +120,8 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
                 MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
                         input.getPowerForecastMultiHorizonErrorDistribution());
 
-                return null;
+                return new PowerForecastBasedConvertor(input.getCableCurrentProfile(),
+                        gen).convertProfileToPositiveOnlyImbalanceVolumes();
             }
         };
 

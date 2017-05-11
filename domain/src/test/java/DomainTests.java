@@ -3,7 +3,7 @@ import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregatorTest;
 import be.kuleuven.cs.gridflex.domain.aggregation.brp.NominationTest;
 import be.kuleuven.cs.gridflex.domain.aggregation.independent.IndependentAggregatorTest;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.BudgetTrackerTest;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolverTest;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation.TurbineConvertorTest;
 import be.kuleuven.cs.gridflex.domain.aggregation.reactive.ReactiveMechanismAggregatorTest;
 import be.kuleuven.cs.gridflex.domain.energy.dso.contractnet.DSMPartnerTest;
 import be.kuleuven.cs.gridflex.domain.energy.dso.contractnet.DSMProposalTest;
@@ -46,7 +46,7 @@ import org.junit.runners.Suite.SuiteClasses;
         NominationTest.class, CongestionProfileTest.class, TrapzPosTest.class,
         CollectionUtilsTest.class, DSMProposalTest.class, DSMPartnerTest.class,
         DSOIntegrationTest.class, TurbineSpecificationTest.class,
-        PortfolioBalanceSolverTest.class, WindSpeedForecastMultiHorizonErrorDistributionTest.class,
+        TurbineConvertorTest.class, WindSpeedForecastMultiHorizonErrorDistributionTest.class,
         BudgetTrackerTest.class })
 public class DomainTests {
 }
