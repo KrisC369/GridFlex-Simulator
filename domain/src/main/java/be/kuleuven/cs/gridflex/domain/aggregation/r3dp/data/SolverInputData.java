@@ -16,6 +16,9 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class SolverInputData {
+    SolverInputData() {
+    }
+
     /**
      * @return the cable current profile.
      */
@@ -59,14 +62,14 @@ public abstract class SolverInputData {
     /**
      * Static factory method.
      *
-     * @param ccp
-     * @param cp
-     * @param nrv
-     * @param specs
-     * @param distribution
-     * @param pip
-     * @param dap
-     * @param seed
+     * @param ccp          The cable current profile.
+     * @param cp           The congestion profile.
+     * @param nrv          The net regulated volume profile.
+     * @param specs        The turbine production curve specification sheet.
+     * @param distribution The wind speed forecast error distribution data.
+     * @param pip          The price profile for positive imbalances.
+     * @param dap          The profile for day-ahead energy prices.
+     * @param seed         The random seed to be used.
      * @return An autoValue solver data input file.
      */
     public static SolverInputData create(CableCurrentProfile ccp, CongestionProfile cp,

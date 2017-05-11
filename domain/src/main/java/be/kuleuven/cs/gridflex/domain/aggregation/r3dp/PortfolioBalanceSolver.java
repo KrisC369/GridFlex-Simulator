@@ -87,6 +87,9 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         return this.congestion;
     }
 
+    /**
+     * Conversion strategy implementation.
+     */
     public enum ProfileConversionStrategy {
         /**
          * Windspeed forecast based error conversion makes use of the turbine convertor to
@@ -116,6 +119,12 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
             }
         };
 
+        /**
+         * Converts the input data to a valid congestion profile.
+         *
+         * @param input The input data.
+         * @return a congestion profile.
+         */
         abstract public CongestionProfile applyConversion(SolverInputData input);
     }
 }

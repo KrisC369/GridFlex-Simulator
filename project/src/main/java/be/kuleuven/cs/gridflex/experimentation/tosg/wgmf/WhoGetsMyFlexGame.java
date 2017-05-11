@@ -64,11 +64,11 @@ public class WhoGetsMyFlexGame extends
     }
 
     /**
-     * //TODO
+     * Factory method for creating a basic game.
      *
-     * @param params
-     * @param baseSeed
-     * @return
+     * @param params   The input params.
+     * @param baseSeed The seed to use.
+     * @return A fully built game object.
      */
     public static WhoGetsMyFlexGame createBasicGame(WgmfGameParams params, long baseSeed) {
         AbstractSolverFactory<SolutionResults> solverplatform = params.getFactory();
@@ -82,12 +82,12 @@ public class WhoGetsMyFlexGame extends
     }
 
     /**
-     * //TODO
+     * Factory method for creating a game with variable pricing for the dso.
      *
-     * @param params
-     * @param baseSeed
-     * @param flexRemunerationPrice
-     * @return
+     * @param params                The input params.
+     * @param baseSeed              The seed to use.
+     * @param flexRemunerationPrice The pricing rate for the DSO.
+     * @return A fully built game object.
      */
     public static WhoGetsMyFlexGame createVariableDSOPricingGame(WgmfGameParams params,
             long baseSeed, double flexRemunerationPrice) {
