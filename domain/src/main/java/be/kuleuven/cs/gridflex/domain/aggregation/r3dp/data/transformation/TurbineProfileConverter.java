@@ -1,30 +1,24 @@
-package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
+package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.WindSpeedProfile;
+import com.google.common.annotations.VisibleForTesting;
 
 /**
- * Convertor class for converting current profiles to imbalance profiles.
+ * Convertor class for converting current profiles to imbalance profiles by deaggregating to
+ * single turbine level and then applying errors to inferred wind speeds.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class TurbineProfileConvertor {
-    static final double TO_POWER = 1.73 * 15.6;
-    static final double CONVERSION = 1.5d;
-    private static final double HOURS_PER_DAY = 24;
-    private static final double SLOTS_PER_HOUR = 4;
-    private static final double EPS = 0.00001;
-    private final PowerValuesProfile powerProfile;
+public final class TurbineProfileConverter extends AbstractProfileConverter {
     private final PowerValuesProfile singleTProfile;
     private final TurbineSpecification specs;
     private final int nbTurbines;
     private final double maxPSingle;
-    private final MultiHorizonErrorGenerator random;
-    public static final double DAY_AHEAD_NOMINATION_DEADLINE = 15;
-    public static final double PROFILE_START_TIME = 0;
 
     /**
      * Default Constructor.
@@ -33,50 +27,22 @@ public final class TurbineProfileConvertor {
      * @param specs   The turbine specs to use.
      * @param random  The random generator of wind errors for different horizons.
      */
-    public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
+    public TurbineProfileConverter(CableCurrentProfile profile, TurbineSpecification specs,
             MultiHorizonErrorGenerator random) {
+        super(profile, random);
         this.specs = specs;
-        //reduced power profile.
-        this.powerProfile = PowerValuesProfile
-                .createFromTimeSeries(profile.transform(p -> (p / CONVERSION) * TO_POWER));
-        this.random = random;
-        double maxPFound = powerProfile.max();
+        double maxPFound = getPowerProfile().max();
         this.nbTurbines = (int) Math.floor(maxPFound / specs.getRatedPower());
         this.maxPSingle = maxPFound / nbTurbines;
         this.singleTProfile = PowerValuesProfile
-                .createFromTimeSeries(powerProfile.transform(p -> p / (double) nbTurbines));
+                .createFromTimeSeries(getPowerProfile().transform(p -> p / (double) nbTurbines));
     }
 
     /**
-     * @return The conversion of the initial profile to an imbalance profile.
+     * @return Power values profile with prediction/forecast data.
      */
-    public CongestionProfile convertProfileToImbalanceVolumes() {
-        return calculateImbalanceVolumeFromActual(
-                toPowerValues(applyPredictionErrors(toWindSpeed())));
-    }
-
-    /**
-     * @return The conversion of the initial profile to an imbalance profile with only positive
-     * values.
-     */
-    public CongestionProfile convertProfileTPositiveOnlyoImbalanceVolumes() {
-        return convertProfileToImbalanceVolumes().transform(v -> v > 0 ? v : 0);
-    }
-
-    /**
-     * Calculate imbalance powerProfile from current and error sampled energy volumes.
-     * To give the volumes that are unpredictably excessive, the predicted values are subtracted
-     * from the actuals.
-     *
-     * @param tSPredicted  the Predicted output volumes.
-     * @param tSCongestion the actual output volumes.
-     * @return A power profile that represents forecast error induced imbalance.
-     */
-    CongestionProfile calculateImbalanceVolumeFromActual(PowerValuesProfile tSPredicted) {
-        //Don't forget to convert to given boosted profile.
-        return CongestionProfile.createFromTimeSeries(
-                powerProfile.subtractValues(tSPredicted).transform(p -> p * CONVERSION)
-                        .transform(p -> p / SLOTS_PER_HOUR));
+    protected PowerValuesProfile calculateForecastedProfile() {
+        return toPowerValues(applyPredictionErrors(toWindSpeed()));
     }
 
     /**
@@ -91,29 +57,21 @@ public final class TurbineProfileConvertor {
     }
 
     /**
-     * Apply prediction erros taking into account different time horizons and
+     * Apply prediction erros taking into account different time horizons.
      *
      * @param timeSeries The input wind speeds
      * @return wind speeds with sample errors added to them
      */
     private WindSpeedProfile applyPredictionErrors(WindSpeedProfile timeSeries) {
         return WindSpeedProfile.createFromTimeSeries(timeSeries.transformFromIndex(
-                i -> applyErrorSingleError(i, timeSeries.value(i)))
+                i -> applyErrorSampleToSingleValue(i, timeSeries.value(i)))
                 .transform(w -> w < 0 ? 0 : w));
-    }
-
-    private double applyErrorSingleError(int idx, double value) {
-        int errorGenIdx = (int) Math
-                .ceil(((idx - PROFILE_START_TIME) % HOURS_PER_DAY) + (HOURS_PER_DAY
-                        - DAY_AHEAD_NOMINATION_DEADLINE));
-        return value + random.generateErrorForHorizon(errorGenIdx);
     }
 
     /**
      * Transforms the given powerProfile of energy volumes to estimated wind speeds needed to cause
      * these errors.
      *
-     * @param c the energy volume powerProfile
      * @return the wind speeds powerProfile
      */
     WindSpeedProfile toWindSpeed() {
@@ -172,15 +130,15 @@ public final class TurbineProfileConvertor {
         }
     }
 
-    public CongestionProfile getOriginalCongestionProfile() {
-        return CongestionProfile
-                .createFromTimeSeries(powerProfile.transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
-    }
-
-    public CongestionProfile getPredictionCongestionProfile() {
+    /**
+     * Visible for testing only.
+     *
+     * @return the predicted profile.
+     */
+    @VisibleForTesting
+    CongestionProfile getPredictionCongestionProfile() {
         return CongestionProfile.createFromTimeSeries(
                 toPowerValues(applyPredictionErrors(toWindSpeed()))
                         .transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
     }
-
 }

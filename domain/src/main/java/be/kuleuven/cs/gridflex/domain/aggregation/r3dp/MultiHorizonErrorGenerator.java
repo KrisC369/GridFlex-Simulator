@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.AbstractErrorDistribution;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.random.MersenneTwister;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 public final class MultiHorizonErrorGenerator {
 
-    private final ForecastHorizonErrorDistribution distribution;
+    private final AbstractErrorDistribution distribution;
     private final List<MersenneTwister> twisters;
 
     /**
@@ -22,7 +22,8 @@ public final class MultiHorizonErrorGenerator {
      * @param seed         The initial seed.
      * @param distribution The error distributions.
      */
-    public MultiHorizonErrorGenerator(long seed, ForecastHorizonErrorDistribution distribution) {
+    public MultiHorizonErrorGenerator(long seed,
+            AbstractErrorDistribution distribution) {
         this.distribution = distribution;
         twisters = Lists.newArrayList();
         for (int i = 0; i < distribution.getMaxForecastHorizon(); i++) {

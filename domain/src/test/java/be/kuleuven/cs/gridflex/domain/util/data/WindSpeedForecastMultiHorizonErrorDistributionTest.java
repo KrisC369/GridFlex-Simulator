@@ -9,13 +9,13 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class ForecastHorizonErrorDistributionTest {
+public class WindSpeedForecastMultiHorizonErrorDistributionTest {
 
     public static final String FILENAME = "windspeedDistributions.csv";
 
     @Test
     public void testLoadFromFile() throws IOException {
-        ForecastHorizonErrorDistribution testDistro = ForecastHorizonErrorDistribution
+        WindSpeedForecastMultiHorizonErrorDistribution testDistro = WindSpeedForecastMultiHorizonErrorDistribution
                 .loadFromCSV(FILENAME);
         assertEquals(36, testDistro.getMaxForecastHorizon(), 0);
     }

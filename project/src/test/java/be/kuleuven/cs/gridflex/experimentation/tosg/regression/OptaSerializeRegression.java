@@ -49,7 +49,7 @@ public class OptaSerializeRegression {
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
         MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
-                1000, wgmfGameParams.getDistribution());
+                1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>
                 memContext2 = () -> new CacheResultOnlyMemoizationDecorator(
@@ -62,12 +62,7 @@ public class OptaSerializeRegression {
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 factory,
-                wgmfGameParams.getInputData().getCableCurrentProfile(), wgmfGameParams
-                .getImbalancePriceData()
-                .getNetRegulatedVolumeProfile(),
-                wgmfGameParams.getImbalancePriceData()
-                        .getPositiveImbalancePriceProfile(), wgmfGameParams.getSpecs(),
-                multiHorizonErrorGenerator, dayAheadPriceData);
+                wgmfGameParams.toSolverInputData(1000));
         HourlyFlexConstraints constr = HourlyFlexConstraints.builder().activationDuration(1)
                 .interActivationTime(2).maximumActivations(4).build();
         portfolioBalanceSolver.registerFlexProvider(new FlexProvider(200, constr));
