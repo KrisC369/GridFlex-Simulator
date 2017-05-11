@@ -6,11 +6,11 @@ import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
 
 /**
- * Abstract profile convertor.
+ * Abstract current profile to congestion profile converter.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-abstract class AbstractProfileConvertor {
+abstract class AbstractProfileConverter {
     static final double HOURS_PER_DAY = 24;
     static final double SLOTS_PER_HOUR = 4;
     static final double EPS = 0.00001;
@@ -23,7 +23,7 @@ abstract class AbstractProfileConvertor {
     private final CableCurrentProfile profile;
     protected final MultiHorizonErrorGenerator random;
 
-    AbstractProfileConvertor(CableCurrentProfile profile,
+    AbstractProfileConverter(CableCurrentProfile profile,
             MultiHorizonErrorGenerator random) {
         this.profile = profile;
         this.random = random;
@@ -39,6 +39,9 @@ abstract class AbstractProfileConvertor {
         return convertProfileToImbalanceVolumes().transform(v -> v > 0 ? v : 0);
     }
 
+    /**
+     * @return The conversion of the initial profile to an imbalance profile.
+     */
     public CongestionProfile convertProfileToImbalanceVolumes() {
         return calculateImbalanceVolumeFromActualAndPredictedData(calculateForecastedProfile());
     }
@@ -75,7 +78,7 @@ abstract class AbstractProfileConvertor {
         return value + random.generateErrorForHorizon(errorGenIdx);
     }
 
-    CongestionProfile getOriginalCongestionProfile() {
+    final CongestionProfile getOriginalCongestionProfile() {
         return CongestionProfile
                 .createFromTimeSeries(powerProfile.transform(p -> p * CONVERSION / SLOTS_PER_HOUR));
     }
@@ -84,7 +87,7 @@ abstract class AbstractProfileConvertor {
         return powerProfile;
     }
 
-    protected final CableCurrentProfile getProfile() {
+    final CableCurrentProfile getProfile() {
         return profile;
     }
 

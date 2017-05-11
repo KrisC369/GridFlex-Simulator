@@ -14,7 +14,7 @@ import com.google.common.annotations.VisibleForTesting;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class TurbineProfileConvertor extends AbstractProfileConvertor {
+public final class TurbineProfileConverter extends AbstractProfileConverter {
     private final PowerValuesProfile singleTProfile;
     private final TurbineSpecification specs;
     private final int nbTurbines;
@@ -27,7 +27,7 @@ public final class TurbineProfileConvertor extends AbstractProfileConvertor {
      * @param specs   The turbine specs to use.
      * @param random  The random generator of wind errors for different horizons.
      */
-    public TurbineProfileConvertor(CableCurrentProfile profile, TurbineSpecification specs,
+    public TurbineProfileConverter(CableCurrentProfile profile, TurbineSpecification specs,
             MultiHorizonErrorGenerator random) {
         super(profile, random);
         this.specs = specs;

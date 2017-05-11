@@ -5,14 +5,20 @@ import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
 
 /**
- * Convertor class for converting current profiles to imbalance profiles by applying forecast
+ * Converter class for converting current profiles to imbalance profiles by applying forecast
  * errors on the power output level.
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class PowerForecastBasedConvertor extends AbstractProfileConvertor {
+public class PowerForecastBasedConverter extends AbstractProfileConverter {
 
-    public PowerForecastBasedConvertor(CableCurrentProfile cableCurrentProfile,
+    /**
+     * General constructor.
+     *
+     * @param cableCurrentProfile The cable current profile to start from.
+     * @param gen                 Error generator serving as random generator.
+     */
+    public PowerForecastBasedConverter(CableCurrentProfile cableCurrentProfile,
             MultiHorizonErrorGenerator gen) {
         super(cableCurrentProfile, gen);
     }

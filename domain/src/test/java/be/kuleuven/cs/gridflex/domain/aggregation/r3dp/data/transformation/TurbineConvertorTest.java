@@ -61,7 +61,7 @@ public class TurbineConvertorTest {
         this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
 
         CongestionProfile cableCurrentProfile2 = toWindAndBackWErrors(c2, specs);
-        List<Double> expected = c2.transform(p -> p * AbstractProfileConvertor.TO_POWER / 4d)
+        List<Double> expected = c2.transform(p -> p * AbstractProfileConverter.TO_POWER / 4d)
                 .values();
         List<Double> actual = cableCurrentProfile2.values();
         //printList(actual, expected);
@@ -80,7 +80,7 @@ public class TurbineConvertorTest {
     public void testToWindAndBackProfiles() {
         PowerValuesProfile cableCurrentProfile2 = toWindAndBack(c2, specs);
         List<Double> expected = c2.transform(
-                p -> p * AbstractProfileConvertor.TO_POWER / AbstractProfileConvertor.CONVERSION)
+                p -> p * AbstractProfileConverter.TO_POWER / AbstractProfileConverter.CONVERSION)
                 .values();
         List<Double> actual = cableCurrentProfile2.values();
         //        assertEquals(expected, actual);
@@ -93,7 +93,7 @@ public class TurbineConvertorTest {
         WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
         this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
-        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
+        TurbineProfileConverter t = new TurbineProfileConverter(c2, specs, generator);
         CongestionProfile orig = t.getOriginalCongestionProfile();
         CongestionProfile cableCurrentProfile2 = t.getPredictionCongestionProfile();
         List<Double> expected = orig.values();
@@ -105,12 +105,12 @@ public class TurbineConvertorTest {
 
     private CongestionProfile toWindAndBackWErrors(CableCurrentProfile c2,
             TurbineSpecification specs) {
-        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
+        TurbineProfileConverter t = new TurbineProfileConverter(c2, specs, generator);
         return t.convertProfileToImbalanceVolumes();
     }
 
     private PowerValuesProfile toWindAndBack(CableCurrentProfile c2, TurbineSpecification specs) {
-        TurbineProfileConvertor t = new TurbineProfileConvertor(c2, specs, generator);
+        TurbineProfileConverter t = new TurbineProfileConverter(c2, specs, generator);
         return t.toPowerValues(t.toWindSpeed());
     }
 

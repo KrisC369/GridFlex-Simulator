@@ -1,8 +1,9 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation.PowerForecastBasedConvertor;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation.TurbineProfileConvertor;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation
+        .PowerForecastBasedConverter;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation.TurbineProfileConverter;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
@@ -104,7 +105,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
             public CongestionProfile applyConversion(SolverInputData input) {
                 MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
                         input.getWindSpeedForecastMultiHorizonErrorDistribution());
-                return new TurbineProfileConvertor(input.getCableCurrentProfile(),
+                return new TurbineProfileConverter(input.getCableCurrentProfile(),
                         input.getTurbineSpecifications(), gen)
                         .convertProfileToPositiveOnlyImbalanceVolumes();
             }
@@ -116,11 +117,9 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         POWER_ERROR_BASED {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
-                //// TODO: 11/05/17 complete conversion.
                 MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
                         input.getPowerForecastMultiHorizonErrorDistribution());
-
-                return new PowerForecastBasedConvertor(input.getCableCurrentProfile(),
+                return new PowerForecastBasedConverter(input.getCableCurrentProfile(),
                         gen).convertProfileToPositiveOnlyImbalanceVolumes();
             }
         };
