@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver
+        .ProfileConversionStrategy.POWER_ERROR_BASED;
+
 /**
  * Game representing the strategic choice of providing your flexibility as a flex consumer to 1)
  * DSOs for grid congestion management, or 2) to portfolio balancers.
@@ -75,7 +78,8 @@ public class WhoGetsMyFlexGame extends
         SolverInputData solverInputData = params.toSolverInputData(baseSeed);
 
         ArrayList<FlexibilityUtiliser> actions = Lists
-                .newArrayList(new PortfolioBalanceSolver(solverplatform, solverInputData),
+                .newArrayList(new PortfolioBalanceSolver(solverplatform, solverInputData,
+                                POWER_ERROR_BASED),
                         new DistributionGridCongestionSolver(solverplatform,
                                 solverInputData.getCongestionProfile()));
         return new WhoGetsMyFlexGame(actions);
@@ -96,7 +100,8 @@ public class WhoGetsMyFlexGame extends
         WgmfSolverFactory solverplatform = params.getFactory();
         //        solverplatform.setSeed(baseSeed);//TODO review! This makes the solver also random.
         ArrayList<FlexibilityUtiliser> actions = Lists
-                .newArrayList(new PortfolioBalanceSolver(solverplatform, solverInputData),
+                .newArrayList(new PortfolioBalanceSolver(solverplatform, solverInputData,
+                                POWER_ERROR_BASED),
                         new DistributionGridCongestionSolver(solverplatform,
                                 solverInputData.getCongestionProfile(), flexRemunerationPrice));
         return new WhoGetsMyFlexGame(actions);

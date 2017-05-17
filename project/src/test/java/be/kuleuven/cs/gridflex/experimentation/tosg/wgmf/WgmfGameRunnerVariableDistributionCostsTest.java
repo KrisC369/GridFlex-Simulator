@@ -13,6 +13,7 @@ import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecificatio
 import be.kuleuven.cs.gridflex.domain.util.Payment;
 import be.kuleuven.cs.gridflex.domain.util.data.DoublePowerCapabilityBand;
 import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
@@ -34,6 +35,9 @@ import static org.mockito.Mockito.when;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class WgmfGameRunnerVariableDistributionCostsTest {
+    static final double TO_POWER = 1.73 * 15.6;
+    static final double CONVERSION = 1.5d;
+    static final double SLOTS_PER_HOUR = 4;
     private static final String DISTRIBUTIONFILE = "windspeedDistributionsNormalized.csv";
     private static final String POWERDISTRIBUTION = "powerDistributions.csv";
     private static final String DATAFILE = "test.csv";
@@ -247,7 +251,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
     @Test
     @Ignore
-    public void testQuantifyNegativePayoffRatio() {
+    public void testQuantifyNegativePayoffRatioPB() {
 
         final double[] positivePayment = { 0 };
         final double[] negativePayment = { 0 };
@@ -263,7 +267,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 wgmfGameParams.getFactory(),
-                wgmfGameParams.toSolverInputData(1000));
+                wgmfGameParams.toSolverInputData(1000),
+                PortfolioBalanceSolver.ProfileConversionStrategy.POWER_ERROR_BASED);
 
         portfolioBalanceSolver.registerFlexProvider(
                 new PseudoFlexProvider(negativePayment, positivePayment, 200));
@@ -284,6 +289,112 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         System.out.println("Positive payment ratio: " + posRatio);
         System.out.println("Negative payment ratio: " + negRatio);
         assertEquals(0, negRatio, 0);
+    }
+
+    @Test
+    @Ignore
+    public void testQuantifyNegativePayoffRatioDGC() {
+
+        final double[] positivePayment = { 0 };
+        final double[] negativePayment = { 0 };
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
+                "verlies aan energie", "startprofiel+extra", 365);
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
+        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getWindSpeedErrorDistributions());
+
+        DistributionGridCongestionSolver dgcSolver = new
+                DistributionGridCongestionSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCongestionProfile());
+
+        dgcSolver.registerFlexProvider(
+                new PseudoFlexProvider(negativePayment, positivePayment, 200));
+        dgcSolver.registerFlexProvider(
+                new PseudoFlexProvider(negativePayment, positivePayment, 500));
+        dgcSolver.solve();
+        SolutionResults solutionCPL = dgcSolver.getSolution();
+        double compCPL = dgcSolver.getFlexibilityProviders().stream()
+                .mapToDouble(fp -> fp.getMonetaryCompensationValue()).sum();
+
+        System.out.println("ObjectiveValue Opta:" + solutionCPL.getObjectiveValue());
+        double total = positivePayment[0] + negativePayment[0];
+        double posRatio = positivePayment[0] / total;
+        double negRatio = negativePayment[0] / total;
+        System.out
+                .println("Pos/Neg payment ratio: " + positivePayment[0] + "/" + negativePayment[0]);
+        System.out.println("Total payment: " + total);
+        System.out.println("Positive payment ratio: " + posRatio);
+        System.out.println("Negative payment ratio: " + negRatio);
+        assertEquals(0, negRatio, 0);
+    }
+
+    @Test
+    @Ignore
+    public void testPortfolioBalanceProfileTransform() {
+
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
+                "verlies aan energie", "startprofiel+extra", 365);
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
+        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getWindSpeedErrorDistributions());
+
+        PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.toSolverInputData(1000),
+                PortfolioBalanceSolver.ProfileConversionStrategy.POWER_ERROR_BASED);
+
+        portfolioBalanceSolver
+                .registerFlexProvider(new FlexProvider(200, HourlyFlexConstraints.R3DP));
+        portfolioBalanceSolver
+                .registerFlexProvider(new FlexProvider(500, HourlyFlexConstraints.R3DP));
+        TimeSeries ts = portfolioBalanceSolver
+                .getCongestionVolumeToResolve();
+        System.out.println(ts.values());
+        System.out.println(wgmfGameParams.getInputData().getCableCurrentProfile()
+                .transform(p -> (p / CONVERSION) * TO_POWER)
+                .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values());
+        //        portfolioBalanceSolver.solve();
+    }
+
+    @Test
+    @Ignore
+    public void testDistributionGridCongestionProfileTransform() {
+
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
+                "verlies aan energie", "startprofiel+extra", 365);
+        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
+        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
+        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+                1000, wgmfGameParams.getWindSpeedErrorDistributions());
+
+        DistributionGridCongestionSolver dgcSolver = new
+                DistributionGridCongestionSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCongestionProfile());
+
+        dgcSolver
+                .registerFlexProvider(new FlexProvider(200, HourlyFlexConstraints.R3DP));
+        dgcSolver
+                .registerFlexProvider(new FlexProvider(500, HourlyFlexConstraints.R3DP));
+        TimeSeries ts = dgcSolver
+                .getCongestionVolumeToResolve();
+        System.out.println(ts.values());
+        System.out.println(wgmfGameParams.getInputData().getCableCurrentProfile()
+                .transform(p -> (p / CONVERSION) * TO_POWER)
+                .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values());
+        //        portfolioBalanceSolver.solve();
     }
 
     private static class PseudoFlexProvider implements FlexibilityProvider {

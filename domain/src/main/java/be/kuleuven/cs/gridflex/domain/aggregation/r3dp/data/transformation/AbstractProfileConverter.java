@@ -17,7 +17,7 @@ abstract class AbstractProfileConverter {
     static final double DAY_AHEAD_NOMINATION_DEADLINE = 15;
     static final double PROFILE_START_TIME = 0;
     static final double TO_POWER = 1.73 * 15.6;
-    static final double CONVERSION = 1.5d;
+    static final double CONVERSION = 1.5d; //Conversion factor for boosted profiles.
 
     private final PowerValuesProfile powerProfile;
     private final CableCurrentProfile profile;
@@ -72,10 +72,24 @@ abstract class AbstractProfileConverter {
      * @return The new value representing value + error sample.
      */
     final double applyErrorSampleToSingleValue(int idx, double value) {
+        return applyErrorSampleToSingleValueWithDenormalization(idx, value, 1);
+    }
+
+    /**
+     * Apply error sample based on the provided generator.
+     *
+     * @param idx          the time series index (as an indication of time).
+     * @param value        the actual value to apply error to.
+     * @param denormFactor The scale factor to denormalize error sample with (1 for not
+     *                     normalized error generators).
+     * @return The new value representing value + error sample.
+     */
+    final double applyErrorSampleToSingleValueWithDenormalization(int idx, double value,
+            double denormFactor) {
         int errorGenIdx = (int) Math
                 .ceil(((idx - PROFILE_START_TIME) % HOURS_PER_DAY) + (HOURS_PER_DAY
                         - DAY_AHEAD_NOMINATION_DEADLINE));
-        return value + random.generateErrorForHorizon(errorGenIdx);
+        return value + (random.generateErrorForHorizon(errorGenIdx) * denormFactor);
     }
 
     final CongestionProfile getOriginalCongestionProfile() {

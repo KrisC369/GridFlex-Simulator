@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
 
@@ -12,15 +13,24 @@ import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
  */
 public class PowerForecastBasedConverter extends AbstractProfileConverter {
 
+    private final double parkCapacity;
+
     /**
      * General constructor.
      *
-     * @param cableCurrentProfile The cable current profile to start from.
-     * @param gen                 Error generator serving as random generator.
+     * @param cableCurrentProfile   The cable current profile to start from.
+     * @param turbineSpecifications The turbine specification spec sheet.
+     * @param gen                   Error generator serving as random generator.
      */
     public PowerForecastBasedConverter(CableCurrentProfile cableCurrentProfile,
-            MultiHorizonErrorGenerator gen) {
+            TurbineSpecification turbineSpecifications, MultiHorizonErrorGenerator gen) {
         super(cableCurrentProfile, gen);
+        double maxPFound = getPowerProfile().max();
+        double nbTurbines = (int) Math.ceil(maxPFound / turbineSpecifications
+                .getRatedPower());
+        this.parkCapacity = turbineSpecifications.getRatedPower() * nbTurbines;
+        //        this.parkCapacity = maxPFound;
+
     }
 
     @Override
@@ -36,7 +46,9 @@ public class PowerForecastBasedConverter extends AbstractProfileConverter {
      */
     private PowerValuesProfile applyPredictionErrors(PowerValuesProfile timeSeries) {
         return PowerValuesProfile.createFromTimeSeries(timeSeries.transformFromIndex(
-                i -> applyErrorSampleToSingleValue(i, timeSeries.value(i)))
-                .transform(w -> w < 0 ? 0 : w));
+                i -> applyErrorSampleToSingleValueWithDenormalization(i, timeSeries.value(i),
+                        parkCapacity))
+                .transform(w -> w < 0 ? 0 : w)
+                .transform(w -> w > parkCapacity ? parkCapacity : w));
     }
 }

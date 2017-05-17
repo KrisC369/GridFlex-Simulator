@@ -36,6 +36,7 @@ import java.util.stream.IntStream;
  */
 public class HeuristicSolver implements Solver<AllocResults> {
 
+    private static final int DECIMAL_SCALING = 100;
     private static String CONFIG_FULLSAT =
             "be/kuleuven/cs/gridflex/solvers/heuristic/solver/HeuristicSolverConfig_FullSat.xml";
     private static String CONFIG_BESTEFFORT =
@@ -86,7 +87,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
                 .mapToDouble(p -> p.getFlexibilityActivationRate().getUp() * p
                         .getFlexibilityActivationConstraints().getMaximumActivations() * p
                         .getFlexibilityActivationConstraints().getActivationDuration()).sum();
-        double bestScore = sum * FRACTION_OF_THEORETICAL_OPT * 100;
+        double bestScore = sum * FRACTION_OF_THEORETICAL_OPT * DECIMAL_SCALING;
 
         String bestScoreString = "0hard/" + String.valueOf((int) bestScore) + "soft";
         solverConfig.getTerminationConfig()
@@ -96,6 +97,13 @@ public class HeuristicSolver implements Solver<AllocResults> {
         //        solverConfig.getTerminationConfig().setUnimprovedStepCountLimit(500);
 
         if (logger.isDebugEnabled()) {
+            logger.info(
+                    "Profile loaded with a total of {} units as a volume to resolve with {} units"
+                            + " of flexible allocation available.",
+                    context.getEnergyProfileToMinimizeWithFlex().sum(), sum);
+            if (context.getEnergyProfileToMinimizeWithFlex().sum() < sum) {
+                logger.info("Note that the maximum available flex is higher than the needed flex.");
+            }
             logger.debug(
                     "Minimum best score: {} added to termination condition. This is {}% relative "
                             + "efficiency of theoretical max: {}",
