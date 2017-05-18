@@ -62,7 +62,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
                 .transformFromIndex(i -> input.getNetRegulatedVolumeProfile().value(i) < 0 ?
                         profile.value(i) : 0);
         //Only positive budgets are useful.
-//                        return negOnly;
+        //                        return negOnly;
         return negOnly
                 .transformFromIndex(i -> budget.getBudgetForPeriod(i) < 0 ? 0 : negOnly.value(i));
     }
@@ -104,7 +104,8 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         WINDSPEED_ERROR_BASED {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
-                MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
+                MultiHorizonNormalErrorGenerator gen = new MultiHorizonNormalErrorGenerator(
+                        input.getSeed(),
                         input.getWindSpeedForecastMultiHorizonErrorDistribution());
                 return new TurbineProfileConverter(input.getCableCurrentProfile(),
                         input.getTurbineSpecifications(), gen)
@@ -118,7 +119,8 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         POWER_ERROR_BASED {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
-                MultiHorizonErrorGenerator gen = new MultiHorizonErrorGenerator(input.getSeed(),
+                MultiHorizonErrorGenerator gen = new MultiHorizonCauchyErrorGenerator(
+                        input.getSeed(),
                         input.getPowerForecastMultiHorizonErrorDistribution());
                 return new PowerForecastBasedConverter(input.getCableCurrentProfile(),
                         input.getTurbineSpecifications(),

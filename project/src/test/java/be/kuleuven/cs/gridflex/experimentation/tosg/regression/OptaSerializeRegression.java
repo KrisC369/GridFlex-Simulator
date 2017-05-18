@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.regression;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;
@@ -48,7 +48,7 @@ public class OptaSerializeRegression {
     public void testOptaPlannerWSerializationRegression() {
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        MultiHorizonNormalErrorGenerator multiHorizonNormalErrorGenerator = new MultiHorizonNormalErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         Supplier<MemoizationContext<ImmutableSolverProblemContextView, AllocResultsView>>

@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.utils;
 
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.ExperimentParams;
@@ -80,7 +80,7 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
     @Override
     protected void execute(WgmfGameParams params) {
         for (int i = 0; i < 400; i++) {
-            MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+            MultiHorizonNormalErrorGenerator multiHorizonNormalErrorGenerator = new MultiHorizonNormalErrorGenerator(
                     baseSeed + i, params.getWindSpeedErrorDistributions());
 
             PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(

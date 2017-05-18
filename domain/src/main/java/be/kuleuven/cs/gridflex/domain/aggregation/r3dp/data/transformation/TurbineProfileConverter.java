@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
@@ -28,7 +28,7 @@ public final class TurbineProfileConverter extends AbstractProfileConverter {
      * @param random  The random generator of wind errors for different horizons.
      */
     public TurbineProfileConverter(CableCurrentProfile profile, TurbineSpecification specs,
-            MultiHorizonErrorGenerator random) {
+            MultiHorizonNormalErrorGenerator random) {
         super(profile, random);
         this.specs = specs;
         double maxPFound = getPowerProfile().max();

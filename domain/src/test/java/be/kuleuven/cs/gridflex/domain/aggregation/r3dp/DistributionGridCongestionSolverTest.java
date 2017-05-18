@@ -32,7 +32,7 @@ public class DistributionGridCongestionSolverTest {
     private CongestionProfile c2;
     private TurbineSpecification specs;
     private GammaDistribution gd;
-    private MultiHorizonErrorGenerator generator;
+    private MultiHorizonNormalErrorGenerator generator;
     private AbstractFlexAllocationSolver solver;
     private ListMultimap<FlexibilityProvider, Boolean> toTest;
 
@@ -45,7 +45,7 @@ public class DistributionGridCongestionSolverTest {
             c2 = CongestionProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
             WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
-            this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
+            this.generator = new MultiHorizonNormalErrorGenerator(SEED, distribution);
             AbstractSolverFactory<SolutionResults> factory = mock(AbstractSolverFactory.class);
             solver = new DistributionGridCongestionSolver(factory, c2);
             toTest = ArrayListMultimap.create();

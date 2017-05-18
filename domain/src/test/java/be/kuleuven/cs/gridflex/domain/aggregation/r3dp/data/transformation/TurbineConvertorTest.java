@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
@@ -33,7 +33,7 @@ public class TurbineConvertorTest {
     private TurbineSpecification specs;
     private GammaDistribution gd;
     private PortfolioBalanceSolver solver;
-    private MultiHorizonErrorGenerator generator;
+    private MultiHorizonNormalErrorGenerator generator;
 
     @Before
     public void setUp() throws Exception {
@@ -44,7 +44,7 @@ public class TurbineConvertorTest {
             c2 = CableCurrentProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
             WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                     .loadFromCSV("windspeedDistributions.csv");
-            this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
+            this.generator = new MultiHorizonNormalErrorGenerator(SEED, distribution);
 
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
@@ -58,7 +58,7 @@ public class TurbineConvertorTest {
     public void testApplicationOfError0s() throws IOException {
         WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
-        this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
+        this.generator = new MultiHorizonNormalErrorGenerator(SEED, distribution);
 
         CongestionProfile cableCurrentProfile2 = toWindAndBackWErrors(c2, specs);
         List<Double> expected = c2.transform(p -> p * AbstractProfileConverter.TO_POWER / 4d)
@@ -92,7 +92,7 @@ public class TurbineConvertorTest {
     public void testToWindAndBackProfiles2() throws IOException {
         WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
                 .loadFromCSV("windspeedDistributionsEmpty.csv");
-        this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
+        this.generator = new MultiHorizonNormalErrorGenerator(SEED, distribution);
         TurbineProfileConverter t = new TurbineProfileConverter(c2, specs, generator);
         CongestionProfile orig = t.getOriginalCongestionProfile();
         CongestionProfile cableCurrentProfile2 = t.getPredictionCongestionProfile();

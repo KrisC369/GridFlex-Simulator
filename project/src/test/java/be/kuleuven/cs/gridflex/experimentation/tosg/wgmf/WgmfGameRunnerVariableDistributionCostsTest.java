@@ -2,7 +2,9 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.AbstractFlexAllocationSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonCauchyErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
@@ -69,15 +71,15 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         return WgmfInputParser.parseInputAndExec(getArgLine(solver));
     }
 
-    public static String[] getArgLine(String solver) {
+    private static String[] getArgLine(String solver) {
         //        return new String[] {
         //                "-n", "2", "-r", "1", "-s", solver, "-m", "LOCAL", "-p1start", "35.4",
         // "-p1step",
         //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
-                "-n", "2", "-r", "1", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "35.4",
+                "-n", "2", "-r", "1", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "15.5",
                 "-p1step",
-                "10", "-p1end", "45.5", "-pIdx", "1" };
+                "10", "-p1end", "16.5", "-pIdx", "1" };
     }
 
     public static WgmfGameParams loadTestResources(ExperimentParams expP) {
@@ -121,7 +123,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        MultiHorizonNormalErrorGenerator multiHorizonNormalErrorGenerator = new
+                MultiHorizonNormalErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
@@ -144,7 +147,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
         wgmfGameParams = loadTestResources(experimentParams);
         dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        multiHorizonNormalErrorGenerator = new MultiHorizonNormalErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         portfolioBalanceSolver = new PortfolioBalanceSolver(
@@ -181,7 +184,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        MultiHorizonNormalErrorGenerator multiHorizonNormalErrorGenerator = new
+                MultiHorizonNormalErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         AbstractFlexAllocationSolver DistributionGridCongestionSolver = new
@@ -206,7 +210,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
         wgmfGameParams = loadTestResources(experimentParams);
         dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        multiHorizonNormalErrorGenerator = new MultiHorizonNormalErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         DistributionGridCongestionSolver = new
@@ -262,7 +266,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 "verlies aan energie", "startprofiel+extra", 365);
         //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        MultiHorizonErrorGenerator multiHorizonNormalErrorGenerator = new
+                MultiHorizonCauchyErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
@@ -304,7 +309,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 "verlies aan energie", "startprofiel+extra", 365);
         //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
+        MultiHorizonNormalErrorGenerator multiHorizonNormalErrorGenerator = new
+                MultiHorizonNormalErrorGenerator(
                 1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         DistributionGridCongestionSolver dgcSolver = new
@@ -342,10 +348,6 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
                 "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
                 "verlies aan energie", "startprofiel+extra", 365);
-        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
-        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
-                1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 wgmfGameParams.getFactory(),
@@ -374,10 +376,6 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
                 "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
                 "verlies aan energie", "startprofiel+extra", 365);
-        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
-        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonErrorGenerator = new MultiHorizonErrorGenerator(
-                1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         DistributionGridCongestionSolver dgcSolver = new
                 DistributionGridCongestionSolver(
