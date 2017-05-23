@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.regression;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;

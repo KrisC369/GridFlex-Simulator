@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 public class WgmfJppfTaskTest {
     private static final int SEED = 3722;
     private static final String DISTRIBUTIONFILE = "windspeedDistributions.csv";
-    private static final String POWERDISTRIBUTION = "powerDistributions.csv";
+    private static final String POWERDISTRIBUTION = "powerDistributionsTestFile.csv";
     private static final String DATAFILE = "test.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String IMBAL = "imbalance_prices_short.csv";

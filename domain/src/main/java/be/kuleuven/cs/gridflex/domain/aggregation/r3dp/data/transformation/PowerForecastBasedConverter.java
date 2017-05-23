@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CableCurrentProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.PowerValuesProfile;
@@ -25,11 +25,7 @@ public class PowerForecastBasedConverter extends AbstractProfileConverter {
     public PowerForecastBasedConverter(CableCurrentProfile cableCurrentProfile,
             TurbineSpecification turbineSpecifications, MultiHorizonErrorGenerator gen) {
         super(cableCurrentProfile, gen);
-        double maxPFound = getPowerProfile().max();
-        double nbTurbines = (int) Math.ceil(maxPFound / turbineSpecifications
-                .getRatedPower());
-        this.parkCapacity = turbineSpecifications.getRatedPower() * nbTurbines;
-        //        this.parkCapacity = maxPFound;
+        this.parkCapacity = getPowerProfile().max();
 
     }
 

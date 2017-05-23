@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.utils;
 
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.ExperimentParams;

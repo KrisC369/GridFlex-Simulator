@@ -1,5 +1,8 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonCauchyErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.transformation
         .PowerForecastBasedConverter;
@@ -62,7 +65,6 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
                 .transformFromIndex(i -> input.getNetRegulatedVolumeProfile().value(i) < 0 ?
                         profile.value(i) : 0);
         //Only positive budgets are useful.
-        //                        return negOnly;
         return negOnly
                 .transformFromIndex(i -> budget.getBudgetForPeriod(i) < 0 ? 0 : negOnly.value(i));
     }

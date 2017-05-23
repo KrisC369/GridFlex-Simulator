@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;

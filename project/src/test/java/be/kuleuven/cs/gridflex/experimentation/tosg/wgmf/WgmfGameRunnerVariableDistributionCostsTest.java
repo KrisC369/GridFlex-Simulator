@@ -2,9 +2,7 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.AbstractFlexAllocationSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonCauchyErrorGenerator;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonErrorGenerator;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.MultiHorizonNormalErrorGenerator;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
@@ -41,7 +39,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     static final double CONVERSION = 1.5d;
     static final double SLOTS_PER_HOUR = 4;
     private static final String DISTRIBUTIONFILE = "windspeedDistributionsNormalized.csv";
-    private static final String POWERDISTRIBUTION = "powerDistributions.csv";
+    private static final String POWERDISTRIBUTION = "powerDistributionsTestFile.csv";
     private static final String DATAFILE = "test.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
     private static final String IMBAL = "imbalance_prices_short.csv";
@@ -209,10 +207,6 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         // "imbalance_prices.csv",
         //                "4kwartOpEnNeer.csv", "verlies aan energie", "startprofiel+extra", 365);
         wgmfGameParams = loadTestResources(experimentParams);
-        dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        multiHorizonNormalErrorGenerator = new MultiHorizonNormalErrorGenerator(
-                1000, wgmfGameParams.getWindSpeedErrorDistributions());
-
         DistributionGridCongestionSolver = new
                 DistributionGridCongestionSolver(
                 wgmfGameParams.getFactory(), wgmfGameParams.getInputData().getCongestionProfile());
@@ -264,11 +258,6 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
                 "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
                 "verlies aan energie", "startprofiel+extra", 365);
-        //        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
-        DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();
-        MultiHorizonErrorGenerator multiHorizonNormalErrorGenerator = new
-                MultiHorizonCauchyErrorGenerator(
-                1000, wgmfGameParams.getWindSpeedErrorDistributions());
 
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 wgmfGameParams.getFactory(),

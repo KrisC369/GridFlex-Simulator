@@ -1,8 +1,9 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gametheory.AgentGenerator;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.gametheory.AgentGenerator;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 
@@ -29,6 +30,7 @@ public class WgmfAgentGenerator implements
 
     @Override
     public FlexibilityProvider getAgent() {
-        return new FlexProvider(gd.sample());
+        return new FlexProvider(gd.sample(),
+                HourlyFlexConstraints.R3DP);
     }
 }

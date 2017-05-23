@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
+package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data;
 
 import be.kuleuven.cs.gridflex.domain.util.data.AbstractErrorDistribution;
 
