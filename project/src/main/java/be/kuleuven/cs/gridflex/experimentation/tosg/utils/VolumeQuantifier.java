@@ -1,7 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.utils;
 
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.ExperimentParams;
@@ -53,11 +52,19 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
         logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
         startExecution(args2,
                 VolumeQuantifier::new);
+        Lists.newArrayList("-pIdx", "0", "-dIdx", "1").toArray(args2);
+        logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
+        startExecution(args2,
+                VolumeQuantifier::new);
         Lists.newArrayList("-pIdx", "0", "-dIdx", "2").toArray(args2);
         logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
         startExecution(args2,
                 VolumeQuantifier::new);
-        Lists.newArrayList("-pIdx", "0", "-dIdx", "3").toArray(args2);
+        Lists.newArrayList("-pIdx", "0", "-dIdx", "5").toArray(args2);
+        logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
+        startExecution(args2,
+                VolumeQuantifier::new);
+        Lists.newArrayList("-pIdx", "0", "-dIdx", "6").toArray(args2);
         logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
         startExecution(args2,
                 VolumeQuantifier::new);
@@ -66,26 +73,33 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
         logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
         startExecution(args2,
                 VolumeQuantifier::new);
+        Lists.newArrayList("-pIdx", "2", "-dIdx", "1").toArray(args2);
+        logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
+        startExecution(args2,
+                VolumeQuantifier::new);
         Lists.newArrayList("-pIdx", "2", "-dIdx", "2").toArray(args2);
         logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
         startExecution(args2,
                 VolumeQuantifier::new);
-        Lists.newArrayList("-pIdx", "2", "-dIdx", "3").toArray(args2);
+        startExecution(args2,
+                VolumeQuantifier::new);
+        Lists.newArrayList("-pIdx", "2", "-dIdx", "5").toArray(args2);
         logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
         startExecution(args2,
                 VolumeQuantifier::new);
-
+        Lists.newArrayList("-pIdx", "2", "-dIdx", "6").toArray(args2);
+        logger.warn("Computing relative error volumes for args: {}", Arrays.toString(args2));
+        startExecution(args2,
+                VolumeQuantifier::new);
     }
 
     @Override
     protected void execute(WgmfGameParams params) {
         for (int i = 0; i < 400; i++) {
-            MultiHorizonNormalErrorGenerator multiHorizonNormalErrorGenerator = new MultiHorizonNormalErrorGenerator(
-                    baseSeed + i, params.getWindSpeedErrorDistributions());
-
             PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                     params.getFactory(),
-                    params.toSolverInputData(0));
+                    params.toSolverInputData(baseSeed + i),
+                    PortfolioBalanceSolver.ProfileConversionStrategy.POWER_ERROR_BASED);
 
             CongestionProfile diff = (CongestionProfile) portfolioBalanceSolver
                     .getCongestionVolumeToResolve();
