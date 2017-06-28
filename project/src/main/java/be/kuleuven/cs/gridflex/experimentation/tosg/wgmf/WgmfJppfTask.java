@@ -49,7 +49,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
     @Override
     public void run() {
         if (getDataProvider() != null) {
-            params = (WgmfGameParams) getDataProvider().getParameter(paramsDataKey);
+            params = getDataProvider().getParameter(paramsDataKey);
         }
         WgmfAgentGenerator configurator = new WgmfAgentGenerator(instanceConfig.getSeed());
         WhoGetsMyFlexGame gameInstance = instanceFactory

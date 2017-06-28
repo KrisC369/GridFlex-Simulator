@@ -2,19 +2,18 @@ package be.kuleuven.cs.gridflex.domain.workstation;
 
 import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
+import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Abstract base class implementing the decorator pattern for Workstation
  * instances.
  *
- * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
- * @param <T>
- *            The type of workstation we are decorating. Only Workstation
+ * @param <T> The type of workstation we are decorating. Only Workstation
  *            interface methods are automatically delegated. Specific subtype
  *            methods should be delegated to in extending delegators.
+ * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public abstract class ForwardingStationDecorator<T extends Workstation>
         implements Workstation {
@@ -24,8 +23,7 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
     /**
      * Default constructor that has to be called by subclasses.
      *
-     * @param ws
-     *            the delegate workstation of this decorator
+     * @param ws the delegate workstation of this decorator
      */
     ForwardingStationDecorator(final T ws) {
         this.w = ws;
@@ -77,9 +75,7 @@ public abstract class ForwardingStationDecorator<T extends Workstation>
 
     @Override
     public List<SimulationComponent> getSimulationSubComponents() {
-        final List<SimulationComponent> toret = new ArrayList<>();
-        toret.addAll(getDelegate().getSimulationSubComponents());
-        return toret;
+        return Lists.newArrayList(getDelegate().getSimulationSubComponents());
     }
 
     @Override
