@@ -53,7 +53,7 @@ public abstract class AbstractFlexAllocationSolver extends FlexibilityUtiliser<S
     }
 
     private void processActivations(@Nullable final SolutionResults results) {
-        if (!getFlexibilityProviders().isEmpty() && !results.equals(SolutionResults.INFEASIBLE)) {
+        if (!getFlexibilityProviders().isEmpty() && !SolutionResults.INFEASIBLE.equals(results)) {
             List<Integer> acts = getTotalActivationsProfile(results.getAllocationMaps());
             List<Double> volumes = getTotalActivatedVolumesProfile(results.getAllocationMaps());
 
@@ -134,6 +134,7 @@ public abstract class AbstractFlexAllocationSolver extends FlexibilityUtiliser<S
             int discretisationInNbSlotsPerHour, List<Integer> acts, List<Double> totalVolumes);
 
     @Override
+    @Nullable
     protected SolutionResults getResult() {
         return results;
     }

@@ -119,7 +119,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
             logger.debug("Starting search.", actConfig);
         }
         solver.solve(unsolvedAlloc);
-        Allocation solvedAlloc = (Allocation) solver.getBestSolution();
+        Allocation solvedAlloc = solver.getBestSolution();
         double objValue = solvedAlloc.getResolvedCongestion();
         double relative = objValue / sum;
 

@@ -77,12 +77,19 @@ public final class WgmfSolverFactory
         } else {
             solverInstance = type.getInstance(flexAllocProblemContext);
         }
-        return new SolverAdapter<AllocResults, SolutionResults>(solverInstance) {
+        return new WgmfResultSolverAdapter(solverInstance);
+    }
 
-            @Override
-            public SolutionResults adaptResult(AllocResults solution) {
-                return new SolutionResultAdapter(solution).getResults();
-            }
-        };
+    private static class WgmfResultSolverAdapter
+            extends SolverAdapter<AllocResults, SolutionResults> {
+
+        public WgmfResultSolverAdapter(Solver<AllocResults> solverInstance) {
+            super(solverInstance);
+        }
+
+        @Override
+        public SolutionResults adaptResult(AllocResults solution) {
+            return new SolutionResultAdapter(solution).getResults();
+        }
     }
 }

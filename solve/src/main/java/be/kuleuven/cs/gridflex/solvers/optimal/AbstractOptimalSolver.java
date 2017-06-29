@@ -125,31 +125,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
 
         @Override
         public MpResult solve() {
-            return new MpResult() {
-                @Override
-                public Number getObjective() {
-                    return 0;
-                }
-
-                @Override
-                public boolean getBoolean(Object var) {
-                    return false;
-                }
-
-                @Override
-                public Number get(Object var) {
-                    return 0;
-                }
-
-                @Override
-                public void put(Object var, Number value) {
-                }
-
-                @Override
-                public Boolean containsVar(Object var) {
-                    return true;
-                }
-            };
+            return new DummyMpResult();
         }
 
         @Override
@@ -158,6 +134,32 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
 
         @Override
         public void setVerbose(int value) {
+        }
+
+        private static class DummyMpResult implements MpResult {
+            @Override
+            public Number getObjective() {
+                return 0;
+            }
+
+            @Override
+            public boolean getBoolean(Object var) {
+                return false;
+            }
+
+            @Override
+            public Number get(Object var) {
+                return 0;
+            }
+
+            @Override
+            public void put(Object var, Number value) {
+            }
+
+            @Override
+            public Boolean containsVar(Object var) {
+                return true;
+            }
         }
     }
 }
