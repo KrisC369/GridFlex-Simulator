@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonCauchyErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
@@ -120,7 +121,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         POWER_ERROR_BASED {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
-                MultiHorizonErrorGenerator gen = new MultiHorizonNormalErrorGenerator(
+                MultiHorizonErrorGenerator gen = new MultiHorizonCauchyErrorGenerator(
                         input.getSeed(),
                         input.getPowerForecastMultiHorizonErrorDistribution());
                 return new PowerForecastBasedConverter(input.getCableCurrentProfile(),
