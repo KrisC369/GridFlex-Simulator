@@ -3,6 +3,10 @@ package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data;
 import be.kuleuven.cs.gridflex.domain.util.data.AbstractErrorDistribution;
 
 /**
+ * Random data generator using a Cauchy distribution.
+ * Input distribution parameters should be defined for the [0,1] domain.
+ * Outputs will be rescaled after draws to the [-1,1] domain.
+ *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class MultiHorizonCauchyErrorGenerator extends MultiHorizonNormalErrorGenerator {
@@ -19,6 +23,7 @@ public class MultiHorizonCauchyErrorGenerator extends MultiHorizonNormalErrorGen
 
     /**
      * Generate error value for given horizon.
+     * Rescales the sample from [0,1] domain to [-1,1].
      *
      * @param i the horizon value.
      * @return The error value.
@@ -30,7 +35,8 @@ public class MultiHorizonCauchyErrorGenerator extends MultiHorizonNormalErrorGen
         //todo use this!
         double cauchyNrm =
                 getTwisters().get(i).nextGaussian() / getTwisters().get(i).nextGaussian();
-        return cauchyNrm * getDistribution().getSdForHorizon(i) + getDistribution()
+        double sample = cauchyNrm * getDistribution().getSdForHorizon(i) + getDistribution()
                 .getMeanForHorizon(i);
+        return (sample * 2) - 1;
     }
 }
