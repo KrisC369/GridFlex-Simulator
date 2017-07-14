@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Abstract error distribution data file.
@@ -18,8 +17,6 @@ import java.util.stream.Collectors;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public abstract class AbstractErrorDistribution {
-
-    private static final double KMH_TO_MS = 3.6d;
 
     /**
      * @return All means for this distribution instance.
@@ -100,9 +97,6 @@ public abstract class AbstractErrorDistribution {
                 means.add(Double.valueOf(record.get(1)));
                 sds.add(Double.valueOf(record.get(2)));
             }
-            //Apply correction: converting from km/h to m/s
-            means = means.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
-            sds = sds.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
             fileReader.close();
             return this;
         }

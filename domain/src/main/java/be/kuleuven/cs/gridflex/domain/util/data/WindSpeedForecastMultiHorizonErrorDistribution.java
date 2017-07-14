@@ -5,6 +5,7 @@ import com.google.auto.value.AutoValue;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -16,6 +17,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 @AutoValue
 public abstract class WindSpeedForecastMultiHorizonErrorDistribution
         extends AbstractErrorDistribution implements Serializable {
+    private static final double KMH_TO_MS = 3.6d;
 
     WindSpeedForecastMultiHorizonErrorDistribution() {
     }
@@ -32,6 +34,9 @@ public abstract class WindSpeedForecastMultiHorizonErrorDistribution
         ErrorDistributions errorDistributions = new ErrorDistributions(filename).invoke();
         List<Double> means = errorDistributions.getMeans();
         List<Double> sds = errorDistributions.getSds();
+        //Apply correction: converting from km/h to m/s
+        means = means.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
+        sds = sds.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
         return create(means, sds);
     }
 
