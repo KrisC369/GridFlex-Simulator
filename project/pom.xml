@@ -89,15 +89,20 @@
             <artifactId>cplex</artifactId>
             <version>12.6.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.n52.matlab</groupId>
-            <artifactId>matlab-control</artifactId>
-            <version>5.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.n52.matlab</groupId>-->
+            <!--<artifactId>matlab-control</artifactId>-->
+            <!--<version>5.0.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-benchmark</artifactId>
             <version>6.5.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.KrisC369</groupId>
+            <artifactId>matlab-control</artifactId>
+            <version>develop_noGuiStartFeature-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <build>

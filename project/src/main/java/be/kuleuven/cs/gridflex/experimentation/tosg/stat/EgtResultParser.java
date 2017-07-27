@@ -21,6 +21,7 @@ public class EgtResultParser implements AutoCloseable {
     private static final Object LOCK = new Object();
     private static final boolean HIDDEN = true;
     private static final boolean REUSE_PREVIOUS = true;
+    private static final boolean NO_GUI = true;
     private final AtomicReference<MatlabProxy> proxy = new AtomicReference<>();
     private static final Logger logger = org.slf4j.LoggerFactory.getLogger(EgtResultParser.class);
     private static final String EGT_FUNCTION_PATH = "~/gitworkspace/EgtTools/src/";
@@ -34,7 +35,7 @@ public class EgtResultParser implements AutoCloseable {
     public EgtResultParser(String pathToML) {
         MatlabProxyFactoryOptions options = new MatlabProxyFactoryOptions.Builder()
                 .setUsePreviouslyControlledSession(REUSE_PREVIOUS).setMatlabLocation(pathToML)
-                .setHidden(HIDDEN).build();
+                .setHidden(HIDDEN).setNoGui(NO_GUI).build();
         try {
             synchronized (LOCK) {
                 logger.debug(
