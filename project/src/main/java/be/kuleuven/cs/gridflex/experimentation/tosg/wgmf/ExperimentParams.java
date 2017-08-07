@@ -1,9 +1,12 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
 import com.google.auto.value.AutoValue;
 
 import java.io.Serializable;
+
+import static be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType.NORMAL;
 
 /**
  * Experiment parameters that define the configuration of concrete experiments.
@@ -20,6 +23,7 @@ public abstract class ExperimentParams implements Serializable {
     private static final boolean DEF_CACHING_ENABLED = false;
     private static final boolean DEF_REMOTE_EXEC = false;
     private static final boolean DEF_UPDATE_CACHE_ENABLED = false;
+    private static final ErrorDistributionType DEF_DISTRIBUTION = NORMAL;
 
     ExperimentParams() {
     }
@@ -78,6 +82,8 @@ public abstract class ExperimentParams implements Serializable {
 
     public abstract boolean isCacheExistenceEnsured();
 
+    public abstract ErrorDistributionType getDistribution();
+
     /**
      * @return A builder instance.
      */
@@ -86,7 +92,7 @@ public abstract class ExperimentParams implements Serializable {
                 .setP1Step(DEF_P1STEP).setP1End(DEF_P1END).setRemoteExecutable(DEF_REMOTE_EXEC)
                 .setWindErrorProfileIndex(DEF_WINDPROF).setCurrentDataProfileIndex(DEF_DATAPROF)
                 .setCachingEnabled(DEF_CACHING_ENABLED).setUpdateCacheEnabled(
-                        DEF_UPDATE_CACHE_ENABLED)
+                        DEF_UPDATE_CACHE_ENABLED).setDistribution(DEF_DISTRIBUTION)
                 .setCacheExistenceEnsured(DEF_UPDATE_CACHE_ENABLED);
     }
 
@@ -164,6 +170,8 @@ public abstract class ExperimentParams implements Serializable {
          * @param ensure File exists
          */
         public abstract Builder setCacheExistenceEnsured(boolean ensure);
+
+        public abstract Builder setDistribution(ErrorDistributionType distributionType);
 
         /**
          * @return Builds an experimentparams instance.

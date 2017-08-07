@@ -1,5 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -27,6 +28,8 @@ public final class WgmfInputParser {
     private static final String PROFINDEX_KEY = "pIdx";
     private static final String MODE_KEY = "m";
     private static final String SOLVER_KEY = "s";
+    private static final String DISTRIBUTION_KEY = "distribution";
+
 
     private static final int NAGENTS_DEFAULT = 2;
     private static final int NREPS_DEFAULT = 1;
@@ -75,6 +78,12 @@ public final class WgmfInputParser {
                         + " with * replaced by \"[dIxd]\" or \"\" if dIdx < 0.");
         o.addOption(CACHING_ALLOC_KEY, true, "Caching enabled");
 
+        o.addOption(withLongOpt("errorDistribution")
+                .withDescription("Which forecast error distribution to to use. [NORMAL|CAUCHY]")
+                .hasArg()
+                .withArgName("DISTRIBUTION")
+                .create(DISTRIBUTION_KEY));
+
         int nAgents = NAGENTS_DEFAULT;
         int nReps = NREPS_DEFAULT;
         Solvers.TYPE solver = SOLVER_DEFAULT;
@@ -120,6 +129,10 @@ public final class WgmfInputParser {
                 builder.setUpdateCacheEnabled(upd);
                 builder.setCacheExistenceEnsured(ensure);
             }
+            if (line.hasOption(DISTRIBUTION_KEY)){
+                builder.setDistribution(ErrorDistributionType.from(line.getOptionValue(DISTRIBUTION_KEY)));
+            }
+
             if (logger.isWarnEnabled()) {
                 String remote = remoteExec ? "REMOTE" : "LOCAL";
                 logger.warn(

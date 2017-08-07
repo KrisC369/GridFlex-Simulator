@@ -75,7 +75,7 @@ public abstract class AbstractWgmfGameRunner {
             return WgmfGameParams.create(dataIn,
                     new WgmfSolverFactory(expP.getSolver(), expP.isUpdateCacheEnabled(),
                             memContext), specs, windDistribution, powerDistribution, imbalIn,
-                    dayAheadPriceProfile);
+                    dayAheadPriceProfile, expP.getDistribution());
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }

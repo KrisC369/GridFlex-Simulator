@@ -63,6 +63,12 @@ public abstract class SolverInputData {
     public abstract DayAheadPriceProfile getDayAheadPriceProfile();
 
     /**
+     * @return The type of distribution (normal/cauchy) that is used to model the forecast
+     * error.
+     */
+    public abstract ErrorDistributionType getForecastErrorDistributionType();
+
+    /**
      * @return the seed to use.
      */
     public abstract long getSeed();
@@ -85,8 +91,8 @@ public abstract class SolverInputData {
             WindSpeedForecastMultiHorizonErrorDistribution windDist,
             PowerForecastMultiHorizonErrorDistribution powerDist,
             PositiveImbalancePriceProfile pip,
-            DayAheadPriceProfile dap, long seed) {
+            DayAheadPriceProfile dap, ErrorDistributionType distribution, long seed) {
         return new AutoValue_SolverInputData(ccp, cp, nrv, pip, specs, windDist, powerDist, dap,
-                seed);
+                distribution, seed);
     }
 }
