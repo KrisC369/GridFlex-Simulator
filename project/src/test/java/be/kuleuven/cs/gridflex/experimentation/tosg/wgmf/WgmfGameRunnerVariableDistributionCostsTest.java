@@ -2,9 +2,9 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.AbstractFlexAllocationSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
@@ -77,7 +77,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         return new String[] {
                 "-n", "2", "-r", "1", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "15.5",
                 "-p1step",
-                "10", "-p1end", "16.5", "-pIdx", "1" };
+                "10", "-p1end", "16.5", "-pIdx", "1", "-distribution", "CAUCHY" };
     }
 
     public static WgmfGameParams loadTestResources(ExperimentParams expP) {
@@ -106,7 +106,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                     .create(dataIn,
                             new WgmfSolverFactory(expP.getSolver(), expP.isUpdateCacheEnabled(),
                                     memContext), specs, windDist, powerDist, imbalIn,
-                            dayAheadPriceProfile);
+                            dayAheadPriceProfile, expP.getDistribution());
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }
