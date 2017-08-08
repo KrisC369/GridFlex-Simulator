@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
 import com.google.auto.value.AutoValue;
 
@@ -24,6 +25,7 @@ public abstract class ExperimentParams implements Serializable {
     private static final boolean DEF_REMOTE_EXEC = false;
     private static final boolean DEF_UPDATE_CACHE_ENABLED = false;
     private static final ErrorDistributionType DEF_DISTRIBUTION = NORMAL;
+    private static final HourlyFlexConstraints DEF_CONSTRAINTS = HourlyFlexConstraints.R3DP;
 
     ExperimentParams() {
     }
@@ -84,6 +86,8 @@ public abstract class ExperimentParams implements Serializable {
 
     public abstract ErrorDistributionType getDistribution();
 
+    public abstract HourlyFlexConstraints getActivationConstraints();
+
     /**
      * @return A builder instance.
      */
@@ -93,6 +97,7 @@ public abstract class ExperimentParams implements Serializable {
                 .setWindErrorProfileIndex(DEF_WINDPROF).setCurrentDataProfileIndex(DEF_DATAPROF)
                 .setCachingEnabled(DEF_CACHING_ENABLED).setUpdateCacheEnabled(
                         DEF_UPDATE_CACHE_ENABLED).setDistribution(DEF_DISTRIBUTION)
+                .setActivationConstraints(DEF_CONSTRAINTS)
                 .setCacheExistenceEnsured(DEF_UPDATE_CACHE_ENABLED);
     }
 
@@ -163,15 +168,29 @@ public abstract class ExperimentParams implements Serializable {
 
         /**
          * @param updateCacheEnabled True if caching should be write-enabled.
+         * @return This builder.
          */
         public abstract Builder setUpdateCacheEnabled(boolean updateCacheEnabled);
 
         /**
          * @param ensure File exists
+         * @return This builder.
          */
         public abstract Builder setCacheExistenceEnsured(boolean ensure);
 
+        /**
+         * Set the distribution to draw forecast from.
+         *
+         * @param distributionType The type of distribution [cauchy|normal]
+         * @return This builder.
+         */
         public abstract Builder setDistribution(ErrorDistributionType distributionType);
+
+        /**
+         * @param constraints The constraints flexibility providers need to adhere to.
+         * @return This builder.
+         */
+        public abstract Builder setActivationConstraints(HourlyFlexConstraints constraints);
 
         /**
          * @return Builds an experimentparams instance.

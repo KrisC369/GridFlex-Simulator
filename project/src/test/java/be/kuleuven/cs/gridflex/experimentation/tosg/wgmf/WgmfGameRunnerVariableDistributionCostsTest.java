@@ -77,7 +77,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         return new String[] {
                 "-n", "2", "-r", "1", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "15.5",
                 "-p1step",
-                "10", "-p1end", "16.5", "-pIdx", "1", "-distribution", "CAUCHY" };
+                "10", "-p1end", "16.5", "-pIdx", "1", "-distribution", "CAUCHY", "-flexIA", "12",
+                "-flexDUR", "2", "-flexCOUNT", "40" };
     }
 
     public static WgmfGameParams loadTestResources(ExperimentParams expP) {
@@ -106,7 +107,8 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                     .create(dataIn,
                             new WgmfSolverFactory(expP.getSolver(), expP.isUpdateCacheEnabled(),
                                     memContext), specs, windDist, powerDist, imbalIn,
-                            dayAheadPriceProfile, expP.getDistribution());
+                            dayAheadPriceProfile, expP.getDistribution(),
+                            expP.getActivationConstraints());
         } catch (IOException e) {
             throw new IllegalStateException("One of the resources could not be loaded.", e);
         }

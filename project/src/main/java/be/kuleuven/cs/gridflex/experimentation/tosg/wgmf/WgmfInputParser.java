@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -29,7 +30,9 @@ public final class WgmfInputParser {
     private static final String MODE_KEY = "m";
     private static final String SOLVER_KEY = "s";
     private static final String DISTRIBUTION_KEY = "distribution";
-
+    private static final String INTERARRIVAL_KEY = "flexIA";
+    private static final String DURATION_KEY = "flexDUR";
+    private static final String ACTCOUNT_KEY = "flexCOUNT";
 
     private static final int NAGENTS_DEFAULT = 2;
     private static final int NREPS_DEFAULT = 1;
@@ -43,7 +46,7 @@ public final class WgmfInputParser {
     /**
      * Use --help or -r [repititions] -n [numberOfAgents] -s [GUROBI|CPLEX|DUMMY|OPTA] -m
      * [LOCAL|REMOTE] -p1start [rangeStart] -p1end [rangeEnd] -p1step [stepSize]
-     * -pIdx[profileIndex] -dIdx [errorDataIdx]
+     * -pIdx[profileIndex] -dIdx [errorDataIdx] -distribution [CAUCHY|NORMAL]
      *
      * @param args The commandline args.
      * @return The experiment params.
@@ -65,6 +68,12 @@ public final class WgmfInputParser {
         o.addOption(P1START_KEY, true, "The starting value of first param");
         o.addOption(P1STEP_KEY, true, "The step size of first param");
         o.addOption(P1END_KEY, true, "The end value of first param");
+        o.addOption(INTERARRIVAL_KEY, true,
+                "Flexibility constraints parameter: min time between activations");
+        o.addOption(DURATION_KEY, true,
+                "Flexibility constraints parameter: duration of an activation");
+        o.addOption(ACTCOUNT_KEY, true,
+                "Flexibility constraints parameter: the number of activations per year");
         o.addOption(DISTINDEX_KEY, true,
                 "The index of distibution file to load. Make sure the input file is named using "
                         + "following convention: "
@@ -129,8 +138,25 @@ public final class WgmfInputParser {
                 builder.setUpdateCacheEnabled(upd);
                 builder.setCacheExistenceEnsured(ensure);
             }
-            if (line.hasOption(DISTRIBUTION_KEY)){
-                builder.setDistribution(ErrorDistributionType.from(line.getOptionValue(DISTRIBUTION_KEY)));
+            if (line.hasOption(DISTRIBUTION_KEY)) {
+                builder.setDistribution(
+                        ErrorDistributionType.from(line.getOptionValue(DISTRIBUTION_KEY)));
+            }//TODO refactor out logic specific stuff to game params.
+            if (line.hasOption(INTERARRIVAL_KEY) && line.hasOption(DURATION_KEY) && line
+                    .hasOption(ACTCOUNT_KEY)) {
+                double ia = Double.parseDouble(line.getOptionValue(INTERARRIVAL_KEY));
+                double duration = Double.parseDouble(line.getOptionValue(DURATION_KEY));
+                int actCount = Integer.parseInt(line.getOptionValue(ACTCOUNT_KEY));
+                builder.setActivationConstraints(HourlyFlexConstraints.builder()
+                        .interActivationTime(ia).activationDuration(duration)
+                        .maximumActivations(actCount).build());
+            } else if ((line.hasOption(INTERARRIVAL_KEY) || line.hasOption(DURATION_KEY) || line
+                    .hasOption(ACTCOUNT_KEY))) {
+                throw new IllegalArgumentException(
+                        "You should specify all activation constraints parameters or none at all,"
+                                + " which sets the default R3DP constraints.");
+            } else {
+                builder.setActivationConstraints(HourlyFlexConstraints.R3DP);
             }
 
             if (logger.isWarnEnabled()) {

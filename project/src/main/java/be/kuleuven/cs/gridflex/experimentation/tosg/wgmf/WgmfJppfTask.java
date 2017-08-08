@@ -51,7 +51,7 @@ public class WgmfJppfTask extends AbstractTask<GameInstanceResult> implements Ca
         if (getDataProvider() != null) {
             params = getDataProvider().getParameter(paramsDataKey);
         }
-        WgmfAgentGenerator configurator = new WgmfAgentGenerator(instanceConfig.getSeed());
+        WgmfAgentGenerator configurator = new WgmfAgentGenerator(instanceConfig.getSeed(),params.getActivationConstraints());
         WhoGetsMyFlexGame gameInstance = instanceFactory
                 .createGameInstance(params, instanceConfig);
         AbstractGameInstanceConfigurator.create(gameInstance)

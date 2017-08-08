@@ -3,6 +3,7 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
@@ -74,7 +75,7 @@ public class WgmfJppfTaskTest {
                     .create(dataIn, new WgmfSolverFactory(
                                     Solvers.TYPE.DUMMY, false, () -> null), specs,
                             windDist, powerDist, imbalIn, dayAheadPriceProfile,
-                            ErrorDistributionType.NORMAL);
+                            ErrorDistributionType.NORMAL, HourlyFlexConstraints.R3DP);
             GameInstanceConfiguration config = GameInstanceConfiguration.builder().setAgentSize(3)
                     .setActionSize(2)
                     .fixAgentToAction(0, 0).fixAgentToAction(1, 0).fixAgentToAction(2, 1)

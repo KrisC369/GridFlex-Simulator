@@ -23,7 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WgmfMultiJobGameRunnerVariableDistributionCosts
+public class  WgmfMultiJobGameRunnerVariableDistributionCosts
         extends WgmfGameRunnerVariableDistributionCosts {
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableDistributionCosts.class);

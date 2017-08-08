@@ -2,6 +2,7 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.ErrorDistributionType;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.SolverInputData;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
 import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
@@ -58,6 +59,11 @@ public abstract class WgmfGameParams implements Serializable {
     public abstract ErrorDistributionType getErrorDistribution();
 
     /**
+     * @return The Hourly flex constraints agents are adhering to.
+     */
+    public abstract HourlyFlexConstraints getActivationConstraints();
+
+    /**
      * Static factory method.
      *
      * @param inputData The data profile to work from.
@@ -72,9 +78,10 @@ public abstract class WgmfGameParams implements Serializable {
             WindSpeedForecastMultiHorizonErrorDistribution windDist,
             PowerForecastMultiHorizonErrorDistribution powerDist,
             ImbalancePriceInputData imbalIn,
-            DayAheadPriceProfile dap, ErrorDistributionType distribution) {
+            DayAheadPriceProfile dap, ErrorDistributionType distribution,
+            HourlyFlexConstraints constraints) {
         return new AutoValue_WgmfGameParams(inputData, factory, specs, windDist, powerDist, imbalIn,
-                dap, distribution);
+                dap, distribution, constraints);
     }
 
     /**
