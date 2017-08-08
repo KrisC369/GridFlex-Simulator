@@ -1,4 +1,5 @@
-GET=tosg.jppf.WgmfMultiJobGameRunnerVariableDistributionCosts
+#!/bin/sh
+TARGET=tosg.wgmf.WgmfMultiJobGameRunnerVariableDistributionCosts
 REPS=$1
 AGENTS=$2
 SOLVER=OPTA
