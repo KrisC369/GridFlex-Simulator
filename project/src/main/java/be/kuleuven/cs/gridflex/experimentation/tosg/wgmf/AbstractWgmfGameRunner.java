@@ -101,7 +101,7 @@ public abstract class AbstractWgmfGameRunner {
         gameJPPFRunner.processResults();
     }
 
-    ExecutionStrategy getStrategy() {
+    protected ExecutionStrategy getStrategy() {
         return strategy;
     }
 

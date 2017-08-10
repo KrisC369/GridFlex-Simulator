@@ -1,11 +1,11 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.runners.jppf.RemoteRunners;
-import be.kuleuven.cs.gridflex.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.runners.jppf.RemoteRunners;
+import be.kuleuven.cs.gridflex.experimentation.runners.local.LocalRunners;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.jppf.node.protocol.Task;

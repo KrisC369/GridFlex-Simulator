@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
 import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.data.CsvResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
 import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
@@ -113,13 +113,13 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
 
     @Override
     protected void processResults() {
-        List<CsvResultWriter.WgmfDynamicsResults> toWrite = Lists.newArrayList();
+        List<EgtCsvResultWriter.WgmfDynamicsResults> toWrite = Lists.newArrayList();
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             for (Map.Entry<Double, ConfigurableGameDirector> entry : priceToDirector.entrySet()) {
                 parseDynamicsAndAddToResults(entry.getKey(), entry.getValue(), toWrite,
                         egtResultParser);
             }
-            CsvResultWriter.writeCsvFile(
+            EgtCsvResultWriter.writeCsvFile(
                     RES_OUTPUT_FILE + String.valueOf(getnAgents()) + "R" + String
                             .valueOf(getnReps()) + "_" + String
                             .valueOf(System.currentTimeMillis() / 100), toWrite, false);
@@ -130,7 +130,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     }
 
     protected final void parseDynamicsAndAddToResults(double pricePoint,
-            ConfigurableGameDirector director, List<CsvResultWriter.WgmfDynamicsResults> results,
+            ConfigurableGameDirector director, List<EgtCsvResultWriter.WgmfDynamicsResults> results,
             EgtResultParser egtResultParser) {
         EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
                 .from(director.getResults().getResults());
@@ -158,7 +158,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
         String[] splitted = DATAPROFILE_TEMPLATE.split("/");
 
-        results.add(CsvResultWriter.WgmfDynamicsResults
+        results.add(EgtCsvResultWriter.WgmfDynamicsResults
                 .create(getnAgents(), getnReps(),
                         splitted[splitted.length - 1]
                                 .replace("*", String.valueOf("[" + dataProfileIdx + "]")),
