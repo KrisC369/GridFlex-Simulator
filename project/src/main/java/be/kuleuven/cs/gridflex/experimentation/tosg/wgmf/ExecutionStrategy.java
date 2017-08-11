@@ -1,8 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
-import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
 import be.kuleuven.cs.gridflex.experimentation.runners.jppf.RemoteRunners;
 import be.kuleuven.cs.gridflex.experimentation.runners.local.LocalRunners;
@@ -53,77 +51,59 @@ enum ExecutionStrategy {
         return toRet;
     }
 
-    <R> void processExecutionResults(List<R> results,
-            ConfigurableGameDirector director) {
-        switch (this) {
-        case REMOTE:
-            for (Task<?> task : (List<Task<?>>) results) {
-                if (task.getThrowable() != null) {
-                    getLogger(ExecutionStrategy.class)
-                            .error("An error occured executing task:", task.getThrowable());
-                    throw new IllegalStateException(
-                            "An exception occured during task execution. The results are likely "
-                                    + "tainted.",
-                            task.getThrowable());
-                } else {
-                    director.notifyVersionHasBeenPlayed((GameInstanceResult) task.getResult());
-                }
-            }
-            break;
-        case LOCAL:
-            for (Future<?> result : (List<Future<?>>) results) {
-                try {
-                    director.notifyVersionHasBeenPlayed((GameInstanceResult) result.get());
-                } catch (InterruptedException e) {
-                    getLogger(ExecutionStrategy.class)
-                            .error("Experimentation got interrupted.", e);
-                    throw new IllegalStateException("Exception caught. Results are likely tainted.",
-                            e);
-                } catch (ExecutionException e) {
-                    getLogger(ExecutionStrategy.class)
-                            .error("An error occured during execution.", e);
-                    throw new IllegalStateException(
-                            "An exception occured during task execution. The results are likely "
-                                    + "tainted.",
-                            e);
-
-                }
-            }
-            break;
-        default:
-        }
+    <R> void processExecutionResultsFailFast(List<R> results,
+            ProcessingCallback callback) {
+        handleProcessing(results, callback, true);
     }
 
-    <R> void processExecutionResults(List<R> allResults, String varKey,
-            Map<Double, ConfigurableGameDirector> directors) {
+    <R> void processExecutionResultsLogErrorsOnly(List<R> results, ProcessingCallback callback) {
+        handleProcessing(results, callback, false);
+    }
+
+    private <R> void handleProcessing(List<R> allResults, ProcessingCallback callback,
+            boolean failfast) {
         switch (this) {
         case REMOTE:
             for (Task<?> task : (List<Task<?>>) allResults) {
                 if (task.getThrowable() != null) {
-                    getLogger(ExecutionStrategy.class).error(task.getThrowable().toString());
+                    getLogger(ExecutionStrategy.class)
+                            .error("An error occured executing task:", task.getThrowable());
+                    if (failfast) {
+                        throw new IllegalStateException(
+                                "An exception occured during task execution. The results are "
+                                        + "likely "
+
+                                        + "tainted.",
+                                task.getThrowable());
+                    }
                 } else {
-                    GameInstanceResult result = (GameInstanceResult) task.getResult();
-                    Double price = result.getGameInstanceConfig().getExtraConfigValues()
-                            .get(varKey);
-                    directors.get(price)
-                            .notifyVersionHasBeenPlayed((GameInstanceResult) task.getResult());
+                    callback.processResults(task.getResult());
                 }
             }
             break;
         case LOCAL:
-            for (Future<?> future : (List<Future<?>>) allResults) {
+            for (Future<?> result : (List<Future<?>>) allResults) {
                 try {
-                    GameInstanceResult result = (GameInstanceResult) future.get();
-                    Double price = result.getGameInstanceConfig().getExtraConfigValues()
-                            .get(varKey);
-                    directors.get(price)
-                            .notifyVersionHasBeenPlayed((GameInstanceResult) future.get());
+                    callback.processResults(result.get());
                 } catch (InterruptedException e) {
                     getLogger(ExecutionStrategy.class)
                             .error("Experimentation got interrupted.", e);
+                    if (failfast) {
+                        throw new IllegalStateException(
+                                "Exception caught. Results are likely tainted.",
+                                e);
+                    }
                 } catch (ExecutionException e) {
                     getLogger(ExecutionStrategy.class)
                             .error("An error occured during execution.", e);
+                    if (failfast) {
+                        throw new IllegalStateException(
+                                "An exception occured during task execution. The results are "
+                                        + "likely "
+
+                                        + "tainted.",
+                                e);
+                    }
                 }
             }
             break;
@@ -165,5 +145,10 @@ enum ExecutionStrategy {
     interface ConfigurationExtractor {
         GameInstanceConfiguration getConfig(Object extractrable)
                 throws InterruptedException, ExecutionException;
+    }
+
+    @FunctionalInterface
+    interface ProcessingCallback {
+        void processResults(Object arg);
     }
 }

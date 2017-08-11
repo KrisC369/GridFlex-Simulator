@@ -14,6 +14,7 @@ import org.apache.commons.math3.stat.descriptive.moment.Variance;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -78,13 +79,13 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
         ListMultimap<HourlyFlexConstraints, OptaJppfTask> experiments = LinkedListMultimap.create();
         for (int ia = 0; ia < 12; ia++) {
             for (int dur = 1; dur <= 8; dur *= 2) {
-                for (int rep = 0; rep < getnReps(); rep++) {
-                    long seed = 0;
-                    HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
-                            .activationDuration(dur).interActivationTime(ia)
-                            .maximumActivations(FLEX_BASE / dur).build();
+                HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
+                        .activationDuration(dur).interActivationTime(ia)
+                        .maximumActivations(FLEX_BASE / dur).build();
+                    long seed = 1234;
                     WgmfAgentGenerator gen = new WgmfAgentGenerator(seed, constraints);
-                    OptaJppfTask optaJppfTask = new OptaJppfTask(PARAM_KEY, seed, agents,
+                for (int rep = 0; rep < getnReps(); rep++) {
+                    OptaJppfTask optaJppfTask = new OptaJppfTask(params, seed, agents,
                             constraints);
                     executables.add(optaJppfTask);
                     experiments.put(constraints, optaJppfTask);
@@ -92,17 +93,25 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
             }
         }
 
+        executables.get(0).run();
         //Execution
+        ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults = LinkedListMultimap
+                .create();
         ExperimentRunner runner = getStrategy()
                 .getRunner(params, PARAMS_KEY, "OptiFlex job.");
         runner.runExperiments(executables);
-        List<Object> objects = runner.waitAndGetResults();
-        //TODO fix linkback.
+        List<Object> resultObjects = runner.waitAndGetResults();
+        getStrategy()
+                .processExecutionResultsLogErrorsOnly(resultObjects,
+                        (obj) -> experimentResults
+                                .put(((OptaExperimentResults) obj).getFlexConstraints(),
+                                        ((OptaExperimentResults) obj).getResultValue()));
+
         //Parse results
         Map<HourlyFlexConstraints, ConfidenceInterval> results = Maps.newLinkedHashMap();
         for (HourlyFlexConstraints f : experiments.keySet()) {
-            List<Double> dres = experiments.get(f).stream()
-                    .mapToDouble(exp -> exp.getResult().doubleValue()).boxed()
+            List<Double> dres = experimentResults.get(f).stream()
+                    .mapToDouble(exp -> exp.doubleValue()).boxed()
                     .collect(Collectors.toList());
             StatAccumulator sa = new StatAccumulator();
             dres.forEach((d) -> sa.accept(d));

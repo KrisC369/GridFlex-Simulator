@@ -29,7 +29,7 @@ public class WgmfGameRunnerVariableFlexParamsTest {
         // "-p1step",
         //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
-                "-n", "4", "-r", "10", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "15.5",
+                "-n", "4", "-r", "10", "-s", solver, "-m", "LOCAL", "-p1start", "15.5",
                 "-p1step",
                 "10", "-p1end", "16.5", "-pIdx", "1", "-distribution", "CAUCHY", "-flexIA", "12",
                 "-flexDUR", "2", "-flexCOUNT", "40" };

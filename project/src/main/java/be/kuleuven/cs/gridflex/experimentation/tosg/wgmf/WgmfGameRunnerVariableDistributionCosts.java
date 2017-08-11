@@ -1,16 +1,16 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
-import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 
@@ -90,8 +90,11 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         runner.runExperiments(alltasks);
         List<?> results = runner.waitAndGetResults();
         logger.info("Experiment results received. \nProcessing results... ");
-        getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
-                UnmodifiableMap.unmodifiableMap(priceToDirector));
+
+        getStrategy().processExecutionResultsLogErrorsOnly(results, (obj) -> priceToDirector
+                .get(((GameInstanceResult) obj).getGameInstanceConfig().getExtraConfigValues()
+                        .get(PRICE_PARAM_KEY))
+                .notifyVersionHasBeenPlayed((GameInstanceResult) obj));
     }
 
     protected final List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,

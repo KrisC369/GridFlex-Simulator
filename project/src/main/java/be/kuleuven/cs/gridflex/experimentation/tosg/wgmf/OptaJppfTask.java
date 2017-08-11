@@ -3,8 +3,6 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
-import be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.WgmfAgentGenerator;
-import be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.WgmfGameParams;
 import com.google.common.annotations.VisibleForTesting;
 import org.jppf.node.protocol.AbstractTask;
 
@@ -17,7 +15,7 @@ import java.util.concurrent.Callable;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class OptaJppfTask extends AbstractTask<BigDecimal> implements Callable<Object> {
+public class OptaJppfTask extends AbstractTask<OptaExperimentResults> implements Callable<Object> {
     //TODO generate serial version id when done.
     private WgmfGameParams params;
     private final String paramsDataKey;
@@ -67,12 +65,14 @@ public class OptaJppfTask extends AbstractTask<BigDecimal> implements Callable<O
 
         portfolioBalanceSolver.solve();
         SolutionResults solutionCPL = portfolioBalanceSolver.getSolution();
-        setResult(BigDecimal.valueOf(solutionCPL.getObjectiveValue()));
+        setResult(OptaExperimentResults
+                .create(BigDecimal.valueOf(solutionCPL.getObjectiveValue()), constraints));
     }
 
     @Override
-    public BigDecimal call() throws Exception {
+    public OptaExperimentResults call() throws Exception {
         run();
         return getResult();
     }
+
 }

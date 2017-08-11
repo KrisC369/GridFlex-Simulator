@@ -1,11 +1,12 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import org.jppf.node.protocol.Task;
 import org.slf4j.Logger;
 
@@ -60,7 +61,8 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();
         logger.info("Experiment results received. \nProcessing results... ");
-        getStrategy().processExecutionResults(results, director);
+        getStrategy().processExecutionResultsFailFast(results,
+                (args) -> director.notifyVersionHasBeenPlayed((GameInstanceResult) args));
     }
 
     @Override

@@ -1,15 +1,15 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
-import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -23,7 +23,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class  WgmfMultiJobGameRunnerVariableDistributionCosts
+public class WgmfMultiJobGameRunnerVariableDistributionCosts
         extends WgmfGameRunnerVariableDistributionCosts {
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableDistributionCosts.class);
@@ -81,8 +81,10 @@ public class  WgmfMultiJobGameRunnerVariableDistributionCosts
             List<?> results = runner.waitAndGetResults();
             logger.info("Experiment results received for price: {}. \nProcessing results... ",
                     price);
-            getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
-                    UnmodifiableMap.unmodifiableMap(priceToDirector));
+            getStrategy().processExecutionResultsLogErrorsOnly(results, (obj) -> priceToDirector
+                    .get(((GameInstanceResult) obj).getGameInstanceConfig().getExtraConfigValues()
+                            .get(PRICE_PARAM_KEY))
+                    .notifyVersionHasBeenPlayed((GameInstanceResult) obj));
             processSingleResult(price, director);
         }
 
