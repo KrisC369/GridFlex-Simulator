@@ -82,8 +82,8 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                 HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
                         .activationDuration(dur).interActivationTime(ia)
                         .maximumActivations(FLEX_BASE / dur).build();
-                    long seed = 1234;
-                    WgmfAgentGenerator gen = new WgmfAgentGenerator(seed, constraints);
+                long seed = 1234;
+                WgmfAgentGenerator gen = new WgmfAgentGenerator(seed, constraints);
                 for (int rep = 0; rep < getnReps(); rep++) {
                     OptaJppfTask optaJppfTask = new OptaJppfTask(params, seed, agents,
                             constraints);
@@ -93,7 +93,6 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
             }
         }
 
-        executables.get(0).run();
         //Execution
         ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults = LinkedListMultimap
                 .create();
