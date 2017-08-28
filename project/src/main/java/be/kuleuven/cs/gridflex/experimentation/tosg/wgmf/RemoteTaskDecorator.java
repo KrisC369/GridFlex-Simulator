@@ -4,6 +4,7 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class RemoteTaskDecorator<T> extends GenericTask<T> {
+
     private GenericTask<T> target;
     private String remoteParamId;
 
@@ -26,8 +27,7 @@ public class RemoteTaskDecorator<T> extends GenericTask<T> {
         return target.call();
     }
 
-    //    static <T> GenericTask<T> decorate(GenericTask<T> proxy,
-    //            String remoteParamID) {
-    //        return new RemoteTaskDecorator<>(remoteParamID, proxy);
-    //    }
+    public GenericTask<T> getTarget() {
+        return target;
+    }
 }

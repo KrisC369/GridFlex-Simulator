@@ -77,7 +77,12 @@ enum ExecutionStrategy {
                                 task.getThrowable());
                     }
                 } else {
-                    callback.processResults(task.getResult());
+                    if (!(task instanceof RemoteTaskDecorator)) {
+                        throw new IllegalStateException(
+                                "Tasks should be decorated for remote use at this point.");
+                    }
+                    GenericTask target = ((RemoteTaskDecorator) task).getTarget();
+                    callback.processResults(target.getResult());
                 }
             }
             break;
