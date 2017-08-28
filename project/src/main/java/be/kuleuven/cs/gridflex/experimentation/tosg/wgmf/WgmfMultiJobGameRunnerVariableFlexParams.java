@@ -84,7 +84,6 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                         .activationDuration(dur).interActivationTime(ia)
                         .maximumActivations(FLEX_BASE / dur).build();
                 long seed = 1234;
-                WgmfAgentGenerator gen = new WgmfAgentGenerator(seed, constraints);
                 for (int rep = 0; rep < getnReps(); rep++) {
                     OptaJppfTask optaJppfTask = new OptaJppfTask(params, seed, agents,
                             constraints);
@@ -101,7 +100,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
         ExperimentRunner runner = getStrategy()
                 .getRunner(params, PARAMS_KEY, "OptiFlex job.");
         runner.runExperiments(executables);
-        List<Object> resultObjects = runner.waitAndGetResults();
+        List<?> resultObjects = runner.waitAndGetResults();
         getStrategy()
                 .processExecutionResultsLogErrorsOnly(resultObjects,
                         (obj) -> experimentResults
