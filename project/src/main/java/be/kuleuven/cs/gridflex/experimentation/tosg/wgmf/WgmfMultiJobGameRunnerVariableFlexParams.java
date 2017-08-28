@@ -74,6 +74,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
         OptiFlexCsvResultWriter.writeCsvFile(resultFileName, Collections.emptyList(), false);
         final int agents = getnAgents();
 
+        logger.info("Creating tasks objects.");
         //Create tasks
         List<OptaJppfTask> executables = Lists.newArrayList();
         ListMultimap<HourlyFlexConstraints, OptaJppfTask> experiments = LinkedListMultimap.create();
@@ -93,6 +94,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
             }
         }
 
+        logger.info("Starting experiment execution");
         //Execution
         ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults = LinkedListMultimap
                 .create();
@@ -106,14 +108,15 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                                 .put(((OptaExperimentResults) obj).getFlexConstraints(),
                                         ((OptaExperimentResults) obj).getResultValue()));
 
+        logger.info("Parsing experiment results.");
         //Parse results
         Map<HourlyFlexConstraints, ConfidenceInterval> results = Maps.newLinkedHashMap();
         for (HourlyFlexConstraints f : experiments.keySet()) {
             List<Double> dres = experimentResults.get(f).stream()
-                    .mapToDouble(exp -> exp.doubleValue()).boxed()
+                    .mapToDouble(BigDecimal::doubleValue).boxed()
                     .collect(Collectors.toList());
             StatAccumulator sa = new StatAccumulator();
-            dres.forEach((d) -> sa.accept(d));
+            dres.forEach(sa::accept);
             ConfidenceInterval ci = sa.getCI(ConfidenceLevel._95pc);
             results.put(f, ci);
 
