@@ -74,5 +74,4 @@ public class OptaJppfTask extends AbstractTask<OptaExperimentResults> implements
         run();
         return getResult();
     }
-
 }

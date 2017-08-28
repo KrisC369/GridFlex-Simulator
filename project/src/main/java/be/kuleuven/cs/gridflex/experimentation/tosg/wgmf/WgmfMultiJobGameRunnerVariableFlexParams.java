@@ -85,7 +85,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                         .maximumActivations(FLEX_BASE / dur).build();
                 long seed = 1234;
                 for (int rep = 0; rep < getnReps(); rep++) {
-                    OptaJppfTask optaJppfTask = new OptaJppfTask(params, seed, agents,
+                    OptaJppfTask optaJppfTask = new OptaJppfTask(this.PARAM_KEY, seed, agents,
                             constraints);
                     executables.add(optaJppfTask);
                     experiments.put(constraints, optaJppfTask);
@@ -98,7 +98,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
         ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults = LinkedListMultimap
                 .create();
         ExperimentRunner runner = getStrategy()
-                .getRunner(params, PARAMS_KEY, "OptiFlex job.");
+                .getRunner(params, this.PARAM_KEY, "OptiFlex job.");
         runner.runExperiments(executables);
         List<?> resultObjects = runner.waitAndGetResults();
         getStrategy()
