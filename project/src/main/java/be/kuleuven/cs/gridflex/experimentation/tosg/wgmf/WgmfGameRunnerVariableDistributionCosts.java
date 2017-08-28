@@ -71,7 +71,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
 
     @Override
     protected void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> alltasks = Lists.newArrayList();
+        List<GenericTask<GameInstanceResult>> alltasks = Lists.newArrayList();
         for (double price = getMinPrice(); price <= getMaxPrice(); price += getPriceStep()) {
             ConfigurableGame game = new ConfigurableGame(getnAgents(),
                     ACTION_SIZE, getnReps());
@@ -81,7 +81,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
             List<GameInstanceConfiguration> priceContainingConfigs =
                     getConfigsWithPricesFromDirector(price, director);
 
-            List<WgmfJppfTask> adapted = adaptPriceConfigsToRunnableTasks(params,
+            List<GenericTask<GameInstanceResult>> adapted = adaptPriceConfigsToRunnableTasks(params,
                     priceContainingConfigs);
             alltasks.addAll(adapted);
         }
@@ -97,14 +97,20 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 .notifyVersionHasBeenPlayed((GameInstanceResult) obj));
     }
 
-    protected final List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,
+    protected final List<GenericTask<GameInstanceResult>> adaptPriceConfigsToRunnableTasks(
+            WgmfGameParams params,
             List<GameInstanceConfiguration> priceContainingConfigs) {
-        return getStrategy().adapt(priceContainingConfigs, params, PARAMS_KEY,
-                (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig) ->
-                        WhoGetsMyFlexGame
-                                .createVariableDSOPricingGame(wgmfParams, instanceConfig.getSeed(),
-                                        instanceConfig.getExtraConfigValues()
-                                                .get(PRICE_PARAM_KEY)));
+
+        List<GenericTask<GameInstanceResult>> collect = priceContainingConfigs.stream()
+                .map(conf -> new WgmfJppfTask(conf, params,
+                        (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig) ->
+                                WhoGetsMyFlexGame
+                                        .createVariableDSOPricingGame(wgmfParams,
+                                                instanceConfig.getSeed(),
+                                                instanceConfig.getExtraConfigValues()
+                                                        .get(PRICE_PARAM_KEY))))
+                .collect(Collectors.toList());
+        return getStrategy().adapt(collect, PARAMS_KEY);
     }
 
     protected final List<GameInstanceConfiguration> getConfigsWithPricesFromDirector(double price,

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -52,11 +53,16 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
 
     @Override
     protected void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> adapted = getStrategy()
-                .adapt(director.getPlayableVersions(), params, PARAMS_KEY,
+        List<GameInstanceConfiguration> playableVersions = director.getPlayableVersions();
+        List<GenericTask<GameInstanceResult>> tasks = playableVersions.stream()
+                .map(conf -> new WgmfJppfTask(conf, params,
                         (WgmfGameParams wgmfParams, GameInstanceConfiguration config) ->
                                 WhoGetsMyFlexGame
-                                        .createBasicGame(wgmfParams, config.getSeed()));
+                                        .createBasicGame(wgmfParams, config.getSeed())))
+                .collect(Collectors.toList());
+        List<GenericTask<GameInstanceResult>> adapted = getStrategy()
+                .adapt(tasks, PARAMS_KEY);
+
         ExperimentRunner runner = getStrategy().getRunner(params, PARAMS_KEY);
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();

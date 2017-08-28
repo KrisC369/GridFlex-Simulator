@@ -111,23 +111,18 @@ enum ExecutionStrategy {
         }
     }
 
-    List<WgmfJppfTask> adapt(
-            final List<GameInstanceConfiguration> playableConfigs,
-            WgmfGameParams params, String paramString, WgmfJppfTask.GameInstanceFactory factory) {
-        //TODO take List<GameInstanceCOnfig iso director.
-        List<WgmfJppfTask> experiments;
+    <T> List<GenericTask<T>> adapt(final List<GenericTask<T>> tasks, String paramString) {
+        List<GenericTask<T>> experiments;
         switch (this) {
         case REMOTE:
             experiments = Lists.newArrayList();
-            for (final GameInstanceConfiguration p : playableConfigs) {
-                experiments.add(new WgmfJppfTask(p, paramString, factory));
+            for (final GenericTask<T> task : tasks) {
+                experiments.add(new RemoteTaskDecorator<T>(paramString, task));
             }
             break;
         case LOCAL:
             experiments = Lists.newArrayList();
-            for (final GameInstanceConfiguration p : playableConfigs) {
-                experiments.add(new WgmfJppfTask(p, params, factory));
-            }
+            experiments.addAll(tasks);
             break;
         default:
             experiments = Lists.newArrayList();
@@ -137,7 +132,7 @@ enum ExecutionStrategy {
 
     private final ConfigurationExtractor extractor;
 
-    private ExecutionStrategy(ConfigurationExtractor ce) {
+    ExecutionStrategy(ConfigurationExtractor ce) {
         this.extractor = ce;
     }
 
