@@ -16,7 +16,7 @@ import java.util.concurrent.Callable;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class OptaJppfTask extends AbstractTask<OptaExperimentResults> implements Callable<Object> {
-    //TODO generate serial version id when done.
+    private static final long serialVersionUID = 5436262172692915491L;
     private WgmfGameParams params;
     private final String paramsDataKey;
     private final long seed;
