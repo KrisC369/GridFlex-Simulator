@@ -82,7 +82,8 @@ public class FlexProvider implements FlexibilityProvider {
 
     private void checkForActivationConstraintViolation(FlexActivation activation) {
         checkArgument(activation.getDuration() == constraints.getActivationDuration(),
-                "Activation duration does not match constraints. Got: " + activation.getDuration());
+                "Activation duration does not match constraints. Got: " + activation.getDuration()
+                        + "With following constraints: " + constraints);
         if (hasActivations()) {
             double timeBetweenLast =
                     activation.getStart() - (getLastActivation().getStart() + getLastActivation()
