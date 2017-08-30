@@ -1,9 +1,11 @@
 package be.kuleuven.cs.gridflex.domain.util.data;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.eclipse.jdt.annotation.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -56,7 +58,9 @@ public abstract class AbstractErrorDistribution {
      */
     static class ErrorDistributions {
         private String filename;
+        @Nullable
         private List<Double> means;
+        @Nullable
         private List<Double> sds;
 
         /**
@@ -69,11 +73,11 @@ public abstract class AbstractErrorDistribution {
         }
 
         List<Double> getMeans() {
-            return means;
+            return UnmodifiableList.unmodifiableList(means);
         }
 
         List<Double> getSds() {
-            return sds;
+            return UnmodifiableList.unmodifiableList(sds);
         }
 
         /**

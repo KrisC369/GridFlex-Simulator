@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class WgmfGameRunnerVariableFlexParamsTest {
-    private static final String executionMode = "REMOTE";
+    private static final String executionMode = "LOCAL";
     private static JPPFDriver driver;
 
     @BeforeClass
@@ -41,10 +41,10 @@ public class WgmfGameRunnerVariableFlexParamsTest {
     }
 
     @Test
-//    @Ignore
+    //    @Ignore
     public void main() throws Exception {
         //        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
-        WgmfMultiJobGameRunnerVariableFlexParams.main(getArgLine("DUMMY"));
+        WgmfMultiJobGameRunnerVariableFlexParams.main(getArgLine("OPTA"));
     }
 
     public static ExperimentParams getParams(String solver) {

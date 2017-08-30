@@ -2,6 +2,7 @@ package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data;
 
 import be.kuleuven.cs.gridflex.domain.util.data.AbstractErrorDistribution;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.commons.math3.random.MersenneTwister;
 
 import java.util.List;
@@ -41,6 +42,6 @@ public abstract class MultiHorizonErrorGenerator {
     }
 
     protected final List<MersenneTwister> getTwisters() {
-        return twisters;
+        return UnmodifiableList.unmodifiableList(twisters);
     }
 }

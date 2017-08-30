@@ -81,7 +81,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                 LinkedListMultimap
                         .create();
         for (int ia = 1; ia < 12; ia++) {
-            for (int dur = 1; dur <= 8; dur *= 2) {
+            for (double dur = 1; dur <= 8; dur *= 2) {
                 HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
                         .activationDuration(dur).interActivationTime(ia)
                         .maximumActivations(FLEX_BASE / dur).build();
