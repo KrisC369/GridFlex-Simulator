@@ -3,7 +3,6 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 import be.kuleuven.cs.gametheory.configurable.AbstractGameInstanceConfigurator;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
-import com.google.common.annotations.VisibleForTesting;
 
 import java.io.Serializable;
 
@@ -21,21 +20,6 @@ public class WgmfJppfTask extends GenericTask<GameInstanceResult> {
     //    private final String paramsDataKey;
     private final GameInstanceFactory instanceFactory;
 
-    //    /**
-    //     * Default constructor.
-    //     *
-    //     * @param instanceConfig The instance config value for this task.
-    //     * @param s              The key for which to query the data provider for the instance
-    //     *                       parameter data.
-    //     */
-    //    public WgmfJppfTask(GameInstanceConfiguration instanceConfig, String s,
-    //            GameInstanceFactory factory) {
-    //        this.instanceConfig = instanceConfig;
-    //        paramsDataKey = s;
-    //        instanceFactory = factory;
-    //    }
-
-    @VisibleForTesting
     WgmfJppfTask(GameInstanceConfiguration instanceConfig, WgmfGameParams params,
             GameInstanceFactory factory) {
         super(params);
