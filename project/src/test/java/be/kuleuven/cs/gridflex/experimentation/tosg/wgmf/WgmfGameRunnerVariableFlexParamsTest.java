@@ -44,7 +44,7 @@ public class WgmfGameRunnerVariableFlexParamsTest {
     //    @Ignore
     public void main() throws Exception {
         //        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
-        WgmfMultiJobGameRunnerVariableFlexParams.main(getArgLine("OPTA"));
+        WgmfMultiJobGameRunnerVariableFlexParams.main(getArgLine("DUMMY"));
     }
 
     public static ExperimentParams getParams(String solver) {
