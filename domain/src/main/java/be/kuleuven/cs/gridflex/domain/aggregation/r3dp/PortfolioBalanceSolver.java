@@ -52,7 +52,6 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         this.budget = BudgetTracker
                 .createDayAheadSellingPrice(inputData.getPositiveImbalancePriceProfile(),
                         inputData.getDayAheadPriceProfile());
-        //        this.congestion = applyWindForecastErrorAndBudgetConstraints(inputData);
         this.congestion = applyBudgetConstraintFilters(strategy.applyConversion(inputData),
                 inputData);
     }

@@ -43,10 +43,10 @@ abstract class AbstractProfileConverter {
      * @return The conversion of the initial profile to an imbalance profile.
      */
     public CongestionProfile convertProfileToImbalanceVolumes() {
-        return calculateImbalanceVolumeFromActualAndPredictedData(calculateForecastedProfile());
+        return calculateImbalanceVolumeFromActualAndPredictedData(calculateForcastedProfile());
     }
 
-    protected abstract PowerValuesProfile calculateForecastedProfile();
+    protected abstract PowerValuesProfile calculateForcastedProfile();
 
     /**
      * Calculate imbalance powerProfile from current and error sampled energy volumes.

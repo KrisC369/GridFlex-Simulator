@@ -18,7 +18,6 @@ public class OptaJppfTask extends GenericTask<OptaExperimentResults> {
     private final long seed;
     private final int agents;
     private final HourlyFlexConstraints constraints;
-    //    private final GameInstanceFactory instanceFactory;
 
     /**
      * Default constructor.

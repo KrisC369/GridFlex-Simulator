@@ -30,7 +30,7 @@ public class PowerForecastBasedConverter extends AbstractProfileConverter {
     }
 
     @Override
-    protected PowerValuesProfile calculateForecastedProfile() {
+    protected PowerValuesProfile calculateForcastedProfile() {
         return applyPredictionErrors(getPowerProfile());
     }
 

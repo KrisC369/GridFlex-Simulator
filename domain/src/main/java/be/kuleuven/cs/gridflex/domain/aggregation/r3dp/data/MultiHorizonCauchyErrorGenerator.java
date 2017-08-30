@@ -30,6 +30,7 @@ public class MultiHorizonCauchyErrorGenerator extends MultiHorizonNormalErrorGen
      */
     @Override
     public double generateErrorForHorizon(int i) {
+        //Alternative way of calculating:
         //        CauchyDistribution c = new CauchyDistribution();
         //        double sample = c.sample();
         //todo use this!

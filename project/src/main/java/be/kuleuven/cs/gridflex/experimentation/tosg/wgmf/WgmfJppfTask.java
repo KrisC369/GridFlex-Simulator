@@ -15,9 +15,7 @@ import java.io.Serializable;
 public class WgmfJppfTask extends GenericTask<GameInstanceResult> {
 
     private static final long serialVersionUID = -5970733781444570465L;
-    //    private WgmfGameParams params;
     private final GameInstanceConfiguration instanceConfig;
-    //    private final String paramsDataKey;
     private final GameInstanceFactory instanceFactory;
 
     WgmfJppfTask(GameInstanceConfiguration instanceConfig, WgmfGameParams params,
@@ -25,8 +23,6 @@ public class WgmfJppfTask extends GenericTask<GameInstanceResult> {
         super(params);
         this.instanceConfig = instanceConfig;
         this.instanceFactory = factory;
-        //        this.paramsDataKey = "";
-        //        this.params = params;
     }
 
     @Override

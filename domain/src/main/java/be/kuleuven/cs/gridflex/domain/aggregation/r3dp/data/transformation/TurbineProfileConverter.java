@@ -41,7 +41,8 @@ public final class TurbineProfileConverter extends AbstractProfileConverter {
     /**
      * @return Power values profile with prediction/forecast data.
      */
-    protected PowerValuesProfile calculateForecastedProfile() {
+    @Override
+    protected PowerValuesProfile calculateForcastedProfile() {
         return toPowerValues(applyPredictionErrors(toWindSpeed()));
     }
 

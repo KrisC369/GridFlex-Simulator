@@ -29,7 +29,7 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WgmfMultiJobGameRunnerVariableFlexParams
+public final class WgmfMultiJobGameRunnerVariableFlexParams
         extends WgmfGameRunnerVariableDistributionCosts {
     public static final String PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
     private static final int FLEX_BASE = 40 * 2;

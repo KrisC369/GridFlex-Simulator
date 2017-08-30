@@ -8,8 +8,8 @@ import be.kuleuven.cs.gridflex.domain.util.data.AbstractErrorDistribution;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public enum ErrorDistributionType {
-    NORMAL(((seed, distribution) -> new MultiHorizonNormalErrorGenerator(seed, distribution))),
-    CAUCHY(((seed, distribution) -> new MultiHorizonCauchyErrorGenerator(seed, distribution)));
+    NORMAL((seed, distribution) -> new MultiHorizonNormalErrorGenerator(seed, distribution)),
+    CAUCHY((seed, distribution) -> new MultiHorizonCauchyErrorGenerator(seed, distribution));
     private final MultiHorizonErrorGeneratorFactory factory;
 
     ErrorDistributionType(MultiHorizonErrorGeneratorFactory factory) {

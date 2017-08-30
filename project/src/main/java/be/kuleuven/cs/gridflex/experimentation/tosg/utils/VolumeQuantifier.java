@@ -23,10 +23,10 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
     private static final Logger logger = getLogger(
             VolumeQuantifier.class);
-    private long baseSeed = 50;
+    private final long baseSeed = 50;
     private int count;
-    private Mean mean;
-    private StandardDeviation std;
+    private final Mean mean;
+    private final StandardDeviation std;
 
     /**
      * Public constructor from params object and exec strategy.
@@ -108,9 +108,6 @@ public class VolumeQuantifier extends WgmfGameRunnerVariableDistributionCosts {
             this.mean.increment(perc);
             this.std.increment(perc);
             this.count++;
-
-            //            System.out.println(diff.values());
-
         }
         double corr = 0;
         if (std.getResult() == 0) {
