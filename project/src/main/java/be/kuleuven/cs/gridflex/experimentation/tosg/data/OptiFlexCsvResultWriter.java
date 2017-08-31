@@ -14,7 +14,7 @@ public final class OptiFlexCsvResultWriter {
     private static final Object[] FILE_HEADER = { "nAgents", "reps",
             "flex duration", "flex Interactivation time", "flex activation count",
             "CI Level", "data file",
-            "Allocation efficiency", "Wind error file idx" };
+            "Resolved congestion", "Wind error file idx" };
 
     private OptiFlexCsvResultWriter() {
     }
