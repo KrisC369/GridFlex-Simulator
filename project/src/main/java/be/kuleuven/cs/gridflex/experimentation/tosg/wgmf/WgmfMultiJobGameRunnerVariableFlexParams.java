@@ -82,7 +82,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                         .create();
         for (int ia = 1; ia <= 24; ia++) {
             for (double dur = 1; dur <= 10; dur += 1) {
-                if (FLEX_BASE % dur == 0 && (dur == 5 || dur == 10)) {
+                if (FLEX_BASE % dur == 0) {
                     HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
                             .activationDuration(dur).interActivationTime(ia)
                             .maximumActivations(FLEX_BASE / dur).build();
