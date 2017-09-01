@@ -6,7 +6,7 @@ Power forecast error distribution profiles:
     -[2]: EDA distribution / 2, normally distributed
     -[3]: ERCOT, day ahead 15 min averages, cauchy distributed
     -[4]: Artificial to match EDA[0] with (wrongful) scaling by /3.6 in total volume, cauchy distributed
-    -[5]:
+    -[5]: Artifical to match EDA[0] with correct scaling in total volume, cauchy distributed
 
 Input power production data files:
     -[0]: Antwerp harbor data profile.
