@@ -78,9 +78,9 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
         //Create tasks
         List<GenericTask<OptaExperimentResults>> executables = Lists.newArrayList();
         ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments =
-                LinkedListMultimap
-                        .create();
-        for (int ia = 1; ia <= 24; ia++) {
+                LinkedListMultimap.create();
+        int start = (int) params.getActivationConstraints().getInterActivationTime();
+        for (int ia = start; ia < start + 12; ia++) {
             for (double dur = 1; dur <= 10; dur += 1) {
                 if (FLEX_BASE % dur == 0) {
                     HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
