@@ -102,7 +102,7 @@ public class OptaJppfTaskTest {
     public void testRun() {
         task.run();
         OptaExperimentResults result = task.getResult();
-        assertEquals(-1, result.getResultValue().doubleValue(), 0);
+        assertEquals(-1, result.getResolvedCongestionValue().doubleValue(), 0);
     }
 
     @Test

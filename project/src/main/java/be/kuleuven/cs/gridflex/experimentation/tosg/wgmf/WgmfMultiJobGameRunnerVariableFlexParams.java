@@ -8,7 +8,6 @@ import be.kuleuven.cs.gridflex.experimentation.tosg.data.OptiFlexCsvResultWriter
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
@@ -17,7 +16,6 @@ import org.slf4j.Logger;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.function.DoubleConsumer;
 import java.util.stream.Collectors;
 
@@ -35,6 +33,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
     private static final int FLEX_BASE = 40 * 2;
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableFlexParams.class);
+    private static final int BASE_SEED = 1234;
     private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
     private final List<OptiFlexCsvResultWriter.OptiFlexResults> writableResults;
 
@@ -79,6 +78,72 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
         List<GenericTask<OptaExperimentResults>> executables = Lists.newArrayList();
         ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments =
                 LinkedListMultimap.create();
+        configureExperiments(params, agents, executables, experiments);
+
+        logger.info("Starting experiment execution");
+        //Execution
+        ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults = LinkedListMultimap
+                .create();
+        ListMultimap<HourlyFlexConstraints, Double> allocEffResults = LinkedListMultimap
+                .create();
+        runExperiments(params, executables, experimentResults, allocEffResults);
+
+        logger.info("Parsing experiment results.");
+        //Parse results
+        parseResults(splitted[splitted.length - 1]
+                        .replace("*", String.valueOf("[" + dataProfileIdx + "]")), experiments,
+                experimentResults,
+                allocEffResults);
+    }
+
+    private void parseResults(String dataFile,
+            ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments,
+            ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults,
+            ListMultimap<HourlyFlexConstraints, Double> allocEffResults) {
+        for (HourlyFlexConstraints f : experiments.keySet()) {
+            List<Double> resCongestionVals = experimentResults.get(f).stream()
+                    .mapToDouble(BigDecimal::doubleValue).boxed()
+                    .collect(Collectors.toList());
+            List<Double> allocEffVals = allocEffResults.get(f).stream()
+                    .collect(Collectors.toList());
+            StatAccumulator resolvedCongestionAcc = new StatAccumulator();
+            StatAccumulator accumulatedEfficiencyAcc = new StatAccumulator();
+            resCongestionVals.forEach(resolvedCongestionAcc::accept);
+            allocEffVals.forEach(accumulatedEfficiencyAcc::accept);
+            ConfidenceInterval resolvedCongestionCI = resolvedCongestionAcc
+                    .getCI(ConfidenceLevel._95pc);
+            ConfidenceInterval allocEffCI = resolvedCongestionAcc.getCI(ConfidenceLevel._95pc);
+
+            OptiFlexCsvResultWriter.OptiFlexResults optiFlexResults = OptiFlexCsvResultWriter
+                    .OptiFlexResults
+                    .create(getnAgents(), getnReps(),
+                            dataFile, f.getActivationDuration(), f.getInterActivationTime(),
+                            (int) f.getMaximumActivations(),
+                            CI_LEVEL.getConfidenceLevel(), resolvedCongestionCI, allocEffCI,
+                            windErrorFileIdx);
+            writableResults.add(optiFlexResults);
+        }
+        OptiFlexCsvResultWriter.writeCsvFile(resultFileName, writableResults, true);
+    }
+
+    private void runExperiments(WgmfGameParams params,
+            List<GenericTask<OptaExperimentResults>> executables,
+            ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults,
+            ListMultimap<HourlyFlexConstraints, Double> allocEffResults) {
+        ExperimentRunner runner = getStrategy()
+                .getRunner(params, this.PARAM_KEY, "OptiFlex job.");
+        List<GenericTask<OptaExperimentResults>> adaptedExecutables = getStrategy()
+                .adapt(executables, this.PARAMS_KEY);
+        runner.runExperiments(adaptedExecutables);
+        List<?> resultObjects = runner.waitAndGetResults();
+        getStrategy()
+                .processExecutionResultsLogErrorsOnly(resultObjects,
+                        (obj) -> processResults(experimentResults, allocEffResults, obj));
+    }
+
+    private void configureExperiments(WgmfGameParams params, int agents,
+            List<GenericTask<OptaExperimentResults>> executables,
+            ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments) {
         int start = (int) params.getActivationConstraints().getInterActivationTime();
         for (int ia = start; ia < start + 12; ia++) {
             for (double dur = 1; dur <= 10; dur += 1) {
@@ -86,7 +151,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                     HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
                             .activationDuration(dur).interActivationTime(ia)
                             .maximumActivations(FLEX_BASE / dur).build();
-                    long seed = 1234;
+                    long seed = BASE_SEED;
                     for (int rep = 0; rep < getnReps(); rep++) {
                         OptaJppfTask optaJppfTask = new OptaJppfTask(params, seed + rep, agents,
                                 constraints);
@@ -96,46 +161,17 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                 }
             }
         }
+    }
 
-        logger.info("Starting experiment execution");
-        //Execution
-        ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults = LinkedListMultimap
-                .create();
-        ExperimentRunner runner = getStrategy()
-                .getRunner(params, this.PARAM_KEY, "OptiFlex job.");
-        List<GenericTask<OptaExperimentResults>> adaptedExecutables = getStrategy()
-                .adapt(executables, this.PARAMS_KEY);
-        runner.runExperiments(adaptedExecutables);
-        List<?> resultObjects = runner.waitAndGetResults();
-        getStrategy()
-                .processExecutionResultsLogErrorsOnly(resultObjects,
-                        (obj) -> experimentResults
-                                .put(((OptaExperimentResults) obj).getFlexConstraints(),
-                                        ((OptaExperimentResults) obj).getResultValue()));
-
-        logger.info("Parsing experiment results.");
-        //Parse results
-        Map<HourlyFlexConstraints, ConfidenceInterval> results = Maps.newLinkedHashMap();
-        for (HourlyFlexConstraints f : experiments.keySet()) {
-            List<Double> dres = experimentResults.get(f).stream()
-                    .mapToDouble(BigDecimal::doubleValue).boxed()
-                    .collect(Collectors.toList());
-            StatAccumulator sa = new StatAccumulator();
-            dres.forEach(sa::accept);
-            ConfidenceInterval ci = sa.getCI(ConfidenceLevel._95pc);
-            results.put(f, ci);
-
-            OptiFlexCsvResultWriter.OptiFlexResults optiFlexResults = OptiFlexCsvResultWriter
-                    .OptiFlexResults
-                    .create(getnAgents(), getnReps(),
-                            splitted[splitted.length - 1]
-                                    .replace("*", String.valueOf("[" + dataProfileIdx + "]")),
-                            f.getActivationDuration(), f.getInterActivationTime(),
-                            (int) f.getMaximumActivations(),
-                            CI_LEVEL.getConfidenceLevel(), ci, windErrorFileIdx);
-            writableResults.add(optiFlexResults);
-        }
-        OptiFlexCsvResultWriter.writeCsvFile(resultFileName, writableResults, true);
+    private static void processResults(
+            ListMultimap<HourlyFlexConstraints, BigDecimal> congestionRes,
+            ListMultimap<HourlyFlexConstraints, Double> allocEffRes, Object obj) {
+        congestionRes
+                .put(((OptaExperimentResults) obj).getFlexConstraints(),
+                        ((OptaExperimentResults) obj).getResolvedCongestionValue());
+        allocEffRes
+                .put(((OptaExperimentResults) obj).getFlexConstraints(),
+                        ((OptaExperimentResults) obj).getAllocEfficiencyValue());
     }
 
     @Override
@@ -148,19 +184,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
         private final Variance variance = new Variance();
         private int count = 0;
 
-        private int getCount() {
-            return count;
-        }
-
-        private Variance getVariance() {
-            return variance;
-        }
-
-        private Mean getMean() {
-            return mean;
-        }
-
-        public ConfidenceInterval getCI(ConfidenceLevel level) {
+        ConfidenceInterval getCI(ConfidenceLevel level) {
             double meanResult = this.mean.getResult();
             double std = Math.sqrt(variance.getResult());
             //hack to allow creating CI's

@@ -48,7 +48,8 @@ public class OptaJppfTask extends GenericTask<OptaExperimentResults> {
         portfolioBalanceSolver.solve();
         SolutionResults solutionCPL = portfolioBalanceSolver.getSolution();
         setResult(OptaExperimentResults
-                .create(BigDecimal.valueOf(solutionCPL.getObjectiveValue()), constraints));
+                .create(BigDecimal.valueOf(solutionCPL.getObjectiveValue()),
+                        solutionCPL.getNormalizedObjectiveValue(), constraints));
     }
 
     @Override

@@ -13,8 +13,8 @@ public final class OptiFlexCsvResultWriter {
     //CSV file header
     private static final Object[] FILE_HEADER = { "nAgents", "reps",
             "flex duration", "flex Interactivation time", "flex activation count",
-            "CI Level", "data file",
-            "Resolved congestion", "Wind error file idx" };
+            "data file", "CI Level", "Resolved congestion", "Alloc efficiency",
+            "Wind error file idx" };
 
     private OptiFlexCsvResultWriter() {
     }
@@ -45,6 +45,8 @@ public final class OptiFlexCsvResultWriter {
 
         public abstract double getCiLevel();
 
+        public abstract ConfidenceInterval getResolvedCongestion();
+
         public abstract ConfidenceInterval getAllocEff();
 
         public abstract int getWindErrorFileIdx();
@@ -55,15 +57,16 @@ public final class OptiFlexCsvResultWriter {
                     getFlexInterActivation(), getFlexActivationCount(),
                     getDataFileName(),
                     getCiLevel(),
-                    getAllocEff().toString(), getWindErrorFileIdx());
+                    getResolvedCongestion().toString(), getAllocEff().toString(),
+                    getWindErrorFileIdx());
         }
 
         public static OptiFlexResults create(int n, int r, String data, double dur, double ia,
                 int ac,
-                double ciLevel, ConfidenceInterval allocEff, int windErrorFileNameIdx) {
+                double ciLevel, ConfidenceInterval resolvCong, ConfidenceInterval allocEff,
+                int windErrorFileNameIdx) {
             return new AutoValue_OptiFlexCsvResultWriter_OptiFlexResults(n, r, data, dur, ia, ac,
-                    ciLevel, allocEff,
-                    windErrorFileNameIdx);
+                    ciLevel, resolvCong, allocEff, windErrorFileNameIdx);
         }
     }
 }
