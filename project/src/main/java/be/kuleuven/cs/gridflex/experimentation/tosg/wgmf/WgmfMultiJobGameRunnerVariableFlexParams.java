@@ -112,7 +112,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
             allocEffVals.forEach(accumulatedEfficiencyAcc::accept);
             ConfidenceInterval resolvedCongestionCI = resolvedCongestionAcc
                     .getCI(ConfidenceLevel._95pc);
-            ConfidenceInterval allocEffCI = resolvedCongestionAcc.getCI(ConfidenceLevel._95pc);
+            ConfidenceInterval allocEffCI = accumulatedEfficiencyAcc.getCI(ConfidenceLevel._95pc);
 
             OptiFlexCsvResultWriter.OptiFlexResults optiFlexResults = OptiFlexCsvResultWriter
                     .OptiFlexResults
