@@ -144,8 +144,9 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
     private void configureExperiments(WgmfGameParams params, int agents,
             List<GenericTask<OptaExperimentResults>> executables,
             ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments) {
+        final int RANGE = 24; //def=6
         int start = (int) params.getActivationConstraints().getInterActivationTime();
-        for (int ia = start; ia < start + 6; ia++) {
+        for (int ia = start; ia < start + RANGE; ia++) {
             for (double dur = 1; dur <= 10; dur += 1) {
                 if (FLEX_BASE % dur == 0) {
                     HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
