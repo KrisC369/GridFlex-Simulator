@@ -49,6 +49,7 @@ public abstract class AbstractWgmfGameRunner {
         try {
             String dataFile = parseDataFileName(expP.getCurrentDataProfileIndex(),
                     DATAPROFILE_TEMPLATE);
+            logger.debug("Loading wind input data file: {}", dataFile);
             WindBasedInputData dataIn = WindBasedInputData.loadFromResource(dataFile);
 
             TurbineSpecification specs = TurbineSpecification.loadFromResource(SPECFILE);
@@ -63,6 +64,7 @@ public abstract class AbstractWgmfGameRunner {
 
             String powerDistFile = parseDataFileName(expP.getWindErrorProfileIndex(),
                     POWER_DISTRIBUTIONFILE_TEMPLATE);
+            logger.debug("Loading power distribution file: {}", powerDistFile);
             PowerForecastMultiHorizonErrorDistribution powerDistribution =
                     PowerForecastMultiHorizonErrorDistribution
                             .loadFromCSV(powerDistFile);

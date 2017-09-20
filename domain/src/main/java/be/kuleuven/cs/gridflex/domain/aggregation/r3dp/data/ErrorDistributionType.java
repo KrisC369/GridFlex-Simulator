@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data;
 
 import be.kuleuven.cs.gridflex.domain.util.data.AbstractErrorDistribution;
+import org.slf4j.LoggerFactory;
 
 /**
  * Specification of different statistical random distributions used for error generation.
@@ -34,6 +35,10 @@ public enum ErrorDistributionType {
      */
     public MultiHorizonErrorGenerator createErrorGenerator(long seed,
             AbstractErrorDistribution distribution) {
+        LoggerFactory.getLogger(ErrorDistributionType.class)
+                .debug("Creating error generator with entries: mean {}, std {}",
+                        distribution.getMeans().get(0).toString(),
+                        distribution.getStandardDeviations().get(0));
         return this.factory.createGenerator(seed, distribution);
     }
 

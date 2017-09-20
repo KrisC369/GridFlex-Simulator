@@ -10,6 +10,8 @@ import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFact
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
 
     private final BudgetTracker budget;
     private final CongestionProfile congestion;
+    private static final Logger logger = LoggerFactory.getLogger(PortfolioBalanceSolver.class);
 
     /**
      * Default constructor
@@ -37,6 +40,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             SolverInputData inputData) {
         this(fac, inputData, WINDSPEED_ERROR_BASED);
+        logger.warn("Windspeed error based solver used. Power based calculations are better.");
     }
 
     /**
@@ -104,6 +108,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         WINDSPEED_ERROR_BASED {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
+                logger.debug("Profile conversion chosen = Windspeed error based.");
                 MultiHorizonNormalErrorGenerator gen = new MultiHorizonNormalErrorGenerator(
                         input.getSeed(),
                         input.getWindSpeedForecastMultiHorizonErrorDistribution());
@@ -119,6 +124,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
         POWER_ERROR_BASED {
             @Override
             public CongestionProfile applyConversion(SolverInputData input) {
+                logger.debug("Profile conversion chosen = Power error based.");
                 MultiHorizonErrorGenerator gen = input.getForecastErrorDistributionType()
                         .createErrorGenerator(input.getSeed(),
                                 input.getPowerForecastMultiHorizonErrorDistribution());

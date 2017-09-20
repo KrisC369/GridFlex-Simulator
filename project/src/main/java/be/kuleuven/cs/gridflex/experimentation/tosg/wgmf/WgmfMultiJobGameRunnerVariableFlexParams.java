@@ -41,12 +41,16 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
     private final int dataProfileIdx;
     private final int windErrorFileIdx;
 
+    private final double iastart;
+    private final double iastep;
+    private final double iastop;
+
     /**
      * Public constructor from params object and exec strategy.
      *
      * @param expP The experiment parameters.
      */
-    private WgmfMultiJobGameRunnerVariableFlexParams(ExperimentParams expP) {
+    WgmfMultiJobGameRunnerVariableFlexParams(ExperimentParams expP) {
         super(expP);
         directorToTasks = LinkedListMultimap.create();
         writableResults = Lists.newArrayList();
@@ -55,6 +59,9 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                         + "_" + String.valueOf(System.currentTimeMillis() / 100) + RES_EXTENSION;
         this.windErrorFileIdx = expP.getWindErrorProfileIndex();
         this.dataProfileIdx = expP.getCurrentDataProfileIndex();
+        this.iastart = expP.getP1Start();
+        this.iastep = expP.getP1Step();
+        this.iastop = expP.getP1End();
     }
 
     /**
@@ -70,6 +77,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
     @Override
     protected void execute(WgmfGameParams params) {
         String[] splitted = DATAPROFILE_TEMPLATE.split("/");
+
         OptiFlexCsvResultWriter.writeCsvFile(resultFileName, Collections.emptyList(), false);
         final int agents = getnAgents();
 
@@ -144,9 +152,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
     private void configureExperiments(WgmfGameParams params, int agents,
             List<GenericTask<OptaExperimentResults>> executables,
             ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments) {
-        final int RANGE = 24; //def=6
-        int start = (int) params.getActivationConstraints().getInterActivationTime();
-        for (int ia = start; ia < start + RANGE; ia++) {
+        for (double ia = getIastart(); ia < getIastop(); ia += getIastep()) {
             for (double dur = 1; dur <= 10; dur += 1) {
                 if (FLEX_BASE % dur == 0) {
                     HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
@@ -203,5 +209,17 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
             variance.increment(value);
             count++;
         }
+    }
+
+    public double getIastart() {
+        return iastart;
+    }
+
+    public double getIastep() {
+        return iastep;
+    }
+
+    public double getIastop() {
+        return iastop;
     }
 }

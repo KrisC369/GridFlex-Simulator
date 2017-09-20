@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.util.data;
 
 import com.google.auto.value.AutoValue;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -32,6 +33,9 @@ public abstract class PowerForecastMultiHorizonErrorDistribution extends Abstrac
         ErrorDistributions errorDistributions = new ErrorDistributions(filename).invoke();
         List<Double> means = errorDistributions.getMeans();
         List<Double> sds = errorDistributions.getSds();
+        LoggerFactory.getLogger(PowerForecastMultiHorizonErrorDistribution.class)
+                .debug("Loading power distribution from csv with entries: mean {}, sd {}",
+                        means.get(0).toString(), sds.get(0).toString());
         return create(means, sds);
     }
 

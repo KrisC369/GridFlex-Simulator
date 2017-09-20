@@ -37,7 +37,8 @@ public class OptaJppfTask extends GenericTask<OptaExperimentResults> {
     public void run() {
         PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
                 params.getFactory(),
-                params.toSolverInputData(seed));
+                params.toSolverInputData(seed),
+                PortfolioBalanceSolver.ProfileConversionStrategy.POWER_ERROR_BASED);
         //generate agents
         WgmfAgentGenerator configurator = new WgmfAgentGenerator(seed,
                 constraints);
