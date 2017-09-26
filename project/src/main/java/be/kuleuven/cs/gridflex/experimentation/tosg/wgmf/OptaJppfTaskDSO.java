@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class OptaJppfTaskDSO extends GenericTask<OptaExperimentResults> {
-    private static final long serialVersionUID = 5436262172692915491L;
+    private static final long serialVersionUID = 6840566173721875682L;
     private WgmfGameParams params;
     private final long seed;
     private final int agents;

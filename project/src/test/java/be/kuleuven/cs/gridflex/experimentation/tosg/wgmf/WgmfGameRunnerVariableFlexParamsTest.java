@@ -57,9 +57,8 @@ public class WgmfGameRunnerVariableFlexParamsTest {
         // "-p1step",
         //                "10", "-p1end", "45.5", "-dIdx", "1", "-pIdx", "1" };
         return new String[] {
-                "-n", "4", "-r", "1", "-s", solver, "-m", executionMode, "-p1start", "15.5",
-                "-p1step",
-                "10", "-p1end", "16.5", "-pIdx", "1", "-distribution", "CAUCHY", "-flexIA", "12",
-                "-flexDUR", "2", "-flexCOUNT", "40" };
+                "-n", "4", "-r", "1", "-s", solver, "-m", executionMode, "-p1start", "12",
+                "-p1step", "1", "-p1end", "13", "-pIdx", "0", "-dIdx", "5", "-distribution",
+                "CAUCHY", "-flexIA", "12", "-flexDUR", "2", "-flexCOUNT", "40" };
     }
 }
