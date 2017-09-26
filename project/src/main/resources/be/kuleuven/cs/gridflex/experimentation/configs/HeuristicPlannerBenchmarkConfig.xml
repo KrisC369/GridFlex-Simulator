@@ -20,7 +20,7 @@
             <entityClass>be.kuleuven.cs.gridflex.solvers.heuristic.domain.ActivationAssignment</entityClass>
             <scoreDirectorFactory>
                 <scoreDefinitionType>HARD_SOFT</scoreDefinitionType>
-                <scoreDrl>be/kuleuven/cs/gridflex/solver/heuristic/solver/SolverScoreRules_FullSat.drl</scoreDrl>
+                <scoreDrl>be/kuleuven/cs/gridflex/solvers/heuristic/solver/SolverScoreRules_FullSat.drl</scoreDrl>
                 <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solvers/cloudBalancingScoreRules.drl</scoreDrl>-->
             </scoreDirectorFactory>
             <termination>

@@ -10,7 +10,7 @@
         <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solvers/cloudBalancingScoreRules.drl</scoreDrl>-->
     </scoreDirectorFactory>
     <constructionHeuristic>
-        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
         <!-- Speedup that can be applied to most, but not all use cases: -->
         <!--<forager>-->
         <!--<pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>-->

@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.PortfolioBalanceSolver;
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class OptaJppfTask extends GenericTask<OptaExperimentResults> {
+public class OptaJppfTaskDSO extends GenericTask<OptaExperimentResults> {
     private static final long serialVersionUID = 5436262172692915491L;
     private WgmfGameParams params;
     private final long seed;
@@ -26,7 +26,8 @@ public class OptaJppfTask extends GenericTask<OptaExperimentResults> {
      * @param s              The key for which to query the data provider for the instance
      *                       parameter data.
      */
-    OptaJppfTask(WgmfGameParams params, long seed, int agents, HourlyFlexConstraints constraints) {
+    OptaJppfTaskDSO(WgmfGameParams params, long seed, int agents,
+            HourlyFlexConstraints constraints) {
         this.seed = seed;
         this.agents = agents;
         this.constraints = constraints;
@@ -35,19 +36,20 @@ public class OptaJppfTask extends GenericTask<OptaExperimentResults> {
 
     @Override
     public void run() {
-        PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
+        DistributionGridCongestionSolver dgsolver = new
+                DistributionGridCongestionSolver(
                 params.getFactory(),
-                params.toSolverInputData(seed),
-                PortfolioBalanceSolver.ProfileConversionStrategy.POWER_ERROR_BASED);
+                params.toSolverInputData(seed).getCongestionProfile(),
+                31);
         //generate agents
         WgmfAgentGenerator configurator = new WgmfAgentGenerator(seed,
                 constraints);
         for (int i = 0; i < agents; i++) {
-            portfolioBalanceSolver.registerFlexProvider(configurator.getAgent());
+            dgsolver.registerFlexProvider(configurator.getAgent());
         }
 
-        portfolioBalanceSolver.solve();
-        SolutionResults solutionCPL = portfolioBalanceSolver.getSolution();
+        dgsolver.solve();
+        SolutionResults solutionCPL = dgsolver.getSolution();
         setResult(OptaExperimentResults
                 .create(BigDecimal.valueOf(solutionCPL.getObjectiveValue()),
                         solutionCPL.getNormalizedObjectiveValue(), constraints));

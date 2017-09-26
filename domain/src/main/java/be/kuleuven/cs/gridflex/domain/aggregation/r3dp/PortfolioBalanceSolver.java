@@ -37,6 +37,7 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
      * @param fac       The solvers factory to draw solvers from.
      * @param inputData the input data.
      */
+    @Deprecated
     public PortfolioBalanceSolver(AbstractSolverFactory<SolutionResults> fac,
             SolverInputData inputData) {
         this(fac, inputData, WINDSPEED_ERROR_BASED);
@@ -58,6 +59,21 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
                         inputData.getDayAheadPriceProfile());
         this.congestion = applyBudgetConstraintFilters(strategy.applyConversion(inputData),
                 inputData);
+        if (logger.isDebugEnabled()) {
+            logData(congestion, inputData);
+        }
+    }
+
+    private void logData(CongestionProfile congestion, SolverInputData inputData) {
+        final double TO_POWER = 1.73 * 15.6;
+        final double CONVERSION = 1.5d;
+        final double SLOTS_PER_HOUR = 4;
+        double toResolve = congestion.sum();
+        double total = inputData.getCableCurrentProfile()
+                .transform(p -> (p / CONVERSION) * TO_POWER)
+                .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).sum();
+
+        logger.debug("Totals to solve: {},\nPercentage of total: {}", toResolve, toResolve / total);
     }
 
     private CongestionProfile applyBudgetConstraintFilters(CongestionProfile profile,

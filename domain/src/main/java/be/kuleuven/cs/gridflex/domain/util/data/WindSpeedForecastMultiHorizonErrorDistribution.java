@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.util.data;
 
 import com.google.auto.value.AutoValue;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -37,6 +38,9 @@ public abstract class WindSpeedForecastMultiHorizonErrorDistribution
         //Apply correction: converting from km/h to m/s
         means = means.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
         sds = sds.stream().map(v -> v / KMH_TO_MS).collect(Collectors.toList());
+        LoggerFactory.getLogger(PowerForecastMultiHorizonErrorDistribution.class)
+                .debug("Loading power distribution from csv with entries: mean {}, sd {}",
+                        means.get(0).toString(), sds.get(0).toString());
         return create(means, sds);
     }
 
