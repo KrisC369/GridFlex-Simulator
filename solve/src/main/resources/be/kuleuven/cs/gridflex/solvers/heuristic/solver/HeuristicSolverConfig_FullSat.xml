@@ -10,7 +10,7 @@
         <!--<scoreDrl>org/optaplanner/examples/cloudbalancing/solvers/cloudBalancingScoreRules.drl</scoreDrl>-->
     </scoreDirectorFactory>
     <constructionHeuristic>
-        <constructionHeuristicType>FIRST_FIT</constructionHeuristicType>
+        <constructionHeuristicType>FIRST_FIT_DECREASING</constructionHeuristicType>
         <!-- Speedup that can be applied to most, but not all use cases: -->
         <!--<forager>-->
         <!--<pickEarlyType>FIRST_NON_DETERIORATING_SCORE</pickEarlyType>-->
@@ -23,13 +23,27 @@
         <!--&lt;!&ndash;<unimprovedSecondsSpentLimit>30</unimprovedSecondsSpentLimit>&ndash;&gt;-->
     </termination>
     <localSearch>
+        <!--<unionMoveSelector>-->
+            <!--<changeMoveSelector>-->
+                <!--<fixedProbabilityWeight>0.85</fixedProbabilityWeight>-->
+            <!--</changeMoveSelector>-->
+            <!--<swapMoveSelector>-->
+                <!--<fixedProbabilityWeight>0.10</fixedProbabilityWeight>-->
+            <!--</swapMoveSelector>-->
+            <!--<pillarSwapMoveSelector>-->
+                <!--<fixedProbabilityWeight>0.5</fixedProbabilityWeight>-->
+            <!--</pillarSwapMoveSelector>-->
+        <!--</unionMoveSelector>-->
         <changeMoveSelector/>
         <localSearchType>TABU_SEARCH</localSearchType>
         <!--<acceptor>-->
-        <!--<solutionTabuSize>1000</solutionTabuSize>-->
+            <!--<solutionTabuSize>1000</solutionTabuSize>-->
+            <!--&lt;!&ndash;<moveTabuSize>4</moveTabuSize>&ndash;&gt;-->
+            <!--&lt;!&ndash;<entityTabuRatio>0.02</entityTabuRatio>&ndash;&gt;-->
+            <!--&lt;!&ndash;<valueTabuRatio>0.02</valueTabuRatio>&ndash;&gt;-->
         <!--</acceptor>-->
         <!--<forager>-->
-        <!--<acceptedCountLimit>1000</acceptedCountLimit>-->
+            <!--<acceptedCountLimit>1000</acceptedCountLimit>-->
         <!--</forager>-->
         <termination>
             <!--<terminationCompositionStyle>AND</terminationCompositionStyle>-->

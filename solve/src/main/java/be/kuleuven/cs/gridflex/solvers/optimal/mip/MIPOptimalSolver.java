@@ -3,10 +3,10 @@ package be.kuleuven.cs.gridflex.solvers.optimal.mip;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.QuarterHourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.solvers.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.optimal.ConstraintConversion;
-import be.kuleuven.cs.gridflex.solvers.data.QuarterHourlyFlexConstraints;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;
@@ -24,9 +24,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static net.sf.jmpi.main.expression.MpExpr.prod;
+import static org.apache.commons.math3.util.FastMath.min;
 
 /**
  * Solver for using flexibility to avoid wind curtailment.
@@ -83,11 +85,44 @@ public class MIPOptimalSolver extends AbstractOptimalSolver {
                     allocResults.put(p, concreteResult.getBoolean(s));
                 }
             }
+            double idealSum = getIdealActivationVolume();
+            double activatedSum = getActualActivatedVolume(allocResults);
+            double relativeObj = activatedSum / idealSum;
             this.results = AllocResults
-                    .create(allocResults, concreteResult.getObjective().doubleValue());
+                    .create(allocResults, activatedSum, relativeObj);
         } else {
             this.results = AllocResults.INFEASIBLE;
         }
+    }
+
+    private double getIdealActivationVolume() {
+        return getProviders().stream().mapToDouble(
+                p -> p.getFlexibilityActivationRate().getUp() * ConstraintConversion
+                        .fromHourlyToQuarterHourly(p.getFlexibilityActivationConstraints())
+                        .getActivationDuration() * ConstraintConversion.fromHourlyToQuarterHourly(p
+                        .getFlexibilityActivationConstraints()).getMaximumActivations()).sum();
+    }
+
+    private double getActualActivatedVolume(
+            ListMultimap<FlexibilityProvider, Boolean> allocResults) {
+        return IntStream.range(0, profile.length())
+                .filter(i -> activated(allocResults, i))
+                .mapToDouble(i -> min(profile.value(i), getSum(allocResults, i))).sum();
+    }
+
+    private double getSum(ListMultimap<FlexibilityProvider, Boolean> acts, int idx) {
+        return acts.keySet().stream().mapToDouble(
+                p -> p.getFlexibilityActivationRate().getUp() * (acts.get(p).get(idx) ? 1 : 0))
+                .sum();
+    }
+
+    private boolean activated(ListMultimap<FlexibilityProvider, Boolean> acts, int idx) {
+        int prod = 1;
+        for (FlexibilityProvider p : acts.keySet()) {
+
+            prod *= (1 - (acts.get(p).get(idx) ? 1 : 0));
+        }
+        return prod == 1 ? false : true;
     }
 
     @Override
@@ -124,9 +159,9 @@ public class MIPOptimalSolver extends AbstractOptimalSolver {
             final MpExpr lhs = new MpExpr().add(solvedID.get(i));
             final MpExpr rhs = new MpExpr();
             for (final FlexibilityProvider p : getProviders()) {
-                rhs.add(prod(
-                        prod(allocDvarID.get(p).get(i), p.getFlexibilityActivationRate().getUp()),
-                        1 / STEPS_PER_HOUR));
+                //removed scaling from hour to quarter hourly because handled by decorator of
+                // providers at init.
+                rhs.add(prod(allocDvarID.get(p).get(i), p.getFlexibilityActivationRate().getUp()));
             }
             prob.addConstraint(new MpConstraint(lhs, MpOperator.LE, rhs));
         }

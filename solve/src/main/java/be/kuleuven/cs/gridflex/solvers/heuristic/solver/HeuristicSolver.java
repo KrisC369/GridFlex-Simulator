@@ -4,11 +4,11 @@ import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.heuristic.domain.ActivationAssignment;
 import be.kuleuven.cs.gridflex.solvers.heuristic.domain.Allocation;
-import be.kuleuven.cs.gridflex.solvers.heuristic.domain.OptaFlexProvider;
-import be.kuleuven.cs.gridflex.solvers.heuristic.domain.QHFlexibilityProvider;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProviderDecorator;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProvider;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ListMultimap;
@@ -83,11 +83,11 @@ public class HeuristicSolver implements Solver<AllocResults> {
         //        solverConfig.getTerminationConfig().setMinutesSpentLimit(10L);
         //        solverConfig.getTerminationConfig().setStepCountLimit(500);
 
-        double sum = Lists.newArrayList(context.getProviders()).stream()
+        double optimalSum = Lists.newArrayList(context.getProviders()).stream()
                 .mapToDouble(p -> p.getFlexibilityActivationRate().getUp() * p
                         .getFlexibilityActivationConstraints().getMaximumActivations() * p
                         .getFlexibilityActivationConstraints().getActivationDuration()).sum();
-        double bestScore = sum * FRACTION_OF_THEORETICAL_OPT * DECIMAL_SCALING;
+        double bestScore = optimalSum * FRACTION_OF_THEORETICAL_OPT * DECIMAL_SCALING;
 
         String bestScoreString = "0hard/" + String.valueOf((int) bestScore) + "soft";
         solverConfig.getTerminationConfig()
@@ -100,14 +100,14 @@ public class HeuristicSolver implements Solver<AllocResults> {
             logger.info(
                     "Profile loaded with a total of {} units as a volume to resolve with {} units"
                             + " of flexible allocation available.",
-                    context.getEnergyProfileToMinimizeWithFlex().sum(), sum);
-            if (context.getEnergyProfileToMinimizeWithFlex().sum() < sum) {
+                    context.getEnergyProfileToMinimizeWithFlex().sum(), optimalSum);
+            if (context.getEnergyProfileToMinimizeWithFlex().sum() < optimalSum) {
                 logger.info("Note that the maximum available flex is higher than the needed flex.");
             }
             logger.debug(
                     "Minimum best score: {} added to termination condition. This is {}% relative "
                             + "efficiency of theoretical max: {}",
-                    bestScoreString, FRACTION_OF_THEORETICAL_OPT * 100, sum * 100);
+                    bestScoreString, FRACTION_OF_THEORETICAL_OPT * 100, optimalSum * 100);
         }
 
         //Build solvers
@@ -121,7 +121,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
         solver.solve(unsolvedAlloc);
         Allocation solvedAlloc = solver.getBestSolution();
         double objValue = solvedAlloc.getResolvedCongestion();
-        double relative = objValue / sum;
+        double relative = objValue / optimalSum;
 
         if (logger.isInfoEnabled()) {
             logger.info("Search ended with objective function result: {}.",
@@ -163,10 +163,10 @@ public class HeuristicSolver implements Solver<AllocResults> {
         public Allocation createAllocation() {
             List<QHFlexibilityProvider> providers = Lists.newArrayList();
             //Order preserving needed.
-            //            context.getProviders().forEach(p -> providers.add(new OptaFlexProvider
+            //            context.getProviders().forEach(p -> providers.add(new QHFlexibilityProviderDecorator
             // (p)));
             for (FlexibilityProvider p : context.getProviders()) {
-                providers.add(new OptaFlexProvider(p));
+                providers.add(new QHFlexibilityProviderDecorator(p));
             }
 
             List<ActivationAssignment> assignments = Lists.newArrayList();

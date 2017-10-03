@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.solvers.optimal;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
-import be.kuleuven.cs.gridflex.solvers.data.QuarterHourlyFlexConstraints;
+import be.kuleuven.cs.gridflex.solvers.common.data.QuarterHourlyFlexConstraints;
 
 /**
  * Utility class for converting flex constraints from and to different time horizons.

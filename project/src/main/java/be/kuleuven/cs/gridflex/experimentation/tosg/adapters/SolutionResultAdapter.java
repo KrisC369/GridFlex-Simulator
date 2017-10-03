@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.adapters;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.SolutionResults;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import com.google.common.collect.ListMultimap;
 
 /**

@@ -1,18 +1,35 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.DistributionGridCongestionSolver;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
+import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
+import com.google.common.collect.ListMultimap;
+import it.unimi.dsi.fastutil.doubles.DoubleList;
 import org.jppf.server.JPPFDriver;
 import org.jppf.utils.JPPFConfiguration;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import static be.kuleuven.cs.gridflex.experimentation.tosg.wgmf
+        .WgmfGameRunnerVariableDistributionCostsTest.loadTestResources;
+import static be.kuleuven.cs.gridflex.experimentation.tosg.wgmf
+        .WgmfGameRunnerVariableDistributionCostsTest.printAllocations;
 
 /**
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public class WgmfGameRunnerVariableFlexParamsTest {
+    static final double TO_POWER = 1.73 * 15.6;
+    static final double CONVERSION = 1.5d;
+    static final double SLOTS_PER_HOUR = 4;
     private static final String executionMode = "LOCAL";
     private static JPPFDriver driver;
+    private ExperimentParams experimentParams;
 
     @BeforeClass
     public static void setUpClass() {
@@ -45,6 +62,43 @@ public class WgmfGameRunnerVariableFlexParamsTest {
     public void main() throws Exception {
         //        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
         WgmfMultiJobGameRunnerVariableFlexParams.main(getArgLine("DUMMY"));
+    }
+
+    @Test
+    @Ignore
+    public void testDSOAllocationResultsSmallTest() {
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "smalltest.csv",
+                "test", "test", 1);
+
+        DistributionGridCongestionSolver dgcSolver = new
+                DistributionGridCongestionSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCongestionProfile());
+
+        HourlyFlexConstraints flex = HourlyFlexConstraints.builder().activationDuration(1)
+                .interActivationTime(1).maximumActivations(2).build();
+
+        dgcSolver.registerFlexProvider(new FlexProvider(200, flex));
+                dgcSolver.registerFlexProvider(new FlexProvider(500, flex));
+        TimeSeries ts = dgcSolver
+                .getCongestionVolumeToResolve();
+        DoubleList toSolve = ts.values();
+        DoubleList input = wgmfGameParams.getInputData().getCableCurrentProfile()
+                .transform(p -> (p / CONVERSION) * TO_POWER)
+                .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values();
+        dgcSolver.solve();
+
+        System.out.println(toSolve);
+        System.out.println(input);
+        System.out.println(
+                "Solved: " + dgcSolver.getSolution().getObjectiveValue() + " / " + dgcSolver
+                        .getSolution().getNormalizedObjectiveValue() + " % of optimal");
+        ListMultimap<FlexibilityProvider, Boolean> allocationMaps = dgcSolver
+                .getSolution().getAllocationMaps();
+        printAllocations(allocationMaps);
     }
 
     public static ExperimentParams getParams(String solver) {

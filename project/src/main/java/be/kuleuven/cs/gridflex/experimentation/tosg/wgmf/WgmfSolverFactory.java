@@ -10,7 +10,7 @@ import be.kuleuven.cs.gridflex.experimentation.tosg.adapters.SolutionResultAdapt
 import be.kuleuven.cs.gridflex.experimentation.tosg.adapters.SolverAdapter;
 import be.kuleuven.cs.gridflex.persistence.MemoizationContext;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 

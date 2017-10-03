@@ -18,11 +18,15 @@ import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErr
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.WindBasedInputData;
+import com.google.common.collect.ListMultimap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import static be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.SerializationUtils.pickle;
 import static be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.SerializationUtils.unpickle;
@@ -38,7 +42,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
     static final double TO_POWER = 1.73 * 15.6;
     static final double CONVERSION = 1.5d;
     static final double SLOTS_PER_HOUR = 4;
-    private static final String DISTRIBUTIONFILE = "windspeedDistributionsNormalized.csv";
+    private static final String DISTRIBUTIONFILE = "windspeedDistributionsEmpty.csv";
     private static final String POWERDISTRIBUTION = "powerDistributionsTestFile.csv";
     private static final String DATAFILE = "test.csv";
     private static final String SPECFILE = "specs_enercon_e101-e1.csv";
@@ -77,7 +81,7 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
         return new String[] {
                 "-n", "2", "-r", "1", "-s", solver, "-c", "ue", "-m", "LOCAL", "-p1start", "15.5",
                 "-p1step",
-                "10", "-p1end", "16.5", "-pIdx", "1", "-distribution", "CAUCHY", "-flexIA", "12",
+                "10", "-p1end", "16.5", "-pIdx", "0", "-distribution", "CAUCHY", "-flexIA", "12",
                 "-flexDUR", "2", "-flexCOUNT", "40" };
     }
 
@@ -349,13 +353,59 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 .registerFlexProvider(new FlexProvider(200, HourlyFlexConstraints.R3DP));
         portfolioBalanceSolver
                 .registerFlexProvider(new FlexProvider(500, HourlyFlexConstraints.R3DP));
+
         TimeSeries ts = portfolioBalanceSolver
                 .getCongestionVolumeToResolve();
         System.out.println(ts.values());
         System.out.println(wgmfGameParams.getInputData().getCableCurrentProfile()
                 .transform(p -> (p / CONVERSION) * TO_POWER)
                 .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values());
+
         //        portfolioBalanceSolver.solve();
+    }
+
+    @Test
+    @Ignore
+    public void testPBAllocationResults() {
+
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
+                "verlies aan energie", "startprofiel+extra", 365);
+
+        PortfolioBalanceSolver portfolioBalanceSolver = new PortfolioBalanceSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.toSolverInputData(1000),
+                PortfolioBalanceSolver.ProfileConversionStrategy.POWER_ERROR_BASED);
+
+        portfolioBalanceSolver
+                .registerFlexProvider(new FlexProvider(200, HourlyFlexConstraints.R3DP));
+        portfolioBalanceSolver
+                .registerFlexProvider(new FlexProvider(500, HourlyFlexConstraints.R3DP));
+
+        TimeSeries ts = portfolioBalanceSolver
+                .getCongestionVolumeToResolve();
+        System.out.println(ts.values());
+        System.out.println(wgmfGameParams.getInputData().getCableCurrentProfile()
+                .transform(p -> (p / CONVERSION) * TO_POWER)
+                .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values());
+
+        portfolioBalanceSolver.solve();
+        ListMultimap<FlexibilityProvider, Boolean> allocationMaps = portfolioBalanceSolver
+                .getSolution().getAllocationMaps();
+        printAllocations(allocationMaps);
+    }
+
+    static void printAllocations(ListMultimap<FlexibilityProvider, Boolean> allocationMaps) {
+        for (FlexibilityProvider p : allocationMaps.keySet()) {
+            System.out.println(p + ": ");
+            IntList acts = new IntArrayList(35040);
+
+            acts.addAll(allocationMaps.get(p).stream().map(b -> b ? 1 : 0)
+                    .collect(Collectors.toList()));
+            System.out.println(acts);
+        }
     }
 
     @Test
@@ -384,6 +434,37 @@ public class WgmfGameRunnerVariableDistributionCostsTest {
                 .transform(p -> (p / CONVERSION) * TO_POWER)
                 .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values());
         //        portfolioBalanceSolver.solve();
+    }
+
+    @Test
+    @Ignore
+    public void testDSOAllocationResults() {
+        experimentParams = getParams("OPTA");
+        WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
+                "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
+                "be/kuleuven/cs/gridflex/experimentation/data/currentAndCongestionProfile[0].csv",
+                "verlies aan energie", "startprofiel+extra", 365);
+
+        DistributionGridCongestionSolver dgcSolver = new
+                DistributionGridCongestionSolver(
+                wgmfGameParams.getFactory(),
+                wgmfGameParams.getInputData().getCongestionProfile());
+
+        dgcSolver
+                .registerFlexProvider(new FlexProvider(200, HourlyFlexConstraints.R3DP));
+        dgcSolver
+                .registerFlexProvider(new FlexProvider(500, HourlyFlexConstraints.R3DP));
+        TimeSeries ts = dgcSolver
+                .getCongestionVolumeToResolve();
+        System.out.println(ts.values());
+        System.out.println(wgmfGameParams.getInputData().getCableCurrentProfile()
+                .transform(p -> (p / CONVERSION) * TO_POWER)
+                .transform(p -> p * CONVERSION / SLOTS_PER_HOUR).values());
+
+        dgcSolver.solve();
+        ListMultimap<FlexibilityProvider, Boolean> allocationMaps = dgcSolver
+                .getSolution().getAllocationMaps();
+        printAllocations(allocationMaps);
     }
 
     private static class PseudoFlexProvider implements FlexibilityProvider {

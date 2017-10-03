@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.solvers.data;
+package be.kuleuven.cs.gridflex.solvers.common.data;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexConstraints;
 

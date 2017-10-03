@@ -1,8 +1,8 @@
-package be.kuleuven.cs.gridflex.solvers.heuristic.domain;
+package be.kuleuven.cs.gridflex.solvers.common;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.solvers.optimal.ConstraintConversion;
-import be.kuleuven.cs.gridflex.solvers.data.QuarterHourlyFlexConstraints;
+import be.kuleuven.cs.gridflex.solvers.common.data.QuarterHourlyFlexConstraints;
 
 /**
  * A quarter hourly discretized flexibility provider.

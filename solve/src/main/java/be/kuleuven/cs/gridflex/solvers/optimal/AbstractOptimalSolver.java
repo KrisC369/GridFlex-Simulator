@@ -3,8 +3,8 @@ package be.kuleuven.cs.gridflex.solvers.optimal;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
-import com.google.common.collect.Lists;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProviderDecorator;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import net.sf.jmpi.main.MpProblem;
 import net.sf.jmpi.main.MpResult;
 import net.sf.jmpi.main.MpSolver;
@@ -15,6 +15,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Abstract solvers that uses flexibility providers to solve the optimal allocation given the
@@ -31,6 +32,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
     private boolean verbose = false;
     private final FlexAllocProblemContext context;
     private final Solver solver;
+    private final List<FlexibilityProvider> providers;
 
     /**
      * Default constructor
@@ -38,6 +40,9 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
     protected AbstractOptimalSolver(FlexAllocProblemContext context, Solver s) {
         this.context = context;
         this.solver = s;
+        this.providers = context.getProviders().stream()
+                .map(p -> new QHFlexibilityProviderDecorator(p)).collect(
+                        Collectors.toList());
     }
 
     /**
@@ -93,7 +98,7 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
      * @return the registered flex providers.
      */
     public final List<FlexibilityProvider> getProviders() {
-        return Collections.unmodifiableList(Lists.newArrayList(context.getProviders()));
+        return Collections.unmodifiableList(this.providers);
     }
 
     /**

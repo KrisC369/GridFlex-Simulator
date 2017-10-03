@@ -8,7 +8,7 @@ import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.solvers.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.optimal.ConstraintConversion;
 import be.kuleuven.cs.gridflex.solvers.optimal.mip.MIPOptimalSolver;
 import com.google.common.collect.Lists;

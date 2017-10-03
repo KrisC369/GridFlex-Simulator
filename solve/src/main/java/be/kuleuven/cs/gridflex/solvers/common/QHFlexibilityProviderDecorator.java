@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.solvers.heuristic.domain;
+package be.kuleuven.cs.gridflex.solvers.common;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexActivation;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
@@ -12,11 +12,11 @@ import be.kuleuven.cs.gridflex.domain.util.data.DoublePowerCapabilityBand;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class OptaFlexProvider implements QHFlexibilityProvider {
+public class QHFlexibilityProviderDecorator implements QHFlexibilityProvider {
     private static final double HOUR_TO_QUARTER_HOUR = 0.25d;
     private final FlexibilityProvider provider;
 
-    public OptaFlexProvider(FlexibilityProvider provider) {
+    public QHFlexibilityProviderDecorator(FlexibilityProvider provider) {
         this.provider = provider;
     }
 
@@ -49,7 +49,7 @@ public class OptaFlexProvider implements QHFlexibilityProvider {
 
     @Override
     public String toString() {
-        return "OptaFlexProvider{" +
+        return "QHFlexibilityProviderDecorator{" +
                 "rateUp=" + provider.getFlexibilityActivationRate().getUp() +
                 '}';
     }

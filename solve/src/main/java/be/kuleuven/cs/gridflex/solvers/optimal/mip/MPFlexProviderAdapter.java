@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.solvers.optimal.mip;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.gridflex.solvers.optimal.MpAdapter;
-import be.kuleuven.cs.gridflex.solvers.data.QuarterHourlyFlexConstraints;
+import be.kuleuven.cs.gridflex.solvers.common.data.QuarterHourlyFlexConstraints;
 import com.google.common.collect.Lists;
 import net.sf.jmpi.main.MpConstraint;
 import net.sf.jmpi.main.MpOperator;

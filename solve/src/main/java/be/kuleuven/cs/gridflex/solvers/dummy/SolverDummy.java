@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.solvers.dummy;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.optimal.AbstractOptimalSolver;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;

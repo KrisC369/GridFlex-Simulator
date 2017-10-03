@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.solvers.heuristic.domain;
 
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProvider;
 import com.google.common.collect.Lists;
 import org.optaplanner.core.api.domain.solution.PlanningEntityCollectionProperty;
 import org.optaplanner.core.api.domain.solution.PlanningSolution;
@@ -112,7 +113,7 @@ public class Allocation implements Solution<HardSoftScore> {
     }
 
     /**
-     * @return The binary data of 1's and 0's that represent the activaitons for all providers as
+     * @return The binary data of 1's and 0's that represent the activations for all providers as
      * a 2dim array.
      */
     public int[][] getAllocationMaps() {

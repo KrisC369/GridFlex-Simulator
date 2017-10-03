@@ -9,7 +9,7 @@ import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.persistence.MapDBMemoizationContext;
 import be.kuleuven.cs.gridflex.persistence.MemoizationContext;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
 import be.kuleuven.cs.gridflex.solvers.heuristic.solver.HeuristicSolverTest;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.AllocResultsView;

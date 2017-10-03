@@ -6,6 +6,7 @@ import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProviderDecorator;
 import be.kuleuven.cs.gridflex.solvers.heuristic.solver.HeuristicSolver;
 import com.google.common.collect.Lists;
 import org.junit.Before;
@@ -40,8 +41,8 @@ public class ActivationAssignmentTest {
                 HourlyFlexConstraints.builder().maximumActivations(2).interActivationTime(1)
                         .activationDuration(0.5).build());
         initSolvers();
-        OptaFlexProvider prov1 = new OptaFlexProvider(first);
-        OptaFlexProvider prov2 = new OptaFlexProvider(second);
+        QHFlexibilityProviderDecorator prov1 = new QHFlexibilityProviderDecorator(first);
+        QHFlexibilityProviderDecorator prov2 = new QHFlexibilityProviderDecorator(second);
         aa1 = ActivationAssignment.create(1, prov1, profile);
         aa2 = ActivationAssignment.create(1, prov2, profile);
     }

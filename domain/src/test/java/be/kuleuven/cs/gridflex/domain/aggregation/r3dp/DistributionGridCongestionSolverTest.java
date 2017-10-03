@@ -44,8 +44,9 @@ public class DistributionGridCongestionSolverTest {
         try {
             specs = TurbineSpecification.loadFromResource("specs_enercon_e101-e1.csv");
             c2 = CongestionProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
-            WindSpeedForecastMultiHorizonErrorDistribution distribution = WindSpeedForecastMultiHorizonErrorDistribution
-                    .loadFromCSV("windspeedDistributions.csv");
+            WindSpeedForecastMultiHorizonErrorDistribution distribution =
+                    WindSpeedForecastMultiHorizonErrorDistribution
+                            .loadFromCSV("windspeedDistributions.csv");
             this.generator = new MultiHorizonNormalErrorGenerator(SEED, distribution);
             AbstractSolverFactory<SolutionResults> factory = mock(AbstractSolverFactory.class);
             solver = new DistributionGridCongestionSolver(factory, c2);
@@ -67,5 +68,4 @@ public class DistributionGridCongestionSolverTest {
         long count = integers.stream().mapToInt(i -> i).sum();
         assertEquals(2 * 40, count, 0);
     }
-
 }

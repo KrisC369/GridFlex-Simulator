@@ -1,6 +1,7 @@
 package be.kuleuven.cs.gridflex.solvers.heuristic.domain;
 
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProvider;
 import be.kuleuven.cs.gridflex.solvers.heuristic.domain.comparators
         .ActivationAssignmentDifficultyComparator;
 import be.kuleuven.cs.gridflex.solvers.heuristic.domain.comparators.IntegerStrengthComparator;

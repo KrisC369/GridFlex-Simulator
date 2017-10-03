@@ -3,7 +3,7 @@ package be.kuleuven.cs.gridflex.solvers.memoization;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.gridflex.persistence.MemoizationContext;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import com.google.common.base.Supplier;
