@@ -58,7 +58,7 @@ public class WgmfGameRunnerVariableFlexParamsTest {
     }
 
     @Test
-    //    @Ignore
+        @Ignore
     public void main() throws Exception {
         //        WgmfGameRunnerVariableDistributionCosts.main(getArgLine("OPTA"));
         WgmfMultiJobGameRunnerVariableFlexParams.main(getArgLine("DUMMY"));
@@ -67,7 +67,7 @@ public class WgmfGameRunnerVariableFlexParamsTest {
     @Test
     @Ignore
     public void testDSOAllocationResultsSmallTest() {
-        experimentParams = getParams("OPTA");
+        experimentParams = getParams("GUROBI");
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams,
                 "be/kuleuven/cs/gridflex/experimentation/data/imbalance_prices.csv",
                 "smalltest.csv",

@@ -27,13 +27,13 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public final class WgmfMultiJobGameRunnerVariableFlexParams
+public class WgmfMultiJobGameRunnerVariableFlexParams
         extends WgmfGameRunnerVariableDistributionCosts {
     public static final String PARAM_KEY = "DISTRIBUTION_E_S_PRICE";
-    private static final int FLEX_BASE = 40 * 2;
+    protected static final int FLEX_BASE = 40 * 2;
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableFlexParams.class);
-    private static final int BASE_SEED = 1234;
+    protected static final int BASE_SEED = 1234;
     private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
     private final List<OptiFlexCsvResultWriter.OptiFlexResults> writableResults;
 
@@ -104,7 +104,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                 allocEffResults);
     }
 
-    private void parseResults(String dataFile,
+    protected void parseResults(String dataFile,
             ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments,
             ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults,
             ListMultimap<HourlyFlexConstraints, Double> allocEffResults) {
@@ -134,7 +134,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
         OptiFlexCsvResultWriter.writeCsvFile(resultFileName, writableResults, true);
     }
 
-    private void runExperiments(WgmfGameParams params,
+    protected void runExperiments(WgmfGameParams params,
             List<GenericTask<OptaExperimentResults>> executables,
             ListMultimap<HourlyFlexConstraints, BigDecimal> experimentResults,
             ListMultimap<HourlyFlexConstraints, Double> allocEffResults) {
@@ -149,7 +149,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                         (obj) -> processResults(experimentResults, allocEffResults, obj));
     }
 
-    private void configureExperiments(WgmfGameParams params, int agents,
+    protected void configureExperiments(WgmfGameParams params, int agents,
             List<GenericTask<OptaExperimentResults>> executables,
             ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments) {
         for (double ia = getIastart(); ia < getIastop(); ia += getIastep()) {
@@ -161,8 +161,7 @@ public final class WgmfMultiJobGameRunnerVariableFlexParams
                     long seed = BASE_SEED;
                     for (int rep = 0; rep < getnReps(); rep++) {
                         GenericTask<OptaExperimentResults> optaJppfTaskDSO = new OptaJppfTaskDSO(
-                                params, seed + rep, agents,
-                                constraints);
+                                params, seed + rep, agents, constraints);
                         executables.add(optaJppfTaskDSO);
                         experiments.put(constraints, optaJppfTaskDSO);
                     }

@@ -28,7 +28,11 @@ enum ExecutionStrategy {
     /**
      * Run local with a multithreaded executor service.
      */
-    LOCAL((o) -> (GameInstanceConfiguration) ((Future<?>) o).get());
+    LOCAL((o) -> (GameInstanceConfiguration) ((Future<?>) o).get()),
+    /**
+     * Run locally with a serial executor in one thread.
+     */
+    LOCAL_SERIAL((o) -> (GameInstanceConfiguration) ((Future<?>) o).get());
 
     ExperimentRunner getRunner(WgmfGameParams params, String paramString) {
         return getRunner(params, paramString, "PocJob");
@@ -45,6 +49,7 @@ enum ExecutionStrategy {
         case LOCAL:
             toRet = LocalRunners.createOSTunedMultiThreadedRunner();
             break;
+        case LOCAL_SERIAL:
         default:
             toRet = LocalRunners.createDefaultSingleThreadedRunner();
         }
@@ -86,6 +91,7 @@ enum ExecutionStrategy {
                 }
             }
             break;
+        case LOCAL_SERIAL:
         case LOCAL:
             for (Future<?> result : (List<Future<?>>) allResults) {
                 try {
@@ -125,6 +131,7 @@ enum ExecutionStrategy {
                 experiments.add(new RemoteTaskDecorator<T>(paramString, task));
             }
             break;
+        case LOCAL_SERIAL:
         case LOCAL:
             experiments = Lists.newArrayList();
             experiments.addAll(tasks);
