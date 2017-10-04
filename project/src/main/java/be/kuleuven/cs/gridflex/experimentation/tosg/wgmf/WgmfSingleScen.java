@@ -50,4 +50,9 @@ public final class WgmfSingleScen
             experiments.put(activationConstraints, optaJppfTaskDSO);
         }
     }
+
+    @Override
+    protected ExecutionStrategy getStrategy() {
+        return ExecutionStrategy.LOCAL_SERIAL;
+    }
 }
