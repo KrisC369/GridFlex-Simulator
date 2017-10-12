@@ -160,10 +160,10 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                             .maximumActivations(FLEX_BASE / dur).build();
                     long seed = BASE_SEED;
                     for (int rep = 0; rep < getnReps(); rep++) {
-                        GenericTask<OptaExperimentResults> optaJppfTaskDSO = new OptaJppfTaskDSO(
+                        GenericTask<OptaExperimentResults> optaJppfTaskPB = new OptaJppfTaskPB(
                                 params, seed + rep, agents, constraints);
-                        executables.add(optaJppfTaskDSO);
-                        experiments.put(constraints, optaJppfTaskDSO);
+                        executables.add(optaJppfTaskPB);
+                        experiments.put(constraints, optaJppfTaskPB);
                     }
                 }
             }
