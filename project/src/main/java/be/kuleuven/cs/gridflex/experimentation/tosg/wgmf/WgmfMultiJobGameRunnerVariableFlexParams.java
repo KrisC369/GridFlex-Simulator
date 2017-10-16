@@ -154,10 +154,10 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
             ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments) {
         for (double ia = getIastart(); ia < getIastop(); ia += getIastep()) {
             for (double dur = 1; dur <= 10; dur += 1) {
-                if (FLEX_BASE % dur == 0) {
+//                if (FLEX_BASE % dur == 0) {
                     HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
                             .activationDuration(dur).interActivationTime(ia)
-                            .maximumActivations(FLEX_BASE / dur).build();
+                            .maximumActivations(10).build();
                     long seed = BASE_SEED;
                     for (int rep = 0; rep < getnReps(); rep++) {
                         GenericTask<OptaExperimentResults> optaJppfTaskPB = new OptaJppfTaskPB(
@@ -166,7 +166,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                         experiments.put(constraints, optaJppfTaskPB);
                     }
                 }
-            }
+//            }
         }
     }
 
