@@ -45,6 +45,8 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
     private final double iastep;
     private final double iastop;
 
+    private final HourlyFlexConstraints constraints;
+
     /**
      * Public constructor from params object and exec strategy.
      *
@@ -62,6 +64,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
         this.iastart = expP.getP1Start();
         this.iastep = expP.getP1Step();
         this.iastop = expP.getP1End();
+        this.constraints = expP.getActivationConstraints();
     }
 
     /**
@@ -152,12 +155,17 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
     protected void configureExperiments(WgmfGameParams params, int agents,
             List<GenericTask<OptaExperimentResults>> executables,
             ListMultimap<HourlyFlexConstraints, GenericTask<OptaExperimentResults>> experiments) {
-        for (double ia = getIastart(); ia < getIastop(); ia += getIastep()) {
-            for (double dur = 1; dur <= 10; dur += 1) {
+        //Defaults:
+        double ia = getConstraints().getInterActivationTime();
+        double dur = getConstraints().getActivationDuration();
+        double count = getConstraints().getMaximumActivations();
+        //params:
+        for (ia = getIastart(); ia < getIastop(); ia += getIastep()) {
+            for (dur = 1; dur <= 10; dur += 1) {
                 //                if (FLEX_BASE % dur == 0) {
                 HourlyFlexConstraints constraints = HourlyFlexConstraints.builder()
                         .activationDuration(dur).interActivationTime(ia)
-                        .maximumActivations(10).build();
+                        .maximumActivations(count).build();
                 long seed = BASE_SEED;
                 for (int rep = 0; rep < getnReps(); rep++) {
                     GenericTask<OptaExperimentResults> optaJppfTaskDSO = new OptaJppfTaskDSO(
@@ -221,5 +229,9 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
 
     public double getIastop() {
         return iastop;
+    }
+
+    public HourlyFlexConstraints getConstraints() {
+        return constraints;
     }
 }
