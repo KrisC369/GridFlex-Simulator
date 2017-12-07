@@ -166,7 +166,7 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
                     HourlyFlexConstraints constraints = HourlyFlexConstraints
                             .builder()
                             .activationDuration(dur).interActivationTime(ia)
-                            .maximumActivations(count).build();
+                            .maximumActivations(FLEX_BASE / dur).build();
                     long seed = BASE_SEED;
                     for (int rep = 0; rep < getnReps(); rep++) {
                         GenericTask<OptaExperimentResults> optaJppfTaskDSO = new OptaJppfTaskDSO(
