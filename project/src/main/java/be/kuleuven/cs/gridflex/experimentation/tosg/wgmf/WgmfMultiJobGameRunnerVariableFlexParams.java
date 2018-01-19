@@ -160,24 +160,23 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
         double dur = getConstraints().getActivationDuration();
         double count = getConstraints().getMaximumActivations();
         //params:
-        for (ia = getIastart(); ia < getIastop(); ia += getIastep()) {
-            for (dur = 1; dur <= 10; dur += 1) {
-                if (FLEX_BASE % dur == 0) {
-                    HourlyFlexConstraints constraints = HourlyFlexConstraints
-                            .builder()
-                            .activationDuration(dur).interActivationTime(ia)
-                            .maximumActivations(FLEX_BASE / dur).build();
-                    long seed = BASE_SEED;
-                    for (int rep = 0; rep < getnReps(); rep++) {
-                        GenericTask<OptaExperimentResults> optaJppfTaskDSO = new OptaJppfTaskDSO(
-
-                                params, seed + rep, agents, constraints);
-                        executables.add(optaJppfTaskDSO);
-                        experiments.put(constraints, optaJppfTaskDSO);
-                    }
-                }
-            }
+        //        for (ia = getIastart(); ia < getIastop(); ia += getIastep()) {
+        //            for (dur = 1; dur <= 10; dur += 1) {
+        //                if (FLEX_BASE % dur == 0) {
+        HourlyFlexConstraints constraints = HourlyFlexConstraints
+                .builder()
+                .activationDuration(dur).interActivationTime(ia)
+                .maximumActivations(count).build();
+        long seed = BASE_SEED;
+        for (int rep = 0; rep < getnReps(); rep++) {
+            GenericTask<OptaExperimentResults> optaJppfTaskPB = new OptaJppfTaskPB(
+                    params, seed + rep, agents, constraints);
+            executables.add(optaJppfTaskPB);
+            experiments.put(constraints, optaJppfTaskPB);
         }
+        //                }
+        //            }
+        //        }
     }
 
     private static void processResults(
