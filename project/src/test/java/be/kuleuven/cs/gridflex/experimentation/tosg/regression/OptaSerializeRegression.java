@@ -15,6 +15,7 @@ import be.kuleuven.cs.gridflex.solvers.Solvers;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.function.Supplier;
@@ -44,7 +45,7 @@ public class OptaSerializeRegression {
         experimentParams = getParams("OPTA");
     }
 
-    @Test
+    @Test@Ignore
     public void testOptaPlannerWSerializationRegression() {
         WgmfGameParams wgmfGameParams = loadTestResources(experimentParams);
         DayAheadPriceProfile dayAheadPriceData = wgmfGameParams.getDayAheadPriceData();

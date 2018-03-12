@@ -19,6 +19,7 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static be.kuleuven.cs.gridflex.experimentation.tosg.wgmf.WgmfGameRunner.loadResources;
+import static be.kuleuven.cs.gridflex.solvers.Solvers.TYPE.DUMMY;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -39,6 +40,7 @@ public class OptaJppfTaskPBTest {
     private OptaJppfTaskPB task;
     private final String PARAMS = "test";
     private ExperimentParams expP;
+    private final Solvers.TYPE solvertype = DUMMY;
     @SuppressWarnings("null")
     private static JPPFDriver driver;
 
@@ -70,7 +72,7 @@ public class OptaJppfTaskPBTest {
 
             WgmfGameParams params = WgmfGameParams
                     .create(dataIn, new WgmfSolverFactory(
-                                    Solvers.TYPE.OPTA, false, () -> null), specs,
+                                    solvertype, false, () -> null), specs,
                             windDist, powerDist, imbalIn, dayAheadPriceProfile,
                             ErrorDistributionType.CAUCHY, HourlyFlexConstraints.R3DP);
 
@@ -84,7 +86,7 @@ public class OptaJppfTaskPBTest {
 
     private void setExp(boolean remote) {
         this.expP = ExperimentParams.builder().setNAgents(8).setNRepititions(1).setSolver(
-                Solvers.TYPE.OPTA)
+                solvertype)
                 .setRemoteExecutable(remote).build();
     }
 
