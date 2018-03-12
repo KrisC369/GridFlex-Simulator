@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.domain.workstation;
 
 import be.kuleuven.cs.gridflex.domain.resource.Resource;
 import be.kuleuven.cs.gridflex.domain.util.Buffer;
-import be.kuleuven.cs.gridflex.domain.util.CollectionUtils;
+import be.kuleuven.cs.gridflex.util.CollectionUtils;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import com.google.common.annotations.VisibleForTesting;
 

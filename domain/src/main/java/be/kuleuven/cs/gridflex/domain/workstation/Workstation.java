@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.workstation;
 
 import be.kuleuven.cs.gridflex.domain.energy.consumption.EnergyConsumptionTrackable;
-import be.kuleuven.cs.gridflex.domain.util.visitor.Visitable;
+import be.kuleuven.cs.gridflex.util.visitor.Visitable;
 
 /**
  * Workstation API for public operations on workstation components. Workstations

@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gametheory.results;
 
-import be.kuleuven.cs.gridflex.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
+import be.kuleuven.cs.gridflex.util.MathUtils;
 import com.google.common.collect.Maps;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;

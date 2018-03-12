@@ -1,9 +1,9 @@
 package be.kuleuven.cs.gametheory.configurable;
 
-import be.kuleuven.cs.gridflex.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
 import be.kuleuven.cs.gametheory.results.GameResult;
 import be.kuleuven.cs.gametheory.results.HeuristicSymmetricPayoffMatrix;
+import be.kuleuven.cs.gridflex.util.MathUtils;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;

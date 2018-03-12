@@ -6,7 +6,7 @@ import be.kuleuven.cs.gridflex.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.gridflex.domain.finance.FinanceTracker;
 import be.kuleuven.cs.gridflex.domain.site.Site;
 import be.kuleuven.cs.gridflex.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.gridflex.domain.util.CollectionUtils;
+import be.kuleuven.cs.gridflex.util.CollectionUtils;
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

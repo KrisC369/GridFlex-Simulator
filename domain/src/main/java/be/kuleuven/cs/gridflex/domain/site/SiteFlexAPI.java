@@ -1,7 +1,7 @@
 package be.kuleuven.cs.gridflex.domain.site;
 
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
-import be.kuleuven.cs.gridflex.domain.util.listener.Listener;
+import be.kuleuven.cs.gridflex.util.listener.Listener;
 
 import java.util.List;
 

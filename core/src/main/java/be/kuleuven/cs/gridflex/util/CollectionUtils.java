@@ -1,7 +1,7 @@
 /**
  *
  */
-package be.kuleuven.cs.gridflex.domain.util;
+package be.kuleuven.cs.gridflex.util;
 
 import java.util.Iterator;
 import java.util.function.ToIntFunction;

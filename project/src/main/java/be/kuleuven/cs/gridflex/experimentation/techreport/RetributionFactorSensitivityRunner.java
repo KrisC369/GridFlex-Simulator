@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.experimentation.techreport;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregator;
 import be.kuleuven.cs.gridflex.domain.site.Site;
-import be.kuleuven.cs.gridflex.domain.util.MathUtils;
+import be.kuleuven.cs.gridflex.util.MathUtils;
 import be.kuleuven.cs.gridflex.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentAtom;
 import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentAtomImpl;

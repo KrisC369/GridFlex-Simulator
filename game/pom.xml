@@ -22,6 +22,7 @@
 			<groupId>be.kuleuven.cs</groupId>
 			<artifactId>gridflex-domain</artifactId>
 			<version>0.1.4-SNAPSHOT</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.googlecode.combinatoricslib</groupId>

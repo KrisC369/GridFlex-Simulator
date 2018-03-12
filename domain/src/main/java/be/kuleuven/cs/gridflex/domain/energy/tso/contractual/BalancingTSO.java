@@ -4,7 +4,7 @@ import be.kuleuven.cs.gridflex.domain.energy.consumption.EnergyConsumptionTracka
 import be.kuleuven.cs.gridflex.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.gridflex.domain.energy.tso.MechanismHost;
 import be.kuleuven.cs.gridflex.domain.energy.tso.simple.CopperplateTSO;
-import be.kuleuven.cs.gridflex.domain.util.CollectionUtils;
+import be.kuleuven.cs.gridflex.util.CollectionUtils;
 import be.kuleuven.cs.gridflex.domain.util.data.IntPowerCapabilityBand;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;

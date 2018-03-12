@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.domain.util;
+package be.kuleuven.cs.gridflex.util;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;

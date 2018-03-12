@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.domain.util;
+package be.kuleuven.cs.gridflex.util;
 
 /**
  * Utility class for array calculations.

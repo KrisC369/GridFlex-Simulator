@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.domain.util.listener;
+package be.kuleuven.cs.gridflex.util.listener;
 
 /**
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)

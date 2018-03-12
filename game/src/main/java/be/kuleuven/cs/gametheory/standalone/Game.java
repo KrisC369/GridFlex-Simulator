@@ -1,13 +1,13 @@
 package be.kuleuven.cs.gametheory.standalone;
 
-import be.kuleuven.cs.gridflex.domain.util.MathUtils;
 import be.kuleuven.cs.gametheory.AbstractGame;
 import be.kuleuven.cs.gametheory.AgentGenerator;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
 import be.kuleuven.cs.gametheory.GameInstanceGenerator;
-import be.kuleuven.cs.gametheory.results.GameResult;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
+import be.kuleuven.cs.gametheory.results.GameResult;
+import be.kuleuven.cs.gridflex.util.MathUtils;
 import org.eclipse.jdt.annotation.NonNull;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;

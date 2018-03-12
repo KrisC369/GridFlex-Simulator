@@ -29,6 +29,10 @@
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.annotation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.combinatoricslib</groupId>
+            <artifactId>combinatoricslib</artifactId>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

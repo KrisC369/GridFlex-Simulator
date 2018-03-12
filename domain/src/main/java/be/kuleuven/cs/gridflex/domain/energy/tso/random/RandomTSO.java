@@ -1,9 +1,9 @@
 package be.kuleuven.cs.gridflex.domain.energy.tso.random;
 
 import be.kuleuven.cs.gridflex.domain.energy.tso.BalancingSignal;
-import be.kuleuven.cs.gridflex.domain.util.listener.Listener;
-import be.kuleuven.cs.gridflex.domain.util.listener.MultiplexListener;
-import be.kuleuven.cs.gridflex.domain.util.listener.NoopListener;
+import be.kuleuven.cs.gridflex.util.listener.Listener;
+import be.kuleuven.cs.gridflex.util.listener.MultiplexListener;
+import be.kuleuven.cs.gridflex.util.listener.NoopListener;
 import be.kuleuven.cs.gridflex.simulation.SimulationComponent;
 import be.kuleuven.cs.gridflex.simulation.SimulationContext;
 import org.apache.commons.math3.random.RandomGenerator;

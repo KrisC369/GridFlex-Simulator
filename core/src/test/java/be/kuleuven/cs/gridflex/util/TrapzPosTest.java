@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.domain.util;
+package be.kuleuven.cs.gridflex.util;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,7 +8,7 @@ import org.junit.runners.Parameterized.Parameters;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static be.kuleuven.cs.gridflex.domain.util.MathUtils.trapzPos;
+import static be.kuleuven.cs.gridflex.util.MathUtils.trapzPos;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)

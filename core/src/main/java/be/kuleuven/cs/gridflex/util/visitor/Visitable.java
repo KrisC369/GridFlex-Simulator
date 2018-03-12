@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.domain.util.visitor;
+package be.kuleuven.cs.gridflex.util.visitor;
 
 /**
  * Interface representing an entity that can be visited by a visitor.

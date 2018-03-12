@@ -1,8 +1,9 @@
-package be.kuleuven.cs.gridflex.domain.util;
+package be.kuleuven.cs.gridflex.util;
 
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.paukov.combinatorics.Factory;
@@ -188,7 +189,7 @@ public class NPermuteAndCombinerTest {
         Generator<String> gen = Factory
                 .createMultiCombinationGenerator(initialVector, n);
 
-        assertEquals(MathUtils.multiCombinationSize(k, n),
+        Assert.assertEquals(MathUtils.multiCombinationSize(k, n),
                 gen.getNumberOfGeneratedObjects(), 0);
     }
 }

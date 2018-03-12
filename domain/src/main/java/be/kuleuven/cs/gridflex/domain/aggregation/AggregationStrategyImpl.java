@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.domain.aggregation;
 
 import be.kuleuven.cs.gridflex.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
-import be.kuleuven.cs.gridflex.domain.util.NPermuteAndCombiner;
+import be.kuleuven.cs.gridflex.util.NPermuteAndCombiner;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
