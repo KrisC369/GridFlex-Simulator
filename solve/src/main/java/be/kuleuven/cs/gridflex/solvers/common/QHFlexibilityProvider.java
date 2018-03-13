@@ -1,7 +1,6 @@
 package be.kuleuven.cs.gridflex.solvers.common;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.gridflex.solvers.optimal.ConstraintConversion;
 import be.kuleuven.cs.gridflex.solvers.common.data.QuarterHourlyFlexConstraints;
 
 /**

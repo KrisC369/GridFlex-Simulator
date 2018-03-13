@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.solvers.optimal;
+package be.kuleuven.cs.gridflex.solvers.common;
 
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexConstraints;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;

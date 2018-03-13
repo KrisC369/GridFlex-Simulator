@@ -6,7 +6,7 @@ import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.common.data.QuarterHourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.solvers.optimal.AbstractOptimalSolver;
-import be.kuleuven.cs.gridflex.solvers.optimal.ConstraintConversion;
+import be.kuleuven.cs.gridflex.solvers.common.ConstraintConversion;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Lists;

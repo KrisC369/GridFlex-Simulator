@@ -9,7 +9,7 @@ import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.solvers.optimal.AbstractOptimalSolver;
 import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
-import be.kuleuven.cs.gridflex.solvers.optimal.ConstraintConversion;
+import be.kuleuven.cs.gridflex.solvers.common.ConstraintConversion;
 import be.kuleuven.cs.gridflex.solvers.optimal.mip.MIPOptimalSolver;
 import com.google.common.collect.Lists;
 import org.junit.Before;
