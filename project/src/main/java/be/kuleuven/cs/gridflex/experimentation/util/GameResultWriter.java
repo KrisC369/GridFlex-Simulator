@@ -1,5 +1,6 @@
-package be.kuleuven.cs.gametheory;
+package be.kuleuven.cs.gridflex.experimentation.util;
 
+import be.kuleuven.cs.gametheory.AbstractGameDirector;
 import be.kuleuven.cs.gridflex.io.ResultWriter;
 
 /**
@@ -16,7 +17,7 @@ public class GameResultWriter extends ResultWriter {
      * @param target the game target.
      */
     public GameResultWriter(final AbstractGameDirector target) {
-        super(target.getFormattedResults());
+        super(target::getFormattedResults);
         this.g = target;
     }
 
@@ -27,7 +28,7 @@ public class GameResultWriter extends ResultWriter {
      * @param loggerTag The result writer tag.
      */
     public GameResultWriter(final AbstractGameDirector target, final String loggerTag) {
-        super(target.getFormattedResults(), loggerTag);
+        super(target::getFormattedResults, loggerTag);
         this.g = target;
     }
 

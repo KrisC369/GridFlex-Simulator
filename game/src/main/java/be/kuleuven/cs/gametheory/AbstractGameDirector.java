@@ -1,6 +1,5 @@
 package be.kuleuven.cs.gametheory;
 
-import be.kuleuven.cs.gridflex.io.Writable;
 import be.kuleuven.cs.gametheory.results.GameResult;
 import com.google.common.collect.Lists;
 
@@ -62,8 +61,8 @@ public class AbstractGameDirector<T extends Playable, I, R> {
      *
      * @return the results in string format.
      */
-    public Writable getFormattedResults() {
-        return () -> game.getResultString();
+    public String getFormattedResults() {
+        return game.getResultString();
     }
 
     /**

@@ -78,7 +78,7 @@ public class ConfigurableGameDirectorTest {
                 .forEach(p -> results.add(GameInstanceResult.create(p, Maps.newLinkedHashMap(po))));
         results.forEach(r -> director.notifyVersionHasBeenPlayed(r));
 
-        String resultStr = director.getFormattedResults().getFormattedResultString();
+        String resultStr = director.getFormattedResults();
         System.out.println(resultStr);
         assertTrue(resultStr.contains("V:PayoffEntry{entries=[2, 0]}->[12345.0, 12345.0]"));
         assertTrue(resultStr.contains("V:PayoffEntry{entries=[1, 1]}->[12345.0, 12345.0]"));

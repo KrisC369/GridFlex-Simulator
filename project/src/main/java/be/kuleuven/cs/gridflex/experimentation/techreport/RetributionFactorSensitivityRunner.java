@@ -1,17 +1,17 @@
 package be.kuleuven.cs.gridflex.experimentation.techreport;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregator;
-import be.kuleuven.cs.gridflex.domain.site.Site;
-import be.kuleuven.cs.gridflex.util.MathUtils;
-import be.kuleuven.cs.gridflex.experimentation.DefaultGameConfigurator;
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentAtom;
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentAtomImpl;
-import be.kuleuven.cs.gridflex.experimentation.runners.local.LocalRunners;
-import be.kuleuven.cs.gridflex.io.ResultWriter;
-import be.kuleuven.cs.gametheory.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
 import be.kuleuven.cs.gametheory.standalone.Game;
 import be.kuleuven.cs.gametheory.standalone.GameDirector;
+import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregator;
+import be.kuleuven.cs.gridflex.domain.site.Site;
+import be.kuleuven.cs.gridflex.experimentation.games.DefaultGameConfigurator;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentAtom;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentAtomImpl;
+import be.kuleuven.cs.gridflex.experimentation.runners.local.LocalRunners;
+import be.kuleuven.cs.gridflex.experimentation.util.GameResultWriter;
+import be.kuleuven.cs.gridflex.io.ResultWriter;
+import be.kuleuven.cs.gridflex.util.MathUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.random.MersenneTwister;
 import org.slf4j.Logger;

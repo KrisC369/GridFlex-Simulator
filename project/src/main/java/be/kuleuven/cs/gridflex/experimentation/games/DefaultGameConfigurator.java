@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.experimentation;
+package be.kuleuven.cs.gridflex.experimentation.games;
 
 import org.apache.commons.math3.random.MersenneTwister;
 

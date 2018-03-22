@@ -1,9 +1,9 @@
 package be.kuleuven.cs.gridflex.examples;
 
-import be.kuleuven.cs.gridflex.experimentation.DefaultGameConfigurator;
 import be.kuleuven.cs.gametheory.standalone.Game;
 import be.kuleuven.cs.gametheory.standalone.GameDirector;
-import be.kuleuven.cs.gametheory.GameResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.games.DefaultGameConfigurator;
+import be.kuleuven.cs.gridflex.experimentation.util.GameResultWriter;
 
 /**
  * An example class running some experiments.

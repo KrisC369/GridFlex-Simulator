@@ -8,7 +8,7 @@ import be.kuleuven.cs.gridflex.experimentation.runners.local.LocalRunners;
 import be.kuleuven.cs.gridflex.experimentation.techreport.RetributionFactorSensitivityRunner;
 import be.kuleuven.cs.gridflex.io.ResultWriter;
 import be.kuleuven.cs.gametheory.results.GameResult;
-import be.kuleuven.cs.gametheory.GameResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.util.GameResultWriter;
 import be.kuleuven.cs.gametheory.Playable;
 import be.kuleuven.cs.gametheory.standalone.Game;
 import be.kuleuven.cs.gametheory.standalone.GameDirector;

@@ -7,7 +7,7 @@ import be.kuleuven.cs.gridflex.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.gridflex.domain.energy.tso.random.RandomTSO;
 import be.kuleuven.cs.gridflex.domain.finance.FinanceTracker;
 import be.kuleuven.cs.gridflex.domain.site.Site;
-import be.kuleuven.cs.gridflex.experimentation.AggregationGame;
+import be.kuleuven.cs.gridflex.experimentation.games.AggregationGame;
 import com.google.common.collect.Lists;
 import org.apache.commons.math3.random.MersenneTwister;
 
@@ -30,12 +30,9 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
     /**
      * Default constructor for this game with two actions.
      *
-     * @param seed
-     *            The seed for this experiment.
-     * @param factor1
-     *            The retribution factor for agent 1.
-     * @param factor2
-     *            The retribution factor for agent 2
+     * @param seed    The seed for this experiment.
+     * @param factor1 The retribution factor for agent 1.
+     * @param factor2 The retribution factor for agent 2
      */
     public RenumerationGame(final int seed, final double factor1, final double factor2) {
         super(seed);
@@ -55,8 +52,7 @@ public class RenumerationGame extends AggregationGame<Site, BRPAggregator> {
     /**
      * Default constructor for this game with two actions.
      *
-     * @param seed
-     *            The seed for this experiment.
+     * @param seed The seed for this experiment.
      */
     public RenumerationGame(final int seed) {
         this(seed, 1, 1);

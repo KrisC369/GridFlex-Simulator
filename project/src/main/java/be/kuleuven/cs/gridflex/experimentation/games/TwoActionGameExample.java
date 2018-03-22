@@ -1,4 +1,4 @@
-package be.kuleuven.cs.gridflex.experimentation;
+package be.kuleuven.cs.gridflex.experimentation.games;
 
 import be.kuleuven.cs.gridflex.domain.aggregation.AggregationStrategyImpl;
 import be.kuleuven.cs.gridflex.domain.aggregation.Aggregator;

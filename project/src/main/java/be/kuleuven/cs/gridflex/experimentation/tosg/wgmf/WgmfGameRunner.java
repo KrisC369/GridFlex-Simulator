@@ -85,6 +85,6 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
         }
         logger.warn("Dynamics equation params: {}", director.getDynamicEquationArguments());
         logger.warn("Payoff table: \n{}",
-                director.getFormattedResults().getFormattedResultString());
+                director.getFormattedResults());
     }
 }
