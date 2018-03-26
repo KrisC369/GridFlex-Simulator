@@ -8,8 +8,8 @@
         <artifactId>gridflex-main</artifactId>
         <version>0.1.4-SNAPSHOT</version>
     </parent>
-    <artifactId>gridflex-solve</artifactId>
-    <name>GridFlex simulator solve</name>
+    <artifactId>gridflex-solving</artifactId>
+    <name>GridFlex simulator solving</name>
     <description>Solver implementations and support for GridFlex.</description>
     <url>http://maven.apache.org</url>
     <properties>
