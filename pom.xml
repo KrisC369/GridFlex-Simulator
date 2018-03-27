@@ -12,8 +12,8 @@
     <modules>
         <module>project</module>
         <module>core</module>
-        <module>game</module>
-        <module>solve</module>
+        <module>games</module>
+        <module>solving</module>
         <module>example</module>
         <module>domain</module>
         <module>persistence</module>
