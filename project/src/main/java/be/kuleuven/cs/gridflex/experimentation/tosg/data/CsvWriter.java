@@ -23,7 +23,7 @@ final class CsvWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final char DELIMITER = ';';
 
-    private CsvWriter(Object[] header_line) {
+    private CsvWriter() {
     }
 
     public static void writeCsvFile(String fileName,
