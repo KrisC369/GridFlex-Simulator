@@ -145,7 +145,6 @@ public class PortfolioBalanceSolver extends AbstractFlexAllocationSolver {
                         .createErrorGenerator(input.getSeed(),
                                 input.getPowerForecastMultiHorizonErrorDistribution());
                 return new PowerForecastBasedConverter(input.getCableCurrentProfile(),
-                        input.getTurbineSpecifications(),
                         gen).convertProfileToPositiveOnlyImbalanceVolumes();
             }
         };

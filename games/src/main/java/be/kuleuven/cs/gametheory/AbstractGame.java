@@ -23,8 +23,6 @@ public abstract class AbstractGame<T, I, R> {
     private static final String CONSOLE = "CONSOLE";
     private static final String CONFIGURING = "Configuring instance: ";
     private static final String EXECUTING = "Executing instance: ";
-    private final int agents;
-    private final int actions;
     private final HeuristicSymmetricPayoffMatrix payoffs;
     private final Logger logger;
     private final List<T> instanceList;
@@ -32,13 +30,11 @@ public abstract class AbstractGame<T, I, R> {
     /**
      * Default constructor.
      *
-     * @param agents The number of agents.
+     * @param agents  The number of agents.
      * @param actions The number of actions that agents can choose from.
      */
     public AbstractGame(final int agents, final int actions) {
-        this.agents = agents;
-        this.actions = actions;
-        this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents, this.actions);
+        this.payoffs = new HeuristicSymmetricPayoffMatrix(agents, actions);
         this.logger = LoggerFactory.getLogger(CONSOLE);
         this.instanceList = Lists.newArrayList();
     }
