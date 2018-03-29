@@ -18,7 +18,7 @@ import static java.lang.StrictMath.sqrt;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public final class EvolutionaryGameDynamics {
-
+    private static final double MINIMUM_DELTA = 0.0000001;
     private static final Logger logger = LoggerFactory.getLogger(EvolutionaryGameDynamics.class);
     private final HeuristicSymmetricPayoffMatrix payoffs;
     private final List<Double> eqnFactorMeans;
@@ -52,17 +52,24 @@ public final class EvolutionaryGameDynamics {
         return Lists.newArrayList(eqnFactorStds);
     }
 
+    /**
+     * Returns a list of confidence intervals based on these dynamics.
+     * In case of a standard deviation of 0, a very small interval is put in the returned list.
+     *
+     * @param level The confidence level for the intervals.
+     * @return a list of non-empty confidence intervals.
+     */
     public List<ConfidenceInterval> getConfidenceIntervals(ConfidenceLevel level) {
         List<ConfidenceInterval> cis = Lists.newArrayList();
         for (int i = 0; i < eqnFactorMeans.size(); i++) {
             double mean = eqnFactorMeans.get(i);
             double std = eqnFactorStds.get(i);
             int sampleSize = eqnFactorSamples.get(i);
-            //hack to allow creating CI's
-            if (std == 0) {
-                std += 0.00001;
-            }
             double error = level.getConfideneCoeff() * std / sqrt((double) sampleSize);
+            //hack to allow creating CI's
+            if (error == 0) {
+                error = MINIMUM_DELTA;
+            }
             cis.add(new ConfidenceInterval(mean - error, mean + error, level.getConfidenceLevel()));
         }
         return cis;
@@ -95,7 +102,8 @@ public final class EvolutionaryGameDynamics {
      * @param currCoeff  The current number of agents to consider.
      * @param sampleSize The number of samples.
      */
-    private static void sumSimilarAgentPayoffs(List<Double> means, List<Double> stds,
+    private static void sumSimilarAgentPayoffs(List<Double> means, List<Double>
+            stds,
             List<Integer> samples, Double[] values, Double[] vars, int coeffDone, int currCoeff,
             int sampleSize) {
         Mean meanOfMeans = new Mean();

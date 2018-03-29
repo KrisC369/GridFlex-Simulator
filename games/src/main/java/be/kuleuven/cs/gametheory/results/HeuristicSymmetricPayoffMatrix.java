@@ -29,6 +29,7 @@ import static java.lang.StrictMath.sqrt;
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
  */
 public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntry, Double[]>> {
+    private static final double MINIMUM_DELTA = 0.0000001;
     private final int agents;
     private final int actions;
     private final Map<PayoffEntry, Mean[]> tableMean;
@@ -200,11 +201,11 @@ public class HeuristicSymmetricPayoffMatrix implements Iterable<Entry<PayoffEntr
         double mean = getExternalityMean();
         double std = Math.sqrt(getExternalityVariance());
         int sampleSize = getExternalitySamples();
-        //hack to allow creating CI's
-        if (std == 0) {
-            std += 0.00001;
-        }
         double error = level.getConfideneCoeff() * std / sqrt((double) sampleSize);
+        //hack to allow creating CI's
+        if (error == 0) {
+            error = MINIMUM_DELTA;
+        }
         return new ConfidenceInterval(mean - error, mean + error, level.getConfidenceLevel());
     }
 
