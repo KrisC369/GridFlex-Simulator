@@ -52,7 +52,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     HeuristicSolver(FlexAllocProblemContext context, boolean fullSat) {
         this.context = context;
         this.fullSat = fullSat;
-        this.randomSeed = context.DEFAULT_SEED;
+        this.randomSeed = context.getSeedValue();
     }
 
     @Override

@@ -54,6 +54,6 @@ public abstract class ImmutableSolverProblemContextView implements Serializable 
                             .from(f));
         }
         return new AutoValue_ImmutableSolverProblemContextView(builder.build(),
-                context.getEnergyProfileToMinimizeWithFlex().values(), context.DEFAULT_SEED);
+                context.getEnergyProfileToMinimizeWithFlex().values(), context.getSeedValue());
     }
 }

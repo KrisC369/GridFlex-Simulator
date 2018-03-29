@@ -24,4 +24,11 @@ public interface FlexAllocProblemContext {
      * @return The energy profile to minimize as a goal for the solvers.
      */
     TimeSeries getEnergyProfileToMinimizeWithFlex();
+
+    /**
+     * @return a default seed value. (default = 0)
+     */
+    default long getSeedValue() {
+        return DEFAULT_SEED;
+    }
 }
