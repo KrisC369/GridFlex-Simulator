@@ -30,7 +30,6 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
      */
     public static final double STEPS_PER_HOUR = 4;
     private boolean verbose = false;
-    private final FlexAllocProblemContext context;
     private final Solver solver;
     private final List<FlexibilityProvider> providers;
 
@@ -38,7 +37,6 @@ public abstract class AbstractOptimalSolver implements Solver<AllocResults> {
      * Default constructor
      */
     protected AbstractOptimalSolver(FlexAllocProblemContext context, Solver s) {
-        this.context = context;
         this.solver = s;
         this.providers = context.getProviders().stream()
                 .map(p -> new QHFlexibilityProviderDecorator(p)).collect(

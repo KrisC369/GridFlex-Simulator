@@ -25,7 +25,6 @@ public class MultiThreadedExperimentRunner implements ExperimentRunner {
             .getLogger(MultiThreadedExperimentRunner.class);
     private static final int SLEEPTIME = 100;
     private final ExecutorService executor;
-    //@Nullable
     private Optional<List<Future<Object>>> futures;
 
     /**

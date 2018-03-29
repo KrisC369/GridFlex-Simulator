@@ -57,7 +57,7 @@ public abstract class AbstractErrorDistribution {
      * Error distribution from csv loader method object.
      */
     static class ErrorDistributions {
-        private String filename;
+        private final String filename;
         @Nullable
         private List<Double> means;
         @Nullable

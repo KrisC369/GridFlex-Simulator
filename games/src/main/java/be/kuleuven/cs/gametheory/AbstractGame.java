@@ -26,7 +26,6 @@ public abstract class AbstractGame<T, I, R> {
     private final int agents;
     private final int actions;
     private final HeuristicSymmetricPayoffMatrix payoffs;
-    private final int reps;
     private final Logger logger;
     private final List<T> instanceList;
 
@@ -34,14 +33,12 @@ public abstract class AbstractGame<T, I, R> {
      * Default constructor.
      *
      * @param agents The number of agents.
-     * @param config The configurator instance.
-     * @param reps   The number of repetitions.
+     * @param actions The number of actions that agents can choose from.
      */
-    public AbstractGame(final int agents, final int actions, final int reps) {
+    public AbstractGame(final int agents, final int actions) {
         this.agents = agents;
         this.actions = actions;
         this.payoffs = new HeuristicSymmetricPayoffMatrix(this.agents, this.actions);
-        this.reps = reps;
         this.logger = LoggerFactory.getLogger(CONSOLE);
         this.instanceList = Lists.newArrayList();
     }

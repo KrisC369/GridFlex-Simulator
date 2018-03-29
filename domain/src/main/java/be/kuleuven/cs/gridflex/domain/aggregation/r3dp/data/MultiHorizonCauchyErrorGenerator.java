@@ -31,9 +31,9 @@ public class MultiHorizonCauchyErrorGenerator extends MultiHorizonNormalErrorGen
     @Override
     public double generateErrorForHorizon(int i) {
         //Alternative way of calculating:
-        //        CauchyDistribution c = new CauchyDistribution();
-        //        double sample = c.sample();
-        //todo use this!
+        //      [code]  CauchyDistribution c = new CauchyDistribution(); double sample = c.sample
+        // (); [/code]
+        //todo consider refactoring!
         double cauchyNrm =
                 getTwisters().get(i).nextGaussian() / getTwisters().get(i).nextGaussian();
         double sample = cauchyNrm * getDistribution().getSdForHorizon(i) + getDistribution()

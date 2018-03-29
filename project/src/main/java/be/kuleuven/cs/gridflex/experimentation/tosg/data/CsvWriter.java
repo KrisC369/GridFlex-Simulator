@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,10 +23,7 @@ final class CsvWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final char DELIMITER = ';';
 
-    private final Object[] header_line;
-
-    public CsvWriter(Object[] header_line) {
-        this.header_line = Arrays.copyOf(header_line, header_line.length);
+    private CsvWriter(Object[] header_line) {
     }
 
     public static void writeCsvFile(String fileName,

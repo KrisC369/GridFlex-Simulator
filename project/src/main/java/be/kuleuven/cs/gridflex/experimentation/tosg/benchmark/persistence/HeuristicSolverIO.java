@@ -10,7 +10,6 @@ import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecificatio
 import be.kuleuven.cs.gridflex.domain.util.data.PowerForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.TimeSeries;
 import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
-import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.DayAheadPriceProfile;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.ImbalancePriceInputData;
 import be.kuleuven.cs.gridflex.experimentation.tosg.data.WindBasedInputData;
@@ -55,13 +54,10 @@ public final class HeuristicSolverIO implements SolutionFileIO {
     private FlexibilityProvider first;
     @Nullable
     private FlexibilityProvider second;
-    @Nullable
-    private CongestionProfile profile;
 
     public HeuristicSolverIO() {
         first = null;
         second = null;
-        profile = null;
     }
 
     @Override

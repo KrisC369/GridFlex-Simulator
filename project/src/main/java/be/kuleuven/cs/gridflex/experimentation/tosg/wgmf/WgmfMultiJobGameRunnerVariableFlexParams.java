@@ -1,6 +1,5 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
@@ -34,7 +33,6 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableFlexParams.class);
     protected static final int BASE_SEED = 1234;
-    private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
     private final List<OptiFlexCsvResultWriter.OptiFlexResults> writableResults;
 
     private final String resultFileName;
@@ -54,7 +52,6 @@ public class WgmfMultiJobGameRunnerVariableFlexParams
      */
     WgmfMultiJobGameRunnerVariableFlexParams(ExperimentParams expP) {
         super(expP);
-        directorToTasks = LinkedListMultimap.create();
         writableResults = Lists.newArrayList();
         resultFileName =
                 RES_OUTPUT_FILE + String.valueOf(getnAgents()) + "R" + String.valueOf(getnReps())

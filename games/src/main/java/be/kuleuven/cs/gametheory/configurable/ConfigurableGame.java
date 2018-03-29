@@ -33,7 +33,7 @@ public class ConfigurableGame extends AbstractGame<GameInstanceConfiguration, Ga
      * @param reps    The number of repetitions.
      */
     public ConfigurableGame(final int agents, final int actions, final int reps) {
-        super(agents, actions, reps);
+        super(agents, actions);
         this.agents = agents;
         this.actions = actions;
         this.reps = reps;

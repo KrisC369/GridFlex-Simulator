@@ -24,7 +24,6 @@ import static org.apache.commons.math3.util.FastMath.min;
  */
 @PlanningSolution
 public class Allocation implements Solution<HardSoftScore> {
-    private static int SIZE = 35040;
     private List<QHFlexibilityProvider> providers;
     private List<ActivationAssignment> assignments;
     private List<Integer> startValueRange;

@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  */
 public class OptaJppfTaskDSO extends GenericTask<OptaExperimentResults> {
     private static final long serialVersionUID = 6840566173721875682L;
-    private WgmfGameParams params;
+    private final WgmfGameParams params;
     private final long seed;
     private final int agents;
     private final HourlyFlexConstraints constraints;
@@ -22,9 +22,10 @@ public class OptaJppfTaskDSO extends GenericTask<OptaExperimentResults> {
     /**
      * Default constructor.
      *
-     * @param instanceConfig The instance config value for this task.
-     * @param s              The key for which to query the data provider for the instance
-     *                       parameter data.
+     * @param params      The parameters value for this task.
+     * @param seed        The seed to use for this task.
+     * @param agents      The number of agents participating.
+     * @param constraints The constraints to enforce concerning activation.
      */
     OptaJppfTaskDSO(WgmfGameParams params, long seed, int agents,
             HourlyFlexConstraints constraints) {

@@ -6,8 +6,8 @@ package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 public class RemoteTaskDecorator<T> extends GenericTask<T> {
 
     private static final long serialVersionUID = -1599132847916137208L;
-    private GenericTask<T> target;
-    private String remoteParamId;
+    private final GenericTask<T> target;
+    private final String remoteParamId;
 
     public RemoteTaskDecorator(String remoteParamId, GenericTask<T> target) {
         super();

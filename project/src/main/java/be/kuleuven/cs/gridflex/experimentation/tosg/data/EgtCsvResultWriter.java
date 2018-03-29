@@ -22,8 +22,7 @@ public final class EgtCsvResultWriter {
     }
 
     public static void writeCsvFile(String fileName,
-            List<EgtCsvResultWriter.WgmfDynamicsResults> results,
-            boolean append) {
+            List<EgtCsvResultWriter.WgmfDynamicsResults> results, boolean append) {
         CsvWriter.writeCsvFile(fileName, results, append, FILE_HEADER);
     }
 

@@ -41,7 +41,7 @@ public class Game<N, K>
      * @param reps   The number of repetitions.
      */
     public Game(final int agents, final GameConfigurator<N, K> config, final int reps) {
-        super(agents, config.getActionSpaceSize(), reps);
+        super(agents, config.getActionSpaceSize());
         this.agents = agents;
         this.actions = config.getActionSpaceSize();
         this.agentGen = config;
