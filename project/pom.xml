@@ -16,22 +16,22 @@
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-nucleus</artifactId>
-            <version>0.1.4-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-games</artifactId>
-            <version>0.1.4-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-persistence</artifactId>
-            <version>0.1.4-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-solving</artifactId>
-            <version>0.1.4-SNAPSHOT</version>
+            <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
