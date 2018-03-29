@@ -6,6 +6,7 @@ package be.kuleuven.cs.gametheory;
  *
  * @param <T> The type of agent.
  * @author Kristof Coninx (kristof.coninx AT cs.kuleuven.be)
+ * @deprecated Unnecessary abstraction. Will be removed eventually.
  */
 @FunctionalInterface
 @Deprecated

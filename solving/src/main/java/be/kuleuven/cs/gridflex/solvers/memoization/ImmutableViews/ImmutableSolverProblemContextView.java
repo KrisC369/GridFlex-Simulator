@@ -24,7 +24,8 @@ public abstract class ImmutableSolverProblemContextView implements Serializable 
     /**
      * @return The flexibility providers present for this problem context.
      */
-    public abstract ImmutableList<FlexibilityProviderView> getProviders();
+    public abstract ImmutableList<be.kuleuven.cs.gridflex.solvers.memoization.immutableViews
+            .FlexibilityProviderView> getProviders();
 
     /**
      * @return The energy profile to minimize as a goal for the solvers.
@@ -43,11 +44,16 @@ public abstract class ImmutableSolverProblemContextView implements Serializable 
      * @return An unmodifiable view.
      */
     public static ImmutableSolverProblemContextView from(FlexAllocProblemContext context) {
-        ImmutableList.Builder<FlexibilityProviderView> builder = ImmutableList.builder();
+        ImmutableList.Builder<be.kuleuven.cs.gridflex.solvers.memoization.immutableViews
+                .FlexibilityProviderView> builder = ImmutableList
+                .builder();
         for (FlexibilityProvider f : context.getProviders()) {
-            builder.add(FlexibilityProviderView.from(f));
+            builder.add(
+                    be.kuleuven.cs.gridflex.solvers.memoization.immutableViews
+                            .FlexibilityProviderView
+                            .from(f));
         }
         return new AutoValue_ImmutableSolverProblemContextView(builder.build(),
-                context.getEnergyProfileToMinimizeWithFlex().values(), context.getSeedValue());
+                context.getEnergyProfileToMinimizeWithFlex().values(), context.DEFAULT_SEED);
     }
 }

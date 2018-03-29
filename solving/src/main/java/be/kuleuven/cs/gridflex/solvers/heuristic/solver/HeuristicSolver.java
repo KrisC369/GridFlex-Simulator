@@ -4,11 +4,11 @@ import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.Solver;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexAllocProblemContext;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProvider;
+import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProviderDecorator;
 import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.heuristic.domain.ActivationAssignment;
 import be.kuleuven.cs.gridflex.solvers.heuristic.domain.Allocation;
-import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProviderDecorator;
-import be.kuleuven.cs.gridflex.solvers.common.QHFlexibilityProvider;
 import com.google.auto.value.AutoValue;
 import com.google.common.base.Charsets;
 import com.google.common.collect.ListMultimap;
@@ -52,7 +52,7 @@ public class HeuristicSolver implements Solver<AllocResults> {
     HeuristicSolver(FlexAllocProblemContext context, boolean fullSat) {
         this.context = context;
         this.fullSat = fullSat;
-        this.randomSeed = context.getSeedValue();
+        this.randomSeed = context.DEFAULT_SEED;
     }
 
     @Override
@@ -163,7 +163,8 @@ public class HeuristicSolver implements Solver<AllocResults> {
         public Allocation createAllocation() {
             List<QHFlexibilityProvider> providers = Lists.newArrayList();
             //Order preserving needed.
-            //            context.getProviders().forEach(p -> providers.add(new QHFlexibilityProviderDecorator
+            //            context.getProviders().forEach(p -> providers.add(new
+            // QHFlexibilityProviderDecorator
             // (p)));
             for (FlexibilityProvider p : context.getProviders()) {
                 providers.add(new QHFlexibilityProviderDecorator(p));

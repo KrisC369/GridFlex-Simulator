@@ -69,6 +69,8 @@ public class AbstractGameDirector<T extends Playable, I, R> {
      * Return the results in a formatted string.
      *
      * @return the results in string format.
+     * @deprecated This causes unnecessary coupling to result analysis format. Will be removed
+     * eventually.
      */
     @Deprecated
     public String getDynamicEquationArguments() {
