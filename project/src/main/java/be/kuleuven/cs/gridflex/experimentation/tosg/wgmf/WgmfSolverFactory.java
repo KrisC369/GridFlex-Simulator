@@ -10,7 +10,7 @@ import be.kuleuven.cs.gridflex.experimentation.tosg.adapters.SolutionResultAdapt
 import be.kuleuven.cs.gridflex.experimentation.tosg.adapters.SolverAdapter;
 import be.kuleuven.cs.gridflex.persistence.MemoizationContext;
 import be.kuleuven.cs.gridflex.solvers.Solvers;
-import be.kuleuven.cs.gridflex.solvers.data.AllocResults;
+import be.kuleuven.cs.gridflex.solvers.common.data.AllocResults;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.AllocResultsView;
 import be.kuleuven.cs.gridflex.solvers.memoization.immutableViews.ImmutableSolverProblemContextView;
 
@@ -28,7 +28,7 @@ public final class WgmfSolverFactory
     private static final long serialVersionUID = -5851172788369007725L;
     private final Solvers.TYPE type;
     private final boolean updateCache;
-    private Supplier<MemoizationContext<ImmutableSolverProblemContextView,
+    private final Supplier<MemoizationContext<ImmutableSolverProblemContextView,
             AllocResultsView>> memoizationContext;
     private long defaultSeed = 0L;
 
@@ -77,12 +77,19 @@ public final class WgmfSolverFactory
         } else {
             solverInstance = type.getInstance(flexAllocProblemContext);
         }
-        return new SolverAdapter<AllocResults, SolutionResults>(solverInstance) {
+        return new WgmfResultSolverAdapter(solverInstance);
+    }
 
-            @Override
-            public SolutionResults adaptResult(AllocResults solution) {
-                return new SolutionResultAdapter(solution).getResults();
-            }
-        };
+    private static class WgmfResultSolverAdapter
+            extends SolverAdapter<AllocResults, SolutionResults> {
+
+        public WgmfResultSolverAdapter(Solver<AllocResults> solverInstance) {
+            super(solverInstance);
+        }
+
+        @Override
+        public SolutionResults adaptResult(AllocResults solution) {
+            return new SolutionResultAdapter(solution).getResults();
+        }
     }
 }

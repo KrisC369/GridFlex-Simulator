@@ -77,16 +77,7 @@ public final class Simulator implements SimulationContext {
         this.eventbus = new EventBus("SimBus" + System.currentTimeMillis());
         this.eventFac = new EventFactoryImplementation();
         this.random = new MersenneTwister(seed);
-        this.uidgen = new UIDGenerator() {
-            private long count;
-
-            @Override
-            public long getNextUID() {
-                synchronized (this) {
-                    return count++;
-                }
-            }
-        };
+        this.uidgen = new MyUIDGenerator();
     }
 
     /**
@@ -94,8 +85,8 @@ public final class Simulator implements SimulationContext {
      *
      * @param duration the duration
      */
-    private Simulator(final int duration2) {
-        this(duration2, duration2);
+    private Simulator(final int duration) {
+        this(duration, duration);
     }
 
     /**
@@ -301,5 +292,16 @@ public final class Simulator implements SimulationContext {
     @Override
     public UIDGenerator getUIDGenerator() {
         return this.uidgen;
+    }
+
+    private static class MyUIDGenerator implements UIDGenerator {
+        private long count;
+
+        @Override
+        public long getNextUID() {
+            synchronized (this) {
+                return count++;
+            }
+        }
     }
 }

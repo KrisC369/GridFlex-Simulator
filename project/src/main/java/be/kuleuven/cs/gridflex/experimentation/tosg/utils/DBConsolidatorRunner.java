@@ -14,6 +14,8 @@ import java.util.List;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public final class DBConsolidatorRunner {
+    private DBConsolidatorRunner() {
+    }
 
     public static void main(String[] args) {
         if (args.length == 0) {

@@ -4,7 +4,7 @@
     <parent>
         <groupId>be.kuleuven.cs</groupId>
         <artifactId>gridflex-main</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.4-SNAPSHOT</version>
     </parent>
     <artifactId>gridflex-example</artifactId>
     <name>GridFlex Simulator examples</name>
@@ -17,21 +17,26 @@
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-nucleus</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-domain</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>gridflex-game</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <artifactId>gridflex-games</artifactId>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jdt</groupId>
             <artifactId>org.eclipse.jdt.annotation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>be.kuleuven.cs</groupId>
+            <artifactId>gridflex-project</artifactId>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

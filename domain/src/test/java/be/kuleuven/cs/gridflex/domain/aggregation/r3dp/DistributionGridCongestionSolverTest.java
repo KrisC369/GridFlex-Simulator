@@ -1,9 +1,10 @@
 package be.kuleuven.cs.gridflex.domain.aggregation.r3dp;
 
+import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.data.MultiHorizonNormalErrorGenerator;
 import be.kuleuven.cs.gridflex.domain.aggregation.r3dp.solver.AbstractSolverFactory;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
 import be.kuleuven.cs.gridflex.domain.energy.generation.wind.TurbineSpecification;
-import be.kuleuven.cs.gridflex.domain.util.data.ForecastHorizonErrorDistribution;
+import be.kuleuven.cs.gridflex.domain.util.data.WindSpeedForecastMultiHorizonErrorDistribution;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.CongestionProfile;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -32,8 +33,8 @@ public class DistributionGridCongestionSolverTest {
     private CongestionProfile c2;
     private TurbineSpecification specs;
     private GammaDistribution gd;
-    private MultiHorizonErrorGenerator generator;
-    private DistributionGridCongestionSolver solver;
+    private MultiHorizonNormalErrorGenerator generator;
+    private AbstractFlexAllocationSolver solver;
     private ListMultimap<FlexibilityProvider, Boolean> toTest;
 
     @Before
@@ -43,11 +44,12 @@ public class DistributionGridCongestionSolverTest {
         try {
             specs = TurbineSpecification.loadFromResource("specs_enercon_e101-e1.csv");
             c2 = CongestionProfile.createFromCSV("smalltest.csv", "test").transform(p -> p * 2);
-            ForecastHorizonErrorDistribution distribution = ForecastHorizonErrorDistribution
-                    .loadFromCSV("windspeedDistributions.csv");
-            this.generator = new MultiHorizonErrorGenerator(SEED, distribution);
-            AbstractSolverFactory<SolutionResults> t = mock(AbstractSolverFactory.class);
-            solver = new DistributionGridCongestionSolver(t, c2);
+            WindSpeedForecastMultiHorizonErrorDistribution distribution =
+                    WindSpeedForecastMultiHorizonErrorDistribution
+                            .loadFromCSV("windspeedDistributions.csv");
+            this.generator = new MultiHorizonNormalErrorGenerator(SEED, distribution);
+            AbstractSolverFactory<SolutionResults> factory = mock(AbstractSolverFactory.class);
+            solver = new DistributionGridCongestionSolver(factory, c2);
             toTest = ArrayListMultimap.create();
             List<Boolean> tt = Collections.nCopies(40, Boolean.TRUE);
             toTest.putAll(mock(FlexibilityProvider.class), tt);
@@ -66,5 +68,4 @@ public class DistributionGridCongestionSolverTest {
         long count = integers.stream().mapToInt(i -> i).sum();
         assertEquals(2 * 40, count, 0);
     }
-
 }

@@ -6,7 +6,7 @@ import be.kuleuven.cs.gridflex.domain.energy.tso.BalancingSignal;
 import be.kuleuven.cs.gridflex.domain.finance.FinanceTracker;
 import be.kuleuven.cs.gridflex.domain.site.Site;
 import be.kuleuven.cs.gridflex.domain.site.SiteFlexAPI;
-import be.kuleuven.cs.gridflex.domain.util.CollectionUtils;
+import be.kuleuven.cs.gridflex.util.CollectionUtils;
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -26,7 +26,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class BRPAggregator extends IndependentAggregator {
 
-    private final Map<SiteFlexAPI, RenumerationMediator> paymentMapper;
+    private final Map<SiteFlexAPI, RemunerationMediator> paymentMapper;
     private final double activationPortion;
     private final double reservePortion;
     private final PriceSignal imbalancePricing;
@@ -64,8 +64,8 @@ public class BRPAggregator extends IndependentAggregator {
         this.paymentMapper.put(client, createMediator(client));
     }
 
-    private RenumerationMediator createMediator(final Site client) {
-        return RenumerationMediator.create(client, reservePortion);
+    private RemunerationMediator createMediator(final Site client) {
+        return RemunerationMediator.create(client, reservePortion);
     }
 
     /**
@@ -78,7 +78,7 @@ public class BRPAggregator extends IndependentAggregator {
         return getActualPaymentMediatorFor(s);
     }
 
-    RenumerationMediator getActualPaymentMediatorFor(final SiteFlexAPI s) {
+    RemunerationMediator getActualPaymentMediatorFor(final SiteFlexAPI s) {
         checkArgument(paymentMapper.containsKey(s),
                 "Invalid argument: Site not registered as client.");
         return this.paymentMapper.get(s);
@@ -112,7 +112,7 @@ public class BRPAggregator extends IndependentAggregator {
     }
 
     private void dispatchBudgets(final int incentives) {
-        for (final RenumerationMediator m : paymentMapper.values()) {
+        for (final RemunerationMediator m : paymentMapper.values()) {
             m.setBudget(incentives);
         }
     }

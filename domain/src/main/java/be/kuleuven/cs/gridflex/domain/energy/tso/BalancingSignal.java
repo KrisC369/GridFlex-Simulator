@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.energy.tso;
 
-import be.kuleuven.cs.gridflex.domain.util.listener.Listener;
+import be.kuleuven.cs.gridflex.util.listener.Listener;
 
 /**
  * This interface represents an entity capable of signifying imbalances in the

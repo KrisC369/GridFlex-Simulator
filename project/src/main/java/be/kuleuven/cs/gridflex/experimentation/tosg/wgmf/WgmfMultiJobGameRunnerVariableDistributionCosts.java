@@ -1,15 +1,15 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.data.CsvResultWriter;
-import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.slf4j.Logger;
 
 import java.util.Collections;
@@ -23,12 +23,13 @@ import static org.slf4j.LoggerFactory.getLogger;
  *
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
-public class WgmfMultiJobGameRunnerVariableDistributionCosts
+public final class WgmfMultiJobGameRunnerVariableDistributionCosts
         extends WgmfGameRunnerVariableDistributionCosts {
     private static final Logger logger = getLogger(
             WgmfMultiJobGameRunnerVariableDistributionCosts.class);
-    private final LinkedListMultimap<ConfigurableGameDirector, WgmfJppfTask> directorToTasks;
-    private final List<CsvResultWriter.WgmfDynamicsResults> writableResults;
+    private final LinkedListMultimap<ConfigurableGameDirector, GenericTask<GameInstanceResult>>
+            directorToTasks;
+    private final List<EgtCsvResultWriter.WgmfDynamicsResults> writableResults;
     private final String resultFileName;
 
     /**
@@ -57,9 +58,9 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
 
     @Override
     protected void execute(WgmfGameParams params) {
-        CsvResultWriter.writeCsvFile(resultFileName, Collections.emptyList(), false);
+        EgtCsvResultWriter.writeCsvFile(resultFileName, Collections.emptyList(), false);
         for (double price = getMinPrice(); price <= getMaxPrice(); price += getPriceStep()) {
-            List<WgmfJppfTask> alltasks = Lists.newArrayList();
+            List<GenericTask<GameInstanceResult>> alltasks = Lists.newArrayList();
 
             ConfigurableGame game = new ConfigurableGame(getnAgents(),
                     ACTION_SIZE, getnReps());
@@ -71,7 +72,7 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
             List<GameInstanceConfiguration> priceContainingConfigs =
                     getConfigsWithPricesFromDirector(price, director);
 
-            List<WgmfJppfTask> adapted = adaptPriceConfigsToRunnableTasks(params,
+            List<GenericTask<GameInstanceResult>> adapted = adaptPriceConfigsToRunnableTasks(params,
                     priceContainingConfigs);
             directorToTasks.putAll(director, adapted);
             alltasks.addAll(adapted);
@@ -81,8 +82,10 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
             List<?> results = runner.waitAndGetResults();
             logger.info("Experiment results received for price: {}. \nProcessing results... ",
                     price);
-            getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
-                    UnmodifiableMap.unmodifiableMap(priceToDirector));
+            getStrategy().processExecutionResultsLogErrorsOnly(results, (obj) -> priceToDirector
+                    .get(((GameInstanceResult) obj).getGameInstanceConfig().getExtraConfigValues()
+                            .get(PRICE_PARAM_KEY))
+                    .notifyVersionHasBeenPlayed((GameInstanceResult) obj));
             processSingleResult(price, director);
         }
 
@@ -91,7 +94,7 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
     private void processSingleResult(Double price, ConfigurableGameDirector d) {
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             parseDynamicsAndAddToResults(price, d, writableResults, egtResultParser);
-            CsvResultWriter.writeCsvFile(resultFileName,
+            EgtCsvResultWriter.writeCsvFile(resultFileName,
                     writableResults.subList(writableResults.size() - 1, writableResults.size()),
                     true);
         } catch (Exception e) {
@@ -102,6 +105,6 @@ public class WgmfMultiJobGameRunnerVariableDistributionCosts
 
     @Override
     protected void processResults() {
-        CsvResultWriter.writeCsvFile(resultFileName + ".whole", writableResults, false);
+        EgtCsvResultWriter.writeCsvFile(resultFileName + ".whole", writableResults, false);
     }
 }

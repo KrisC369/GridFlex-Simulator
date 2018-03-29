@@ -1,8 +1,9 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
+import be.kuleuven.cs.gametheory.AgentGenerator;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexProvider;
 import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.FlexibilityProvider;
-import be.kuleuven.cs.gametheory.AgentGenerator;
+import be.kuleuven.cs.gridflex.domain.energy.dso.r3dp.HourlyFlexConstraints;
 import org.apache.commons.math3.distribution.GammaDistribution;
 import org.apache.commons.math3.random.MersenneTwister;
 
@@ -16,19 +17,23 @@ public class WgmfAgentGenerator implements
     private static final double R3DP_GAMMA_SCALE = 677.926;
     private static final double R3DP_GAMMA_SHAPE = 1.37012;
     private final GammaDistribution gd;
+    private final HourlyFlexConstraints activationConstraints;
 
     /**
      * Default constructor.
      *
-     * @param seed The seed to use.
+     * @param seed                  The seed to use.
+     * @param activationConstraints The activation constraints to use.
      */
-    public WgmfAgentGenerator(long seed) {
+    public WgmfAgentGenerator(long seed, HourlyFlexConstraints activationConstraints) {
         this.gd = new GammaDistribution(new MersenneTwister(seed), R3DP_GAMMA_SHAPE,
                 R3DP_GAMMA_SCALE);
+        this.activationConstraints = activationConstraints;
     }
 
     @Override
     public FlexibilityProvider getAgent() {
-        return new FlexProvider(gd.sample());
+        return new FlexProvider(gd.sample(),
+                activationConstraints);
     }
 }

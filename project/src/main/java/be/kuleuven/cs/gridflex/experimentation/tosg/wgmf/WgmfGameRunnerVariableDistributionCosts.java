@@ -1,16 +1,16 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.data.CsvResultWriter;
-import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
 import be.kuleuven.cs.gametheory.stats.ConfidenceLevel;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.tosg.data.EgtCsvResultWriter;
+import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.apache.commons.collections4.map.UnmodifiableMap;
 import org.apache.commons.math3.stat.interval.ConfidenceInterval;
 import org.slf4j.Logger;
 
@@ -71,7 +71,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
 
     @Override
     protected void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> alltasks = Lists.newArrayList();
+        List<GenericTask<GameInstanceResult>> alltasks = Lists.newArrayList();
         for (double price = getMinPrice(); price <= getMaxPrice(); price += getPriceStep()) {
             ConfigurableGame game = new ConfigurableGame(getnAgents(),
                     ACTION_SIZE, getnReps());
@@ -81,7 +81,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
             List<GameInstanceConfiguration> priceContainingConfigs =
                     getConfigsWithPricesFromDirector(price, director);
 
-            List<WgmfJppfTask> adapted = adaptPriceConfigsToRunnableTasks(params,
+            List<GenericTask<GameInstanceResult>> adapted = adaptPriceConfigsToRunnableTasks(params,
                     priceContainingConfigs);
             alltasks.addAll(adapted);
         }
@@ -90,18 +90,27 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
         runner.runExperiments(alltasks);
         List<?> results = runner.waitAndGetResults();
         logger.info("Experiment results received. \nProcessing results... ");
-        getStrategy().processExecutionResults(results, PRICE_PARAM_KEY,
-                UnmodifiableMap.unmodifiableMap(priceToDirector));
+
+        getStrategy().processExecutionResultsLogErrorsOnly(results, (obj) -> priceToDirector
+                .get(((GameInstanceResult) obj).getGameInstanceConfig().getExtraConfigValues()
+                        .get(PRICE_PARAM_KEY))
+                .notifyVersionHasBeenPlayed((GameInstanceResult) obj));
     }
 
-    protected final List<WgmfJppfTask> adaptPriceConfigsToRunnableTasks(WgmfGameParams params,
+    protected final List<GenericTask<GameInstanceResult>> adaptPriceConfigsToRunnableTasks(
+            WgmfGameParams params,
             List<GameInstanceConfiguration> priceContainingConfigs) {
-        return getStrategy().adapt(priceContainingConfigs, params, PARAMS_KEY,
-                (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig) ->
-                        WhoGetsMyFlexGame
-                                .createVariableDSOPricingGame(wgmfParams, instanceConfig.getSeed(),
-                                        instanceConfig.getExtraConfigValues()
-                                                .get(PRICE_PARAM_KEY)));
+
+        List<GenericTask<GameInstanceResult>> collect = priceContainingConfigs.stream()
+                .map(conf -> new WgmfJppfTask(conf, params,
+                        (WgmfGameParams wgmfParams, GameInstanceConfiguration instanceConfig) ->
+                                WhoGetsMyFlexGame
+                                        .createVariableDSOPricingGame(wgmfParams,
+                                                instanceConfig.getSeed(),
+                                                instanceConfig.getExtraConfigValues()
+                                                        .get(PRICE_PARAM_KEY))))
+                .collect(Collectors.toList());
+        return getStrategy().adapt(collect, PARAMS_KEY);
     }
 
     protected final List<GameInstanceConfiguration> getConfigsWithPricesFromDirector(double price,
@@ -113,13 +122,13 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
 
     @Override
     protected void processResults() {
-        List<CsvResultWriter.WgmfDynamicsResults> toWrite = Lists.newArrayList();
+        List<EgtCsvResultWriter.WgmfDynamicsResults> toWrite = Lists.newArrayList();
         try (EgtResultParser egtResultParser = new EgtResultParser(null)) {
             for (Map.Entry<Double, ConfigurableGameDirector> entry : priceToDirector.entrySet()) {
                 parseDynamicsAndAddToResults(entry.getKey(), entry.getValue(), toWrite,
                         egtResultParser);
             }
-            CsvResultWriter.writeCsvFile(
+            EgtCsvResultWriter.writeCsvFile(
                     RES_OUTPUT_FILE + String.valueOf(getnAgents()) + "R" + String
                             .valueOf(getnReps()) + "_" + String
                             .valueOf(System.currentTimeMillis() / 100), toWrite, false);
@@ -130,7 +139,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
     }
 
     protected final void parseDynamicsAndAddToResults(double pricePoint,
-            ConfigurableGameDirector director, List<CsvResultWriter.WgmfDynamicsResults> results,
+            ConfigurableGameDirector director, List<EgtCsvResultWriter.WgmfDynamicsResults> results,
             EgtResultParser egtResultParser) {
         EvolutionaryGameDynamics dynamics = EvolutionaryGameDynamics
                 .from(director.getResults().getResults());
@@ -158,7 +167,7 @@ public class WgmfGameRunnerVariableDistributionCosts extends AbstractWgmfGameRun
                 CI_LEVEL.getConfidenceLevel(), Arrays.toString(fixedPointsHigher));
         String[] splitted = DATAPROFILE_TEMPLATE.split("/");
 
-        results.add(CsvResultWriter.WgmfDynamicsResults
+        results.add(EgtCsvResultWriter.WgmfDynamicsResults
                 .create(getnAgents(), getnReps(),
                         splitted[splitted.length - 1]
                                 .replace("*", String.valueOf("[" + dataProfileIdx + "]")),

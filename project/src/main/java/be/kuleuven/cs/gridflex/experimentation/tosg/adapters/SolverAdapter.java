@@ -26,11 +26,6 @@ public abstract class SolverAdapter<F, T> implements Solver<T> {
         return adaptResult(target.solve());
     }
 
-    //    @Override
-    //    public T getSolution() {
-    //        return adaptResult(target.getSolution());
-    //    }
-
     /**
      * Perform the actual adaptation.
      *

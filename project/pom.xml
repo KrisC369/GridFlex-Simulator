@@ -1,9 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>be.kuleuven.cs</groupId>
         <artifactId>gridflex-main</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.4-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
 
@@ -16,27 +18,22 @@
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-nucleus</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>gridflex-game</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>be.kuleuven.cs</groupId>
-            <artifactId>gridflex-example</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <artifactId>gridflex-games</artifactId>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
             <artifactId>gridflex-persistence</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>be.kuleuven.cs</groupId>
-            <artifactId>gridflex-solve</artifactId>
-            <version>0.1.3-SNAPSHOT</version>
+            <artifactId>gridflex-solving</artifactId>
+            <version>0.1.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -82,22 +79,27 @@
         <dependency>
             <groupId>com.gurobi</groupId>
             <artifactId>gurobi</artifactId>
-            <version>7.0.1</version>
+            <version>7.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.cplex</groupId>
             <artifactId>cplex</artifactId>
             <version>12.6.3</version>
         </dependency>
-        <dependency>
-            <groupId>org.n52.matlab</groupId>
-            <artifactId>matlab-control</artifactId>
-            <version>5.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.n52.matlab</groupId>-->
+        <!--<artifactId>matlab-control</artifactId>-->
+        <!--<version>5.0.0</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.optaplanner</groupId>
             <artifactId>optaplanner-benchmark</artifactId>
             <version>6.5.0.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.KrisC369</groupId>
+            <artifactId>matlab-control</artifactId>
+            <version>develop_noGuiStartFeature-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <build>

@@ -6,7 +6,7 @@ package be.kuleuven.cs.gridflex.domain.process;
 import be.kuleuven.cs.gridflex.domain.resource.Resource;
 import be.kuleuven.cs.gridflex.domain.util.Buffer;
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
-import be.kuleuven.cs.gridflex.domain.util.NPermuteAndCombiner;
+import be.kuleuven.cs.gridflex.util.NPermuteAndCombiner;
 import be.kuleuven.cs.gridflex.domain.workstation.CurtailableWorkstation;
 import be.kuleuven.cs.gridflex.domain.workstation.DualModeWorkstation;
 import be.kuleuven.cs.gridflex.domain.workstation.Workstation;

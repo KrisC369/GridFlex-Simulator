@@ -2,7 +2,7 @@ package be.kuleuven.cs.gridflex.domain.aggregation;
 
 import be.kuleuven.cs.gridflex.domain.site.SiteFlexAPI;
 import be.kuleuven.cs.gridflex.domain.util.FlexTuple;
-import be.kuleuven.cs.gridflex.domain.util.NPermuteAndCombiner;
+import be.kuleuven.cs.gridflex.util.NPermuteAndCombiner;
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -26,7 +26,6 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
      * performancewise. This is a brute force algorithm.
      */
     CARTESIANPRODUCT() {
-
         @Override
         public int performAggregationStep(final AggregationContext context, final int t,
                 final Multimap<SiteFlexAPI, FlexTuple> flex, final int target) {
@@ -79,6 +78,9 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
             return score;
         }
 
+        private int diff(final int i, final int target) {
+            return Math.abs(target - i);
+        }
     },
 
     /**
@@ -89,7 +91,6 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
      * flex-set.
      */
     MOVINGHORIZON() {
-
         @Override
         public int performAggregationStep(final AggregationContext context, final int t,
                 final Multimap<SiteFlexAPI, FlexTuple> flex, final int target) {
@@ -146,8 +147,4 @@ public enum AggregationStrategyImpl implements AggregationStrategy {
     @Override
     public abstract int performAggregationStep(AggregationContext context,
             int t, Multimap<SiteFlexAPI, FlexTuple> flex, int target);
-
-    private static int diff(final int i, final int target) {
-        return Math.abs(target - i);
-    }
 }

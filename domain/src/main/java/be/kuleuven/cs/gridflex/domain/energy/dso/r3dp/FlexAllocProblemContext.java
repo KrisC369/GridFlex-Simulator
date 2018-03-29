@@ -10,6 +10,10 @@ import java.util.Collection;
  * @author Kristof Coninx <kristof.coninx AT cs.kuleuven.be>
  */
 public interface FlexAllocProblemContext {
+    /**
+     * a default seed value. (default = 0)
+     */
+    long DEFAULT_SEED = 0L;
 
     /**
      * @return The flexibility providers present for this problem context.
@@ -22,10 +26,9 @@ public interface FlexAllocProblemContext {
     TimeSeries getEnergyProfileToMinimizeWithFlex();
 
     /**
-     * @return the seed value. (default = 0)
+     * @return a default seed value. (default = 0)
      */
     default long getSeedValue() {
-        return 0L;
+        return DEFAULT_SEED;
     }
-
 }

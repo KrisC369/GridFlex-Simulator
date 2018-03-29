@@ -3,7 +3,7 @@ package be.kuleuven.cs.gridflex.domain.energy.tso;
 import be.kuleuven.cs.gridflex.domain.energy.generation.EnergyProductionTrackable;
 import be.kuleuven.cs.gridflex.domain.energy.tso.simple.CopperplateTSO;
 import be.kuleuven.cs.gridflex.domain.site.Site;
-import be.kuleuven.cs.gridflex.domain.util.listener.Listener;
+import be.kuleuven.cs.gridflex.util.listener.Listener;
 import be.kuleuven.cs.gridflex.simulation.Simulator;
 import org.junit.Before;
 import org.junit.Test;

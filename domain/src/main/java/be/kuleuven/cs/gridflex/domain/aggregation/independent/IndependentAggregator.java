@@ -43,7 +43,7 @@ public class IndependentAggregator extends Aggregator {
     }
 
     protected final int getTargetFlex() {
-        return getTso().getCurrentImbalance() * 1;
+        return getTso().getCurrentImbalance();
     }
 
     @Override

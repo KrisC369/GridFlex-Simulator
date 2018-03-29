@@ -1,11 +1,11 @@
 package be.kuleuven.cs.gridflex.experimentation.saso;
 
-import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregator;
-import be.kuleuven.cs.gridflex.domain.site.Site;
-import be.kuleuven.cs.gridflex.experimentation.DefaultSiteAgentGenerator;
-import be.kuleuven.cs.gridflex.experimentation.TwoActionGameExample;
 import be.kuleuven.cs.gametheory.GameConfigurator;
 import be.kuleuven.cs.gametheory.GameInstance;
+import be.kuleuven.cs.gridflex.domain.aggregation.brp.BRPAggregator;
+import be.kuleuven.cs.gridflex.domain.site.Site;
+import be.kuleuven.cs.gridflex.experimentation.games.DefaultSiteAgentGenerator;
+import be.kuleuven.cs.gridflex.experimentation.games.TwoActionGameExample;
 import org.apache.commons.math3.random.MersenneTwister;
 
 /**

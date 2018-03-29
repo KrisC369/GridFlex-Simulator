@@ -1,16 +1,18 @@
 package be.kuleuven.cs.gridflex.experimentation.tosg.wgmf;
 
-import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
-import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGame;
 import be.kuleuven.cs.gametheory.configurable.ConfigurableGameDirector;
 import be.kuleuven.cs.gametheory.configurable.GameInstanceConfiguration;
+import be.kuleuven.cs.gametheory.configurable.GameInstanceResult;
 import be.kuleuven.cs.gametheory.evolutionary.EvolutionaryGameDynamics;
+import be.kuleuven.cs.gridflex.experimentation.runners.ExperimentRunner;
+import be.kuleuven.cs.gridflex.experimentation.tosg.stat.EgtResultParser;
 import org.jppf.node.protocol.Task;
 import org.slf4j.Logger;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -51,16 +53,22 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
 
     @Override
     protected void execute(WgmfGameParams params) {
-        List<WgmfJppfTask> adapted = getStrategy()
-                .adapt(director.getPlayableVersions(), params, PARAMS_KEY,
+        List<GameInstanceConfiguration> playableVersions = director.getPlayableVersions();
+        List<GenericTask<GameInstanceResult>> tasks = playableVersions.stream()
+                .map(conf -> new WgmfJppfTask(conf, params,
                         (WgmfGameParams wgmfParams, GameInstanceConfiguration config) ->
                                 WhoGetsMyFlexGame
-                                        .createBasicGame(wgmfParams, config.getSeed()));
+                                        .createBasicGame(wgmfParams, config.getSeed())))
+                .collect(Collectors.toList());
+        List<GenericTask<GameInstanceResult>> adapted = getStrategy()
+                .adapt(tasks, PARAMS_KEY);
+
         ExperimentRunner runner = getStrategy().getRunner(params, PARAMS_KEY);
         runner.runExperiments(adapted);
         List<Task<?>> results = runner.waitAndGetResults();
         logger.info("Experiment results received. \nProcessing results... ");
-        getStrategy().processExecutionResults(results, director);
+        getStrategy().processExecutionResultsFailFast(results,
+                (args) -> director.notifyVersionHasBeenPlayed((GameInstanceResult) args));
     }
 
     @Override
@@ -77,6 +85,6 @@ public class WgmfGameRunner extends AbstractWgmfGameRunner {
         }
         logger.warn("Dynamics equation params: {}", director.getDynamicEquationArguments());
         logger.warn("Payoff table: \n{}",
-                director.getFormattedResults().getFormattedResultString());
+                director.getFormattedResults());
     }
 }

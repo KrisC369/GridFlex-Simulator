@@ -59,6 +59,7 @@ public class FlexProvider implements FlexibilityProvider {
     @Override
     public void registerActivation(FlexActivation activation, Payment payment) {
         checkForActivationConstraintViolation(activation);
+        checkForUnacceptablePayment(payment);
         addActivation(activation);
         registerCompensation(payment);
     }
@@ -71,9 +72,18 @@ public class FlexProvider implements FlexibilityProvider {
         runningCompensationValue += compensation.getMonetaryAmount();
     }
 
+    private void checkForUnacceptablePayment(Payment payment) {
+        if (payment.getMonetaryAmount() < 0) {
+            throw new IllegalArgumentException(
+                    "Negative activation payment " + payment
+                            + " means we are paying. This is not acceptable.");
+        }
+    }
+
     private void checkForActivationConstraintViolation(FlexActivation activation) {
         checkArgument(activation.getDuration() == constraints.getActivationDuration(),
-                "Activation duration does not match constraints. Got: " + activation.getDuration());
+                "Activation duration does not match constraints. Got: " + activation.getDuration()
+                        + "With following constraints: " + constraints);
         if (hasActivations()) {
             double timeBetweenLast =
                     activation.getStart() - (getLastActivation().getStart() + getLastActivation()

@@ -1,6 +1,6 @@
 package be.kuleuven.cs.gridflex.domain.energy.dso.contractnet;
 
-import be.kuleuven.cs.gridflex.domain.util.CollectionUtils;
+import be.kuleuven.cs.gridflex.util.CollectionUtils;
 import be.kuleuven.cs.gridflex.domain.util.data.profiles.AbstractTimeSeriesImplementation;
 import be.kuleuven.cs.gridflex.protocol.contractnet.ContractNetInitiator;
 import org.apache.commons.math3.util.FastMath;
