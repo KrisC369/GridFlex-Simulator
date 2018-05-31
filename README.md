@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/KrisC369/GridFlex-Simulator.svg?branch=master)](https://travis-ci.org/KrisC369/GridFlex-Simulator) 
 [![Build Status](https://circleci.com/gh/KrisC369/GridFlex-Simulator/tree/develop.png?style=shield&circle-token=:circle-token)](https://circleci.com/gh/KrisC369/GridFlex-Simulator) 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2453a1b571704a45a0f078591635ab6b)](https://www.codacy.com/app/kristofconinx369/GridFlex-Simulator?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KrisC369/GridFlex-Simulator&amp;utm_campaign=Badge_Grade)
+[![DOI](https://zenodo.org/badge/73939718.svg)](https://zenodo.org/badge/latestdoi/73939718)
 
 GridFlex Simulator
 =======
